@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# From https://github.com/mortlach/lp-decrypter
+#
 # simple gematria encoding
 # thanks to 'solvers, and bb who started this many years ago
 #
