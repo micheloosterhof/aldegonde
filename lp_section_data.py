@@ -1,3 +1,5 @@
+# from https://github.com/mortlach/lp-decrypter
+
 ''' LP data split by side art '''
 
 lp_sections_by_red_runes = [
