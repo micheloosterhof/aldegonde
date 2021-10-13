@@ -86,6 +86,16 @@ def isomorph(
     return sequences
 
 
+def diffstream(runes: list[int]) -> list[int]:
+    """
+    diffstream mod MAX
+    """
+    diff = []
+    for i in range(0, len(runes)-1):
+        diff.append( (runes[i]-runes[i+1] + MAX) % MAX )
+    return diff
+
+
 def trigrams(runes: List[int]):
     """
     get the trigrams
@@ -179,6 +189,8 @@ def dist(runes: List[int]) -> str:
 
 def ioc(runes: List[int]) -> float:
     """
+    Monographic Index of Coincidence: ΔIC
+
     Input is a list of integers, from 0 to MAX-1
     Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
     """
@@ -196,14 +208,14 @@ def ioc(runes: List[int]) -> float:
 
 def ioc2(runes: List[int], cut: int = 0) -> float:
     """
-    digraph ioc - This IOC calculation runs on pairs of runes
+    Digraphic Index of Coincidence: ΔIC
 
     Input is a list of integers, with values from 0 to MAX-1
     Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
 
-    Specify `cut=0` and it will operate on sliding blocks of 2 runes: AB, BC, CD, DE
-    Specify `cut=1` and it will operate on non-overlapping blocks of 2 runes: AB, CD, EF
-    Specify `cut=2` and it will operate on non-overlapping blocks of 2 runes: BC, DE, FG
+    Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE
+    Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF
+    Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BC, DE, FG
     """
     if cut == 0:
         l: list = []
@@ -231,15 +243,15 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
 
 def ioc3(runes: List[int], cut: int = 0) -> float:
     """
-    trigraph ioc - This IOC calculation runs on three runes
+    Trigraphic Index of Coincidence: ΔIC
 
     Input is a list of integers, with values from 0 to MAX-1
     Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
 
-    Specify `cut=0` and it will operate on sliding blocks of 2 runes: ABC, BCD, CDE, ...
-    Specify `cut=1` and it will operate on non-overlapping blocks of 2 runes: ABC, DEF, ...
-    Specify `cut=2` and it will operate on non-overlapping blocks of 2 runes: BCD, EFG, ...
-    Specify `cut=3` and it will operate on non-overlapping blocks of 2 runes: CDE, FGH, ...
+    Specify `cut=0` and it operates on sliding blocks of 2 runes: ABC, BCD, CDE, ...
+    Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: ABC, DEF, ...
+    Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BCD, EFG, ...
+    Specify `cut=3` and it operates on non-overlapping blocks of 2 runes: CDE, FGH, ...
     """
     if cut == 0:
         l: list = []
@@ -264,9 +276,50 @@ def ioc3(runes: List[int], cut: int = 0) -> float:
     return IC
 
 
+def ioc4(runes: List[int], cut: int = 0) -> float:
+    """
+    Tetragraphic Index of Coincidence: ΔIC
+
+    Input is a list of integers, with values from 0 to MAX-1
+    Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
+
+    Specify `cut=0` and it operates on sliding blocks of 2 runes: ABCD, BCDE, CDEF, ...
+    Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: ABCD, EFGH, ...
+    Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BCDE, FGHI, ...
+    Specify `cut=3` and it operates on non-overlapping blocks of 2 runes: CDEF, GHIJ, ...
+    Specify `cut=4` and it operates on non-overlapping blocks of 2 runes: DEFG, HIJK, ...
+    """
+    if cut == 0:
+        l: list = []
+        for i in range(0, len(runes) - 2):
+            l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
+        freqs = Counter(l)
+        freqsum = 0.0
+        for r in freqs.keys():
+            freqsum += freqs[r] * (freqs[r] - 1)
+        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
+    elif cut == 1 or cut == 2 or cut == 3 or cut ==4:
+        l: list = []
+        for i in range(cut-1, len(runes) - 3, 2):
+            l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
+        freqs = Counter(l)
+        freqsum = 0.0
+        for r in freqs.keys():
+            freqsum += freqs[r] * (freqs[r] - 1)
+        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX * MAX
+    else:
+        raise Exception
+    return IC
+
 def chi(text1: List[int], text2: List[int]) -> float:
     """
     Calculate chi test of 2 texts
+
+    It's calculated by multiplying the frequency count of one letter
+    in the first string by the frequency count of the same letter
+    in the second string, and then doing the same for all the other
+    letters, and summing the result. This is divided by the product
+    of the total number of letters in each string.
     """
     N1 = len(text1)
     N2 = len(text2)
@@ -307,7 +360,10 @@ def kappa(ciphertext: List[int], max: int = 51) -> None:
             counter = counter + 1
             if ciphertext[i] == ciphertext[i + a]:
                 dups = dups + 1
-        print(f"offset={a}, dups={dups}, ioc={dups/counter*MAX:.3f}")
+        print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ", end="")
+        if i%4==0:
+            print()
+
 
 
 def bigram_diagram(runes: List[int]) -> None:
@@ -437,8 +493,8 @@ def split_by_period(ciphertext: List[int], period: int) -> List[List[int]]:
     alphabet = {}
     for i in range(0, period):
         alphabet[i] = []
-    for i in range(0, len(ciphertext) - 1):
-        alphabet[ciphertext[i] % period].append(ciphertext[i])
+    for i in range(0, len(ciphertext)):
+        alphabet[i % period].append(ciphertext[i])
     return alphabet
 
 
@@ -449,7 +505,7 @@ def split_by_character(ciphertext: List[int]) -> Dict[int, List[int]]:
     alphabet = {}
     for i in range(0, MAX):
         alphabet[i] = []
-    for i in range(0, len(ciphertext) - 2):
+    for i in range(0, len(ciphertext) - 1):
         alphabet[ciphertext[i]].append(ciphertext[i + 1])
 
     # for i in alphabet.keys():
@@ -833,3 +889,13 @@ def prime_factors(n: int) -> List[int]:
     if n > 1:
         factors.append(n)
     return factors
+
+def primes(n):
+    out = list()
+    sieve = [True] * (n+1)
+    for p in range(2, n+1):
+        if (sieve[p]):
+            out.append(p)
+            for i in range(p, n+1, p):
+                sieve[i] = False
+    return out
