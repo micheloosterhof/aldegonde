@@ -641,7 +641,7 @@ def plaintext_autokey_beaufort_decrypt(
 
 # assume 1 letter cipher autokey
 # split by previous letter and create MAX alphabets. run bigram on these
-def test2(ciphertext):
+def run_test2(ciphertext):
     print("test for autokey, test for IOC after specific character")
 
     # length of autokey introductory key
@@ -666,7 +666,7 @@ def test2(ciphertext):
 
 # assume 1 letter cipher autokey
 # split by next letter and create MAX alphabets. run bigram on these
-def test2a(ciphertext):
+def run_test2a(ciphertext):
 
     for a in range(1, 20):
         alphabet = {}
@@ -685,7 +685,7 @@ def test2a(ciphertext):
 
 
 # assume fixed length key. find period
-def test3(ciphertext):
+def run_test3(ciphertext):
     print("testing for fixed size periodicity")
     for period in range(1, 30):
         group = {}
@@ -771,7 +771,7 @@ def offset_reverse():
 
 
 # test cipher autokey
-def test4():
+def run_test4():
     print("\n\n\nLP\n")
     print("IOC: " + ioc(gl))
     bigram_diagram(gl)
