@@ -252,7 +252,7 @@ def ioc3(runes: List[int], cut: int = 0) -> float:
         IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
     elif cut == 1 or cut == 2 or cut == 3:
         l: list = []
-        for i in range(cut, len(runes) - 2, 2):
+        for i in range(cut-1, len(runes) - 2, 2):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
         freqs = Counter(l)
         freqsum = 0.0
