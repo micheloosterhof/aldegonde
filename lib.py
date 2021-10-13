@@ -86,7 +86,7 @@ def isomorph(
     return sequences
 
 
-def diffstream(runes: list[int]) -> list[int]:
+def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
     """
