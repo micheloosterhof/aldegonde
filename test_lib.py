@@ -22,6 +22,20 @@ def test_ioc2_uniform():
     assert ioc2(ones)==MAX*MAX
     assert ioc2(nils)==MAX*MAX
 
+def test_ioc2_random():
+    assert ioc2(rand,cut=1)==0.0
+
+def test_ioc2_uniform():
+    assert ioc2(ones,cut=1)==MAX*MAX
+    assert ioc2(nils,cut=1)==MAX*MAX
+
+def test_ioc2_random():
+    assert ioc2(rand,cut=2)==0.0
+
+def test_ioc2_uniform():
+    assert ioc2(ones,cut=2)==MAX*MAX
+    assert ioc2(nils,cut=2)==MAX*MAX
+
 def test_ioc3_random():
     assert ioc3(rand)==0.0
 
