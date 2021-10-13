@@ -4,24 +4,29 @@ MAX=29
 
 from lib import *
 
-nuls = [0] * 30
+nils = [0] * 30
 ones = [1] * 30
 rand = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
-
-print(nuls)
-print(ioc(nuls))
-
-print(ones)
-print(ioc(ones))
-
-print(rand)
-print(ioc(rand))
 
 def test_ioc_random():
     assert ioc(rand)==0.0
     
 def test_ioc_uniform():
-    assert ioc(ones)==29.0
+    assert ioc(ones)==MAX
+    assert ioc(nils)==MAX
+
+def test_ioc2_random():
+    assert ioc2(rand)==0.0
+
+def test_ioc2_uniform():
+    assert ioc2(ones)==MAX*MAX
+    assert ioc2(nils)==MAX*MAX
+
+def test_ioc3_random():
+    assert ioc3(rand)==0.0
+
+def test_ioc3_uniform():
+    assert ioc3(ones)==MAX*MAX*MAX
 
 # sanity check
 def autokey():
