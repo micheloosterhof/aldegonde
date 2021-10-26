@@ -87,13 +87,13 @@ def isomorph(
 
 
 def randomrunes(l: int, max: int = MAX) -> List[int]:
-   """
-   Random list of runes of lenth len
-   """
-   rl = []
-   for i in range(0, l):
-      rl.append(random.randrange(0,max))
-   return rl
+    """
+    Random list of runes of lenth len
+    """
+    rl = []
+    for i in range(0, l):
+        rl.append(random.randrange(0, max))
+    return rl
 
 
 def diffstream(runes: List[int]) -> List[int]:
@@ -101,8 +101,8 @@ def diffstream(runes: List[int]) -> List[int]:
     diffstream mod MAX
     """
     diff = []
-    for i in range(0, len(runes)-1):
-        diff.append( (runes[i+1]-runes[i] + MAX) % MAX )
+    for i in range(0, len(runes) - 1):
+        diff.append((runes[i + 1] - runes[i] + MAX) % MAX)
     return diff
 
 
@@ -180,8 +180,12 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> int:
     for index in range(0, N - skip - 1):
         if runes[index] == runes[index + skip]:
             if trace:
-                print(f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}")
-                print(f"factors N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}")
+                print(
+                    f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}"
+                )
+                print(
+                    f"factors N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
+                )
             doublets += 1
     expected: float = N / MAX
     sigmage = abs(doublets - expected) / math.sqrt(expected)
@@ -230,14 +234,14 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
     Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BC, DE, FG
     """
     N = len(runes)
-    if N<3:
-       return 0.0
+    if N < 3:
+        return 0.0
     l: list = []
     if cut == 0:
-        for i in range(0, N-1):
+        for i in range(0, N - 1):
             l.append(f"{runes[i]}-{runes[i+1]}")
     elif cut == 1 or cut == 2:
-        for i in range(cut, N-1, 2):
+        for i in range(cut, N - 1, 2):
             l.append(f"{runes[i]}-{runes[i+1]}")
     else:
         raise Exception
@@ -265,14 +269,14 @@ def ioc3(runes: List[int], cut: int = 0) -> float:
     Specify `cut=3` and it operates on non-overlapping blocks of 2 runes: CDE, FGH, ...
     """
     N = len(runes)
-    if N<4:
-       return 0.0
+    if N < 4:
+        return 0.0
     l: list = []
     if cut == 0:
-        for i in range(0, N-2):
+        for i in range(0, N - 2):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
     elif cut == 1 or cut == 2 or cut == 3:
-        for i in range(cut-1, N-2, 3):
+        for i in range(cut - 1, N - 2, 3):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
     else:
         raise Exception
@@ -301,15 +305,15 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
     Specify `cut=4` and it operates on non-overlapping blocks of 2 runes: DEFG, HIJK, ...
     """
     N = len(runes)
-    if N<6:
-       return 0.0
+    if N < 6:
+        return 0.0
     l: list = []
     if cut == 0:
-        for i in range(0, N-3):
+        for i in range(0, N - 3):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
-    elif cut == 1 or cut == 2 or cut == 3 or cut ==4:
+    elif cut == 1 or cut == 2 or cut == 3 or cut == 4:
         l: list = []
-        for i in range(cut-1, N-3, 4):
+        for i in range(cut - 1, N - 3, 4):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
     else:
         raise Exception
@@ -319,6 +323,7 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
         freqsum += freqs[r] * (freqs[r] - 1)
     IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX * MAX
     return IC
+
 
 def chi(text1: List[int], text2: List[int]) -> float:
     """
@@ -370,9 +375,8 @@ def kappa(ciphertext: List[int], min: int = 1, max: int = 51) -> None:
             if ciphertext[i] == ciphertext[i + a]:
                 dups = dups + 1
         print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ", end="")
-        if i%4==0:
+        if i % 4 == 0:
             print()
-
 
 
 def bigram_diagram(runes: List[int]) -> None:
@@ -704,13 +708,17 @@ def plaintext_autokey_beaufort_decrypt(
     return output
 
 
-# assume 1 letter cipher autokey
-# split by previous letter and create MAX alphabets. run bigram on these
 def run_test2(ciphertext):
-    print("test for autokey, test for IOC after specific character")
+    """
+    assume 1 letter cipher autokey
+    split by previous letter and create MAX alphabets. run bigram/ioc on these
+    """
+    print("\ntest for autokey, test for IOC after specific character")
+    print("#######################################################\n")
 
     # length of autokey introductory key
     for a in range(1, 10):
+        print(f"Checking key size {a}")
 
         alphabet = {}
         for i in range(0, MAX):
@@ -722,11 +730,11 @@ def run_test2(ciphertext):
         tot = 0.0
         for i in alphabet.keys():
             tot += ioc(alphabet[i])
-            print(f"IOC: {ioc(alphabet[i])}")
-            dist(alphabet[i])
+            print(f"IOC: {ioc(alphabet[i]):.3f}")
+            # dist(alphabet[i])
             # bigram_diagram(alphabet[i])
             # print("key={}: ioc of runes following {} = {}".format(a, i, ioc(alphabet[i])))
-        print(f"key={a} avgioc={tot/MAX}")
+        print(f"key={a} avgioc={tot/MAX:.3f}")
 
 
 # assume 1 letter cipher autokey
@@ -746,7 +754,7 @@ def run_test2a(ciphertext):
             tot += ioc(alphabet[i])
             # bigram_diagram(alphabet[i])
             # print("key={}: ioc of runes before {} = {}".format(a, i, ioc(alphabet[i])))
-        print(f"key={a} avgioc={tot/MAX}")
+        print(f"key={a} avgioc={tot/MAX:.3f}")
 
 
 # assume fixed length key. find period
@@ -765,7 +773,7 @@ def run_test3(ciphertext):
             iocsum += float(ioc(group[k]))
             # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
 
-        print("average ioc period {} = {}".format(period, iocsum / period))
+        print(f"avgioc period {period} = {iocsum/period:.2f}")
 
 
 # test cipher autokey
@@ -899,13 +907,14 @@ def prime_factors(n: int) -> List[int]:
         factors.append(n)
     return factors
 
+
 def primes(n):
     out = list()
-    sieve = [True] * (n+1)
-    for p in range(2, n+1):
-        if (sieve[p]):
+    sieve = [True] * (n + 1)
+    for p in range(2, n + 1):
+        if sieve[p]:
             out.append(p)
-            for i in range(p, n+1, p):
+            for i in range(p, n + 1, p):
                 sieve[i] = False
     return out
 
@@ -913,6 +922,8 @@ def primes(n):
 """
 2vig are vigenere variants that look 2 characters back rather than one
 """
+
+
 def ciphertext_autokey_vig2_encrypt(
     plaintext: List[int], primer: List[int] = [0, 0]
 ) -> List[int]:
@@ -922,7 +933,7 @@ def ciphertext_autokey_vig2_encrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j+1] + key[j] + MAX) % MAX
+        c = (plaintext[j] - key[j + 1] + key[j] + MAX) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -937,7 +948,7 @@ def ciphertext_autokey_vig2_decrypt(
     key: List[int] = primer + ciphertext
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] + key[j+1] - key[j] + MAX) % MAX)
+        output.append((ciphertext[j] + key[j + 1] - key[j] + MAX) % MAX)
     return output
 
 
@@ -974,3 +985,50 @@ def ciphertext_autokey_oddvig_decrypt(
             p = (ciphertext[j] + key[j] + MAX) % MAX
         output.append(p)
     return output
+
+
+def english_output(runes: List[int], limit=0) -> None:
+    """
+    prints rune output translated back to english letters
+    """
+    if limit == 0:
+        limit = len(runes)
+
+    print("--: ", end="")
+    for i in range(0, limit):
+        print("{:2} ".format(runes[i]), end="")
+    print()
+
+    print("--: ", end="")
+    for i in range(0, limit):
+        print("{} ".format(g.position_to_latin_forward_dict[runes[i]]), end="")
+    print()
+
+
+def bruteforce_autokey(
+    ciphertext: List[int],
+    minkeylength: int = 1,
+    maxkeylength: int = 1,
+    iocthreshold: float = 1.4,
+) -> None:
+    """
+    bruteforce vigenere autokey and variants
+    """
+    algs = {
+        "ciphertext_vigenere": ciphertext_autokey_vigenere_decrypt,
+        "ciphertext_beaufort": ciphertext_autokey_beaufort_decrypt,
+        "ciphertext_minuend": ciphertext_autokey_minuend_decrypt,
+        "plaintext_vigenere": plaintext_autokey_vigenere_decrypt,
+        "plaintext_beaufort": plaintext_autokey_beaufort_decrypt,
+        "plaintext_minuend": plaintext_autokey_minuend_decrypt,
+    }
+
+    for a in algs.keys():
+        for key1 in range(0, MAX):
+            p = algs[a](ciphertext, [key1])
+            ic = ioc(p)
+            if ic > iocthreshold:
+                print(f"key {[key1]}: {ic}: ")
+                english_output(p, limit=30)
+
+    return
