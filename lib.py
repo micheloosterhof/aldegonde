@@ -86,13 +86,23 @@ def isomorph(
     return sequences
 
 
+def randomrunes(l: int, max: int = MAX) -> List[int]:
+   """
+   Random list of runes of lenth len
+   """
+   rl = []
+   for i in range(0, l):
+      rl.append(random.randrange(0,max))
+   return rl
+
+
 def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
     """
     diff = []
     for i in range(0, len(runes)-1):
-        diff.append( (runes[i]-runes[i+1] + MAX) % MAX )
+        diff.append( (runes[i+1]-runes[i] + MAX) % MAX )
     return diff
 
 
@@ -161,14 +171,17 @@ def triplets(runes: List[int]) -> int:
     return triplets
 
 
-def doublets(runes: List[int], skip: int = 1) -> int:
+def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> int:
     """
     find number of doublets. doublet is X followed by X for any X
     """
     N = len(runes)
     doublets: int = 0
-    for index in range(0, N - skip):
+    for index in range(0, N - skip - 1):
         if runes[index] == runes[index + skip]:
+            if trace:
+                print(f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}")
+                print(f"factors N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}")
             doublets += 1
     expected: float = N / MAX
     sigmage = abs(doublets - expected) / math.sqrt(expected)
@@ -196,14 +209,13 @@ def ioc(runes: List[int]) -> float:
     """
     N = len(runes)
     if N < 2:
-        return 0
+        return 0.0
     freqs = Counter(runes)
     freqsum = 0.0
-    for rune in range(0, MAX):
+    for rune in range(0, N):
         freqsum += freqs[rune] * (freqs[rune] - 1)
     IC = freqsum / (N * (N - 1)) * MAX
     return IC
-    # return "{0:.3f}".format(IC)
 
 
 def ioc2(runes: List[int], cut: int = 0) -> float:
@@ -217,27 +229,26 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
     Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF
     Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BC, DE, FG
     """
+    N = len(runes)
+    if N<3:
+       return 0.0
+    l: list = []
     if cut == 0:
-        l: list = []
-        for i in range(0, len(runes) - 1):
+        for i in range(0, N-1):
             l.append(f"{runes[i]}-{runes[i+1]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX
     elif cut == 1 or cut == 2:
-        l: list = []
-        for i in range(cut, len(runes) - 1, 2):
+        for i in range(cut, N-1, 2):
             l.append(f"{runes[i]}-{runes[i+1]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX
     else:
         raise Exception
-
+    freqs = Counter(l)
+    freqsum = 0.0
+    for r in freqs.keys():
+        freqsum += freqs[r] * (freqs[r] - 1)
+    try:
+        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX
+    except ZeroDivisionError:
+        IC = 0.0
     return IC
 
 
@@ -253,26 +264,26 @@ def ioc3(runes: List[int], cut: int = 0) -> float:
     Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BCD, EFG, ...
     Specify `cut=3` and it operates on non-overlapping blocks of 2 runes: CDE, FGH, ...
     """
+    N = len(runes)
+    if N<4:
+       return 0.0
+    l: list = []
     if cut == 0:
-        l: list = []
-        for i in range(0, len(runes) - 2):
+        for i in range(0, N-2):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
     elif cut == 1 or cut == 2 or cut == 3:
-        l: list = []
-        for i in range(cut-1, len(runes) - 2, 2):
+        for i in range(cut-1, N-2, 3):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
     else:
         raise Exception
+    freqs = Counter(l)
+    freqsum = 0.0
+    for r in freqs.keys():
+        freqsum += freqs[r] * (freqs[r] - 1)
+    try:
+        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
+    except ZeroDivisionError:
+        IC = 0.0
     return IC
 
 
@@ -289,26 +300,24 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
     Specify `cut=3` and it operates on non-overlapping blocks of 2 runes: CDEF, GHIJ, ...
     Specify `cut=4` and it operates on non-overlapping blocks of 2 runes: DEFG, HIJK, ...
     """
+    N = len(runes)
+    if N<6:
+       return 0.0
+    l: list = []
     if cut == 0:
-        l: list = []
-        for i in range(0, len(runes) - 2):
-            l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
+        for i in range(0, N-3):
+            l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
     elif cut == 1 or cut == 2 or cut == 3 or cut ==4:
         l: list = []
-        for i in range(cut-1, len(runes) - 3, 2):
+        for i in range(cut-1, N-3, 4):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
-        freqs = Counter(l)
-        freqsum = 0.0
-        for r in freqs.keys():
-            freqsum += freqs[r] * (freqs[r] - 1)
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX * MAX
     else:
         raise Exception
+    freqs = Counter(l)
+    freqsum = 0.0
+    for r in freqs.keys():
+        freqsum += freqs[r] * (freqs[r] - 1)
+    IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX * MAX
     return IC
 
 def chi(text1: List[int], text2: List[int]) -> float:
@@ -346,14 +355,14 @@ def banbury(runes: List[int]) -> None:
         print(f"offset: {offset} matches {matches}")
 
 
-def kappa(ciphertext: List[int], max: int = 51) -> None:
+def kappa(ciphertext: List[int], min: int = 1, max: int = 51) -> None:
     """
     kappa test
     max -> max offset. if
     """
     if max == 0:
         max = int(len(ciphertext) / 2)
-    for a in range(1, max):
+    for a in range(min, max):
         counter = 0
         dups = 0
         for i in range(0, len(ciphertext) - a):
@@ -899,3 +908,69 @@ def primes(n):
             for i in range(p, n+1, p):
                 sieve[i] = False
     return out
+
+
+"""
+2vig are vigenere variants that look 2 characters back rather than one
+"""
+def ciphertext_autokey_vig2_encrypt(
+    plaintext: List[int], primer: List[int] = [0, 0]
+) -> List[int]:
+    """
+    2Vig primitive without any console output, C=P+K1+K
+    """
+    key: List[int] = primer.copy()
+    output: List[int] = []
+    for j in range(0, len(plaintext)):
+        c = (plaintext[j] - key[j+1] + key[j] + MAX) % MAX
+        output.append(c)
+        key.append(c)
+    return output
+
+
+def ciphertext_autokey_vig2_decrypt(
+    ciphertext: List[int], primer: List[int] = [0, 0]
+) -> List[int]:
+    """
+    2Vig primitive without any console output, P=C-K
+    """
+    key: List[int] = primer + ciphertext
+    output: List[int] = []
+    for j in range(0, len(ciphertext)):
+        output.append((ciphertext[j] + key[j+1] - key[j] + MAX) % MAX)
+    return output
+
+
+def ciphertext_autokey_oddvig_encrypt(
+    plaintext: List[int], primer: List[int] = [0]
+) -> List[int]:
+    """
+    2Vig primitive without any console output, C=P+K1+K
+    """
+    key: List[int] = primer.copy()
+    output: List[int] = []
+    for j in range(0, len(plaintext)):
+        if j % 2 == 0:
+            c = (plaintext[j] + key[j] + MAX) % MAX
+        else:
+            c = (plaintext[j] - key[j] + MAX) % MAX
+        output.append(c)
+        key.append(c)
+    return output
+
+
+def ciphertext_autokey_oddvig_decrypt(
+    ciphertext: List[int], primer: List[int] = [0]
+) -> List[int]:
+    """
+    2Vig primitive without any console output, P=C-K
+    """
+    key: List[int] = primer + ciphertext
+    output: List[int] = []
+    for j in range(0, len(ciphertext)):
+        if j % 2 == 0:
+            p = (ciphertext[j] - key[j] + MAX) % MAX
+        else:
+            p = (ciphertext[j] + key[j] + MAX) % MAX
+        output.append(p)
+    return output

@@ -10,7 +10,7 @@ rand = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 
 def test_ioc_random():
     assert ioc(rand)==0.0
-    
+
 def test_ioc_uniform():
     assert ioc(ones)==MAX
     assert ioc(nils)==MAX
@@ -50,3 +50,7 @@ def autokey():
     assert plaintext_autokey_beaufort_decrypt(plaintext_autokey_beaufort_encrypt(rand)) == rand
     assert plaintext_autokey_vigenere_decrypt(plaintext_autokey_vigenere_encrypt(rand)) == rand
     assert plaintext_autokey_minuend_decrypt(plaintext_autokey_minuend_encrypt(rand)) == rand
+
+def vig2():
+    assert ciphertext_autokey_vig2_decrypt(ciphertext_autokey_vig2_encrypt(rand)) == rand
+    assert ciphertext_autokey_oddvig_decrypt(ciphertext_autokey_oddvig_encrypt(rand)) == rand
