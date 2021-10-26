@@ -1009,7 +1009,7 @@ def bruteforce_autokey(
     ciphertext: List[int],
     minkeylength: int = 1,
     maxkeylength: int = 1,
-    iocthreshold: float = 1.4,
+    iocthreshold: float = 1.2,
 ) -> None:
     """
     bruteforce vigenere autokey and variants
@@ -1022,13 +1022,13 @@ def bruteforce_autokey(
         "plaintext_beaufort": plaintext_autokey_beaufort_decrypt,
         "plaintext_minuend": plaintext_autokey_minuend_decrypt,
     }
-
-    for a in algs.keys():
-        for key1 in range(0, MAX):
-            p = algs[a](ciphertext, [key1])
-            ic = ioc(p)
-            if ic > iocthreshold:
-                print(f"key {[key1]}: {ic}: ")
-                english_output(p, limit=30)
+    for keylength in range(minkeylength, maxkeylength + 1):
+        for key in range(0, (MAX ** keylength) + 1):
+            for a in algs.keys():
+                p = algs[a](ciphertext, [key])
+                ic = ioc(p)
+                if ic > iocthreshold:
+                    print(f"key {[key]}: {ic}: ")
+                    english_output(p, limit=30)
 
     return
