@@ -53,6 +53,12 @@ def test_ioc3_uniform():
     assert ioc3(ones) == MAX * MAX * MAX
 
 
+def test_split_by_doublet():
+    inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
+    outp = [[0, 1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10]]
+    assert split_by_doublet(inp) == outp
+
+
 # sanity check
 def autokey():
     assert (

@@ -580,6 +580,22 @@ def split_by_character(ciphertext: List[int]) -> Dict[int, List[int]]:
     return alphabet
 
 
+def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
+    """
+    split by doublet
+    """
+    output = []
+    current = []
+    for i in range(0, len(ciphertext)):
+        if ciphertext[i] == ciphertext[i - 1]:
+            output.append(current)
+            current = [ciphertext[i]]
+        else:
+            current.append(ciphertext[i])
+    output.append(current)
+    return output
+
+
 # ciphertext autokey variations
 # we can do 3 operations, 2 subtractions and 1 addition, addition=vigenere, subtraction=beaufort, minuend
 # C=P+K C=P-K, C=K-P
