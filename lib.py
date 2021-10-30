@@ -75,7 +75,7 @@ def isomorph(
     sequences = {}
     for length in range(min, max + 1):
         l = []
-        for index in range(0, len(ciphertext) - length):
+        for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
             l.append(k)
         f = Counter(l)
@@ -183,7 +183,7 @@ def isomorph2(
     sequences = {}
     for length in range(min, max + 1):
         l = {}
-        for index in range(0, len(ciphertext) - length):
+        for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
             if k in l.keys():
                 l[k].append(index)
