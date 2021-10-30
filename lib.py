@@ -203,7 +203,7 @@ def find(sequence: List[int], runes: List[int]) -> List[int]:
     """
     N = len(runes)
     results = []
-    for index in range(0, N - len(sequence)):
+    for index in range(0, N - len(sequence)+1):
         if sequence == runes[index : index + len(sequence)]:
             results.append(index)
     return results
@@ -468,7 +468,9 @@ def bigram_diagram(runes: List[int]) -> None:
             if v == 0:
                 print(colors.bgRed, end="")
             elif v < 5:
-                print(colors.bgBlue, end="")
+                print(colors.bgYellow, end="")
+            elif v < 10:
+                print(colors.bgGreen, end="")
             print(f"{v:02}", end="")
             print(colors.reset, end=" ")
 
