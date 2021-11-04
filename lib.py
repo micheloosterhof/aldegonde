@@ -224,14 +224,15 @@ def triplets(runes: List[int]) -> int:
     return triplets
 
 
-def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> int:
+def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
     """
     find number of doublets. doublet is X followed by X for any X
     """
     N = len(runes)
-    doublets: int = 0
+    doublets: List[int] = []
     for index in range(0, N - skip - 1):
         if runes[index] == runes[index + skip]:
+            doublets.append(index)
             if trace:
                 print(
                     f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}"
@@ -239,10 +240,10 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> int:
                 print(
                     f"factors N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
                 )
-            doublets += 1
+    l: int = len(doublets)
     expected: float = N / MAX
-    sigmage = abs(doublets - expected) / math.sqrt(expected)
-    print(f"doublets={doublets} expected={N/MAX:.2f} σ={sigmage:.2f}")
+    sigmage: float = abs(l - expected) / math.sqrt(expected)
+    print(f"doublets={l} expected={N/MAX:.2f} σ={sigmage:.2f}")
     return doublets
 
 
