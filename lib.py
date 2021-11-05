@@ -203,7 +203,7 @@ def find(sequence: List[int], runes: List[int]) -> List[int]:
     """
     N = len(runes)
     results = []
-    for index in range(0, N - len(sequence)+1):
+    for index in range(0, N - len(sequence) + 1):
         if sequence == runes[index : index + len(sequence)]:
             results.append(index)
     return results
@@ -429,8 +429,9 @@ def kappa(ciphertext: List[int], min: int = 1, max: int = 51) -> None:
             if ciphertext[i] == ciphertext[i + a]:
                 dups = dups + 1
         print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ", end="")
-        if i % 4 == 0:
+        if (i + 4) % 4 == 0:
             print()
+    print()
 
 
 def bigram_diagram(runes: List[int]) -> None:
