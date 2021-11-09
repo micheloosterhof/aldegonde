@@ -155,7 +155,7 @@ def diffstream(runes: List[int]) -> List[int]:
     """
     diff = []
     for i in range(0, len(runes) - 1):
-        diff.append((runes[i + 1] - runes[i] + MAX) % MAX)
+        diff.append((runes[i + 1] - runes[i]) % MAX)
     return diff
 
 
@@ -445,8 +445,8 @@ def bigram_diagram(runes: List[int]) -> None:
         "{:02d}-{:02d}".format(runes[idx], runes[idx + 1])
         for idx in range(len(runes) - 1)
     )
-    bigram = defaultdict(dict)
 
+    bigram = defaultdict(dict)
     for i in res.keys():
         x, y = i.split("-")
         bigram[int(x)][int(y)] = res[i]
@@ -614,7 +614,7 @@ def ciphertext_autokey_vigenere_encrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] + key[j] + MAX) % MAX
+        c = (plaintext[j] + key[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -629,7 +629,7 @@ def ciphertext_autokey_vigenere_decrypt(
     key: List[int] = primer + ciphertext
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] - key[j] + MAX) % MAX)
+        output.append((ciphertext[j] - key[j]) % MAX)
     return output
 
 
@@ -642,7 +642,7 @@ def ciphertext_autokey_minuend_encrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (key[j] - plaintext[j] + MAX) % MAX
+        c = (key[j] - plaintext[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -657,7 +657,7 @@ def ciphertext_autokey_minuend_decrypt(
     key: List[int] = primer + ciphertext
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        output.append((key[j] - ciphertext[j] + MAX) % MAX)
+        output.append((key[j] - ciphertext[j]) % MAX)
     return output
 
 
@@ -670,7 +670,7 @@ def ciphertext_autokey_beaufort_encrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j] + MAX) % MAX
+        c = (plaintext[j] - key[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -685,7 +685,7 @@ def ciphertext_autokey_beaufort_decrypt(
     key: List[int] = primer + ciphertext
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] + key[j] + MAX) % MAX)
+        output.append((ciphertext[j] + key[j]) % MAX)
     return output
 
 
@@ -703,7 +703,7 @@ def plaintext_autokey_vigenere_encrypt(
     key: List[int] = primer + plaintext
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] + key[j] + MAX) % MAX
+        c = (plaintext[j] + key[j]) % MAX
         output.append(c)
     return output
 
@@ -717,7 +717,7 @@ def plaintext_autokey_vigenere_decrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        c = (ciphertext[j] - key[j] + MAX) % MAX
+        c = (ciphertext[j] - key[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -732,7 +732,7 @@ def plaintext_autokey_minuend_encrypt(
     key: List[int] = primer + plaintext
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (key[j] - plaintext[j] + MAX) % MAX
+        c = (key[j] - plaintext[j]) % MAX
         output.append(c)
     return output
 
@@ -746,7 +746,7 @@ def plaintext_autokey_minuend_decrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        c = (key[j] - ciphertext[j] + MAX) % MAX
+        c = (key[j] - ciphertext[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -761,7 +761,7 @@ def plaintext_autokey_beaufort_encrypt(
     key: List[int] = primer + plaintext
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j] + MAX) % MAX
+        c = (plaintext[j] - key[j]) % MAX
         output.append(c)
     return output
 
@@ -775,7 +775,7 @@ def plaintext_autokey_beaufort_decrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        p = (key[j] + ciphertext[j] + MAX) % MAX
+        p = (key[j] + ciphertext[j]) % MAX
         output.append(p)
         key.append(p)
     return output
@@ -856,9 +856,9 @@ def offset():
 
     output = []
     for j in range(0, len(gl)):
-        transform = (gl[j] + MAX - gl[(j + 1) % len(gl)]) % MAX
+        transform = (gl[j] - gl[(j + 1) % len(gl)]) % MAX
 
-        output.append((gl[j] + MAX - gl[(j + 1) % len(gl)]) % MAX)
+        output.append((gl[j] - gl[(j + 1) % len(gl)]) % MAX)
 
     # print sample
     samplesize = 10
@@ -890,9 +890,9 @@ def offset_reverse():
 
     output = []
     for j in range(0, len(gl)):
-        transform = (gl[j - 1] + MAX - gl[(j) % len(gl)]) % MAX
+        transform = (gl[j - 1] - gl[(j) % len(gl)]) % MAX
 
-        output.append((gl[j] + MAX + offset - gl[(j - 1) % len(gl)]) % MAX)
+        output.append((gl[j] + offset - gl[(j - 1) % len(gl)]) % MAX)
 
     # print sample
     samplesize = 10
@@ -930,7 +930,7 @@ def run_test4():
 
         output = []
         for j in range(0, len(gl)):
-            output.append((gl[j] + MAX + offset - gl[(j - 1) % len(gl)]) % MAX)
+            output.append((gl[j] + offset - gl[(j - 1) % len(gl)]) % MAX)
 
         # print sample
         samplesize = 10
@@ -1006,7 +1006,7 @@ def ciphertext_autokey_vig2_encrypt(
     key: List[int] = primer.copy()
     output: List[int] = []
     for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j + 1] + key[j] + MAX) % MAX
+        c = (plaintext[j] - key[j + 1] + key[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -1021,7 +1021,7 @@ def ciphertext_autokey_vig2_decrypt(
     key: List[int] = primer + ciphertext
     output: List[int] = []
     for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] + key[j + 1] - key[j] + MAX) % MAX)
+        output.append((ciphertext[j] + key[j + 1] - key[j]) % MAX)
     return output
 
 
@@ -1035,9 +1035,9 @@ def ciphertext_autokey_oddvig_encrypt(
     output: List[int] = []
     for j in range(0, len(plaintext)):
         if j % 2 == 0:
-            c = (plaintext[j] + key[j] + MAX) % MAX
+            c = (plaintext[j] + key[j]) % MAX
         else:
-            c = (plaintext[j] - key[j] + MAX) % MAX
+            c = (plaintext[j] - key[j]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -1053,9 +1053,9 @@ def ciphertext_autokey_oddvig_decrypt(
     output: List[int] = []
     for j in range(0, len(ciphertext)):
         if j % 2 == 0:
-            p = (ciphertext[j] - key[j] + MAX) % MAX
+            p = (ciphertext[j] - key[j]) % MAX
         else:
-            p = (ciphertext[j] + key[j] + MAX) % MAX
+            p = (ciphertext[j] + key[j]) % MAX
         output.append(p)
     return output
 
