@@ -159,18 +159,6 @@ def shift(inp: List[int], shift: int) -> List[int]:
     return output
 
 
-def slices(inp: List[int], size: int) -> List[List[int]]:
-    """
-    Create slices of the input, with a certain slice size
-    For size 3, it will return a list of lists with elements:
-       [0, 3, 6, 9] [1, 4, 7, 10] [2, 5, 8]
-    """
-    outp = []
-    for i in range(0, size):
-        outp.append(inp[slice(i, len(inp), size)])
-    return outp
-
-
 def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
@@ -578,37 +566,36 @@ def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
     print("\n")
 
 
-def split_by_period(ciphertext: List[int], period: int) -> List[List[int]]:
+# split_by functions offers various methods to split a larger text into smaller text
+
+def split_by_slice(inp: List[int], size: int) -> Dict[int, List[int]]:
     """
-    split functions, split by position
+    Create slices of the input, with a certain slice size
+    This will return every N'th element
+    For size 3, it will return a list of lists with elements:
+       [0, 3, 6, 9] [1, 4, 7, 10] [2, 5, 8]
     """
-    alphabet = {}
-    for i in range(0, period):
-        alphabet[i] = []
-    for i in range(0, len(ciphertext)):
-        alphabet[i % period].append(ciphertext[i])
-    return alphabet
+    outp = {}
+    for i in range(0, size):
+        outp[i] = inp[slice(i, len(inp), size)].copy()
+    return outp
 
 
-def split_by_character(ciphertext: List[int]) -> Dict[int, List[int]]:
+def split_by_character(inp: List[int]) -> Dict[int, List[int]]:
     """
     by previous character
     """
-    alphabet = {}
+    outp = {}
     for i in range(0, MAX):
-        alphabet[i] = []
-    for i in range(0, len(ciphertext) - 1):
-        alphabet[ciphertext[i]].append(ciphertext[i + 1])
-
-    # for i in alphabet.keys():
-    #    #bigram_diagram(alphabet[i])
-    #    print("key={}: ioc of runes following {} = {}".format(a, i, ioc(alphabet[i])))
-    return alphabet
+        outp[i] = []
+    for i in range(0, len(inp) - 1):
+        outp[inp[i]].append(inp[i + 1])
+    return outp
 
 
 def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
     """
-    split by doublet
+    split in simple chunks separated by a doublet
     """
     output = []
     current = []
@@ -813,30 +800,30 @@ def detect_plaintext_autokey_vigenere(
     the way Caesar generalizes to Vigenere,
     a single-letter autokey generalizes to a multi-letter autokey
     to solve it, split it into multiple slices.
-
-    split by previous letter and create MAX alphabets. run bigram/ioc on these
     """
     if trace is True:
-        print(
-            "\ntest for plaintext autokey, calculate for IOC after specific character"
-        )
+        print(f"test for plaintext autokey, samplesize={len(ciphertext)}")
         print("#######################################################\n")
 
     for keysize in range(minkeysize, maxkeysize + 1):
-        if trace is True:
-            print(f"keysize {keysize}")
         slices = {}
         iocs = 0
         for start in range(0, keysize):
             slices[start] = ciphertext[start::keysize]
-
+            if trace is True:
+                print(f"\nslice={start}: ", end="")
+            # Bruteforce the introductory key at this position
             for key in range(0, MAX):
                 plain = plaintext_autokey_vigenere_decrypt(slices[start], [key])
                 iocs += ioc(plain)
-                # print(f"slice {start} key={key} ioc={ioc(plain)}")
+                if ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"ioc={ioc(plain):.2f} ", end="")
         iocavg = iocs / MAX / keysize
+        if trace is True:
+            print(f"\nkeysize={keysize} avgioc = {iocavg:0.3f}")
         if iocavg > 1.2:
-            print(f"iocavg = {iocavg:0.3f} length {keysize}")
+            print(f"Attempting bruteforce...")
             if keysize < 4:
                 bruteforce_autokey(
                     ciphertext,
@@ -860,9 +847,7 @@ def detect_ciphertext_autokey_vigenere(
     split by previous letter and create MAX alphabets. run bigram/ioc on these
     """
     if trace is True:
-        print(
-            "\ntest for ciphertext autokey, calculate for IOC after specific character"
-        )
+        print(f"test for ciphertext autokey, samplesize={len(ciphertext)}")
         print("#######################################################\n")
 
     # length of autokey introductory key
