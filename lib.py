@@ -149,6 +149,16 @@ class RuneIterator:
             return base29(x, padding=self.length)
 
 
+def shift(inp: List[int], shift: int) -> List[int]:
+    """
+    shift contents of list by `shift` mod MAX
+    """
+    output = []
+    for i in inp:
+        output.append((i + shift + MAX) % MAX)
+    return output
+
+
 def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
@@ -781,16 +791,17 @@ def plaintext_autokey_beaufort_decrypt(
     return output
 
 
-def run_test2(ciphertext):
+def detect_autokey(
+    ciphertext: List[int], minkey: int = 1, maxkey: int = 10, trace: bool = False
+):
     """
-    assume 1 letter cipher autokey
     split by previous letter and create MAX alphabets. run bigram/ioc on these
     """
-    print("\ntest for autokey, test for IOC after specific character")
+    print("\ntest for autokey, calculate for IOC after specific character")
     print("#######################################################\n")
 
     # length of autokey introductory key
-    for a in range(1, 10):
+    for a in range(minkey, maxkey):
         print(f"Checking key size {a}")
 
         alphabet = {}
@@ -803,10 +814,9 @@ def run_test2(ciphertext):
         tot = 0.0
         for i in alphabet.keys():
             tot += ioc(alphabet[i])
-            print(f"IOC: {ioc(alphabet[i]):.3f}")
+            print(f"IOC: key={i} {ioc(alphabet[i]):.3f}")
             # dist(alphabet[i])
             # bigram_diagram(alphabet[i])
-            # print("key={}: ioc of runes following {} = {}".format(a, i, ioc(alphabet[i])))
         print(f"key={a} avgioc={tot/MAX:.3f}")
 
 
