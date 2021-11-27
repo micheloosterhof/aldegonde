@@ -159,6 +159,18 @@ def shift(inp: List[int], shift: int) -> List[int]:
     return output
 
 
+def slices(inp: List[int], size: int) -> List[List[int]]:
+    """
+    Create slices of the input, with a certain slice size
+    For size 3, it will return a list of lists with elements:
+       [0, 3, 6, 9] [1, 4, 7, 10] [2, 5, 8]
+    """
+    outp = []
+    for i in range(0, size):
+        outp.append(inp[slice(i, len(inp), size)])
+    return outp
+
+
 def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
@@ -791,18 +803,72 @@ def plaintext_autokey_beaufort_decrypt(
     return output
 
 
-def detect_autokey(
-    ciphertext: List[int], minkey: int = 1, maxkey: int = 10, trace: bool = False
-):
+def detect_plaintext_autokey_vigenere(
+    ciphertext: List[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 20,
+    trace: bool = False,
+) -> None:
     """
+    the way Caesar generalizes to Vigenere,
+    a single-letter autokey generalizes to a multi-letter autokey
+    to solve it, split it into multiple slices.
+
     split by previous letter and create MAX alphabets. run bigram/ioc on these
     """
-    print("\ntest for autokey, calculate for IOC after specific character")
-    print("#######################################################\n")
+    if trace is True:
+        print(
+            "\ntest for plaintext autokey, calculate for IOC after specific character"
+        )
+        print("#######################################################\n")
+
+    for keysize in range(minkeysize, maxkeysize + 1):
+        if trace is True:
+            print(f"keysize {keysize}")
+        slices = {}
+        iocs = 0
+        for start in range(0, keysize):
+            slices[start] = ciphertext[start::keysize]
+
+            for key in range(0, MAX):
+                plain = plaintext_autokey_vigenere_decrypt(slices[start], [key])
+                iocs += ioc(plain)
+                # print(f"slice {start} key={key} ioc={ioc(plain)}")
+        iocavg = iocs / MAX / keysize
+        if iocavg > 1.2:
+            print(f"iocavg = {iocavg:0.3f} length {keysize}")
+            if keysize < 4:
+                bruteforce_autokey(
+                    ciphertext,
+                    minkeylength=keysize,
+                    maxkeylength=keysize,
+                    iocthreshold=1.3,
+                )
+
+
+def detect_ciphertext_autokey_vigenere(
+    ciphertext: List[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 10,
+    trace: bool = False,
+):
+    """
+    the way Caesar generalizes to Vigenere,
+    a single-letter autokey generalizes to a multi-letter autokey
+    to solve it, split it into multiple segments
+
+    split by previous letter and create MAX alphabets. run bigram/ioc on these
+    """
+    if trace is True:
+        print(
+            "\ntest for ciphertext autokey, calculate for IOC after specific character"
+        )
+        print("#######################################################\n")
 
     # length of autokey introductory key
-    for a in range(minkey, maxkey):
-        print(f"Checking key size {a}")
+    for a in range(minkeysize, maxkeysize + 1):
+        if trace is True:
+            print(f"Checking key size {a}")
 
         alphabet = {}
         for i in range(0, MAX):
@@ -1115,3 +1181,25 @@ def bruteforce_autokey(
                     english_output(p, limit=30)
 
     return
+
+
+def gcd(p, q):
+    # Create the gcd of two positive integers.
+    while q != 0:
+        p, q = q, p % q
+    return p
+
+
+def is_coprime(x, y):
+    return gcd(x, y) == 1
+
+
+def phi_func(x):
+    """
+    euler phi // totient
+    """
+    if x == 1:
+        return 1
+    else:
+        n = [y for y in range(1, x) if is_coprime(x, y)]
+        return len(n)

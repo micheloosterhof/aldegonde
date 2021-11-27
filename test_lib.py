@@ -59,6 +59,11 @@ def test_split_by_doublet():
     assert split_by_doublet(inp) == outp
 
 
+def test_slices():
+    inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
+    outp = [[0, 3, 5, 7, 10], [1, 4, 6, 8], [2, 4, 7, 9]]
+    assert slices(inp, 3) == outp
+
 # sanity check
 def autokey():
     assert (
