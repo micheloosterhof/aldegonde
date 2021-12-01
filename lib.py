@@ -86,6 +86,30 @@ def isomorph(
     return sequences
 
 
+def isomorph2(
+    ciphertext: List[int], min: int = 2, max: int = 10
+):  # -> Dict(List[int], int):
+    """
+    Find repeating sequences in the list, up to `max`. Max defaults to 10
+    Returns dictionary with as key the sequence as a string, and as value the list of starting positions of that substring
+    """
+    sequences = {}
+    for length in range(min, max + 1):
+        l = {}
+        for index in range(0, len(ciphertext) - length + 1):
+            k = "-".join([str(x) for x in ciphertext[index : index + length]])
+            if k in l.keys():
+                l[k].append(index)
+            else:
+                l[k] = [index]
+
+        for k in l.keys():
+            if len(l[k]) > 1:
+                sequences[k] = l[k].copy()
+
+    return sequences
+
+
 def randomrunes(l: int, max: int = MAX) -> List[int]:
     """
     Random list of runes of lenth len
@@ -181,30 +205,6 @@ def quadgrams(runes: List[int]):
     get the quadgrams
     """
     return isomorph(runes, min=4, max=4)
-
-
-def isomorph2(
-    ciphertext: List[int], min: int = 2, max: int = 10
-):  # -> Dict(List[int], int):
-    """
-    Find repeating sequences in the list, up to `max`. Max defaults to 10
-    Returns dictionary with as key the sequence as a string, and as value the list of starting positions of that substring
-    """
-    sequences = {}
-    for length in range(min, max + 1):
-        l = {}
-        for index in range(0, len(ciphertext) - length + 1):
-            k = "-".join([str(x) for x in ciphertext[index : index + length]])
-            if k in l.keys():
-                l[k].append(index)
-            else:
-                l[k] = [index]
-
-        for k in l.keys():
-            if len(l[k]) > 1:
-                sequences[k] = l[k].copy()
-
-    return sequences
 
 
 def find(sequence: List[int], runes: List[int]) -> List[int]:
