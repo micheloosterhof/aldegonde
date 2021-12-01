@@ -431,7 +431,13 @@ def banbury(runes: List[int]) -> None:
         print(f"offset: {offset} matches {matches}")
 
 
-def kappa(ciphertext: List[int], min: int = 1, max: int = 51) -> None:
+def kappa(
+    ciphertext: List[int],
+    min: int = 1,
+    max: int = 51,
+    threshold: float = 1.3,
+    trace: bool = False,
+) -> None:
     """
     kappa test
     max -> max offset. if
@@ -445,9 +451,8 @@ def kappa(ciphertext: List[int], min: int = 1, max: int = 51) -> None:
             counter = counter + 1
             if ciphertext[i] == ciphertext[i + a]:
                 dups = dups + 1
-        print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ", end="")
-        if (i + 4) % 4 == 0:
-            print()
+        if (dups / counter * MAX) > threshold or trace is True:
+            print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ")
     print()
 
 
@@ -472,7 +477,7 @@ def bigram_diagram(runes: List[int]) -> None:
         "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
     )
     print(
-        "---+----------------------------------------------------------------------------------------+----"
+        "---+----------------------------------------------------------------------------------------+------"
     )
 
     # for i in sorted(bigram.keys()):
@@ -503,10 +508,10 @@ def bigram_diagram(runes: List[int]) -> None:
         print("| {0:.3f}".format(pioc))
 
     print(
-        "--------------------------------------------------------------------------------------------+----"
+        "---+----------------------------------------------------------------------------------------+------"
     )
     print(
-        "                                                                                            | {0:.3f}".format(
+        "   |                                                                                        | {0:.3f}".format(
             ioc
         )
     )
@@ -574,6 +579,7 @@ def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
 
 
 # split_by functions offers various methods to split a larger text into smaller text
+
 
 def split_by_slice(inp: List[int], size: int) -> Dict[int, List[int]]:
     """
