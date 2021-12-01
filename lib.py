@@ -878,7 +878,8 @@ def detect_ciphertext_autokey_vigenere(
         tot = 0.0
         for i in alphabet.keys():
             tot += ioc(alphabet[i])
-            print(f"IOC: key={i} {ioc(alphabet[i]):.3f}")
+            if trace is True:
+                print(f"IOC: key={i} {ioc(alphabet[i]):.3f}")
             # dist(alphabet[i])
             # bigram_diagram(alphabet[i])
         print(f"key={a} avgioc={tot/MAX:.3f}")
@@ -905,7 +906,7 @@ def run_test2a(ciphertext):
 
 
 # assume fixed length key. find period
-def run_test3(ciphertext):
+def run_test3(ciphertext: List[int], trace: bool = False):
     print("testing for fixed size periodicity")
     for period in range(1, 30):
         group = {}

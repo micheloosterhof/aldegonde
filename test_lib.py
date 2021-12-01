@@ -59,7 +59,7 @@ def test_split_by_doublet():
     assert split_by_doublet(inp) == outp
 
 
-def split_by_slice():
+def test_split_by_slice():
     inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
     outp = {0: [0, 3, 5, 7, 10], 1: [1, 4, 6, 8], 2: [2, 4, 7, 9]}
     assert slices(inp, 3) == outp
