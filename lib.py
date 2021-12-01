@@ -95,7 +95,7 @@ def isomorph2(
     """
     sequences = {}
     for length in range(min, max + 1):
-        l = {}
+        l: Dict[str, List[int]] = {}
         for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
             if k in l.keys():
@@ -264,7 +264,7 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
     return doublets
 
 
-def dist(runes: List[int]) -> str:
+def dist(runes: List[int]) -> None:
     """
     print frequency distribution
     """
@@ -384,7 +384,6 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
         for i in range(0, N - 3):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
     elif cut == 1 or cut == 2 or cut == 3 or cut == 4:
-        l: list = []
         for i in range(cut - 1, N - 3, 4):
             l.append(f"{runes[i]}-{runes[i+1]}-{runes[i+2]}-{runes[i+3]}")
     else:
@@ -417,21 +416,6 @@ def chi(text1: List[int], text2: List[int]) -> float:
     return sum
 
 
-def banbury(runes: List[int]) -> None:
-    """
-    Banbury test. Overlay text with itself, count number of same characters
-    Output is printed
-    """
-    print("banbury")
-    N: int = len(runes)
-    for offset in range(1, N - 50):
-        matches = 0
-        for i in range(0, N - offset):
-            if runes[i] == runes[i + offset]:
-                matches += 1
-        print(f"offset: {offset} matches {matches}")
-
-
 def kappa(
     ciphertext: List[int],
     min: int = 1,
@@ -441,7 +425,7 @@ def kappa(
 ) -> None:
     """
     kappa test
-    max -> max offset. if
+    overlay text with itself and count the number of duplicate letters
     """
     if max == 0:
         max = int(len(ciphertext) / 2)
@@ -470,9 +454,9 @@ def bigram_diagram(runes: List[int]) -> None:
     )
 
     bigram = defaultdict(dict)
-    for i in res.keys():
-        x, y = i.split("-")
-        bigram[int(x)][int(y)] = res[i]
+    for k in res.keys():
+        x, y = k.split("-")
+        bigram[int(x)][int(y)] = res[k]
 
     print(
         "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
@@ -532,9 +516,9 @@ def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
     )
     bigram = defaultdict(dict)
 
-    for i in res.keys():
-        x, y = i.split("-")
-        bigram[int(x)][int(y)] = res[i]
+    for k in res.keys():
+        x, y = k.split("-")
+        bigram[int(x)][int(y)] = res[k]
 
     print(
         "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
@@ -543,9 +527,10 @@ def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
         "---+----------------------------------------------------------------------------------------+----"
     )
 
-    # for i in sorted(bigram.keys()):
+    i: int
     for i in range(0, MAX):
         print(f"{i:02} | ", end="")
+        j: int
         for j in range(0, MAX):
             # for j in sorted(bigram[i]):
             try:
@@ -599,7 +584,7 @@ def split_by_character(inp: List[int]) -> Dict[int, List[int]]:
     """
     by previous character
     """
-    outp = {}
+    outp: Dict[int, List[int]] = {}
     for i in range(0, MAX):
         outp[i] = []
     for i in range(0, len(inp) - 1):
@@ -611,8 +596,8 @@ def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
     """
     split in simple chunks separated by a doublet
     """
-    output = []
-    current = []
+    output: List[List[int]] = []
+    current: List[int] = []
     for i in range(0, len(ciphertext)):
         if ciphertext[i] == ciphertext[i - 1]:
             output.append(current)
@@ -821,7 +806,7 @@ def detect_plaintext_autokey_vigenere(
 
     for keysize in range(minkeysize, maxkeysize + 1):
         slices = {}
-        iocs = 0
+        iocs: float = 0
         for start in range(0, keysize):
             slices[start] = ciphertext[start::keysize]
             if trace is True:
@@ -869,7 +854,7 @@ def detect_ciphertext_autokey_vigenere(
         if trace is True:
             print(f"Checking key size {a}")
 
-        alphabet = {}
+        alphabet: Dict[int, List[int]] = {}
         for i in range(0, MAX):
             alphabet[i] = []
 
@@ -910,7 +895,7 @@ def run_test2a(ciphertext):
 def run_test3(ciphertext: List[int], trace: bool = False):
     print("testing for fixed size periodicity")
     for period in range(1, 30):
-        group = {}
+        group: Dict[int, List[int]] = {}
         for i in range(period):
             group[i] = []
 
