@@ -110,6 +110,13 @@ def isomorph2(
     return sequences
 
 
+def alphabet(text: List[int]) -> List[int]:
+    """
+    Find all unique values
+    """
+    return sorted(list(set(text)))
+
+
 def randomrunes(l: int, max: int = MAX) -> List[int]:
     """
     Random list of runes of lenth len
