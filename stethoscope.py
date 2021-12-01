@@ -170,25 +170,29 @@ def split_and_chi(ciphertext: List[int]):
 ##bruteforce_autokey(s[0], minkeylength=4, maxkeylength=4, iocthreshold=1.35)
 
 
-print(isomorph2(gl, min=5))
+def analyze_segment(ciphertext: List[int]):
+    print(f"ciphertext size {len(ciphertext)}")
+    print(f"alphabet size {len(alphabet(ciphertext))}: {alphabet(ciphertext)}")
+    print()
+    print(f" ioc={ioc(ciphertext):.3f}")
+    print(
+        f" ioc2={ioc2(ciphertext,cut=0):.3f} ioc2a={ioc2(ciphertext,cut=1):.3f}, ioc2b={ioc2(ciphertext,cut=2):.3f}"
+    )
+    print(
+        f" ioc3={ioc3(ciphertext,cut=0):.3f} ioc3a={ioc3(ciphertext,cut=1):.3f}, ioc3b={ioc3(ciphertext,cut=2):.3f}, ioc3c={ioc3(ciphertext,cut=3):.3f}"
+    )
+    # print(f" ioc4={ioc4(ciphertext,cut=0):.4f} ioc4a={ioc4(ciphertext,cut=1):.4f}, ioc4b={ioc4(ciphertext,cut=2):.4f}, ioc4c={ioc4(ciphertext,cut=4):.4f}")
+    print()
+    print(f" isomorphs length 3: {isomorph2(ciphertext,min=3,max=3)}")
+    print(f" isomorphs length 4: {isomorph2(ciphertext,min=4,max=4)}")
+    print(f" isomorphs length 5: {isomorph2(ciphertext,min=5,max=5)}")
+    print(f" isomorphs length 6: {isomorph2(ciphertext,min=6,max=6)}")
+    print(f" isomorphs length 7: {isomorph2(ciphertext,min=7,max=17)}")
 
+    bigram_diagram(ciphertext)
 
-totient = []
-for i in range(1, 4000):
-    totient.append(phi_func(i))
-
-N = len(sgl)
-# p = primes(10000000)
-for i in range(0, N):
-    gl = sgl[i]
-
-    print(f"alphabet: {alphabet(gl)}")
-
-    bigram_diagram(gl)
-
-    print(f"#### segment {i+1} ######")
-    print(f"len {len(gl)} factors:{prime_factors(len(gl))}")
-    english_output(gl, limit=20)
+    print(f"len {len(ciphertext)} factors:{prime_factors(len(ciphertext))}")
+    english_output(ciphertext, limit=20)
 
     # print("chi test")
     # for j in range(i,N):
@@ -196,37 +200,29 @@ for i in range(0, N):
     #    print(f"rand chi {i}-{j}: {chi(sgl[i],rsegments[j])*MAX}")
 
     print("doublet test")
-    db = doublets(gl, trace=True)
+    db = doublets(ciphertext, trace=True)
     print(db)
     # pattern_finder(db)
 
     print("kappa test")
-    kappa(gl)
+    kappa(ciphertext)
 
     print("testing for vigenere")
-    run_test3(gl)
+    run_test3(ciphertext)
 
     print("plaintext and ciphertext autokey test")
-    detect_plaintext_autokey_vigenere(gl, trace=False)
-    detect_ciphertext_autokey_vigenere(gl, trace=False)
-
+    detect_plaintext_autokey_vigenere(ciphertext, trace=False)
+    detect_ciphertext_autokey_vigenere(ciphertext, trace=False)
 
     # print(f"#### segment {i+1} bruteforce autokey ######")
-    # bruteforce_autokey(gl,     maxkeylength=3)
+    # bruteforce_autokey(ciphertext,     maxkeylength=3)
 
-    print(f"#### segment {i+1} IOC's #######")
-    print(f" ioc={ioc(gl):.3f}")
-    print(
-        f" ioc2={ioc2(gl,cut=0):.3f} ioc2a={ioc2(gl,cut=1):.3f}, ioc2b={ioc2(gl,cut=2):.3f}"
-    )
-    print(
-        f" ioc3={ioc3(gl,cut=0):.3f} ioc3a={ioc3(gl,cut=1):.3f}, ioc3b={ioc3(gl,cut=2):.3f}, ioc3c={ioc3(gl,cut=3):.3f}"
-    )
-    # print(f" ioc4={ioc4(gl,cut=0):.4f} ioc4a={ioc4(gl,cut=1):.4f}, ioc4b={ioc4(gl,cut=2):.4f}, ioc4c={ioc4(gl,cut=4):.4f}")
 
-    print(f"#### segment {i+1} ISOMORPH's ######")
-    print(f" isomorphs length 3: {isomorph2(gl,min=3,max=3)}")
-    print(f" isomorphs length 4: {isomorph2(gl,min=4,max=4)}")
-    print(f" isomorphs length 5: {isomorph2(gl,min=5,max=5)}")
-    print(f" isomorphs length 6: {isomorph2(gl,min=6,max=6)}")
-    print(f" isomorphs length 7: {isomorph2(gl,min=7,max=17)}")
+print("Full liber primus")
+analyze_segment(gl)
+
+N = len(sgl)
+for i in range(0, N):
+    gl = sgl[i]
+    print(f"\n\n\n#### segment {i+1} ######")
+    analyze_segment(gl)

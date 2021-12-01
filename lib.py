@@ -283,13 +283,14 @@ def ioc(runes: List[int]) -> float:
     Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
     """
     N = len(runes)
+    A = len(alphabet(runes))
     if N < 2:
         return 0.0
     freqs = Counter(runes)
     freqsum = 0.0
     for rune in range(0, N):
         freqsum += freqs[rune] * (freqs[rune] - 1)
-    IC = freqsum / (N * (N - 1)) * MAX
+    IC = freqsum / (N * (N - 1)) * A
     return IC
 
 
