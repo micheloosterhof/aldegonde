@@ -33,9 +33,8 @@ def beaufort_decrypt_interrupted(
     keylen = len(primer)
     for pos in range(0, len(ciphertext)):
         if pos in interruptors:
-            # reset key stream and output `F` rune.
+            # output `F` rune and do not increase key position
             output.append(0)
-            # keypos = 0
         else:
             output.append((ciphertext[pos] + primer[keypos % keylen]) % MAX)
             keypos = keypos + 1
@@ -48,8 +47,18 @@ for r in welcome:
 
 print(f"runes size {len(runes)}")
 print(f"alphabet size {len(alphabet(runes))}: {alphabet(runes)}")
+print(f"ioc={ioc(runes):.3f}")
+print(
+    f"ioc2={ioc2(runes,cut=0):.3f} ioc2a={ioc2(runes,cut=1):.3f}, ioc2b={ioc2(runes,cut=2):.3f}"
+)
+print(
+    f"ioc3={ioc3(runes,cut=0):.3f} ioc3a={ioc3(runes,cut=1):.3f}, ioc3b={ioc3(runes,cut=2):.3f}, ioc3c={ioc3(runes ,cut=3):.3f}"
+)
 
-plain = beaufort_decrypt_interrupted(runes, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465,514])
+detect_vigenere(runes, trace=True)
+
+plain = beaufort_decrypt_interrupted(
+    runes, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
+)
 
 english_output(plain, limit=0)
-print(f"plain ioc = {ioc(plain):.3f} kappa = {ioc(plain)/29:.3f}")
