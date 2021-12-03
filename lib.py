@@ -840,6 +840,8 @@ def detect_plaintext_autokey_vigenere(
     the way Caesar generalizes to Vigenere,
     a single-letter autokey generalizes to a multi-letter autokey
     to solve it, split it into multiple slices.
+    
+    NOTE: this only detects vigenere, not beaufort or minuend
     """
     if trace is True:
         print(f"test for plaintext autokey, samplesize={len(ciphertext)}")
@@ -847,22 +849,42 @@ def detect_plaintext_autokey_vigenere(
 
     for keysize in range(minkeysize, maxkeysize + 1):
         slices = {}
-        iocs: float = 0
+        vigiocs: float = 0
+        miniocs: float = 0
+        beaiocs: float = 0
         for start in range(0, keysize):
             slices[start] = ciphertext[start::keysize]
             if trace is True:
                 print(f"\nslice={start}: ", end="")
-            # Bruteforce the introductory key at this position
+            # Bruteforce Vigenere introductory key at this position
             for key in range(0, MAX):
                 plain = plaintext_autokey_vigenere_decrypt(slices[start], [key])
-                iocs += ioc(plain)
+                vigiocs += ioc(plain)
                 if ioc(plain) > 1.3:
                     if trace is True:
-                        print(f"ioc={ioc(plain):.2f} ", end="")
-        iocavg = iocs / MAX / keysize
+                        print(f"vigenere ioc={ioc(plain):.2f} ", end="")
+            # Bruteforce Beaufort introductory key at this position
+            for key in range(0, MAX):
+                plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
+                beaiocs += ioc(plain)
+                if ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"beaufort ioc={ioc(plain):.2f} ", end="")
+            # Bruteforce Minuend introductory key at this position
+            for key in range(0, MAX):
+                plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
+                miniocs += ioc(plain)
+                if ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"minuend ioc={ioc(plain):.2f} ", end="")
+        vigiocavg = vigiocs / MAX / keysize
+        miniocavg = miniocs / MAX / keysize
+        beaiocavg = beaiocs / MAX / keysize
         if trace is True:
-            print(f"\nkeysize={keysize} avgioc = {iocavg:0.3f}")
-        if iocavg > 1.2:
+            print(f"\nvigenere keysize={keysize} avgioc = {vigiocavg:0.3f}")
+            print(f"\nbeaufort keysize={keysize} avgioc = {beaiocavg:0.3f}")
+            print(f"\nminuend  keysize={keysize} avgioc = {miniocavg:0.3f}")
+        if vigiocavg > 1.2 or miniocavg > 1.2 or beaiocavg > 1.2:
             print(f"Attempting bruteforce...")
             if keysize < 4:
                 bruteforce_autokey(
