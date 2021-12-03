@@ -963,7 +963,8 @@ def run_test3(ciphertext: List[int], trace: bool = False):
             iocsum += float(ioc(group[k]))
             # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
 
-        print(f"avgioc period {period} = {iocsum/period:.2f}")
+        if trace is True or iocsum/period>1.0:
+            print(f"avgioc period {period} = {iocsum/period:.2f}")
 
 
 # test cipher autokey
