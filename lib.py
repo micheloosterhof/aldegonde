@@ -571,7 +571,7 @@ def split_by_slice(inp: List[int], size: int) -> Dict[int, List[int]]:
     """
     Create slices of the input, with a certain slice size
     This will return every N'th element
-    For size 3, it will return a list of lists with elements:
+    For size 3, it will return a dictionary of lists with elements:
        [0, 3, 6, 9] [1, 4, 7, 10] [2, 5, 8]
     """
     outp = {}
@@ -606,6 +606,47 @@ def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
             current.append(ciphertext[i])
     output.append(current)
     return output
+
+
+def beaufort_encrypt(plaintext: List[int], primer: List[int] = [0], trace: bool = False):
+    """
+    Plain Beaufort
+    """
+    output: List[int] = []
+    for i in range(0,len(plaintext)):
+        output.append((plaintext[i] - primer[i % len(primer)]) % MAX)
+    return output
+
+
+def beaufort_decrypt(ciphertext: List[int], primer: List[int] = [0], trace: bool = False):
+    """
+    Plain Beaufort
+    """
+    output: List[int] = []
+    for i in range(0,len(ciphertext)):
+        output.append((ciphertext[i] + primer[i % len(primer)]) % MAX)
+    return output
+
+
+def vigenere_decrypt(ciphertext: List[int], primer: List[int] = [0], trace: bool = False):
+    """
+    Plain Vigenere
+    """
+    output: List[int] = []
+    for i in range(0,len(ciphertext)):
+        output.append((ciphertext[i] - primer[i % len(primer)]) % MAX)
+    return output
+
+
+def vigenere_encrypt(plaintext: List[int], primer: List[int] = [0], trace: bool = False):
+    """
+    Plain Vigenere
+    """
+    output: List[int] = []
+    for i in range(0,len(plaintext)):
+        output.append((plaintext[i] + primer[i % len(primer)]) % MAX)
+    return output
+
 
 
 # ciphertext autokey variations
@@ -870,6 +911,21 @@ def detect_ciphertext_autokey_vigenere(
             # bigram_diagram(alphabet[i])
         print(f"key={a} avgioc={tot/MAX:.3f}")
 
+# assume fixed length key. find period
+def detect_vigenere(ciphertext: List[int], minkeysize: int = 1, maxkeysize:int = 20,trace: bool = False):
+    print("testing for periodicity using friedman test")
+    for period in range(1, 30):
+        slices = split_by_slice(ciphertext, period)
+
+        iocsum: float = 0.0
+        for k in slices.keys():
+            ic = ioc(slices[k])
+            iocsum += ic
+            if trace is True:
+                print(f"ioc of runes {k}/{period} = {ic:.3f}")
+        if trace is True:
+            print(f"avgioc period {period} = {iocsum/period:.2f}")
+
 
 # assume 1 letter cipher autokey
 # split by next letter and create MAX alphabets. run bigram on these
@@ -1125,7 +1181,7 @@ def english_output(runes: List[int], limit=0) -> None:
     """
     prints rune output translated back to english letters
     """
-    if limit == 0:
+    if limit == 0 or limit > len(runes):
         limit = len(runes)
 
     print("--: ", end="")
@@ -1135,7 +1191,7 @@ def english_output(runes: List[int], limit=0) -> None:
 
     print("--: ", end="")
     for i in range(0, limit):
-        print("{} ".format(g.position_to_latin_forward_dict[runes[i]]), end="")
+        print("{:2} ".format(g.position_to_latin_forward_dict[runes[i]]), end="")
     print()
 
 
