@@ -14,8 +14,8 @@ def test_ioc_random():
 
 
 def test_ioc_uniform():
-    assert ioc(ones) == MAX
-    assert ioc(nils) == MAX
+    assert ioc(ones) == 1.0
+    assert ioc(nils) == 1.0
 
 
 def test_ioc2_random():
@@ -53,6 +53,11 @@ def test_ioc3_uniform():
     assert ioc3(ones) == MAX * MAX * MAX
 
 
+def test_isomorph():
+    assert isomorph([0,1,2,3,4]) == isomorph([1,2,3,4,5])
+    assert isomorph([0,1,1,3,5]) == isomorph([1,2,2,9,8])
+
+
 def test_split_by_doublet():
     inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
     outp = [[0, 1, 2, 3, 4], [4, 5, 6, 7], [7, 8, 9, 10]]
@@ -62,7 +67,7 @@ def test_split_by_doublet():
 def test_split_by_slice():
     inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
     outp = {0: [0, 3, 5, 7, 10], 1: [1, 4, 6, 8], 2: [2, 4, 7, 9]}
-    assert slices(inp, 3) == outp
+    assert split_by_slice(inp, 3) == outp
 
 # sanity check
 def autokey():
