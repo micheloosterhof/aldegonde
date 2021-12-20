@@ -65,7 +65,7 @@ class colors:
     bgBrightWhite = "\033[47;1m"
 
 
-def isomorph(
+def repeat(
     ciphertext: List[int], min: int = 2, max: int = 10
 ):  # -> Dict(List[int], int):
     """
@@ -86,7 +86,7 @@ def isomorph(
     return sequences
 
 
-def isomorph2(
+def repeat2(
     ciphertext: List[int], min: int = 2, max: int = 10
 ):  # -> Dict(List[int], int):
     """
@@ -204,14 +204,14 @@ def trigrams(runes: List[int]):
     """
     get the trigrams
     """
-    return isomorph(runes, min=3, max=3)
+    return repeat(runes, min=3, max=3)
 
 
 def quadgrams(runes: List[int]):
     """
     get the quadgrams
     """
-    return isomorph(runes, min=4, max=4)
+    return repeat(runes, min=4, max=4)
 
 
 def find(sequence: List[int], runes: List[int]) -> List[int]:
@@ -480,6 +480,8 @@ def bigram_diagram(runes: List[int]) -> None:
                 print(colors.bgYellow, end="")
             elif v < 10:
                 print(colors.bgGreen, end="")
+            elif v > 25:
+                print(colors.bgBlue, end="")
             print(f"{v:02}", end="")
             print(colors.reset, end=" ")
 
@@ -830,7 +832,7 @@ def plaintext_autokey_beaufort_decrypt(
     return output
 
 
-def detect_plaintext_autokey_vigenere(
+def detect_plaintext_autokey(
     ciphertext: List[int],
     minkeysize: int = 1,
     maxkeysize: int = 20,
@@ -840,8 +842,6 @@ def detect_plaintext_autokey_vigenere(
     the way Caesar generalizes to Vigenere,
     a single-letter autokey generalizes to a multi-letter autokey
     to solve it, split it into multiple slices.
-    
-    NOTE: this only detects vigenere, not beaufort or minuend
     """
     if trace is True:
         print(f"test for plaintext autokey, samplesize={len(ciphertext)}")
@@ -1100,7 +1100,7 @@ def ignore():
     for offset in range(1, 20):
         print(f"OFFSET: {offset}")
         x = autokey_vigenere(gl, offset=offset)
-        print("number of dups: " + str(len(isomorph(x).keys())))
+        print("number of dups: " + str(len(repeat(x).keys())))
         y = split_by_character(x)
         for k in y.keys():
             print(ioc(y[k]), end=" ")
