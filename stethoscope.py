@@ -4,6 +4,7 @@
 from collections import Counter, defaultdict
 import math
 import random
+import statistics
 import sys
 from typing import Dict, List
 
@@ -18,7 +19,7 @@ from lib import *
 
 g = gematria.gematria
 
-# isomorphs
+# repeats
 djubei = [23, 11, 1, 17, 18, 10]
 iso51 = [17, 19, 4, 9, 19]
 iso52 = [3, 1, 9, 7, 19]
@@ -169,7 +170,6 @@ def split_and_chi(ciphertext: List[int]):
 # bruteforce_autokey(sgl[1], minkeylength=2, maxkeylength=2, iocthreshold=1.15)
 ##bruteforce_autokey(s[0], minkeylength=4, maxkeylength=4, iocthreshold=1.35)
 
-
 def analyze_segment(ciphertext: List[int]):
     print(f"ciphertext size {len(ciphertext)}")
     print(f"alphabet size {len(alphabet(ciphertext))}: {alphabet(ciphertext)}")
@@ -183,11 +183,19 @@ def analyze_segment(ciphertext: List[int]):
     )
     # print(f" ioc4={ioc4(ciphertext,cut=0):.4f} ioc4a={ioc4(ciphertext,cut=1):.4f}, ioc4b={ioc4(ciphertext,cut=2):.4f}, ioc4c={ioc4(ciphertext,cut=4):.4f}")
     print()
-    print(f" isomorphs length 3: {isomorph2(ciphertext,min=3,max=3)}")
-    print(f" isomorphs length 4: {isomorph2(ciphertext,min=4,max=4)}")
-    print(f" isomorphs length 5: {isomorph2(ciphertext,min=5,max=5)}")
-    print(f" isomorphs length 6: {isomorph2(ciphertext,min=6,max=6)}")
-    print(f" isomorphs length 7: {isomorph2(ciphertext,min=7,max=17)}")
+    #print(f" repeats length 3: {repeat2(ciphertext,min=3,max=3)}")
+    print(f" repeats length 4: {repeat2(ciphertext,min=4,max=4)}")
+    print(f" repeats length 5: {repeat2(ciphertext,min=5,max=5)}")
+    print(f" repeats length 6: {repeat2(ciphertext,min=6,max=6)}")
+    print(f" repeats length 7: {repeat2(ciphertext,min=7,max=17)}")
+
+    iso = repeat2(ciphertext,min=4,max=7)
+    for k in iso.keys():
+        for r in range(1,len(iso[k])):
+            distance = iso[k][r] - iso[k][r-1]
+            factors = prime_factors(distance)
+            print(f"{k} distance={distance} factors={factors} ",end="")
+        print()
 
     bigram_diagram(ciphertext)
 
@@ -211,15 +219,15 @@ def analyze_segment(ciphertext: List[int]):
     run_test3(ciphertext)
 
     print("plaintext and ciphertext autokey test")
-    detect_plaintext_autokey_vigenere(ciphertext, trace=False)
+    detect_plaintext_autokey(ciphertext, trace=False)
     detect_ciphertext_autokey_vigenere(ciphertext, trace=False)
 
     # print(f"#### segment {i+1} bruteforce autokey ######")
     # bruteforce_autokey(ciphertext,     maxkeylength=3)
 
-
 print("Full liber primus")
 analyze_segment(gl)
+print("slice analysis")
 
 N = len(sgl)
 for i in range(0, N):
