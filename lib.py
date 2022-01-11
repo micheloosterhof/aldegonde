@@ -1223,6 +1223,7 @@ def bruteforce_autokey(
     minkeylength: int = 1,
     maxkeylength: int = 1,
     iocthreshold: float = 1.2,
+    trace: bool = False,
 ) -> None:
     """
     bruteforce vigenere autokey and variants
@@ -1240,7 +1241,7 @@ def bruteforce_autokey(
             for a in algs.keys():
                 p = algs[a](ciphertext, key)
                 ic = ioc(p)
-                if ic > iocthreshold:
+                if ic > iocthreshold or trace:
                     print(f"key {key}: {ic}: ")
                     english_output(p, limit=30)
 
@@ -1275,12 +1276,12 @@ def isomorph(ciphertext: List[int]) -> str:
     Output is this normalized as an isomorph, it's output as a string for easy comparison in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
     """
-    output = []
+    output = ""
     letter = 'A'
     mapping: Dict[int, str] = {}
     for r in ciphertext:
         if r not in mapping:
             mapping[r] = letter
             letter = chr(ord(letter) + 1)
-        output.append(mapping[r])
+        output = output + mapping[r]
     return output
