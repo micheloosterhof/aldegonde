@@ -396,6 +396,17 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
     return IC
 
 
+def hamming_distance(s1: List[int], s2: List[int]) -> int:
+    """
+    The Hamming distance between two equal-length strings of symbols
+    is the number of positions at which the corresponding symbols
+    are different
+    """
+    if len(s1) != len(s2):
+        raise ValueError("Undefined for sequences of unequal length.")
+    return sum(el1 != el2 for el1, el2 in zip(s1, s2))
+
+
 def chi(text1: List[int], text2: List[int]) -> float:
     """
     Calculate chi test of 2 texts
@@ -610,45 +621,52 @@ def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
     return output
 
 
-def beaufort_encrypt(plaintext: List[int], primer: List[int] = [0], trace: bool = False):
+def beaufort_encrypt(
+    plaintext: List[int], primer: List[int] = [0], trace: bool = False
+):
     """
     Plain Beaufort
     """
     output: List[int] = []
-    for i in range(0,len(plaintext)):
+    for i in range(0, len(plaintext)):
         output.append((plaintext[i] - primer[i % len(primer)]) % MAX)
     return output
 
 
-def beaufort_decrypt(ciphertext: List[int], primer: List[int] = [0], trace: bool = False):
+def beaufort_decrypt(
+    ciphertext: List[int], primer: List[int] = [0], trace: bool = False
+):
     """
     Plain Beaufort
     """
     output: List[int] = []
-    for i in range(0,len(ciphertext)):
+    for i in range(0, len(ciphertext)):
         output.append((ciphertext[i] + primer[i % len(primer)]) % MAX)
     return output
 
 
-def vigenere_decrypt(ciphertext: List[int], primer: List[int] = [0], trace: bool = False):
+def vigenere_decrypt(
+    ciphertext: List[int], primer: List[int] = [0], trace: bool = False
+):
     """
     Plain Vigenere
     """
     output: List[int] = []
-    for i in range(0,len(ciphertext)):
+    for i in range(0, len(ciphertext)):
         output.append((ciphertext[i] - primer[i % len(primer)]) % MAX)
     return output
 
 
-def vigenere_encrypt(plaintext: List[int], primer: List[int] = [0], trace: bool = False):
+def vigenere_encrypt(
+    plaintext: List[int], primer: List[int] = [0], trace: bool = False
+):
     """
     Plain Vigenere
     """
     output: List[int] = []
-    for i in range(0,len(plaintext)):
+    for i in range(0, len(plaintext)):
         output.append((plaintext[i] + primer[i % len(primer)]) % MAX)
     return output
-
 
 
 # ciphertext autokey variations
@@ -933,8 +951,14 @@ def detect_ciphertext_autokey_vigenere(
             # bigram_diagram(alphabet[i])
         print(f"key={a} avgioc={tot/MAX:.3f}")
 
+
 # assume fixed length key. find period
-def detect_vigenere(ciphertext: List[int], minkeysize: int = 1, maxkeysize:int = 20,trace: bool = False):
+def detect_vigenere(
+    ciphertext: List[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 20,
+    trace: bool = False,
+):
     print("testing for periodicity using friedman test")
     for period in range(1, 30):
         slices = split_by_slice(ciphertext, period)
@@ -985,7 +1009,7 @@ def run_test3(ciphertext: List[int], trace: bool = False):
             iocsum += float(ioc(group[k]))
             # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
 
-        if trace is True or iocsum/period>1.0:
+        if trace is True or iocsum / period > 1.0:
             print(f"avgioc period {period} = {iocsum/period:.2f}")
 
 
@@ -1277,7 +1301,7 @@ def isomorph(ciphertext: List[int]) -> str:
     Example ATTACK and EFFECT both normalize to ABBACD
     """
     output = ""
-    letter = 'A'
+    letter = "A"
     mapping: Dict[int, str] = {}
     for r in ciphertext:
         if r not in mapping:
