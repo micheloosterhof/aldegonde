@@ -193,10 +193,33 @@ def shift(inp: List[int], shift: int) -> List[int]:
 def diffstream(runes: List[int]) -> List[int]:
     """
     diffstream mod MAX
+    DIFF = C_K+1 - C_K % MAX
     """
     diff = []
     for i in range(0, len(runes) - 1):
         diff.append((runes[i + 1] - runes[i]) % MAX)
+    return diff
+
+
+def diffstream1(runes: List[int]) -> List[int]:
+    """
+    diffstream mod MAX
+    DIFF = C_K - C_K+1 % MAX
+    """
+    diff = []
+    for i in range(0, len(runes) - 1):
+        diff.append((runes[i] - runes[i + 1]) % MAX)
+    return diff
+
+
+def addstream(runes: List[int]) -> List[int]:
+    """
+    diffstream mod MAX
+    DIFF = C_K + C_K+1 % MAX
+    """
+    diff = []
+    for i in range(0, len(runes) - 1):
+        diff.append((runes[i + 1] + runes[i]) % MAX)
     return diff
 
 
@@ -255,7 +278,7 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
                     f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}"
                 )
                 print(
-                    f"factors N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
+                    f" factors N-1: {prime_factors(index-1)}; N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
                 )
     l: int = len(doublets)
     expected: float = N / MAX
@@ -313,7 +336,7 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
         for i in range(0, N - 1):
             l.append(f"{runes[i]}-{runes[i+1]}")
     elif cut == 1 or cut == 2:
-        for i in range(cut, N - 1, 2):
+        for i in range(cut -1, N - 1, 2):
             l.append(f"{runes[i]}-{runes[i+1]}")
     else:
         raise Exception
