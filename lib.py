@@ -1,11 +1,9 @@
 from collections import Counter, defaultdict
 import math
 import random
-import sys
 from typing import Dict, List
 
 import gematria
-import lp_section_data as lp
 
 g = gematria.gematria
 
@@ -303,18 +301,30 @@ def ioc(runes: List[int]) -> float:
     Monographic Index of Coincidence: ΔIC
 
     Input is a list of integers, from 0 to MAX-1
-    Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
+    Output is the Index of Coincidence formatted as a float
+
+    This output is not normalized to alphabet size
     """
     N = len(runes)
-    A = len(alphabet(runes))
     if N < 2:
         return 0.0
     freqs = Counter(runes)
     freqsum = 0.0
     for rune in range(0, N):
         freqsum += freqs[rune] * (freqs[rune] - 1)
-    IC = freqsum / (N * (N - 1)) * A
+    IC = freqsum / (N * (N - 1))
     return IC
+
+
+def normalized_ioc(runes: List[int], alphabetsize: int = 0) -> float:
+    """
+    Like ioc() but normalized by alphabet size.
+    """
+    if alphabetsize == 0:
+        A = len(alphabet(runes))
+    else:
+        A = alphabet
+    return ioc(runes) * A
 
 
 def ioc2(runes: List[int], cut: int = 0) -> float:
@@ -322,7 +332,7 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
     Digraphic Index of Coincidence: ΔIC
 
     Input is a list of integers, with values from 0 to MAX-1
-    Output is the Index of Coincidence formatted as a float, normalized to to alphabet size
+    Output is the Index of Coincidence formatted as a float
 
     Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE
     Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF
@@ -336,7 +346,7 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
         for i in range(0, N - 1):
             l.append(f"{runes[i]}-{runes[i+1]}")
     elif cut == 1 or cut == 2:
-        for i in range(cut -1, N - 1, 2):
+        for i in range(cut - 1, N - 1, 2):
             l.append(f"{runes[i]}-{runes[i+1]}")
     else:
         raise Exception
@@ -345,10 +355,21 @@ def ioc2(runes: List[int], cut: int = 0) -> float:
     for r in freqs.keys():
         freqsum += freqs[r] * (freqs[r] - 1)
     try:
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX
+        IC = freqsum / (len(l) * (len(l) - 1))
     except ZeroDivisionError:
         IC = 0.0
     return IC
+
+
+def normalized_ioc2(runes: List[int], cut: int = 0, alphabetsize: int = 0) -> float:
+    """
+    Like ioc2() but normalized by alphabet size.
+    """
+    if alphabetsize == 0:
+        A = len(alphabet(runes))
+    else:
+        A = alphabet
+    return ioc2(runes) * pow(A, 2)
 
 
 def ioc3(runes: List[int], cut: int = 0) -> float:
@@ -380,10 +401,21 @@ def ioc3(runes: List[int], cut: int = 0) -> float:
     for r in freqs.keys():
         freqsum += freqs[r] * (freqs[r] - 1)
     try:
-        IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX
+        IC = freqsum / (len(l) * (len(l) - 1))
     except ZeroDivisionError:
         IC = 0.0
     return IC
+
+
+def normalized_ioc3(runes: List[int], cut: int = 0, alphabetsize: int = 0) -> float:
+    """
+    Like ioc3() but normalized by alphabet size.
+    """
+    if alphabetsize == 0:
+        A = len(alphabet(runes))
+    else:
+        A = alphabet
+    return ioc3(runes) * pow(A, 3)
 
 
 def ioc4(runes: List[int], cut: int = 0) -> float:
@@ -415,8 +447,19 @@ def ioc4(runes: List[int], cut: int = 0) -> float:
     freqsum = 0.0
     for r in freqs.keys():
         freqsum += freqs[r] * (freqs[r] - 1)
-    IC = freqsum / (len(l) * (len(l) - 1)) * MAX * MAX * MAX * MAX
+    IC = freqsum / (len(l) * (len(l) - 1))
     return IC
+
+
+def normalized_ioc4(runes: List[int], cut: int = 0, alphabetsize: int = 0) -> float:
+    """
+    Like ioc4() but normalized by alphabet size.
+    """
+    if alphabetsize == 0:
+        A = len(alphabet(runes))
+    else:
+        A = alphabet
+    return ioc4(runes) * pow(A, 4)
 
 
 def hamming_distance(s1: List[int], s2: List[int]) -> int:
@@ -926,7 +969,7 @@ def detect_plaintext_autokey(
             print(f"\nbeaufort keysize={keysize} avgioc = {beaiocavg:0.3f}")
             print(f"\nminuend  keysize={keysize} avgioc = {miniocavg:0.3f}")
         if vigiocavg > 1.2 or miniocavg > 1.2 or beaiocavg > 1.2:
-            print(f"Attempting bruteforce...")
+            print("Attempting bruteforce...")
             if keysize < 4:
                 bruteforce_autokey(
                     ciphertext,
@@ -1039,7 +1082,7 @@ def run_test3(ciphertext: List[int], trace: bool = False):
 # test cipher autokey
 def offset():
     # offset is the main variable, how much we are overlaying the data
-    print(f"OFFSET: 1\n")
+    print("OFFSET: 1\n")
 
     output = []
     for j in range(0, len(gl)):
