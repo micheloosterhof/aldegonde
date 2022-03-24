@@ -943,24 +943,24 @@ def detect_plaintext_autokey(
             # Bruteforce Vigenere introductory key at this position
             for key in range(0, MAX):
                 plain = plaintext_autokey_vigenere_decrypt(slices[start], [key])
-                vigiocs += ioc(plain)
-                if ioc(plain) > 1.3:
+                vigiocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
                     if trace is True:
-                        print(f"vigenere ioc={ioc(plain):.2f} ", end="")
+                        print(f"vigenere ioc={normalized_ioc(plain):.2f} ", end="")
             # Bruteforce Beaufort introductory key at this position
             for key in range(0, MAX):
                 plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
-                beaiocs += ioc(plain)
-                if ioc(plain) > 1.3:
+                beaiocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
                     if trace is True:
-                        print(f"beaufort ioc={ioc(plain):.2f} ", end="")
+                        print(f"beaufort ioc={normalized_ioc(plain):.2f} ", end="")
             # Bruteforce Minuend introductory key at this position
             for key in range(0, MAX):
                 plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
-                miniocs += ioc(plain)
-                if ioc(plain) > 1.3:
+                miniocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
                     if trace is True:
-                        print(f"minuend ioc={ioc(plain):.2f} ", end="")
+                        print(f"minuend ioc={normalized_ioc(plain):.2f} ", end="")
         vigiocavg = vigiocs / MAX / keysize
         miniocavg = miniocs / MAX / keysize
         beaiocavg = beaiocs / MAX / keysize
@@ -1010,9 +1010,9 @@ def detect_ciphertext_autokey_vigenere(
 
         tot = 0.0
         for i in alphabet.keys():
-            tot += ioc(alphabet[i])
+            tot += normalized_ioc(alphabet[i])
             if trace is True:
-                print(f"IOC: key={i} {ioc(alphabet[i]):.3f}")
+                print(f"IOC: key={i} {normalized_ioc(alphabet[i]):.3f}")
             # dist(alphabet[i])
             # bigram_diagram(alphabet[i])
         print(f"key={a} avgioc={tot/MAX:.3f}")
@@ -1031,7 +1031,7 @@ def detect_vigenere(
 
         iocsum: float = 0.0
         for k in slices.keys():
-            ic = ioc(slices[k])
+            ic = normalized_ioc(slices[k])
             iocsum += ic
             if trace is True:
                 print(f"ioc of runes {k}/{period} = {ic:.3f}")
@@ -1053,7 +1053,7 @@ def run_test2a(ciphertext):
 
         tot = 0
         for i in alphabet.keys():
-            tot += ioc(alphabet[i])
+            tot += normalized_ioc(alphabet[i])
             # bigram_diagram(alphabet[i])
             # print("key={}: ioc of runes before {} = {}".format(a, i, ioc(alphabet[i])))
         print(f"key={a} avgioc={tot/MAX:.3f}")
@@ -1072,7 +1072,7 @@ def run_test3(ciphertext: List[int], trace: bool = False):
 
         iocsum = 0.0
         for k in group.keys():
-            iocsum += float(ioc(group[k]))
+            iocsum += float(normalized_ioc(group[k]))
             # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
 
         if trace is True or iocsum / period > 1.0:
@@ -1108,7 +1108,7 @@ def offset():
     # for i in range(0,samplesize*3):
     #    print("{:2} ".format(g.position_to_latin_forward_dict[output[i]]), end="")
 
-    print("IOC: " + ioc(output))
+    print("IOC: " + normalized_ioc(output))
     bigram_diagram(output)
 
 
@@ -1142,14 +1142,14 @@ def offset_reverse():
     # for i in range(0,samplesize*3):
     #    print("{:2} ".format(g.position_to_latin_forward_dict[output[i]]), end="")
 
-    print("IOC: " + ioc(output))
+    print("IOC: " + normalized_ioc(output))
     bigram_diagram(output)
 
 
 # test cipher autokey
 def run_test4():
     print("\n\n\nLP\n")
-    print("IOC: " + ioc(gl))
+    print("IOC: " + normalized_ioc(gl))
     bigram_diagram(gl)
 
     # now overlay list with itself
@@ -1182,7 +1182,7 @@ def run_test4():
 
         print()
 
-        print("IOC: " + ioc(output))
+        print("IOC: " + normalized_ioc(output))
         bigram_diagram(output)
 
 
@@ -1193,7 +1193,7 @@ def ignore():
         print("number of dups: " + str(len(repeat(x).keys())))
         y = split_by_character(x)
         for k in y.keys():
-            print(ioc(y[k]), end=" ")
+            print(normalized_ioc(y[k]), end=" ")
         print()
 
 
@@ -1330,7 +1330,7 @@ def bruteforce_autokey(
         for key in RuneIterator(keylength):
             for a in algs.keys():
                 p = algs[a](ciphertext, key)
-                ic = ioc(p)
+                ic = normalized_ioc(p)
                 if ic > iocthreshold or trace:
                     print(f"key {key}: {ic}: ")
                     english_output(p, limit=30)
