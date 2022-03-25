@@ -178,9 +178,10 @@ class RuneIterator:
             return base29(x, padding=self.length)
 
 
-def shift(inp: List[int], shift: int) -> List[int]:
+def rot(inp: List[int], shift: int) -> List[int]:
     """
     shift contents of list by `shift` mod MAX
+    e.g. rot13
     """
     output = []
     for i in inp:
@@ -524,7 +525,7 @@ def bigram_diagram(runes: List[int]) -> None:
     Output is the bigram frequency diagram printed to stdout
     """
     count = Counter(runes)
-    ioc = 0.0
+    ioc: float = 0.0
     res = Counter(
         "{:02d}-{:02d}".format(runes[idx], runes[idx + 1])
         for idx in range(len(runes) - 1)
@@ -535,12 +536,14 @@ def bigram_diagram(runes: List[int]) -> None:
         x, y = k.split("-")
         bigram[int(x)][int(y)] = res[k]
 
-    print(
-        "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
-    )
-    print(
-        "---+----------------------------------------------------------------------------------------+------"
-    )
+    print("   | ", end="")
+    for i in range(0, MAX):
+        print(f"{i:02d} ", end="")
+    print("| IOC")
+    print("---+-", end="")
+    for i in range(0, MAX):
+        print(f"---", end="")
+    print("+------")
 
     # for i in sorted(bigram.keys()):
     for i in range(0, MAX):
@@ -571,15 +574,15 @@ def bigram_diagram(runes: List[int]) -> None:
         ioc += pioc
         print("| {0:.3f}".format(pioc))
 
-    print(
-        "---+----------------------------------------------------------------------------------------+------"
-    )
-    print(
-        "   |                                                                                        | {0:.3f}".format(
-            ioc
-        )
-    )
-    print("\n")
+    print("---+-", end="")
+    for i in range(0, MAX):
+        print(f"---", end="")
+    print("+------")
+
+    print("   | ", end="")
+    for i in range(0, MAX):
+        print(f"   ", end="")
+    print(f"| {ioc:0.3f}")
 
 
 def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
