@@ -3,6 +3,8 @@ import math
 import random
 from typing import Dict, List
 
+from scipy.stats import poisson
+
 import gematria
 
 g = gematria.gematria
@@ -280,9 +282,11 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
                     f" factors N-1: {prime_factors(index-1)}; N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
                 )
     l: int = len(doublets)
-    expected: float = N / MAX
-    sigmage: float = abs(l - expected) / math.sqrt(expected)
-    print(f"doublets={l} expected={N/MAX:.2f} σ={sigmage:.2f}")
+
+    mu = N/MAX
+    mean, var = poisson.stats(mu, loc=0, moments='mv')
+    sigmage: float = abs(l - mean) / math.sqrt(var)
+    print(f"doublets={l} expected={mean:.2f} S={sigmage:.2f}σ")
     return doublets
 
 
