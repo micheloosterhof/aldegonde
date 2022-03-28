@@ -65,6 +65,20 @@ class colors:
     bgBrightWhite = "\033[47;1m"
 
 
+def shannon_entropy(
+    ciphertext: List[int], base: int = 2) -> float:
+    """
+    shannon entropy. by default in bits.
+    """
+    f = Counter(ciphertext)
+    N = len(ciphertext)
+    H: float = 0.0
+    for k in f.keys():
+        H = H - f[k]/N * math.log(f[k]/N, base)
+    print(f"S = {H:.3f} bits (size={N})")
+    return H
+
+
 def repeat(
     ciphertext: List[int], min: int = 2, max: int = 10
 ):  # -> Dict(List[int], int):
@@ -1033,7 +1047,7 @@ def detect_vigenere(
     trace: bool = False,
 ):
     print("testing for periodicity using friedman test")
-    for period in range(1, 30):
+    for period in range(minkeysize, maxkeysize):
         slices = split_by_slice(ciphertext, period)
 
         iocsum: float = 0.0
