@@ -6,3 +6,4 @@ py==1.11.0
 pyparsing==3.0.7
 pytest==7.1.1
 toml==0.10.2
+scipy
