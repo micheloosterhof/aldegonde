@@ -100,6 +100,31 @@ def repeat(
     return sequences
 
 
+def repeat_statistics(
+    ciphertext: List[int], min: int = 2, max: int = 10, trace: bool = False
+):  # -> Dict(List[int], int):
+    """
+    Find repeating sequences in the list, up to `max`. Max defaults to 10
+    Returns dictionary with as key the sequence as a string, and as value the number of occurences
+    """
+    for length in range(min, max + 1):
+        l = []
+        num = 0
+        for index in range(0, len(ciphertext) - length + 1):
+            k = "-".join([str(x) for x in ciphertext[index : index + length]])
+            l.append(k)
+        f = Counter(l)
+        for k in f.keys():
+            if f[k] > 1:
+                num = num + 1
+
+        mu: float = len(ciphertext)/pow(MAX, length)
+        expected = pow(MAX, length)*poisson.pmf(2, mu)
+        var = poisson.stats(mu, loc=0, moments='v') * pow(MAX, length)
+        sigmage: float = abs(num - expected) / math.sqrt(var)
+        print(f"repeats length {length}: observed={num:.2f} expected={expected:.7f} S={sigmage:.2f}σ")
+
+
 def repeat2(
     ciphertext: List[int], min: int = 2, max: int = 10
 ):  # -> Dict(List[int], int):
