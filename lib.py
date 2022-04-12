@@ -115,11 +115,12 @@ def detect_gronsfeld(runes: List[int]) -> None:
 
 
 def repeat_statistics(
-    ciphertext: List[int], min: int = 2, max: int = 10, trace: bool = False
+    ciphertext: List[int], min: int = 4, max: int = 10, trace: bool = False
 ):  # -> Dict(List[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
+    The expected formula works best for length 4 or larger
     """
     for length in range(min, max + 1):
         l = []
@@ -139,9 +140,9 @@ def repeat_statistics(
         # sigmage: float = abs(num - expected) / poisson.std(mu)
         print(f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ")
 
-
         # second method
         expected = len(ciphertext)*(len(ciphertext)-1)/(2*pow(MAX,length))
+        sigmage: float = abs(num - expected) / math.sqrt(var)
         print(f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ")
 
 
