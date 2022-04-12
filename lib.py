@@ -104,6 +104,16 @@ def shannon2_entropy(
     return H
 
 
+def detect_gronsfeld(runes: List[int]) -> None:
+    """
+    compare frequency of the 4 most common runes with the 2 least common runes
+    """
+    freqs = Counter(runes)
+    val=sorted(freqs.values())
+    p: float = (val[-1]+val[-2]+val[-3]+val[-4]) / (val[0] + val[1])
+    print(f"gronsfeld ratio: {p:.2f}")
+
+
 def repeat_statistics(
     ciphertext: List[int], min: int = 2, max: int = 10, trace: bool = False
 ):  # -> Dict(List[int], int):
