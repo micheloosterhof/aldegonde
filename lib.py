@@ -902,13 +902,34 @@ def vigenere_encrypt_with_alphabet(
 
     for i in range(0, len(plaintext)):
         row_index = alphabet.index(primer[i % len(primer)])
+        row = tr[row_index]
+        column_index = alphabet.index(plaintext[i])
+        output.append(tr[row_index][column_index])
+
+    return output
+
+
+def vigenere_decrypt_with_alphabet(
+    ciphertext: List[int],
+    primer: List[int] = [0],
+    alphabet: List[int] = range(0, MAX + 1),
+    trace: bool = False,
+):
+    """
+    Plain Vigenere C=P+K
+    """
+    output: List[int] = []
+    tr: List[List[int]] = construct_tabula_recta(alphabet)
+
+    for i in range(0, len(ciphertext)):
+        row_index = alphabet.index(primer[i % len(primer)])
         print(f"row index={row_index}")
         row = tr[row_index]
         print(f"row={row}")
-        column_index = alphabet.index(plaintext[i])
+        column_index = row.index(ciphertext[i])
         print(f"column index={column_index}")
         # output.append( tr[row_index][column_index] )
-        output.append(tr[column_index][row_index])
+        output.append(alphabet[column_index])
 
     return output
 

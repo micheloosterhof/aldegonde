@@ -4,8 +4,8 @@ MAX = 29
 
 from lib import *
 
-nils = [0] * 30
-ones = [1] * 30
+nils = [0] * 300
+ones = [1] * 300
 rand = range(0, MAX + 1)
 
 
@@ -116,7 +116,7 @@ def test_i2a():
     assert i2a([7, 24, 3, 17, 0, 20, 11, 8, 2]) == "HYDRAULIC"
 
 
-def test_vigenere_with_custom_alphabet():
+def test_vigenere_encrypt_with_custom_alphabet():
     demo_alphabet = a2i("KRYPTOSABCDEFGHIJLMNQUVWXZ")
     demo_key = a2i("PALIMPSEST")
     demo_cipher_string = a2i(
@@ -127,4 +127,18 @@ def test_vigenere_with_custom_alphabet():
     )
     assert demo_cipher_string == vigenere_encrypt_with_alphabet(
         plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
+    )
+
+
+def test_vigenere_decrypt_with_custom_alphabet():
+    demo_alphabet = a2i("KRYPTOSABCDEFGHIJLMNQUVWXZ")
+    demo_key = a2i("PALIMPSEST")
+    demo_cipher_string = a2i(
+        "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
+    )
+    demo_cipher_decoded = a2i(
+        "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
+    )
+    assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
+        ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
     )
