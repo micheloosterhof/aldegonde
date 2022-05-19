@@ -54,8 +54,8 @@ def test_ioc3_uniform():
 
 
 def test_isomorph():
-    assert isomorph([0,1,2,3,4]) == isomorph([1,2,3,4,5])
-    assert isomorph([0,1,1,3,5]) == isomorph([1,2,2,9,8])
+    assert isomorph([0, 1, 2, 3, 4]) == isomorph([1, 2, 3, 4, 5])
+    assert isomorph([0, 1, 1, 3, 5]) == isomorph([1, 2, 2, 9, 8])
 
 
 def test_split_by_doublet():
@@ -68,6 +68,7 @@ def test_split_by_slice():
     inp = [0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10]
     outp = {0: [0, 3, 5, 7, 10], 1: [1, 4, 6, 8], 2: [2, 4, 7, 9]}
     assert split_by_slice(inp, 3) == outp
+
 
 # sanity check
 def autokey():
@@ -104,4 +105,26 @@ def vig2():
     assert (
         ciphertext_autokey_oddvig_decrypt(ciphertext_autokey_oddvig_encrypt(rand))
         == rand
+    )
+
+
+def test_a2i():
+    assert a2i("HYDRAULIC") == [7, 24, 3, 17, 0, 20, 11, 8, 2]
+
+
+def test_i2a():
+    assert i2a([7, 24, 3, 17, 0, 20, 11, 8, 2]) == "HYDRAULIC"
+
+
+def test_vigenere_with_custom_alphabet():
+    demo_alphabet = a2i("KRYPTOSABCDEFGHIJLMNQUVWXZ")
+    demo_key = a2i("PALIMPSEST")
+    demo_cipher_string = a2i(
+        "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
+    )
+    demo_cipher_decoded = a2i(
+        "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
+    )
+    assert demo_cipher_string == vigenere_encrypt_with_alphabet(
+        plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
     )

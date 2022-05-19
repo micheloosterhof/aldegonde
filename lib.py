@@ -65,6 +65,26 @@ class colors:
     bgBrightWhite = "\033[47;1m"
 
 
+def a2i(text: str) -> List[int]:
+    """
+    ASCII 2 INTEGER [A-Z] -> [0-25]
+    """
+    output: List[int] = []
+    for c in text:
+        output.append(ord(c) - ord("A"))
+    return output
+
+
+def i2a(text: List[int]) -> str:
+    """
+    INTEGER 2 ASCII [0-25] -> [A-Z]
+    """
+    output: str = ""
+    for c in text:
+        output += chr(ord("A") + c)
+    return output
+
+
 def shannon_entropy(ciphertext: List[int], base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
@@ -851,6 +871,55 @@ def vigenere_encrypt(
     for i in range(0, len(plaintext)):
         output.append((plaintext[i] + primer[i % len(primer)]) % MAX)
     return output
+
+
+def construct_tabula_recta(
+    alphabet: List[int] = list(range(0, MAX)), trace: bool = True
+):
+    """
+    construct a tabula recta based on custom alphabet.
+    output is a MAX*MAX matrix
+    """
+    output: List[List[int]] = []
+    for shift in range(0, MAX):
+        output.append(alphabet[shift:] + alphabet[:shift])
+    if trace:
+        print(repr(output))
+    return output
+
+
+def vigenere_encrypt_with_alphabet(
+    plaintext: List[int],
+    primer: List[int] = [0],
+    alphabet: List[int] = range(0, MAX + 1),
+    trace: bool = False,
+):
+    """
+    Plain Vigenere C=P+K
+    """
+    output: List[int] = []
+    tr: List[List[int]] = construct_tabula_recta(alphabet)
+
+    for i in range(0, len(plaintext)):
+        row_index = alphabet.index(primer[i % len(primer)])
+        print(f"row index={row_index}")
+        row = tr[row_index]
+        print(f"row={row}")
+        column_index = alphabet.index(plaintext[i])
+        print(f"column index={column_index}")
+        # output.append( tr[row_index][column_index] )
+        output.append(tr[column_index][row_index])
+
+    return output
+
+
+def keyword_to_alphabet(keyword: List[int] = range(0, MAX + 1)):
+    """
+    construct alphabet order based on keyword
+    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
+    """
+    alphabet = keyword
+    return alphabet
 
 
 # ciphertext autokey variations
