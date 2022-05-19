@@ -23,26 +23,21 @@ def test_ioc2_random():
 
 
 def test_ioc2_uniform():
-    assert ioc2(ones) == MAX * MAX
-    assert ioc2(nils) == MAX * MAX
+    assert ioc2(nils) == 1.0
+    assert ioc2(ones) == 1.0
+    assert ioc2(ones, cut=0) == 1.0
+    assert ioc2(nils, cut=0) == 1.0
+    assert ioc2(ones, cut=1) == 1.0
+    assert ioc2(nils, cut=1) == 1.0
+    assert ioc2(ones, cut=2) == 1.0
+    assert ioc2(nils, cut=2) == 1.0
 
 
-def test_ioc2_random():
+def test_ioc2_random_cut1():
+    assert ioc2(rand) == 0.0
+    assert ioc2(rand, cut=0) == 0.0
     assert ioc2(rand, cut=1) == 0.0
-
-
-def test_ioc2_uniform():
-    assert ioc2(ones, cut=1) == MAX * MAX
-    assert ioc2(nils, cut=1) == MAX * MAX
-
-
-def test_ioc2_random():
     assert ioc2(rand, cut=2) == 0.0
-
-
-def test_ioc2_uniform():
-    assert ioc2(ones, cut=2) == MAX * MAX
-    assert ioc2(nils, cut=2) == MAX * MAX
 
 
 def test_ioc3_random():
@@ -50,7 +45,7 @@ def test_ioc3_random():
 
 
 def test_ioc3_uniform():
-    assert ioc3(ones) == MAX * MAX * MAX
+    assert ioc3(ones) == 1.0
 
 
 def test_isomorph():
@@ -136,16 +131,18 @@ def test_vigenere_encrypt_with_custom_alphabet():
     assert demo_cipher_string == vigenere_encrypt_with_alphabet(
         plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
     )
-
-
-def test_vigenere_decrypt_with_custom_alphabet():
-    demo_alphabet = a2i("KRYPTOSABCDEFGHIJLMNQUVWXZ")
-    demo_key = a2i("PALIMPSEST")
-    demo_cipher_string = a2i(
-        "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
+    assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
+        ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
     )
-    demo_cipher_decoded = a2i(
-        "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
+
+
+def test_vigenere_with_standard_alphabet():
+    demo_alphabet = a2i("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    demo_key = a2i("LEMON")
+    demo_cipher_string = a2i("LXFOPVEFRNHR")
+    demo_cipher_decoded = a2i("ATTACKATDAWN")
+    assert demo_cipher_string == vigenere_encrypt_with_alphabet(
+        plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
     )
     assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
         ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
