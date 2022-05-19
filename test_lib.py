@@ -116,6 +116,14 @@ def test_i2a():
     assert i2a([7, 24, 3, 17, 0, 20, 11, 8, 2]) == "HYDRAULIC"
 
 
+def test_vigenere_encrypt():
+    key = a2i("LEMON")
+    plaintext = a2i("ATTACKATDAWN")
+    ciphertext = a2i("LXFOPVEFRNHR")
+    assert ciphertext == vigenere_encrypt(plaintext=plaintext, primer=key)
+    assert plaintext == vigenere_decrypt(ciphertext=ciphertext, primer=key)
+
+
 def test_vigenere_encrypt_with_custom_alphabet():
     demo_alphabet = a2i("KRYPTOSABCDEFGHIJLMNQUVWXZ")
     demo_key = a2i("PALIMPSEST")
