@@ -10,7 +10,7 @@ import gematria
 g = gematria.gematria
 
 # There are 29 runes. Generally counted 0-28
-MAX = 29
+MAX = 26
 
 
 class colors:
@@ -65,8 +65,27 @@ class colors:
     bgBrightWhite = "\033[47;1m"
 
 
-def shannon_entropy(
-    ciphertext: List[int], base: int = 2) -> float:
+def a2i(text: str) -> List[int]:
+    """
+    ASCII 2 INTEGER [A-Z] -> [0-25]
+    """
+    output: List[int] = []
+    for c in text:
+        output.append(ord(c) - ord("A"))
+    return output
+
+
+def i2a(text: List[int]) -> str:
+    """
+    INTEGER 2 ASCII [0-25] -> [A-Z]
+    """
+    output: str = ""
+    for c in text:
+        output += chr(ord("A") + c)
+    return output
+
+
+def shannon_entropy(ciphertext: List[int], base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
     """
@@ -74,13 +93,12 @@ def shannon_entropy(
     N = len(ciphertext)
     H: float = 0.0
     for k in f.keys():
-        H = H - f[k]/N * math.log(f[k]/N, base)
+        H = H - f[k] / N * math.log(f[k] / N, base)
     print(f"Shannon Entropy = {H:.3f} bits (size={N})")
     return H
 
 
-def shannon2_entropy(
-    runes: List[int], base: int = 2, cut = 0) -> float:
+def shannon2_entropy(runes: List[int], base: int = 2, cut=0) -> float:
     """
     shannon entropy. by default in bits.
     """
@@ -99,7 +117,7 @@ def shannon2_entropy(
     f = Counter(l)
     H: float = 0.0
     for k in f.keys():
-        H = H - f[k]/N * math.log(f[k]/N, base)
+        H = H - f[k] / N * math.log(f[k] / N, base)
     print(f"S = {H:.3f} bits (size={N})")
     return H
 
@@ -109,8 +127,8 @@ def detect_gronsfeld(runes: List[int]) -> None:
     compare frequency of the 4 most common runes with the 2 least common runes
     """
     freqs = Counter(runes)
-    val=sorted(freqs.values())
-    p: float = (val[-1]+val[-2]+val[-3]+val[-4]) / (val[0] + val[1])
+    val = sorted(freqs.values())
+    p: float = (val[-1] + val[-2] + val[-3] + val[-4]) / (val[0] + val[1])
     print(f"gronsfeld ratio: {p:.2f}")
 
 
@@ -133,17 +151,21 @@ def repeat_statistics(
             if f[k] > 1:
                 num = num + 1
 
-        mu: float = len(ciphertext)/pow(MAX, length)
-        expected = pow(MAX, length)*poisson.pmf(2, mu)
-        var = poisson.stats(mu, loc=0, moments='v') * pow(MAX, length)
+        mu: float = len(ciphertext) / pow(MAX, length)
+        expected = pow(MAX, length) * poisson.pmf(2, mu)
+        var = poisson.stats(mu, loc=0, moments="v") * pow(MAX, length)
         sigmage: float = abs(num - expected) / math.sqrt(var)
         # sigmage: float = abs(num - expected) / poisson.std(mu)
-        print(f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ")
+        print(
+            f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ"
+        )
 
         # second method
-        expected = len(ciphertext)*(len(ciphertext)-1)/(2*pow(MAX,length))
+        expected = len(ciphertext) * (len(ciphertext) - 1) / (2 * pow(MAX, length))
         sigmage: float = abs(num - expected) / math.sqrt(var)
-        print(f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ")
+        print(
+            f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ"
+        )
 
 
 def repeat(
@@ -271,7 +293,7 @@ class RuneIterator:
 
     def __init__(self, length: int):
         self.length = length
-        self.maximum = MAX ** length
+        self.maximum = MAX**length
 
     def __iter__(self):
         self.i = 0
@@ -389,8 +411,8 @@ def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
                 )
     l: int = len(doublets)
 
-    mu = N/MAX
-    mean, var = poisson.stats(mu, loc=0, moments='mv')
+    mu = N / MAX
+    mean, var = poisson.stats(mu, loc=0, moments="mv")
     sigmage: float = abs(l - mean) / math.sqrt(var)
     print(f"doublets={l} expected={mean:.2f} S={sigmage:.2f}σ")
     return doublets
@@ -800,11 +822,12 @@ def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
     return output
 
 
-def beaufort_encrypt(
+def variant_beaufort_encrypt(
     plaintext: List[int], primer: List[int] = [0], trace: bool = False
 ):
     """
-    Plain Beaufort
+    Variant Beaufort C=P-K
+    Note: this is the same as vigenere_decrypt() !!
     """
     output: List[int] = []
     for i in range(0, len(plaintext)):
@@ -812,11 +835,12 @@ def beaufort_encrypt(
     return output
 
 
-def beaufort_decrypt(
+def variant_beaufort_decrypt(
     ciphertext: List[int], primer: List[int] = [0], trace: bool = False
 ):
     """
-    Plain Beaufort
+    Plain Beaufort P=C+K
+    Note: this is the same as vigenere_encrypt() !!
     """
     output: List[int] = []
     for i in range(0, len(ciphertext)):
@@ -824,11 +848,37 @@ def beaufort_decrypt(
     return output
 
 
+def beaufort_encrypt(
+    plaintext: List[int], primer: List[int] = [0], trace: bool = False
+):
+    """
+    Plain Beaufort C=K-P
+    Note: this is the same as beaufort_decrypt() !!
+    """
+    output: List[int] = []
+    for i in range(0, len(plaintext)):
+        output.append((primer[i % len(primer)] - plaintext[i]) % MAX)
+    return output
+
+
+def beaufort_decrypt(
+    ciphertext: List[int], primer: List[int] = [0], trace: bool = False
+):
+    """
+    Plain Beaufort P=K-P
+    Note: this is the same as beaufort_encrypt() !!
+    """
+    output: List[int] = []
+    for i in range(0, len(ciphertext)):
+        output.append((primer[i % len(primer)] - ciphertext[i]) % MAX)
+    return output
+
+
 def vigenere_decrypt(
     ciphertext: List[int], primer: List[int] = [0], trace: bool = False
 ):
     """
-    Plain Vigenere
+    Plain Vigenere P=C-K
     """
     output: List[int] = []
     for i in range(0, len(ciphertext)):
@@ -840,12 +890,82 @@ def vigenere_encrypt(
     plaintext: List[int], primer: List[int] = [0], trace: bool = False
 ):
     """
-    Plain Vigenere
+    Plain Vigenere C=P+K
     """
     output: List[int] = []
     for i in range(0, len(plaintext)):
         output.append((plaintext[i] + primer[i % len(primer)]) % MAX)
     return output
+
+
+def construct_tabula_recta(
+    alphabet: List[int] = list(range(0, MAX)), trace: bool = True
+):
+    """
+    construct a tabula recta based on custom alphabet.
+    output is a MAX*MAX matrix
+    """
+    output: List[List[int]] = []
+    for shift in range(0, MAX):
+        output.append(alphabet[shift:] + alphabet[:shift])
+    if trace:
+        print(repr(output))
+    return output
+
+
+def vigenere_encrypt_with_alphabet(
+    plaintext: List[int],
+    primer: List[int] = [0],
+    alphabet: List[int] = range(0, MAX + 1),
+    trace: bool = False,
+):
+    """
+    Plain Vigenere C=P+K
+    """
+    output: List[int] = []
+    tr: List[List[int]] = construct_tabula_recta(alphabet)
+
+    for i in range(0, len(plaintext)):
+        row_index = alphabet.index(primer[i % len(primer)])
+        row = tr[row_index]
+        column_index = alphabet.index(plaintext[i])
+        output.append(tr[row_index][column_index])
+
+    return output
+
+
+def vigenere_decrypt_with_alphabet(
+    ciphertext: List[int],
+    primer: List[int] = [0],
+    alphabet: List[int] = range(0, MAX + 1),
+    trace: bool = False,
+):
+    """
+    Plain Vigenere C=P+K
+    """
+    output: List[int] = []
+    tr: List[List[int]] = construct_tabula_recta(alphabet)
+
+    for i in range(0, len(ciphertext)):
+        row_index = alphabet.index(primer[i % len(primer)])
+        print(f"row index={row_index}")
+        row = tr[row_index]
+        print(f"row={row}")
+        column_index = row.index(ciphertext[i])
+        print(f"column index={column_index}")
+        # output.append( tr[row_index][column_index] )
+        output.append(alphabet[column_index])
+
+    return output
+
+
+def keyword_to_alphabet(keyword: List[int] = range(0, MAX + 1)):
+    """
+    construct alphabet order based on keyword
+    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
+    """
+    alphabet = keyword
+    return alphabet
 
 
 # ciphertext autokey variations

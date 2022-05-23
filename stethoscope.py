@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 # #pypy3
 
 from collections import Counter, defaultdict
