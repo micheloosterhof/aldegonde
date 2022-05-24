@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 
 from typing import Dict, List
 import gematria
@@ -47,15 +47,13 @@ for r in welcome:
 
 print(f"runes size {len(runes)}")
 print(f"alphabet size {len(alphabet(runes))}: {alphabet(runes)}")
-print(f"ioc={ioc(runes):.3f}")
+print(f"ioc={normalized_ioc(runes):.3f}")
 print(
-    f"ioc2={ioc2(runes,cut=0):.3f} ioc2a={ioc2(runes,cut=1):.3f}, ioc2b={ioc2(runes,cut=2):.3f}"
+    f"ioc2={normalized_ioc2(runes,cut=0):.3f} ioc2a={normalized_ioc2(runes,cut=1):.3f}, ioc2b={normalized_ioc2(runes,cut=2):.3f}"
 )
 print(
     f"ioc3={ioc3(runes,cut=0):.3f} ioc3a={ioc3(runes,cut=1):.3f}, ioc3b={ioc3(runes,cut=2):.3f}, ioc3c={ioc3(runes ,cut=3):.3f}"
 )
-
-detect_vigenere(runes, trace=True)
 
 plain = beaufort_decrypt_interrupted(
     runes, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
