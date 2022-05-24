@@ -85,6 +85,19 @@ def i2a(text: List[int]) -> str:
     return output
 
 
+def shuffle(sequence: List[int]) -> List[int]:
+    """
+    Shuffle elements of a list
+    """
+    inp = list(sequence)
+    output = []
+    while len(inp):
+        r = random.randrange(0,len(inp))
+        output.append(inp[r])
+        inp.remove(inp[r])
+    return output
+
+
 def shannon_entropy(ciphertext: List[int], base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
