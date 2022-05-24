@@ -92,7 +92,7 @@ def shuffle(sequence: List[int]) -> List[int]:
     inp = list(sequence)
     output = []
     while len(inp):
-        r = random.randrange(0,len(inp))
+        r = random.randrange(0, len(inp))
         output.append(inp[r])
         inp.remove(inp[r])
     return output
@@ -181,6 +181,50 @@ def repeat_statistics(
         )
 
 
+def monoalphabetic_substitution_encrypt(
+    sequence: List[int], key: List[int]
+) -> List[int]:
+    """
+    Monalphabetic substitution
+    """
+    output = []
+    for e in sequence:
+        output.append(key[e])
+    return output
+
+
+def reverse_key(key: List[int]) -> List[int]:
+    """
+    Takes an array containing all elements and reverses the index and the value
+    Returns output if the input contains valid values, else raises ValueError
+    """
+    output = [-1] * len(key)
+    for i in key:
+        try:
+            output[key[i]] = i
+        except IndexError:
+            raise ValueError
+    for i in output:
+        if i == -1:
+            raise ValueError
+    return output
+
+
+def monoalphabetic_substitution_decrypt(
+    sequence: List[int], key: List[int]
+) -> List[int]:
+    """
+    Monalphabetic substitution
+    NOTE: key input is the same as for encryption, this function will reverse the key
+    """
+    reversed_key = reverse_key(key)
+    # print(f"revkey: {reversed_key}")
+    output = []
+    for e in sequence:
+        output.append(reversed_key[e])
+    return output
+
+
 def repeat(
     ciphertext: List[int], min: int = 2, max: int = 10
 ):  # -> Dict(List[int], int):
@@ -220,11 +264,13 @@ def repeat_statistics(
             if f[k] > 1:
                 num = num + 1
 
-        mu: float = len(ciphertext)/pow(MAX, length)
-        expected = pow(MAX, length)*poisson.pmf(2, mu)
-        var = poisson.stats(mu, loc=0, moments='v') * pow(MAX, length)
+        mu: float = len(ciphertext) / pow(MAX, length)
+        expected = pow(MAX, length) * poisson.pmf(2, mu)
+        var = poisson.stats(mu, loc=0, moments="v") * pow(MAX, length)
         sigmage: float = abs(num - expected) / math.sqrt(var)
-        print(f"repeats length {length}: observed={num:.2f} expected={expected:.7f} S={sigmage:.2f}σ")
+        print(
+            f"repeats length {length}: observed={num:.2f} expected={expected:.7f} S={sigmage:.2f}σ"
+        )
 
 
 def repeat2(

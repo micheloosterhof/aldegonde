@@ -133,10 +133,21 @@ def find_words_with_doublets():
     """
     find isomorphs containing doublets or long isomorphs
     """
-    words = lp.section1["all_words"] + lp.section2["all_words"] + lp.section3["all_words"] + lp.section4["all_words"] +\
-     lp.section5["all_words"] + lp.section6["all_words"] + lp.section7["all_words"] + lp.section8["all_words"] +\
-     lp.section9["all_words"] + lp.section10["all_words"] + lp.section11["all_words"] + lp.section12["all_words"] +\
-     lp.section13["all_words"]
+    words = (
+        lp.section1["all_words"]
+        + lp.section2["all_words"]
+        + lp.section3["all_words"]
+        + lp.section4["all_words"]
+        + lp.section5["all_words"]
+        + lp.section6["all_words"]
+        + lp.section7["all_words"]
+        + lp.section8["all_words"]
+        + lp.section9["all_words"]
+        + lp.section10["all_words"]
+        + lp.section11["all_words"]
+        + lp.section12["all_words"]
+        + lp.section13["all_words"]
+    )
     isos = {}
 
     for word in words:
@@ -146,7 +157,7 @@ def find_words_with_doublets():
 
         iso = isomorph(numbers)
         string = f"{word} {numbers}"
-        if len(doublets(numbers))>0 or len(numbers)>9:
+        if len(doublets(numbers)) > 0 or len(numbers) > 9:
             if iso in isos:
                 isos[iso].append(string)
             else:
@@ -154,17 +165,29 @@ def find_words_with_doublets():
 
     for key in isos.keys():
         if len(isos[key]) > 2:
-            for l in range(0,len(isos[key])):
+            for l in range(0, len(isos[key])):
                 print(f"{key} {isos[key][l]}")
+
 
 def find_words_before_single_rune():
     """
     find isomorphs containing doublets or long isomorphs
     """
-    words = lp.section1["all_words"] + lp.section2["all_words"] + lp.section3["all_words"] + lp.section4["all_words"] +\
-     lp.section5["all_words"] + lp.section6["all_words"] + lp.section7["all_words"] + lp.section8["all_words"] +\
-     lp.section9["all_words"] + lp.section10["all_words"] + lp.section11["all_words"] + lp.section12["all_words"] +\
-     lp.section13["all_words"]
+    words = (
+        lp.section1["all_words"]
+        + lp.section2["all_words"]
+        + lp.section3["all_words"]
+        + lp.section4["all_words"]
+        + lp.section5["all_words"]
+        + lp.section6["all_words"]
+        + lp.section7["all_words"]
+        + lp.section8["all_words"]
+        + lp.section9["all_words"]
+        + lp.section10["all_words"]
+        + lp.section11["all_words"]
+        + lp.section12["all_words"]
+        + lp.section13["all_words"]
+    )
 
     prev = None
     print(f"A  word = ")
@@ -179,18 +202,17 @@ def find_words_before_single_rune():
             current.append(g.rune_to_position_forward_dict[rune])
             counter += 1
         if len(current) == 1:
-            print(f"c={counter%29:4d} sum={(prev[-1]+current[0])%29:02d} diff={(current[0]-prev[-1])%29:02d} diff={(prev[-1]-current[0])%29:02d} {prev[-1]:2d} {current[0]:2d} =  --  {prev} {current} ctr={counter}")
-            sums.append((prev[-1]+current[0])%29)
-            diff1.append((prev[-1]-current[0])%29)
-            diff2.append((current[0]-prev[-1])%29)
+            print(
+                f"c={counter%29:4d} sum={(prev[-1]+current[0])%29:02d} diff={(current[0]-prev[-1])%29:02d} diff={(prev[-1]-current[0])%29:02d} {prev[-1]:2d} {current[0]:2d} =  --  {prev} {current} ctr={counter}"
+            )
+            sums.append((prev[-1] + current[0]) % 29)
+            diff1.append((prev[-1] - current[0]) % 29)
+            diff2.append((current[0] - prev[-1]) % 29)
         prev = current
 
     print(dist(sums))
     print(dist(diff1))
     print(dist(diff2))
-
-
-
 
 
 # p = primes(10000000)
@@ -234,6 +256,7 @@ def find_words_before_single_rune():
 # bruteforce_autokey(sgl[1], minkeylength=2, maxkeylength=2, iocthreshold=1.15)
 ##bruteforce_autokey(s[0], minkeylength=4, maxkeylength=4, iocthreshold=1.35)
 
+
 def analyze_segment(ciphertext: List[int]):
     print(f"ciphertext size {len(ciphertext)}")
     print(f"alphabet size {len(alphabet(ciphertext))}: {alphabet(ciphertext)}")
@@ -247,18 +270,18 @@ def analyze_segment(ciphertext: List[int]):
     )
     # print(f" ioc4={ioc4(ciphertext,cut=0):.4f} ioc4a={ioc4(ciphertext,cut=1):.4f}, ioc4b={ioc4(ciphertext,cut=2):.4f}, ioc4c={ioc4(ciphertext,cut=4):.4f}")
     print()
-    #print(f" repeats length 3: {repeat2(ciphertext,min=3,max=3)}")
+    # print(f" repeats length 3: {repeat2(ciphertext,min=3,max=3)}")
     print(f" repeats length 4: {repeat2(ciphertext,min=4,max=4)}")
     print(f" repeats length 5: {repeat2(ciphertext,min=5,max=5)}")
     print(f" repeats length 6: {repeat2(ciphertext,min=6,max=6)}")
     print(f" repeats length 7: {repeat2(ciphertext,min=7,max=17)}")
 
-    iso = repeat2(ciphertext,min=4,max=7)
+    iso = repeat2(ciphertext, min=4, max=7)
     for k in iso.keys():
-        for r in range(1,len(iso[k])):
-            distance = iso[k][r] - iso[k][r-1]
+        for r in range(1, len(iso[k])):
+            distance = iso[k][r] - iso[k][r - 1]
             factors = prime_factors(distance)
-            print(f"{k} distance={distance} factors={factors} ",end="")
+            print(f"{k} distance={distance} factors={factors} ", end="")
         print()
 
     bigram_diagram(ciphertext)
@@ -288,6 +311,7 @@ def analyze_segment(ciphertext: List[int]):
 
     # print(f"#### segment {i+1} bruteforce autokey ######")
     # bruteforce_autokey(ciphertext,     maxkeylength=3)
+
 
 print("Full liber primus")
 analyze_segment(gl)
