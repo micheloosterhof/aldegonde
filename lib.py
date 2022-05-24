@@ -10,7 +10,7 @@ import gematria
 g = gematria.gematria
 
 # There are 29 runes. Generally counted 0-28
-MAX = 26
+MAX = 29
 
 
 class colors:

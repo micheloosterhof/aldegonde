@@ -129,6 +129,70 @@ def split_and_chi(ciphertext: List[int]):
             print(f"chi {s}-{t}: {chi(spl[s],spl[t])*MAX}")
 
 
+def find_words_with_doublets():
+    """
+    find isomorphs containing doublets or long isomorphs
+    """
+    words = lp.section1["all_words"] + lp.section2["all_words"] + lp.section3["all_words"] + lp.section4["all_words"] +\
+     lp.section5["all_words"] + lp.section6["all_words"] + lp.section7["all_words"] + lp.section8["all_words"] +\
+     lp.section9["all_words"] + lp.section10["all_words"] + lp.section11["all_words"] + lp.section12["all_words"] +\
+     lp.section13["all_words"]
+    isos = {}
+
+    for word in words:
+        numbers = []
+        for rune in word:
+            numbers.append(g.rune_to_position_forward_dict[rune])
+
+        iso = isomorph(numbers)
+        string = f"{word} {numbers}"
+        if len(doublets(numbers))>0 or len(numbers)>9:
+            if iso in isos:
+                isos[iso].append(string)
+            else:
+                isos[iso] = [string]
+
+    for key in isos.keys():
+        if len(isos[key]) > 2:
+            for l in range(0,len(isos[key])):
+                print(f"{key} {isos[key][l]}")
+
+def find_words_before_single_rune():
+    """
+    find isomorphs containing doublets or long isomorphs
+    """
+    words = lp.section1["all_words"] + lp.section2["all_words"] + lp.section3["all_words"] + lp.section4["all_words"] +\
+     lp.section5["all_words"] + lp.section6["all_words"] + lp.section7["all_words"] + lp.section8["all_words"] +\
+     lp.section9["all_words"] + lp.section10["all_words"] + lp.section11["all_words"] + lp.section12["all_words"] +\
+     lp.section13["all_words"]
+
+    prev = None
+    print(f"A  word = ")
+    counter = 0
+    wc = 0
+    sums = []
+    diff1 = []
+    diff2 = []
+    for word in words:
+        current = []
+        for rune in word:
+            current.append(g.rune_to_position_forward_dict[rune])
+            counter += 1
+        if len(current) == 1:
+            print(f"c={counter%29:4d} sum={(prev[-1]+current[0])%29:02d} diff={(current[0]-prev[-1])%29:02d} diff={(prev[-1]-current[0])%29:02d} {prev[-1]:2d} {current[0]:2d} =  --  {prev} {current} ctr={counter}")
+            sums.append((prev[-1]+current[0])%29)
+            diff1.append((prev[-1]-current[0])%29)
+            diff2.append((current[0]-prev[-1])%29)
+        prev = current
+
+    print(dist(sums))
+    print(dist(diff1))
+    print(dist(diff2))
+
+
+
+
+
 # p = primes(10000000)
 # delstream = []
 # for i in range(0,len(gl)):
