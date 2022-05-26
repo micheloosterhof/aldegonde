@@ -1,3 +1,25 @@
+[project]
+name = "aldegonde"
+description = "Classical Cryptography Library"
+version = "0.0.1"
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+keywords = ["cryptanalysis", "cryptology", "cryptography"]
+authors = [
+  {email = "michel@oosterhof.net", name = "Michel Oosterhof"}
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python"
+]
+
+[project.urls]
+homepage = "example.com"
+documentation = "readthedocs.org"
+repository = "github.com"
+changelog = "github.com/me/spam/blob/master/CHANGELOG.md"
+
 [tool.mypy]
 
 ignore_missing_imports      = true
