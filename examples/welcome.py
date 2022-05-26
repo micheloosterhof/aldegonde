@@ -54,4 +54,4 @@ plain = beaufort_decrypt_interrupted(
     seq, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
 )
 
-cicada3301.english_output(plain, limit=0)
+cicada3301.print_english(plain, limit=0)
