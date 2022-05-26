@@ -137,10 +137,10 @@ def alphabet(text: list[int]) -> list[int]:
     return sorted(list(set(text)))
 
 
-def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)):
+def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)) -> Alphabet:
     """
     construct alphabet order based on keyword
     example:    keyword_to_alphabet(a2i("HYDRAULIC"))
     """
-    alphabet = keyword
+    alphabet = Alphabet(keyword)
     return alphabet

@@ -1,4 +1,5 @@
 import random
+
 from . import alphabet
 
 MAX = 29
@@ -82,7 +83,7 @@ def print_english(runes: list[int], limit=0) -> None:
 
     print("ENGLISH:  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(alphabet.CICADA_ENGLISH_ALPHABET[runes[i]]), end="")
+        print(f"{alphabet.CICADA_ENGLISH_ALPHABET[runes[i]]:2} ", end="")
     print()
 
 
@@ -95,7 +96,7 @@ def print_rune_index(runes: list[int], limit=0) -> None:
 
     print("RUNEIDX: ", end="")
     for i in range(0, limit):
-        print("{:02} ".format(runes[i]), end="")
+        print(f"{runes[i]:02} ", end="")
     print()
 
 
@@ -108,5 +109,5 @@ def print_rune(runes: list[int], limit=0) -> None:
 
     print("RUNES  :  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(alphabet.CICADA_ALPHABET[runes[i]]), end="")
+        print(f"{alphabet.CICADA_ALPHABET[runes[i]]:2} ", end="")
     print()

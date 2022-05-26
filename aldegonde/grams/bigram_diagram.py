@@ -13,7 +13,7 @@ def print_bigram_diagram(runes: list[int]) -> None:
     count = Counter(runes)
     ioc: float = 0.0
     res = Counter(
-        "{:02d}-{:02d}".format(runes[idx], runes[idx + 1])
+        f"{runes[idx]:02d}-{runes[idx + 1]:02d}"
         for idx in range(len(runes) - 1)
     )
 
@@ -63,7 +63,7 @@ def print_bigram_diagram(runes: list[int]) -> None:
             * MAX
         )
         ioc += pioc
-        print("| {0:.3f}".format(pioc))
+        print(f"| {pioc:.3f}")
 
     print("---+-", end="")
     for i in range(0, MAX):
@@ -84,7 +84,7 @@ def bigram_diagram_skip(runes: list[int], skip: int = 1) -> None:
     count = Counter(runes)
     ioc = 0.0
     res = Counter(
-        "{:02d}-{:02d}".format(runes[idx], runes[idx + skip])
+        f"{runes[idx]:02d}-{runes[idx + skip]:02d}"
         for idx in range(len(runes) - skip)
     )
     bigram = defaultdict(dict)
@@ -124,13 +124,13 @@ def bigram_diagram_skip(runes: list[int], skip: int = 1) -> None:
             * MAX
         )
         ioc += pioc
-        print("| {0:.3f}".format(pioc))
+        print(f"| {pioc:.3f}")
 
     print(
         "--------------------------------------------------------------------------------------------+----"
     )
     print(
-        "                                                                                            | {0:.3f}".format(
+        "                                                                                            | {:.3f}".format(
             ioc
         )
     )

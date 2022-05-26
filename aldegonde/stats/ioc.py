@@ -28,12 +28,13 @@ def normalized_ioc(runes: list[int], alphabetsize: int = 0) -> float:
     Like ioc() but normalized by alphabet size.
     """
     if alphabetsize == 0:
-        try:
-            A = len(runes.alphabet)
-        except:
+        if isinstance(runes, list):
             A = len(alphabet.alphabet(runes))
+        else:
+            A = len(runes.alphabet)
     else:
-        A = alphabet
+        A = alphabetsize
+
     return ioc(runes) * A
 
 
@@ -78,7 +79,7 @@ def normalized_ioc2(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> fl
     if alphabetsize == 0:
         A = len(alphabet.alphabet(runes))
     else:
-        A = alphabet
+        A = alphabetsize
     return ioc2(runes) * pow(A, 2)
 
 
@@ -124,7 +125,7 @@ def normalized_ioc3(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> fl
     if alphabetsize == 0:
         A = len(alphabet.alphabet(runes))
     else:
-        A = alphabet
+        A = alphabetsize
     return ioc3(runes) * pow(A, 3)
 
 
@@ -168,5 +169,5 @@ def normalized_ioc4(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> fl
     if alphabetsize == 0:
         A = len(alphabet.alphabet(runes))
     else:
-        A = alphabet
+        A = alphabetsize
     return ioc4(runes) * pow(A, 4)

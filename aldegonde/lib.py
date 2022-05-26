@@ -1,7 +1,6 @@
 from collections import Counter
-import gematria
-
-g = gematria.gematria
+#import gematria
+#g = gematria.gematria
 
 # There are 29 runes. Generally counted 0-28
 MAX = 29
@@ -290,15 +289,15 @@ def offset():
     samplesize = 10
     print("CIPHER: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(gl[i]), end="")
+        print(f"{gl[i]:2} ", end="")
     print()
     print("OFFSET: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(gl[(1 + i) % len(gl)]), end="")
+        print(f"{gl[(1 + i) % len(gl)]:2} ", end="")
     print()
     print("OUTPUT: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(output[i]), end="")
+        print(f"{output[i]:2} ", end="")
 
     # print("\nOUTPUT: ", end="")
     # for i in range(0,samplesize*3):
@@ -324,15 +323,15 @@ def offset_reverse():
     samplesize = 10
     print("CIPHER: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(gl[i]), end="")
+        print(f"{gl[i]:2} ", end="")
     print()
     print("OFFSET: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(gl[(offset + i) % len(gl)]), end="")
+        print(f"{gl[(offset + i) % len(gl)]:2} ", end="")
     print()
     print("OUTPUT: ", end="")
     for i in range(0, samplesize):
-        print("{:2} ".format(output[i]), end="")
+        print(f"{output[i]:2} ", end="")
 
     # print("\nOUTPUT: ", end="")
     # for i in range(0,samplesize*3):
@@ -362,19 +361,19 @@ def run_test4():
         samplesize = 10
         print("CIPHER: ", end="")
         for i in range(0, samplesize):
-            print("{:2} ".format(gl[i]), end="")
+            print(f"{gl[i]:2} ", end="")
         print()
         print("OFFSET: ", end="")
         for i in range(0, samplesize):
-            print("{:2} ".format(gl[(1 + i) % len(gl)]), end="")
+            print(f"{gl[(1 + i) % len(gl)]:2} ", end="")
         print()
         print("OUTPUT: ", end="")
         for i in range(0, samplesize):
-            print("{:2} ".format(output[i]), end="")
+            print(f"{output[i]:2} ", end="")
 
         print("\nOUTPUT: ", end="")
         for i in range(0, samplesize * 3):
-            print("{:2} ".format(g.position_to_latin_forward_dict[output[i]]), end="")
+            print(f"{g.position_to_latin_forward_dict[output[i]]:2} ", end="")
 
         print()
 
