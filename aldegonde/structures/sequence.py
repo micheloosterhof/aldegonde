@@ -4,6 +4,7 @@
 from typing import Optional
 from . import alphabet as abc
 
+
 class Sequence:
     """A sequence object, composed of plaintext or ciphertext
        It consists of elements, modeled as integers, and an alphabet of all possible options
@@ -30,6 +31,7 @@ class Sequence:
             try:
                 self.elements.append(self.alphabet.a2i(c))
             except KeyError:
+                print(f"{c} not in alphabet")
                 pass
 
     def restore_punctuation(self) -> str:
@@ -43,7 +45,7 @@ class Sequence:
                 out += self.alphabet.i2a(self.elements[count])
                 count += 1
             except IndexError:
-                print("eek")
+                print(f"unknown character {c}")
                 out += c
         return out
 

@@ -1,5 +1,4 @@
-
-def bigram_diagram(runes: List[int]) -> None:
+def bigram_diagram(runes: list[int]) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
@@ -65,7 +64,7 @@ def bigram_diagram(runes: List[int]) -> None:
     print(f"| {ioc:0.3f}")
 
 
-def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
+def bigram_diagram_skip(runes: list[int], skip: int = 1) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
@@ -124,4 +123,3 @@ def bigram_diagram_skip(runes: List[int], skip: int = 1) -> None:
         )
     )
     print("\n")
-

@@ -1,8 +1,6 @@
-from typing import List
-
 def monoalphabetic_substitution_encrypt(
-    sequence: List[int], key: List[int]
-) -> List[int]:
+    sequence: list[int], key: list[int]
+) -> list[int]:
     """
     Monalphabetic substitution
     """
@@ -12,7 +10,7 @@ def monoalphabetic_substitution_encrypt(
     return output
 
 
-def reverse_key(key: List[int]) -> List[int]:
+def reverse_key(key: list[int]) -> list[int]:
     """
     Takes an array containing all elements and reverses the index and the value
     Returns output if the input contains valid values, else raises ValueError
@@ -30,8 +28,8 @@ def reverse_key(key: List[int]) -> List[int]:
 
 
 def monoalphabetic_substitution_decrypt(
-    sequence: List[int], key: List[int]
-) -> List[int]:
+    sequence: list[int], key: list[int]
+) -> list[int]:
     """
     Monalphabetic substitution
     NOTE: key input is the same as for encryption, this function will reverse the key
@@ -42,4 +40,3 @@ def monoalphabetic_substitution_decrypt(
     for e in sequence:
         output.append(reversed_key[e])
     return output
-

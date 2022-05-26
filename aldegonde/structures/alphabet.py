@@ -21,7 +21,7 @@ CICADA_ALPHABET = [
     "ᚻ",
     "ᚾ",
     "ᛁ",
-    "ᛂ",
+    "ᛄ",
     "ᛇ",
     "ᛈ",
     "ᛉ",
@@ -63,7 +63,6 @@ class Alphabet:
 
     def a2i(self, a: str) -> int:
         i = self.reversealphabet[a]
-        print(i)
         if i is not None:
             return self.reversealphabet[a]
         else:

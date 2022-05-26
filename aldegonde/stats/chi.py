@@ -1,8 +1,7 @@
 from collections import Counter
-from typing import List
 
 
-def chi(text1: List[int], text2: List[int]) -> float:
+def chi(text1: list[int], text2: list[int]) -> float:
     """
     Calculate chi test of 2 texts
 

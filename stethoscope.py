@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 # #pypy3
 
-from collections import Counter, defaultdict
 import math
 import random
-import statistics
-import sys
-from typing import Dict, List
 
 import gematria
 import lp_section_data as lp
@@ -17,23 +13,9 @@ import lp_section_data as lp
 
 from lib import *
 
+import aldegonde
+
 g = gematria.gematria
-
-# repeats
-djubei = [23, 11, 1, 17, 18, 10]
-iso51 = [17, 19, 4, 9, 19]
-iso52 = [3, 1, 9, 7, 19]
-iso53 = [3, 0, 20, 22, 21]
-iso54 = [10, 19, 21, 26, 24]
-
-# test alphabet of first letters of each word
-
-
-def oeis():
-    """
-    https://oeis.org/search?fmt=json&q=<sequenceTerm>&start=<itemToStartAt>
-    """
-
 
 def first_letter_of_word():
     for i in [
@@ -118,7 +100,7 @@ for i in segments:
 # exit(1)
 
 
-def split_and_chi(ciphertext: List[int]):
+def split_and_chi(ciphertext: list[int]):
     """
     split text in some way and run chi2 on splits with itself
     """
@@ -215,49 +197,7 @@ def find_words_before_single_rune():
     print(dist(diff2))
 
 
-# p = primes(10000000)
-# delstream = []
-# for i in range(0,len(gl)):
-#     delstream.append((p[i+1]-p[i])%29)
-# bigram_diagram(delstream)
-#
-# exit(1)
-
-
-# s = split_by_character(gl)
-# for shift in range(0,MAX):
-#    for g in range(0,len(s)):
-#        for h in range(g,len(s)):
-#             x = shift(s[g],shift)
-#             xchi = MAX*chi(x,s[h])
-#             if xchi>1.1:
-#                 print(f"shift {shift} chi {g} {h}: {xchi}")
-
-# for period in range(1,2):
-#    print(f"period {period}")
-#    s = split_by_period(gl, period)
-#    for shif in range(0,MAX):
-#        for g in range(0,len(s)):
-#            for h in range(g,len(s)):
-#                 x = shift(s[g],shif)
-#                 xchi = MAX*chi(x,s[h])
-##                 if xchi>1.1:
-#                     print(f"shift {shift} chi {g} {h}: {xchi}")
-
-
-# ds = split_by_doublet(gl)
-# for gl in ds:
-# for i in range(0, len(gl), 20):
-#  g = gl[i:i+150]
-#  print(f"## starter: {i}")
-#  #print(f"## Length of piece: {len(g)}")
-#  test_plaintext_vig2(g)
-#
-# bruteforce_autokey(sgl[1], minkeylength=2, maxkeylength=2, iocthreshold=1.15)
-##bruteforce_autokey(s[0], minkeylength=4, maxkeylength=4, iocthreshold=1.35)
-
-
-def analyze_segment(ciphertext: List[int]):
+def analyze_segment(ciphertext: list[int]):
     print(f"ciphertext size {len(ciphertext)}")
     print(f"alphabet size {len(alphabet(ciphertext))}: {alphabet(ciphertext)}")
     print()

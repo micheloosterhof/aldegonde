@@ -1,7 +1,4 @@
-from typing import List
-
-
-def hamming_distance(s1: List[int], s2: List[int]) -> int:
+def hamming_distance(s1: list[int], s2: list[int]) -> int:
     """
     The Hamming distance between two equal-length strings of symbols
     is the number of positions at which the corresponding symbols

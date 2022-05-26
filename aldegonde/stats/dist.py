@@ -1,6 +1,4 @@
-from typing import List
-
-def dist(runes: List[int]) -> None:
+def dist(runes: list[int]) -> None:
     """
     print frequency distribution
     """

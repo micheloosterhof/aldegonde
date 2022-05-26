@@ -1,9 +1,9 @@
 from collections import Counter
 import math
-from typing import Dict, List
+from typing import list
 
 
-def shannon_entropy(ciphertext: List[int], base: int = 2) -> float:
+def shannon_entropy(ciphertext: list[int], base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
     """
@@ -16,7 +16,7 @@ def shannon_entropy(ciphertext: List[int], base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(runes: List[int], base: int = 2, cut=0) -> float:
+def shannon2_entropy(runes: list[int], base: int = 2, cut=0) -> float:
     """
     shannon entropy. by default in bits.
     """

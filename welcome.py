@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 
-from typing import Dict, List
+"""
+Decode welcome message
+"""
+
 import gematria
-from lib import *
+
+import aldegonde as ag
+
+from aldegonde.structures import alphabet, sequence, cicada3301
+from aldegonde.stats import ioc
 
 g = gematria.gematria
 
@@ -16,19 +23,19 @@ welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗ
 ᛇᛁᛉᚦᛋᚫᚻᚫᚦᚣᚠᛚᚳᛖᚱᛈᚠᚪᛉᚱᛒᛖᚫᚳᛒᚠ"
 
 key = [6, 19, 28, 19, 20, 19, 13, 3]
-
+MAX = 29
 
 def beaufort_decrypt_interrupted(
-    ciphertext: List[int],
-    primer: List[int] = [0],
-    interruptors: List[int] = [],
+    ciphertext: list[int],
+    primer: list[int] = [0],
+    interruptors: list[int] = [],
     trace: bool = False,
 ):
     """
     Plain Beaufort
     interruptors is list of positions where encryption (re)starts
     """
-    output: List[int] = []
+    output: list[int] = []
     keypos = 0
     keylen = len(primer)
     for pos in range(0, len(ciphertext)):
@@ -45,18 +52,16 @@ runes = []
 for r in welcome:
     runes.append(g.rune_to_position_forward_dict[r])
 
-print(f"runes size {len(runes)}")
-print(f"alphabet size {len(alphabet(runes))}: {alphabet(runes)}")
-print(f"ioc={normalized_ioc(runes):.3f}")
-print(
-    f"ioc2={normalized_ioc2(runes,cut=0):.3f} ioc2a={normalized_ioc2(runes,cut=1):.3f}, ioc2b={normalized_ioc2(runes,cut=2):.3f}"
-)
-print(
-    f"ioc3={ioc3(runes,cut=0):.3f} ioc3a={ioc3(runes,cut=1):.3f}, ioc3b={ioc3(runes,cut=2):.3f}, ioc3c={ioc3(runes ,cut=3):.3f}"
-)
+print(f"{welcome}")
+seq = sequence.Sequence(welcome, alphabet=alphabet.CICADA_ALPHABET)
+print(f"{seq}")
+
+print(f"length: {len(runes)} runes")
+print(f"alphabet size: {len(alphabet.alphabet(runes))}: {alphabet.alphabet(runes)}")
+print(f"ioc={ioc.normalized_ioc(runes):.3f}")
 
 plain = beaufort_decrypt_interrupted(
     runes, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
 )
 
-english_output(plain, limit=0)
+cicada3301.english_output(plain, limit=0)

@@ -1,8 +1,7 @@
 from scipy.stats import poisson
-from typing import List
 
 
-def triplets(runes: List[int]) -> int:
+def triplets(runes: list[int]) -> int:
     """
     find number of triplet. triplet is X followed by XX for any X
     """
@@ -17,12 +16,12 @@ def triplets(runes: List[int]) -> int:
     return triplets
 
 
-def doublets(runes: List[int], skip: int = 1, trace: bool = False) -> List[int]:
+def doublets(runes: list[int], skip: int = 1, trace: bool = False) -> list[int]:
     """
     find number of doublets. doublet is X followed by X for any X
     """
     N = len(runes)
-    doublets: List[int] = []
+    doublets: list[int] = []
     for index in range(0, N - skip - 1):
         if runes[index] == runes[index + skip]:
             doublets.append(index)

@@ -1,8 +1,4 @@
-from collections import Counter, defaultdict
-import math
-import random
-from typing import Dict, List
-
+from collections import Counter
 import gematria
 
 g = gematria.gematria
@@ -11,7 +7,7 @@ g = gematria.gematria
 MAX = 29
 
 
-def detect_gronsfeld(runes: List[int]) -> None:
+def detect_gronsfeld(runes: list[int]) -> None:
     """
     compare frequency of the 4 most common runes with the 2 least common runes
     """
@@ -21,7 +17,7 @@ def detect_gronsfeld(runes: List[int]) -> None:
     print(f"gronsfeld ratio: {p:.2f}")
 
 
-def diffstream(runes: List[int]) -> List[int]:
+def diffstream(runes: list[int]) -> list[int]:
     """
     diffstream mod MAX
     DIFF = C_K+1 - C_K % MAX
@@ -32,7 +28,7 @@ def diffstream(runes: List[int]) -> List[int]:
     return diff
 
 
-def diffstream1(runes: List[int]) -> List[int]:
+def diffstream1(runes: list[int]) -> list[int]:
     """
     diffstream mod MAX
     DIFF = C_K - C_K+1 % MAX
@@ -43,7 +39,7 @@ def diffstream1(runes: List[int]) -> List[int]:
     return diff
 
 
-def addstream(runes: List[int]) -> List[int]:
+def addstream(runes: list[int]) -> list[int]:
     """
     diffstream mod MAX
     DIFF = C_K + C_K+1 % MAX
@@ -54,21 +50,21 @@ def addstream(runes: List[int]) -> List[int]:
     return diff
 
 
-def trigrams(runes: List[int]):
+def trigrams(runes: list[int]):
     """
     get the trigrams
     """
     return repeat(runes, min=3, max=3)
 
 
-def quadgrams(runes: List[int]):
+def quadgrams(runes: list[int]):
     """
     get the quadgrams
     """
     return repeat(runes, min=4, max=4)
 
 
-def find(sequence: List[int], runes: List[int]) -> List[int]:
+def find(sequence: list[int], runes: list[int]) -> list[int]:
     """
     find `sequence` inside the list of `runes`, return array with indexes
     """
@@ -80,7 +76,7 @@ def find(sequence: List[int], runes: List[int]) -> List[int]:
     return results
 
 
-def dist(runes: List[int]) -> None:
+def dist(runes: list[int]) -> None:
     """
     print frequency distribution
     """
@@ -92,7 +88,7 @@ def dist(runes: List[int]) -> None:
 
 
 def kappa(
-    ciphertext: List[int],
+    ciphertext: list[int],
     min: int = 1,
     max: int = 51,
     threshold: float = 1.3,
@@ -117,7 +113,7 @@ def kappa(
 
 
 def detect_plaintext_autokey(
-    ciphertext: List[int],
+    ciphertext: list[int],
     minkeysize: int = 1,
     maxkeysize: int = 20,
     trace: bool = False,
@@ -180,7 +176,7 @@ def detect_plaintext_autokey(
 
 
 def detect_ciphertext_autokey_vigenere(
-    ciphertext: List[int],
+    ciphertext: list[int],
     minkeysize: int = 1,
     maxkeysize: int = 10,
     trace: bool = False,
@@ -201,7 +197,7 @@ def detect_ciphertext_autokey_vigenere(
         if trace is True:
             print(f"Checking key size {a}")
 
-        alphabet: Dict[int, List[int]] = {}
+        alphabet: dict[int, list[int]] = {}
         for i in range(0, MAX):
             alphabet[i] = []
 
@@ -220,7 +216,7 @@ def detect_ciphertext_autokey_vigenere(
 
 # assume fixed length key. find period
 def detect_vigenere(
-    ciphertext: List[int],
+    ciphertext: list[int],
     minkeysize: int = 1,
     maxkeysize: int = 20,
     trace: bool = False,
@@ -260,10 +256,10 @@ def run_test2a(ciphertext):
 
 
 # assume fixed length key. find period
-def run_test3(ciphertext: List[int], trace: bool = False):
+def run_test3(ciphertext: list[int], trace: bool = False):
     print("testing for fixed size periodicity")
     for period in range(1, 30):
-        group: Dict[int, List[int]] = {}
+        group: dict[int, list[int]] = {}
         for i in range(period):
             group[i] = []
 
@@ -397,7 +393,7 @@ def ignore():
         print()
 
 
-def prime_factors(n: int) -> List[int]:
+def prime_factors(n: int) -> list[int]:
     i = 2
     factors = []
     while i * i <= n:
@@ -428,13 +424,13 @@ def primes(n):
 
 
 def ciphertext_autokey_vig2_encrypt(
-    plaintext: List[int], primer: List[int] = [0, 0]
-) -> List[int]:
+    plaintext: list[int], primer: list[int] = [0, 0]
+) -> list[int]:
     """
     2Vig primitive without any console output, C=P+K1+K
     """
-    key: List[int] = primer.copy()
-    output: List[int] = []
+    key: list[int] = primer.copy()
+    output: list[int] = []
     for j in range(0, len(plaintext)):
         c = (plaintext[j] - key[j + 1] + key[j]) % MAX
         output.append(c)
@@ -443,26 +439,26 @@ def ciphertext_autokey_vig2_encrypt(
 
 
 def ciphertext_autokey_vig2_decrypt(
-    ciphertext: List[int], primer: List[int] = [0, 0]
-) -> List[int]:
+    ciphertext: list[int], primer: list[int] = [0, 0]
+) -> list[int]:
     """
     2Vig primitive without any console output, P=C-K
     """
-    key: List[int] = primer + ciphertext
-    output: List[int] = []
+    key: list[int] = primer + ciphertext
+    output: list[int] = []
     for j in range(0, len(ciphertext)):
         output.append((ciphertext[j] + key[j + 1] - key[j]) % MAX)
     return output
 
 
 def ciphertext_autokey_oddvig_encrypt(
-    plaintext: List[int], primer: List[int] = [0]
-) -> List[int]:
+    plaintext: list[int], primer: list[int] = [0]
+) -> list[int]:
     """
     2Vig primitive without any console output, C=P+K1+K
     """
-    key: List[int] = primer.copy()
-    output: List[int] = []
+    key: list[int] = primer.copy()
+    output: list[int] = []
     for j in range(0, len(plaintext)):
         if j % 2 == 0:
             c = (plaintext[j] + key[j]) % MAX
@@ -474,13 +470,13 @@ def ciphertext_autokey_oddvig_encrypt(
 
 
 def ciphertext_autokey_oddvig_decrypt(
-    ciphertext: List[int], primer: List[int] = [0]
-) -> List[int]:
+    ciphertext: list[int], primer: list[int] = [0]
+) -> list[int]:
     """
     2Vig primitive without any console output, P=C-K
     """
-    key: List[int] = primer + ciphertext
-    output: List[int] = []
+    key: list[int] = primer + ciphertext
+    output: list[int] = []
     for j in range(0, len(ciphertext)):
         if j % 2 == 0:
             p = (ciphertext[j] - key[j]) % MAX
@@ -491,7 +487,7 @@ def ciphertext_autokey_oddvig_decrypt(
 
 
 def bruteforce_autokey(
-    ciphertext: List[int],
+    ciphertext: list[int],
     minkeylength: int = 1,
     maxkeylength: int = 1,
     iocthreshold: float = 1.2,

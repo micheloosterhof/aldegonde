@@ -1,5 +1,4 @@
 import random
-from typing import Dict, List
 
 import gematria
 
@@ -9,7 +8,7 @@ g = gematria.gematria
 MAX = 29
 
 
-def randomrunes(l: int, max: int = MAX) -> List[int]:
+def randomrunes(l: int, max: int = MAX) -> list[int]:
     """
     Random list of runes of lenth len
     """
@@ -19,7 +18,7 @@ def randomrunes(l: int, max: int = MAX) -> List[int]:
     return rl
 
 
-def numberToBase(n: int, b: int) -> List[int]:
+def numberToBase(n: int, b: int) -> list[int]:
     """
     converts from base10 to any other base. outputs as list of int
     """
@@ -32,7 +31,7 @@ def numberToBase(n: int, b: int) -> List[int]:
     return digits[::-1]
 
 
-def base29(input: int, padding: int = -1) -> List[int]:
+def base29(input: int, padding: int = -1) -> list[int]:
     """
     input `int` and output in Base29 as list of integers
     """
@@ -72,7 +71,7 @@ class RuneIterator:
             return base29(x, padding=self.length)
 
 
-def english_output(runes: List[int], limit=0) -> None:
+def english_output(runes: list[int], limit=0) -> None:
     """
     prints rune output translated back to english letters
     """

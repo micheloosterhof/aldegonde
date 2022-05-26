@@ -1,13 +1,12 @@
 from collections import Counter
 import math
-from typing import Dict, List
 
 from scipy.stats import poisson
 
 
 def repeat_statistics(
-    ciphertext: List[int], min: int = 4, max: int = 10, trace: bool = False
-):  # -> Dict(List[int], int):
+    ciphertext: list[int], min: int = 4, max: int = 10, trace: bool = False
+):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
@@ -42,8 +41,8 @@ def repeat_statistics(
 
 
 def repeat(
-    ciphertext: List[int], min: int = 2, max: int = 10
-):  # -> Dict(List[int], int):
+    ciphertext: list[int], min: int = 2, max: int = 10
+):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
@@ -63,15 +62,15 @@ def repeat(
 
 
 def repeat2(
-    ciphertext: List[int], min: int = 2, max: int = 10
-):  # -> Dict(List[int], int):
+    ciphertext: list[int], min: int = 2, max: int = 10
+):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the list of starting positions of that substring
     """
     sequences = {}
     for length in range(min, max + 1):
-        l: Dict[str, List[int]] = {}
+        l: dict[str, list[int]] = {}
         for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
             if k in l.keys():

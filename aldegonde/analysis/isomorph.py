@@ -1,7 +1,4 @@
-from typing import List
-
-
-def isomorph(ciphertext: List[int]) -> str:
+def isomorph(ciphertext: list[int]) -> str:
     """
     Input is a piece of ciphertext as a list of int
     Output is this normalized as an isomorph, it's output as a string for easy comparison in alphabet A-Z
@@ -9,7 +6,7 @@ def isomorph(ciphertext: List[int]) -> str:
     """
     output = ""
     letter = "A"
-    mapping: Dict[int, str] = {}
+    mapping: dict[int, str] = {}
     for r in ciphertext:
         if r not in mapping:
             mapping[r] = letter

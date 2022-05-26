@@ -1,7 +1,4 @@
-from typing import Dict, List
-
-
-def split_by_slice(inp: List[int], size: int) -> Dict[int, List[int]]:
+def split_by_slice(inp: list[int], size: int) -> dict[int, list[int]]:
     """
     Create slices of the input, with a certain slice size
     This will return every N'th element
@@ -14,11 +11,11 @@ def split_by_slice(inp: List[int], size: int) -> Dict[int, List[int]]:
     return outp
 
 
-def split_by_character(inp: List[int]) -> Dict[int, List[int]]:
+def split_by_character(inp: list[int]) -> dict[int, list[int]]:
     """
     by previous character
     """
-    outp: Dict[int, List[int]] = {}
+    outp: dict[int, list[int]] = {}
     for i in range(0, MAX):
         outp[i] = []
     for i in range(0, len(inp) - 1):
@@ -26,12 +23,12 @@ def split_by_character(inp: List[int]) -> Dict[int, List[int]]:
     return outp
 
 
-def split_by_doublet(ciphertext: List[int]) -> List[List[int]]:
+def split_by_doublet(ciphertext: list[int]) -> list[list[int]]:
     """
     split in simple chunks separated by a doublet
     """
-    output: List[List[int]] = []
-    current: List[int] = []
+    output: list[list[int]] = []
+    current: list[int] = []
     for i in range(0, len(ciphertext)):
         if ciphertext[i] == ciphertext[i - 1]:
             output.append(current)
