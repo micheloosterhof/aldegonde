@@ -1,10 +1,6 @@
 import random
+from . import alphabet
 
-import gematria
-
-g = gematria.gematria
-
-# There are 29 runes. Generally counted 0-28
 MAX = 29
 
 
@@ -71,7 +67,26 @@ class RuneIterator:
             return base29(x, padding=self.length)
 
 
-def english_output(runes: list[int], limit=0) -> None:
+def print_all(runes: list[int], limit=0) -> None:
+    print_rune(runes, limit)
+    print_rune_index(runes, limit)
+    print_english(runes, limit)
+
+
+def print_english(runes: list[int], limit=0) -> None:
+    """
+    prints rune output translated back to english letters
+    """
+    if limit == 0 or limit > len(runes):
+        limit = len(runes)
+
+    print("ENGLISH:  ", end="")
+    for i in range(0, limit):
+        print("{:2} ".format(alphabet.CICADA_ENGLISH_ALPHABET[runes[i]]), end="")
+    print()
+
+
+def print_rune_index(runes: list[int], limit=0) -> None:
     """
     prints rune output translated back to english letters
     """
@@ -83,7 +98,15 @@ def english_output(runes: list[int], limit=0) -> None:
         print("{:02} ".format(runes[i]), end="")
     print()
 
-    print("ENGLISH:  ", end="")
+
+def print_rune(runes: list[int], limit=0) -> None:
+    """
+    prints rune output translated back to english letters
+    """
+    if limit == 0 or limit > len(runes):
+        limit = len(runes)
+
+    print("RUNES  :  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(g.position_to_latin_forward_dict[runes[i]]), end="")
+        print("{:2} ".format(alphabet.CICADA_ALPHABET[runes[i]]), end="")
     print()
