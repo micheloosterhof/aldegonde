@@ -28,7 +28,10 @@ def normalized_ioc(runes: list[int], alphabetsize: int = 0) -> float:
     Like ioc() but normalized by alphabet size.
     """
     if alphabetsize == 0:
-        A = len(alphabet.alphabet(runes))
+        try:
+            A = len(runes.alphabet)
+        except:
+            A = len(alphabet.alphabet(runes))
     else:
         A = alphabet
     return ioc(runes) * A

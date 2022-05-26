@@ -47,21 +47,15 @@ def beaufort_decrypt_interrupted(
             keypos = keypos + 1
     return output
 
-
-runes = []
-for r in welcome:
-    runes.append(g.rune_to_position_forward_dict[r])
-
-print(f"{welcome}")
+print(f"source: {welcome}")
 seq = sequence.Sequence(welcome, alphabet=alphabet.CICADA_ALPHABET)
-print(f"{seq}")
-
-print(f"length: {len(runes)} runes")
-print(f"alphabet size: {len(alphabet.alphabet(runes))}: {alphabet.alphabet(runes)}")
-print(f"ioc={ioc.normalized_ioc(runes):.3f}")
+print(f"ciphertext: {seq.elements}")
+print(f"alphabet: {seq.alphabet}")
+print(f"length: {len(seq)} runes")
+print(f"ioc={ioc.ioc(seq):.3f} nioc={ioc.normalized_ioc(seq):.3f}")
 
 plain = beaufort_decrypt_interrupted(
-    runes, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
+    seq, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
 )
 
 cicada3301.english_output(plain, limit=0)

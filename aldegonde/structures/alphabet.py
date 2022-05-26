@@ -57,6 +57,9 @@ class Alphabet:
         for i, e in enumerate(self.alphabet):
             self.reversealphabet[e] = i
 
+    def __len__(self) -> int:
+        return self.alphabetsize
+
     def __str__(self) -> str:
         """ """
         return "Alphabet: " + "".join(self.alphabet)

@@ -49,6 +49,18 @@ class Sequence:
                 out += c
         return out
 
+    def __getitem__(self, key) -> int:
+        """
+        Return numerical index of character at this position like a normal sequence
+        """
+        return self.elements[key]
+
+    def __len__(self) -> int:
+        """
+        Number of elements
+        """
+        return len(self.elements)
+
     def __str__(self) -> str:
         """ """
         return self.restore_punctuation()
