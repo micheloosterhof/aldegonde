@@ -52,7 +52,7 @@ class Sequence:
                 out += c
         return out
 
-    def __getitem__(self, key) -> int:
+    def __getitem__(self, key: int) -> int:
         """
         Return numerical index of character at this position like a normal sequence
         """

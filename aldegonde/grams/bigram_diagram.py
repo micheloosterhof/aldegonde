@@ -1,5 +1,6 @@
 from collections import Counter, defaultdict
-from .color import *
+
+from color import *
 
 
 def print_bigram_diagram(runes: list[int]) -> None:

@@ -3,8 +3,7 @@ import math
 
 from scipy.stats import poisson
 
-
-def repeat_statistics(
+def print_repeat_statistics(
     ciphertext: list[int], min: int = 4, max: int = 10, trace: bool = False
 ):  # -> dict(list[int], int):
     """
@@ -33,10 +32,10 @@ def repeat_statistics(
         )
 
         # second method
-        expected = len(ciphertext) * (len(ciphertext) - 1) / (2 * pow(MAX, length))
-        sigmage: float = abs(num - expected) / math.sqrt(var)
+        expected2 = len(ciphertext) * (len(ciphertext) - 1) / (2 * pow(MAX, length))
+        sigmage2: float = abs(num - expected2) / math.sqrt(var)
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.3f} S={sigmage:.2f}σ"
+            f"repeats length {length}: observed={num:d} expected={expected2:.3f} S={sigmage2:.2f}σ"
         )
 
 

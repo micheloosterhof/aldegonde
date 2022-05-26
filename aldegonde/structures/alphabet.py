@@ -69,7 +69,7 @@ def i2a(text: list[int]) -> str:
 
 def alphabet(text: list[int]) -> list[int]:
     """
-    Find all unique values
+    Find all unique values in a sequence or list
     """
     return sorted(list(set(text)))
 

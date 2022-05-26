@@ -1,7 +1,5 @@
 from collections import Counter
 import math
-from typing import list
-
 
 def shannon_entropy(ciphertext: list[int], base: int = 2) -> float:
     """

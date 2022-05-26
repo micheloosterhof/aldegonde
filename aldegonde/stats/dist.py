@@ -1,3 +1,5 @@
+from collections import Counter
+
 def dist(runes: list[int]) -> None:
     """
     print frequency distribution

@@ -1,3 +1,5 @@
+# ANSI colors
+
 class colors:
     reset = "\033[0m"
 

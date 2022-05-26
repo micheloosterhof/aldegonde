@@ -29,7 +29,7 @@ print(f"{len(segments)} segments")
 for s in segments:
     if len(s) == 0:
         continue
-    seg = sequence.Sequence(s, alphabet=alphabet.CICADA_ALPHABET)
+    seg = sequence.Sequence(s, alphabet=cicada3301.CICADA_ALPHABET)
     if len(seg) == 0:
         print("EMPTY SEGMENT")
         continue

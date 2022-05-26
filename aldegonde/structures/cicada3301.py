@@ -128,13 +128,13 @@ class RuneIterator:
             return base29(x, padding=self.length)
 
 
-def print_all(runes: list[int], limit=0) -> None:
+def print_all(runes: list[int], limit: int = 0) -> None:
     print_rune(runes, limit)
     print_rune_index(runes, limit)
     print_english(runes, limit)
 
 
-def print_english(runes: list[int], limit=0) -> None:
+def print_english(runes: list[int], limit: int = 0) -> None:
     """
     prints rune output translated back to english letters
     """
@@ -147,7 +147,7 @@ def print_english(runes: list[int], limit=0) -> None:
     print()
 
 
-def print_rune_index(runes: list[int], limit=0) -> None:
+def print_rune_index(runes: list[int], limit: int = 0) -> None:
     """
     prints rune output translated back to english letters
     """
@@ -160,7 +160,7 @@ def print_rune_index(runes: list[int], limit=0) -> None:
     print()
 
 
-def print_rune(runes: list[int], limit=0) -> None:
+def print_rune(runes: list[int], limit: int = 0) -> None:
     """
     prints rune output translated back to english letters
     """
