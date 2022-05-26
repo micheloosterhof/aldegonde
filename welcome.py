@@ -4,14 +4,8 @@
 Decode welcome message
 """
 
-import gematria
-
-import aldegonde as ag
-
 from aldegonde.structures import alphabet, sequence, cicada3301
 from aldegonde.stats import ioc
-
-g = gematria.gematria
 
 welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗᛠᛇᛏᚳᚾᚫᛝᛗᛡᛡᛗᛗᚹᚫᛈᛞᛝᛡᚱᚩᛠᛡᛗᛁᚠᚠᛖᚢᛝᛇᚢᚫᚣᛈᚱᚫᛁᛈᚫᚳᚫᚫᚾᚹᛒᛉ\
 ᛗᛞᚱᛡᛁᚠᛈᚳᛇᛇᚫᚳᚱᚦᛈᚠᛄᛗᚩᛇᚳᚹᛡᛒᚫᚹᛒᛠᛚᛋᚱᚣᛄᚫᚱᛗᚳᚦᛇᚫᛏᚳᛈᚹᛗᚷᛇᚳᛝᛈᚢᛇᚳᚱᛖᚹᛡᛈᛁᛒᚣᛒᛉᚠᛚᛁᚱᚱᛗᚳ\
@@ -23,7 +17,7 @@ welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗ
 ᛇᛁᛉᚦᛋᚫᚻᚫᚦᚣᚠᛚᚳᛖᚱᛈᚠᚪᛉᚱᛒᛖᚫᚳᛒᚠ"
 
 key = [6, 19, 28, 19, 20, 19, 13, 3]
-MAX = 29
+
 
 def beaufort_decrypt_interrupted(
     ciphertext: list[int],
@@ -37,15 +31,17 @@ def beaufort_decrypt_interrupted(
     """
     output: list[int] = []
     keypos = 0
+    azlen = len(ciphertext.alphabet)
     keylen = len(primer)
     for pos in range(0, len(ciphertext)):
         if pos in interruptors:
             # output `F` rune and do not increase key position
             output.append(0)
         else:
-            output.append((ciphertext[pos] + primer[keypos % keylen]) % MAX)
+            output.append((ciphertext[pos] + primer[keypos % keylen]) % azlen)
             keypos = keypos + 1
     return output
+
 
 print(f"source: {welcome}")
 seq = sequence.Sequence(welcome, alphabet=alphabet.CICADA_ALPHABET)
