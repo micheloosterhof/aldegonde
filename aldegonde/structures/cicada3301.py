@@ -78,12 +78,12 @@ def english_output(runes: list[int], limit=0) -> None:
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
-    print("--: ", end="")
+    print("RUNEIDX: ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(runes[i]), end="")
+        print("{:02} ".format(runes[i]), end="")
     print()
 
-    print("--: ", end="")
+    print("ENGLISH:  ", end="")
     for i in range(0, limit):
         print("{:2} ".format(g.position_to_latin_forward_dict[runes[i]]), end="")
     print()
