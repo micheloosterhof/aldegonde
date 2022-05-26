@@ -41,6 +41,38 @@ CICADA_ALPHABET = [
     "ᛠ",
 ]
 
+CICADA_ENGLISH_ALPHABET = [
+    "F",
+    "U",
+    "TH",
+    "O",
+    "R",
+    "C",
+    "G",
+    "W",
+    "H",
+    "N",
+    "I",
+    "J",
+    "EO",
+    "P",
+    "X",
+    "S",
+    "T",
+    "B",
+    "E",
+    "M",
+    "L",
+    "NG",
+    "OE",
+    "D",
+    "A",
+    "AE",
+    "Y",
+    "IA",
+    "EA",
+]
+
 
 class Alphabet:
     """
