@@ -44,7 +44,7 @@ def beaufort_decrypt_interrupted(
 
 
 print(f"source: {welcome}")
-seq = sequence.Sequence(welcome, alphabet=alphabet.CICADA_ALPHABET)
+seq = sequence.Sequence(welcome, alphabet=cicada3301.CICADA_ALPHABET)
 print(f"alphabet: {seq.alphabet}")
 print(f"ciphertext: {seq.elements}")
 print(f"length: {len(seq)} runes")

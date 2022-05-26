@@ -9,69 +9,6 @@ LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
 DIGITS_ALPHABET = [chr(code) for code in range(ord("0"), ord("9") + 1)]
 BASE62_ALPHABET = LOWERCASE_ALPHABET + UPPERCASE_ALPHABET + DIGITS_ALPHABET
-CICADA_ALPHABET = [
-    "ᚠ",
-    "ᚢ",
-    "ᚦ",
-    "ᚩ",
-    "ᚱ",
-    "ᚳ",
-    "ᚷ",
-    "ᚹ",
-    "ᚻ",
-    "ᚾ",
-    "ᛁ",
-    "ᛄ",
-    "ᛇ",
-    "ᛈ",
-    "ᛉ",
-    "ᛋ",
-    "ᛏ",
-    "ᛒ",
-    "ᛖ",
-    "ᛗ",
-    "ᛚ",
-    "ᛝ",
-    "ᛟ",
-    "ᛞ",
-    "ᚪ",
-    "ᚫ",
-    "ᚣ",
-    "ᛡ",
-    "ᛠ",
-]
-
-CICADA_ENGLISH_ALPHABET = [
-    "F",
-    "U",
-    "TH",
-    "O",
-    "R",
-    "C",
-    "G",
-    "W",
-    "H",
-    "N",
-    "I",
-    "J",
-    "EO",
-    "P",
-    "X",
-    "S",
-    "T",
-    "B",
-    "E",
-    "M",
-    "L",
-    "NG",
-    "OE",
-    "D",
-    "A",
-    "AE",
-    "Y",
-    "IA",
-    "EA",
-]
 
 
 class Alphabet:
@@ -137,10 +74,10 @@ def alphabet(text: list[int]) -> list[int]:
     return sorted(list(set(text)))
 
 
-def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)):
+def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)) -> Alphabet:
     """
     construct alphabet order based on keyword
     example:    keyword_to_alphabet(a2i("HYDRAULIC"))
     """
-    alphabet = keyword
+    alphabet = Alphabet(keyword)
     return alphabet

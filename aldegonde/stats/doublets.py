@@ -1,10 +1,19 @@
+import math
+
 from scipy.stats import poisson
+
+from ..structures import alphabet, sequence
 
 
 def triplets(runes: list[int]) -> int:
     """
     find number of triplet. triplet is X followed by XX for any X
     """
+    try:
+        MAX = len(runes.alphabet)
+    except:
+        MAX = len(alphabet.alphabet(runes))
+
     N = len(runes)
     triplets: int = 0
     for index in range(0, N - 2):
@@ -20,6 +29,10 @@ def doublets(runes: list[int], skip: int = 1, trace: bool = False) -> list[int]:
     """
     find number of doublets. doublet is X followed by X for any X
     """
+    try:
+        MAX = len(runes.alphabet)
+    except:
+        MAX = len(alphabet.alphabet(runes))
     N = len(runes)
     doublets: list[int] = []
     for index in range(0, N - skip - 1):
@@ -28,9 +41,6 @@ def doublets(runes: list[int], skip: int = 1, trace: bool = False) -> list[int]:
             if trace:
                 print(
                     f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}"
-                )
-                print(
-                    f" factors N-1: {prime_factors(index-1)}; N: {prime_factors(index)};  N+1: {prime_factors(index+1)} N+2 {prime_factors(index+2)}"
                 )
     l: int = len(doublets)
 

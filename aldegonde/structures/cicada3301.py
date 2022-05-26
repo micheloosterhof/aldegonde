@@ -1,10 +1,71 @@
 import random
-from . import alphabet
 
-MAX = 29
+CICADA_ALPHABET = [
+    "ᚠ",
+    "ᚢ",
+    "ᚦ",
+    "ᚩ",
+    "ᚱ",
+    "ᚳ",
+    "ᚷ",
+    "ᚹ",
+    "ᚻ",
+    "ᚾ",
+    "ᛁ",
+    "ᛄ",
+    "ᛇ",
+    "ᛈ",
+    "ᛉ",
+    "ᛋ",
+    "ᛏ",
+    "ᛒ",
+    "ᛖ",
+    "ᛗ",
+    "ᛚ",
+    "ᛝ",
+    "ᛟ",
+    "ᛞ",
+    "ᚪ",
+    "ᚫ",
+    "ᚣ",
+    "ᛡ",
+    "ᛠ",
+]
+
+CICADA_ENGLISH_ALPHABET = [
+    "F",
+    "U",
+    "TH",
+    "O",
+    "R",
+    "C",
+    "G",
+    "W",
+    "H",
+    "N",
+    "I",
+    "J",
+    "EO",
+    "P",
+    "X",
+    "S",
+    "T",
+    "B",
+    "E",
+    "M",
+    "L",
+    "NG",
+    "OE",
+    "D",
+    "A",
+    "AE",
+    "Y",
+    "IA",
+    "EA",
+]
 
 
-def randomrunes(l: int, max: int = MAX) -> list[int]:
+def randomrunes(l: int, max: int = 29) -> list[int]:
     """
     Random list of runes of lenth len
     """
@@ -31,7 +92,7 @@ def base29(input: int, padding: int = -1) -> list[int]:
     """
     input `int` and output in Base29 as list of integers
     """
-    l = numberToBase(input, MAX)
+    l = numberToBase(input, 29)
     if padding == -1:
         return l
     else:
@@ -43,7 +104,7 @@ def base29(input: int, padding: int = -1) -> list[int]:
 
 class RuneIterator:
     """
-    iterates over runes length L, [0,0,0], [0,0,1], [0,0,2], ..., [0,0,MAX], [0,1,0], ...
+    iterates over runes length L, [0,0,0], [0,0,1], [0,0,2], ..., [0,0,28], [0,1,0], ...
     """
 
     i: int
@@ -52,7 +113,7 @@ class RuneIterator:
 
     def __init__(self, length: int):
         self.length = length
-        self.maximum = MAX**length
+        self.maximum = 29**length
 
     def __iter__(self):
         self.i = 0
@@ -82,7 +143,7 @@ def print_english(runes: list[int], limit=0) -> None:
 
     print("ENGLISH:  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(alphabet.CICADA_ENGLISH_ALPHABET[runes[i]]), end="")
+        print("{:2} ".format(CICADA_ENGLISH_ALPHABET[runes[i]]), end="")
     print()
 
 
@@ -108,5 +169,5 @@ def print_rune(runes: list[int], limit=0) -> None:
 
     print("RUNES  :  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(alphabet.CICADA_ALPHABET[runes[i]]), end="")
+        print("{:2} ".format(CICADA_ALPHABET[runes[i]]), end="")
     print()
