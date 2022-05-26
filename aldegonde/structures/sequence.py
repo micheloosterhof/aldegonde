@@ -27,12 +27,15 @@ class Sequence:
         else:
             self.alphabet = abc.Alphabet()
 
+        skips = []
         for c in text:
             try:
                 self.elements.append(self.alphabet.a2i(c))
             except KeyError:
-                print(f"{c} not in alphabet")
+                skips.append(c)
                 pass
+
+        print(f"skipped characters {set(skips)}")
 
     def restore_punctuation(self) -> str:
         """

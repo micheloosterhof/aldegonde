@@ -1,14 +1,26 @@
-def bigram_diagram(runes: list[int]) -> None:
+from collections import Counter, defaultdict
+from .color import *
+
+
+def print_bigram_diagram(runes: list[int]) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
     """
+    if len(runes) < 2:
+        return
+
     count = Counter(runes)
     ioc: float = 0.0
     res = Counter(
         "{:02d}-{:02d}".format(runes[idx], runes[idx + 1])
         for idx in range(len(runes) - 1)
     )
+
+    try:
+        MAX = len(runes.alphabet)
+    except:
+        MAX = len(alphabet.alphabet(runes))
 
     bigram = defaultdict(dict)
     for k in res.keys():
