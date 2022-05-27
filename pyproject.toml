@@ -3,7 +3,7 @@ name = "aldegonde"
 description = "Classical Cryptography Library"
 version = "0.0.1"
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {file = "LICENSE.txt"}
 keywords = ["cryptanalysis", "cryptology", "cryptography"]
 authors = [

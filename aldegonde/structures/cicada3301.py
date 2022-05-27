@@ -156,7 +156,7 @@ def print_rune_index(runes: list[int], limit: int = 0) -> None:
 
     print("RUNEIDX: ", end="")
     for i in range(0, limit):
-        print("{:02} ".format(runes[i]), end="")
+        print(f"{runes[i]:02} ", end="")
     print()
 
 
