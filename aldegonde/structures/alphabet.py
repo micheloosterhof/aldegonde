@@ -29,9 +29,15 @@ class Alphabet:
     def __len__(self) -> int:
         return self.alphabetsize
 
+    def __repr__(self) -> str:
+        return "Alphabet<" + "".join(self.alphabet) + ">"
+
     def __str__(self) -> str:
         """ """
         return "Alphabet: " + "".join(self.alphabet)
+
+    def __eq__(self, other) -> bool:
+        return self.alphabet == other.alphabet
 
     def a2i(self, a: str) -> int:
         i = self.reversealphabet[a]
