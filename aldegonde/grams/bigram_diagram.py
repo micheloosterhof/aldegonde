@@ -1,7 +1,6 @@
 from collections import Counter, defaultdict
 
-from color import *
-
+from . color import *
 
 def print_bigram_diagram(runes: list[int]) -> None:
     """
@@ -14,8 +13,7 @@ def print_bigram_diagram(runes: list[int]) -> None:
     count = Counter(runes)
     ioc: float = 0.0
     res = Counter(
-        f"{runes[idx]:02d}-{runes[idx + 1]:02d}"
-        for idx in range(len(runes) - 1)
+        f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(len(runes) - 1)
     )
 
     try:
@@ -85,8 +83,7 @@ def bigram_diagram_skip(runes: list[int], skip: int = 1) -> None:
     count = Counter(runes)
     ioc = 0.0
     res = Counter(
-        f"{runes[idx]:02d}-{runes[idx + skip]:02d}"
-        for idx in range(len(runes) - skip)
+        f"{runes[idx]:02d}-{runes[idx + skip]:02d}" for idx in range(len(runes) - skip)
     )
     bigram = defaultdict(dict)
 
