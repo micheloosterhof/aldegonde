@@ -55,7 +55,7 @@ class Alphabet:
 
 def a2i(text: str) -> list[int]:
     """
-    ASCII 2 INTEGER [A-Z] -> [0-25]
+    LETTER 2 INTEGER [A-Z] -> [0-25]
     """
     output: list[int] = []
     for c in text:
@@ -65,7 +65,7 @@ def a2i(text: str) -> list[int]:
 
 def i2a(text: list[int]) -> str:
     """
-    INTEGER 2 ASCII [0-25] -> [A-Z]
+    LETTER 2 ASCII [0-25] -> [A-Z]
     """
     output: str = ""
     for c in text:
