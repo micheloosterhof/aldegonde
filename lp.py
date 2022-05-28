@@ -26,14 +26,14 @@ with open("liber-primus__transcription--master.txt") as f:
 
 segments = lp.split("$")
 print(f"{len(segments)} segments")
-for s in segments:
+for i, s in enumerate(segments):
     if len(s) == 0:
         continue
+    print(f"\n\nNEW SEGMENT {i} **************")
     seg = sequence.Sequence(s, alphabet=cicada3301.CICADA_ALPHABET)
     if len(seg) == 0:
-        print("EMPTY SEGMENT")
+        print("EMPTY SEGMENT {i}")
         continue
-    print("\n\nNEW SEGMENT **************\n\n")
     # print(f"source: {s}")
     print(f"alphabet: {seg.alphabet}")
     # print(f"ciphertext: {seg.elements}")

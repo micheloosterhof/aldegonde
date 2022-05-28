@@ -67,3 +67,19 @@ class Sequence:
     def __str__(self) -> str:
         """ """
         return self.restore_punctuation()
+
+    def append(self, item):
+        if item.alphabet != self.alphabet:
+            raise TypeError("Alphabets don't match")
+        self.text = ""
+        self.elements.append(item.elements)
+
+    def __add__(self, other):
+        if other.alphabet != self.alphabet:
+            raise TypeError("Alphabets don't match")
+        return Sequence(self.elements + other.elements, alphabet=self.alphabet)
+
+    def copy(self):
+        newone = type(self)()
+        newone.__dict__.update(self.__dict__)
+        return newone
