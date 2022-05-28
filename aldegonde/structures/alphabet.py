@@ -1,10 +1,6 @@
 """Class to group information about alphabets.
 """
 
-# There are 29 runes. Generally counted 0-28
-# TODO: this parameter needs to be phased out
-MAX = 29
-
 LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
 DIGITS_ALPHABET = [chr(code) for code in range(ord("0"), ord("9") + 1)]
@@ -17,6 +13,7 @@ class Alphabet:
         >>> abc = Alphabet(LOWERCASE_ALPHABET)
     """
 
+    # TODO: init from text rather than list
     def __init__(self, alphabet: list[str] = UPPERCASE_ALPHABET) -> None:
         """ """
         self.alphabet = alphabet
@@ -80,10 +77,10 @@ def alphabet(text: list[int]) -> list[int]:
     return sorted(list(set(text)))
 
 
-def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)) -> Alphabet:
-    """
-    construct alphabet order based on keyword
-    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
-    """
-    alphabet = Alphabet(keyword)
-    return alphabet
+# def keyword_to_alphabet(keyword: list[int] = range(0, MAX + 1)) -> Alphabet:
+#    """
+#    construct alphabet order based on keyword
+#    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
+#    """
+#    alphabet = Alphabet(keyword)
+#    return alphabet
