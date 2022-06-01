@@ -47,25 +47,16 @@ class Alphabet:
         """ """
         return "Alphabet: " + "".join(self.alphabet)
 
-    def __eq__(self, other) -> bool:
-        try:
-            return self.alphabet == other.alphabet
-        except AttributeError:
-            return False
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Alphabet):
+            return NotImplemented
+        return self.alphabet == other.alphabet
 
     def __iter__(self):
         """
         TODO: use separate iterator object
         """
-        self.idx = 0
-        return self
-
-    def __next__(self):
-        self.idx += 1
-        try:
-            return self.data[idx - 1]
-        except:
-            raise StopIteration
+        return AlphabetIterator(self)
 
     def a2i(self, a: str) -> int:
         i = self.reversealphabet[a]
@@ -79,6 +70,23 @@ class Alphabet:
             return self.alphabet[i]
         except IndexError:
             raise KeyError("Character not in alphabet")
+
+
+class AlphabetIterator:
+    """
+    Iterator for alphabet
+    """
+
+    def __init__(self, obj: Alphabet) -> None:
+        self.idx: int = 0
+        self.obj = obj
+
+    def __next__(self):
+        self.idx += 1
+        try:
+            return self.obj[self.idx - 1]
+        except:
+            raise StopIteration
 
 
 def a2i(text: str) -> list[int]:
