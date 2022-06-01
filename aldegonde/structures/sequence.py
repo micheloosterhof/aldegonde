@@ -78,7 +78,7 @@ class Sequence:
                 out += c
         return out
 
-    def __getitem__(self, key: Union[int, slice]):
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, list[int]]:
         """
         Return character at this position like a normal sequence
         """
@@ -100,19 +100,8 @@ class Sequence:
         )
 
     def __iter__(self):
-        """
-        TODO: use separate iterator object
-        """
-        self.idx = 0
-        return self
-
-    def __next__(self):
         """ """
-        self.idx += 1
-        try:
-            return self.data[idx - 1]
-        except:
-            raise StopIteration
+        return SequenceIterator(self)
 
     def __str__(self) -> str:
         """ """
@@ -143,3 +132,20 @@ class Sequence:
         newone = type(self)()
         newone.__dict__.update(self.__dict__)
         return newone
+
+
+class SequenceIterator:
+    """
+    Iterator for Sequence
+    """
+
+    def __init__(self, obj: Sequence) -> None:
+        self.idx: int = 0
+        self.obj = obj
+
+    def __next__(self):
+        self.idx += 1
+        try:
+            return self.obj[self.idx - 1]
+        except:
+            raise StopIteration
