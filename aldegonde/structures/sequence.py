@@ -1,7 +1,7 @@
 """Class to group information about a sequence.
 """
 
-from typing import Optional
+from typing import Optional, Union
 from . import alphabet as abc
 
 
@@ -21,7 +21,7 @@ class Sequence:
         self,
         text: Optional[str] = None,
         data: Optional[list[int]] = None,
-        alphabet: Optional[list[str]] = None,
+        alphabet: Union[list[str], str, abc.Alphabet, None] = None,
     ) -> None:
         """
         Args:
@@ -31,10 +31,14 @@ class Sequence:
         if text is not None and data is not None:
             raise TypeError("Either construct with data or text, not both")
 
-        if alphabet != None:
+        if isinstance(alphabet, abc.Alphabet):
+            self.alphabet = alphabet
+        if isinstance(alphabet, str) or isinstance(alphabet, list):
             self.alphabet = abc.Alphabet(alphabet)
-        else:
+        elif alphabet is None:
             self.alphabet = abc.Alphabet()
+        else:
+            raise TypeError
 
         if text is not None:
             self.data = []
@@ -74,11 +78,11 @@ class Sequence:
                 out += c
         return out
 
-    def __getitem__(self, key: int) -> int:
+    def __getitem__(self, key: Union[int, slice]):
         """
-        Return numerical index of character at this position like a normal sequence
+        Return character at this position like a normal sequence
         """
-        return self.data[key]
+        return self.data.__getitem__(key)
 
     def __len__(self) -> int:
         """

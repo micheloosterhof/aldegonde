@@ -14,6 +14,7 @@ class Alphabet:
     Example:
         >>> abc = Alphabet(LOWERCASE_ALPHABET)
     """
+
     def __init__(self, data: Union[list[str], str, None] = UPPERCASE_ALPHABET) -> None:
         """ """
         if isinstance(data, list):
