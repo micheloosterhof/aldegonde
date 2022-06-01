@@ -26,6 +26,12 @@ class Alphabet:
     def __len__(self) -> int:
         return self.alphabetsize
 
+    def __getitem__(self, key: int) -> str:
+        """
+        Return numerical index of character at this position like a normal sequence
+        """
+        return self.alphabet[key]
+
     def __repr__(self) -> str:
         return "Alphabet<" + "".join(self.alphabet) + ">"
 
@@ -34,7 +40,21 @@ class Alphabet:
         return "Alphabet: " + "".join(self.alphabet)
 
     def __eq__(self, other) -> bool:
-        return self.alphabet == other.alphabet
+        try:
+            return self.alphabet == other.alphabet
+        except AttributeError:
+            return False
+
+    def __iter__(self):
+        self.idx = 0
+        return self
+
+    def __next__(self):
+        self.idx += 1
+        try:
+            return self.data[idx-1]
+        except:
+            raise StopIteration
 
     def a2i(self, a: str) -> int:
         i = self.reversealphabet[a]

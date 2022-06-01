@@ -53,6 +53,8 @@ class Sequence:
             for c in self.data:
                 self.text += self.alphabet.i2a(c)
         else:
+            self.data = []
+            self.text = ""
             # empty array
             pass
 
@@ -92,20 +94,34 @@ class Sequence:
             + ">"
         )
 
+    def __iter__(self):
+        self.idx = 0
+        return self
+
+    def __next__(self):
+        self.idx += 1
+        try:
+            return self.data[idx-1]
+        except:
+            raise StopIteration
+
     def __str__(self) -> str:
         """ """
         return self.restore_punctuation()
 
     def append(self, item):
-        if item.alphabet != self.alphabet:
-            raise TypeError("Alphabets don't match")
-        self.text = ""
-        self.data.append(item.data)
+        """
+        """
+        if not isinstance(item, int):
+            raise TypeError
+        if item > len(self.alphabet):
+            raise TypeError("Item outside alphabet")
+        self.data.append(item)
 
-    #    def __add__(self, other):
-    #        if other.alphabet != self.alphabet:
-    #            raise TypeError("Alphabets don't match")
-    #        return Sequence(self.data + other.data, alphabet=self.alphabet)
+    def __add__(self, other):
+        if other.alphabet != self.alphabet:
+            raise TypeError("Alphabets don't match")
+        return Sequence(data=self.data + other.data, alphabet=self.alphabet)
 
     def __eq__(self, other):
         if other.alphabet != self.alphabet:
