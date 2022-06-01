@@ -1,7 +1,10 @@
 from collections import Counter
 import math
 
-def shannon_entropy(ciphertext: list[int], base: int = 2) -> float:
+from ..structures import alphabet, sequence
+
+
+def shannon_entropy(ciphertext: sequence.Sequence, base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
     """
@@ -14,7 +17,7 @@ def shannon_entropy(ciphertext: list[int], base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(runes: list[int], base: int = 2, cut=0) -> float:
+def shannon2_entropy(runes: sequence.Sequence, base: int = 2, cut=0) -> float:
     """
     shannon entropy. by default in bits.
     """

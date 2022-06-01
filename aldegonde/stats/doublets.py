@@ -5,15 +5,11 @@ from scipy.stats import poisson
 from ..structures import alphabet, sequence
 
 
-def triplets(runes: list[int]) -> int:
+def triplets(runes: sequence.Sequence) -> int:
     """
     find number of triplet. triplet is X followed by XX for any X
     """
-    try:
-        MAX = len(runes.alphabet)
-    except:
-        MAX = len(alphabet.alphabet(runes))
-
+    MAX = len(runes.alphabet)
     N = len(runes)
     triplets: int = 0
     for index in range(0, N - 2):
@@ -25,14 +21,11 @@ def triplets(runes: list[int]) -> int:
     return triplets
 
 
-def doublets(runes: list[int], skip: int = 1, trace: bool = False) -> list[int]:
+def doublets(runes: sequence.Sequence, skip: int = 1, trace: bool = False) -> list[int]:
     """
     find number of doublets. doublet is X followed by X for any X
     """
-    try:
-        MAX = len(runes.alphabet)
-    except:
-        MAX = len(alphabet.alphabet(runes))
+    MAX = len(runes.alphabet)
     N = len(runes)
     doublets: list[int] = []
     for index in range(0, N - skip - 1):

@@ -2,6 +2,7 @@ from collections import Counter
 
 from ..structures import alphabet, sequence
 
+
 def ioc(runes: sequence.Sequence) -> float:
     """
     Monographic Index of Coincidence: ΔIC

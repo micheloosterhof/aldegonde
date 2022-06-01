@@ -1,6 +1,6 @@
 #!/usr/bin/env p
 
-from . ioc import ioc, ioc2, ioc3, ioc4
+from .ioc import ioc, ioc2, ioc3, ioc4
 
 MAX = 29
 

@@ -3,14 +3,18 @@ import math
 
 from scipy.stats import poisson
 
+from ..structures import alphabet, sequence
+
+
 def print_repeat_statistics(
-    ciphertext: list[int], min: int = 4, max: int = 10, trace: bool = False
+    ciphertext: sequence.Sequence, min: int = 4, max: int = 10, trace: bool = False
 ):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     The expected formula works best for length 4 or larger
     """
+    MAX = len(ciphertext.alphabet)
     for length in range(min, max + 1):
         l = []
         num = 0
@@ -40,7 +44,7 @@ def print_repeat_statistics(
 
 
 def repeat(
-    ciphertext: list[int], min: int = 2, max: int = 10
+    ciphertext: sequence.Sequence, min: int = 2, max: int = 10
 ):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
@@ -61,7 +65,7 @@ def repeat(
 
 
 def repeat2(
-    ciphertext: list[int], min: int = 2, max: int = 10
+    ciphertext: sequence.Sequence, min: int = 2, max: int = 10
 ):  # -> dict(list[int], int):
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
