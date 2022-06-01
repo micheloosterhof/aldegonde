@@ -1,9 +1,8 @@
 from collections import Counter
 
-from ..structures import alphabet
+from ..structures import alphabet, sequence
 
-
-def ioc(runes: list[int]) -> float:
+def ioc(runes: sequence.Sequence) -> float:
     """
     Monographic Index of Coincidence: ΔIC
 
@@ -23,22 +22,14 @@ def ioc(runes: list[int]) -> float:
     return IC
 
 
-def normalized_ioc(runes: list[int], alphabetsize: int = 0) -> float:
+def normalized_ioc(runes: sequence.Sequence) -> float:
     """
     Like ioc() but normalized by alphabet size.
     """
-    if alphabetsize == 0:
-        if isinstance(runes, list):
-            A = len(alphabet.alphabet(runes))
-        else:
-            A = len(runes.alphabet)
-    else:
-        A = alphabetsize
-
-    return ioc(runes) * A
+    return ioc(runes) * len(runes.alphabet)
 
 
-def ioc2(runes: list[int], cut: int = 0) -> float:
+def ioc2(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Digraphic Index of Coincidence: ΔIC
 
@@ -72,22 +63,14 @@ def ioc2(runes: list[int], cut: int = 0) -> float:
     return IC
 
 
-def normalized_ioc2(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> float:
+def normalized_ioc2(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Like ioc2() but normalized by alphabet size.
     """
-    if alphabetsize == 0:
-        try:
-            A = len(runes.alphabet)
-        except:
-            A = len(alphabet.alphabet(runes))
-    else:
-        A = alphabetsize
-
-    return ioc2(runes) * pow(A, 2)
+    return ioc2(runes, cut=cut) * pow(len(runes.alphabet), 2)
 
 
-def ioc3(runes: list[int], cut: int = 0) -> float:
+def ioc3(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Trigraphic Index of Coincidence: ΔIC
 
@@ -122,22 +105,14 @@ def ioc3(runes: list[int], cut: int = 0) -> float:
     return IC
 
 
-def normalized_ioc3(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> float:
+def normalized_ioc3(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Like ioc3() but normalized by alphabet size.
     """
-    if alphabetsize == 0:
-        try:
-            A = len(runes.alphabet)
-        except:
-            A = len(alphabet.alphabet(runes))
-    else:
-        A = alphabetsize
-
-    return ioc3(runes) * pow(A, 3)
+    return ioc3(runes, cut=cut) * pow(len(runes.alphabet), 3)
 
 
-def ioc4(runes: list[int], cut: int = 0) -> float:
+def ioc4(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Tetragraphic Index of Coincidence: ΔIC
 
@@ -170,16 +145,8 @@ def ioc4(runes: list[int], cut: int = 0) -> float:
     return IC
 
 
-def normalized_ioc4(runes: list[int], cut: int = 0, alphabetsize: int = 0) -> float:
+def normalized_ioc4(runes: sequence.Sequence, cut: int = 0) -> float:
     """
     Like ioc4() but normalized by alphabet size.
     """
-    if alphabetsize == 0:
-        try:
-            A = len(runes.alphabet)
-        except:
-            A = len(alphabet.alphabet(runes))
-    else:
-        A = alphabetsize
-
-    return ioc4(runes) * pow(A, 4)
+    return ioc4(runes, cut=cut) * pow(len(runes.alphabet), 4)
