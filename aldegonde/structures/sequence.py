@@ -95,13 +95,17 @@ class Sequence:
         )
 
     def __iter__(self):
+        """
+        TODO: use separate iterator object
+        """
         self.idx = 0
         return self
 
     def __next__(self):
+        """ """
         self.idx += 1
         try:
-            return self.data[idx-1]
+            return self.data[idx - 1]
         except:
             raise StopIteration
 
@@ -110,8 +114,7 @@ class Sequence:
         return self.restore_punctuation()
 
     def append(self, item):
-        """
-        """
+        """ """
         if not isinstance(item, int):
             raise TypeError
         if item > len(self.alphabet):

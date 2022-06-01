@@ -46,13 +46,16 @@ class Alphabet:
             return False
 
     def __iter__(self):
+        """
+        TODO: use separate iterator object
+        """
         self.idx = 0
         return self
 
     def __next__(self):
         self.idx += 1
         try:
-            return self.data[idx-1]
+            return self.data[idx - 1]
         except:
             raise StopIteration
 
