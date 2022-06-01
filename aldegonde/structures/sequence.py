@@ -50,8 +50,9 @@ class Sequence:
 
         elif data is not None:
             self.data = list(data)
-            for c in self.data:
-                self.text += self.alphabet.i2a(c)
+            self.text = ""
+            for i in self.data:
+                self.text += self.alphabet.i2a(i)
         else:
             self.data = []
             self.text = ""
