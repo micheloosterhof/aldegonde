@@ -1,14 +1,19 @@
 from collections import Counter, defaultdict
+from typing import Dict
 
-from . color import *
+from ..structures import sequence
 
-def print_bigram_diagram(runes: list[int]) -> None:
+from .color import colors
+
+
+def print_bigram_diagram(runes: sequence.Sequence) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
     """
     if len(runes) < 2:
         return
+    MAX = len(runes.alphabet)
 
     count = Counter(runes)
     ioc: float = 0.0
@@ -16,12 +21,7 @@ def print_bigram_diagram(runes: list[int]) -> None:
         f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(len(runes) - 1)
     )
 
-    try:
-        MAX = len(runes.alphabet)
-    except:
-        MAX = len(alphabet.alphabet(runes))
-
-    bigram = defaultdict(dict)
+    bigram: Dict = defaultdict(dict)
     for k in res.keys():
         x, y = k.split("-")
         bigram[int(x)][int(y)] = res[k]
@@ -75,17 +75,20 @@ def print_bigram_diagram(runes: list[int]) -> None:
     print(f"| {ioc:0.3f}")
 
 
-def bigram_diagram_skip(runes: list[int], skip: int = 1) -> None:
+def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
     """
+    if len(runes) < 2:
+        return
+    MAX = len(runes.alphabet)
     count = Counter(runes)
     ioc = 0.0
     res = Counter(
         f"{runes[idx]:02d}-{runes[idx + skip]:02d}" for idx in range(len(runes) - skip)
     )
-    bigram = defaultdict(dict)
+    bigram: Dict = defaultdict(dict)
 
     for k in res.keys():
         x, y = k.split("-")
