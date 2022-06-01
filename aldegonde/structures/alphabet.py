@@ -1,6 +1,8 @@
 """Class to group information about alphabets.
 """
 
+from typing import Union
+
 LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
 DIGITS_ALPHABET = [chr(code) for code in range(ord("0"), ord("9") + 1)]
@@ -12,13 +14,18 @@ class Alphabet:
     Example:
         >>> abc = Alphabet(LOWERCASE_ALPHABET)
     """
-
-    # TODO: init from text rather than list
-    def __init__(self, alphabet: list[str] = UPPERCASE_ALPHABET) -> None:
+    def __init__(self, data: Union[list[str], str, None] = UPPERCASE_ALPHABET) -> None:
         """ """
-        self.alphabet = alphabet
-        self.alphabetsize = len(self.alphabet)
+        if isinstance(data, list):
+            self.alphabet = data
+        elif isinstance(data, str):
+            self.data = list(data)
+        elif data is None:
+            self.data = []
+        else:
+            raise TypeError
 
+        self.alphabetsize = len(self.alphabet)
         self.reversealphabet: dict[str, int] = {}
         for i, e in enumerate(self.alphabet):
             self.reversealphabet[e] = i
