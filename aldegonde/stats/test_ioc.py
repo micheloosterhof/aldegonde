@@ -6,7 +6,7 @@ from .ioc import ioc, ioc2, ioc3, ioc4
 
 nils = sequence.Sequence(data=[0] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
 ones = sequence.Sequence(data=[1] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
-uniq = sequence.Sequence(data=range(0, 26), alphabet=alphabet.UPPERCASE_ALPHABET)
+uniq = sequence.Sequence(data=list(range(0, 26)), alphabet=alphabet.UPPERCASE_ALPHABET)
 
 
 def test_ioc_unique():

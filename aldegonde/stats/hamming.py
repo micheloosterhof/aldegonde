@@ -1,4 +1,7 @@
-def hamming_distance(s1: list[int], s2: list[int]) -> int:
+from ..structures import alphabet, sequence
+
+
+def hamming_distance(s1: sequence.Sequence, s2: sequence.Sequence) -> int:
     """
     The Hamming distance between two equal-length strings of symbols
     is the number of positions at which the corresponding symbols

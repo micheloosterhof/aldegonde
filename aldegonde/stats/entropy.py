@@ -17,7 +17,7 @@ def shannon_entropy(ciphertext: sequence.Sequence, base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(runes: sequence.Sequence, base: int = 2, cut=0) -> float:
+def shannon2_entropy(runes: sequence.Sequence, base: int = 2, cut: int = 0) -> float:
     """
     shannon entropy. by default in bits.
     """

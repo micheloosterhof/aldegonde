@@ -1,5 +1,6 @@
 from collections import Counter
 import math
+from typing import Dict
 
 from scipy.stats import poisson
 
@@ -8,7 +9,7 @@ from ..structures import alphabet, sequence
 
 def print_repeat_statistics(
     ciphertext: sequence.Sequence, min: int = 4, max: int = 10, trace: bool = False
-):  # -> dict(list[int], int):
+) -> None:
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
@@ -45,7 +46,7 @@ def print_repeat_statistics(
 
 def repeat(
     ciphertext: sequence.Sequence, min: int = 2, max: int = 10
-):  # -> dict(list[int], int):
+) -> dict[str, int]:
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
@@ -66,7 +67,7 @@ def repeat(
 
 def repeat2(
     ciphertext: sequence.Sequence, min: int = 2, max: int = 10
-):  # -> dict(list[int], int):
+) -> dict[str, list[int]]:
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the list of starting positions of that substring
