@@ -5,7 +5,7 @@ from scipy.stats import poisson
 from ..structures import alphabet, sequence
 
 
-def print_doublets_statistics(runes: sequence.Sequence, skip: int = 1) -> list[int]:
+def print_doublets_statistics(runes: sequence.Sequence, skip: int = 1) -> None:
     """
     find the number of doublets. doublet is X followed by X for any X
     """

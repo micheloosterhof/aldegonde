@@ -1,10 +1,12 @@
-#!/usr/bin/env p
+#!/usr/bin/env python
+
+from ..structures import alphabet, sequence
 
 from .ioc import ioc, ioc2, ioc3, ioc4
 
-nils = [0] * 300
-ones = [1] * 300
-uniq = range(0, 300)
+nils = sequence.Sequence(data=[0] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
+ones = sequence.Sequence(data=[1] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
+uniq = sequence.Sequence(data=range(0, 26), alphabet=alphabet.UPPERCASE_ALPHABET)
 
 
 def test_ioc_unique():
@@ -18,6 +20,9 @@ def test_ioc_uniform():
 
 def test_ioc2_unique():
     assert ioc2(uniq) == 0.0
+    assert ioc2(uniq, cut=0) == 0.0
+    assert ioc2(uniq, cut=1) == 0.0
+    assert ioc2(uniq, cut=2) == 0.0
 
 
 def test_ioc2_uniform():
@@ -29,13 +34,6 @@ def test_ioc2_uniform():
     assert ioc2(nils, cut=1) == 1.0
     assert ioc2(ones, cut=2) == 1.0
     assert ioc2(nils, cut=2) == 1.0
-
-
-def test_ioc2_unique():
-    assert ioc2(uniq) == 0.0
-    assert ioc2(uniq, cut=0) == 0.0
-    assert ioc2(uniq, cut=1) == 0.0
-    assert ioc2(uniq, cut=2) == 0.0
 
 
 def test_ioc3_unique():
