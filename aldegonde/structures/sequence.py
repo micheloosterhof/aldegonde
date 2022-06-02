@@ -1,7 +1,7 @@
 """Class to group information about a sequence.
 """
 
-from typing import Optional, Union
+from typing import Optional, Union, overload
 from . import alphabet as abc
 
 
@@ -78,7 +78,15 @@ class Sequence:
                 out += c
         return out
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[int, list[int]]:
+    @overload
+    def __getitem__(self, key: int) -> int:
+        """
+        Return character at this position like a normal sequence
+        """
+        return self.data[key]
+
+    @overload
+    def __getitem__(self, key: slice) -> Union[int, list[int]]:
         """
         Return character at this position like a normal sequence
         """
