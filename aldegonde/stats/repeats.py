@@ -1,10 +1,9 @@
 from collections import Counter
 import math
-from typing import Dict
 
 from scipy.stats import poisson
 
-from ..structures import alphabet, sequence
+from ..structures import sequence
 
 
 def print_repeat_statistics(

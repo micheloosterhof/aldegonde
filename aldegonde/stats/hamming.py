@@ -1,4 +1,4 @@
-from ..structures import alphabet, sequence
+from ..structures import sequence
 
 
 def hamming_distance(s1: sequence.Sequence, s2: sequence.Sequence) -> int:

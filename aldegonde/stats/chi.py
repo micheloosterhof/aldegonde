@@ -1,6 +1,6 @@
 from collections import Counter
 
-from ..structures import alphabet, sequence
+from ..structures import sequence
 
 
 def chi(text1: sequence.Sequence, text2: sequence.Sequence) -> float:

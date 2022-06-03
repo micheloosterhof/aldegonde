@@ -1,6 +1,6 @@
 from collections import Counter
 
-from ..structures import alphabet, sequence
+from ..structures import sequence
 
 
 def ioc(runes: sequence.Sequence) -> float:
