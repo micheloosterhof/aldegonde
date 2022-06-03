@@ -32,7 +32,7 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     print("| IOC")
     print("---+-", end="")
     for i in range(0, MAX):
-        print(f"---", end="")
+        print("---", end="")
     print("+------")
 
     # for i in sorted(bigram.keys()):
@@ -42,7 +42,7 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
             # for j in sorted(bigram[i]):
             try:
                 v = bigram[i][j]
-            except:
+            except IndexError:
                 v = 0
             if v == 0:
                 print(colors.bgRed, end="")
@@ -66,12 +66,12 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
 
     print("---+-", end="")
     for i in range(0, MAX):
-        print(f"---", end="")
+        print("---", end="")
     print("+------")
 
     print("   | ", end="")
     for i in range(0, MAX):
-        print(f"   ", end="")
+        print("   ", end="")
     print(f"| {ioc:0.3f}")
 
 
@@ -109,7 +109,7 @@ def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
             # for j in sorted(bigram[i]):
             try:
                 v = bigram[i][j]
-            except:
+            except IndexError:
                 v = 0
             if v == 0:
                 print(colors.bgRed, end="")
