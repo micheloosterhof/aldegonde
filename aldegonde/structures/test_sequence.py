@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from .sequence import *
-from .alphabet import *
+from .sequence import Sequence
+from .alphabet import UPPERCASE_ALPHABET
 
 
 def test_sequence_init():

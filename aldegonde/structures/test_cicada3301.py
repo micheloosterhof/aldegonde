@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-from .sequence import *
-from .alphabet import *
-from .cicada3301 import *
+from .sequence import Sequence
+from .cicada3301 import CICADA_ALPHABET
 
 
 def test_welcome():

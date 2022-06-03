@@ -2,7 +2,10 @@
 """
 
 from typing import Optional, Union, overload
-from . import alphabet as abc
+
+import aldegonde.structures.alphabet as alpha
+
+# TODO: can we inherit from abc.Sequence?
 
 
 class Sequence:
@@ -15,13 +18,13 @@ class Sequence:
 
     text: str = ""
     data: list[int] = []
-    alphabet: abc.Alphabet
+    alphabet: alpha.Alphabet
 
     def __init__(
         self,
         text: Optional[str] = None,
         data: Optional[list[int]] = None,
-        alphabet: Union[list[str], str, abc.Alphabet, None] = None,
+        alphabet: Union[list[str], str, alpha.Alphabet, None] = None,
     ) -> None:
         """
         Args:
@@ -31,14 +34,14 @@ class Sequence:
         if text is not None and data is not None:
             raise TypeError("Either construct with data or text, not both")
 
-        if isinstance(alphabet, abc.Alphabet):
+        if isinstance(alphabet, alpha.Alphabet):
             self.alphabet = alphabet
         if isinstance(alphabet, str) or isinstance(alphabet, list):
-            self.alphabet = abc.Alphabet(alphabet)
+            self.alphabet = alpha.Alphabet(alphabet)
         elif alphabet is None:
-            self.alphabet = abc.Alphabet()
+            self.alphabet = alpha.Alphabet()
         else:
-            raise TypeError
+            raise TypeError(f"Unsupported type: {type(alphabet)}")
 
         if text is not None:
             self.data = []
@@ -80,13 +83,13 @@ class Sequence:
 
     @overload
     def __getitem__(self, key: int) -> int:
-        """
-        Return character at this position like a normal sequence
-        """
-        return self.data[key]
+        ...
 
     @overload
     def __getitem__(self, key: slice) -> Union[int, list[int]]:
+        ...
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, list[int]]:
         """
         Return character at this position like a normal sequence
         """
@@ -155,5 +158,5 @@ class SequenceIterator:
         self.idx += 1
         try:
             return self.obj[self.idx - 1]
-        except:
+        except IndexError:
             raise StopIteration
