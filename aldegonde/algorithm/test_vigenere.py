@@ -16,7 +16,7 @@ def test_vigenere():
     assert plaintext == vigenere_decrypt(ciphertext=ciphertext, primer=key)
 
 
-def z_test_vigenere_with_custom_alphabet():
+def test_vigenere_with_custom_alphabet():
     demo_alphabet = Sequence(
         text="KRYPTOSABCDEFGHIJLMNQUVWXZ", alphabet=UPPERCASE_ALPHABET
     )
@@ -37,7 +37,7 @@ def z_test_vigenere_with_custom_alphabet():
     )
 
 
-def z_test_vigenere_with_standard_alphabet():
+def test_vigenere_with_standard_alphabet():
     demo_alphabet = Sequence("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alphabet=UPPERCASE_ALPHABET)
     demo_key = Sequence("LEMON", alphabet=UPPERCASE_ALPHABET)
     demo_cipher_string = Sequence("LXFOPVEFRNHR", alphabet=UPPERCASE_ALPHABET)

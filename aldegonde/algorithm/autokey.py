@@ -2,7 +2,6 @@
 # we can do 3 operations, 2 subtractions and 1 addition, addition=vigenere, subtraction=beaufort, minuend
 # C=P+K C=P-K, C=K-P
 
-from ..structures.alphabet import Alphabet
 from ..structures.sequence import Sequence
 
 
@@ -46,7 +45,8 @@ def ciphertext_autokey_minuend_encrypt(
     """
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer.copy()
-    output: Sequence(alphabet=plaintext.alphabet)
+    MAX = len(plaintext.alphabet)
+    output = Sequence(alphabet=plaintext.alphabet)
     for j in range(0, len(plaintext)):
         c = (key[j] - plaintext[j]) % MAX
         output.append(c)
@@ -63,6 +63,7 @@ def ciphertext_autokey_minuend_decrypt(
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
+    MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         output.append((key[j] - ciphertext[j]) % MAX)
     return output
@@ -76,7 +77,8 @@ def ciphertext_autokey_beaufort_encrypt(
     """
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer.copy()
-    output: Sequence(alphabet=plaintext.alphabet)
+    output = Sequence(alphabet=plaintext.alphabet)
+    MAX = len(plaintext.alphabet)
     for j in range(0, len(plaintext)):
         c = (plaintext[j] - key[j]) % MAX
         output.append(c)
@@ -93,6 +95,7 @@ def ciphertext_autokey_beaufort_decrypt(
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
+    MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         output.append((ciphertext[j] + key[j]) % MAX)
     return output
@@ -112,7 +115,8 @@ def combo_autokey_vigenere_encrypt(
     assert primer.alphabet == plaintext.alphabet
     plain_key: Sequence = primer + plaintext
     cipher_key: Sequence = primer
-    output: Sequence(alphabet=plaintext.alphabet)
+    output = Sequence(alphabet=plaintext.alphabet)
+    MAX = len(plaintext.alphabet)
     for j in range(0, len(plaintext)):
         if mode == 1:
             c = (plaintext[j] + plain_key[j] + cipher_key[j]) % MAX
@@ -147,6 +151,7 @@ def combo_autokey_vigenere_decrypt(
     plain_key: Sequence = primer
     cipher_key: Sequence = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
+    MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         # TODO encrypt and decrypt modes don't match
         if mode == 1:
@@ -219,6 +224,7 @@ def plaintext_autokey_minuend_encrypt(
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer + plaintext
     output = Sequence(alphabet=plaintext.alphabet)
+    MAX = len(plaintext.alphabet)
     for j in range(0, len(plaintext)):
         c = (key[j] - plaintext[j]) % MAX
         output.append(c)
@@ -234,6 +240,7 @@ def plaintext_autokey_minuend_decrypt(
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer.copy()
     output = Sequence(alphabet=ciphertext.alphabet)
+    MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         c = (key[j] - ciphertext[j]) % MAX
         output.append(c)
@@ -250,6 +257,7 @@ def plaintext_autokey_beaufort_encrypt(
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer + plaintext
     output = Sequence(alphabet=plaintext.alphabet)
+    MAX = len(plaintext.alphabet)
     for j in range(0, len(plaintext)):
         c = (plaintext[j] - key[j]) % MAX
         output.append(c)
@@ -265,6 +273,7 @@ def plaintext_autokey_beaufort_decrypt(
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer.copy()
     output = Sequence(alphabet=ciphertext.alphabet)
+    MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         p = (key[j] + ciphertext[j]) % MAX
         output.append(p)

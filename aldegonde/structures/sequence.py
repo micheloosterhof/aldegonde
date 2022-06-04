@@ -118,6 +118,12 @@ class Sequence:
         """ """
         return self.restore_punctuation()
 
+    def index(self, elem: int) -> int:
+        """
+        return index of element
+        """
+        return self.data.index(elem)
+
     def append(self, item):
         """ """
         if not isinstance(item, int):
