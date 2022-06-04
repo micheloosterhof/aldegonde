@@ -36,7 +36,7 @@ class Sequence:
 
         if isinstance(alphabet, alpha.Alphabet):
             self.alphabet = alphabet
-        if isinstance(alphabet, str) or isinstance(alphabet, list):
+        elif isinstance(alphabet, str) or isinstance(alphabet, list):
             self.alphabet = alpha.Alphabet(alphabet)
         elif alphabet is None:
             self.alphabet = alpha.Alphabet()

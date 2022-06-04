@@ -1,88 +1,92 @@
+from ..structures.alphabet import Alphabet
+from ..structures.sequence import Sequence
+
+
 def variant_beaufort_encrypt(
-    plaintext: list[int], primer: list[int] = [0], trace: bool = False
-):
+    plaintext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
     """
     Variant Beaufort C=P-K
     Note: this is the same as vigenere_decrypt() !!
     """
-    output: list[int] = []
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
     for i in range(0, len(plaintext)):
-        output.append((plaintext[i] - primer[i % len(primer)]) % MAX)
+        output.append((plaintext[i] - primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
 def variant_beaufort_decrypt(
-    ciphertext: list[int], primer: list[int] = [0], trace: bool = False
-):
+    ciphertext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
     """
     Plain Beaufort P=C+K
     Note: this is the same as vigenere_encrypt() !!
     """
-    output: list[int] = []
+    output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     for i in range(0, len(ciphertext)):
-        output.append((ciphertext[i] + primer[i % len(primer)]) % MAX)
+        output.append((ciphertext[i] + primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
 def beaufort_encrypt(
-    plaintext: list[int], primer: list[int] = [0], trace: bool = False
-):
+    plaintext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
     """
     Plain Beaufort C=K-P
     Note: this is the same as beaufort_decrypt() !!
     """
-    output: list[int] = []
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
     for i in range(0, len(plaintext)):
-        output.append((primer[i % len(primer)] - plaintext[i]) % MAX)
+        output.append((primer[i % len(primer)] - plaintext[i]) % len(output.alphabet))
     return output
 
 
 def beaufort_decrypt(
-    ciphertext: list[int], primer: list[int] = [0], trace: bool = False
-):
+    ciphertext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
     """
     Plain Beaufort P=K-P
     Note: this is the same as beaufort_encrypt() !!
     """
-    output: list[int] = []
+    output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     for i in range(0, len(ciphertext)):
-        output.append((primer[i % len(primer)] - ciphertext[i]) % MAX)
-    return output
-
-
-def vigenere_decrypt(
-    ciphertext: list[int], primer: list[int] = [0], trace: bool = False
-):
-    """
-    Plain Vigenere P=C-K
-    """
-    output: list[int] = []
-    for i in range(0, len(ciphertext)):
-        output.append((ciphertext[i] - primer[i % len(primer)]) % MAX)
+        output.append((primer[i % len(primer)] - ciphertext[i]) % len(output.alphabet))
     return output
 
 
 def vigenere_encrypt(
-    plaintext: list[int], primer: list[int] = [0], trace: bool = False
-):
+    plaintext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
     """
     Plain Vigenere C=P+K
     """
-    output: list[int] = []
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
+    print(output)
+    print(repr(output))
     for i in range(0, len(plaintext)):
-        output.append((plaintext[i] + primer[i % len(primer)]) % MAX)
+        output.append((plaintext[i] + primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
-def construct_tabula_recta(
-    alphabet: list[int] = list(range(0, MAX)), trace: bool = True
-):
+def vigenere_decrypt(
+    ciphertext: Sequence, primer: Sequence, trace: bool = False
+) -> Sequence:
+    """
+    Plain Vigenere P=C-K
+    """
+    output: Sequence = Sequence(alphabet=ciphertext.alphabet)
+    for i in range(0, len(ciphertext)):
+        output.append((ciphertext[i] - primer[i % len(primer)]) % len(output.alphabet))
+    return output
+
+
+def construct_tabula_recta(alphabet: Alphabet, trace: bool = True):
     """
     construct a tabula recta based on custom alphabet.
     output is a MAX*MAX matrix
     """
-    output: list[list[int]] = []
-    for shift in range(0, MAX):
+    output: list[list[str]] = []
+    for shift in range(0, len(alphabet)):
         output.append(alphabet[shift:] + alphabet[:shift])
     if trace:
         print(repr(output))
@@ -90,36 +94,41 @@ def construct_tabula_recta(
 
 
 def vigenere_encrypt_with_alphabet(
-    plaintext: list[int],
-    primer: list[int] = [0],
-    alphabet: list[int] = range(0, MAX + 1),
+    plaintext: Sequence,
+    primer: Sequence,
+    alphabet: list[int],
     trace: bool = False,
-):
+) -> Sequence:
     """
     Plain Vigenere C=P+K
     """
-    output: list[int] = []
+    output: Sequence = Sequence()
+    if not alphabet:
+        alphabet = list(range(0, len(plaintext.alphabet) + 1))
     tr: list[list[int]] = construct_tabula_recta(alphabet)
+    abc = list(alphabet)
 
     for i in range(0, len(plaintext)):
-        row_index = alphabet.index(primer[i % len(primer)])
+        row_index = abc.index(primer[i % len(primer)])
         row = tr[row_index]
-        column_index = alphabet.index(plaintext[i])
+        column_index = abc.index(plaintext[i])
         output.append(tr[row_index][column_index])
 
     return output
 
 
 def vigenere_decrypt_with_alphabet(
-    ciphertext: list[int],
-    primer: list[int] = [0],
-    alphabet: list[int] = range(0, MAX + 1),
+    ciphertext: Sequence,
+    primer: Sequence,
+    alphabet: list[int],
     trace: bool = False,
-):
+) -> Sequence:
     """
     Plain Vigenere C=P+K
     """
-    output: list[int] = []
+    output: Sequence = Sequence()
+    if not alphabet:
+        alphabet = list(range(0, len(ciphertext.alphabet) + 1))
     tr: list[list[int]] = construct_tabula_recta(alphabet)
 
     for i in range(0, len(ciphertext)):
@@ -132,31 +141,31 @@ def vigenere_decrypt_with_alphabet(
 
 
 def combo_autokey_vigenere_encrypt(
-    plaintext: list[int], primer: list[int] = [0], mode: int = 1
-) -> list[int]:
+    plaintext: Sequence, primer: Sequence, mode: int = 1
+) -> Sequence:
     """
     Combo vigenere that combines plaintext + ciphertext
     """
-    plain_key: list[int] = primer + plaintext
-    cipher_key: list[int] = primer
-    output: list[int] = []
+    plain_key: Sequence = primer + plaintext
+    cipher_key: Sequence = primer
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
     for j in range(0, len(plaintext)):
         if mode == 1:
-            c = (plaintext[j] + plain_key[j] + cipher_key[j]) % MAX
+            c = (plaintext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 2:
-            c = (plaintext[j] + plain_key[j] - cipher_key[j]) % MAX
+            c = (plaintext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 3:
-            c = (plaintext[j] - plain_key[j] + cipher_key[j]) % MAX
+            c = (plaintext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 4:
-            c = (plaintext[j] - plain_key[j] - cipher_key[j]) % MAX
+            c = (plaintext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 5:
-            c = (-plaintext[j] + plain_key[j] + cipher_key[j]) % MAX
+            c = (-plaintext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 6:
-            c = (-plaintext[j] + plain_key[j] - cipher_key[j]) % MAX
+            c = (-plaintext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 7:
-            c = (-plaintext[j] - plain_key[j] + cipher_key[j]) % MAX
+            c = (-plaintext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 8:
-            c = (-plaintext[j] - plain_key[j] - cipher_key[j]) % MAX
+            c = (-plaintext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
         else:
             raise Exception
         cipher_key.append(c)
@@ -165,32 +174,32 @@ def combo_autokey_vigenere_encrypt(
 
 
 def combo_autokey_vigenere_decrypt(
-    ciphertext: list[int], primer: list[int] = [0], mode: int = 1
-) -> list[int]:
+    ciphertext: Sequence, primer: Sequence, mode: int = 1
+) -> Sequence:
     """
     Vigenere primitive without any console output, C=P+K
     """
-    plain_key: list[int] = primer
-    cipher_key: list[int] = primer + ciphertext
-    output: list[int] = []
+    plain_key: Sequence = primer
+    cipher_key: Sequence = primer + ciphertext
+    output = Sequence(alphabet=ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
         # TODO encrypt and decrypt modes don't match
         if mode == 1:
-            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
+            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 2:
-            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
+            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 3:
-            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
+            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 4:
-            p = (ciphertext[j] - plain_key[j] - cipher_key[j]) % MAX
+            p = (ciphertext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 5:
-            p = (-ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
+            p = (-ciphertext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 6:
-            p = (-ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
+            p = (-ciphertext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
         elif mode == 7:
-            p = (-ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
+            p = (-ciphertext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
         elif mode == 8:
-            p = (-ciphertext[j] - plain_key[j] - cipher_key[j]) % MAX
+            p = (-ciphertext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
         else:
             raise Exception
         plain_key.append(p)
