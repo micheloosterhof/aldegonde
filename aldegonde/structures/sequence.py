@@ -132,7 +132,10 @@ class Sequence:
         return Sequence(data=self.data + other.data, alphabet=self.alphabet)
 
     def __eq__(self, other):
-        if other.alphabet != self.alphabet:
+        try:
+            if other.alphabet != self.alphabet:
+                return False
+        except AttributeError:
             return False
         if other.data != self.data:
             print(f"data mismatch {other.data} != {self.data}")
