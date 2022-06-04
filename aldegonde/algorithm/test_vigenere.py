@@ -5,6 +5,7 @@ from ..structures.sequence import Sequence
 
 from .vigenere import vigenere_encrypt, vigenere_decrypt
 from .vigenere import beaufort_encrypt, beaufort_decrypt
+from .vigenere import variant_beaufort_encrypt, variant_beaufort_decrypt
 from .vigenere import vigenere_encrypt_with_alphabet, vigenere_decrypt_with_alphabet
 
 
@@ -22,10 +23,18 @@ def test_beaufort():
         text="DEFENDTHEEASTWALLOFTHECASTLE", alphabet=UPPERCASE_ALPHABET
     )
     ciphertext = Sequence(
-        text="CKMPVCPVWPIWUJOGIUAPVWRIWUUK", alphabet=UPPERCASE_ALPHABET
+        text="CKMPVCP VWPIWUJOGIUAPVWRIWUUK", alphabet=UPPERCASE_ALPHABET
     )
     assert ciphertext == beaufort_encrypt(plaintext=plaintext, primer=key)
     assert plaintext == beaufort_decrypt(ciphertext=ciphertext, primer=key)
+
+
+def test_variant_variant_beaufort():
+    key = Sequence(text="CIPHER", alphabet=UPPERCASE_ALPHABET)
+    plaintext = Sequence(text="HONESTY IS THE BEST POLICY", alphabet=UPPERCASE_ALPHABET)
+    ciphertext = Sequence(text="FGYXOCWADMDNZWDMLXJANR", alphabet=UPPERCASE_ALPHABET)
+    assert ciphertext == variant_beaufort_encrypt(plaintext=plaintext, primer=key)
+    assert plaintext == variant_beaufort_decrypt(ciphertext=ciphertext, primer=key)
 
 
 def test_vigenere_with_custom_alphabet():
