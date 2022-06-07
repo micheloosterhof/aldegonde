@@ -49,7 +49,7 @@ class Alphabet:
         return self.alphabet.__getitem__(key)
 
     def __repr__(self) -> str:
-        return "Alphabet<" + "".join(self.alphabet) + ">"
+        return "Alphabet(" + "".join(self.alphabet) + ")"
 
     def __str__(self) -> str:
         """ """

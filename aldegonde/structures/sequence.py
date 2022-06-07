@@ -43,6 +43,7 @@ class Sequence:
         else:
             raise TypeError(f"Unsupported type: {type(alphabet)}")
 
+        # TODO text can be an iterator..., not always a list
         if text is not None:
             self.data = []
             self.text = text
@@ -72,13 +73,15 @@ class Sequence:
         """
         out: str = ""
         count: int = 0
+        unknowns: list = []
         for c in self.text:
             try:
                 out += self.alphabet.i2a(self.data[count])
                 count += 1
             except IndexError:
-                print(f"unknown character {c}")
+                unknowns.append(c)                
                 out += c
+        print(f"unknowns: {set(unknowns)}")
         return out
 
     @overload
@@ -103,11 +106,11 @@ class Sequence:
 
     def __repr__(self) -> str:
         return (
-            "Sequence <data="
+            "Sequence(data="
             + repr(self.data)
-            + " alphabet="
+            + ", alphabet="
             + repr(self.alphabet)
-            + ">"
+            + ")"
         )
 
     def __iter__(self):
@@ -116,7 +119,10 @@ class Sequence:
 
     def __str__(self) -> str:
         """ """
-        return self.restore_punctuation()
+        if self.text:
+            return self.restore_punctuation()
+        else:
+            return "".join(map(self.alphabet.i2a, self.data))
 
     def index(self, elem: int) -> int:
         """
