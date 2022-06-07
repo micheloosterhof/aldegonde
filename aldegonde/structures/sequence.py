@@ -54,7 +54,7 @@ class Sequence:
                 except KeyError:
                     skips.append(c)
                     pass
-            print(f"skipped characters {set(skips)}")
+            print(f"skipped characters {repr(set(skips))}")
 
         elif data is not None:
             self.data = list(data)
@@ -73,15 +73,15 @@ class Sequence:
         """
         out: str = ""
         count: int = 0
-        unknowns: list = []
+        skips: list = []
         for c in self.text:
             try:
                 out += self.alphabet.i2a(self.data[count])
                 count += 1
             except IndexError:
-                unknowns.append(c)                
+                skips.append(c)
                 out += c
-        print(f"unknowns: {set(unknowns)}")
+        print(f"skips: {repr(set(skips))}")
         return out
 
     @overload
@@ -141,7 +141,7 @@ class Sequence:
     def __add__(self, other):
         if other.alphabet != self.alphabet:
             raise TypeError("Alphabets don't match")
-        return Sequence(data=self.data + other.data, alphabet=self.alphabet)
+        return Sequence(data=(self.data + other.data), alphabet=self.alphabet)
 
     def __eq__(self, other):
         try:
