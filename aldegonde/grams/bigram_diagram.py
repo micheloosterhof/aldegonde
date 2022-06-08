@@ -42,7 +42,7 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
             # for j in sorted(bigram[i]):
             try:
                 v = bigram[i][j]
-            except IndexError:
+            except KeyError:
                 v = 0
             if v == 0:
                 print(colors.bgRed, end="")
@@ -73,6 +73,37 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     for i in range(0, MAX):
         print("   ", end="")
     print(f"| {ioc:0.3f}")
+
+
+def bigram_diagram(runes: sequence.Sequence) -> list[list[int]]:
+    """
+    Input is a list of integers, from 0 to MAX-1
+    Output is bigram frequency diagram as matrix
+    """
+    if len(runes) < 2:
+        return []
+    MAX = len(runes.alphabet)
+
+    count = Counter(runes)
+    ioc: float = 0.0
+    res = Counter(
+        f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(len(runes) - 1)
+    )
+
+    bigram: Dict = defaultdict(dict)
+    for k in res.keys():
+        x, y = k.split("-")
+        bigram[int(x)][int(y)] = res[k]
+
+    output: list[list[int]] = [([0] * MAX) for i in range(MAX)]
+    for x in range(0, MAX):
+        for y in range(0, MAX):
+            try:
+                output[x][y] = bigram[x][y]
+            except KeyError:
+                pass
+
+    return output
 
 
 def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
