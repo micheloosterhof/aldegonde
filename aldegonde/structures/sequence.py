@@ -57,7 +57,7 @@ class Sequence:
             print(f"skipped characters {repr(set(skips))}")
 
         elif data is not None:
-            self.data = list(data)
+            self.data = data.copy()
             self.text = ""
             for i in self.data:
                 self.text += self.alphabet.i2a(i)
