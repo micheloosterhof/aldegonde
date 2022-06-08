@@ -37,7 +37,7 @@ def ciphertext_autokey_vigenere_decrypt(
     return output
 
 
-def ciphertext_autokey_minuend_encrypt(
+def ciphertext_autokey_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -54,7 +54,7 @@ def ciphertext_autokey_minuend_encrypt(
     return output
 
 
-def ciphertext_autokey_minuend_decrypt(
+def ciphertext_autokey_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -69,7 +69,7 @@ def ciphertext_autokey_minuend_decrypt(
     return output
 
 
-def ciphertext_autokey_beaufort_encrypt(
+def ciphertext_autokey_variant_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -86,7 +86,7 @@ def ciphertext_autokey_beaufort_encrypt(
     return output
 
 
-def ciphertext_autokey_beaufort_decrypt(
+def ciphertext_autokey_variant_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -198,6 +198,34 @@ def plaintext_autokey_vigenere_encrypt(
     return output
 
 
+def plaintext_autokey_vigenere_encrypt_with_alphabet(
+    plaintext: Sequence,
+    primer: Sequence,
+    alphabet: list[int],
+    trace: bool = False,
+) -> Sequence:
+    """
+    Plain Vigenere C=P+K
+    """
+    assert primer.alphabet == plaintext.alphabet
+    key = primer + plaintext
+    MAX = len(plaintext.alphabet)
+    output: Sequence = Sequence()
+
+    if not alphabet:
+        alphabet = list(range(0, MAX + 1))
+    tr: list[list[int]] = construct_tabula_recta(alphabet)
+    abc = list(alphabet)
+
+    for i in range(0, len(plaintext)):
+        row_index = abc.index(key[i])
+        row = tr[row_index]
+        column_index = abc.index(plaintext[i])
+        output.append(tr[row_index][column_index])
+
+    return output
+
+
 def plaintext_autokey_vigenere_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
@@ -215,7 +243,7 @@ def plaintext_autokey_vigenere_decrypt(
     return output
 
 
-def plaintext_autokey_minuend_encrypt(
+def plaintext_autokey_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -231,7 +259,7 @@ def plaintext_autokey_minuend_encrypt(
     return output
 
 
-def plaintext_autokey_minuend_decrypt(
+def plaintext_autokey_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -248,7 +276,7 @@ def plaintext_autokey_minuend_decrypt(
     return output
 
 
-def plaintext_autokey_beaufort_encrypt(
+def plaintext_autokey_variant_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
@@ -264,7 +292,7 @@ def plaintext_autokey_beaufort_encrypt(
     return output
 
 
-def plaintext_autokey_beaufort_decrypt(
+def plaintext_autokey_variant_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
