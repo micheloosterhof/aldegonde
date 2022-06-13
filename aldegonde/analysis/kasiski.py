@@ -1,7 +1,12 @@
 from ..structures import sequence
+from ..stats import repeats
 
 
 def print_kappa(
+    """
+    The `Kappa` test. Overlay the ciphertext with itself shifted by a number of positions, then count the
+    positions with the same character.
+    """
     ciphertext: sequence.Sequence,
     minimum: int = 1,
     maximum: int = 51,

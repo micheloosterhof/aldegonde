@@ -5,27 +5,39 @@ from ..structures.sequence import Sequence
 def variant_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
+    for i in range(0, len(plaintext)):
+        output.append(
+            variant_beaufort_encrypt_module(
+                plaintext[i], primer[i % len(primer)], len(output.alphabet)
+            )
+        )
+    return output
+
+
+def variant_beaufort_encrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
     """
     Variant Beaufort C=P-K
     Note: this is the same as vigenere_decrypt() !!
     """
-    output: Sequence = Sequence(alphabet=plaintext.alphabet)
-    for i in range(0, len(plaintext)):
-        output.append((plaintext[i] - primer[i % len(primer)]) % len(output.alphabet))
-    return output
+    return (char - modifier) % alphabetlen
 
 
 def variant_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
-    """
-    Plain Beaufort P=C+K
-    Note: this is the same as vigenere_encrypt() !!
-    """
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     for i in range(0, len(ciphertext)):
         output.append((ciphertext[i] + primer[i % len(primer)]) % len(output.alphabet))
     return output
+
+
+def variant_beaufort_decrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
+    """
+    Plain Beaufort P=C+K
+    Note: this is the same as vigenere_encrypt() !!
+    """
+    return (char + modifier) % alphabetlen
 
 
 def beaufort_encrypt(
@@ -37,8 +49,17 @@ def beaufort_encrypt(
     """
     output: Sequence = Sequence(alphabet=plaintext.alphabet)
     for i in range(0, len(plaintext)):
-        output.append((primer[i % len(primer)] - plaintext[i]) % len(output.alphabet))
+        # output.append((primer[i % len(primer)] - plaintext[i]) % len(output.alphabet))
+        output.append(
+            beaufort_encrypt_module(
+                plaintext[i], primer[i % len(primer)], len(output.alphabet)
+            )
+        )
     return output
+
+
+def beaufort_encrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
+    return (modifier - char) % alphabetlen
 
 
 def beaufort_decrypt(
@@ -50,16 +71,22 @@ def beaufort_decrypt(
     """
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     for i in range(0, len(ciphertext)):
-        output.append((primer[i % len(primer)] - ciphertext[i]) % len(output.alphabet))
+        # output.append((primer[i % len(primer)] - ciphertext[i]) % len(output.alphabet))
+        output.append(
+            beaufort_decrypt_module(
+                ciphertext[i], primer[i % len(primer)], len(output.alphabet)
+            )
+        )
     return output
+
+
+def beaufort_decrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
+    return (modifier - char) % alphabetlen
 
 
 def vigenere_encrypt(
     plaintext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
-    """
-    Plain Vigenere C=P+K
-    """
     output: Sequence = Sequence(alphabet=plaintext.alphabet)
     print(output)
     print(repr(output))
@@ -68,16 +95,27 @@ def vigenere_encrypt(
     return output
 
 
+def vigenere_encrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
+    """
+    Plain Vigenere C=P+K
+    """
+    return (char + modifier) % alphabetlen
+
+
 def vigenere_decrypt(
     ciphertext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
-    """
-    Plain Vigenere P=C-K
-    """
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     for i in range(0, len(ciphertext)):
         output.append((ciphertext[i] - primer[i % len(primer)]) % len(output.alphabet))
     return output
+
+
+def vigenere_encrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
+    """
+    Plain Vigenere P=C-K
+    """
+    return (char - modifier) % alphabetlen
 
 
 def construct_tabula_recta(alphabet: Alphabet, trace: bool = True):
@@ -93,6 +131,20 @@ def construct_tabula_recta(alphabet: Alphabet, trace: bool = True):
     return output
 
 
+"""
+The Quagmire group of periodic ciphers are similar to the Vigenère cipher but use one or more mixed alphabets. There are four variations; I, II, III and IV. The simplest of these, the Quagmire I cipher, is constructed from a keyed plaintext alphabet created from the keyword with repeated letters being omitted and followed by the unused letters of the alphabet in alphabetic order. For example the keyword PAULBRANDT is reduced to PAULBRNDT when repeated letters are removed. Appending unused alphabet letters produces the following keyed alphabet:
+
+PAULBRNDTCEFGHIJKMOQSVWXYZ
+
+The Quagmires 2, 3 and 4 are constructed in a similar way except:
+
+Quagmire 2 uses a straight (A-Z) alphabet for the plaintext and a keyed alphabet for the ciphertext,
+
+Quagmire 3 uses a keyed alphabet for the plaintext and the same keyed alphabet for the ciphertext,
+
+Quagmire 4 uses a keyed alphabet for the plaintext and a different keyed alphabet for the ciphertext.
+"""
+
 def vigenere_encrypt_with_alphabet(
     plaintext: Sequence,
     primer: Sequence,
@@ -100,7 +152,7 @@ def vigenere_encrypt_with_alphabet(
     trace: bool = False,
 ) -> Sequence:
     """
-    Plain Vigenere C=P+K
+    Vigenere with custom alphabet. Also known as the Quagmire I
     """
     output: Sequence = Sequence()
     if not alphabet:
@@ -137,71 +189,4 @@ def vigenere_decrypt_with_alphabet(
         column_index = row.index(ciphertext[i])
         output.append(alphabet[column_index])
 
-    return output
-
-
-def combo_autokey_vigenere_encrypt(
-    plaintext: Sequence, primer: Sequence, mode: int = 1
-) -> Sequence:
-    """
-    Combo vigenere that combines plaintext + ciphertext
-    """
-    plain_key: Sequence = primer + plaintext
-    cipher_key: Sequence = primer
-    output: Sequence = Sequence(alphabet=plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        if mode == 1:
-            c = (plaintext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 2:
-            c = (plaintext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 3:
-            c = (plaintext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 4:
-            c = (plaintext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 5:
-            c = (-plaintext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 6:
-            c = (-plaintext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 7:
-            c = (-plaintext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 8:
-            c = (-plaintext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        else:
-            raise Exception
-        cipher_key.append(c)
-        output.append(c)
-    return output
-
-
-def combo_autokey_vigenere_decrypt(
-    ciphertext: Sequence, primer: Sequence, mode: int = 1
-) -> Sequence:
-    """
-    Vigenere primitive without any console output, C=P+K
-    """
-    plain_key: Sequence = primer
-    cipher_key: Sequence = primer + ciphertext
-    output = Sequence(alphabet=ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        # TODO encrypt and decrypt modes don't match
-        if mode == 1:
-            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 2:
-            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 3:
-            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 4:
-            p = (ciphertext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 5:
-            p = (-ciphertext[j] + plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 6:
-            p = (-ciphertext[j] + plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        elif mode == 7:
-            p = (-ciphertext[j] - plain_key[j] + cipher_key[j]) % len(output.alphabet)
-        elif mode == 8:
-            p = (-ciphertext[j] - plain_key[j] - cipher_key[j]) % len(output.alphabet)
-        else:
-            raise Exception
-        plain_key.append(p)
-        output.append(p)
     return output

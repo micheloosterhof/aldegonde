@@ -1,4 +1,7 @@
+import numpy as np
+
 from ..structures import sequence, alphabet
+from ..stats import repeats
 
 from .kasiski import print_kappa
 
@@ -11,3 +14,20 @@ EXAMPLE = "CVJTNAFENMCDMKBXFSTKLHGSOJWHOFUISFYFBEXEINFIMAYSSDYYIJNPWTOKFRHWVWTZF
 def test_kasiski():
     ciphertext = sequence.Sequence(EXAMPLE, alphabet=alphabet.UPPERCASE_ALPHABET)
     print_kappa(ciphertext)
+
+
+def test_repeats():
+    ciphertext = sequence.Sequence(EXAMPLE, alphabet=alphabet.UPPERCASE_ALPHABET)
+    reps = repeats.repeat2(ciphertext, min=4)
+    diffs = []
+    for key in reps.keys():
+        positions = reps[key]
+        print(f"examining {key}: {reps[key]}")
+        for i in range(1, len(positions)):
+            diff = positions[i] - positions[i - 1]
+            print(f"diff = {diff}")
+            diffs.append(diff)
+
+    print(diffs)
+    print(np.gcd.reduce(diffs))
+    raise Exception
