@@ -3,10 +3,6 @@ from ..stats import repeats
 
 
 def print_kappa(
-    """
-    The `Kappa` test. Overlay the ciphertext with itself shifted by a number of positions, then count the
-    positions with the same character.
-    """
     ciphertext: sequence.Sequence,
     minimum: int = 1,
     maximum: int = 51,
@@ -14,12 +10,14 @@ def print_kappa(
     trace: bool = False,
 ) -> None:
     """
-    kappa test
-    overlay text with itself and count the number of duplicate letters
+    The `Kappa` test. Overlay the ciphertext with itself shifted by a number of positions, then count the
+    positions with the same character.
     """
     MAX = len(ciphertext.alphabet)
     if maximum == 0:
         maximum = int(len(ciphertext) / 2)
+    elif maximum > len(ciphertext):
+        maximum = len(ciphertext)
     for keylen in range(minimum, maximum):
         counter = 0
         dups = 0

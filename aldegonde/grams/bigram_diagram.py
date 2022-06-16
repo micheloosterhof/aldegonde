@@ -75,10 +75,14 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     print(f"| {ioc:0.3f}")
 
 
-def bigram_diagram(runes: sequence.Sequence) -> list[list[int]]:
+def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is bigram frequency diagram as matrix
+
+    Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE
+    Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF
+    Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BC, DE, FG
     """
     if len(runes) < 2:
         return []
@@ -86,9 +90,20 @@ def bigram_diagram(runes: sequence.Sequence) -> list[list[int]]:
 
     count = Counter(runes)
     ioc: float = 0.0
-    res = Counter(
-        f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(len(runes) - 1)
-    )
+    if cut == 0:
+        res = Counter(
+            f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(0, len(runes) - 1)
+        )
+    elif cut == 1:
+        res = Counter(
+            f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(0, len(runes) - 1, 2)
+        )
+    elif cut == 2:
+        res = Counter(
+            f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(1, len(runes) - 1, 2)
+        )
+    else:
+        raise Exception("`cut` variable can be 0, 1 or 2")
 
     bigram: Dict = defaultdict(dict)
     for k in res.keys():

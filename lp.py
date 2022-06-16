@@ -4,8 +4,9 @@
 """
 
 from aldegonde.structures import alphabet, sequence, cicada3301
-from aldegonde.stats import ioc
+from aldegonde.stats import ioc, repeats, doublets
 from aldegonde.grams import bigram_diagram
+from aldegonde.analysis import kasiski
 
 
 def try_totient(runes: list[int]):
@@ -21,10 +22,11 @@ def try_totient(runes: list[int]):
     cicada3301.english_output(out, limit=30)
 
 
-with open("liber-primus__transcription--master.txt") as f:
+# with open("liber-primus__transcription--master.txt") as f:
+with open("page0-58.txt") as f:
     lp = f.read()
 
-segments = lp.split("$")
+segments = lp.split("&")
 print(f"{len(segments)} segments")
 for i, s in enumerate(segments):
     if len(s) == 0:
@@ -40,4 +42,18 @@ for i, s in enumerate(segments):
     print(f"length: {len(seg)} runes")
     print(f"ioc={ioc.ioc(seg):.3f} nioc={ioc.normalized_ioc(seg):.3f}")
     cicada3301.print_all(seg, limit=30)
-    # bigram_diagram.print_bigram_diagram(seg)
+    bigram_diagram.print_bigram_diagram(seg)
+    doublets.print_doublets_statistics(seg)
+    doublets.print_doublets_statistics(seg, skip=2)
+    repeats.print_repeat_statistics(seg, min=2)
+    kasiski.print_kappa(seg)
+    reps=repeats.repeat2(seg, min=5)
+    diffs=[]
+    for key in reps.keys():
+        positions = reps[key]
+        print(f"examining {key}: {reps[key]}")
+        for i in range(1, len(positions)):
+            diff = positions[i] - positions[i-1]
+            print(f"diff = {diff}")
+            diffs.append(diff)
+   
