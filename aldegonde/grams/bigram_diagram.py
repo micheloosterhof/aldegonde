@@ -24,7 +24,7 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     bigram: Dict = defaultdict(dict)
     for k in res.keys():
         x, y = k.split("-")
-        bigram[int(x)][int(y)] = res[k]
+        bigram[int(y)][int(x)] = res[k]
 
     print("   | ", end="")
     for i in range(0, MAX):
@@ -108,7 +108,7 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
     bigram: Dict = defaultdict(dict)
     for k in res.keys():
         x, y = k.split("-")
-        bigram[int(x)][int(y)] = res[k]
+        bigram[int(y)][int(x)] = res[k]
 
     output: list[list[int]] = [([0] * MAX) for i in range(MAX)]
     for x in range(0, MAX):
