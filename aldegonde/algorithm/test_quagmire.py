@@ -16,6 +16,7 @@ Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is
     Ciphertext: HIFUFC IRFKUY KYJPFQ SSHZMM QONGKF KTNDQA WDJSKF KVJNHC LIRUCX OWHGUY IDJDUK G
 """
 
+
 def test_quagmire_1():
     return 0
 
@@ -38,6 +39,7 @@ def test_quagmire_1():
         ciphertext=demo_ciphertext, primer=demo_key, alphabet=demo_alphabet
     )
 
+
 def test_vigenere_with_custom_alphabet():
     demo_alphabet = Sequence(
         text="KRYPTOSABCDEFGHIJLMNQUVWXZ", alphabet=UPPERCASE_ALPHABET
@@ -57,10 +59,6 @@ def test_vigenere_with_custom_alphabet():
     assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
         ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
     )
-
-
-
-
 
 
 """

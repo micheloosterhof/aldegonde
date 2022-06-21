@@ -96,11 +96,13 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
         )
     elif cut == 1:
         res = Counter(
-            f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(0, len(runes) - 1, 2)
+            f"{runes[idx]:02d}-{runes[idx + 1]:02d}"
+            for idx in range(0, len(runes) - 1, 2)
         )
     elif cut == 2:
         res = Counter(
-            f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(1, len(runes) - 1, 2)
+            f"{runes[idx]:02d}-{runes[idx + 1]:02d}"
+            for idx in range(1, len(runes) - 1, 2)
         )
     else:
         raise Exception("`cut` variable can be 0, 1 or 2")

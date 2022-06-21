@@ -145,6 +145,7 @@ Quagmire 3 uses a keyed alphabet for the plaintext and the same keyed alphabet f
 Quagmire 4 uses a keyed alphabet for the plaintext and a different keyed alphabet for the ciphertext.
 """
 
+
 def vigenere_encrypt_with_alphabet(
     plaintext: Sequence,
     primer: Sequence,
