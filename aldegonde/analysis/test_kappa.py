@@ -3,7 +3,7 @@ import numpy as np
 from ..structures import sequence, alphabet
 from ..stats import repeats
 
-from .kasiski import print_kappa
+from .kappa import print_kappa
 
 """
 """
