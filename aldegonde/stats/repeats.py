@@ -12,7 +12,7 @@ def print_repeat_statistics(
     """
     Find repeating sequences in the list, up to `max`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
-    The expected formula works best for length 4 or larger
+    The expected formula works best for length 3 or larger
     """
     MAX = len(ciphertext.alphabet)
     for length in range(min, max + 1):
