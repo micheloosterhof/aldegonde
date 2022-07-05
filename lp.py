@@ -22,8 +22,8 @@ def try_totient(runes: list[int]):
     cicada3301.english_output(out, limit=30)
 
 
-# with open("liber-primus__transcription--master.txt") as f:
-with open("page0-58.txt") as f:
+# with open("data/liber-primus__transcription--master.txt") as f:
+with open("data/page0-58.txt") as f:
     lp = f.read()
 
 segments = lp.split("&")
