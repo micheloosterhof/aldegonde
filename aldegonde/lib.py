@@ -47,20 +47,6 @@ def addstream(runes: list[int]) -> list[int]:
     return diff
 
 
-def trigrams(runes: list[int]):
-    """
-    get the trigrams
-    """
-    return repeat(runes, min=3, max=3)
-
-
-def quadgrams(runes: list[int]):
-    """
-    get the quadgrams
-    """
-    return repeat(runes, min=4, max=4)
-
-
 def find(sequence: list[int], runes: list[int]) -> list[int]:
     """
     find `sequence` inside the list of `runes`, return array with indexes
@@ -82,31 +68,6 @@ def dist(runes: list[int]) -> None:
     print("frequency distribution")
     for rune in range(0, MAX):
         print(f"{rune}: {freqs[rune]/N*100}")
-
-
-def kappa(
-    ciphertext: list[int],
-    min: int = 1,
-    max: int = 51,
-    threshold: float = 1.3,
-    trace: bool = False,
-) -> None:
-    """
-    kappa test
-    overlay text with itself and count the number of duplicate letters
-    """
-    if max == 0:
-        max = int(len(ciphertext) / 2)
-    for a in range(min, max):
-        counter = 0
-        dups = 0
-        for i in range(0, len(ciphertext) - a):
-            counter = counter + 1
-            if ciphertext[i] == ciphertext[i + a]:
-                dups = dups + 1
-        if (dups / counter * MAX) > threshold or trace is True:
-            print(f"offset={a:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ")
-    print()
 
 
 def detect_plaintext_autokey(
