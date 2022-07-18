@@ -59,6 +59,49 @@ def all_isomorphs(ciphertext: sequence.Sequence, length: int) -> dict[str, list[
     return isos
 
 
+def random_isomorph_statistics(
+    sequencelength: int, isomorphlength: int, samples: int = 20, trace: bool = False
+) -> tuple[float, float]:
+    """
+    Returns the average number of distinct isomorphs and the average total number of isomorphs
+    """
+    distincts: Dict[int, list[int]] = {}
+    totals: Dict[int, list[int]] = {}
+
+    for test in range(0, samples):
+        # create random samples
+        r: list[int] = []
+        for i in range(0, sequencelength):
+            r.append(random.randrange(0, 29))
+
+        isos = all_isomorphs(r, isomorphlength)
+        distinct = 0
+        total = 0
+        for key in isos.keys():
+            if len(isos[key]) > 1:
+                distinct += 1
+                total += len(isos[key])
+
+        if distinct > 0:
+            if isomorphlength in distincts:
+                distincts[isomorphlength].append(distinct)
+                totals[isomorphlength].append(total)
+            else:
+                distincts[isomorphlength] = [distinct]
+                totals[isomorphlength] = [total]
+
+    try:
+        avgdistinct = sum(distincts[isomorphlength]) / len(distincts[isomorphlength])
+    except KeyError:
+        avgdistinct = 0.0
+    try:
+        avgtotal = sum(totals[isomorphlength]) / len(totals[isomorphlength])
+    except KeyError:
+        avgtotal = 0.0
+
+    return (avgdistinct, avgtotal)
+
+
 def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> None:
     """
     Look for isomorphs in the sequence.
@@ -81,58 +124,17 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
                 counter += 1
                 totals += len(isos[key])
 
-        if counter == 0:
+        avgdistinct: float
+        avgtotal: float
+        (avgdistinct, avgtotal) = random_isomorph_statistics(
+            sequencelength=len(seq), isomorphlength=length
+        )
+
+        if counter == 0 and avgdistinct == 0:
             print(f"no isomorphs found of length {length}")
             break
         else:
+            print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
             print(
-                f"isomorph length {length}: found {counter} distinct isomorphs, total: {totals} ",
-            )
-
-        # mu = len(seq) / math.factorial(length - 1)
-        # mean, var = poisson.stats(mu, loc=0, moments="mv")
-        # sigmage: float = abs(counter - mean) / math.sqrt(var)
-        # print(f"[INCORRECT: isomorph={counter} expected={mean:.2f} S={sigmage:.2f}σ]")
-
-
-def print_random_isomorph_statistics(sequencelength: int, trace: bool = False) -> None:
-    """
-    Look for isomorphs in the sequence.
-    Isomorphs are sequences that have the same number of unique characters:
-    CDDE and LKKY are isomorphs, that can be generalized to the pattern ABBC
-    This function collects all isomorphs
-    """
-    startlength = 4
-    endlength = 40
-
-    counters: Dict[int, list[int]] = {}
-    totals: Dict[int, list[int]] = {}
-
-    for test in range(0, 20):
-        # generate a random sequence of the correct length
-        r: list[int] = []
-        for i in range(0, sequencelength):
-            r.append(random.randrange(0, 29))
-
-        for length in range(startlength, endlength + 1):
-            isos = all_isomorphs(r, length)
-            counter = 0
-            total = 0
-            for key in isos.keys():
-                if len(isos[key]) > 1:
-                    counter += 1
-                    total += len(isos[key])
-
-            if counter > 0:
-                if length in counters:
-                    counters[length].append(counter)
-                    totals[length].append(total)
-                else:
-                    counters[length] = [counter]
-                    totals[length] = [total]
-
-    for length in range(startlength, endlength + 1):
-        if length in counters:
-            print(
-                f"isomorph length {length}: avg distinct {sum(counters[length])/len(counters[length]):.2f} avg total {sum(totals[length])/len(totals[length]):.2f}"
+                f"{counter:3d} (avg: {avgdistinct:6.2f}), total: {totals:4d} (avg: {avgtotal:7.2f}) ",
             )
