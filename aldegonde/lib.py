@@ -47,18 +47,6 @@ def addstream(runes: list[int]) -> list[int]:
     return diff
 
 
-def find(sequence: list[int], runes: list[int]) -> list[int]:
-    """
-    find `sequence` inside the list of `runes`, return array with indexes
-    """
-    N = len(runes)
-    results = []
-    for index in range(0, N - len(sequence) + 1):
-        if sequence == runes[index : index + len(sequence)]:
-            results.append(index)
-    return results
-
-
 def detect_plaintext_autokey(
     ciphertext: list[int],
     minkeysize: int = 1,

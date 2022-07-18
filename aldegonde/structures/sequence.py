@@ -1,6 +1,7 @@
 """Class to group information about a sequence.
 """
 
+import collections
 from typing import Optional, Union, overload
 
 import aldegonde.structures.alphabet as alpha
@@ -8,7 +9,7 @@ import aldegonde.structures.alphabet as alpha
 # TODO: can we inherit from abc.Sequence?
 
 
-class Sequence:
+class Sequence(collections.Sequence):
     """A sequence object, composed of plaintext or ciphertext
     It consists of elements, modeled as integers, and an alphabet of all possible options
 
@@ -175,3 +176,15 @@ class SequenceIterator:
             return self.obj[self.idx - 1]
         except IndexError:
             raise StopIteration
+
+
+def find(sequence: list[int], runes: list[int]) -> list[int]:
+    """
+    find `sequence` inside the list of `runes`, return array with indexes
+    """
+    N = len(runes)
+    results = []
+    for index in range(0, N - len(sequence) + 1):
+        if sequence == runes[index : index + len(sequence)]:
+            results.append(index)
+    return results
