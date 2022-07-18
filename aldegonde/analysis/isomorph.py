@@ -14,6 +14,7 @@ import functools
 import itertools
 import math
 import random
+import statistics
 
 from scipy.stats import poisson
 
@@ -63,7 +64,7 @@ def random_isomorph_statistics(
     sequencelength: int, isomorphlength: int, samples: int = 20, trace: bool = False
 ) -> tuple[float, float]:
     """
-    Returns the average number of distinct isomorphs and the average total number of isomorphs
+    Returns the mean and stdev of distinct isomorphs and mean and stdev of total isomorphs
     """
     distincts: Dict[int, list[int]] = {}
     totals: Dict[int, list[int]] = {}
@@ -82,24 +83,19 @@ def random_isomorph_statistics(
                 distinct += 1
                 total += len(isos[key])
 
-        if distinct > 0:
-            if isomorphlength in distincts:
-                distincts[isomorphlength].append(distinct)
-                totals[isomorphlength].append(total)
-            else:
-                distincts[isomorphlength] = [distinct]
-                totals[isomorphlength] = [total]
+        if isomorphlength in distincts:
+            distincts[isomorphlength].append(distinct)
+            totals[isomorphlength].append(total)
+        else:
+            distincts[isomorphlength] = [distinct]
+            totals[isomorphlength] = [total]
 
-    try:
-        avgdistinct = sum(distincts[isomorphlength]) / len(distincts[isomorphlength])
-    except KeyError:
-        avgdistinct = 0.0
-    try:
-        avgtotal = sum(totals[isomorphlength]) / len(totals[isomorphlength])
-    except KeyError:
-        avgtotal = 0.0
-
-    return (avgdistinct, avgtotal)
+    # TODO: we're assuming a normal distribution here, this may not be correct
+    meandistinct = statistics.mean(distincts[isomorphlength])
+    stdevdistinct = statistics.stdev(distincts[isomorphlength])
+    meantotal = statistics.mean(totals[isomorphlength])
+    stdevtotal = statistics.stdev(totals[isomorphlength])
+    return (meandistinct, stdevdistinct, meantotal, stdevtotal)
 
 
 def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> None:
@@ -124,9 +120,7 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
                 counter += 1
                 totals += len(isos[key])
 
-        avgdistinct: float
-        avgtotal: float
-        (avgdistinct, avgtotal) = random_isomorph_statistics(
+        (avgdistinct, stdevdistinct, avgtotal, stdevtotal) = random_isomorph_statistics(
             sequencelength=len(seq), isomorphlength=length
         )
 
@@ -136,5 +130,9 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
         else:
             print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
             print(
-                f"{counter:3d} (avg: {avgdistinct:6.2f}), total: {totals:4d} (avg: {avgtotal:7.2f}) ",
+                f"{counter:3d} (avg: {avgdistinct:6.2f}, S={abs(avgdistinct-counter)/stdevdistinct:4.2f}σ)",
+                end=" ",
+            )
+            print(
+                f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) ",
             )
