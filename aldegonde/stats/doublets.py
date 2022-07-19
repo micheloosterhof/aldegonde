@@ -19,7 +19,7 @@ def print_doublets_statistics(runes: sequence.Sequence, skip: int = 1) -> None:
     mu = N / MAX
     mean, var = poisson.stats(mu, loc=0, moments="mv")
     sigmage: float = abs(l - mean) / math.sqrt(var)
-    print(f"doublets={l} expected={mean:.2f} S={sigmage:.2f}σ")
+    print(f"doublets={l} (skip={skip}) expected={mean:.2f} S={sigmage:.2f}σ")
 
 
 def doublets(runes: sequence.Sequence, skip: int = 1, trace: bool = False) -> list[int]:

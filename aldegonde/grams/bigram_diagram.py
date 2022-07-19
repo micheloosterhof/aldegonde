@@ -29,11 +29,12 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     print("   | ", end="")
     for i in range(0, MAX):
         print(f"{i:02d} ", end="")
-    print("| IOC")
+    print("| IOC   | nIOC")
+
     print("---+-", end="")
     for i in range(0, MAX):
         print("---", end="")
-    print("+------")
+    print("+-------+------")
 
     # for i in sorted(bigram.keys()):
     for i in range(0, MAX):
@@ -62,12 +63,12 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
             * MAX
         )
         ioc += pioc
-        print(f"| {pioc:.3f}")
+        print(f"| {pioc:.3f} | {MAX*pioc:.3f}")
 
     print("---+-", end="")
     for i in range(0, MAX):
         print("---", end="")
-    print("+------")
+    print("+--------------")
 
     print("   | ", end="")
     for i in range(0, MAX):
