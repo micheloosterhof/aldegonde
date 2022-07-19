@@ -61,7 +61,7 @@ def random_isomorph_statistics(
 
     for _ in range(0, samples):
         # create random samples
-        rand: list[int] = random.sample(range(0, 29), sequencelength)
+        rand: list[int] = [random.randrange(0,29) for _ in range(sequencelength)]
         isos = all_isomorphs(rand, isomorphlength)
         distinct = 0
         total = 0
