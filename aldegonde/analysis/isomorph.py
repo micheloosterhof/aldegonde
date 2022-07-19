@@ -1,44 +1,34 @@
 """
     Example ATTACK and EFFECT both normalize to ABBACD
-   
+
     length 1: A (1)
     length 2: AA | AB (2)
     length 3: AAA | AAB ABA ABB | ABC (5)
-    length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB | AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
-
-    sum:     2^(length-1) + 2^(length-2)
-
-
+    length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
+              AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
-import functools
-import itertools
-import math
 import random
 import statistics
+from typing import Dict
 
-from scipy.stats import poisson
-
-from ..structures import alphabet, sequence
-from ..stats import ioc, repeats, doublets
-from ..grams import bigram_diagram
-from ..algorithm import autokey
+from ..structures import sequence
 
 
 def isomorph(ciphertext: sequence.Sequence) -> str:
     """
     Input is a piece of ciphertext as a list of int
-    Output is this normalized as an isomorph, it's output as a string for easy comparison in alphabet A-Z
+    Output is this normalized as an isomorph, as a string for easy comparison in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
     TODO: raise exception when we go beyond Z
     """
-    output = ""
-    letter = "A"
+    output: str = ""
+    letter: str = "A"
     mapping: dict[int, str] = {}
-    for r in ciphertext:
-        if r not in mapping:
-            mapping[r] = letter
+    for rune in ciphertext:
+        if rune not in mapping:
+            mapping[rune] = letter
             letter = chr(ord(letter) + 1)
-        output = output + mapping[r]
+        output = output + mapping[rune]
     return output
 
 
@@ -69,19 +59,16 @@ def random_isomorph_statistics(
     distincts: Dict[int, list[int]] = {}
     totals: Dict[int, list[int]] = {}
 
-    for test in range(0, samples):
+    for _ in range(0, samples):
         # create random samples
-        r: list[int] = []
-        for i in range(0, sequencelength):
-            r.append(random.randrange(0, 29))
-
-        isos = all_isomorphs(r, isomorphlength)
+        rand: list[int] = random.sample(range(0, 29), sequencelength)
+        isos = all_isomorphs(rand, isomorphlength)
         distinct = 0
         total = 0
-        for key in isos.keys():
-            if len(isos[key]) > 1:
+        for value in isos.values():
+            if len(value) > 1:
                 distinct += 1
-                total += len(isos[key])
+                total += len(value)
 
         if isomorphlength in distincts:
             distincts[isomorphlength].append(distinct)
@@ -111,28 +98,28 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
 
     for length in range(startlength, endlength + 1):
         isos = all_isomorphs(seq, length)
-        counter = 0
+        distinct = 0
         totals = 0
-        for key in isos.keys():
-            if len(isos[key]) > 1:
+        for key, value in isos.items():
+            if len(value) > 1:
                 if trace is True:
-                    print(f"isomorph {key} at positions: {isos[key]}")
-                counter += 1
-                totals += len(isos[key])
+                    print(f"isomorph {key} at positions: {value}")
+                distinct += 1
+                totals += len(value)
 
         (avgdistinct, stdevdistinct, avgtotal, stdevtotal) = random_isomorph_statistics(
             sequencelength=len(seq), isomorphlength=length
         )
 
-        if counter == 0 and avgdistinct == 0:
+        if distinct == 0 and avgdistinct == 0:
             print(f"no isomorphs found of length {length}")
             break
-        else:
-            print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
-            print(
-                f"{counter:3d} (avg: {avgdistinct:6.2f}, S={abs(avgdistinct-counter)/stdevdistinct:4.2f}σ)",
-                end=" ",
-            )
-            print(
-                f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) ",
-            )
+
+        print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
+        print(
+            f"{distinct:3d} (avg: {avgdistinct:6.2f}, S={abs(avgdistinct-distinct)/stdevdistinct:4.2f}σ)",
+            end=" ",
+        )
+        print(
+            f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) ",
+        )
