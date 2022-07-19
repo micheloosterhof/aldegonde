@@ -52,7 +52,7 @@ def all_isomorphs(ciphertext: sequence.Sequence, length: int) -> dict[str, list[
 
 def random_isomorph_statistics(
     sequencelength: int, isomorphlength: int, samples: int = 20, trace: bool = False
-) -> tuple[float, float]:
+) -> tuple[float, float, float, float]:
     """
     Returns the mean and stdev of distinct isomorphs and mean and stdev of total isomorphs
     """
@@ -98,8 +98,8 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
 
     for length in range(startlength, endlength + 1):
         isos = all_isomorphs(seq, length)
-        distinct = 0
-        totals = 0
+        distinct: int = 0
+        totals: int = 0
         for key, value in isos.items():
             if len(value) > 1:
                 if trace is True:

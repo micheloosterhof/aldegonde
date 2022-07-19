@@ -1,5 +1,4 @@
 from ..structures import sequence
-from ..stats import repeats
 
 
 def print_kappa(
