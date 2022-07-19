@@ -1,7 +1,7 @@
 """Class to group information about a sequence.
 """
 
-import collections
+import collections.abc
 from typing import Optional, Union, overload
 
 import aldegonde.structures.alphabet as alpha
@@ -9,7 +9,7 @@ import aldegonde.structures.alphabet as alpha
 # TODO: can we inherit from abc.Sequence?
 
 
-class Sequence(collections.Sequence):
+class Sequence(collections.abc.Sequence):
     """A sequence object, composed of plaintext or ciphertext
     It consists of elements, modeled as integers, and an alphabet of all possible options
 
