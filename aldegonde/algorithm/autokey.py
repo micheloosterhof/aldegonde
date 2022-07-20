@@ -1,6 +1,8 @@
-# ciphertext autokey variations
-# we can do 3 operations, 2 subtractions and 1 addition, addition=vigenere, subtraction=beaufort, minuend
-# C=P+K C=P-K, C=K-P
+"""
+ciphertext autokey variations
+we can do 3 operations, 2 subtractions and 1 addition, addition=vigenere, subtraction=beaufort, minuend
+C=P+K C=P-K, C=K-P
+"""
 
 from ..structures.sequence import Sequence
 
@@ -317,12 +319,12 @@ def plaintext_autokey_vigenere_encrypt_with_alphabet(
     primer: Sequence,
     # alphabet: list[int] = range(0, MAX + 1),
     trace: bool = False,
-):
+) -> Sequence:
     """
     Plain Vigenere C=P+K
     """
     assert primer.alphabet == plaintext.alphabet
-    output: list[int] = []
+    output = Sequence(alphabet=plaintext.alphabet)
     tr: list[list[int]] = construct_tabula_recta(alphabet)
 
     key: list[int] = primer.copy()
