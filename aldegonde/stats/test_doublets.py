@@ -1,3 +1,5 @@
+"""tests for doublets.py"""
+
 from ..structures import sequence, alphabet
 from .doublets import doublets, triplets
 
