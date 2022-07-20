@@ -1,3 +1,7 @@
+"""
+Functions around chi^2
+"""
+
 from collections import Counter
 
 from ..structures import sequence
@@ -20,7 +24,7 @@ def chi(text1: sequence.Sequence, text2: sequence.Sequence) -> float:
     N2 = len(text2)
     freqs1 = Counter(text1)
     freqs2 = Counter(text2)
-    sum: float = 0.0
+    total: float = 0.0
     for rune in range(0, len(text1.alphabet)):
-        sum += freqs1[rune] * freqs2[rune] / (N1 * N2)
-    return sum
+        total += freqs1[rune] * freqs2[rune] / (N1 * N2)
+    return total
