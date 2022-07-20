@@ -61,14 +61,10 @@ def random_isomorph_statistics(
 
     for _ in range(0, samples):
         # create random samples
-        rand: list[int] = [random.randrange(0,29) for _ in range(sequencelength)]
+        rand: list[int] = [random.randrange(0, 29) for _ in range(sequencelength)]
         isos = all_isomorphs(rand, isomorphlength)
-        distinct = 0
-        total = 0
-        for value in isos.values():
-            if len(value) > 1:
-                distinct += 1
-                total += len(value)
+        distinct: int = len(isos.keys())
+        total: int = sum([len(x) for x in isos.values()])
 
         if isomorphlength in distincts:
             distincts[isomorphlength].append(distinct)
@@ -77,7 +73,6 @@ def random_isomorph_statistics(
             distincts[isomorphlength] = [distinct]
             totals[isomorphlength] = [total]
 
-    # TODO: we're assuming a normal distribution here, this may not be correct
     meandistinct = statistics.mean(distincts[isomorphlength])
     stdevdistinct = statistics.stdev(distincts[isomorphlength])
     meantotal = statistics.mean(totals[isomorphlength])
@@ -98,28 +93,32 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
 
     for length in range(startlength, endlength + 1):
         isos = all_isomorphs(seq, length)
-        distinct: int = 0
-        totals: int = 0
-        for key, value in isos.items():
-            if len(value) > 1:
-                if trace is True:
-                    print(f"isomorph {key} at positions: {value}")
-                distinct += 1
-                totals += len(value)
+        # print(isos.keys())
+        distinct: int = len(isos.keys())
+        totals: int = sum([len(x) for x in isos.values()])
 
         (avgdistinct, stdevdistinct, avgtotal, stdevtotal) = random_isomorph_statistics(
             sequencelength=len(seq), isomorphlength=length
         )
 
-        if distinct == 0 and avgdistinct == 0:
-            print(f"no isomorphs found of length {length}")
+        if distinct == totals:
+            print(f"no duplicate isomorphs found of length {length}")
             break
 
         print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
-        print(
-            f"{distinct:3d} (avg: {avgdistinct:6.2f}, S={abs(avgdistinct-distinct)/stdevdistinct:4.2f}σ)",
-            end=" ",
-        )
-        print(
-            f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) ",
-        )
+        try:
+            print(
+                f"{distinct:3d} (avg: {avgdistinct:6.2f}, S={abs(avgdistinct-distinct)/stdevdistinct:4.2f}σ)",
+                end=" ",
+            )
+        except ZeroDivisionError:
+            print(
+                f"{distinct:3d} (avg: {avgdistinct:6.2f}",
+                end=" ",
+            )
+        try:
+            print(
+                f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) "
+            )
+        except ZeroDivisionError:
+            print(f"total: {totals:4d} (avg: {avgtotal:7.2f})")
