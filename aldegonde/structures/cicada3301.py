@@ -65,14 +65,29 @@ CICADA_ENGLISH_ALPHABET = [
 ]
 
 
-def randomrunes(l: int, max: int = 29) -> list[int]:
+def randomrunes(l: int, maximum: int = 29) -> list[int]:
     """
     Random list of runes of lenth len
     """
-    rl = []
+    output = []
     for i in range(0, l):
-        rl.append(random.randrange(0, max))
-    return rl
+        output.append(random.randrange(0, max))
+    return output
+
+
+def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
+    """
+    Random list of runes of lenth len, but with low doublets, like the LP
+    """
+    output = []
+    prev = None
+    for i in range(0, length):
+        rune = random.randrange(0, maximum)
+        if rune == prev and random.randrange(0, 6) > 0:
+            rune = random.randrange(0, maximum)
+        prev = rune
+        output.append(rune)
+    return output
 
 
 def numberToBase(n: int, b: int) -> list[int]:
