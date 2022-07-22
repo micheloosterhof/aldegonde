@@ -8,10 +8,15 @@ def print_dist(runes: sequence.Sequence) -> None:
     print frequency distribution
     """
     N = len(runes)
+    col = 0
     freqs = Counter(runes)
-    print("frequency distribution")
+    print("frequency distribution:")
     for rune in range(0, len(runes.alphabet)):
-        print(f"{rune}: {freqs[rune]/N*100}")
+        if col >0 and col % 5 == 0:
+            print("")
+        print(f"{rune:02d}: {runes.alphabet[rune]}: {freqs[rune]:03d}: {freqs[rune]/N*100:.3f}% | ", end="")
+        col = col + 1
+    print("")
 
 
 def monograph_dist(runes: sequence.Sequence) -> dict[int, int]:
