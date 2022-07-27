@@ -158,7 +158,7 @@ def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
             # for j in sorted(bigram[i]):
             try:
                 v = bigram[i][j]
-            except IndexError:
+            except KeyError:
                 v = 0
             if v == 0:
                 print(colors.bgRed, end="")

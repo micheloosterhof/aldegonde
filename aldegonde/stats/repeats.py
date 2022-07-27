@@ -6,16 +6,22 @@ from scipy.stats import poisson
 from ..structures import sequence
 
 
+# TODO: add `cut` parameter here
+
+
 def print_repeat_statistics(
-    ciphertext: sequence.Sequence, min: int = 4, max: int = 10, trace: bool = False
+    ciphertext: sequence.Sequence,
+    minimum: int = 4,
+    maximum: int = 10,
+    trace: bool = False,
 ) -> None:
     """
-    Find repeating sequences in the list, up to `max`. Max defaults to 10
+    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     The expected formula works best for length 3 or larger
     """
     MAX = len(ciphertext.alphabet)
-    for length in range(min, max + 1):
+    for length in range(minimum, maximum + 1):
         l = []
         num = 0
         for index in range(0, len(ciphertext) - length + 1):
@@ -44,14 +50,14 @@ def print_repeat_statistics(
 
 
 def repeat(
-    ciphertext: sequence.Sequence, min: int = 2, max: int = 10
+    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10
 ) -> dict[str, int]:
     """
-    Find repeating sequences in the list, up to `max`. Max defaults to 10
+    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     """
     sequences = {}
-    for length in range(min, max + 1):
+    for length in range(minimum, maximum + 1):
         l = []
         for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
@@ -65,14 +71,14 @@ def repeat(
 
 
 def repeat2(
-    ciphertext: sequence.Sequence, min: int = 2, max: int = 10
+    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10
 ) -> dict[str, list[int]]:
     """
-    Find repeating sequences in the list, up to `max`. Max defaults to 10
+    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the list of starting positions of that substring
     """
     sequences = {}
-    for length in range(min, max + 1):
+    for length in range(minimum, maximum + 1):
         l: dict[str, list[int]] = {}
         for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
