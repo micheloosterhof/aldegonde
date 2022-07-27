@@ -7,11 +7,13 @@
     length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
               AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
+import itertools
 import random
 import statistics
 from typing import Dict
 
 from ..structures import sequence
+from ..math import factor
 
 
 def isomorph(ciphertext: sequence.Sequence) -> str:
@@ -54,30 +56,30 @@ def random_isomorph_statistics(
     sequencelength: int, isomorphlength: int, samples: int = 20, trace: bool = False
 ) -> tuple[float, float, float, float]:
     """
-    Returns the mean and stdev of distinct isomorphs and mean and stdev of total isomorphs
+    Returns the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs
     """
     distincts: Dict[int, list[int]] = {}
-    totals: Dict[int, list[int]] = {}
+    duplicates: Dict[int, list[int]] = {}
 
     for _ in range(0, samples):
         # create random samples
         rand: list[int] = [random.randrange(0, 29) for _ in range(sequencelength)]
         isos = all_isomorphs(rand, isomorphlength)
         distinct: int = len(isos.keys())
-        total: int = sum([len(x) for x in isos.values()])
+        duplicate: int = sum([len(x) for x in isos.values() if len(x)>1])
 
         if isomorphlength in distincts:
             distincts[isomorphlength].append(distinct)
-            totals[isomorphlength].append(total)
+            duplicates[isomorphlength].append(duplicate)
         else:
             distincts[isomorphlength] = [distinct]
-            totals[isomorphlength] = [total]
+            duplicates[isomorphlength] = [duplicate]
 
     meandistinct = statistics.mean(distincts[isomorphlength])
     stdevdistinct = statistics.stdev(distincts[isomorphlength])
-    meantotal = statistics.mean(totals[isomorphlength])
-    stdevtotal = statistics.stdev(totals[isomorphlength])
-    return (meandistinct, stdevdistinct, meantotal, stdevtotal)
+    meanduplicate = statistics.mean(duplicates[isomorphlength])
+    stdevduplicate = statistics.stdev(duplicates[isomorphlength])
+    return (meandistinct, stdevdistinct, meanduplicate, stdevduplicate)
 
 
 def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> None:
@@ -95,13 +97,18 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
         isos = all_isomorphs(seq, length)
         # print(isos.keys())
         distinct: int = len(isos.keys())
-        totals: int = sum([len(x) for x in isos.values()])
+        duplicates: int = sum([len(x) for x in isos.values() if len(x)>1])
 
-        (avgdistinct, stdevdistinct, avgtotal, stdevtotal) = random_isomorph_statistics(
+        if duplicates<100 or trace is True:
+            for key, values in isos.items():
+                for v in itertools.combinations(values, 2):
+                    print(f"{key} loc={v[1]}-{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}")
+
+        (avgdistinct, stdevdistinct, avgduplicate, stdevduplicate) = random_isomorph_statistics(
             sequencelength=len(seq), isomorphlength=length
         )
 
-        if distinct == totals:
+        if duplicates == 0:
             print(f"no duplicate isomorphs found of length {length}")
             break
 
@@ -118,7 +125,10 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
             )
         try:
             print(
-                f"total: {totals:4d} (avg: {avgtotal:7.2f} S={abs(avgtotal-totals)/stdevtotal:4.2f}σ) "
+                f"duplicate: {duplicates:4d} (avg: {avgduplicate:7.2f} S={abs(avgduplicate-duplicates)/stdevduplicate:4.2f}σ) "
             )
         except ZeroDivisionError:
-            print(f"total: {totals:4d} (avg: {avgtotal:7.2f})")
+            print(f"duplicate: {duplicates:4d} (avg: {avgduplicate:7.2f})")
+
+
+
