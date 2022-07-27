@@ -3,6 +3,7 @@
 """
 """
 
+import itertools
 import random
 import math
 from scipy.stats import poisson
@@ -10,8 +11,10 @@ from scipy.stats import poisson
 from aldegonde.structures import alphabet, sequence, cicada3301
 from aldegonde.stats import ioc, repeats, doublets, dist
 from aldegonde.grams import bigram_diagram
+from aldegonde.math import factor
 from aldegonde.analysis import kappa, isomorph
 from aldegonde.algorithm import autokey
+
 
 def try_totient(runes: list[int]):
     """ """
@@ -55,15 +58,16 @@ for i, s in enumerate(segments):
     bigram_diagram.bigram_diagram_skip(seg, skip=2)
     doublets.print_doublets_statistics(seg)
     doublets.print_doublets_statistics(seg, skip=2)
-    repeats.print_repeat_statistics(seg, min=2)
+    repeats.print_repeat_statistics(seg, minimum=2)
     kappa.print_kappa(seg)
-    reps = repeats.repeat2(seg, min=5)
+    reps = repeats.repeat2(seg, minimum=5)
     diffs = []
     for key in reps.keys():
         positions = reps[key]
         print(f"examining {key}: {reps[key]}")
-        for i in range(1, len(positions)):
-            diff = positions[i] - positions[i - 1]
-            print(f"diff = {diff}")
-            diffs.append(diff)
+        for v in itertools.combinations(positions, 2):
+            print(
+                f"{key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
+            )
+
     isomorph.print_isomorph_statistics(seg)
