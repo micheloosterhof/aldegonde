@@ -64,10 +64,10 @@ for i, s in enumerate(segments):
     diffs = []
     for key in reps.keys():
         positions = reps[key]
-        print(f"examining {key}: {reps[key]}")
         for v in itertools.combinations(positions, 2):
             print(
-                f"{key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
+                f"repeat: {key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
             )
 
+    print("\n")
     isomorph.print_isomorph_statistics(seg)
