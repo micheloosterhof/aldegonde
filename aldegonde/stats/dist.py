@@ -12,9 +12,12 @@ def print_dist(runes: sequence.Sequence) -> None:
     freqs = Counter(runes)
     print("frequency distribution:")
     for rune in range(0, len(runes.alphabet)):
-        if col >0 and col % 5 == 0:
+        if col > 0 and col % 5 == 0:
             print("")
-        print(f"{rune:02d}: {runes.alphabet[rune]}: {freqs[rune]:03d}: {freqs[rune]/N*100:.3f}% | ", end="")
+        print(
+            f"{rune:02d}: {runes.alphabet[rune]}: {freqs[rune]:03d}: {freqs[rune]/N*100:.3f}% | ",
+            end="",
+        )
         col = col + 1
     print("")
 
