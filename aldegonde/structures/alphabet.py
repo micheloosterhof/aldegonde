@@ -53,7 +53,7 @@ class Alphabet:
 
     def __str__(self) -> str:
         """ """
-        return "Alphabet: " + "".join(self.alphabet) + f"  {len(self.alphabet)} items"
+        return "".join(self.alphabet) + f" ({len(self.alphabet)} symbols)"
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Alphabet):
