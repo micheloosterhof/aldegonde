@@ -23,3 +23,45 @@ def ngrams(runes: sequence.Sequence, length: int, cut: int = 0) -> list[list[int
         for i in range(cut - 1, N - length + 1, length):
             l.append(runes[i : i + length])
     return l
+
+
+def digraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for digraphs
+    """
+    return ngrams(sequence, length=2, cut=cut)
+
+
+def trigraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for trigraphs
+    """
+    return ngrams(sequence, length=3, cut=cut)
+
+
+def tetragraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for tetragraphs
+    """
+    return ngrams(sequence, length=4, cut=cut)
+
+
+def bigrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for digrams
+    """
+    return ngrams(sequence, length=2, cut=cut)
+
+
+def trigrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for trigrams
+    """
+    return ngrams(sequence, length=3, cut=cut)
+
+
+def quadgrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+    """
+    convenience function for tetragrams
+    """
+    return ngrams(sequence, length=4, cut=cut)
