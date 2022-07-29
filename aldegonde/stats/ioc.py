@@ -1,5 +1,6 @@
 from collections import Counter
 from math import sqrt
+from typing import Tuple
 
 from ..structures import sequence
 from .ngrams import ngrams
@@ -85,7 +86,7 @@ def normalized_ioc2(runes: sequence.Sequence, cut: int = 0) -> float:
     return ioc_general(runes, length=2, cut=cut)[0]
 
 
-def ioc_general(runes: sequence.Sequence, length: int, cut: int = 0) -> (float, float):
+def ioc_general(runes: sequence.Sequence, length: int, cut: int = 0) -> Tuple[float, float]:
     """
     Multigraphic Index of Coincidence: ΔIC
 
@@ -109,7 +110,7 @@ def ioc_general(runes: sequence.Sequence, length: int, cut: int = 0) -> (float, 
     # L is the number of items we have counted
     L = len(l)
     if L < 2:
-        return 0.0
+        return (0.0, 0.0)
 
     freqs = Counter(l)
     freqsum: float = 0.0
@@ -206,3 +207,14 @@ def normalized_ioc4(runes: sequence.Sequence, cut: int = 0) -> float:
     Like ioc4() but normalized by alphabet size.
     """
     return ioc_general(runes, length=4, cut=cut)[0]
+
+
+def sliding_window_ioc(runes: sequence.Sequence, window: int = 100) -> list[float]:
+    """
+    calculate sliding window IOC of a large data set
+    """
+    C = len(runes.alphabet)
+    output: list[float] = []
+    for i in range(0,len(runes)-window):
+        output.append(C*ioc(runes[i:i+window]))
+    return output
