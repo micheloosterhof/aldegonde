@@ -191,3 +191,24 @@ def vigenere_decrypt_with_alphabet(
         output.append(alphabet[column_index])
 
     return output
+
+
+# assume fixed length key. find period
+def detect_vigenere(
+    ciphertext: list[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 20,
+    trace: bool = False,
+):
+    print("testing for periodicity using friedman test")
+    for period in range(minkeysize, maxkeysize):
+        slices = split_by_slice(ciphertext, period)
+
+        iocsum: float = 0.0
+        for k in slices.keys():
+            ic = normalized_ioc(slices[k])
+            iocsum += ic
+            if trace is True:
+                print(f"ioc of runes {k}/{period} = {ic:.3f}")
+        if trace is True:
+            print(f"avgioc period {period} = {iocsum/period:.2f}")
