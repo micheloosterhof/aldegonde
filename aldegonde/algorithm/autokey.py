@@ -338,3 +338,105 @@ def plaintext_autokey_vigenere_encrypt_with_alphabet(
         key.append(c)
 
     return output
+
+
+def detect_plaintext_autokey(
+    ciphertext: list[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 20,
+    trace: bool = False,
+) -> None:
+    """
+    the way Caesar generalizes to Vigenere,
+    a single-letter autokey generalizes to a multi-letter autokey
+    to solve it, split it into multiple slices.
+    """
+    if trace is True:
+        print(f"test for plaintext autokey, samplesize={len(ciphertext)}")
+        print("#######################################################\n")
+
+    for keysize in range(minkeysize, maxkeysize + 1):
+        slices = {}
+        vigiocs: float = 0
+        miniocs: float = 0
+        beaiocs: float = 0
+        for start in range(0, keysize):
+            slices[start] = ciphertext[start::keysize]
+            if trace is True:
+                print(f"\nslice={start}: ", end="")
+            # Bruteforce Vigenere introductory key at this position
+            for key in range(0, MAX):
+                plain = plaintext_autokey_vigenere_decrypt(slices[start], [key])
+                vigiocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"vigenere ioc={normalized_ioc(plain):.2f} ", end="")
+            # Bruteforce Beaufort introductory key at this position
+            for key in range(0, MAX):
+                plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
+                beaiocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"beaufort ioc={normalized_ioc(plain):.2f} ", end="")
+            # Bruteforce Minuend introductory key at this position
+            for key in range(0, MAX):
+                plain = plaintext_autokey_beaufort_decrypt(slices[start], [key])
+                miniocs += normalized_ioc(plain)
+                if normalized_ioc(plain) > 1.3:
+                    if trace is True:
+                        print(f"minuend ioc={normalized_ioc(plain):.2f} ", end="")
+        vigiocavg = vigiocs / MAX / keysize
+        miniocavg = miniocs / MAX / keysize
+        beaiocavg = beaiocs / MAX / keysize
+        if trace is True:
+            print(f"\nvigenere keysize={keysize} avgioc = {vigiocavg:0.3f}")
+            print(f"\nbeaufort keysize={keysize} avgioc = {beaiocavg:0.3f}")
+            print(f"\nminuend  keysize={keysize} avgioc = {miniocavg:0.3f}")
+        if vigiocavg > 1.2 or miniocavg > 1.2 or beaiocavg > 1.2:
+            print("Attempting bruteforce...")
+            if keysize < 4:
+                bruteforce_autokey(
+                    ciphertext,
+                    minkeylength=keysize,
+                    maxkeylength=keysize,
+                    iocthreshold=1.3,
+                )
+
+
+def detect_ciphertext_autokey_vigenere(
+    ciphertext: list[int],
+    minkeysize: int = 1,
+    maxkeysize: int = 10,
+    trace: bool = False,
+):
+    """
+    the way Caesar generalizes to Vigenere,
+    a single-letter autokey generalizes to a multi-letter autokey
+    to solve it, split it into multiple segments
+
+    split by previous letter and create MAX alphabets. run bigram/ioc on these
+    """
+    if trace is True:
+        print(f"test for ciphertext autokey, samplesize={len(ciphertext)}")
+        print("#######################################################\n")
+
+    # length of autokey introductory key
+    for a in range(minkeysize, maxkeysize + 1):
+        if trace is True:
+            print(f"Checking key size {a}")
+
+        alphabet: dict[int, list[int]] = {}
+        for i in range(0, MAX):
+            alphabet[i] = []
+
+        for i in range(0, len(ciphertext) - a - 1):
+            alphabet[ciphertext[i]].append(ciphertext[i + a])
+
+        tot = 0.0
+        for i in alphabet.keys():
+            tot += normalized_ioc(alphabet[i])
+            if trace is True:
+                print(f"IOC: key={i} {normalized_ioc(alphabet[i]):.3f}")
+            # dist(alphabet[i])
+            # bigram_diagram(alphabet[i])
+        print(f"key={a} avgioc={tot/MAX:.3f}")

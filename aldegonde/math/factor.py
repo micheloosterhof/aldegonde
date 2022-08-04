@@ -2,6 +2,7 @@
 prime factorization
 """
 
+
 def prime_factors(n: int) -> list[int]:
     i = 2
     factors = []
