@@ -1,3 +1,7 @@
+"""
+module description
+"""
+
 from ..structures import sequence
 
 
@@ -25,5 +29,7 @@ def print_kappa(
             if ciphertext[i] == ciphertext[i + keylen]:
                 dups = dups + 1
         if (dups / counter * MAX) > threshold or trace is True:
-            print(f"keylen={keylen:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} ")
+            print(
+                f"kappa: keylen={keylen:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} "
+            )
     print()
