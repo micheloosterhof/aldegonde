@@ -2,7 +2,7 @@
 
 from ..structures import alphabet, sequence
 
-from .ngrams import ngrams
+from .ngrams import ngrams,iterngrams
 
 uniq = sequence.Sequence(data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET)
 
@@ -20,3 +20,4 @@ def test_ngram_unique():
     assert ngrams(uniq, length=4, cut=2) == [[1, 2, 3, 4]]
     assert ngrams(uniq, length=4, cut=3) == []
     assert ngrams(uniq, length=4, cut=4) == []
+    assert [x for x in iterngrams(uniq, length=4, cut=4)] == []
