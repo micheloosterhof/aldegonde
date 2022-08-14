@@ -1,8 +1,36 @@
-"""
-ngrams
+"""functions for ngrams
 """
 
+from typing import Iterator
+
 from ..structures import sequence
+
+
+def iterngrams(
+    runes: sequence.Sequence, length: int, cut: int = 0
+) -> Iterator[list[int]]:
+    """Returns ngrams for the given sequence
+    Args:
+        runes: Sequence
+        length: size of ngram
+        cut: where to start ngrams
+
+    Yields:
+        ngrams: ngrams
+
+    Specify `cut=0` to return sliding blocks of 2 runes: ABC, BCD, CDE, ...
+    Specify `cut=1` to return non-overlapping blocks of 3 runes: ABC, DEF, ...
+    Specify `cut=2` to return non-overlapping blocks of 3 runes: BCD, EFG, ...
+    """
+    assert length > 0
+    assert 0 <= cut <= length
+    N = len(runes)  # size of sequence
+    if cut == 0:  # pylint: disable=C2001
+        for i in range(0, N - length + 1):
+            yield list(runes[i : i + length])
+    elif cut in range(1, length + 1):
+        for i in range(cut - 1, N - length + 1, length):
+            yield list(runes[i : i + length])
 
 
 def ngrams(runes: sequence.Sequence, length: int, cut: int = 0) -> list[list[int]]:
@@ -14,15 +42,7 @@ def ngrams(runes: sequence.Sequence, length: int, cut: int = 0) -> list[list[int
     Specify `cut=1` and it operates on non-overlapping blocks of 3 runes: ABC, DEF, ...
     Specify `cut=2` and it operates on non-overlapping blocks of 3 runes: BCD, EFG, ...
     """
-    N = len(runes)  # size of sequence
-    l: list[list[int]] = []
-    if cut == 0:
-        for i in range(0, N - length + 1):
-            l.append(runes[i : i + length])
-    elif cut in range(1, length + 1):
-        for i in range(cut - 1, N - length + 1, length):
-            l.append(runes[i : i + length])
-    return l
+    return list(iterngrams(runes, length=length, cut=cut))
 
 
 def digraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
