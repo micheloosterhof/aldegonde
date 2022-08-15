@@ -109,14 +109,15 @@ Combo autokey combines both the plaintext and ciphertext algorithms
 
 
 def combo_autokey_vigenere_encrypt(
-    plaintext: Sequence, primer: Sequence, mode: int = 1
+    plaintext: Sequence, plainprimer: Sequence, cipherprimer: Sequence, mode: int = 1
 ) -> Sequence:
     """
     Vigenere primitive without any console output, C=P+K
     """
-    assert primer.alphabet == plaintext.alphabet
-    plain_key: Sequence = primer + plaintext
-    cipher_key: Sequence = primer
+    assert cipherprimer.alphabet == plaintext.alphabet
+    assert plainprimer.alphabet == plaintext.alphabet
+    plain_key: Sequence = plainprimer + plaintext
+    cipher_key: Sequence = cipherprimer
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
     for j in range(0, len(plaintext)):
@@ -144,26 +145,26 @@ def combo_autokey_vigenere_encrypt(
 
 
 def combo_autokey_vigenere_decrypt(
-    ciphertext: Sequence, primer: Sequence, mode: int = 1
+    ciphertext: Sequence, plainprimer: Sequence, cipherprimer: Sequence, mode: int = 1
 ) -> Sequence:
     """
     Vigenere primitive without any console output, C=P+K
     """
-    assert primer.alphabet == ciphertext.alphabet
-    plain_key: Sequence = primer
-    cipher_key: Sequence = primer + ciphertext
+    assert plainprimer.alphabet == ciphertext.alphabet
+    assert cipherprimer.alphabet == ciphertext.alphabet
+    plain_key: Sequence = plainprimer
+    cipher_key: Sequence = cipherprimer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
     for j in range(0, len(ciphertext)):
-        # TODO encrypt and decrypt modes don't match
         if mode == 1:
-            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
-        elif mode == 2:
-            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
-        elif mode == 3:
-            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
-        elif mode == 4:
             p = (ciphertext[j] - plain_key[j] - cipher_key[j]) % MAX
+        elif mode == 2:
+            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
+        elif mode == 3:
+            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
+        elif mode == 4:
+            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 5:
             p = (-ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 6:

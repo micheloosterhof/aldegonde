@@ -1,4 +1,11 @@
-def primes(n):
+"""primes
+"""
+
+import itertools
+
+
+def primes(n: int) -> list[int]:
+    """primes as a list"""
     out = list()
     sieve = [True] * (n + 1)
     for p in range(2, n + 1):
@@ -7,3 +14,31 @@ def primes(n):
             for i in range(p, n + 1, p):
                 sieve[i] = False
     return out
+
+
+class PrimeGenerator:
+    """primes as a generator"""
+
+    def __init__(self) -> None:
+        self.primes = []
+        self.current = 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self) -> int:
+        candidate = self.current + 1
+        while True:
+            for prime in itertools.takewhile(
+                lambda p: candidate >= p**2, self.primes
+            ):
+                if candidate % prime == 0:
+                    break
+            else:
+                self.primes.append(candidate)
+                self.current = candidate
+                break
+
+            candidate += 1
+
+        return self.current
