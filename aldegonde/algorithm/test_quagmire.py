@@ -17,7 +17,7 @@ Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is
 """
 
 
-def test_quagmire_1():
+def test_quagmire_1() -> None:
     return 0
 
     demo_alphabet = Sequence(
@@ -40,7 +40,7 @@ def test_quagmire_1():
     )
 
 
-def test_vigenere_with_custom_alphabet():
+def test_vigenere_with_custom_alphabet() -> None:
     demo_alphabet = Sequence(
         text="KRYPTOSABCDEFGHIJLMNQUVWXZ", alphabet=UPPERCASE_ALPHABET
     )

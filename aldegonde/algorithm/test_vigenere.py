@@ -9,7 +9,7 @@ from .vigenere import variant_beaufort_encrypt, variant_beaufort_decrypt
 from .vigenere import vigenere_encrypt_with_alphabet, vigenere_decrypt_with_alphabet
 
 
-def test_vigenere():
+def test_vigenere() -> None:
     key = Sequence(text="LEMON", alphabet=UPPERCASE_ALPHABET)
     plaintext = Sequence(text="ATTACKATDAWN", alphabet=UPPERCASE_ALPHABET)
     ciphertext = Sequence(text="LXFOPVEFRNHR", alphabet=UPPERCASE_ALPHABET)
@@ -17,7 +17,7 @@ def test_vigenere():
     assert plaintext == vigenere_decrypt(ciphertext=ciphertext, primer=key)
 
 
-def test_beaufort():
+def test_beaufort() -> None:
     key = Sequence(text="FORTIFICATION", alphabet=UPPERCASE_ALPHABET)
     plaintext = Sequence(
         text="DEFENDTHEEASTWALLOFTHECASTLE", alphabet=UPPERCASE_ALPHABET
@@ -29,7 +29,7 @@ def test_beaufort():
     assert plaintext == beaufort_decrypt(ciphertext=ciphertext, primer=key)
 
 
-def test_variant_variant_beaufort():
+def test_variant_variant_beaufort() -> None:
     key = Sequence(text="CIPHER", alphabet=UPPERCASE_ALPHABET)
     plaintext = Sequence(text="HONESTY IS THE BEST POLICY", alphabet=UPPERCASE_ALPHABET)
     ciphertext = Sequence(text="FGYXOCWADMDNZWDMLXJANR", alphabet=UPPERCASE_ALPHABET)
@@ -37,7 +37,7 @@ def test_variant_variant_beaufort():
     assert plaintext == variant_beaufort_decrypt(ciphertext=ciphertext, primer=key)
 
 
-def test_vigenere_with_custom_alphabet():
+def test_vigenere_with_custom_alphabet() -> None:
     demo_alphabet = Sequence(
         text="KRYPTOSABCDEFGHIJLMNQUVWXZ", alphabet=UPPERCASE_ALPHABET
     )
@@ -58,7 +58,7 @@ def test_vigenere_with_custom_alphabet():
     )
 
 
-def test_vigenere_with_standard_alphabet():
+def test_vigenere_with_standard_alphabet() -> None:
     demo_alphabet = Sequence("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alphabet=UPPERCASE_ALPHABET)
     demo_key = Sequence("LEMON", alphabet=UPPERCASE_ALPHABET)
     demo_cipher_string = Sequence("LXFOPVEFRNHR", alphabet=UPPERCASE_ALPHABET)

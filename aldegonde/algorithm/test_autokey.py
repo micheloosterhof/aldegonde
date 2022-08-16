@@ -5,7 +5,7 @@ from ..structures.alphabet import UPPERCASE_ALPHABET
 from ..structures.sequence import Sequence
 
 
-def test_plaintext_autokey_vigenere_x():
+def test_plaintext_autokey_vigenere_x() -> None:
     demo_key = Sequence("X", alphabet=UPPERCASE_ALPHABET)
     demo_plaintext = Sequence("NOTIFYQUARTERMASTER", alphabet=UPPERCASE_ALPHABET)
     demo_ciphertext = Sequence("KBHBNDOKURKXVDMSLXV", alphabet=UPPERCASE_ALPHABET)
@@ -23,7 +23,7 @@ def test_plaintext_autokey_vigenere_x():
     )
 
 
-def test_plaintext_autokey_vigenere_typewriter():
+def test_plaintext_autokey_vigenere_typewriter() -> None:
     demo_key = Sequence("TYPEWRITER", alphabet=UPPERCASE_ALPHABET)
     demo_plaintext = Sequence("NOTIFYQUARTERMASTER", alphabet=UPPERCASE_ALPHABET)
     demo_ciphertext = Sequence("GMIMBPYNEIGSKUFQJYR", alphabet=UPPERCASE_ALPHABET)
@@ -41,7 +41,7 @@ def test_plaintext_autokey_vigenere_typewriter():
     )
 
 
-def test_ciphertext_autokey_vigenere_x():
+def test_ciphertext_autokey_vigenere_x() -> None:
     demo_key = Sequence("X", alphabet=UPPERCASE_ALPHABET)
     demo_plaintext = Sequence("NOTIFYQUARTERMASTER", alphabet=UPPERCASE_ALPHABET)
     demo_ciphertext = Sequence("KYRZECSMMDWARDDVOSJ", alphabet=UPPERCASE_ALPHABET)
@@ -59,7 +59,7 @@ def test_ciphertext_autokey_vigenere_x():
     )
 
 
-def test_ciphertext_autokey_vigenere_typewriter():
+def test_ciphertext_autokey_vigenere_typewriter() -> None:
     demo_key = Sequence("TYPEWRITER", alphabet=UPPERCASE_ALPHABET)
     demo_plaintext = Sequence("NOTIFYQUARTERMASTER", alphabet=UPPERCASE_ALPHABET)
     demo_ciphertext = Sequence("GMIMBPYNEIGSKUFQJYR", alphabet=UPPERCASE_ALPHABET)
