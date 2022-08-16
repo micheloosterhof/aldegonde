@@ -3,7 +3,7 @@ from typing import Dict
 
 from ..structures import sequence
 
-from .color import colors
+from .color import Colors
 
 
 def print_bigram_diagram(runes: sequence.Sequence) -> None:
@@ -46,15 +46,15 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
             except KeyError:
                 v = 0
             if v == 0:
-                print(colors.bgRed, end="")
+                print(Colors.bgRed, end="")
             elif v < 5:
-                print(colors.bgYellow, end="")
+                print(Colors.bgYellow, end="")
             elif v < 10:
-                print(colors.bgGreen, end="")
+                print(Colors.bgGreen, end="")
             elif v > 25:
-                print(colors.bgBlue, end="")
+                print(Colors.bgBlue, end="")
             print(f"{v:02}", end="")
-            print(colors.reset, end=" ")
+            print(Colors.reset, end=" ")
 
         # partial IOC (one rune), and total IOC
         pioc = (
@@ -161,11 +161,11 @@ def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
             except KeyError:
                 v = 0
             if v == 0:
-                print(colors.bgRed, end="")
+                print(Colors.bgRed, end="")
             elif v < 5:
-                print(colors.bgBlue, end="")
+                print(Colors.bgBlue, end="")
             print(f"{v:02}", end="")
-            print(colors.reset, end=" ")
+            print(Colors.reset, end=" ")
 
         # partial IOC (one rune), and total IOC
         pioc = (

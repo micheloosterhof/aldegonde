@@ -1,7 +1,9 @@
-# ANSI colors
+"""ANSI colors
+"""
 
-
-class colors:
+class Colors:
+    """ANSI colors
+    """
     reset = "\033[0m"
 
     # Black

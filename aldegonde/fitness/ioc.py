@@ -3,6 +3,7 @@ IOC Scoring Function
 """
 
 from math import sqrt
+from typing import Callable
 
 from ..structures import sequence
 from ..stats import ioc
@@ -15,7 +16,7 @@ ITALIAN = 0.0738
 RUSSIAN = 0.0529
 
 
-def IocFitness(target_ioc: float):
+def IocFitness(target_ioc: float) -> Callable[[sequence.Sequence],float]:
     """Score a text by evaluating its IOC score
 
     Example:
@@ -28,6 +29,6 @@ def IocFitness(target_ioc: float):
     """
 
     def inner(text: sequence.Sequence) -> float:
-        return -sqrt(abs(ioc.ioc(text) - target_ioc))
+        return -sqrt(abs(ioc.ioc(text)[1] - target_ioc))
 
     return inner

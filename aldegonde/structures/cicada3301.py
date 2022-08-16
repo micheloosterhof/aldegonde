@@ -126,7 +126,7 @@ class RuneIterator:
     maximum: int
     length: int
 
-    def __init__(self, length: int):
+    def __init__(self, length: int) -> None:
         self.length = length
         self.maximum = 29**length
 

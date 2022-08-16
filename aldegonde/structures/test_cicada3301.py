@@ -4,7 +4,7 @@ from .sequence import Sequence
 from .cicada3301 import CICADA_ALPHABET
 
 
-def test_welcome():
+def test_welcome() -> None:
     seq1 = Sequence(text="ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏ", alphabet=CICADA_ALPHABET)
     assert seq1 == Sequence(
         data=[1, 28, 21, 15, 12, 0, 5, 4, 12, 1, 6, 13, 28, 28, 0, 7, 14, 16],
