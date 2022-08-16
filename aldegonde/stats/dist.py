@@ -30,5 +30,5 @@ def monograph_dist(runes: sequence.Sequence) -> dict[int, int]:
     N = len(runes)
     freqs = Counter(runes)
     for rune in range(0, len(runes.alphabet)):
-        out[runes.alphabet[rune]] = freqs[rune]
+        out[rune] = freqs[rune]
     return out
