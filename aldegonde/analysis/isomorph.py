@@ -19,7 +19,7 @@ from ..math import factor
 def isomorph(ciphertext: sequence.Sequence) -> str:
     """
     Input is a piece of ciphertext as a list of int
-    Output is this normalized as an isomorph, as a string for easy comparison in alphabet A-Z
+    Output is this normalized as an isomorph, as a string in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
     TODO: raise exception when we go beyond Z
     """
@@ -129,6 +129,3 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
             )
         except ZeroDivisionError:
             print(f"duplicate: {duplicates:4d} (avg: {avgduplicate:7.2f})")
-
-
-

@@ -1,7 +1,7 @@
 """Class to group information about alphabets.
 """
 
-from typing import Union, overload, Iterator
+from typing import Union, overload, Iterator, Iterable
 
 LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
@@ -60,7 +60,7 @@ class Alphabet:
             return NotImplemented
         return self.alphabet == other.alphabet
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self) -> "AlphabetIterator":
         """
         TODO: use separate iterator object
         """
@@ -80,17 +80,13 @@ class Alphabet:
             raise KeyError("Character not in alphabet")
 
 
-class AlphabetIterator:
+class AlphabetIterator():
     """
     Iterator for alphabet
     """
-
     def __init__(self, obj: Alphabet) -> None:
         self.idx: int = 0
         self.obj = obj
-
-    def __iter__(self):
-        raise NotImplemented
 
     def __next__(self) -> str:
         self.idx += 1
@@ -127,10 +123,10 @@ def alphabet(text: list[int]) -> list[int]:
     return sorted(list(set(text)))
 
 
-def keyword_to_mixed_alphabet(keyword: list[int]) -> Alphabet:
-    """
-    construct alphabet order based on keyword
-    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
-    """
-    alphabet = Alphabet(data=keyword)
-    return alphabet
+#def keyword_to_mixed_alphabet(keyword: list[int]) -> Alphabet:
+#    """
+#    construct alphabet order based on keyword
+#    example:    keyword_to_alphabet(a2i("HYDRAULIC"))
+#    """
+#    alphabet = Alphabet(data=keyword)
+#    return alphabet

@@ -2,7 +2,7 @@
 """
 
 import collections.abc
-from typing import Optional, Union, overload
+from typing import Optional, Union, overload, Iterator, Iterable
 
 import aldegonde.structures.alphabet as alpha
 
@@ -114,7 +114,7 @@ class Sequence(collections.abc.Sequence):
             + ")"
         )
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[int]:
         """ """
         return SequenceIterator(self)
 
@@ -165,7 +165,6 @@ class SequenceIterator:
     """
     Iterator for Sequence
     """
-
     def __init__(self, obj: Sequence) -> None:
         self.idx: int = 0
         self.obj = obj
