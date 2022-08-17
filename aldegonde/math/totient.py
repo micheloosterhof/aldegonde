@@ -1,15 +1,15 @@
-def gcd(p, q):
+def gcd(p: int, q: int) -> int:
     # Create the gcd of two positive integers.
     while q != 0:
         p, q = q, p % q
     return p
 
 
-def is_coprime(x, y):
+def is_coprime(x: int, y: int) -> bool:
     return gcd(x, y) == 1
 
 
-def phi_func(x):
+def phi_func(x: int) -> int:
     """
     euler phi // totient
     """

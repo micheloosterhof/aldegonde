@@ -1,4 +1,5 @@
 import random
+from typing import Iterator
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -69,9 +70,9 @@ def randomrunes(l: int, maximum: int = 29) -> list[int]:
     """
     Random list of runes of lenth len
     """
-    output = []
+    output: list[int] = []
     for i in range(0, l):
-        output.append(random.randrange(0, max))
+        output.append(random.randrange(0, maximum))
     return output
 
 
@@ -130,11 +131,11 @@ class RuneIterator:
         self.length = length
         self.maximum = 29**length
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[list[int]]:
         self.i = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> list[int]:
         if self.i >= self.maximum:
             raise StopIteration
         else:

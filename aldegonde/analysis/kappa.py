@@ -1,5 +1,4 @@
-"""
-module description
+"""module description
 """
 
 from ..structures import sequence
@@ -12,10 +11,11 @@ def print_kappa(
     threshold: float = 1.3,
     trace: bool = False,
 ) -> None:
+    """The `Kappa` test. Overlay the ciphertext with itself shifted by a number
+    of positions, then count the positions with the same character.
     """
-    The `Kappa` test. Overlay the ciphertext with itself shifted by a number of positions, then count the
-    positions with the same character.
-    """
+    assert maximum >= 0
+    assert minimum >= 1
     MAX = len(ciphertext.alphabet)
     if maximum == 0:
         maximum = int(len(ciphertext) / 2)
@@ -30,6 +30,8 @@ def print_kappa(
                 dups = dups + 1
         if (dups / counter * MAX) > threshold or trace is True:
             print(
-                f"kappa: keylen={keylen:02d}, dups={dups:02d}, ioc={dups/counter*MAX:.3f} "
+                f"kappa: keylen={keylen:02d},"
+                + f"dups={dups:02d},"
+                + f"ioc={dups/counter*MAX:.3f} "
             )
     print()
