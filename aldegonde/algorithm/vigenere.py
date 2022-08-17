@@ -6,10 +6,10 @@ def variant_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
     output: Sequence = Sequence(alphabet=plaintext.alphabet)
-    for i in range(0, len(plaintext)):
+    for i, e in enumerate(plaintext):
         output.append(
             variant_beaufort_encrypt_module(
-                plaintext[i], primer[i % len(primer)], len(output.alphabet)
+                e, primer[i % len(primer)], len(output.alphabet)
             )
         )
     return output
@@ -27,8 +27,8 @@ def variant_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
-    for i in range(0, len(ciphertext)):
-        output.append((ciphertext[i] + primer[i % len(primer)]) % len(output.alphabet))
+    for i, e in enumerate(ciphertext):
+        output.append((e + primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
@@ -48,12 +48,10 @@ def beaufort_encrypt(
     Note: this is the same as beaufort_decrypt() !!
     """
     output: Sequence = Sequence(alphabet=plaintext.alphabet)
-    for i in range(0, len(plaintext)):
+    for i, e in enumerate(plaintext):
         # output.append((primer[i % len(primer)] - plaintext[i]) % len(output.alphabet))
         output.append(
-            beaufort_encrypt_module(
-                plaintext[i], primer[i % len(primer)], len(output.alphabet)
-            )
+            beaufort_encrypt_module(e, primer[i % len(primer)], len(output.alphabet))
         )
     return output
 
@@ -70,12 +68,10 @@ def beaufort_decrypt(
     Note: this is the same as beaufort_encrypt() !!
     """
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
-    for i in range(0, len(ciphertext)):
+    for i, e in enumerate(ciphertext):
         # output.append((primer[i % len(primer)] - ciphertext[i]) % len(output.alphabet))
         output.append(
-            beaufort_decrypt_module(
-                ciphertext[i], primer[i % len(primer)], len(output.alphabet)
-            )
+            beaufort_decrypt_module(e, primer[i % len(primer)], len(output.alphabet))
         )
     return output
 
@@ -88,10 +84,8 @@ def vigenere_encrypt(
     plaintext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
     output: Sequence = Sequence(alphabet=plaintext.alphabet)
-    print(output)
-    print(repr(output))
-    for i in range(0, len(plaintext)):
-        output.append((plaintext[i] + primer[i % len(primer)]) % len(output.alphabet))
+    for i, e in enumerate(plaintext):
+        output.append((e + primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
@@ -106,8 +100,8 @@ def vigenere_decrypt(
     ciphertext: Sequence, primer: Sequence, trace: bool = False
 ) -> Sequence:
     output: Sequence = Sequence(alphabet=ciphertext.alphabet)
-    for i in range(0, len(ciphertext)):
-        output.append((ciphertext[i] - primer[i % len(primer)]) % len(output.alphabet))
+    for i, e in enumerate(ciphertext):
+        output.append((e - primer[i % len(primer)]) % len(output.alphabet))
     return output
 
 
