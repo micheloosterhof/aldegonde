@@ -40,10 +40,10 @@ class Sequence(collections.abc.Sequence):
     def fromlist(cls, data: list[int], alphabet: list[str]) -> None:
         """from list constructor"""
         text: str = ""
-        alpha = alpha.Alphabet(alphabet)
+        abc = alpha.Alphabet(alphabet)
         for i in data:
-            text += alpha.i2a(i)
-        return cls(text=text, data=data.copy())
+            text += abc.i2a(i)
+        return cls(text=text, data=data.copy(), alphabet=abc)
 
     @classmethod
     def fromstr(cls, text: str, alphabet: list[str]) -> None:
