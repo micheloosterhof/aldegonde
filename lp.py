@@ -48,7 +48,7 @@ for i, s in enumerate(segments):
         # print(f"source: {s}")
         print(f"full alphabet: {seg.alphabet}")
         used = "".join([seg.alphabet[r] for r in set(seg.data)])
-        print(f"used alphabet: {used} {len(set(seg.data))} items")
+        print(f"used alphabet: {used} {len(set(seg.data))} symbols")
         # print(f"ciphertext: {seg.elements}")
         print(f"length: {len(seg)} runes")
         cicada3301.print_all(seg, limit=30)
@@ -72,6 +72,6 @@ for i, s in enumerate(segments):
         print("\n")
         # isomorph.print_isomorph_statistics(seg)
 
-        slide = ioc.sliding_window_ioc(seg, window=100)
-        for i, e in enumerate(slide):
-            print(f"{i:5d} {e:.3f}")
+        #slide = ioc.sliding_window_ioc(seg, window=100)
+        #for i, e in enumerate(slide):
+        #    print(f"{i:5d} {e:.3f}")

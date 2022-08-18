@@ -178,10 +178,10 @@ def vigenere_decrypt_with_alphabet(
         alphabet = list(range(0, len(ciphertext.alphabet) + 1))
     tr: list[list[int]] = construct_tabula_recta(alphabet)
 
-    for i in range(0, len(ciphertext)):
+    for i, e in enumerate(ciphertext):
         row_index = alphabet.index(primer[i % len(primer)])
         row = tr[row_index]
-        column_index = row.index(ciphertext[i])
+        column_index = row.index(e)
         output.append(alphabet[column_index])
 
     return output
