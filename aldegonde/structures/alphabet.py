@@ -7,6 +7,7 @@ LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
 DIGITS_ALPHABET = [chr(code) for code in range(ord("0"), ord("9") + 1)]
 BASE62_ALPHABET = LOWERCASE_ALPHABET + UPPERCASE_ALPHABET + DIGITS_ALPHABET
+BASE64_ALPHABET = LOWERCASE_ALPHABET + UPPERCASE_ALPHABET + DIGITS_ALPHABET + ["/", "="]
 
 
 class Alphabet:
@@ -80,10 +81,11 @@ class Alphabet:
             raise KeyError("Character not in alphabet")
 
 
-class AlphabetIterator():
+class AlphabetIterator:
     """
     Iterator for alphabet
     """
+
     def __init__(self, obj: Alphabet) -> None:
         self.idx: int = 0
         self.obj = obj
@@ -123,7 +125,7 @@ def alphabet(text: list[int]) -> list[int]:
     return sorted(list(set(text)))
 
 
-#def keyword_to_mixed_alphabet(keyword: list[int]) -> Alphabet:
+# def keyword_to_mixed_alphabet(keyword: list[int]) -> Alphabet:
 #    """
 #    construct alphabet order based on keyword
 #    example:    keyword_to_alphabet(a2i("HYDRAULIC"))

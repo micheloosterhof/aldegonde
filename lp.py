@@ -38,10 +38,10 @@ for i, s in enumerate(segments):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
-    seg = sequence.Sequence(s, alphabet=cicada3301.CICADA_ALPHABET)
+    seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
     for skip in range(1, 2):
         # print(f"skip={skip}")
-        # seg = sequence.Sequence(data=deltastream(seg1.data, skip=skip), alphabet=cicada3301.CICADA_ALPHABET)
+        # seg = sequence.Sequence.fromlist(data=deltastream(seg1.data, skip=skip), alphabet=cicada3301.CICADA_ALPHABET)
         if len(seg) == 0:
             print("EMPTY SEGMENT {i}")
             continue

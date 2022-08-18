@@ -11,62 +11,54 @@ import aldegonde.structures.alphabet as alpha
 
 class Sequence(collections.abc.Sequence):
     """A sequence object, composed of plaintext or ciphertext
-    It consists of elements, modeled as integers, and an alphabet of all possible options
+    It consists of elements, modeled as integers, and an alphabet of all possible symbols
 
     Example:
         >>> decryption = Sequence(text="plaintext")
     """
 
-    text: str = ""
-    data: list[int] = []
+    text: str
+    data: list[int]
     alphabet: alpha.Alphabet
 
     def __init__(
         self,
-        text: Optional[str] = None,
-        data: Optional[list[int]] = None,
-        alphabet: Union[list[str], str, alpha.Alphabet, None] = None,
+        text: str = None,
+        data: list[int] = None,
+        alphabet: alpha.Alphabet = alpha.LOWERCASE_ALPHABET,
     ) -> None:
         """
         Args:
             text: The text
             data: Raw elements as indices to the alphabet
         """
-        if text is not None and data is not None:
-            raise TypeError("Either construct with data or text, not both")
+        self.alphabet = alphabet
+        self.data = data
+        self.text = text
 
-        if isinstance(alphabet, alpha.Alphabet):
-            self.alphabet = alphabet
-        elif isinstance(alphabet, str) or isinstance(alphabet, list):
-            self.alphabet = alpha.Alphabet(alphabet)
-        elif alphabet is None:
-            self.alphabet = alpha.Alphabet()
-        else:
-            raise TypeError(f"Unsupported type: {type(alphabet)}")
+    @classmethod
+    def fromlist(cls, data: list[int], alphabet: list[str]) -> None:
+        """from list constructor"""
+        text: str = ""
+        alpha = alpha.Alphabet(alphabet)
+        for i in data:
+            text += alpha.i2a(i)
+        return cls(text=text, data=data.copy())
 
-        # TODO text can be an iterator..., not always a list
-        if text is not None:
-            self.data = []
-            self.text = text
-            skips = []
-            for c in text:
-                try:
-                    self.data.append(self.alphabet.a2i(c))
-                except KeyError:
-                    skips.append(c)
-                    pass
-            print(f"skipped characters {repr(set(skips))}")
-
-        elif data is not None:
-            self.data = data.copy()
-            self.text = ""
-            for i in self.data:
-                self.text += self.alphabet.i2a(i)
-        else:
-            self.data = []
-            self.text = ""
-            # empty array
-            pass
+    @classmethod
+    def fromstr(cls, text: str, alphabet: list[str]) -> None:
+        """from str constructor"""
+        abc = alpha.Alphabet(alphabet)
+        data = []
+        skips = []
+        for c in text:
+            try:
+                data.append(abc.a2i(c))
+            except KeyError:
+                skips.append(c)
+                pass
+        print(f"skipped characters {repr(set(skips))}")
+        return cls(text=text, data=data, alphabet=abc)
 
     def restore_punctuation(self) -> str:
         """
@@ -94,15 +86,11 @@ class Sequence(collections.abc.Sequence):
         ...
 
     def __getitem__(self, key: Union[int, slice]) -> Union[int, list[int]]:
-        """
-        Return character at this position like a normal sequence
-        """
+        """Return character at this position like a normal sequence"""
         return self.data.__getitem__(key)
 
     def __len__(self) -> int:
-        """
-        Number of elements
-        """
+        """Number of elements"""
         return len(self.data)
 
     def __repr__(self) -> str:
@@ -165,6 +153,7 @@ class SequenceIterator:
     """
     Iterator for Sequence
     """
+
     def __init__(self, obj: Sequence) -> None:
         self.idx: int = 0
         self.obj = obj
