@@ -105,13 +105,6 @@ def vigenere_decrypt(
     return output
 
 
-def vigenere_encrypt_module(char: int, modifier: int, alphabetlen: int) -> int:
-    """
-    Plain Vigenere P=C-K
-    """
-    return (char - modifier) % alphabetlen
-
-
 def construct_tabula_recta(alphabet: Alphabet, trace: bool = True):
     """
     construct a tabula recta based on custom alphabet.
@@ -149,7 +142,7 @@ def vigenere_encrypt_with_alphabet(
     """
     Vigenere with custom alphabet. Also known as the Quagmire I
     """
-    output: Sequence = Sequence()
+    output: Sequence = Sequence(alphabet=plaintext.alphabet)
     if not alphabet:
         alphabet = list(range(0, len(plaintext.alphabet) + 1))
     tr: list[list[int]] = construct_tabula_recta(alphabet)
@@ -173,7 +166,7 @@ def vigenere_decrypt_with_alphabet(
     """
     Plain Vigenere C=P+K
     """
-    output: Sequence = Sequence()
+    output: Sequence = Sequence(alphabet=ciphertext.alphabet)
     if not alphabet:
         alphabet = list(range(0, len(ciphertext.alphabet) + 1))
     tr: list[list[int]] = construct_tabula_recta(alphabet)

@@ -2,9 +2,11 @@
 
 from ..structures import alphabet, sequence
 
-from .ngrams import ngrams, iterngrams
+from .ngrams import ngrams, iterngrams, trigraphs, tetragraphs
 
-uniq = sequence.Sequence(data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET)
+uniq = sequence.Sequence.fromlist(
+    data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET
+)
 
 
 def test_ngram_unique():

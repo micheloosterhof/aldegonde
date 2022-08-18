@@ -3,9 +3,11 @@
 from ..structures import sequence, alphabet
 from .doublets import doublets, triplets
 
-uniq = sequence.Sequence("ABCDEFGH", alphabet=alphabet.UPPERCASE_ALPHABET)
-dobl = sequence.Sequence("AABBCCDDEEFFGGHH", alphabet=alphabet.UPPERCASE_ALPHABET)
-trpl = sequence.Sequence(
+uniq = sequence.Sequence.fromstr("ABCDEFGH", alphabet=alphabet.UPPERCASE_ALPHABET)
+dobl = sequence.Sequence.fromstr(
+    "AABBCCDDEEFFGGHH", alphabet=alphabet.UPPERCASE_ALPHABET
+)
+trpl = sequence.Sequence.fromstr(
     "AAABBBCCCDDDEEEFFFGGGHHH", alphabet=alphabet.UPPERCASE_ALPHABET
 )
 

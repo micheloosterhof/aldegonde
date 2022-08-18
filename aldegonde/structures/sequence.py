@@ -23,9 +23,9 @@ class Sequence(collections.abc.Sequence):
 
     def __init__(
         self,
-        text: str = None,
-        data: list[int] = None,
-        alphabet: alpha.Alphabet = alpha.LOWERCASE_ALPHABET,
+        text: str = "",
+        data: list[int] = [],
+        alphabet: alpha.Alphabet = alpha.Alphabet(alpha.LOWERCASE_ALPHABET)
     ) -> None:
         """
         Args:
@@ -33,11 +33,11 @@ class Sequence(collections.abc.Sequence):
             data: Raw elements as indices to the alphabet
         """
         self.alphabet = alphabet
-        self.data = data
+        self.data = data.copy()
         self.text = text
 
     @classmethod
-    def fromlist(cls, data: list[int], alphabet: list[str]) -> None:
+    def fromlist(cls, data: list[int], alphabet: list[str]):
         """from list constructor"""
         text: str = ""
         abc = alpha.Alphabet(alphabet)
@@ -46,7 +46,7 @@ class Sequence(collections.abc.Sequence):
         return cls(text=text, data=data.copy(), alphabet=abc)
 
     @classmethod
-    def fromstr(cls, text: str, alphabet: list[str]) -> None:
+    def fromstr(cls, text: str, alphabet: list[str]):
         """from str constructor"""
         abc = alpha.Alphabet(alphabet)
         data = []

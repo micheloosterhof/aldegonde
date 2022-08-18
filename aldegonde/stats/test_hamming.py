@@ -3,9 +3,9 @@
 from ..structures import sequence, alphabet
 from .hamming import hamming_distance
 
-karolin = sequence.Sequence("karolin", alphabet=alphabet.LOWERCASE_ALPHABET)
-kathrin = sequence.Sequence("kathrin", alphabet=alphabet.LOWERCASE_ALPHABET)
-kerstin = sequence.Sequence("kerstin", alphabet=alphabet.LOWERCASE_ALPHABET)
+karolin = sequence.Sequence.fromstr("karolin", alphabet=alphabet.LOWERCASE_ALPHABET)
+kathrin = sequence.Sequence.fromstr("kathrin", alphabet=alphabet.LOWERCASE_ALPHABET)
+kerstin = sequence.Sequence.fromstr("kerstin", alphabet=alphabet.LOWERCASE_ALPHABET)
 
 
 def test_hamming():

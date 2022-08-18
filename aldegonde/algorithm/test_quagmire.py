@@ -20,15 +20,15 @@ Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is
 def test_quagmire_1() -> None:
     return 0
 
-    demo_alphabet = Sequence(
+    demo_alphabet = Sequence.fromstr(
         text="PAULBRNDTCEFGHIJKMOQSVWXYZ", alphabet=UPPERCASE_ALPHABET
     )
-    demo_key = Sequence("BRANDT", alphabet=UPPERCASE_ALPHABET)
-    demo_ciphertext = Sequence(
+    demo_key = Sequence.fromstr("BRANDT", alphabet=UPPERCASE_ALPHABET)
+    demo_ciphertext = Sequence.fromstr(
         "HIFUFCIRFKUYKYJPFQSSHZMMQONGKFKTNDQAWDJSKFKVJNHCLIRUCXOWHGUYIDJDUKG",
         alphabet=UPPERCASE_ALPHABET,
     )
-    demo_plaintext = Sequence(
+    demo_plaintext = Sequence.fromstr(
         "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON",
         alphabet=UPPERCASE_ALPHABET,
     )
@@ -41,15 +41,15 @@ def test_quagmire_1() -> None:
 
 
 def test_vigenere_with_custom_alphabet() -> None:
-    demo_alphabet = Sequence(
+    demo_alphabet = Sequence.fromstr(
         text="KRYPTOSABCDEFGHIJLMNQUVWXZ", alphabet=UPPERCASE_ALPHABET
     )
-    demo_key = Sequence("PALIMPSEST", alphabet=UPPERCASE_ALPHABET)
-    demo_cipher_string = Sequence(
+    demo_key = Sequence.fromstr("PALIMPSEST", alphabet=UPPERCASE_ALPHABET)
+    demo_cipher_string = Sequence.fromstr(
         "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD",
         alphabet=UPPERCASE_ALPHABET,
     )
-    demo_cipher_decoded = Sequence(
+    demo_cipher_decoded = Sequence.fromstr(
         "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION",
         alphabet=UPPERCASE_ALPHABET,
     )
