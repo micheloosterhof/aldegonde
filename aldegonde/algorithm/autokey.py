@@ -17,8 +17,8 @@ def ciphertext_autokey_vigenere_encrypt(
     key: Sequence = primer.copy()
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (plaintext[j] + key[j]) % MAX
+    for i, e in enumerate(plaintext):
+        c = (e + key[i]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -34,8 +34,8 @@ def ciphertext_autokey_vigenere_decrypt(
     MAX = len(ciphertext.alphabet)
     key = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] - key[j]) % MAX)
+    for i, e in enumerate(ciphertext):
+        output.append((e - key[i]) % MAX)
     return output
 
 
@@ -49,8 +49,8 @@ def ciphertext_autokey_beaufort_encrypt(
     key: Sequence = primer.copy()
     MAX = len(plaintext.alphabet)
     output = Sequence(alphabet=plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (key[j] - plaintext[j]) % MAX
+    for i, e in enumerate(plaintext):
+        c = (key[j] - e) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -66,8 +66,8 @@ def ciphertext_autokey_beaufort_decrypt(
     key: Sequence = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        output.append((key[j] - ciphertext[j]) % MAX)
+    for i, e in enumerate(ciphertext):
+        output.append((key[i] - e) % MAX)
     return output
 
 
@@ -81,8 +81,8 @@ def ciphertext_autokey_variant_beaufort_encrypt(
     key: Sequence = primer.copy()
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j]) % MAX
+    for i in enumerate(plaintext):
+        c = (e - key[i]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -98,8 +98,8 @@ def ciphertext_autokey_variant_beaufort_decrypt(
     key: Sequence = primer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        output.append((ciphertext[j] + key[j]) % MAX)
+    for i in enumerate(ciphertext):
+        output.append((e + key[j]) % MAX)
     return output
 
 
@@ -120,23 +120,23 @@ def combo_autokey_vigenere_encrypt(
     cipher_key: Sequence = cipherprimer
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
-    for j in range(0, len(plaintext)):
+    for i, e in enumerate(plaintext):
         if mode == 1:
-            c = (plaintext[j] + plain_key[j] + cipher_key[j]) % MAX
+            c = (e + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 2:
-            c = (plaintext[j] + plain_key[j] - cipher_key[j]) % MAX
+            c = (e + plain_key[j] - cipher_key[j]) % MAX
         elif mode == 3:
-            c = (plaintext[j] - plain_key[j] + cipher_key[j]) % MAX
+            c = (e - plain_key[j] + cipher_key[j]) % MAX
         elif mode == 4:
-            c = (plaintext[j] - plain_key[j] - cipher_key[j]) % MAX
+            c = (e - plain_key[j] - cipher_key[j]) % MAX
         elif mode == 5:
-            c = (-plaintext[j] + plain_key[j] + cipher_key[j]) % MAX
+            c = (-e + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 6:
-            c = (-plaintext[j] + plain_key[j] - cipher_key[j]) % MAX
+            c = (-e + plain_key[j] - cipher_key[j]) % MAX
         elif mode == 7:
-            c = (-plaintext[j] - plain_key[j] + cipher_key[j]) % MAX
+            c = (-e - plain_key[j] + cipher_key[j]) % MAX
         elif mode == 8:
-            c = (-plaintext[j] - plain_key[j] - cipher_key[j]) % MAX
+            c = (-e - plain_key[j] - cipher_key[j]) % MAX
         else:
             raise Exception
         cipher_key.append(c)
@@ -156,23 +156,23 @@ def combo_autokey_vigenere_decrypt(
     cipher_key: Sequence = cipherprimer + ciphertext
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
+    for i in enumerate(ciphertext):
         if mode == 1:
-            p = (ciphertext[j] - plain_key[j] - cipher_key[j]) % MAX
+            p = (e - plain_key[j] - cipher_key[j]) % MAX
         elif mode == 2:
-            p = (ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
+            p = (e - plain_key[j] + cipher_key[j]) % MAX
         elif mode == 3:
-            p = (ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
+            p = (e + plain_key[j] - cipher_key[j]) % MAX
         elif mode == 4:
-            p = (ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
+            p = (e + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 5:
-            p = (-ciphertext[j] + plain_key[j] + cipher_key[j]) % MAX
+            p = (-e + plain_key[j] + cipher_key[j]) % MAX
         elif mode == 6:
-            p = (-ciphertext[j] + plain_key[j] - cipher_key[j]) % MAX
+            p = (-e + plain_key[j] - cipher_key[j]) % MAX
         elif mode == 7:
-            p = (-ciphertext[j] - plain_key[j] + cipher_key[j]) % MAX
+            p = (-e - plain_key[j] + cipher_key[j]) % MAX
         elif mode == 8:
-            p = (-ciphertext[j] - plain_key[j] - cipher_key[j]) % MAX
+            p = (-e - plain_key[j] - cipher_key[j]) % MAX
         else:
             raise Exception
         plain_key.append(p)
@@ -195,8 +195,8 @@ def plaintext_autokey_vigenere_encrypt(
     key = primer + plaintext
     MAX = len(plaintext.alphabet)
     output = Sequence(alphabet=plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (plaintext[j] + key[j]) % MAX
+    for i, e in enumerate(plaintext):
+        c = (e + key[i]) % MAX
         output.append(c)
     return output
 
@@ -220,10 +220,10 @@ def plaintext_autokey_vigenere_encrypt_with_alphabet(
     tr: list[list[int]] = construct_tabula_recta(alphabet)
     abc = list(alphabet)
 
-    for i in range(0, len(plaintext)):
+    for i, e in enumerate(plaintext):
         row_index = abc.index(key[i])
         row = tr[row_index]
-        column_index = abc.index(plaintext[i])
+        column_index = abc.index(e)
         output.append(tr[row_index][column_index])
 
     return output
@@ -239,8 +239,8 @@ def plaintext_autokey_vigenere_decrypt(
     key: Sequence = primer.copy()
     MAX = len(ciphertext.alphabet)
     output = Sequence(alphabet=ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        c = (ciphertext[j] - key[j]) % MAX
+    for i, e in enumerate(ciphertext):
+        c = (e - key[i]) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -250,14 +250,14 @@ def plaintext_autokey_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
-    Minuend primitive without any console output, C=K-P
+    Beaufort primitive without any console output, C=K-P
     """
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer + plaintext
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (key[j] - plaintext[j]) % MAX
+    for i in enumerate(plaintext):
+        c = (key[i] - e) % MAX
         output.append(c)
     return output
 
@@ -266,14 +266,14 @@ def plaintext_autokey_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
-    Minuend primitive without any console output, P=K-C
+    Beaufort primitive without any console output, P=K-C
     """
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer.copy()
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        c = (key[j] - ciphertext[j]) % MAX
+    for i, e in enumerate(ciphertext):
+        c = (key[i] - e) % MAX
         output.append(c)
         key.append(c)
     return output
@@ -283,14 +283,14 @@ def plaintext_autokey_variant_beaufort_encrypt(
     plaintext: Sequence, primer: Sequence
 ) -> Sequence:
     """
-    Beafort primitive without any console output, C=P-K
+    Variant Beafort primitive without any console output, C=P-K
     """
     assert primer.alphabet == plaintext.alphabet
     key: Sequence = primer + plaintext
     output = Sequence(alphabet=plaintext.alphabet)
     MAX = len(plaintext.alphabet)
-    for j in range(0, len(plaintext)):
-        c = (plaintext[j] - key[j]) % MAX
+    for i, e in enumerate(plaintext):
+        c = (e - key[i]) % MAX
         output.append(c)
     return output
 
@@ -299,20 +299,17 @@ def plaintext_autokey_variant_beaufort_decrypt(
     ciphertext: Sequence, primer: Sequence
 ) -> Sequence:
     """
-    Beafort primitive without any console output, P=C+K
+    Variant Beafort primitive without any console output, P=C+K
     """
     assert primer.alphabet == ciphertext.alphabet
     key: Sequence = primer.copy()
     output = Sequence(alphabet=ciphertext.alphabet)
     MAX = len(ciphertext.alphabet)
-    for j in range(0, len(ciphertext)):
-        p = (key[j] + ciphertext[j]) % MAX
+    for i, e in enumerate(ciphertext):
+        p = (key[i] + e) % MAX
         output.append(p)
         key.append(p)
     return output
-
-
-# Vigenere Autokey with custom alphabet
 
 
 def plaintext_autokey_vigenere_encrypt_with_alphabet(
@@ -322,7 +319,7 @@ def plaintext_autokey_vigenere_encrypt_with_alphabet(
     trace: bool = False,
 ) -> Sequence:
     """
-    Plain Vigenere C=P+K
+    Vigenere Autokey with custom alphabet
     """
     assert primer.alphabet == plaintext.alphabet
     output = Sequence(alphabet=plaintext.alphabet)
