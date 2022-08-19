@@ -2,11 +2,9 @@
 """
 
 import collections.abc
-from typing import Optional, Union, overload, Iterator, Iterable
+from typing import Union, overload, Iterator
 
 import aldegonde.structures.alphabet as alpha
-
-# TODO: can we inherit from abc.Sequence?
 
 
 class Sequence(collections.abc.Sequence):
@@ -23,18 +21,24 @@ class Sequence(collections.abc.Sequence):
 
     def __init__(
         self,
-        text: str = "",
-        data: list[int] = [],
-        alphabet: alpha.Alphabet = alpha.Alphabet(alpha.LOWERCASE_ALPHABET)
+        text: str = None,
+        data: list[int] = None,
+        alphabet: alpha.Alphabet = alpha.Alphabet(alpha.LOWERCASE_ALPHABET),
     ) -> None:
         """
         Args:
             text: The text
             data: Raw elements as indices to the alphabet
         """
+        if data:
+            self.data = data.copy()
+        else:
+            self.data = []
+        if text:
+            self.text = text
+        else:
+            self.text = ""
         self.alphabet = alphabet
-        self.data = data.copy()
-        self.text = text
 
     @classmethod
     def fromlist(cls, data: list[int], alphabet: list[str]):
@@ -49,15 +53,15 @@ class Sequence(collections.abc.Sequence):
     def fromstr(cls, text: str, alphabet: list[str]):
         """from str constructor"""
         abc = alpha.Alphabet(alphabet)
-        data = []
-        skips = []
-        for c in text:
+        data: list[int] = []
+        skips: list[str] = []
+        for symbol in text:
             try:
-                data.append(abc.a2i(c))
+                data.append(abc.a2i(symbol))
             except KeyError:
-                skips.append(c)
-                pass
-        print(f"skipped characters {repr(set(skips))}")
+                skips.append(symbol)
+        if skips:
+            print(f"skipped characters {repr(set(skips))}")
         return cls(text=text, data=data, alphabet=abc)
 
     def restore_punctuation(self) -> str:
@@ -67,14 +71,15 @@ class Sequence(collections.abc.Sequence):
         out: str = ""
         count: int = 0
         skips: list = []
-        for c in self.text:
+        for symbol in self.text:
             try:
                 out += self.alphabet.i2a(self.data[count])
                 count += 1
             except IndexError:
-                skips.append(c)
-                out += c
-        print(f"skips: {repr(set(skips))}")
+                skips.append(symbol)
+                out += symbol
+        if skips:
+            print(f"skips: {repr(set(skips))}")
         return out
 
     @overload
@@ -110,17 +115,17 @@ class Sequence(collections.abc.Sequence):
         """ """
         if self.text:
             return self.restore_punctuation()
-        else:
-            return "".join(map(self.alphabet.i2a, self.data))
+        return "".join(map(self.alphabet.i2a, self.data))
 
-    def index(self, elem: int) -> int:
+    def index(self, value: int) -> int:
+        # def index(self, value: int, start: int = ..., stop: int = ...) -> int:
         """
         return index of element
         """
-        return self.data.index(elem)
+        return self.data.index(value)
 
-    def append(self, item):
-        """ """
+    def append(self, item: int):
+        """append element"""
         if not isinstance(item, int):
             raise TypeError
         if item > len(self.alphabet):
@@ -170,9 +175,8 @@ def find(sequence: list[int], runes: list[int]) -> list[int]:
     """
     find `sequence` inside the list of `runes`, return array with indexes
     """
-    N = len(runes)
     results = []
-    for index in range(0, N - len(sequence) + 1):
+    for index in range(0, len(runes) - len(sequence) + 1):
         if sequence == runes[index : index + len(sequence)]:
             results.append(index)
     return results
