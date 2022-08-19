@@ -2,12 +2,12 @@
 """
 
 import collections.abc
-from typing import Union, overload, Iterator
+from typing import Optional, Union, overload, Iterator
 
 import aldegonde.structures.alphabet as alpha
 
 
-class Sequence(collections.abc.Sequence):
+class Sequence(collections.abc.Sequence[int]):
     """A sequence object, composed of plaintext or ciphertext
     It consists of elements, modeled as integers, and an alphabet of all possible symbols
 
@@ -21,8 +21,8 @@ class Sequence(collections.abc.Sequence):
 
     def __init__(
         self,
-        text: str = None,
-        data: list[int] = None,
+        text: Optional[str] = None,
+        data: Optional[list[int]] = None,
         alphabet: alpha.Alphabet = alpha.Alphabet(alpha.LOWERCASE_ALPHABET),
     ) -> None:
         """
@@ -41,7 +41,7 @@ class Sequence(collections.abc.Sequence):
         self.alphabet = alphabet
 
     @classmethod
-    def fromlist(cls, data: list[int], alphabet: list[str]):
+    def fromlist(cls, data: list[int], alphabet: list[str]) -> "Sequence":
         """from list constructor"""
         text: str = ""
         abc = alpha.Alphabet(alphabet)
@@ -50,7 +50,7 @@ class Sequence(collections.abc.Sequence):
         return cls(text=text, data=data.copy(), alphabet=abc)
 
     @classmethod
-    def fromstr(cls, text: str, alphabet: list[str]):
+    def fromstr(cls, text: str, alphabet: list[str]) -> "Sequence":
         """from str constructor"""
         abc = alpha.Alphabet(alphabet)
         data: list[int] = []
@@ -70,7 +70,7 @@ class Sequence(collections.abc.Sequence):
         """
         out: str = ""
         count: int = 0
-        skips: list = []
+        skips: list[str] = []
         for symbol in self.text:
             try:
                 out += self.alphabet.i2a(self.data[count])
@@ -124,7 +124,7 @@ class Sequence(collections.abc.Sequence):
         """
         return self.data.index(value)
 
-    def append(self, item: int):
+    def append(self, item: int) -> None:
         """append element"""
         if not isinstance(item, int):
             raise TypeError
@@ -132,12 +132,14 @@ class Sequence(collections.abc.Sequence):
             raise TypeError("Item outside alphabet")
         self.data.append(item)
 
-    def __add__(self, other):
+    def __add__(self, other: "Sequence") -> "Sequence":
         if other.alphabet != self.alphabet:
             raise TypeError("Alphabets don't match")
         return Sequence(data=(self.data + other.data), alphabet=self.alphabet)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Sequence):
+            return NotImplemented
         try:
             if other.alphabet != self.alphabet:
                 return False
@@ -148,7 +150,7 @@ class Sequence(collections.abc.Sequence):
             return False
         return True
 
-    def copy(self):
+    def copy(self) -> "Sequence":
         newone = type(self)()
         newone.__dict__.update(self.__dict__)
         return newone
@@ -163,7 +165,7 @@ class SequenceIterator:
         self.idx: int = 0
         self.obj = obj
 
-    def __next__(self):
+    def __next__(self) -> int:
         self.idx += 1
         try:
             return self.obj[self.idx - 1]
