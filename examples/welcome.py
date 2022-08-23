@@ -44,11 +44,11 @@ def beaufort_decrypt_interrupted(
 
 
 print(f"source: {welcome}")
-seq = sequence.Sequence(welcome, alphabet=cicada3301.CICADA_ALPHABET)
+seq = sequence.Sequence.fromstr(welcome, alphabet=cicada3301.CICADA_ALPHABET)
 print(f"alphabet: {seq.alphabet}")
 print(f"ciphertext: {seq.data}")
 print(f"length: {len(seq)} runes")
-print(f"ioc={ioc.ioc(seq):.3f} nioc={ioc.normalized_ioc(seq):.3f}")
+ioc.print_ioc_statistics(seq)
 
 plain = beaufort_decrypt_interrupted(
     seq, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
