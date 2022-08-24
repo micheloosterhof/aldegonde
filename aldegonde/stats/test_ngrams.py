@@ -9,7 +9,7 @@ uniq = sequence.Sequence.fromlist(
 )
 
 
-def test_ngram_unique():
+def test_ngram_unique() -> None:
     assert ngrams(uniq, length=2, cut=0) == [[0, 1], [1, 2], [2, 3], [3, 4]]
     assert ngrams(uniq, length=2, cut=1) == [[0, 1], [2, 3]]
     assert ngrams(uniq, length=2, cut=2) == [[1, 2], [3, 4]]
