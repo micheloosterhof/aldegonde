@@ -1,11 +1,13 @@
 """eois sequence functions"""
 
+from functools import cache
 import json
 from urllib import request
 
 # import requests
 
 
+@cache
 def result_eois(seq: int) -> list[int]:
     """https://oeis.org/search?fmt=<json|text>&q=id:A<sequenceNumber>"""
     with request.urlopen(
