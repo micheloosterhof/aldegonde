@@ -18,5 +18,5 @@ def result_eois(seq: int) -> list[int]:
         print(f"{len(results)} results")
         result = results[0]
         print(result["data"])
-        data = result["data"]
+        data = [int(z) for z in result["data"].split(",")]
     return data

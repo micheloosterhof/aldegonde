@@ -2,5 +2,5 @@ from . import eois
 
 
 def test_eois_result() -> None:
-    print(eois.result_eois(1))
-    raise Exception
+    data = eois.result_eois(40)
+    assert data[0:10] == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
