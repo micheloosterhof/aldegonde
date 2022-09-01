@@ -31,7 +31,7 @@ CICADA_ALPHABET = [
 ]
 
 
-def construct_tabula_recta(alphabet, trace: bool = False):
+def construct_tabula_recta(alphabet, trace: bool = False) -> list[list[int]]:
     """
     construct a tabula recta based on custom alphabet.
     output is a MAX*MAX matrix

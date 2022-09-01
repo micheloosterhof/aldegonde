@@ -18,7 +18,7 @@ Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is
 
 
 def test_quagmire_1() -> None:
-    return 0
+    return
 
     demo_alphabet = Sequence.fromstr(
         text="PAULBRNDTCEFGHIJKMOQSVWXYZ", alphabet=UPPERCASE_ALPHABET
