@@ -34,17 +34,12 @@ def print_repeat_statistics(
 
         # first method, poisson distribution
         mu: float = len(ciphertext) / pow(MAX, length)
-        expected1 = pow(MAX, length) * poisson.pmf(2, mu)
+        expected = pow(MAX, length) * poisson.sf(k=1, mu=mu, loc=0)
         var = poisson.stats(mu, loc=0, moments="v") * pow(MAX, length)
-        sigmage1: float = abs(num - expected1) / math.sqrt(var)
+        sigmage: float = abs(num - expected) / math.sqrt(var)
         # sigmage: float = abs(num - expected1) / poisson.std(mu)
-
-        # second method, simple math
-        expected2 = len(ciphertext) * (len(ciphertext) - 1) / (2 * pow(MAX, length))
-        sigmage2: float = abs(num - expected2) / math.sqrt(var)
-
         print(
-            f"repeats length {length}: observed={num:d} expected1={expected1:.3f} S1={sigmage1:.2f}σ expected2={expected2:.3f} S2={sigmage2:.2f}σ"
+            f"repeats length {length}: observed={num:d} expected={expected:.3f} S1={sigmage:.2f}σ"
         )
 
 
