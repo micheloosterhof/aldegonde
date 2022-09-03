@@ -39,7 +39,7 @@ def print_repeat_statistics(
         sigmage: float = abs(num - expected) / math.sqrt(var)
         # sigmage: float = abs(num - expected1) / poisson.std(mu)
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.3f} S1={sigmage:.2f}σ"
+            f"repeats length {length}: observed={num:d} expected={expected:.2f} S1={sigmage:.2f}σ"
         )
 
 
