@@ -2,6 +2,7 @@
 """
 
 import itertools
+from typing import Iterable, Iterator
 
 
 def primes(n: int) -> list[int]:
@@ -16,14 +17,14 @@ def primes(n: int) -> list[int]:
     return out
 
 
-class PrimeGenerator:
+class PrimeGenerator(Iterable):
     """primes as a generator"""
 
     def __init__(self) -> None:
-        self.primes = []
+        self.primes: list[int] = []
         self.current = 1
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[int]:
         return self
 
     def __next__(self) -> int:
