@@ -1,3 +1,5 @@
+"""Functions to deal with Cicada 3301"""
+
 import random
 from typing import Iterator
 
@@ -66,12 +68,12 @@ CICADA_ENGLISH_ALPHABET = [
 ]
 
 
-def randomrunes(l: int, maximum: int = 29) -> list[int]:
+def randomrunes(length: int, maximum: int = 29) -> list[int]:
     """
     Random list of runes of lenth len
     """
     output: list[int] = []
-    for i in range(0, l):
+    for _ in range(0, length):
         output.append(random.randrange(0, maximum))
     return output
 
@@ -82,7 +84,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
     """
     output = []
     prev = None
-    for i in range(0, length):
+    for _ in range(0, length):
         rune = random.randrange(0, maximum)
         if rune == prev and random.randrange(0, 6) > 0:
             rune = random.randrange(0, maximum)
@@ -145,6 +147,7 @@ class RuneIterator:
 
 
 def print_all(runes: list[int], limit: int = 0) -> None:
+    """Print runes, rune indexes and english output"""
     print_rune(runes, limit)
     print_rune_index(runes, limit)
     print_english(runes, limit)
@@ -157,9 +160,10 @@ def print_english(runes: list[int], limit: int = 0) -> None:
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
-    print("ENGLISH:  ", end="")
+    print("ENGLISH: ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(CICADA_ENGLISH_ALPHABET[runes[i]]), end="")
+        eng = CICADA_ENGLISH_ALPHABET[runes[i]]
+        print(f"{eng:>2} ", end="")
     print()
 
 
