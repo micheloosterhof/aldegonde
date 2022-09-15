@@ -2,12 +2,12 @@
 """
 
 import collections.abc
-from typing import Optional, Union, overload, Iterator
+from typing import Optional, Union, overload, Iterator, Iterable
 
 import aldegonde.structures.alphabet as alpha
 
 
-class Sequence(collections.abc.Sequence[int]):
+class Sequence(collections.abc.Sequence[int], Iterable):
     """A sequence object, composed of plaintext or ciphertext
     It consists of elements, modeled as integers, and an alphabet of all possible symbols
 
@@ -156,7 +156,7 @@ class Sequence(collections.abc.Sequence[int]):
         return newone
 
 
-class SequenceIterator:
+class SequenceIterator(Iterator):
     """
     Iterator for Sequence
     """

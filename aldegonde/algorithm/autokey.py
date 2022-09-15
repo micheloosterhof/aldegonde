@@ -1,6 +1,7 @@
 """
 ciphertext autokey variations
-we can do 3 operations, 2 subtractions and 1 addition, addition=vigenere, subtraction=beaufort, minuend
+we can do 3 operations, 2 subtractions and 1 addition
+addition=vigenere, subtraction=beaufort, minuend
 C=P+K C=P-K, C=K-P
 """
 

@@ -1,3 +1,5 @@
+"""simple shift cipher"""
+
 from ..structures import sequence
 
 

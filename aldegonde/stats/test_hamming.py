@@ -8,7 +8,7 @@ kathrin = sequence.Sequence.fromstr("kathrin", alphabet=alphabet.LOWERCASE_ALPHA
 kerstin = sequence.Sequence.fromstr("kerstin", alphabet=alphabet.LOWERCASE_ALPHABET)
 
 
-def test_hamming():
+def test_hamming() -> None:
     assert hamming_distance(karolin, kathrin) == 3
     assert hamming_distance(karolin, kerstin) == 3
     assert hamming_distance(kathrin, kerstin) == 4

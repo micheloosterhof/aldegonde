@@ -1,5 +1,7 @@
 from ..structures.alphabet import Alphabet
 from ..structures.sequence import Sequence
+from ..analysis.split import split_by_slice
+from ..stats.ioc import ioc
 
 
 def variant_beaufort_encrypt(
@@ -105,7 +107,7 @@ def vigenere_decrypt(
     return output
 
 
-def construct_tabula_recta(alphabet: Alphabet, trace: bool = True):
+def construct_tabula_recta(alphabet: Alphabet, trace: bool = True) -> list[list[str]]:
     """
     construct a tabula recta based on custom alphabet.
     output is a MAX*MAX matrix
@@ -148,10 +150,10 @@ def vigenere_encrypt_with_alphabet(
     tr: list[list[int]] = construct_tabula_recta(alphabet)
     abc = list(alphabet)
 
-    for i in range(0, len(plaintext)):
+    for i, e in enumerate(plaintext):
         row_index = abc.index(primer[i % len(primer)])
         row = tr[row_index]
-        column_index = abc.index(plaintext[i])
+        column_index = abc.index(e)
         output.append(tr[row_index][column_index])
 
     return output
@@ -186,14 +188,14 @@ def detect_vigenere(
     minkeysize: int = 1,
     maxkeysize: int = 20,
     trace: bool = False,
-):
+) -> None:
     print("testing for periodicity using friedman test")
     for period in range(minkeysize, maxkeysize):
         slices = split_by_slice(ciphertext, period)
 
         iocsum: float = 0.0
-        for k in slices.keys():
-            ic = normalized_ioc(slices[k])
+        for k, v in slices.items():
+            ic = ioc(v)[1]
             iocsum += ic
             if trace is True:
                 print(f"ioc of runes {k}/{period} = {ic:.3f}")
