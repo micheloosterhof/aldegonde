@@ -1,3 +1,5 @@
+"""Functions to split a text in various ways"""
+
 from ..structures import sequence
 
 

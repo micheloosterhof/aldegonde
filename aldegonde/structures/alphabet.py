@@ -71,8 +71,7 @@ class Alphabet:
         i = self.reversealphabet[a]
         if i is not None:
             return self.reversealphabet[a]
-        else:
-            raise KeyError("Character not in alphabet")
+        raise KeyError("Character not in alphabet")
 
     def i2a(self, i: int) -> str:
         try:

@@ -7,7 +7,7 @@ from typing import Iterable, Iterator
 
 def primes(n: int) -> list[int]:
     """primes as a list"""
-    out = list()
+    out: list[int] = []
     sieve = [True] * (n + 1)
     for p in range(2, n + 1):
         if sieve[p]:

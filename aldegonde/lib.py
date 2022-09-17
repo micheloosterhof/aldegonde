@@ -47,46 +47,6 @@ def addstream(runes: list[int]) -> list[int]:
     return diff
 
 
-# assume 1 letter cipher autokey
-# split by next letter and create MAX alphabets. run bigram on these
-def run_test2a(ciphertext):
-
-    for a in range(1, 20):
-        alphabet = {}
-        for i in range(0, MAX):
-            alphabet[i] = []
-
-        for i in range(0 + a, len(ciphertext)):
-            alphabet[ciphertext[i]].append(ciphertext[i - a])
-
-        tot = 0
-        for i in alphabet.keys():
-            tot += normalized_ioc(alphabet[i])
-            # bigram_diagram(alphabet[i])
-            # print("key={}: ioc of runes before {} = {}".format(a, i, ioc(alphabet[i])))
-        print(f"key={a} avgioc={tot/MAX:.3f}")
-
-
-# assume fixed length key. find period
-def run_test3(ciphertext: list[int], trace: bool = False):
-    print("testing for fixed size periodicity")
-    for period in range(1, 30):
-        group: dict[int, list[int]] = {}
-        for i in range(period):
-            group[i] = []
-
-        for i in range(0, len(ciphertext)):
-            group[i % period].append(ciphertext[i])
-
-        iocsum = 0.0
-        for k in group.keys():
-            iocsum += float(normalized_ioc(group[k]))
-            # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
-
-        if trace is True or iocsum / period > 1.0:
-            print(f"avgioc period {period} = {iocsum/period:.2f}")
-
-
 # test cipher autokey
 def offset():
     # offset is the main variable, how much we are overlaying the data

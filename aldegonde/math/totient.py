@@ -15,6 +15,5 @@ def phi_func(x: int) -> int:
     """
     if x == 1:
         return 1
-    else:
-        n = [y for y in range(1, x) if is_coprime(x, y)]
-        return len(n)
+    n = [y for y in range(1, x) if is_coprime(x, y)]
+    return len(n)

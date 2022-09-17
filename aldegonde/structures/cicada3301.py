@@ -113,11 +113,10 @@ def base29(input: int, padding: int = -1) -> list[int]:
     l = numberToBase(input, 29)
     if padding == -1:
         return l
-    else:
-        pad_value = 0
-        pad_size = padding - len(l)
-        final_list = [*[pad_value] * pad_size, *l]
-        return final_list
+    pad_value = 0
+    pad_size = padding - len(l)
+    final_list = [*[pad_value] * pad_size, *l]
+    return final_list
 
 
 class RuneIterator:
@@ -140,10 +139,9 @@ class RuneIterator:
     def __next__(self) -> list[int]:
         if self.i >= self.maximum:
             raise StopIteration
-        else:
-            x = self.i
-            self.i += 1
-            return base29(x, padding=self.length)
+        x = self.i
+        self.i += 1
+        return base29(x, padding=self.length)
 
 
 def print_all(runes: list[int], limit: int = 0) -> None:

@@ -1,6 +1,7 @@
 from collections import Counter
 
 from ..structures import sequence
+from .ngrams import iterngrams
 
 
 def print_dist(runes: sequence.Sequence) -> None:
@@ -11,24 +12,23 @@ def print_dist(runes: sequence.Sequence) -> None:
     col = 0
     freqs = Counter(runes)
     print("frequency distribution:")
-    for rune in range(0, len(runes.alphabet)):
+    for i, e in enumerate(runes.alphabet):
         if col > 0 and col % 5 == 0:
             print("")
         print(
-            f"{rune:02d}: {runes.alphabet[rune]}: {freqs[rune]:03d}: {freqs[rune]/N*100:.3f}% | ",
+            f"{i:02d}: {e}: {freqs[i]:03d}: {freqs[i]/N*100:.3f}% | ",
             end="",
         )
         col = col + 1
     print("")
 
 
-def monograph_dist(runes: sequence.Sequence) -> dict[int, int]:
+def dist(runes: sequence.Sequence, length: int = 1, cut: int = 0) -> dict[str, int]:
     """
-    print frequency distribution
+    flexible dist function
     """
-    out: dict[int, int] = {}
-    N = len(runes)
-    freqs = Counter(runes)
-    for rune in range(0, len(runes.alphabet)):
-        out[rune] = freqs[rune]
+    out: dict[str, int] = {}
+    for g in iterngrams(runes, length=length, cut=cut):
+        k = "-".join([str(x) for x in g])
+        out[k] = out.get(k, 0) + 1
     return out

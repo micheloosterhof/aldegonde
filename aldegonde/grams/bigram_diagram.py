@@ -1,3 +1,5 @@
+"""Bigram diagrams"""
+
 from collections import Counter, defaultdict
 from typing import Dict
 
@@ -22,9 +24,9 @@ def print_bigram_diagram(runes: sequence.Sequence) -> None:
     )
 
     bigram: Dict = defaultdict(dict)
-    for k in res.keys():
+    for k, v in res.items():
         x, y = k.split("-")
-        bigram[int(y)][int(x)] = res[k]
+        bigram[int(y)][int(x)] = v
 
     print("   | ", end="")
     for i in range(0, MAX):
@@ -89,8 +91,6 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
         return []
     MAX = len(runes.alphabet)
 
-    count = Counter(runes)
-    ioc: float = 0.0
     if cut == 0:
         res = Counter(
             f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(0, len(runes) - 1)
@@ -109,9 +109,9 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
         raise Exception("`cut` variable can be 0, 1 or 2")
 
     bigram: Dict = defaultdict(dict)
-    for k in res.keys():
+    for k, v in res.items():
         x, y = k.split("-")
-        bigram[int(y)][int(x)] = res[k]
+        bigram[int(y)][int(x)] = v
 
     output: list[list[int]] = [([0] * MAX) for i in range(MAX)]
     for x in range(0, MAX):
@@ -139,9 +139,9 @@ def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
     )
     bigram: Dict = defaultdict(dict)
 
-    for k in res.keys():
+    for k, v in res.items():
         x, y = k.split("-")
-        bigram[int(x)][int(y)] = res[k]
+        bigram[int(x)][int(y)] = v
 
     print(
         "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
@@ -180,8 +180,6 @@ def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
         "--------------------------------------------------------------------------------------------+----"
     )
     print(
-        "                                                                                            | {:.3f}".format(
-            ioc
-        )
+        f"                                                                                            | {ioc:.3f}"
     )
     print("\n")

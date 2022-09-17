@@ -70,6 +70,13 @@ def test_ciphertext_autokey_vigenere_x() -> None:
         == demo_plaintext
     )
 
+    assert (
+        autokey.ciphertext_autokey_encrypt(
+            plaintext=demo_plaintext, primer=demo_key, encryptf=autokey.vigenere_encrypt
+        )
+        == demo_ciphertext
+    )
+
 
 def test_ciphertext_autokey_vigenere_typewriter() -> None:
     demo_key = Sequence.fromstr("TYPEWRITER", alphabet=UPPERCASE_ALPHABET)

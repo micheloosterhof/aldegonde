@@ -201,3 +201,23 @@ def detect_vigenere(
                 print(f"ioc of runes {k}/{period} = {ic:.3f}")
         if trace is True:
             print(f"avgioc period {period} = {iocsum/period:.2f}")
+
+
+# assume fixed length key. find period
+def run_test3(ciphertext: list[int], trace: bool = False):
+    print("testing for fixed size periodicity")
+    for period in range(1, 30):
+        group: dict[int, list[int]] = {}
+        for i in range(period):
+            group[i] = []
+
+        for i, e in enumerate(ciphertext):
+            group[i % period].append(e)
+
+        iocsum = 0.0
+        for k, v in group.items():
+            iocsum += float((v)[1])
+            # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
+
+        if trace is True or iocsum / period > 1.0:
+            print(f"avgioc period {period} = {iocsum/period:.2f}")
