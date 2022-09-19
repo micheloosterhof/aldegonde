@@ -48,7 +48,7 @@ def addstream(runes: list[int]) -> list[int]:
 
 
 # test cipher autokey
-def offset():
+def offset(gl):
     # offset is the main variable, how much we are overlaying the data
     print("OFFSET: 1\n")
 
@@ -81,7 +81,7 @@ def offset():
 
 
 # test cipher autokey
-def offset_reverse():
+def offset_reverse(gl):
     # offset is the main variable, how much we are overlaying the data
     offset = 5
     print(f"OFFSET: {offset}\n")
@@ -115,7 +115,7 @@ def offset_reverse():
 
 
 # test cipher autokey
-def run_test4():
+def run_test4(gl):
     print("\n\n\nLP\n")
     print("IOC: " + normalized_ioc(gl))
     bigram_diagram(gl)
@@ -154,7 +154,7 @@ def run_test4():
         bigram_diagram(output)
 
 
-def ignore():
+def ignore(gl):
     for offset in range(1, 20):
         print(f"OFFSET: {offset}")
         x = autokey_vigenere(gl, offset=offset)
