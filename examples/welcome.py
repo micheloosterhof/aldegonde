@@ -5,7 +5,7 @@ Decode welcome message
 """
 
 from aldegonde.structures import alphabet, sequence, cicada3301
-from aldegonde.stats import ioc
+from aldegonde.stats import ioc, doublets
 
 welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗᛠᛇᛏᚳᚾᚫᛝᛗᛡᛡᛗᛗᚹᚫᛈᛞᛝᛡᚱᚩᛠᛡᛗᛁᚠᚠᛖᚢᛝᛇᚢᚫᚣᛈᚱᚫᛁᛈᚫᚳᚫᚫᚾᚹᛒᛉ\
 ᛗᛞᚱᛡᛁᚠᛈᚳᛇᛇᚫᚳᚱᚦᛈᚠᛄᛗᚩᛇᚳᚹᛡᛒᚫᚹᛒᛠᛚᛋᚱᚣᛄᚫᚱᛗᚳᚦᛇᚫᛏᚳᛈᚹᛗᚷᛇᚳᛝᛈᚢᛇᚳᚱᛖᚹᛡᛈᛁᛒᚣᛒᛉᚠᛚᛁᚱᚱᛗᚳ\
@@ -53,5 +53,10 @@ ioc.print_ioc_statistics(seq)
 plain = beaufort_decrypt_interrupted(
     seq, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
 )
+
+plainseq = sequence.Sequence.fromlist(plain, alphabet=cicada3301.CICADA_ALPHABET)
+
+doublets.print_doublets_statistics(plainseq)
+ioc.print_ioc_statistics(plainseq)
 
 cicada3301.print_english(plain, limit=0)

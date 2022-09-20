@@ -23,16 +23,22 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     """
     diff = []
     for i in range(0, len(runes) - skip):
-        diff.append((runes[i + skip] - runes[i]) % 29)
+        diff.append((runes[i + skip] + runes[i]) % 29)
     return diff
 
 
-# with open("data/page54-55.txt") as f:
+#with open("data/page54-55.txt") as f:
 with open("data/page0-58.txt") as f:
     lp = f.read()
 
-segments = lp.split("&")
-# segments = [lp]
+
+# RL is a random rune list same size as all the other runes
+rl = []
+for i in range(0, 100000):
+    rl.append(random.randrange(0, 29))
+
+segments = lp.split("$")
+segments = [lp]
 print(f"{len(segments)} segments")
 for i, s in enumerate(segments):
     if len(s) == 0:
@@ -41,7 +47,6 @@ for i, s in enumerate(segments):
     seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
     for skip in range(1, 2):
         # print(f"skip={skip}")
-        # seg = sequence.Sequence.fromlist(data=deltastream(seg1.data, skip=skip), alphabet=cicada3301.CICADA_ALPHABET)
         if len(seg) == 0:
             print("EMPTY SEGMENT {i}")
             continue
