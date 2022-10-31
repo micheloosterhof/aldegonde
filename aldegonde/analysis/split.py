@@ -12,7 +12,8 @@ def split_by_slice(inp: sequence.Sequence, size: int) -> dict[int, sequence.Sequ
     """
     outp = {}
     for i in range(0, size):
-        outp[i] = inp[slice(i, len(inp), size)].copy()
+        ra = inp[slice(i, len(inp), size)].copy()
+        outp[i] = sequence.Sequence.fromlist(data=ra, alphabet=inp.alphabet.alphabet)
     return outp
 
 

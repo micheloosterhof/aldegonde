@@ -2,6 +2,7 @@ from ..structures.alphabet import Alphabet
 from ..structures.sequence import Sequence
 from ..analysis.split import split_by_slice
 from ..stats.ioc import ioc
+from ..structures import cicada3301
 
 
 def variant_beaufort_encrypt(
@@ -182,42 +183,3 @@ def vigenere_decrypt_with_alphabet(
     return output
 
 
-# assume fixed length key. find period
-def detect_vigenere(
-    ciphertext: list[int],
-    minkeysize: int = 1,
-    maxkeysize: int = 20,
-    trace: bool = False,
-) -> None:
-    print("testing for periodicity using friedman test")
-    for period in range(minkeysize, maxkeysize):
-        slices = split_by_slice(ciphertext, period)
-
-        iocsum: float = 0.0
-        for k, v in slices.items():
-            ic = ioc(v)[1]
-            iocsum += ic
-            if trace is True:
-                print(f"ioc of runes {k}/{period} = {ic:.3f}")
-        if trace is True:
-            print(f"avgioc period {period} = {iocsum/period:.2f}")
-
-
-# assume fixed length key. find period
-def run_test3(ciphertext: list[int], trace: bool = False):
-    print("testing for fixed size periodicity")
-    for period in range(1, 30):
-        group: dict[int, list[int]] = {}
-        for i in range(period):
-            group[i] = []
-
-        for i, e in enumerate(ciphertext):
-            group[i % period].append(e)
-
-        iocsum = 0.0
-        for k, v in group.items():
-            iocsum += float((v)[1])
-            # print("ioc of runes {}/{} = {}".format(k, period, ioc(group[k])))
-
-        if trace is True or iocsum / period > 1.0:
-            print(f"avgioc period {period} = {iocsum/period:.2f}")
