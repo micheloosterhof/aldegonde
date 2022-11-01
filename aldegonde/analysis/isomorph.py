@@ -66,7 +66,7 @@ def random_isomorph_statistics(
         rand: list[int] = [random.randrange(0, 29) for _ in range(sequencelength)]
         isos = all_isomorphs(rand, isomorphlength)
         distinct: int = len(isos.keys())
-        duplicate: int = sum([len(x) for x in isos.values() if len(x)>1])
+        duplicate: int = sum([len(x) for x in isos.values() if len(x) > 1])
 
         if isomorphlength in distincts:
             distincts[isomorphlength].append(distinct)
@@ -97,16 +97,21 @@ def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> No
         isos = all_isomorphs(seq, length)
         # print(isos.keys())
         distinct: int = len(isos.keys())
-        duplicates: int = sum([len(x) for x in isos.values() if len(x)>1])
+        duplicates: int = sum([len(x) for x in isos.values() if len(x) > 1])
 
-        if duplicates<100 or trace is True:
+        if duplicates < 100 or trace is True:
             for key, values in isos.items():
                 for v in itertools.combinations(values, 2):
-                    print(f"{key} loc={v[1]}-{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}")
+                    print(
+                        f"{key} loc={v[1]}-{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
+                    )
 
-        (avgdistinct, stdevdistinct, avgduplicate, stdevduplicate) = random_isomorph_statistics(
-            sequencelength=len(seq), isomorphlength=length
-        )
+        (
+            avgdistinct,
+            stdevdistinct,
+            avgduplicate,
+            stdevduplicate,
+        ) = random_isomorph_statistics(sequencelength=len(seq), isomorphlength=length)
 
         if duplicates == 0:
             print(f"no duplicate isomorphs found of length {length}")

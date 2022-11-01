@@ -1,9 +1,10 @@
 """ANSI colors
 """
 
+
 class Colors:
-    """ANSI colors
-    """
+    """ANSI colors"""
+
     reset = "\033[0m"
 
     # Black

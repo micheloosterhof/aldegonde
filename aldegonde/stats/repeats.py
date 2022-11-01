@@ -42,7 +42,6 @@ def print_repeat_statistics(
         )
 
 
-
 def repeat(
     ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10
 ) -> dict[str, int]:
@@ -97,15 +96,15 @@ def odd_spaced_repeats(ciphertext: sequence.Sequence, minimum=3, maximum=6):
     for length in range(minimum, maximum + 1):
         rep = repeat2(ciphertext, minimum=length, maximum=length)
         for v in rep.values():
-            for l in range(1,len(v)):
-                d.append(v[l]-v[l-1])
+            for l in range(1, len(v)):
+                d.append(v[l] - v[l - 1])
 
-    even=0
-    odd=0
+    even = 0
+    odd = 0
     for x in d:
-        if x/2==int(x/2):
-            even+=1
+        if x / 2 == int(x / 2):
+            even += 1
         else:
-            odd+=1
-    if even+odd>0:
+            odd += 1
+    if even + odd > 0:
         print(f"even {even:3d} odd {odd:3d}  percentage: {100*odd/(even+odd):02f}")

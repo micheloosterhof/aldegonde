@@ -17,8 +17,8 @@ def result_eois(seq: int) -> list[int]:
         results = data["results"]
         if len(results) != 1:
             raise KeyError
-        #print(f"{len(results)} results")
+        # print(f"{len(results)} results")
         result = results[0]
-        #print(result["data"])
+        # print(result["data"])
         data = [int(z) for z in result["data"].split(",")]
     return data

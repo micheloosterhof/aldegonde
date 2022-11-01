@@ -19,7 +19,7 @@ def friedman_test(
     # delta is the difference between the avgioc and the max of avgioc of all lower values
     avgioc: dict[int, float] = {}
     deltas: dict[int, float] = {}
- 
+
     if trace is True:
         print("Testing for periodicity using friedman test")
     print("Candidates:")
@@ -31,6 +31,8 @@ def friedman_test(
             iocsum += ic
             if trace is True:
                 print(f"ioc of runes {k}/{period} = {ic:.3f}")
-        avgioc[period] = iocsum/period
-        deltas[period] = avgioc[period]-max(avgioc.values())
-        print(f"period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:.3f}")
+        avgioc[period] = iocsum / period
+        deltas[period] = avgioc[period] - max(avgioc.values())
+        print(
+            f"period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:.3f}"
+        )
