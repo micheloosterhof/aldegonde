@@ -2,3 +2,5 @@ __pycache__
 build
 .direnv
 .ipynb_checkpoints
+.tox
+.idea
