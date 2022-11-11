@@ -1,3 +1,8 @@
+"""monoalphabetic substitution
+"""
+
+import random
+
 def monoalphabetic_substitution_encrypt(
     sequence: list[int], key: list[int]
 ) -> list[int]:
@@ -11,8 +16,7 @@ def monoalphabetic_substitution_encrypt(
 
 
 def reverse_key(key: list[int]) -> list[int]:
-    """
-    Takes an array containing all elements and reverses the index and the value
+    """Takes an array containing all elements and reverses the index and the value
     Returns output if the input contains valid values, else raises ValueError
     """
     output = [-1] * len(key)
@@ -30,8 +34,7 @@ def reverse_key(key: list[int]) -> list[int]:
 def monoalphabetic_substitution_decrypt(
     sequence: list[int], key: list[int]
 ) -> list[int]:
-    """
-    Monalphabetic substitution
+    """Monalphabetic substitution
     NOTE: key input is the same as for encryption, this function will reverse the key
     """
     reversed_key = reverse_key(key)
@@ -40,3 +43,9 @@ def monoalphabetic_substitution_decrypt(
     for e in sequence:
         output.append(reversed_key[e])
     return output
+
+
+def randomkey(length: int) -> list[int]:
+    """Generate a random key for use the previous functions
+    """
+    return random.sample(list(range(length)), length)
