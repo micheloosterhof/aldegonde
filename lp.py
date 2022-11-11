@@ -9,10 +9,10 @@ import math
 from scipy.stats import poisson
 
 from aldegonde.structures import alphabet, sequence, cicada3301
-from aldegonde.stats import ioc, repeats, doublets, dist
+from aldegonde.stats import ioc, repeats, doublets, dist, ngrams
 from aldegonde.grams import bigram_diagram
-from aldegonde.math import factor
-from aldegonde.analysis import kappa, isomorph
+from aldegonde.math import factor, primes, totient, modular
+from aldegonde.analysis import kappa, isomorph, friedman
 from aldegonde.algorithm import autokey
 
 
@@ -31,20 +31,34 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
 with open("data/page0-58.txt") as f:
     lp = f.read()
 
-
-# RL is a random rune list same size as all the other runes
-rl = []
-for i in range(0, 100000):
-    rl.append(random.randrange(0, 29))
-
 segments = lp.split("$")
-segments = [lp]
+#segments = [lp]
+z = segments[0:10]
+#z = segments[0:1]
+#z = segments[9]
+y = ["".join(z)]
+
+
+#priem = primes.primes(10000)
+#priem.remove(29)
+#tot = []
+#for i in range(0,len(y[0])+2):
+#    tot.append(totient.phi_func(i))
+
+
 print(f"{len(segments)} segments")
-for i, s in enumerate(segments):
+for i, s in enumerate(y):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
     seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
+
+    #l = []
+    #for i, e in enumerate(seq):
+    #    l.append((e+tot[i])%29)
+
+    #seg = sequence.Sequence.fromlist(data=l, alphabet=cicada3301.CICADA_ALPHABET)
+
     for skip in range(1, 2):
         # print(f"skip={skip}")
         if len(seg) == 0:
@@ -60,11 +74,12 @@ for i, s in enumerate(segments):
         dist.print_dist(seg)
         ioc.print_ioc_statistics(seg)
         bigram_diagram.print_bigram_diagram(seg)
-        bigram_diagram.bigram_diagram_skip(seg, skip=2)
+        bigram_diagram.print_bigram_diagram(seg, skip=2)
         doublets.print_doublets_statistics(seg)
         doublets.print_doublets_statistics(seg, skip=2)
         repeats.print_repeat_statistics(seg, minimum=2)
         kappa.print_kappa(seg)
+        friedman.friedman_test(seg)
         reps = repeats.repeat2(seg, minimum=5)
         diffs = []
         for key in reps.keys():

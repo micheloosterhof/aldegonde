@@ -5,6 +5,8 @@ ciphertext autokey variations
 from typing import Callable
 
 from ..structures.sequence import Sequence
+from ..stats.ioc import ioc
+from ..analysis.split import split_by_character
 
 
 def ciphertext_autokey_encrypt(
@@ -442,3 +444,21 @@ def run_test2a(ciphertext):
             # bigram_diagram(alphabet[i])
             # print("key={}: ioc of runes before {} = {}".format(a, i, ioc(alphabet[i])))
         print(f"key={a} avgioc={tot/MAX:.3f}")
+
+
+def detect_autokey(
+    ciphertext: Sequence,
+    minkeysize: int = 1,
+    maxkeysize: int = 20,
+    trace: bool = False,
+) -> None:
+    print("testing for 1 letter autokey using friedman test")
+    slices = split_by_character(ciphertext)
+
+    iocsum: float = 0.0
+    for k, v in slices.items():
+        ic = ioc(v)[1]
+        iocsum += ic
+        if trace is False:
+            print(f"ioc of runes {k}/{len(ciphertext.alphabet)} = {ic:.3f}")
+    print(f"avgioc {len(ciphertext.alphabet)} = {iocsum/len(ciphertext.alphabet):.2f}")
