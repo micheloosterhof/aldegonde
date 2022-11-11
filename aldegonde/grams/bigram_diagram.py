@@ -8,19 +8,19 @@ from ..structures import sequence
 from .color import Colors
 
 
-def print_bigram_diagram(runes: sequence.Sequence) -> None:
+def print_bigram_diagram(runes: sequence.Sequence, skip: int=1) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
     """
-    if len(runes) < 2:
+    if len(runes)+skip < 2:
         return
     MAX = len(runes.alphabet)
 
     count = Counter(runes)
     ioc: float = 0.0
     res = Counter(
-        f"{runes[idx]:02d}-{runes[idx + 1]:02d}" for idx in range(len(runes) - 1)
+        f"{runes[idx]:02d}-{runes[idx + skip]:02d}" for idx in range(len(runes) - skip)
     )
 
     bigram: Dict = defaultdict(dict)
@@ -122,64 +122,3 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
                 pass
 
     return output
-
-
-def bigram_diagram_skip(runes: sequence.Sequence, skip: int = 1) -> None:
-    """
-    Input is a list of integers, from 0 to MAX-1
-    Output is the bigram frequency diagram printed to stdout
-    """
-    if len(runes) < 2:
-        return
-    MAX = len(runes.alphabet)
-    count = Counter(runes)
-    ioc = 0.0
-    res = Counter(
-        f"{runes[idx]:02d}-{runes[idx + skip]:02d}" for idx in range(len(runes) - skip)
-    )
-    bigram: Dict = defaultdict(dict)
-
-    for k, v in res.items():
-        x, y = k.split("-")
-        bigram[int(x)][int(y)] = v
-
-    print(
-        "   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 | IOC"
-    )
-    print(
-        "---+----------------------------------------------------------------------------------------+----"
-    )
-
-    i: int
-    for i in range(0, MAX):
-        print(f"{i:02} | ", end="")
-        j: int
-        for j in range(0, MAX):
-            # for j in sorted(bigram[i]):
-            try:
-                v = bigram[i][j]
-            except KeyError:
-                v = 0
-            if v == 0:
-                print(Colors.bgRed, end="")
-            elif v < 5:
-                print(Colors.bgBlue, end="")
-            print(f"{v:02}", end="")
-            print(Colors.reset, end=" ")
-
-        # partial IOC (one rune), and total IOC
-        pioc = (
-            (count[int(i)] * (count[int(i)] - 1))
-            / (len(runes) * (len(runes) - 1))
-            * MAX
-        )
-        ioc += pioc
-        print(f"| {pioc:.3f}")
-
-    print(
-        "--------------------------------------------------------------------------------------------+----"
-    )
-    print(
-        f"                                                                                            | {ioc:.3f}"
-    )
-    print("\n")
