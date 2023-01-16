@@ -23,7 +23,7 @@ def friedman_test(
     if trace is True:
         print("Testing for periodicity using friedman test")
     print("Candidates:")
-    for period in range(minkeysize, maxkeysize):
+    for period in range(minkeysize, maxkeysize+1):
         slices = split_by_slice(ciphertext, period)
         iocsum: float = 0.0
         for k, v in slices.items():
