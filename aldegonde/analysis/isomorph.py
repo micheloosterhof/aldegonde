@@ -14,7 +14,7 @@ import statistics
 from typing import Dict
 
 from ..structures import sequence
-from ..math import factor
+from ..maths import factor
 
 
 def isomorph(ciphertext: sequence.Sequence) -> str:
