@@ -11,7 +11,7 @@ from scipy.stats import poisson
 from aldegonde.structures import alphabet, sequence, cicada3301
 from aldegonde.stats import ioc, repeats, doublets, dist, ngrams
 from aldegonde.grams import bigram_diagram
-from aldegonde.math import factor, primes, totient, modular
+from aldegonde.maths import factor, primes, totient, modular
 from aldegonde.analysis import kappa, isomorph, friedman
 from aldegonde.algorithm import autokey
 

@@ -53,4 +53,13 @@ line-length = 88
 
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F", "UP"]
-ignore = []
+ignore = ["E501"]
+
+# Assume Python 3.10.
+target-version = "py310"
+
+[tool.isort]
+profile = "black"
+known_first_party = ["aldegonde"]
+sections=["FUTURE","STDLIB","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
+
