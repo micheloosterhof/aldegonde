@@ -47,3 +47,10 @@ disallow_any_expr           = false
 disallow_any_generics       = false
 disallow_untyped_calls      = false
 warn_unused_ignores         = false
+
+[tool.ruff]
+line-length = 88
+
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F", "UP"]
+ignore = []
