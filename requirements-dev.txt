@@ -4,5 +4,5 @@ mypy==0.991
 pipdeptree==2.3.3
 pur==7.0.0
 pytest==7.2.1
-ruff==0.0.223
-tox==4.3.3
+ruff==0.0.229
+tox==4.3.5
