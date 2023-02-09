@@ -3,7 +3,7 @@
 
 from collections import Counter
 from math import sqrt
-from typing import Tuple, NamedTuple
+from typing import NamedTuple
 
 from ..structures import sequence
 from .ngrams import ngrams
@@ -11,7 +11,7 @@ from .ngrams import ngrams
 
 def ioc(
     runes: sequence.Sequence, length: int = 1, cut: int = 0
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     """Multigraphic Index of Coincidence: ΔIC
     Args:
         runes: Sequence
@@ -28,16 +28,16 @@ def ioc(
     Specify `cut=2` and it operates on non-overlapping blocks of 3 runes: BCD, EFG, ...
     """
     C = pow(len(runes.alphabet), length)  # size of alphabet
-    l: list[str] = []
+    items: list[str] = []
     for g in ngrams(runes, length=length, cut=cut):
-        l.append("-".join([str(x) for x in g]))
+        items.append("-".join([str(x) for x in g]))
 
     # L is the number of items we have counted
-    L = len(l)
+    L = len(items)
     if L < 2:
         return (0.0, 0.0, 0.0)
 
-    freqs = Counter(l)
+    freqs = Counter(items)
     freqsum: float = 0.0
     for v in freqs.values():
         freqsum += v * (v - 1)
@@ -75,16 +75,16 @@ def sliding_window_ioc(runes: sequence.Sequence, window: int = 100) -> list[floa
     return output
 
 
-def ioc2(runes: sequence.Sequence, cut: int = 0) -> Tuple[float, float, float]:
+def ioc2(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
     """Multigraphic Index of Coincidence: ΔIC"""
     return ioc(runes, cut=cut, length=2)
 
 
-def ioc3(runes: sequence.Sequence, cut: int = 0) -> Tuple[float, float, float]:
+def ioc3(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
     """Multigraphic Index of Coincidence: ΔIC"""
     return ioc(runes, cut=cut, length=3)
 
 
-def ioc4(runes: sequence.Sequence, cut: int = 0) -> Tuple[float, float, float]:
+def ioc4(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
     """Multigraphic Index of Coincidence: ΔIC"""
     return ioc(runes, cut=cut, length=4)
