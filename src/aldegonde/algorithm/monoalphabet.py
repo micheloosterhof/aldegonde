@@ -3,6 +3,7 @@
 
 import random
 
+
 def monoalphabetic_substitution_encrypt(
     sequence: list[int], key: list[int]
 ) -> list[int]:
@@ -46,6 +47,5 @@ def monoalphabetic_substitution_decrypt(
 
 
 def randomkey(length: int) -> list[int]:
-    """Generate a random key for use the previous functions
-    """
+    """Generate a random key for use the previous functions"""
     return random.sample(list(range(length)), length)
