@@ -57,6 +57,6 @@ plain = beaufort_decrypt_interrupted(
 plainseq = sequence.Sequence.fromlist(plain, alphabet=cicada3301.CICADA_ALPHABET)
 
 doublets.print_doublets_statistics(plainseq)
-ioc.print_ioc_statistics(plainseq)
 
 cicada3301.print_english(plain, limit=0)
+ioc.print_ioc_statistics(plainseq)
