@@ -21,7 +21,7 @@ upgrade: ## Upgrade Python requirements to latest version
 
 .PHONY: clean
 clean: ## Clean Jupyter Notebooks of output data
-	find . -name '*.ipynb' | xargs -P 6 -n 1 jupyter nbconvert --clear-output --inplace
+	find notebooks -name '*.ipynb' | xargs -P 6 -n 1 jupyter nbconvert --clear-output --inplace
 
 .PHONY: lint
 lint: ## Various Linters

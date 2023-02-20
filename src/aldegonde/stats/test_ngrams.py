@@ -2,7 +2,7 @@
 
 from ..structures import alphabet, sequence
 
-from .ngrams import ngrams, iterngrams, trigraphs, tetragraphs
+from .ngrams import ngrams, iterngrams
 
 uniq = sequence.Sequence.fromlist(
     data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET

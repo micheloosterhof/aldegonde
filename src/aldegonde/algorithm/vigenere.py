@@ -181,5 +181,3 @@ def vigenere_decrypt_with_alphabet(
         output.append(alphabet[column_index])
 
     return output
-
-
