@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from .sequence import Sequence
-from .alphabet import UPPERCASE_ALPHABET
+from aldegonde.structures.sequence import Sequence
+from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
 
 
 def test_sequence_init() -> None:
