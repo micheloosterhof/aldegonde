@@ -1,6 +1,6 @@
 """Functions to split a text in various ways"""
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def split_by_slice(inp: sequence.Sequence, size: int) -> dict[int, sequence.Sequence]:

@@ -1,8 +1,8 @@
 """Friedman test to detect use of the same alphabet at regular intervals"""
 
-from ..structures.sequence import Sequence
-from ..analysis.split import split_by_slice
-from ..stats.ioc import ioc
+from aldegonde.structures.sequence import Sequence
+from aldegonde.analysis.split import split_by_slice
+from aldegonde.stats.ioc import ioc
 
 # assume fixed length key. find period
 def friedman_test(

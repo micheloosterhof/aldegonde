@@ -3,7 +3,7 @@
 
 from typing import Iterator
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def iterngrams(

@@ -13,8 +13,8 @@ import random
 import statistics
 from typing import Dict
 
-from ..structures import sequence
-from ..maths import factor
+from aldegonde.structures import sequence
+from aldegonde.maths import factor
 
 
 def isomorph(ciphertext: sequence.Sequence) -> str:

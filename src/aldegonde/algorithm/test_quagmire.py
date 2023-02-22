@@ -1,7 +1,7 @@
-from ..structures.alphabet import UPPERCASE_ALPHABET
-from ..structures.sequence import Sequence
+from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
+from aldegonde.structures.sequence import Sequence
 
-from .vigenere import vigenere_encrypt_with_alphabet, vigenere_decrypt_with_alphabet
+from aldegonde.algorithms.vigenere import vigenere_encrypt_with_alphabet, vigenere_decrypt_with_alphabet
 
 """
 From: https://sites.google.com/site/cryptocrackprogram/user-guide/cipher-types/substitution/quagmire

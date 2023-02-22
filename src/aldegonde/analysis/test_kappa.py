@@ -1,6 +1,6 @@
-from ..structures import sequence, alphabet
+from aldegonde.structures import sequence, alphabet
 
-from .kappa import print_kappa
+from aldegonde.analysis.kappa import print_kappa
 
 """
 """

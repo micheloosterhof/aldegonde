@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-from ..structures.alphabet import UPPERCASE_ALPHABET
-from ..structures.sequence import Sequence
+from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
+from aldegonde.structures.sequence import Sequence
+
+import aldegonde.structures.vigenere
 
 from .vigenere import vigenere_encrypt, vigenere_decrypt
 from .vigenere import beaufort_encrypt, beaufort_decrypt
@@ -13,8 +15,8 @@ def test_vigenere() -> None:
     key = Sequence.fromstr(text="LEMON", alphabet=UPPERCASE_ALPHABET)
     plaintext = Sequence.fromstr(text="ATTACKATDAWN", alphabet=UPPERCASE_ALPHABET)
     ciphertext = Sequence.fromstr(text="LXFOPVEFRNHR", alphabet=UPPERCASE_ALPHABET)
-    assert ciphertext == vigenere_encrypt(plaintext=plaintext, primer=key)
-    assert plaintext == vigenere_decrypt(ciphertext=ciphertext, primer=key)
+    assert ciphertext == vigenere.vigenere_encrypt(plaintext=plaintext, primer=key)
+    assert plaintext == vigenere.vigenere_decrypt(ciphertext=ciphertext, primer=key)
 
 
 def test_beaufort() -> None:
@@ -25,8 +27,8 @@ def test_beaufort() -> None:
     ciphertext = Sequence.fromstr(
         text="CKMPVCP VWPIWUJOGIUAPVWRIWUUK", alphabet=UPPERCASE_ALPHABET
     )
-    assert ciphertext == beaufort_encrypt(plaintext=plaintext, primer=key)
-    assert plaintext == beaufort_decrypt(ciphertext=ciphertext, primer=key)
+    assert ciphertext == vigenere.beaufort_encrypt(plaintext=plaintext, primer=key)
+    assert plaintext == vigenere.beaufort_decrypt(ciphertext=ciphertext, primer=key)
 
 
 def test_variant_variant_beaufort() -> None:

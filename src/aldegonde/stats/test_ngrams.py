@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ..structures import alphabet, sequence
+from aldegonde.structures import alphabet, sequence
 
-from .ngrams import ngrams, iterngrams
+from aldegonde.stats.ngrams import ngrams, iterngrams
 
 uniq = sequence.Sequence.fromlist(
     data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET

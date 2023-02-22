@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from . import autokey
-from ..structures.alphabet import UPPERCASE_ALPHABET
-from ..structures.sequence import Sequence
+from aldegonde.algorithms import autokey
+from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
+from aldegonde.structures.sequence import Sequence
 
 
 def test_plaintext_autokey_vigenere_x() -> None:

@@ -1,7 +1,7 @@
 """module description
 """
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def print_kappa(

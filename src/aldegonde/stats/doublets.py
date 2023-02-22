@@ -6,7 +6,7 @@ import math
 
 from scipy.stats import poisson
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def print_doublets_statistics(runes: sequence.Sequence, skip: int = 1) -> None:
