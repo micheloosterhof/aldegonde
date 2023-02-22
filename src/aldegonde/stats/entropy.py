@@ -3,7 +3,7 @@
 from collections import Counter
 import math
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def shannon_entropy(ciphertext: sequence.Sequence, base: int = 2) -> float:

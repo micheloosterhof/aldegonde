@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from .sequence import Sequence
-from .cicada3301 import CICADA_ALPHABET
+from aldegonde.structures.sequence import Sequence
+from aldegonde.structures.cicada3301 import CICADA_ALPHABET
 
 
 def test_welcome() -> None:

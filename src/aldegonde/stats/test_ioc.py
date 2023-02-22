@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ..structures import alphabet, sequence
+from aldegonde.structures import alphabet, sequence
 
-from .ioc import ioc, ioc2, ioc3, ioc4
+from aldegonde.stats.ioc import ioc, ioc2, ioc3, ioc4
 
 nils = sequence.Sequence.fromlist(data=[0] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
 ones = sequence.Sequence.fromlist(data=[1] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)

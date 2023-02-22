@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .alphabet import a2i, i2a
+from aldegonde.structures.alphabet import a2i, i2a
 
 
 def test_a2i() -> None:

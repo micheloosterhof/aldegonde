@@ -2,8 +2,8 @@
 From: https://sites.google.com/site/cryptocrackprogram/user-guide/cipher-types/substitution/quagmire
 """
 
-from ..structures.alphabet import Alphabet
-from ..structures.sequence import Sequence
+from aldegonde.structures.alphabet import Alphabet
+from aldegonde.structures.sequence import Sequence
 
 
 def quagmire1_encrypt(

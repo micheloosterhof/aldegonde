@@ -5,8 +5,8 @@ IOC Scoring Function
 from math import sqrt
 from typing import Callable
 
-from ..structures import sequence
-from ..stats import ioc
+from aldegonde.structures import sequence
+from aldegonde.stats import ioc
 
 ENGLISH = 0.0667
 FRENCH = 0.0778

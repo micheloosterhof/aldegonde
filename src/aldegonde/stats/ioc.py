@@ -5,8 +5,8 @@ from collections import Counter
 from math import sqrt
 from typing import NamedTuple
 
-from ..structures import sequence
-from .ngrams import ngrams
+from aldegonde.structures import sequence
+from aldegonde.stats.ngrams import ngrams
 
 
 def ioc(

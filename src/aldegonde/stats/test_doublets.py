@@ -1,7 +1,7 @@
 """tests for doublets.py"""
 
-from ..structures import sequence, alphabet
-from .doublets import doublets, triplets
+from aldegonde.structures import sequence, alphabet
+from aldegonde.stats.doublets import doublets, triplets
 
 uniq = sequence.Sequence.fromstr("ABCDEFGH", alphabet=alphabet.UPPERCASE_ALPHABET)
 dobl = sequence.Sequence.fromstr(

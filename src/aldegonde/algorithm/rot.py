@@ -1,6 +1,6 @@
 """simple shift cipher"""
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def rot(inp: sequence.Sequence, shift: int) -> sequence.Sequence:

@@ -1,7 +1,7 @@
 from collections import Counter
 
-from ..structures import sequence
-from .ngrams import iterngrams
+from aldegonde.structures import sequence
+from aldegonde.stats.ngrams import iterngrams
 
 
 def print_dist(runes: sequence.Sequence) -> None:

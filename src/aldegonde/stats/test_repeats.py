@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ..structures import alphabet, sequence
+from aldegonde.structures import alphabet, sequence
 
-from .repeats import repeat, repeat2
+from aldegonde.stats.repeats import repeat, repeat2
 
 uniq = sequence.Sequence.fromstr(text="ABCABC", alphabet=alphabet.UPPERCASE_ALPHABET)
 

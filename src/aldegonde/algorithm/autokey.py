@@ -4,9 +4,9 @@ ciphertext autokey variations
 
 from typing import Callable
 
-from ..structures.sequence import Sequence
-from ..stats.ioc import ioc
-from ..analysis.split import split_by_character
+from aldegonde.structures.sequence import Sequence
+from aldegonde.stats.ioc import ioc
+from aldegonde.analysis.split import split_by_character
 
 
 def ciphertext_autokey_encrypt(

@@ -7,7 +7,7 @@ from collections import Counter
 
 import scipy.stats.power_divergence
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 def gtest(text1: sequence.Sequence, text2: sequence.Sequence) -> float:

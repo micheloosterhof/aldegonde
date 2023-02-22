@@ -3,7 +3,7 @@ import math
 
 from scipy.stats import poisson
 
-from ..structures import sequence
+from aldegonde.structures import sequence
 
 
 # TODO: add `cut` parameter here
@@ -38,7 +38,7 @@ def print_repeat_statistics(
         sigmage: float = abs(num - expected) / math.sqrt(var)
         # sigmage: float = abs(num - expected1) / poisson.std(mu)
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.2f} S1={sigmage:.2f}σ"
+            f"repeats length {length}: observed={num:d} expected={expected:.2f} S={sigmage:.2f}σ"
         )
 
 
