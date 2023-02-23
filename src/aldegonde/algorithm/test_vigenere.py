@@ -3,7 +3,7 @@
 from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
 from aldegonde.structures.sequence import Sequence
 
-import aldegonde.algorithms.vigenere
+import aldegonde.algorithm.vigenere
 
 
 def test_vigenere() -> None:

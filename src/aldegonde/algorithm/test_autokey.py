@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from aldegonde.algorithms import autokey
+from aldegonde.algorithm import autokey
 from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
 from aldegonde.structures.sequence import Sequence
 
