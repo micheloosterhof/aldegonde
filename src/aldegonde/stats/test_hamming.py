@@ -1,7 +1,7 @@
 #!/usr/bin/env p
 
 from aldegonde.structures import sequence, alphabet
-from aldegonde.stat.shamming import hamming_distance
+from aldegonde.stats.hamming import hamming_distance
 
 karolin = sequence.Sequence.fromstr("karolin", alphabet=alphabet.LOWERCASE_ALPHABET)
 kathrin = sequence.Sequence.fromstr("kathrin", alphabet=alphabet.LOWERCASE_ALPHABET)
