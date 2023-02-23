@@ -3,12 +3,7 @@
 from aldegonde.structures.alphabet import UPPERCASE_ALPHABET
 from aldegonde.structures.sequence import Sequence
 
-import aldegonde.structures.vigenere
-
-from .vigenere import vigenere_encrypt, vigenere_decrypt
-from .vigenere import beaufort_encrypt, beaufort_decrypt
-from .vigenere import variant_beaufort_encrypt, variant_beaufort_decrypt
-from .vigenere import vigenere_encrypt_with_alphabet, vigenere_decrypt_with_alphabet
+import aldegonde.algorithms.vigenere
 
 
 def test_vigenere() -> None:
