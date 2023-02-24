@@ -34,8 +34,8 @@ def test_variant_variant_beaufort() -> None:
     ciphertext = Sequence.fromstr(
         text="FGYXOCWADMDNZWDMLXJANR", alphabet=UPPERCASE_ALPHABET
     )
-    assert ciphertext == variant_beaufort_encrypt(plaintext=plaintext, primer=key)
-    assert plaintext == variant_beaufort_decrypt(ciphertext=ciphertext, primer=key)
+    assert ciphertext == vigenere.variant_beaufort_encrypt(plaintext=plaintext, primer=key)
+    assert plaintext == vigenere.variant_beaufort_decrypt(ciphertext=ciphertext, primer=key)
 
 
 def test_vigenere_with_custom_alphabet() -> None:
@@ -51,10 +51,10 @@ def test_vigenere_with_custom_alphabet() -> None:
         "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION",
         alphabet=UPPERCASE_ALPHABET,
     )
-    assert demo_cipher_string == vigenere_encrypt_with_alphabet(
+    assert demo_cipher_string == vigenere.vigenere_encrypt_with_alphabet(
         plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
     )
-    assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
+    assert demo_cipher_decoded == vigenere.vigenere_decrypt_with_alphabet(
         ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
     )
 
@@ -66,9 +66,9 @@ def test_vigenere_with_standard_alphabet() -> None:
     demo_key = Sequence.fromstr("LEMON", alphabet=UPPERCASE_ALPHABET)
     demo_cipher_string = Sequence.fromstr("LXFOPVEFRNHR", alphabet=UPPERCASE_ALPHABET)
     demo_cipher_decoded = Sequence.fromstr("ATTACKATDAWN", alphabet=UPPERCASE_ALPHABET)
-    assert demo_cipher_string == vigenere_encrypt_with_alphabet(
+    assert demo_cipher_string == vigenere.vigenere_encrypt_with_alphabet(
         plaintext=demo_cipher_decoded, primer=demo_key, alphabet=demo_alphabet
     )
-    assert demo_cipher_decoded == vigenere_decrypt_with_alphabet(
+    assert demo_cipher_decoded == vigenere.vigenere_decrypt_with_alphabet(
         ciphertext=demo_cipher_string, primer=demo_key, alphabet=demo_alphabet
     )
