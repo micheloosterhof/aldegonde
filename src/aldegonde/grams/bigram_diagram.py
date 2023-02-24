@@ -1,7 +1,6 @@
 """Bigram diagrams"""
 
 from collections import Counter, defaultdict
-from typing import Dict
 
 from ..structures import sequence
 

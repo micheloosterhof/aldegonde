@@ -11,7 +11,6 @@ from collections import defaultdict
 import itertools
 import random
 import statistics
-from typing import Dict
 
 from aldegonde.structures import sequence
 from aldegonde.maths import factor

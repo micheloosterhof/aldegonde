@@ -130,10 +130,10 @@ def keyword_generator(keyword: str, alphabet: str) -> str:
     assert False not in [letter in alphabet for letter in keyword]
 
     for letter in keyword:
-        if not letter in output:
+        if letter not in output:
             output += letter
     for letter in alphabet:
-        if not letter in output:
+        if letter not in output:
             output += letter
 
     assert len(output) == len(alphabet)
