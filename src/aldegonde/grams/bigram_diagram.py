@@ -23,7 +23,7 @@ def print_bigram_diagram(runes: sequence.Sequence, skip: int=1) -> None:
         f"{runes[idx]:02d}-{runes[idx + skip]:02d}" for idx in range(len(runes) - skip)
     )
 
-    bigram: Dict = defaultdict(dict)
+    bigram: dict = defaultdict(dict)
     for k, v in res.items():
         x, y = k.split("-")
         bigram[int(y)][int(x)] = v
@@ -108,7 +108,7 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
     else:
         raise Exception("`cut` variable can be 0, 1 or 2")
 
-    bigram: Dict = defaultdict(dict)
+    bigram: dict = defaultdict(dict)
     for k, v in res.items():
         x, y = k.split("-")
         bigram[int(y)][int(x)] = v

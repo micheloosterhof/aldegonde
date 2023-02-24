@@ -1,7 +1,8 @@
 """Class to group information about alphabets.
 """
 
-from typing import Union, overload, Iterator, Iterable
+from typing import Union, overload
+from collections.abc import Iterator, Iterable
 
 LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]

@@ -47,7 +47,10 @@ def ioc(
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
 
-    Ioc = NamedTuple("Ioc", [("ioc", float), ("nioc", float), ("sigmage", float)])
+    class Ioc(NamedTuple):
+        ioc: float
+        nioc: float
+        sigmage: float
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 

@@ -2,7 +2,8 @@
 """
 
 import collections.abc
-from typing import Optional, Union, overload, Iterator, Iterable
+from typing import Optional, Union, overload
+from collections.abc import Iterator, Iterable
 
 import aldegonde.structures.alphabet as alpha
 

@@ -1,7 +1,7 @@
 """functions for ngrams
 """
 
-from typing import Iterator
+from collections.abc import Iterator
 
 from aldegonde.structures import sequence
 

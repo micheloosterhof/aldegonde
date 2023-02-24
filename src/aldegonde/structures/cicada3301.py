@@ -1,7 +1,7 @@
 """Functions to deal with Cicada 3301"""
 
 import random
-from typing import Iterator
+from collections.abc import Iterator
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -187,5 +187,5 @@ def print_rune(runes: list[int], limit: int = 0) -> None:
 
     print("RUNES  :  ", end="")
     for i in range(0, limit):
-        print("{:2} ".format(CICADA_ALPHABET[runes[i]]), end="")
+        print(f"{CICADA_ALPHABET[runes[i]]:2} ", end="")
     print()
