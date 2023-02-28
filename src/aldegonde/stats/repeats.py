@@ -1,9 +1,11 @@
 from collections import Counter
+from collections import defaultdict
 import math
 
 from scipy.stats import poisson
 
 from aldegonde.structures import sequence
+from aldegonde.stats.ngrams import ngrams
 
 
 # TODO: add `cut` parameter here
@@ -13,6 +15,7 @@ def print_repeat_statistics(
     ciphertext: sequence.Sequence,
     minimum: int = 4,
     maximum: int = 10,
+    cut: int = 0,
     trace: bool = False,
 ) -> None:
     """
@@ -24,9 +27,8 @@ def print_repeat_statistics(
     for length in range(minimum, maximum + 1):
         l = []
         num = 0
-        for index in range(0, len(ciphertext) - length + 1):
-            k = "-".join([str(x) for x in ciphertext[index : index + length]])
-            l.append(k)
+        for g in ngrams(ciphertext, length=length, cut=cut):
+            l.append("-".join([str(x) for x in g]))
         for v in Counter(l).values():
             if v > 1:
                 num = num + 1
@@ -43,7 +45,7 @@ def print_repeat_statistics(
 
 
 def repeat(
-    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10
+    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10, cut: int = 0
 ) -> dict[str, int]:
     """
     Find repeating sequences in the list, up to `maximum`. Max defaults to 10
@@ -52,9 +54,8 @@ def repeat(
     sequences = {}
     for length in range(minimum, maximum + 1):
         l = []
-        for index in range(0, len(ciphertext) - length + 1):
-            k = "-".join([str(x) for x in ciphertext[index : index + length]])
-            l.append(k)
+        for g in ngrams(ciphertext, length=length, cut=cut):
+            l.append("-".join([str(x) for x in g]))
         f = Counter(l)
         for k, v in f.items():
             if v > 1:
@@ -73,14 +74,10 @@ def repeat2(
     """
     sequences = {}
     for length in range(minimum, maximum + 1):
-        l: dict[str, list[int]] = {}
+        l: dict[str, list[int]] = defaultdict(list)
         for index in range(0, len(ciphertext) - length + 1):
             k = "-".join([str(x) for x in ciphertext[index : index + length]])
-            if k in l:
-                l[k].append(index)
-            else:
-                l[k] = [index]
-
+            l[k].append(index)
         for k, v in l.items():
             if len(v) > 1:
                 sequences[k] = v.copy()

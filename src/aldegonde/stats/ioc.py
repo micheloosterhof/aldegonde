@@ -51,6 +51,7 @@ def ioc(
         ioc: float
         nioc: float
         sigmage: float
+
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
@@ -60,7 +61,7 @@ def print_ioc_statistics(runes: sequence.Sequence) -> None:
     """
     for length in range(1, 6):
         for cut in range(0, length + 1):
-            if length==1 and cut==1: 
+            if length == 1 and cut == 1:
                 continue
             _, nioc, sigmage = ioc(runes, length=length, cut=cut)
             print(f"ΔIC{length} (cut={cut}) = {nioc:.3f} S={sigmage:.3f}σ ", end="| ")

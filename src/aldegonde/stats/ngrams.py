@@ -1,14 +1,14 @@
 """functions for ngrams
 """
 
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 
 from aldegonde.structures import sequence
 
 
 def iterngrams(
     runes: sequence.Sequence, length: int, cut: int = 0
-) -> Iterator[list[int]]:
+) -> Generator[list[int], None, None]:
     """Returns ngrams for the given sequence
     Args:
         runes: Sequence
