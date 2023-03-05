@@ -6,7 +6,7 @@ def print_modchecker(runes: list[int], trace: bool = False) -> None:
         return
     runes = sorted(runes)
     lowest = runes[0]
-    highest = runes[-1]
+    runes[-1]
 
     for i in range(lowest, 0, -1):
         rests = []
