@@ -24,7 +24,7 @@ defusedxml==0.7.1
 distlib==0.3.6
 entrypoints==0.4
 executing==1.2.0
-fastjsonschema==2.16.2
+fastjsonschema==2.16.3
 filelock==3.9.0
 fonttools==4.38.0
 idna==3.4
@@ -32,12 +32,12 @@ importlab==0.8
 iniconfig==2.0.0
 ipykernel==6.21.2
 ipython-genutils==0.2.0
-ipython==8.10.0
+ipython==8.11.0
 ipywidgets==8.0.4
 jedi==0.18.2
 jsonschema==4.17.3
 jupyter-client==8.0.3
-jupyter-console==6.6.1
+jupyter-console==6.6.2
 jupyter-core==5.2.0
 jupyter==1.0.0
 jupyterlab-pygments==0.2.2
@@ -45,7 +45,7 @@ jupyterlab-widgets==3.0.5
 kiwisolver==1.4.4
 libcst==0.4.9
 matplotlib-inline==0.1.6
-matplotlib==3.7.0
+matplotlib==3.7.1
 mistune==2.0.5
 nbclient==0.7.2
 nbconvert==7.2.9
@@ -63,7 +63,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 pluggy==1.0.0
 prometheus-client==0.16.0
-prompt-toolkit==3.0.37
+prompt-toolkit==3.0.38
 psutil==5.9.4
 ptyprocess==0.7.0
 pure-eval==0.2.2
@@ -91,7 +91,7 @@ tomli==2.0.1
 tornado==6.2
 traitlets==5.9.0
 urllib3==1.26.14
-virtualenv==20.19.0
+virtualenv==20.20.0
 wcwidth==0.2.6
 webencodings==0.5.1
 widgetsnbextension==4.0.5
