@@ -3,17 +3,23 @@
 
 import random
 
+from aldegonde.structures.alphabet import Alphabet
+from aldegonde.structures.sequence import Sequence
+
 
 def monoalphabetic_substitution_encrypt(
-    sequence: list[int], key: list[int]
-) -> list[int]:
+    plaintext: Sequence, key: list[int]
+) -> Sequence:
     """
     Monalphabetic substitution
     """
     output = []
-    for e in sequence:
+    for e in plaintext:
         output.append(key[e])
-    return output
+    outputseq: Sequence = Sequence.fromlist(
+        data=output, alphabet=plaintext.alphabet.alphabet
+    )
+    return outputseq
 
 
 def reverse_key(key: list[int]) -> list[int]:
@@ -33,17 +39,20 @@ def reverse_key(key: list[int]) -> list[int]:
 
 
 def monoalphabetic_substitution_decrypt(
-    sequence: list[int], key: list[int]
-) -> list[int]:
+    ciphertext: Sequence, key: list[int]
+) -> Sequence:
     """Monalphabetic substitution
     NOTE: key input is the same as for encryption, this function will reverse the key
     """
     reversed_key = reverse_key(key)
-    # print(f"revkey: {reversed_key}")
+    print(f"revkey: {reversed_key}")
     output = []
-    for e in sequence:
+    for e in ciphertext:
         output.append(reversed_key[e])
-    return output
+    outputseq: Sequence = Sequence.fromlist(
+        data=output, alphabet=ciphertext.alphabet.alphabet
+    )
+    return outputseq
 
 
 def randomkey(length: int) -> list[int]:
