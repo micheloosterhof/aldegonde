@@ -70,13 +70,13 @@ class Sequence(collections.abc.Sequence[int], Iterable):
         Restore original punctuation
         """
         out: str = ""
-        count: int = 0
+        index: int = 0
         skips: list[str] = []
         for symbol in self.text:
-            try:
-                out += self.alphabet.i2a(self.data[count])
-                count += 1
-            except IndexError:
+            if symbol in self.alphabet:
+                out += self.alphabet.i2a(self.data[index])
+                index += 1
+            else:
                 skips.append(symbol)
                 out += symbol
         if skips:
