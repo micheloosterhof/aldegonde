@@ -8,17 +8,21 @@
               AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
 from collections import defaultdict
+from collections.abc import Sequence
 import itertools
 import random
 import statistics
 
-from aldegonde.structures import sequence
 from aldegonde.maths import factor
 
+from typing import TypeVar
 
-def isomorph(ciphertext: sequence.Sequence) -> str:
+T = TypeVar("T")
+
+
+def isomorph(ciphertext: Sequence[T]) -> str:
     """
-    Input is a piece of ciphertext as a list of int
+    Input is a piece of ciphertext as a sequence
     Output is this normalized as an isomorph, as a string in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
     TODO: raise exception when we go beyond Z
@@ -34,7 +38,7 @@ def isomorph(ciphertext: sequence.Sequence) -> str:
     return output
 
 
-def all_isomorphs(ciphertext: sequence.Sequence, length: int) -> dict[str, list[int]]:
+def all_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
     """
     Return all isomorphs of a particular length from a sequence
     """
@@ -80,7 +84,7 @@ def random_isomorph_statistics(
     return (meandistinct, stdevdistinct, meanduplicate, stdevduplicate)
 
 
-def print_isomorph_statistics(seq: sequence.Sequence, trace: bool = False) -> None:
+def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
     """
     Look for isomorphs in the sequence.
     Isomorphs are sequences that have the same number of unique characters:
