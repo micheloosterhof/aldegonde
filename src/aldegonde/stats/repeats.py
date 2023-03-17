@@ -1,6 +1,8 @@
 from collections import Counter
 from collections import defaultdict
+from collections.abc import Sequence
 import math
+from typing import TypeVar
 
 from scipy.stats import poisson
 
@@ -8,7 +10,7 @@ from aldegonde.structures import sequence
 from aldegonde.stats.ngrams import ngrams
 
 
-# TODO: add `cut` parameter here
+T = TypeVar("T")
 
 
 def print_repeat_statistics(
@@ -28,7 +30,8 @@ def print_repeat_statistics(
         l = []
         num = 0
         for g in ngrams(ciphertext, length=length, cut=cut):
-            l.append("-".join([str(x) for x in g]))
+            l.append(str(g))
+            print(f"{g} {repr(g)} {str(g)}")
         for v in Counter(l).values():
             if v > 1:
                 num = num + 1
@@ -45,7 +48,7 @@ def print_repeat_statistics(
 
 
 def repeat(
-    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10, cut: int = 0
+    ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10, cut: int = 0
 ) -> dict[str, int]:
     """
     Find repeating sequences in the list, up to `maximum`. Max defaults to 10
@@ -55,7 +58,7 @@ def repeat(
     for length in range(minimum, maximum + 1):
         l = []
         for g in ngrams(ciphertext, length=length, cut=cut):
-            l.append("-".join([str(x) for x in g]))
+            l.append(str(g))
         f = Counter(l)
         for k, v in f.items():
             if v > 1:
@@ -65,7 +68,7 @@ def repeat(
 
 
 def repeat2(
-    ciphertext: sequence.Sequence, minimum: int = 2, maximum: int = 10
+    ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10
 ) -> dict[str, list[int]]:
     """
     Find repeating sequences in the list, up to `maximum`. Max defaults to 10
@@ -76,7 +79,7 @@ def repeat2(
     for length in range(minimum, maximum + 1):
         l: dict[str, list[int]] = defaultdict(list)
         for index in range(0, len(ciphertext) - length + 1):
-            k = "-".join([str(x) for x in ciphertext[index : index + length]])
+            k = str(ciphertext[index : index + length])
             l[k].append(index)
         for k, v in l.items():
             if len(v) > 1:
