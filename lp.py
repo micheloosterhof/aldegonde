@@ -9,10 +9,10 @@ import math
 from scipy.stats import poisson
 
 from aldegonde.structures import alphabet, sequence, cicada3301
-from aldegonde.stats import ioc, repeats, doublets, dist, ngrams
+from aldegonde.stats import ioc, repeats, doublets, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular
-from aldegonde.analysis import kappa, isomorph, friedman
+from aldegonde.analysis import kappa, friedman
 from aldegonde.algorithm import autokey
 
 
@@ -72,15 +72,16 @@ for i, s in enumerate(y):
         print(f"length: {len(seg)} runes")
         cicada3301.print_all(seg, limit=30)
         dist.print_dist(seg)
+        entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg)
         bigram_diagram.print_bigram_diagram(seg)
         bigram_diagram.print_bigram_diagram(seg, skip=2)
         doublets.print_doublets_statistics(seg)
         doublets.print_doublets_statistics(seg, skip=2)
-        repeats.print_repeat_statistics(seg, minimum=2)
         kappa.print_kappa(seg)
         friedman.friedman_test(seg)
         reps = repeats.repeat2(seg, minimum=5)
+        repeats.print_repeat_statistics(seg, minimum=2)
         diffs = []
         for key in reps.keys():
             positions = reps[key]
