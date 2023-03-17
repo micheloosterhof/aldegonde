@@ -1,14 +1,15 @@
 """functions for ngrams
 """
 
-from collections.abc import Generator, Iterator
+from collections.abc import Generator, Sequence
+from typing import TypeVar
 
-from aldegonde.structures import sequence
+T = TypeVar("T")
 
 
 def iterngrams(
-    runes: sequence.Sequence, length: int, cut: int = 0
-) -> Generator[list[int], None, None]:
+    runes: Sequence[T], length: int, cut: int = 0
+) -> Generator[Sequence[T], None, None]:
     """Returns ngrams for the given sequence
     Args:
         runes: Sequence
@@ -33,7 +34,7 @@ def iterngrams(
             yield list(runes[i : i + length])
 
 
-def ngrams(runes: sequence.Sequence, length: int, cut: int = 0) -> list[list[int]]:
+def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
     """
     Input is a Sequence
     Output is a list of ngrams
@@ -45,42 +46,42 @@ def ngrams(runes: sequence.Sequence, length: int, cut: int = 0) -> list[list[int
     return list(iterngrams(runes, length=length, cut=cut))
 
 
-def digraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def digraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for digraphs
     """
     return ngrams(runes, length=2, cut=cut)
 
 
-def trigraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def trigraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for trigraphs
     """
     return ngrams(runes, length=3, cut=cut)
 
 
-def tetragraphs(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def tetragraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for tetragraphs
     """
     return ngrams(runes, length=4, cut=cut)
 
 
-def bigrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def bigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for digrams
     """
     return ngrams(runes, length=2, cut=cut)
 
 
-def trigrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def trigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for trigrams
     """
     return ngrams(runes, length=3, cut=cut)
 
 
-def quadgrams(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
+def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     """
     convenience function for tetragrams
     """
