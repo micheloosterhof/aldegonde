@@ -1,12 +1,16 @@
 """Entropy related functions"""
 
 from collections import Counter
+from collections.abc import Sequence
 import math
+from typing import TypeVar
+
+T = TypeVar("T")
 
 from aldegonde.structures import sequence
 
 
-def shannon_entropy(ciphertext: sequence.Sequence, base: int = 2) -> float:
+def shannon_entropy(ciphertext: Sequence[T], base: int = 2) -> float:
     """
     shannon entropy. by default in bits.
     """
@@ -19,20 +23,20 @@ def shannon_entropy(ciphertext: sequence.Sequence, base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(runes: sequence.Sequence, base: int = 2, cut: int = 0) -> float:
+def shannon2_entropy(ciphertext: Sequence[T], base: int = 2, cut: int = 0) -> float:
     """
     shannon entropy. by default in bits.
     """
-    N = len(runes)
+    N = len(ciphertext)
     if N < 3:
         return 0.0
     l: list = []
     if cut == 0:
         for i in range(0, N - 1):
-            l.append(f"{runes[i]}-{runes[i+1]}")
+            l.append(f"{ciphertext[i]}-{ciphertext[i+1]}")
     elif cut in (1, 2):
         for i in range(cut - 1, N - 1, 2):
-            l.append(f"{runes[i]}-{runes[i+1]}")
+            l.append(f"{ciphertext[i]}-{ciphertext[i+1]}")
     else:
         raise Exception
     f = Counter(l)
