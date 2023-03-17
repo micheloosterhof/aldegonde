@@ -12,6 +12,7 @@ from collections.abc import Sequence
 import itertools
 import random
 import statistics
+from typing import Tuple
 
 from aldegonde.maths import factor
 
@@ -29,12 +30,12 @@ def isomorph(ciphertext: Sequence[T]) -> str:
     """
     output: str = ""
     letter: str = "A"
-    mapping: dict[int, str] = {}
+    mapping: dict[str, str] = {}
     for rune in ciphertext:
         if rune not in mapping:
-            mapping[rune] = letter
+            mapping[str(rune)] = letter
             letter = chr(ord(letter) + 1)
-        output = output + mapping[rune]
+        output = output + mapping[str(rune)]
     return output
 
 
@@ -51,7 +52,7 @@ def all_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
     return isos
 
 
-def isomorph_statistics(isomorphs: dict[str, list[int]]) -> (int, int):
+def isomorph_statistics(isomorphs: dict[str, list[int]]) -> Tuple[int, int]:
     """
     Input is the output of `all_isomorphs`.
     Returns `distincts` and `duplicates` for the input
@@ -62,7 +63,11 @@ def isomorph_statistics(isomorphs: dict[str, list[int]]) -> (int, int):
 
 
 def random_isomorph_statistics(
-    sequencelength: int, isomorphlength: int, samples: int = 20, trace: bool = False
+    sequencelength: int,
+    isomorphlength: int,
+    samples: int = 20,
+    trace: bool = False,
+    alphabetlen: int = 29,
 ) -> tuple[float, float, float, float]:
     """
     Returns the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs
@@ -71,7 +76,9 @@ def random_isomorph_statistics(
     duplicates: list[int] = []
 
     for _ in range(0, samples):
-        rand: list[int] = [random.randrange(0, 29) for _ in range(sequencelength)]
+        rand: list[int] = [
+            random.randrange(0, alphabetlen) for _ in range(sequencelength)
+        ]
         isos = all_isomorphs(rand, isomorphlength)
         (distinct, duplicate) = isomorph_statistics(isos)
         distincts.append(distinct)
