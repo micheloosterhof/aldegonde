@@ -1,7 +1,10 @@
-from aldegonde.structures import sequence
+from collections.abc import Sequence
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
-def hamming_distance(s1: sequence.Sequence, s2: sequence.Sequence) -> int:
+def hamming_distance(s1: Sequence[T], s2: Sequence[T]) -> int:
     """
     The Hamming distance between two equal-length strings of symbols
     is the number of positions at which the corresponding symbols
