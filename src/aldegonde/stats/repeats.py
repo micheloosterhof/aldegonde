@@ -31,7 +31,6 @@ def print_repeat_statistics(
         num = 0
         for g in ngrams(ciphertext, length=length, cut=cut):
             l.append(str(g))
-            print(f"{g} {repr(g)} {str(g)}")
         for v in Counter(l).values():
             if v > 1:
                 num = num + 1
