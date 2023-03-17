@@ -28,10 +28,10 @@ def iterngrams(
     N = len(runes)  # size of sequence
     if cut == 0:  # pylint: disable=C2001
         for i in range(0, N - length + 1):
-            yield list(runes[i : i + length])
+            yield runes[i : i + length]
     elif cut in range(1, length + 1):
         for i in range(cut - 1, N - length + 1, length):
-            yield list(runes[i : i + length])
+            yield runes[i : i + length]
 
 
 def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
