@@ -103,8 +103,17 @@ def variantbeaufort_tr(alphabet: Sequence[T], shift: int = 3) -> dict[T, dict[T,
 
 def quagmire1_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
     """
-    Generate a Vigenere tabula recta with the standard alphabet
+    THIS IS INCORRECT
     """
+    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    for i, key in enumerate(alphabet):
+        for j, e in enumerate(alphabet):
+            tr[key][e] = sorted(alphabet)[(i + j) % len(alphabet)]
+    return tr
+
+
+def quagmire3_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+    """ """
     tr: dict[T, dict[T, T]] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):

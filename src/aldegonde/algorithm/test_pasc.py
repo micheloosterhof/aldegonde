@@ -38,24 +38,8 @@ def test_quagmire1() -> None:
     is this quagmire1?
     """
     return
-    alphabet = "KRYPTOSABCDEFGHIJLMNQUVWXZ"
-    key = "PALIMPSEST"
-    ciphertext = "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
-    plaintext = "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
-    assert list(ciphertext) == pasc.pasc_encrypt(
-        plaintext, key, pasc.quagmire1_tr(alphabet)
-    )
-    assert list(plaintext) == pasc.pasc_decrypt(
-        ciphertext, key, pasc.quagmire1_tr(alphabet)
-    )
-
-
-def test_quagmire_kryptos() -> None:
-    """
-    is this quagmire1?
-    """
-    return
     alphabet = "PAULBRNDTCEFGHIJKMOQSVWXYZ"
+    # assert pasc.quagmire1_tr(alphabet) == 0
     key = "BRANDT"
     plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     ciphertext = "HIFUFCIRFKUYKYJPFQSSHZMMQONGKFKTNDQAWDJSKFKVJNHCLIRUCXOWHGUYIDJDUKG"
@@ -64,6 +48,38 @@ def test_quagmire_kryptos() -> None:
     )
     assert list(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.quagmire1_tr(alphabet)
+    )
+
+
+def test_quagmire3() -> None:
+    """
+    is this quagmire3?
+    """
+    alphabet = "PAULBRNDTCEFGHIJKMOQSVWXYZ"
+    key = "BRANDT"
+    plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
+    ciphertext = "FXDIEOGNDBZIIHFCENWDCQMUSLJPJVITJXVKPOFGJVIEFDGOJXQIDHOFCPZIGOFXZPE"
+    assert list(ciphertext) == pasc.pasc_encrypt(
+        plaintext, key, pasc.quagmire3_tr(alphabet)
+    )
+    assert list(plaintext) == pasc.pasc_decrypt(
+        ciphertext, key, pasc.quagmire3_tr(alphabet)
+    )
+
+
+def test_quagmire3_kryptos() -> None:
+    """
+    is this quagmire3?
+    """
+    alphabet = "KRYPTOSABCDEFGHIJLMNQUVWXZ"
+    key = "PALIMPSEST"
+    ciphertext = "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
+    plaintext = "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
+    assert list(ciphertext) == pasc.pasc_encrypt(
+        plaintext, key, pasc.quagmire3_tr(alphabet)
+    )
+    assert list(plaintext) == pasc.pasc_decrypt(
+        ciphertext, key, pasc.quagmire3_tr(alphabet)
     )
 
 
