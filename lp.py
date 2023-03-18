@@ -59,7 +59,6 @@ for i, s in enumerate(y):
         try:
             q.append(modular.div29(l[i], priem[i]))
         except:
-            print(f"* {priem[i]}", end="")
             q.append(0)
 
     # l = []
@@ -85,22 +84,13 @@ for i, s in enumerate(y):
         ioc.print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_bigram_diagram(seg)
         bigram_diagram.print_bigram_diagram(seg, skip=2)
-        doublets.print_doublets_statistics(seg)
-        doublets.print_doublets_statistics(seg, skip=2)
+        doublets.print_doublets_statistics(seg, alphabetsize=29)
+        doublets.print_doublets_statistics(seg, alphabetsize=29, skip=2)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
         friedman.friedman_test(seg)
-        reps = repeats.repeat2(seg, minimum=5)
         repeats.print_repeat_statistics(seg, minimum=2)
-        diffs = []
-        for key in reps.keys():
-            positions = reps[key]
-            for v in itertools.combinations(positions, 2):
-                print(
-                    f"repeat: {key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
-                )
-
-        print("\n")
-        # isomorph.print_isomorph_statistics(seg)
+        repeats.print_repeat_positions(seg, minimum=5)
+        isomorph.print_isomorph_statistics(seg)
 
         # slide = ioc.sliding_window_ioc(seg, window=100)
         # for i, e in enumerate(slide):
