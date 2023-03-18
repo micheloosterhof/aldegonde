@@ -1,13 +1,11 @@
 """IOC calculation
 """
 
-from collections import Counter
 from collections.abc import Sequence
 from math import sqrt
 from typing import NamedTuple
 from typing import TypeVar
 
-from aldegonde.stats.ngrams import iterngrams, ngrams
 from aldegonde.stats.dist import dist
 
 T = TypeVar("T")
@@ -72,10 +70,10 @@ def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
         for cut in range(0, length + 1):
             if length == 1 and cut == 1:
                 continue
-            _, nioc, sigmage = nioc(
+            _, nic, sigmage = nioc(
                 text, alphabetsize=alphabetsize, length=length, cut=cut
             )
-            print(f"ΔIC{length} (cut={cut}) = {nioc:.3f} S={sigmage:.3f}σ ", end="| ")
+            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={sigmage:.3f}σ ", end="| ")
         print()
 
 
