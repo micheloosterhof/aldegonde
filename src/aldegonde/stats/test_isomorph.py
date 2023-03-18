@@ -7,6 +7,7 @@ def test_isomorph():
     assert isomorph("ATTACK") == isomorph("EFFECT")
     assert isomorph("ATTACK") == "ABBACD"
     assert isomorph("ATTA") == "ABBA"
+    assert isomorph([0, 0, 0, 0]) == "AAAA"
 
 
 def test_all_isomorphs():

@@ -7,13 +7,11 @@
     length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
               AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
-from collections import Counter, defaultdict
+from collections import Counter
 from collections.abc import Sequence
-import itertools
 import random
 import statistics
 
-from aldegonde.maths import factor
 from aldegonde.stats.ngrams import iterngrams
 
 from typing import TypeVar
@@ -32,7 +30,7 @@ def isomorph(text: Sequence[T]) -> str:
     letter: str = "A"
     mapping: dict[str, str] = {}
     for rune in text:
-        if rune not in mapping:
+        if str(rune) not in mapping:
             mapping[str(rune)] = letter
             letter = chr(ord(letter) + 1)
         output = output + mapping[str(rune)]
@@ -53,7 +51,6 @@ def isomorph_statistics(isomorphs: dict[str, int]) -> tuple[int, int]:
     """
     distinct: int = len(isomorphs.keys())
     duplicate: int = sum([x for x in isomorphs.values() if x > 1])
-    print(f"isostat: {distinct} {duplicate}: {isomorphs}")
     return (distinct, duplicate)
 
 
@@ -100,13 +97,6 @@ def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
     for length in range(startlength, endlength + 1):
         isos = count_isomorphs(seq, length)
         (distinct, duplicate) = isomorph_statistics(isos)
-        if duplicate < 100 or trace is True:
-            for key, values in isos.items():
-                for v in itertools.combinations(values, 2):
-                    print(
-                        f"{key} loc={v[1]}-{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
-                    )
-
         (
             avgdistinct,
             stdevdistinct,
