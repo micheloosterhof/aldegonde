@@ -25,8 +25,8 @@ distlib==0.3.6
 entrypoints==0.4
 executing==1.2.0
 fastjsonschema==2.16.3
-filelock==3.9.0
-fonttools==4.39.0
+filelock==3.10.0
+fonttools==4.39.2
 idna==3.4
 importlab==0.8
 iniconfig==2.0.0
@@ -38,7 +38,7 @@ jedi==0.18.2
 jsonschema==4.17.3
 jupyter-client==8.0.3
 jupyter-console==6.6.3
-jupyter-core==5.2.0
+jupyter-core==5.3.0
 jupyter==1.0.0
 jupyterlab-pygments==0.2.2
 jupyterlab-widgets==3.0.5
@@ -48,7 +48,7 @@ matplotlib-inline==0.1.6
 matplotlib==3.7.1
 mistune==2.0.5
 nbclient==0.7.2
-nbconvert==7.2.9
+nbconvert==7.2.10
 nbformat==5.7.3
 nest-asyncio==1.5.6
 networkx==3.0
@@ -58,7 +58,7 @@ numpy==1.24.2
 packaging==23.0
 pandocfilters==1.5.0
 parso==0.8.3
-pathspec==0.11.0
+pathspec==0.11.1
 pexpect==4.8.0
 pickleshare==0.7.5
 pluggy==1.0.0
@@ -75,8 +75,8 @@ pyflakes==3.0.1
 pyparsing==3.0.9
 pyrsistent==0.19.3
 python-dateutil==2.8.2
-pyzmq==25.0.0
-qtconsole==5.4.0
+pyzmq==25.0.1
+qtconsole==5.4.1
 requests==2.28.2
 scipy==1.10.1
 six==1.16.0
@@ -90,8 +90,7 @@ toml==0.10.2
 tomli==2.0.1
 tornado==6.2
 traitlets==5.9.0
-urllib3==1.26.14
-virtualenv==20.20.0
+urllib3==1.26.15
 wcwidth==0.2.6
 webencodings==0.5.1
 widgetsnbextension==4.0.5
