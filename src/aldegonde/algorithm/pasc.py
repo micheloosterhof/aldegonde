@@ -103,7 +103,11 @@ def variantbeaufort_tr(alphabet: Sequence[T], shift: int = 3) -> dict[T, dict[T,
 
 def quagmire1_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
     """ """
-    raise NotImplementedError
+    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    for i, key in enumerate(sorted(alphabet)):
+        for j, e in enumerate(sorted(alphabet)):
+            tr[key][e] = alphabet[(i + j) % len(alphabet)]
+    return tr
 
 
 def quagmire2_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
@@ -125,10 +129,18 @@ def quagmire4_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
     raise NotImplementedError
 
 
-def quagmire3_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
-    """ """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
-    for i, key in enumerate(alphabet):
-        for j, e in enumerate(alphabet):
-            tr[key][e] = alphabet[(i + j) % len(alphabet)]
-    return tr
+def print_tr(tr: dict[T, dict[T, T]]) -> None:
+    """
+    print TR
+    """
+    print("  | ", end="")
+    for i in tr.keys():
+        for j in tr[i].keys():
+            print(f"{j} ", end="")
+        break
+    print("|\n--+-" + (len(tr.keys()) * "--") + "+-")
+    for i in tr.keys():
+        print(f"{i} | ", end="")
+        for j in tr[i].keys():
+            print(f"{tr[i][j]} ", end="")
+        print("|")

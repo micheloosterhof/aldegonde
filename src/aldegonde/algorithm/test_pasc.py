@@ -40,6 +40,8 @@ def test_quagmire1() -> None:
     return
     alphabet = masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT")
     key = "BRANDT"
+    tr = pasc.quagmire1_tr(alphabet)
+    pasc.print_tr(tr)
     plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     ciphertext = "HIFUFCIRFKUYKYJPFQSSHZMMQONGKFKTNDQAWDJSKFKVJNHCLIRUCXOWHGUYIDJDUKG"
     assert list(ciphertext) == pasc.pasc_encrypt(
