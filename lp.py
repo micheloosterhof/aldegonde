@@ -23,26 +23,25 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     """
     diff = []
     for i in range(0, len(runes) - skip):
-        diff.append((runes[i + skip] + runes[i]) % 29)
+        diff.append((runes[i + skip] - runes[i]) % 29)
     return diff
 
 
-#with open("data/page54-55.txt") as f:
+# with open("data/page54-55.txt") as f:
 with open("data/page0-58.txt") as f:
     lp = f.read()
 
 segments = lp.split("$")
-#segments = [lp]
+# segments = [lp]
 z = segments[0:10]
-#z = segments[0:1]
-#z = segments[9]
+# z = segments[0:1]
+# z = segments[9]
 y = ["".join(z)]
 
 
-#priem = primes.primes(10000)
-#priem.remove(29)
-#tot = []
-#for i in range(0,len(y[0])+2):
+priem = primes.primes(1000000)
+# tot = []
+# for i in range(0,len(y[0])+2):
 #    tot.append(totient.phi_func(i))
 
 
@@ -51,13 +50,23 @@ for i, s in enumerate(y):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
-    seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
+    seq = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
 
-    #l = []
-    #for i, e in enumerate(seq):
+    l = deltastream(seq)
+
+    q = []
+    for i, e in enumerate(l):
+        try:
+            q.append(modular.div29(l[i], priem[i]))
+        except:
+            print(f"* {priem[i]}", end="")
+            q.append(0)
+
+    # l = []
+    # for i, e in enumerate(seq):
     #    l.append((e+tot[i])%29)
 
-    #seg = sequence.Sequence.fromlist(data=l, alphabet=cicada3301.CICADA_ALPHABET)
+    seg = sequence.Sequence.fromlist(data=q, alphabet=cicada3301.CICADA_ALPHABET)
 
     for skip in range(1, 2):
         # print(f"skip={skip}")
@@ -65,7 +74,7 @@ for i, s in enumerate(y):
             print("EMPTY SEGMENT {i}")
             continue
         # print(f"source: {s}")
-        print(f"full alphabet: {seg.alphabet}")
+        print(f"\nfull alphabet: {seg.alphabet}")
         used = "".join([seg.alphabet[r] for r in set(seg.data)])
         print(f"used alphabet: {used} {len(set(seg.data))} symbols")
         # print(f"ciphertext: {seg.elements}")
@@ -73,12 +82,12 @@ for i, s in enumerate(y):
         cicada3301.print_all(seg, limit=30)
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
-        ioc.print_ioc_statistics(seg)
+        ioc.print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_bigram_diagram(seg)
         bigram_diagram.print_bigram_diagram(seg, skip=2)
         doublets.print_doublets_statistics(seg)
         doublets.print_doublets_statistics(seg, skip=2)
-        kappa.print_kappa(seg)
+        kappa.print_kappa(seg, alphabetsize=29, trace=True)
         friedman.friedman_test(seg)
         reps = repeats.repeat2(seg, minimum=5)
         repeats.print_repeat_statistics(seg, minimum=2)
@@ -93,6 +102,6 @@ for i, s in enumerate(y):
         print("\n")
         # isomorph.print_isomorph_statistics(seg)
 
-        #slide = ioc.sliding_window_ioc(seg, window=100)
-        #for i, e in enumerate(slide):
+        # slide = ioc.sliding_window_ioc(seg, window=100)
+        # for i, e in enumerate(slide):
         #    print(f"{i:5d} {e:.3f}")
