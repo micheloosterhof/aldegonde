@@ -2,7 +2,7 @@
 
 import sys
 
-from  aldegonde.maths.modular import modDivide
+from aldegonde.maths.modular import modDivide
 
 
 def divtable(size: int = 29):
