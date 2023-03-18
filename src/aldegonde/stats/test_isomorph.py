@@ -1,11 +1,16 @@
 """tests for doublets.py"""
 
-from aldegonde.stats.isomorph import isomorph, all_isomorphs
+from aldegonde.stats.isomorph import isomorph, count_isomorphs
 
 
 def test_isomorph():
     assert isomorph("ATTACK") == isomorph("EFFECT")
+    assert isomorph("ATTACK") == "ABBACD"
+    assert isomorph("ATTA") == "ABBA"
 
 
 def test_all_isomorphs():
-    assert all_isomorphs("ATTACK", length=4) == {"ABBA": [0], "AABC": [1]}
+    # ATTA -> ABBA
+    # TTAC -> AABC
+    # TACK -> ABCD
+    assert count_isomorphs("ATTACK", length=4) == {"ABBA": 1, "AABC": 1, "ABCD": 1}

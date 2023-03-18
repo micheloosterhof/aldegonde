@@ -7,22 +7,23 @@
     length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
               AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
-from collections import defaultdict
+from collections import Counter, defaultdict
 from collections.abc import Sequence
 import itertools
 import random
 import statistics
 
 from aldegonde.maths import factor
+from aldegonde.stats.ngrams import iterngrams
 
 from typing import TypeVar
 
 T = TypeVar("T")
 
 
-def isomorph(ciphertext: Sequence[T]) -> str:
+def isomorph(text: Sequence[T]) -> str:
     """
-    Input is a piece of ciphertext as a sequence
+    Input is a piece of text as a sequence
     Output is this normalized as an isomorph, as a string in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
     TODO: raise exception when we go beyond Z
@@ -30,7 +31,7 @@ def isomorph(ciphertext: Sequence[T]) -> str:
     output: str = ""
     letter: str = "A"
     mapping: dict[str, str] = {}
-    for rune in ciphertext:
+    for rune in text:
         if rune not in mapping:
             mapping[str(rune)] = letter
             letter = chr(ord(letter) + 1)
@@ -38,26 +39,21 @@ def isomorph(ciphertext: Sequence[T]) -> str:
     return output
 
 
-def all_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
+def count_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, int]:
     """
-    Return all isomorphs of a particular length from a sequence
+    Return all isomorphs of a particular length from a sequence with their count
     """
-    isos: dict[str, list[int]] = defaultdict(
-        list
-    )  # normalized isomorph as key, list of positions as value
-    for pos in range(0, len(ciphertext) - length):
-        iso = isomorph(ciphertext[pos : pos + length])
-        isos[iso].append(pos)
-    return isos
+    return Counter([isomorph(x) for x in iterngrams(ciphertext, length=length)])
 
 
-def isomorph_statistics(isomorphs: dict[str, list[int]]) -> tuple[int, int]:
+def isomorph_statistics(isomorphs: dict[str, int]) -> tuple[int, int]:
     """
-    Input is the output of `all_isomorphs`.
+    Input is the output of `count_isomorphs`.
     Returns `distincts` and `duplicates` for the input
     """
     distinct: int = len(isomorphs.keys())
-    duplicate: int = sum([len(x) for x in isomorphs.values() if len(x) > 1])
+    duplicate: int = sum([x for x in isomorphs.values() if x > 1])
+    print(f"isostat: {distinct} {duplicate}: {isomorphs}")
     return (distinct, duplicate)
 
 
@@ -78,7 +74,7 @@ def random_isomorph_statistics(
         rand: list[int] = [
             random.randrange(0, alphabetlen) for _ in range(sequencelength)
         ]
-        isos = all_isomorphs(rand, isomorphlength)
+        isos = count_isomorphs(rand, isomorphlength)
         (distinct, duplicate) = isomorph_statistics(isos)
         distincts.append(distinct)
         duplicates.append(duplicate)
@@ -102,7 +98,7 @@ def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
     isos: dict[str, list[int]]  # normalized isomorph as key, list of positions as value
 
     for length in range(startlength, endlength + 1):
-        isos = all_isomorphs(seq, length)
+        isos = count_isomorphs(seq, length)
         (distinct, duplicate) = isomorph_statistics(isos)
         if duplicate < 100 or trace is True:
             for key, values in isos.items():
