@@ -1,4 +1,4 @@
-from aldegonde.analysis.kappa import print_kappa, kappa
+from aldegonde.analysis.kappa import kappa
 
 """
 """

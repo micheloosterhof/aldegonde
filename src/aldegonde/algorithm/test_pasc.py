@@ -50,7 +50,7 @@ def test_quagmire1() -> None:
     )
 
 
-def test_quagmire1b() -> None:
+def test_quagmire_kryptos() -> None:
     """
     is this quagmire1?
     """
@@ -65,3 +65,48 @@ def test_quagmire1b() -> None:
     assert list(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.quagmire1_tr(alphabet)
     )
+
+
+"""
+From: https://sites.google.com/site/cryptocrackprogram/user-guide/cipher-types/substitution/quagmire
+
+Type: Quagmire 1
+Plaintext keyword: PAULBRANDT
+Indicator keyword: BRANDT
+Indicator position: A
+Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is the limit when there are footprints on the moon.” gives:
+
+    Plaintext:  dontle tanyon etelly outhes kyisth elimit whenth ereare footpr intson themoo n
+    Ciphertext: HIFUFC IRFKUY KYJPFQ SSHZMM QONGKF KTNDQA WDJSKF KVJNHC LIRUCX OWHGUY IDJDUK G
+"""
+
+"""
+Type: Quagmire 2
+
+Ciphertext keyword: PAULBRANDT
+Indicator keyword: BRANDT
+Indicator position: C
+Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is the limit when there are footprints on the moon.” gives:
+
+    Plaintext:  dontle tanyon etelly outhes kyisth elimit whenth ereare footpr intson themoo n
+    Ciphertext: RMGXKE VLGUQQ NWLJKB KXOFCY GADWYH NIDKHZ YELMYH NSLBWE DMHXSX EKOWQQ VELKQS J
+
+Type: Quagmire 3
+Plain/Ciphertext keywords: PAULBRANDT
+Indicator keyword: BRANDT
+Indicator position: P
+Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is the limit when there are footprints on the moon.” gives:
+
+    Plaintext:  dontle tanyon etelly outhes kyisth elimit whenth ereare footpr intson themoo n
+    Ciphertext: FXDIEO GNDBZI IHFCEN WDCQMU SLJPJV ITJXVK POFGJV IEFDGO JXQIDH OFCPZI GOFXZP E
+
+Type: Quagmire 4
+Plaintext keyword: PAULBRANDT
+Ciphertext keyword: BRANDT
+Indicator keyword: COUNTRY
+Indicator position: P
+Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is the limit when there are footprints on the moon.” gives:
+
+    Plaintext:  dontlet anyonet ellyout heskyis thelimi twhenth erearef ootprin tsonthe moon
+    Ciphertext: KFBIFIC EWQVIIC OSXRXNC SBLSNMQ LNDCSQJ LJEKIGI OVDDHIG YFANHMD LHJGKLF XFJG
+"""
