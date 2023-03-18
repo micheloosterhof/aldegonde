@@ -1,5 +1,4 @@
 from collections import Counter
-from collections import defaultdict
 from collections.abc import Sequence
 import math
 from typing import TypeVar
@@ -7,7 +6,7 @@ from typing import TypeVar
 from scipy.stats import poisson
 
 from aldegonde.structures import sequence
-from aldegonde.stats.ngrams import iterngrams, ngram_distribution
+from aldegonde.stats.ngrams import iterngrams, ngram_distribution, ngram_positions
 
 
 T = TypeVar("T")
@@ -46,41 +45,41 @@ def print_repeat_statistics(
         )
 
 
-def repeat(
-    ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10, cut: int = 0
+def repeat_distribution(
+    ciphertext: Sequence[T], length: int = 2, cut: int = 0
 ) -> dict[str, int]:
     """
     Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     """
     sequences = {}
-    for length in range(minimum, maximum + 1):
-        f = ngram_distribution(ciphertext, length=length, cut=cut)
-        for k, v in f.items():
-            if v > 1:
-                sequences[k] = v
+    f = ngram_distribution(ciphertext, length=length, cut=cut)
+    for k, v in f.items():
+        if v > 1:
+            sequences[k] = v
     return sequences
 
 
-def repeat_positions(
+def print_repeat_positions(
     ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10
-) -> dict[str, list[int]]:
+) -> None:
     """
-    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
-    Returns dictionary with as key the sequence as a string, and
-    as value the list of starting positions of that substring
+    Print repeating sequences in the list, up to `maximum`. Max defaults to 10
     """
-    sequences = {}
     for length in range(minimum, maximum + 1):
-        l: dict[str, list[int]] = defaultdict(list)
-        for index in range(0, len(ciphertext) - length + 1):
-            k = str(ciphertext[index : index + length])
-            l[k].append(index)
-        for k, v in l.items():
-            if len(v) > 1:
-                sequences[k] = v.copy()
+        pos = repeat_positions(ciphertext, length=length)
+        print(f"repeats length {length}: {pos}")
 
-    return sequences
+
+def repeat_positions(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
+    """
+    repeat positions are just ngrams where each list has at least 2 entries
+    """
+    repeats: dict[str, list[int]] = {}
+    for k, v in ngram_positions(ciphertext, length=length).items():
+        if len(v) > 1:
+            repeats[k] = v
+    return repeats
 
 
 def odd_spaced_repeats(ciphertext: Sequence[T], minimum=3, maximum=6):
@@ -89,7 +88,7 @@ def odd_spaced_repeats(ciphertext: Sequence[T], minimum=3, maximum=6):
     """
     d = []
     for length in range(minimum, maximum + 1):
-        rep = repeat_positions(ciphertext, minimum=length, maximum=length)
+        rep = repeat_positions(ciphertext, length=length)
         for v in rep.values():
             for l in range(1, len(v)):
                 d.append(v[l] - v[l - 1])
