@@ -2,7 +2,7 @@
 """
 
 import collections.abc
-from typing import overload
+from typing import overload, Union
 from collections.abc import Iterator, Iterable
 
 import aldegonde.structures.alphabet as alpha
@@ -22,8 +22,8 @@ class Sequence(collections.abc.Sequence[int], Iterable):
 
     def __init__(
         self,
-        text: str | None = None,
-        data: list[int] | None = None,
+        text: Union[str, None] = None,
+        data: Union[list[int], None] = None,
         alphabet: alpha.Alphabet = alpha.Alphabet(alpha.LOWERCASE_ALPHABET),
     ) -> None:
         """
@@ -88,10 +88,10 @@ class Sequence(collections.abc.Sequence[int], Iterable):
         ...
 
     @overload
-    def __getitem__(self, key: slice) -> int | list[int]:
+    def __getitem__(self, key: slice) -> Union[int, list[int]]:
         ...
 
-    def __getitem__(self, key: int | slice) -> int | list[int]:
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, list[int]]:
         """Return character at this position like a normal sequence"""
         return self.data.__getitem__(key)
 

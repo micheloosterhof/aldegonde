@@ -1,7 +1,7 @@
 """Class to group information about alphabets.
 """
 
-from typing import overload
+from typing import overload, Union
 
 LOWERCASE_ALPHABET = [chr(code) for code in range(ord("a"), ord("z") + 1)]
 UPPERCASE_ALPHABET = [chr(code) for code in range(ord("A"), ord("Z") + 1)]
@@ -16,7 +16,7 @@ class Alphabet:
         >>> abc = Alphabet(LOWERCASE_ALPHABET)
     """
 
-    def __init__(self, data: list[str] | str | None = UPPERCASE_ALPHABET) -> None:
+    def __init__(self, data: Union[list[str], str, None] = UPPERCASE_ALPHABET) -> None:
         """ """
         if isinstance(data, list):
             self.alphabet = data
@@ -40,10 +40,10 @@ class Alphabet:
         ...
 
     @overload
-    def __getitem__(self, key: slice) -> str | list[str]:
+    def __getitem__(self, key: slice) -> Union[str, list[str]]:
         ...
 
-    def __getitem__(self, key: int | slice) -> str | list[str]:
+    def __getitem__(self, key: Union[int, slice]) -> Union[str, list[str]]:
         """
         Return character at this position like a normal sequence
         """
