@@ -13,7 +13,6 @@ from aldegonde.stats import ioc, repeats, doublets, dist, ngrams, entropy, isomo
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular
 from aldegonde.analysis import kappa, friedman
-from aldegonde.algorithm import autokey
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
