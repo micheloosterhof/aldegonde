@@ -1,6 +1,6 @@
 from aldegonde.structures import sequence, alphabet
 
-from aldegonde.analysis.kappa import print_kappa
+from aldegonde.analysis.kappa import print_kappa, kappa
 
 """
 """
@@ -9,5 +9,9 @@ TXT = """CVJTNAFENMCDMKBXFSTKLHGSOJWHOFUISFYFBEXEINFIMAYSSDYYIJNPWTOKFRHWVWTZFXH
 
 
 def test_kappa() -> None:
-    ciphertext = sequence.Sequence(TXT, alphabet=alphabet.UPPERCASE_ALPHABET)
-    print_kappa(ciphertext)
+    assert kappa("ABCDEFGHIJKLMNOPQRSTUVWXYZ", shift=1) == 0.0
+    assert kappa("ABCABC", shift=1) == 0.0
+    assert kappa("ABCABC", shift=2) == 0.0
+    assert kappa("ABCABC", shift=3) == 1.0
+    assert kappa("ABCABCABC", shift=3) == 1.0
+    assert kappa("ABCABCABCXXX", shift=3) == 2 / 3
