@@ -82,7 +82,9 @@ def repeat_positions(ciphertext: Sequence[T], length: int) -> dict[str, list[int
     return repeats
 
 
-def odd_spaced_repeats(ciphertext: Sequence[T], minimum=3, maximum=6):
+def odd_spaced_repeats(
+    ciphertext: Sequence[T], minimum: int = 3, maximum: int = 6
+) -> None:
     """
     ROD = percentage of odd-spaced repeats to all repeats.
     """
