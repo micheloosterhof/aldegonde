@@ -108,7 +108,7 @@ def quagmire1_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
     tr: dict[T, dict[T, T]] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
-            tr[key][e] = sorted(alphabet)[(i + j) % len(alphabet)]
+            tr[key][e] = alphabet[(i + j) % len(alphabet)]
     return tr
 
 

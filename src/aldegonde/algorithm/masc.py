@@ -80,8 +80,22 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
     return key
 
 
-def keywordkey(alphabet: Sequence[T], keyword: Sequence[T]) -> dict[T, T]:
+def keywordkey(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
+    """Custom alphabet generator, takes a keyword, and
+
+    example: keyword:  PAULBRANDT
+             alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+             returns:  PAULBRNDTCEFGHIJKMOQSVWXYZ
     """
-    create a custom mapping based on a keyword: HYDRAULIC
-    """
-    raise NotImplementedError
+    output: list = []
+    assert False not in [letter in alphabet for letter in keyword]
+
+    for letter in keyword:
+        if letter not in output:
+            output.append(letter)
+    for letter in alphabet:
+        if letter not in output:
+            output.append(letter)
+
+    assert len(output) == len(alphabet)
+    return output
