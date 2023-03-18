@@ -1,14 +1,18 @@
 """Friedman test to detect use of the same alphabet at regular intervals"""
 
-from aldegonde.structures.sequence import Sequence
-from aldegonde.analysis.split import split_by_slice
+from collections.abc import Sequence
+from typing import TypeVar
+
 from aldegonde.stats.ioc import ioc
+
+T = TypeVar("T")
+
 
 # assume fixed length key. find period
 def friedman_test(
-    ciphertext: Sequence,
-    minkeysize: int = 1,
-    maxkeysize: int = 20,
+    ciphertext: Sequence[T],
+    minperiod: int = 1,
+    maxperiod: int = 20,
     trace: bool = False,
 ) -> None:
     """
@@ -22,17 +26,23 @@ def friedman_test(
 
     if trace is True:
         print("Testing for periodicity using friedman test")
+
     print("Candidates:")
-    for period in range(minkeysize, maxkeysize + 1):
-        slices = split_by_slice(ciphertext, period)
+    for period in range(minperiod, maxperiod + 1):
         iocsum: float = 0.0
-        for k, v in slices.items():
-            ic = ioc(v)[1]
+        for k in range(0, period):
+            v = ciphertext[slice(k, len(ciphertext), period)]
+            ic: float = ioc(v)  # note, perviously was normalized
             iocsum += ic
             if trace is True:
-                print(f"ioc of runes {k}/{period} = {ic:.3f}")
+                print(f"ioc of slice {k}/{period} = {ic:.3f}")
         avgioc[period] = iocsum / period
         deltas[period] = avgioc[period] - max(avgioc.values())
         print(
-            f"period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:.3f}"
+            f"period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:+.4f}",
+            end="",
         )
+        if abs(deltas[period]) < 0.001:
+            print(" <===")
+        else:
+            print()
