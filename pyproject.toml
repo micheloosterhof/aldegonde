@@ -53,7 +53,7 @@ line-length = 88
 
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F", "UP"]
-ignore = ["E501", "E741"]
+ignore = ["E501", "E741", "UP007"]
 
 # Assume Python 3.10.
 target-version = "py310"
