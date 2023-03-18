@@ -14,8 +14,7 @@ def print_dist(runes: Sequence[T]) -> None:
     N = len(runes)
     col = 0
     freqs = dist(runes)
-    print(freqs)
-    print("frequency distribution:")
+    print("Frequency Distribution:")
     for i, e in enumerate(freqs.keys()):
         if col > 0 and col % 5 == 0:
             print("")
@@ -29,6 +28,6 @@ def print_dist(runes: Sequence[T]) -> None:
 
 def dist(text: Sequence[T], length: int = 1, cut: int = 0) -> dict[str, int]:
     """
-    flexible dist function, returns ngrams by count
+    flexible dist function, returns ngrams by count, this could also be count_ngrams
     """
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
