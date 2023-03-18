@@ -85,7 +85,7 @@ def test_quagmire3_kryptos1() -> None:
 
 def test_quagmire3_kryptos2() -> None:
     """
-    K2
+    K2 - this is the corrected version with the extra `S`
     """
     alphabet = "KRYPTOSABCDEFGHIJLMNQUVWXZ"
     key = "ABSCISSA"
