@@ -5,6 +5,8 @@ Functions around chi^2
 from collections.abc import Sequence
 from typing import TypeVar
 
+import scipy
+
 from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
@@ -24,8 +26,17 @@ def chi(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
     for key in d1.keys():
-        try:
+        if key in d2:
             total += d1[key] * d2[key]
-        except KeyError:
-            continue
     return total / (len(d1.keys()) * len(d2.keys()))
+
+
+def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
+    """
+    https://en.wikipedia.org/wiki/G-test
+    use scipy.stats.power_divergence with lambda_=0
+    Calculate another comparison of 2 texts
+    """
+    d1 = ngram_distribution(text1, length=length)
+    d2 = ngram_distribution(text2, length=length)
+    return scipy.stats.power_divergence(f_obs=d1, f_exp=d2, lambda_=0)
