@@ -3,26 +3,20 @@ https://en.wikipedia.org/wiki/G-test
 use scipy.stats.power_divergence with lambda_=0
 """
 
-from collections import Counter
+from collections.abc import Sequence
+from typing import TypeVar
 
 import scipy.stats.power_divergence
 
-from aldegonde.structures import sequence
+from aldegonde.stats.dist import dist
+
+T = TypeVar("T")
 
 
-def gtest(text1: sequence.Sequence, text2: sequence.Sequence) -> float:
+def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     """
     Calculate chi test of 2 texts
-
-    It's calculated by multiplying the frequency count of one letter
-    in the first string by the frequency count of the same letter
-    in the second string, and then doing the same for all the other
-    letters, and summing the result. This is divided by the product
-    of the total number of letters in each string.
     """
-    if text1.alphabet != text2.alphabet:
-        raise TypeError("Incompatible alphabet")
-
-    freqs1 = Counter(text1)
-    freqs2 = Counter(text2)
-    return scipy.stats.power_divergence(f_obs=freqs1, f_exp=freqs2, lambda_=0)
+    d1 = dist(text1, length=length)
+    d2 = dist(text2, length=length)
+    return scipy.stats.power_divergence(f_obs=d1, f_exp=d2, lambda_=0)
