@@ -78,3 +78,10 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
             "Invalid Affine cipher parameter: A={a} is not coprime with the size of the alphabet {len(alphabet)}"
         )
     return key
+
+
+def keywordkey(alphabet: Sequence[T], keyword: Sequence[T]) -> dict[T, T]:
+    """
+    create a custom mapping based on a keyword: HYDRAULIC
+    """
+    raise NotImplementedError
