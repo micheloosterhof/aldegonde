@@ -2,45 +2,56 @@
 """
 
 from collections import Counter
+from collections.abc import Sequence
 from math import sqrt
 from typing import NamedTuple
+from typing import TypeVar
 
-from aldegonde.structures import sequence
-from aldegonde.stats.ngrams import ngrams
+from aldegonde.stats.ngrams import iterngrams, ngrams
+from aldegonde.stats.dist import dist
+
+T = TypeVar("T")
 
 
-def ioc(
-    runes: sequence.Sequence, length: int = 1, cut: int = 0
-) -> tuple[float, float, float]:
+def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC
     Args:
-        runes: Sequence
+        text: Sequence
         length: size of ngram
         cut: where to start ngrams
 
     Yields:
         Output is the Index of Coincidence formatted as a float,
-        normalized to to alphabet size, and the number of standard
-        deviations away from random data (sigmage)
 
-    Specify `cut=0` and it operates on sliding blocks of 2 runes: ABC, BCD, CDE, ...
-    Specify `cut=1` and it operates on non-overlapping blocks of 3 runes: ABC, DEF, ...
-    Specify `cut=2` and it operates on non-overlapping blocks of 3 runes: BCD, EFG, ...
+    Specify `cut=0` and it operates on sliding blocks of 2 text: ABC, BCD, CDE, ...
+    Specify `cut=1` and it operates on non-overlapping blocks of 3 text: ABC, DEF, ...
+    Specify `cut=2` and it operates on non-overlapping blocks of 3 text: BCD, EFG, ...
     """
-    C = pow(len(runes.alphabet), length)  # size of alphabet
-    items: list[str] = [str(g) for g in ngrams(runes, length=length, cut=cut)]
+    freqs: dict[str, int] = dist(text, length=length, cut=cut)
+    L: int = sum([x for x in freqs.values()])
+    if L < 2:
+        return 0.0
+    freqsum: float = sum([v * (v - 1) for v in freqs.values()])
+    ic = freqsum / (L * (L - 1))
+    return ic
 
-    # L is the number of items we have counted
-    L = len(items)
+
+def nioc(
+    text: Sequence[T], alphabetsize: int, length: int = 1, cut: int = 1
+) -> tuple[float, float, float]:
+    """
+    Yields:
+        Output is the Index of Coincidence formatted as a float,
+        normalized to to alphabet size, and the number of standard
+        deviations away from random data
+    """
+    freqs: dict[str, int] = dist(text, length=length, cut=cut)
+    L: int = sum([x for x in freqs.values()])
     if L < 2:
         return (0.0, 0.0, 0.0)
-
-    freqs = Counter(items)
-    freqsum: float = 0.0
-    for v in freqs.values():
-        freqsum += v * (v - 1)
-
+    freqsum: float = sum([v * (v - 1) for v in freqs.values()])
     ic = freqsum / (L * (L - 1))
+    C = pow(alphabetsize, length)  # size of alphabet
     nic = C * ic
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
@@ -53,7 +64,7 @@ def ioc(
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
-def print_ioc_statistics(runes: sequence.Sequence) -> None:
+def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
     """
     print IOC statistics
     """
@@ -61,32 +72,33 @@ def print_ioc_statistics(runes: sequence.Sequence) -> None:
         for cut in range(0, length + 1):
             if length == 1 and cut == 1:
                 continue
-            _, nioc, sigmage = ioc(runes, length=length, cut=cut)
+            _, nioc, sigmage = nioc(
+                text, alphabetsize=alphabetsize, length=length, cut=cut
+            )
             print(f"ΔIC{length} (cut={cut}) = {nioc:.3f} S={sigmage:.3f}σ ", end="| ")
         print()
 
 
-def sliding_window_ioc(runes: sequence.Sequence, window: int = 100) -> list[float]:
+def sliding_window_ioc(text: Sequence[T], window: int = 100) -> list[float]:
     """
     calculate sliding window IOC of a large data set
     """
-    C = len(runes.alphabet)
     output: list[float] = []
-    for i in range(0, len(runes) - window):
-        output.append(C * ioc(runes[i : i + window])[1])
+    for i in range(0, len(text) - window):
+        output.append(ioc(text[i : i + window]))
     return output
 
 
-def ioc2(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
+def ioc2(text: Sequence[T], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC"""
-    return ioc(runes, cut=cut, length=2)
+    return ioc(text, cut=cut, length=2)
 
 
-def ioc3(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
+def ioc3(text: Sequence[T], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC"""
-    return ioc(runes, cut=cut, length=3)
+    return ioc(text, cut=cut, length=3)
 
 
-def ioc4(runes: sequence.Sequence, cut: int = 0) -> tuple[float, float, float]:
+def ioc4(text: Sequence[T], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC"""
-    return ioc(runes, cut=cut, length=4)
+    return ioc(text, cut=cut, length=4)
