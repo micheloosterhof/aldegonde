@@ -39,3 +39,9 @@ def test_affinekey() -> None:
         assert masc.affinekey(ABC, a=2, b=8) == masc.affinekey(ABC, a=2, b=8)
     except ValueError:
         pass
+
+
+def test_keywordkey() -> None:
+    assert masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT") == list(
+        "PAULBRNDTCEFGHIJKMOQSVWXYZ"
+    )
