@@ -1,4 +1,4 @@
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
@@ -31,3 +31,15 @@ def dist(text: Sequence[T], length: int = 1, cut: int = 0) -> dict[str, int]:
     flexible dist function, returns ngrams by count, this could also be count_ngrams
     """
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
+
+
+def ngram_positions(
+    text: Sequence[T], length: int = 1, cut: int = 0
+) -> dict[str, list[int]]:
+    """
+    flexible ngram positions function, returns each ngram and its starting location in the source text
+    """
+    out: dict[str, list[int]] = defaultdict(list)
+    for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
+        out[e].append(i)
+    return out

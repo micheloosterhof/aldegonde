@@ -7,7 +7,8 @@ from typing import TypeVar
 from scipy.stats import poisson
 
 from aldegonde.structures import sequence
-from aldegonde.stats.ngrams import ngrams
+from aldegonde.stats.ngrams import iterngrams
+from aldegonde.stats.dist import dist
 
 
 T = TypeVar("T")
@@ -29,7 +30,7 @@ def print_repeat_statistics(
     for length in range(minimum, maximum + 1):
         l = []
         num = 0
-        for g in ngrams(ciphertext, length=length, cut=cut):
+        for g in iterngrams(ciphertext, length=length, cut=cut):
             l.append(str(g))
         for v in Counter(l).values():
             if v > 1:
@@ -55,18 +56,14 @@ def repeat(
     """
     sequences = {}
     for length in range(minimum, maximum + 1):
-        l = []
-        for g in ngrams(ciphertext, length=length, cut=cut):
-            l.append(str(g))
-        f = Counter(l)
+        f = dist(ciphertext, length=length, cut=cut)
         for k, v in f.items():
             if v > 1:
                 sequences[k] = v
-
     return sequences
 
 
-def repeat2(
+def repeat_positions(
     ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10
 ) -> dict[str, list[int]]:
     """

@@ -44,6 +44,18 @@ def count_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, int]:
     return Counter([isomorph(x) for x in iterngrams(ciphertext, length=length)])
 
 
+def isomorph_positions(
+    text: Sequence[T], length: int = 1, cut: int = 0
+) -> dict[str, list[int]]:
+    """
+    flexible isomorph positions function, returns each ngram and its starting location in the source text
+    """
+    out: dict[str, list[int]] = defaultdict(list)
+    for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
+        out[isomorph(e)].append(i)
+    return out
+
+
 def isomorph_statistics(isomorphs: dict[str, int]) -> tuple[int, int]:
     """
     Input is the output of `count_isomorphs`.
@@ -92,7 +104,7 @@ def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
     """
     startlength = 4
     endlength = 40
-    isos: dict[str, list[int]]  # normalized isomorph as key, list of positions as value
+    isos: dict[str, int]  # normalized isomorph as key, count as value
 
     for length in range(startlength, endlength + 1):
         isos = count_isomorphs(seq, length)
