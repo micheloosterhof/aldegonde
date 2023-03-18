@@ -12,7 +12,6 @@ from collections.abc import Sequence
 import itertools
 import random
 import statistics
-from typing import Tuple
 
 from aldegonde.maths import factor
 
@@ -52,7 +51,7 @@ def all_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
     return isos
 
 
-def isomorph_statistics(isomorphs: dict[str, list[int]]) -> Tuple[int, int]:
+def isomorph_statistics(isomorphs: dict[str, list[int]]) -> tuple[int, int]:
     """
     Input is the output of `all_isomorphs`.
     Returns `distincts` and `duplicates` for the input

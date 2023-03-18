@@ -1,4 +1,4 @@
-from aldegonde.stats import eois
+# from aldegonde.stats import eois
 
 
 def test_eois_result() -> None:

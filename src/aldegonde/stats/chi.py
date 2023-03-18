@@ -2,12 +2,15 @@
 Functions around chi^2
 """
 
-from collections import Counter
+from collections.abc import Sequence
+from typing import TypeVar
 
-from aldegonde.structures import sequence
+from aldegonde.stats.dist import dist
+
+T = TypeVar("T")
 
 
-def chi(text1: sequence.Sequence, text2: sequence.Sequence) -> float:
+def chi(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     """
     Calculate chi test of 2 texts
 
@@ -17,14 +20,12 @@ def chi(text1: sequence.Sequence, text2: sequence.Sequence) -> float:
     letters, and summing the result. This is divided by the product
     of the total number of letters in each string.
     """
-    if text1.alphabet != text2.alphabet:
-        raise TypeError("Incompatible alphabet")
-
-    N1 = len(text1)
-    N2 = len(text2)
-    freqs1 = Counter(text1)
-    freqs2 = Counter(text2)
     total: float = 0.0
-    for rune in range(0, len(text1.alphabet)):
-        total += freqs1[rune] * freqs2[rune] / (N1 * N2)
-    return total
+    d1 = dist(text1, length=length)
+    d2 = dist(text2, length=length)
+    for key in d1.keys():
+        try:
+            total += d1[key] * d2[key]
+        except KeyError:
+            continue
+    return total / (len(d1.keys()) * len(d2.keys()))

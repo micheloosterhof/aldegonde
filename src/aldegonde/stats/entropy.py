@@ -7,8 +7,6 @@ from typing import TypeVar
 
 T = TypeVar("T")
 
-from aldegonde.structures import sequence
-
 
 def shannon_entropy(ciphertext: Sequence[T], base: int = 2) -> float:
     """
