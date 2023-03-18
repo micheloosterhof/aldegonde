@@ -2,7 +2,12 @@
 
 from aldegonde.structures import alphabet, sequence
 
-from aldegonde.stats.ngrams import ngrams, iterngrams
+from aldegonde.stats.ngrams import (
+    ngrams,
+    iterngrams,
+    ngram_positions,
+    ngram_distribution,
+)
 
 uniq = sequence.Sequence.fromlist(
     data=list(range(0, 5)), alphabet=alphabet.UPPERCASE_ALPHABET
@@ -27,3 +32,16 @@ def test_ngram_unique() -> None:
     assert ngrams(string, length=4, cut=0) == ["ABCD", "BCDE", "CDEF"]
     assert ngrams(string, length=4, cut=1) == ["ABCD"]
     assert list(iterngrams(uniq, length=4, cut=4)) == []
+
+
+abc = "ABC"
+nz = "NOPQRSTUVWXYZ"
+a = "A"
+
+
+def test_dist() -> None:
+    assert ngram_distribution(abc) == {"A": 1, "B": 1, "C": 1}
+
+
+def test_dist_positions() -> None:
+    assert ngram_positions(abc) == {"A": [0], "B": [1], "C": [2]}

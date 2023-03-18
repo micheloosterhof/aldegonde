@@ -5,7 +5,7 @@ Functions around chi^2
 from collections.abc import Sequence
 from typing import TypeVar
 
-from aldegonde.stats.dist import dist
+from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
 
@@ -21,8 +21,8 @@ def chi(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     of the total number of letters in each string.
     """
     total: float = 0.0
-    d1 = dist(text1, length=length)
-    d2 = dist(text2, length=length)
+    d1 = ngram_distribution(text1, length=length)
+    d2 = ngram_distribution(text2, length=length)
     for key in d1.keys():
         try:
             total += d1[key] * d2[key]

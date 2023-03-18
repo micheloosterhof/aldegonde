@@ -7,8 +7,7 @@ from typing import TypeVar
 from scipy.stats import poisson
 
 from aldegonde.structures import sequence
-from aldegonde.stats.ngrams import iterngrams
-from aldegonde.stats.dist import dist
+from aldegonde.stats.ngrams import iterngrams, ngram_distribution
 
 
 T = TypeVar("T")
@@ -56,7 +55,7 @@ def repeat(
     """
     sequences = {}
     for length in range(minimum, maximum + 1):
-        f = dist(ciphertext, length=length, cut=cut)
+        f = ngram_distribution(ciphertext, length=length, cut=cut)
         for k, v in f.items():
             if v > 1:
                 sequences[k] = v
@@ -90,7 +89,7 @@ def odd_spaced_repeats(ciphertext: sequence.Sequence, minimum=3, maximum=6):
     """
     d = []
     for length in range(minimum, maximum + 1):
-        rep = repeat2(ciphertext, minimum=length, maximum=length)
+        rep = repeat_positions(ciphertext, minimum=length, maximum=length)
         for v in rep.values():
             for l in range(1, len(v)):
                 d.append(v[l] - v[l - 1])

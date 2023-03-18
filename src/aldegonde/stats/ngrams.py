@@ -1,6 +1,7 @@
 """functions for ngrams
 """
 
+from collections import Counter, defaultdict
 from collections.abc import Generator, Sequence
 from typing import TypeVar
 
@@ -86,3 +87,24 @@ def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     convenience function for tetragrams
     """
     return ngrams(runes, length=4, cut=cut)
+
+
+def ngram_distribution(
+    text: Sequence[T], length: int = 1, cut: int = 0
+) -> dict[str, int]:
+    """
+    flexible dist function, returns ngrams by count, this could also be count_ngrams
+    """
+    return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
+
+
+def ngram_positions(
+    text: Sequence[T], length: int = 1, cut: int = 0
+) -> dict[str, list[int]]:
+    """
+    flexible ngram positions function, returns each ngram and its starting location in the source text
+    """
+    out: dict[str, list[int]] = defaultdict(list)
+    for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
+        out[str(e)].append(i)
+    return out

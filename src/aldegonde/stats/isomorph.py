@@ -7,7 +7,7 @@
     length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
               AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Sequence
 import random
 import statistics

@@ -1,8 +1,7 @@
-from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
-from aldegonde.stats.ngrams import iterngrams
+from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
 
@@ -13,7 +12,7 @@ def print_dist(runes: Sequence[T]) -> None:
     """
     N = len(runes)
     col = 0
-    freqs = dist(runes)
+    freqs = ngram_distribution(runes)
     print("Frequency Distribution:")
     for i, e in enumerate(freqs.keys()):
         if col > 0 and col % 5 == 0:
@@ -24,22 +23,3 @@ def print_dist(runes: Sequence[T]) -> None:
         )
         col = col + 1
     print("")
-
-
-def dist(text: Sequence[T], length: int = 1, cut: int = 0) -> dict[str, int]:
-    """
-    flexible dist function, returns ngrams by count, this could also be count_ngrams
-    """
-    return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
-
-
-def ngram_positions(
-    text: Sequence[T], length: int = 1, cut: int = 0
-) -> dict[str, list[int]]:
-    """
-    flexible ngram positions function, returns each ngram and its starting location in the source text
-    """
-    out: dict[str, list[int]] = defaultdict(list)
-    for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
-        out[e].append(i)
-    return out

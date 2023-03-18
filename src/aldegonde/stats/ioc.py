@@ -6,7 +6,7 @@ from math import sqrt
 from typing import NamedTuple
 from typing import TypeVar
 
-from aldegonde.stats.dist import dist
+from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
 
@@ -25,7 +25,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     Specify `cut=1` and it operates on non-overlapping blocks of 3 text: ABC, DEF, ...
     Specify `cut=2` and it operates on non-overlapping blocks of 3 text: BCD, EFG, ...
     """
-    freqs: dict[str, int] = dist(text, length=length, cut=cut)
+    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
     L: int = sum([x for x in freqs.values()])
     if L < 2:
         return 0.0
@@ -43,7 +43,7 @@ def nioc(
         normalized to to alphabet size, and the number of standard
         deviations away from random data
     """
-    freqs: dict[str, int] = dist(text, length=length, cut=cut)
+    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
     L: int = sum([x for x in freqs.values()])
     if L < 2:
         return (0.0, 0.0, 0.0)
