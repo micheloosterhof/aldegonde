@@ -7,12 +7,12 @@ from ..structures import sequence
 from .color import Colors
 
 
-def print_bigram_diagram(runes: sequence.Sequence, skip: int=1) -> None:
+def print_bigram_diagram(runes: sequence.Sequence, skip: int = 1) -> None:
     """
     Input is a list of integers, from 0 to MAX-1
     Output is the bigram frequency diagram printed to stdout
     """
-    if len(runes)+skip < 2:
+    if len(runes) + skip < 2:
         return
     MAX = len(runes.alphabet)
 
