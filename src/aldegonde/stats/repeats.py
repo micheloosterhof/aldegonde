@@ -83,7 +83,7 @@ def repeat_positions(
     return sequences
 
 
-def odd_spaced_repeats(ciphertext: sequence.Sequence, minimum=3, maximum=6):
+def odd_spaced_repeats(ciphertext: Sequence[T], minimum=3, maximum=6):
     """
     ROD = percentage of odd-spaced repeats to all repeats.
     """
