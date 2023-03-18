@@ -3,7 +3,7 @@ IOC Scoring Function
 """
 
 from math import sqrt
-from typing import Callable
+from collections.abc import Callable
 
 from aldegonde.structures import sequence
 from aldegonde.stats import ioc
