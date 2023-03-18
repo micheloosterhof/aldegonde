@@ -39,7 +39,7 @@ def friedman_test(
         avgioc[period] = iocsum / period
         deltas[period] = avgioc[period] - max(avgioc.values())
         print(
-            f"period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:+.4f}",
+            f"friedman: period {period:02d} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:+.4f}",
             end="",
         )
         if abs(deltas[period]) < 0.001:

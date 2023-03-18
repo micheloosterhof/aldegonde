@@ -1,5 +1,3 @@
-from aldegonde.structures import sequence, alphabet
-
 from aldegonde.analysis.kappa import print_kappa, kappa
 
 """
