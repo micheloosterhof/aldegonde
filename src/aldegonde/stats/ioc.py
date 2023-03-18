@@ -28,7 +28,7 @@ def ioc(
     Specify `cut=2` and it operates on non-overlapping blocks of 3 runes: BCD, EFG, ...
     """
     C = pow(len(runes.alphabet), length)  # size of alphabet
-    items: list[str]  = [str(g) for g in ngrams(runes, length=length, cut=cut)]
+    items: list[str] = [str(g) for g in ngrams(runes, length=length, cut=cut)]
 
     # L is the number of items we have counted
     L = len(items)
