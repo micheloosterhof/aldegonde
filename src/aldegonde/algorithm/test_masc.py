@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from aldegonde import masc
+from aldegonde.algorithm import masc
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ALICE = (
