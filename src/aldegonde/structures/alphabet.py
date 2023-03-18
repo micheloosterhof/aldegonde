@@ -77,7 +77,7 @@ class Alphabet:
         try:
             return self.alphabet[i]
         except IndexError:
-            raise KeyError("Character not in alphabet")
+            raise KeyError(f"Character not in alphabet: {i}")
 
 
 class AlphabetIterator:
