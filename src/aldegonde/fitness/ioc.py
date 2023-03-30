@@ -29,6 +29,6 @@ def IocFitness(target_ioc: float) -> Callable[[sequence.Sequence], float]:
     """
 
     def inner(text: sequence.Sequence) -> float:
-        return -sqrt(abs(ioc.ioc(text)[1] - target_ioc))
+        return -sqrt(abs(ioc.ioc(text) - target_ioc))
 
     return inner
