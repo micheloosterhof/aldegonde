@@ -39,4 +39,4 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     """
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
-    return power_divergence(f_obs=d1, f_exp=d2, lambda_=0)
+    return float(power_divergence(f_obs=d1, f_exp=d2, lambda_=0, axis=None))
