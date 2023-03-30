@@ -113,10 +113,10 @@ def bigram_diagram(runes: sequence.Sequence, cut: int = 0) -> list[list[int]]:
         bigram[int(y)][int(x)] = v
 
     output: list[list[int]] = [([0] * MAX) for i in range(MAX)]
-    for x in range(0, MAX):
-        for y in range(0, MAX):
+    for i in range(0, MAX):
+        for j in range(0, MAX):
             try:
-                output[x][y] = bigram[x][y]
+                output[i][j] = bigram[i][j]
             except KeyError:
                 pass
 
