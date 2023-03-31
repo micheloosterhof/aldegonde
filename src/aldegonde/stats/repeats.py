@@ -17,6 +17,7 @@ def print_repeat_statistics(
     minimum: int = 4,
     maximum: int = 10,
     cut: int = 0,
+    alphabetsize: int = 26,
     trace: bool = False,
 ) -> None:
     """
@@ -24,7 +25,7 @@ def print_repeat_statistics(
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     The expected formula works best for length 3 or larger
     """
-    MAX = len(ciphertext.alphabet)
+    MAX = alphabetsize
     for length in range(minimum, maximum + 1):
         l = []
         num = 0
