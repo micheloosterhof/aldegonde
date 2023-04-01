@@ -49,22 +49,7 @@ for i, s in enumerate(y):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
-    seq = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
-
-    l = deltastream(seq)
-
-    q = []
-    for i, e in enumerate(l):
-        try:
-            q.append(modular.div29(l[i], priem[i]))
-        except:
-            q.append(0)
-
-    # l = []
-    # for i, e in enumerate(seq):
-    #    l.append((e+tot[i])%29)
-
-    seg = sequence.Sequence.fromlist(data=q, alphabet=cicada3301.CICADA_ALPHABET)
+    seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
 
     for skip in range(1, 2):
         # print(f"skip={skip}")
@@ -81,8 +66,9 @@ for i, s in enumerate(y):
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg, alphabetsize=29)
-        bigram_diagram.print_bigram_diagram(seg)
-        bigram_diagram.print_bigram_diagram(seg, skip=2)
+        bigram_diagram.print_bigram_diagram(seg, alphabet=list(range(0, 29)))
+        bigram_diagram.print_bigram_diagram2(seg, alphabet=list(range(0, 29)))
+        bigram_diagram.print_bigram_diagram(seg, alphabet=list(range(0, 29)), skip=2)
         doublets.print_doublets_statistics(seg, alphabetsize=29)
         doublets.print_doublets_statistics(seg, alphabetsize=29, skip=2)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
