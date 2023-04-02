@@ -6,7 +6,7 @@ from collections.abc import Sequence
 from math import log10
 from typing import TypeVar
 
-from scipy.stats import power_divergence
+from scipy.stats import power_divergence, chisquare
 
 from aldegonde.stats.ngrams import ngram_distribution, iterngrams
 
@@ -32,7 +32,7 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
 
 
 # use scipy.stats.chisquare?
-def chisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
+def mychisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     """
     Calculate chi^2 test of 2 texts
 
@@ -87,13 +87,13 @@ from aldegonde.data.ngrams.english import quadgrams
 
 
 def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
-    """
-    """
+    """ """
+    floor = 0.01
     frequency_map = quadgrams.quadgrams
     ngrams = frequency_to_probability(frequency_map)
     d1 = ngram_distribution(text, length=length)
     d2 = [ngrams.get(ngram, floor) for ngram in d1.keys()]
-    return scipy.stats.chisquare(f_obs=d1, f_exp=d2)
+    return chisquare(f_obs=d1, f_exp=d2)
 
 
 def quadgramscore(text: Sequence[T], length: int = 4) -> float:
@@ -102,8 +102,7 @@ def quadgramscore(text: Sequence[T], length: int = 4) -> float:
     """
     frequency_map = quadgrams.quadgrams
     ngrams = frequency_to_probability(frequency_map, decorator=log10)
-
-    floor = log10(0.01 / sum(frequency_map.values()))
+    floor = log10(0.001 / sum(frequency_map.values()))
     return sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length))
 
 
