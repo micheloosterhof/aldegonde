@@ -9,6 +9,7 @@ from typing import TypeVar
 from scipy.stats import power_divergence, chisquare
 
 from aldegonde.stats.ngrams import ngram_distribution, iterngrams
+from aldegonde.data.ngrams.english import quadgrams
 
 T = TypeVar("T")
 
@@ -81,9 +82,6 @@ def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
         if key in d2:
             total += log10(d1[key])
     return total
-
-
-from aldegonde.data.ngrams.english import quadgrams
 
 
 def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
