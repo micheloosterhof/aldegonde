@@ -9,9 +9,18 @@ All are polyalphabetic substitution ciphers with a fixed key length
 from collections.abc import Sequence
 from collections import defaultdict
 import random
-from typing import TypeVar
+from typing import Any, Protocol, TypeVar
 
-T = TypeVar("T")
+
+class Comparable(Protocol):
+    def __lt__(self, __other: Any) -> bool:
+        ...
+
+    def __gt__(self, __other: Any) -> bool:
+        ...
+
+
+T = TypeVar("T", bound=Comparable)
 
 # the key here is tradionally called a Tabula Recta
 # implemented as dict[T, dict[T, T]]
