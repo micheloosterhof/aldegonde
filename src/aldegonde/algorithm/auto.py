@@ -3,16 +3,12 @@ ciphertext autokey variations
 """
 
 from collections.abc import Sequence
-from typing import TypeVar
 
-from aldegonde.algorithm.pasc import reverse_tr
-
-
-T = TypeVar("T")
+from aldegonde.algorithm.pasc import reverse_tr, T, TR
 
 
 def ciphertext_autokey_encrypt(
-    plaintext: Sequence[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
+    plaintext: Sequence[T], primer: Sequence[T], tr: TR
 ) -> list[T]:
     """
     Ciphertext Autokey Encryption
@@ -27,12 +23,12 @@ def ciphertext_autokey_encrypt(
 
 
 def ciphertext_autokey_decrypt(
-    ciphertext: Sequence[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
+    ciphertext: Sequence[T], primer: Sequence[T], tr: TR
 ) -> list[T]:
     """
     Ciphertext Autokey Decryption
     """
-    rtr = reverse_tr(tr)
+    rtr: TR[T] = reverse_tr(tr)
     key: list[T] = list(primer) + list(ciphertext)
     output: list[T] = []
     for i, e in enumerate(ciphertext):

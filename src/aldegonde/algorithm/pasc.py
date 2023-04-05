@@ -27,11 +27,10 @@ T = TypeVar("T", bound=Comparable)
 # could also implement as dict[int, dict[T, T]]
 # because it's periodic and we could numerically index
 # for autokey, we will need dict[T, dict[T, T]], might as well standardize
+TR = dict[T, dict[T, T]]
 
 
-def pasc_encrypt(
-    plaintext: Sequence[T], keyword: Sequence[T], tr: dict[T, dict[T, T]]
-) -> list[T]:
+def pasc_encrypt(plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]) -> list[T]:
     """
     Polyalphabetic substitution
     """
@@ -42,34 +41,32 @@ def pasc_encrypt(
 
 
 # This is a good candidate for functool caching
-def reverse_tr(tr: dict[T, dict[T, T]]) -> dict[T, dict[T, T]]:
+def reverse_tr(tr: TR[T]) -> TR[T]:
     """
     Takes a dict containing all elements and reverses the index and the value
     Returns output if the input contains valid values, else raises ValueError
     """
-    output: dict[T, dict[T, T]] = defaultdict(dict)
+    output: TR = defaultdict(dict)
     for keyword in tr:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
     return output
 
 
-def pasc_decrypt(
-    ciphertext: Sequence[T], keyword: Sequence[T], tr: dict[T, dict[T, T]]
-) -> list[T]:
+def pasc_decrypt(ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]) -> list[T]:
     """Polyalphabetic substitution
     NOTE: tr input is the same as for encryption, this function will reverse the key
     """
-    reversed_tr: dict[T, dict[T, T]] = reverse_tr(tr)
+    reversed_tr: TR[T] = reverse_tr(tr)
     plaintext: list = []
     for i, e in enumerate(ciphertext):
         plaintext.append(reversed_tr[keyword[i % len(keyword)]][e])
     return plaintext
 
 
-def random_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def random_tr(alphabet: Sequence[T]) -> TR[T]:
     """Generate a random TR for use in the previous functions"""
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for key in alphabet:
         shuffled = random.sample(alphabet, len(alphabet))
         for k, v in zip(alphabet, shuffled):
@@ -77,68 +74,68 @@ def random_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
     return tr
 
 
-def vigenere_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def vigenere_tr(alphabet: Sequence[T]) -> TR[T]:
     """
     Generate a Vigenere tabula recta with the standard alphabet
     """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
             tr[key][e] = alphabet[(i + j) % len(alphabet)]
     return tr
 
 
-def beaufort_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def beaufort_tr(alphabet: Sequence[T]) -> TR[T]:
     """
     Generate a Beaufort tabula recta (reversed alphabet)
     """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
             tr[key][e] = alphabet[(i - j) % len(alphabet)]
     return tr
 
 
-def variantbeaufort_tr(alphabet: Sequence[T], shift: int = 3) -> dict[T, dict[T, T]]:
+def variantbeaufort_tr(alphabet: Sequence[T]) -> TR[T]:
     """
     Generate a Variant Beaufort tabula recta
     """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
             tr[key][e] = alphabet[(j - i) % len(alphabet)]
     return tr
 
 
-def quagmire1_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def quagmire1_tr(alphabet: Sequence[T]) -> TR[T]:
     """ """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(sorted(alphabet)):
         for j, e in enumerate(sorted(alphabet)):
             tr[key][e] = alphabet[(i + j) % len(alphabet)]
     return tr
 
 
-def quagmire2_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def quagmire2_tr(alphabet: Sequence[T]) -> TR[T]:
     """ """
     raise NotImplementedError
 
 
-def quagmire3_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def quagmire3_tr(alphabet: Sequence[T]) -> TR[T]:
     """ """
-    tr: dict[T, dict[T, T]] = defaultdict(dict)
+    tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
             tr[key][e] = alphabet[(i + j) % len(alphabet)]
     return tr
 
 
-def quagmire4_tr(alphabet: Sequence[T]) -> dict[T, dict[T, T]]:
+def quagmire4_tr(alphabet: Sequence[T]) -> TR[T]:
     """ """
     raise NotImplementedError
 
 
-def print_tr(tr: dict[T, dict[T, T]]) -> None:
+def print_tr(tr: TR[T]) -> None:
     """
     print TR
     """
