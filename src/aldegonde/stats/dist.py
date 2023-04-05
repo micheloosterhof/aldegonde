@@ -1,7 +1,10 @@
 from collections.abc import Sequence
 from typing import TypeVar
 
+from scipy.stats import chisquare
+
 from aldegonde.stats.ngrams import ngram_distribution
+
 
 T = TypeVar("T")
 
@@ -23,3 +26,7 @@ def print_dist(runes: Sequence[T]) -> None:
         )
         col = col + 1
     print("")
+
+    observed = [freqs[i] for i in freqs.keys()]
+    chi2, p = chisquare(f_obs=observed)
+    print(f"chi2 goodness of fit for uniform distribution = {chi2:.5f} p-value={p:.5f}")
