@@ -1,15 +1,10 @@
 """tests for doublets.py"""
 
-from aldegonde.structures import sequence, alphabet
 from aldegonde.stats.doublets import doublets, triplets
 
-uniq = sequence.Sequence.fromstr("ABCDEFGH", alphabet=alphabet.UPPERCASE_ALPHABET)
-dobl = sequence.Sequence.fromstr(
-    "AABBCCDDEEFFGGHH", alphabet=alphabet.UPPERCASE_ALPHABET
-)
-trpl = sequence.Sequence.fromstr(
-    "AAABBBCCCDDDEEEFFFGGGHHH", alphabet=alphabet.UPPERCASE_ALPHABET
-)
+uniq = "ABCDEFGH"
+dobl = "AABBCCDDEEFFGGHH"
+trpl = "AAABBBCCCDDDEEEFFFGGGHHH"
 
 
 def test_doublets() -> None:

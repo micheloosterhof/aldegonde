@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 
-from aldegonde.structures import alphabet, sequence
-
 from aldegonde.stats.ioc import ioc, ioc2, ioc3, ioc4
 
-nils = sequence.Sequence.fromlist(data=[0] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
-ones = sequence.Sequence.fromlist(data=[1] * 300, alphabet=alphabet.UPPERCASE_ALPHABET)
-uniq = sequence.Sequence.fromlist(
-    data=list(range(0, 26)), alphabet=alphabet.UPPERCASE_ALPHABET
-)
+nils = "A" * 300
+ones = "B" * 300
+uniq = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def test_ioc_unique() -> None:

@@ -5,7 +5,6 @@ from typing import TypeVar
 
 from scipy.stats import poisson
 
-from aldegonde.structures import sequence
 from aldegonde.stats.ngrams import iterngrams, ngram_distribution, ngram_positions
 
 
@@ -13,7 +12,7 @@ T = TypeVar("T")
 
 
 def print_repeat_statistics(
-    ciphertext: sequence.Sequence,
+    ciphertext: Sequence[T],
     minimum: int = 4,
     maximum: int = 10,
     cut: int = 0,
