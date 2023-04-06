@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from aldegonde.structures.sequence import Sequence
 from aldegonde.structures.cicada3301 import CICADA_ALPHABET
 
 
