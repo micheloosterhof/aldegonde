@@ -8,7 +8,7 @@ import random
 import math
 from scipy.stats import poisson
 
-from aldegonde.structures import alphabet, sequence, cicada3301
+from aldegonde.structures import cicada3301
 from aldegonde.stats import ioc, repeats, doublets, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular
@@ -38,18 +38,12 @@ z = segments[0:10]
 y = ["".join(z)]
 
 
-priem = primes.primes(1000000)
-# tot = []
-# for i in range(0,len(y[0])+2):
-#    tot.append(totient.phi_func(i))
-
-
 print(f"{len(segments)} segments")
 for i, s in enumerate(y):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
-    seg = sequence.Sequence.fromstr(text=s, alphabet=cicada3301.CICADA_ALPHABET)
+    seg = "".join([x for x in s if x in cicada3301.CICADA_ALPHABET])
 
     for skip in range(1, 2):
         # print(f"skip={skip}")
@@ -57,20 +51,21 @@ for i, s in enumerate(y):
             print("EMPTY SEGMENT {i}")
             continue
         # print(f"source: {s}")
-        print(f"\nfull alphabet: {seg.alphabet}")
-        used = "".join([seg.alphabet[r] for r in set(seg.data)])
-        print(f"used alphabet: {used} ({len(set(seg.data))} symbols)")
+        # print(f"\nfull alphabet: {cicada3301.CICADA_ALPHABET}")
+        # used = "".join([cicada3301.CICADA_ALPHABET[r] for r in set(seg)])
+        print(f"used alphabet: {set(seg)} ({len(set(seg))} symbols)")
         # print(f"ciphertext: {seg.elements}")
         print(f"length: {len(seg)} symbols")
-        cicada3301.print_all(seg, limit=30)
+        # cicada3301.print_all(seg, limit=30)
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg, alphabetsize=29)
-        bigram_diagram.print_bigram_diagram(seg, alphabet=list(range(0, 29)))
-        bigram_diagram.print_bigram_diagram2(seg, alphabet=list(range(0, 29)))
-        bigram_diagram.print_bigram_diagram(seg, alphabet=list(range(0, 29)), skip=2)
-        doublets.print_doublets_statistics(seg, alphabetsize=29)
-        doublets.print_doublets_statistics(seg, alphabetsize=29, skip=2)
+        bigram_diagram.print_bigram_diagram(seg, alphabet=cicada3301.CICADA_ALPHABET)
+        bigram_diagram.print_bigram_diagram(
+            seg, skip=11, alphabet=cicada3301.CICADA_ALPHABET
+        )
+        for i in range(1, 50):
+            doublets.print_doublets_statistics(seg, skip=i, alphabetsize=29)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
         friedman.friedman_test(seg)
         repeats.print_repeat_statistics(seg, minimum=2)
