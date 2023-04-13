@@ -24,20 +24,18 @@ T = TypeVar("T", bound=Comparable)
 
 # the key here is tradionally called a Tabula Recta
 # implemented as dict[T, dict[T, T]]
-# could also implement as dict[int, dict[T, T]]
-# because it's periodic and we could numerically index
-# for autokey, we will need dict[T, dict[T, T]], might as well standardize
+# the first key here is the letter of the keyword used for the polygraphic substitution.
+# the second key is the plaintext being encrypted
 TR = dict[T, dict[T, T]]
 
 
-def pasc_encrypt(plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]) -> list[T]:
+def pasc_encrypt(
+    plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]
+) -> tuple[T, ...]:
     """
     Polyalphabetic substitution
     """
-    ciphertext: list = []
-    for i, e in enumerate(plaintext):
-        ciphertext.append(tr[keyword[i % len(keyword)]][e])
-    return ciphertext
+    return tuple(tr[keyword[i % len(keyword)]][e] for i, e in enumerate(plaintext))
 
 
 # This is a good candidate for functool caching
@@ -53,15 +51,16 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     return output
 
 
-def pasc_decrypt(ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]) -> list[T]:
+def pasc_decrypt(
+    ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]
+) -> tuple[T, ...]:
     """Polyalphabetic substitution
     NOTE: tr input is the same as for encryption, this function will reverse the key
     """
     reversed_tr: TR[T] = reverse_tr(tr)
-    plaintext: list = []
-    for i, e in enumerate(ciphertext):
-        plaintext.append(reversed_tr[keyword[i % len(keyword)]][e])
-    return plaintext
+    return tuple(
+        reversed_tr[keyword[i % len(keyword)]][e] for i, e in enumerate(ciphertext)
+    )
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:

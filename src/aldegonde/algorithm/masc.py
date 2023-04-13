@@ -12,14 +12,11 @@ from typing import TypeVar
 T = TypeVar("T")
 
 
-def masc_encrypt(plaintext: Sequence[T], key: dict[T, T]) -> list[T]:
+def masc_encrypt(plaintext: Sequence[T], key: dict[T, T]) -> tuple[T, ...]:
     """
     Monalphabetic substitution
     """
-    output: list = []
-    for e in plaintext:
-        output.append(key[e])
-    return output
+    return tuple(key[e] for e in plaintext)
 
 
 def reverse_key(key: dict[T, T]) -> dict[T, T]:
@@ -33,15 +30,12 @@ def reverse_key(key: dict[T, T]) -> dict[T, T]:
     return output
 
 
-def masc_decrypt(ciphertext: Sequence[T], key: dict[T, T]) -> list[T]:
+def masc_decrypt(ciphertext: Sequence[T], key: dict[T, T]) -> tuple[T, ...]:
     """Monalphabetic substitution
     NOTE: key input is the same as for encryption, this function will reverse the key
     """
     reversed_key: dict[T, T] = reverse_key(key)
-    output: list = []
-    for e in ciphertext:
-        output.append(reversed_key[e])
-    return output
+    return tuple(reversed_key[e] for e in ciphertext)
 
 
 def randomkey(alphabet: Sequence[T]) -> dict[T, T]:

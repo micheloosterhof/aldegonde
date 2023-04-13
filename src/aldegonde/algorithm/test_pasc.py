@@ -9,26 +9,26 @@ def test_vigenere() -> None:
     key = "LEMON"
     plaintext = "ATTACKATDAWN"
     ciphertext = "LXFOPVEFRNHR"
-    assert list(ciphertext) == pasc.pasc_encrypt(plaintext, key, pasc.vigenere_tr(ABC))
-    assert list(plaintext) == pasc.pasc_decrypt(ciphertext, key, pasc.vigenere_tr(ABC))
+    assert tuple(ciphertext) == pasc.pasc_encrypt(plaintext, key, pasc.vigenere_tr(ABC))
+    assert tuple(plaintext) == pasc.pasc_decrypt(ciphertext, key, pasc.vigenere_tr(ABC))
 
 
 def test_beaufort() -> None:
     key = "FORTIFICATION"
     plaintext = "DEFENDTHEEASTWALLOFTHECASTLE"
     ciphertext = "CKMPVCPVWPIWUJOGIUAPVWRIWUUK"
-    assert list(ciphertext) == pasc.pasc_encrypt(plaintext, key, pasc.beaufort_tr(ABC))
-    assert list(plaintext) == pasc.pasc_decrypt(ciphertext, key, pasc.beaufort_tr(ABC))
+    assert tuple(ciphertext) == pasc.pasc_encrypt(plaintext, key, pasc.beaufort_tr(ABC))
+    assert tuple(plaintext) == pasc.pasc_decrypt(ciphertext, key, pasc.beaufort_tr(ABC))
 
 
 def test_variantbeaufort() -> None:
     key = "CIPHER"
     plaintext = "HONESTYISTHEBESTPOLICY"
     ciphertext = "FGYXOCWADMDNZWDMLXJANR"
-    assert list(ciphertext) == pasc.pasc_encrypt(
+    assert tuple(ciphertext) == pasc.pasc_encrypt(
         plaintext, key, pasc.variantbeaufort_tr(ABC)
     )
-    assert list(plaintext) == pasc.pasc_decrypt(
+    assert tuple(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.variantbeaufort_tr(ABC)
     )
 
@@ -44,10 +44,10 @@ def test_quagmire1() -> None:
     # pasc.print_tr(tr)
     # plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     # ciphertext = "HIFUFCIRFKUYKYJPFQSSHZMMQONGKFKTNDQAWDJSKFKVJNHCLIRUCXOWHGUYIDJDUKG"
-    # assert list(ciphertext) == pasc.pasc_encrypt(
+    # assert tuple(ciphertext) == pasc.pasc_encrypt(
     #    plaintext, key, pasc.quagmire1_tr(alphabet)
     # )
-    # assert list(plaintext) == pasc.pasc_decrypt(
+    # assert tuple(plaintext) == pasc.pasc_decrypt(
     #    ciphertext, key, pasc.quagmire1_tr(alphabet)
     # )
 
@@ -58,10 +58,10 @@ def test_quagmire3() -> None:
     key = "BRANDT"
     plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     ciphertext = "FXDIEOGNDBZIIHFCENWDCQMUSLJPJVITJXVKPOFGJVIEFDGOJXQIDHOFCPZIGOFXZPE"
-    assert list(ciphertext) == pasc.pasc_encrypt(
+    assert tuple(ciphertext) == pasc.pasc_encrypt(
         plaintext, key, pasc.quagmire3_tr(alphabet)
     )
-    assert list(plaintext) == pasc.pasc_decrypt(
+    assert tuple(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.quagmire3_tr(alphabet)
     )
 
@@ -74,10 +74,10 @@ def test_quagmire3_kryptos1() -> None:
     key = "PALIMPSEST"
     ciphertext = "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
     plaintext = "BETWEENSUBTLESHADINGANDTHEABSENCEOFLIGHTLIESTHENUANCEOFIQLUSION"
-    assert list(ciphertext) == pasc.pasc_encrypt(
+    assert tuple(ciphertext) == pasc.pasc_encrypt(
         plaintext, key, pasc.quagmire3_tr(alphabet)
     )
-    assert list(plaintext) == pasc.pasc_decrypt(
+    assert tuple(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.quagmire3_tr(alphabet)
     )
 
@@ -90,10 +90,10 @@ def test_quagmire3_kryptos2() -> None:
     key = "ABSCISSA"
     ciphertext = "VFPJUDEEHZWETZYVGWHKKQETGFQJNCEGGWHKKDQMCPFQZDQMMIAGPFXHQRLGTIMVMZJANQLVKQEDAGDVFRPJUNGEUNAQZGZLECGYUXUEENJTBJLBQCRTBJDFHRRYIZETKZEMVDUFKSJHKFWHKUWQLSZFTIHHDDDUVHDWKBFUFPWNTDFIYCUQZEREEVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDXFLGGTEZFKZBSFDQVGOGIPUFXHHDRKFFHQNTGPUAECNUVPDJMQCLQUMUNEDFQELZZVRRGKFFVOEEXBDMVPNFQXEZLGREDNQFMPNZGLFLPMRJQYALMGNUVPDXVKPDQUMEBEDMHDAFMJGZNUPLGESWJLLAETG"
     plaintext = "ITWASTOTALLYINVISIBLEHOWSTHATPOSSIBLETHEYUSEDTHEEARTHSMAGNETICFIELDXTHEINFORMATIONWASGATHEREDANDTRANSMITTEDUNDERGRUUNDTOANUNKNOWNLOCATIONXDOESLANGLEYKNOWABOUTTHISTHEYSHOULDITSBURIEDOUTTHERESOMEWHEREXWHOKNOWSTHEEXACTLOCATIONONLYWWTHISWASHISLASTMESSAGEXTHIRTYEIGHTDEGREESFIFTYSEVENMINUTESSIXPOINTFIVESECONDSNORTHSEVENTYSEVENDEGREESEIGHTMINUTESFORTYFOURSECONDSWESTXLAYERTWO"
-    assert list(ciphertext) == pasc.pasc_encrypt(
+    assert tuple(ciphertext) == pasc.pasc_encrypt(
         plaintext, key, pasc.quagmire3_tr(alphabet)
     )
-    assert list(plaintext) == pasc.pasc_decrypt(
+    assert tuple(plaintext) == pasc.pasc_decrypt(
         ciphertext, key, pasc.quagmire3_tr(alphabet)
     )
 
@@ -106,8 +106,8 @@ def test_quagmire4() -> None:
     # key = "BRANDT"
     # plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     # ciphertext = "KFBIFICEWQVIICOSXRXNCSBLSNMQLNDCSQJLJEKIGIOVDDHIGYFANHMDLHJGKLFXFJG"
-    # assert list(ciphertext) == pasc.pasc_encrypt(plaintext, key, tr)
-    # assert list(plaintext) == pasc.pasc_decrypt(ciphertext, key, tr)
+    # assert tuple(ciphertext) == pasc.pasc_encrypt(plaintext, key, tr)
+    # assert tuple(plaintext) == pasc.pasc_decrypt(ciphertext, key, tr)
 
 
 """

@@ -12,14 +12,14 @@ def test_masc_encrypt_random() -> None:
     rnd = masc.randomkey(ABC)
     ciphertext = masc.masc_encrypt(ALICE, key=rnd)
     plaintext = masc.masc_decrypt(ciphertext, key=rnd)
-    assert list(ALICE) == plaintext
+    assert tuple(ALICE) == plaintext
 
 
 def test_masc_encrypt_caesar() -> None:
     caesar = masc.shiftedkey(ABC, shift=3)
     ciphertext = masc.masc_encrypt(ALICE, key=caesar)
     plaintext = masc.masc_decrypt(ciphertext, key=caesar)
-    assert list(ALICE) == plaintext
+    assert tuple(ALICE) == plaintext
 
 
 def test_reverse_key() -> None:
