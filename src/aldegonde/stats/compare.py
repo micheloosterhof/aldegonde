@@ -68,7 +68,7 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
         obs.append(d1[k])
         exp.append(d2[k])
     print(power_divergence(f_obs=obs, f_exp=exp, lambda_=0))
-    return power_divergence(f_obs=obs, f_exp=exp, lambda_=0).statistic
+    return float(power_divergence(f_obs=obs, f_exp=exp, lambda_=0).statistic)
 
 
 def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
@@ -91,7 +91,7 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
     ngrams = frequency_to_probability(frequency_map)
     d1 = ngram_distribution(text, length=length)
     d2 = [ngrams.get(ngram, floor) for ngram in d1.keys()]
-    return chisquare(f_obs=d1, f_exp=d2)
+    return float(chisquare(f_obs=d1, f_exp=d2))
 
 
 def quadgramscore(text: Sequence[T], length: int = 4) -> float:
@@ -101,7 +101,7 @@ def quadgramscore(text: Sequence[T], length: int = 4) -> float:
     frequency_map = quadgrams.quadgrams
     ngrams = frequency_to_probability(frequency_map, decorator=log10)
     floor = log10(0.001 / sum(frequency_map.values()))
-    return sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length))
+    return float(sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length)))
 
 
 # def NgramScorer(frequency_map):
