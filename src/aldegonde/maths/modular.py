@@ -31,7 +31,7 @@ def modDivide(a: int, b: int, m: int) -> int:
     return (inv * a) % m
 
 
-def div29(a, b):
+def div29(a: int, b: int) -> int:
     """
     convenience function for 3301
     """
