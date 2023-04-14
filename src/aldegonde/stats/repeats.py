@@ -52,12 +52,11 @@ def repeat_distribution(
     Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
     """
-    sequences = {}
-    f = ngram_distribution(ciphertext, length=length, cut=cut)
-    for k, v in f.items():
-        if v > 1:
-            sequences[k] = v
-    return sequences
+    return {
+        k: v
+        for k, v in ngram_distribution(ciphertext, length=length, cut=cut).items()
+        if v > 1
+    }
 
 
 def print_repeat_positions(
@@ -71,15 +70,17 @@ def print_repeat_positions(
         print(f"repeats length {length}: {pos}")
 
 
-def repeat_positions(ciphertext: Sequence[T], length: int) -> dict[str, list[int]]:
+def repeat_positions(
+    ciphertext: Sequence[T], length: int, cut: int = 0
+) -> dict[str, list[int]]:
     """
     repeat positions are just ngrams where each list has at least 2 entries
     """
-    repeats: dict[str, list[int]] = {}
-    for k, v in ngram_positions(ciphertext, length=length).items():
-        if len(v) > 1:
-            repeats[k] = v
-    return repeats
+    return {
+        k: v
+        for k, v in ngram_positions(ciphertext, length=length, cut=cut).items()
+        if len(v) > 1
+    }
 
 
 def odd_spaced_repeats(
