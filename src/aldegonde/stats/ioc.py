@@ -26,7 +26,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     Specify `cut=2` and it operates on non-overlapping blocks of 3 text: BCD, EFG, ...
     """
     freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-    L: int = sum([x for x in freqs.values()])
+    L: int = sum(x for x in freqs.values())
     if L < 2:
         return 0.0
     freqsum: float = sum([v * (v - 1) for v in freqs.values()])
@@ -44,7 +44,7 @@ def nioc(
         deviations away from random data
     """
     freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-    L: int = sum([x for x in freqs.values()])
+    L: int = sum(x for x in freqs.values())
     if L < 2:
         return (0.0, 0.0, 0.0)
     freqsum: float = sum([v * (v - 1) for v in freqs.values()])
