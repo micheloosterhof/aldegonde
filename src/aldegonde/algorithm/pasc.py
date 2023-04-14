@@ -65,7 +65,7 @@ def random_tr(alphabet: Sequence[T]) -> TR[T]:
     tr: TR[T] = defaultdict(dict)
     for key in alphabet:
         shuffled = random.sample(alphabet, len(alphabet))
-        for k, v in zip(alphabet, shuffled):
+        for k, v in zip(alphabet, shuffled, strict=True):
             tr[key][k] = v
     return tr
 

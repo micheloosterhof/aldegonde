@@ -41,7 +41,7 @@ def randomkey(alphabet: Sequence[T]) -> dict[T, T]:
     """Generate a random key for use in the previous functions."""
     key: dict[T, T] = {}
     shuffled = random.sample(alphabet, len(alphabet))
-    for k, v in zip(alphabet, shuffled):
+    for k, v in zip(alphabet, shuffled, strict=True):
         key[k] = v
     return key
 

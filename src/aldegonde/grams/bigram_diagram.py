@@ -30,7 +30,7 @@ def print_bigram_diagram(
     print("| IOC   | nIOC")
 
     print("---+-", end="")
-    for i in range(0, MAX):
+    for _i in range(0, MAX):
         print("---", end="")
     print("+-------+------")
 
@@ -63,12 +63,12 @@ def print_bigram_diagram(
         print(f"| {pioc:.3f} | {MAX*pioc:.3f}")
 
     print("---+-", end="")
-    for i in range(0, MAX):
+    for _i in range(0, MAX):
         print("---", end="")
     print("+--------------")
 
     print("   | ", end="")
-    for i in range(0, MAX):
+    for _i in range(0, MAX):
         print("   ", end="")
     print(f"| {ioc:0.3f}")
 
