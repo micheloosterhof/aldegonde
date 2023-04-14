@@ -9,6 +9,14 @@ from .color import Colors
 T = TypeVar("T")
 
 
+def print_header(width: int):
+    """print header"""
+    print("---+-", end="")
+    for _i in range(0, width):
+        print("---", end="")
+    print("+-------+------")
+
+
 def print_bigram_diagram(
     runes: Sequence[T], alphabet: Sequence[T], skip: int = 1, cut: int = 0
 ) -> None:
@@ -18,7 +26,6 @@ def print_bigram_diagram(
     if len(runes) + skip < 2:
         return
     MAX = len(alphabet)
-
     count = Counter(runes)
     ioc: float = 0.0
 
@@ -29,12 +36,8 @@ def print_bigram_diagram(
         print(f"{i:02d} ", end="")
     print("| IOC   | nIOC")
 
-    print("---+-", end="")
-    for _i in range(0, MAX):
-        print("---", end="")
-    print("+-------+------")
+    print_header(MAX)
 
-    # for i in sorted(bigram.keys()):
     for i in range(0, MAX):
         print(f"{i:02} | ", end="")
         for j in range(0, MAX):
@@ -62,10 +65,7 @@ def print_bigram_diagram(
         ioc += pioc
         print(f"| {pioc:.3f} | {MAX*pioc:.3f}")
 
-    print("---+-", end="")
-    for _i in range(0, MAX):
-        print("---", end="")
-    print("+--------------")
+    print_header(MAX)
 
     print("   | ", end="")
     for _i in range(0, MAX):

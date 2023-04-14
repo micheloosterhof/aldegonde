@@ -100,9 +100,9 @@ def numberToBase(n: int, b: int) -> list[int]:
     return digits[::-1]
 
 
-def base29(input: int, padding: int = -1) -> list[int]:
+def base29(value: int, padding: int = -1) -> list[int]:
     """Input `int` and output in Base29 as list of integers."""
-    l = numberToBase(input, 29)
+    l = numberToBase(value, 29)
     if padding == -1:
         return l
     pad_value = 0
