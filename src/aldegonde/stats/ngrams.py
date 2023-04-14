@@ -1,5 +1,4 @@
-"""functions for ngrams
-"""
+"""functions for ngrams."""
 
 from collections import Counter, defaultdict
 from collections.abc import Generator, Sequence
@@ -15,9 +14,10 @@ def iterngrams(
     Args:
         runes: Sequence
         length: size of ngram
-        cut: where to start ngrams
+        cut: where to start ngrams.
 
-    Yields:
+    Yields
+    ------
         ngrams: ngrams
 
     Specify `cut=0` to return sliding blocks of runes: ABC, BCD, CDE, ...
@@ -36,9 +36,8 @@ def iterngrams(
 
 
 def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
-    """
-    Input is a Sequence
-    Output is a list of ngrams
+    """Input is a Sequence
+    Output is a list of ngrams.
 
     Specify `cut=0` and it operates on sliding blocks of 2 runes: ABC, BCD, CDE, ...
     Specify `cut=1` and it operates on non-overlapping blocks of 3 runes: ABC, DEF, ...
@@ -48,62 +47,46 @@ def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
 
 
 def digraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for digraphs
-    """
+    """Convenience function for digraphs."""
     return ngrams(runes, length=2, cut=cut)
 
 
 def trigraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for trigraphs
-    """
+    """Convenience function for trigraphs."""
     return ngrams(runes, length=3, cut=cut)
 
 
 def tetragraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for tetragraphs
-    """
+    """Convenience function for tetragraphs."""
     return ngrams(runes, length=4, cut=cut)
 
 
 def bigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for digrams
-    """
+    """Convenience function for digrams."""
     return ngrams(runes, length=2, cut=cut)
 
 
 def trigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for trigrams
-    """
+    """Convenience function for trigrams."""
     return ngrams(runes, length=3, cut=cut)
 
 
 def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """
-    convenience function for tetragrams
-    """
+    """Convenience function for tetragrams."""
     return ngrams(runes, length=4, cut=cut)
 
 
 def ngram_distribution(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, int]:
-    """
-    flexible dist function, returns ngrams by count, this could also be count_ngrams
-    """
+    """Flexible dist function, returns ngrams by count, this could also be count_ngrams."""
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
 
 
 def ngram_positions(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, list[int]]:
-    """
-    flexible ngram positions function, returns each ngram and its starting locations in the source text
-    """
+    """Flexible ngram positions function, returns each ngram and its starting locations in the source text."""
     out: dict[str, list[int]] = defaultdict(list)
     for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
         out[str(e)].append(i)

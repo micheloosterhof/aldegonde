@@ -1,4 +1,4 @@
-"""Functions to deal with Cicada 3301"""
+"""Functions to deal with Cicada 3301."""
 
 import random
 from collections.abc import Iterator
@@ -69,9 +69,7 @@ CICADA_ENGLISH_ALPHABET = [
 
 
 def randomrunes(length: int, maximum: int = 29) -> list[int]:
-    """
-    Random list of runes of lenth len
-    """
+    """Random list of runes of lenth len."""
     output: list[int] = []
     for _ in range(0, length):
         output.append(random.randrange(0, maximum))
@@ -79,9 +77,7 @@ def randomrunes(length: int, maximum: int = 29) -> list[int]:
 
 
 def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
-    """
-    Random list of runes of lenth len, but with low doublets, like the LP
-    """
+    """Random list of runes of lenth len, but with low doublets, like the LP."""
     output = []
     prev = None
     for _ in range(0, length):
@@ -94,9 +90,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
 
 
 def numberToBase(n: int, b: int) -> list[int]:
-    """
-    converts from base10 to any other base. outputs as list of int
-    """
+    """Converts from base10 to any other base. outputs as list of int."""
     if n == 0:
         return [0]
     digits = []
@@ -107,9 +101,7 @@ def numberToBase(n: int, b: int) -> list[int]:
 
 
 def base29(input: int, padding: int = -1) -> list[int]:
-    """
-    input `int` and output in Base29 as list of integers
-    """
+    """Input `int` and output in Base29 as list of integers."""
     l = numberToBase(input, 29)
     if padding == -1:
         return l
@@ -120,9 +112,7 @@ def base29(input: int, padding: int = -1) -> list[int]:
 
 
 class RuneIterator:
-    """
-    iterates over runes length L, [0,0,0], [0,0,1], [0,0,2], ..., [0,0,28], [0,1,0], ...
-    """
+    """iterates over runes length L, [0,0,0], [0,0,1], [0,0,2], ..., [0,0,28], [0,1,0], ..."""
 
     i: int
     maximum: int
@@ -145,16 +135,14 @@ class RuneIterator:
 
 
 def print_all(runes: list[int], limit: int = 0) -> None:
-    """Print runes, rune indexes and english output"""
+    """Print runes, rune indexes and english output."""
     print_rune(runes, limit)
     print_rune_index(runes, limit)
     print_english(runes, limit)
 
 
 def print_english(runes: list[int], limit: int = 0) -> None:
-    """
-    prints rune output translated back to english letters
-    """
+    """Prints rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
@@ -166,9 +154,7 @@ def print_english(runes: list[int], limit: int = 0) -> None:
 
 
 def print_rune_index(runes: list[int], limit: int = 0) -> None:
-    """
-    prints rune output translated back to english letters
-    """
+    """Prints rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
@@ -179,9 +165,7 @@ def print_rune_index(runes: list[int], limit: int = 0) -> None:
 
 
 def print_rune(runes: list[int], limit: int = 0) -> None:
-    """
-    prints rune output translated back to english letters
-    """
+    """Prints rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 

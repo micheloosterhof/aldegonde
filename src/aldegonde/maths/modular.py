@@ -1,14 +1,11 @@
-"""
-modular division in python
-"""
+"""modular division in python."""
 
 import math
 
 
 def modInverse(b: int, m: int) -> int:
-    """
-    Function to find modulo inverse of b. It returns -1 when inverse doesn't
-    modInverse works for prime m
+    """Function to find modulo inverse of b. It returns -1 when inverse doesn't
+    modInverse works for prime m.
     """
     g = math.gcd(b, m)
     if g != 1:
@@ -20,9 +17,7 @@ def modInverse(b: int, m: int) -> int:
 
 
 def modDivide(a: int, b: int, m: int) -> int:
-    """
-    Function to compute a/b under modulo m
-    """
+    """Function to compute a/b under modulo m."""
     a = a % m
     inv = modInverse(b, m)
     if inv == -1:
@@ -32,7 +27,5 @@ def modDivide(a: int, b: int, m: int) -> int:
 
 
 def div29(a: int, b: int) -> int:
-    """
-    convenience function for 3301
-    """
+    """Convenience function for 3301."""
     return modDivide(a, b, 29)

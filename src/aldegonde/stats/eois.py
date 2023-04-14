@@ -1,4 +1,4 @@
-"""eois sequence functions"""
+"""eois sequence functions."""
 
 from functools import cache
 import json
@@ -9,7 +9,7 @@ from urllib import request
 
 @cache
 def result_eois(seq: int) -> list[int]:
-    """https://oeis.org/search?fmt=<json|text>&q=id:A<sequenceNumber>"""
+    """https://oeis.org/search?fmt=<json|text>&q=id:A<sequenceNumber>."""
     with request.urlopen(
         f"https://oeis.org/search?fmt=json&q=id:A{seq:-06d}&start=1"
     ) as res:

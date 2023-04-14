@@ -1,6 +1,4 @@
-"""
-ciphertext autokey variations
-"""
+"""ciphertext autokey variations."""
 
 from collections.abc import Sequence
 
@@ -10,9 +8,7 @@ from aldegonde.algorithm.pasc import reverse_tr, T, TR
 def ciphertext_autokey_encrypt(
     plaintext: Sequence[T], primer: Sequence[T], tr: TR
 ) -> list[T]:
-    """
-    Ciphertext Autokey Encryption
-    """
+    """Ciphertext Autokey Encryption."""
     key: list = list(primer)
     output: list[T] = []
     for i, e in enumerate(plaintext):
@@ -25,9 +21,7 @@ def ciphertext_autokey_encrypt(
 def ciphertext_autokey_decrypt(
     ciphertext: Sequence[T], primer: Sequence[T], tr: TR
 ) -> list[T]:
-    """
-    Ciphertext Autokey Decryption
-    """
+    """Ciphertext Autokey Decryption."""
     rtr: TR[T] = reverse_tr(tr)
     key: list[T] = list(primer) + list(ciphertext)
     output: list[T] = []
@@ -39,9 +33,7 @@ def ciphertext_autokey_decrypt(
 def plaintext_autokey_encrypt(
     plaintext: Sequence[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
 ) -> Sequence:
-    """
-    Plaintext Autokey Encryption
-    """
+    """Plaintext Autokey Encryption."""
     key: list[T] = list(primer) + list(plaintext)
     output: list[T] = []
     for i, e in enumerate(plaintext):
@@ -52,9 +44,7 @@ def plaintext_autokey_encrypt(
 def plaintext_autokey_decrypt(
     ciphertext: Sequence, primer: Sequence, tr: dict[T, dict[T, T]]
 ) -> Sequence:
-    """
-    Plaintext Autokey Decryption primitive P[i] = DF(C[i], P[i-1])
-    """
+    """Plaintext Autokey Decryption primitive P[i] = DF(C[i], P[i-1])."""
     rtr = reverse_tr(tr)
     key: list = list(primer)
     output: list = []

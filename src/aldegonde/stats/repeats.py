@@ -19,10 +19,9 @@ def print_repeat_statistics(
     alphabetsize: int = 26,
     trace: bool = False,
 ) -> None:
-    """
-    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
+    """Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences
-    The expected formula works best for length 3 or larger
+    The expected formula works best for length 3 or larger.
     """
     MAX = alphabetsize
     for length in range(minimum, maximum + 1):
@@ -48,9 +47,8 @@ def print_repeat_statistics(
 def repeat_distribution(
     ciphertext: Sequence[T], length: int = 2, cut: int = 0
 ) -> dict[str, int]:
-    """
-    Find repeating sequences in the list, up to `maximum`. Max defaults to 10
-    Returns dictionary with as key the sequence as a string, and as value the number of occurences
+    """Find repeating sequences in the list, up to `maximum`. Max defaults to 10
+    Returns dictionary with as key the sequence as a string, and as value the number of occurences.
     """
     return {
         k: v
@@ -62,9 +60,7 @@ def repeat_distribution(
 def print_repeat_positions(
     ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10
 ) -> None:
-    """
-    Print repeating sequences in the list, up to `maximum`. Max defaults to 10
-    """
+    """Print repeating sequences in the list, up to `maximum`. Max defaults to 10."""
     for length in range(minimum, maximum + 1):
         pos = repeat_positions(ciphertext, length=length)
         print(f"repeats length {length}: {pos}")
@@ -73,9 +69,7 @@ def print_repeat_positions(
 def repeat_positions(
     ciphertext: Sequence[T], length: int, cut: int = 0
 ) -> dict[str, list[int]]:
-    """
-    repeat positions are just ngrams where each list has at least 2 entries
-    """
+    """Repeat positions are just ngrams where each list has at least 2 entries."""
     return {
         k: v
         for k, v in ngram_positions(ciphertext, length=length, cut=cut).items()
@@ -86,9 +80,7 @@ def repeat_positions(
 def odd_spaced_repeats(
     ciphertext: Sequence[T], minimum: int = 3, maximum: int = 6
 ) -> None:
-    """
-    ROD = percentage of odd-spaced repeats to all repeats.
-    """
+    """ROD = percentage of odd-spaced repeats to all repeats."""
     d = []
     for length in range(minimum, maximum + 1):
         rep = repeat_positions(ciphertext, length=length)

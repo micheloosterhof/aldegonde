@@ -1,4 +1,4 @@
-"""Friedman test to detect use of the same alphabet at regular intervals"""
+"""Friedman test to detect use of the same alphabet at regular intervals."""
 
 from collections.abc import Sequence
 from typing import TypeVar
@@ -15,9 +15,8 @@ def friedman_test(
     maxperiod: int = 20,
     trace: bool = False,
 ) -> None:
-    """
-    this is the friedman test
-    https://crypto.stackexchange.com/questions/40066/finding-length-of-a-key-for-a-given-vigenere-cipher-using-index-of-coincidence
+    """This is the friedman test
+    https://crypto.stackexchange.com/questions/40066/finding-length-of-a-key-for-a-given-vigenere-cipher-using-index-of-coincidence.
     """
     # avgioc contains the key length as key. as value it's the avgioc
     # delta is the difference between the avgioc and the max of avgioc of all lower values

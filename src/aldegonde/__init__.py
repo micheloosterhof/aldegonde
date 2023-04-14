@@ -1,1 +1,1 @@
-"""This is the aldegonde library for cryptography and cryptanalysis"""
+"""This is the aldegonde library for cryptography and cryptanalysis."""

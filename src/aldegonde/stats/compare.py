@@ -1,6 +1,4 @@
-"""
-Functions around comparing texts or distributions in texts
-"""
+"""Functions around comparing texts or distributions in texts."""
 
 from collections.abc import Sequence
 from math import log10
@@ -18,14 +16,17 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
     """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
     Example:
+    -------
         >>> frequency_to_probability({'a': 2, 'b': 2})
         {'a': 0.5, 'b': 0.5}
 
     Args:
+    ----
         frequency_map (dict): The dictionary to transform
         decorator (function): A function to manipulate the probability
 
     Returns:
+    -------
         Dictionary of ngrams to probability
     """
     total = sum(frequency_map.values())
@@ -34,8 +35,7 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
 
 # use scipy.stats.chisquare?
 def mychisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
-    """
-    Calculate chi^2 test of 2 texts
+    """Calculate chi^2 test of 2 texts.
 
     It's calculated by multiplying the frequency count of one letter
     in the first string by the frequency count of the same letter
@@ -53,12 +53,10 @@ def mychisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> floa
 
 
 def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
-    """
-    https://en.wikipedia.org/wiki/G-test
+    """https://en.wikipedia.org/wiki/G-test
     use scipy.stats.power_divergence with lambda_=0
-    Calculate another comparison of 2 texts
+    Calculate another comparison of 2 texts.
     """
-
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
 
@@ -72,9 +70,7 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
 
 
 def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
-    """
-    scoring using log of frequency
-    """
+    """Scoring using log of frequency."""
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
     total: float = 0.0
@@ -95,9 +91,7 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
 
 
 def quadgramscore(text: Sequence[T], length: int = 4) -> float:
-    """
-    quadgram score against test corpus
-    """
+    """Quadgram score against test corpus."""
     frequency_map = quadgrams.quadgrams
     ngrams = frequency_to_probability(frequency_map, decorator=log10)
     floor = log10(0.001 / sum(frequency_map.values()))

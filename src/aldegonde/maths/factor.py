@@ -1,6 +1,4 @@
-"""
-prime factorization
-"""
+"""prime factorization."""
 
 
 def prime_factors(n: int) -> list[int]:

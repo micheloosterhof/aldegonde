@@ -1,12 +1,11 @@
-"""primes
-"""
+"""primes."""
 
 import itertools
 from collections.abc import Iterable, Iterator
 
 
 def primes(n: int) -> list[int]:
-    """primes as a list"""
+    """Primes as a list."""
     out: list[int] = []
     sieve = [True] * (n + 1)
     for p in range(2, n + 1):
@@ -18,7 +17,7 @@ def primes(n: int) -> list[int]:
 
 
 class PrimeGenerator(Iterable):
-    """primes as a generator"""
+    """primes as a generator."""
 
     def __init__(self) -> None:
         self.primes: list[int] = []

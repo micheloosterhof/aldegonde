@@ -1,11 +1,10 @@
-"""
-    Example ATTACK and EFFECT both normalize to ABBACD
+"""Example ATTACK and EFFECT both normalize to ABBACD.
 
-    length 1: A (1)
-    length 2: AA | AB (2)
-    length 3: AAA | AAB ABA ABB | ABC (5)
-    length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
-              AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
+length 1: A (1)
+length 2: AA | AB (2)
+length 3: AAA | AAB ABA ABB | ABC (5)
+length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
+AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
 from collections import Counter, defaultdict
 from collections.abc import Sequence
@@ -20,11 +19,10 @@ T = TypeVar("T")
 
 
 def isomorph(text: Sequence[T]) -> str:
-    """
-    Input is a piece of text as a sequence
+    """Input is a piece of text as a sequence
     Output is this normalized as an isomorph, as a string in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
-    TODO: raise exception when we go beyond Z
+    TODO: raise exception when we go beyond Z.
     """
     output: str = ""
     letter: str = "A"
@@ -40,18 +38,14 @@ def isomorph(text: Sequence[T]) -> str:
 def isomorph_distribution(
     ciphertext: Sequence[T], length: int, cut: int = 0
 ) -> dict[str, int]:
-    """
-    Return all isomorphs of a particular length from a sequence with their count
-    """
+    """Return all isomorphs of a particular length from a sequence with their count."""
     return Counter([isomorph(x) for x in iterngrams(ciphertext, length=length)])
 
 
 def isomorph_positions(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, list[int]]:
-    """
-    flexible isomorph positions function, returns each ngram and its starting location in the source text
-    """
+    """Flexible isomorph positions function, returns each ngram and its starting location in the source text."""
     out: dict[str, list[int]] = defaultdict(list)
     for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
         out[isomorph(e)].append(i)
@@ -59,9 +53,8 @@ def isomorph_positions(
 
 
 def isomorph_statistics(dist: dict[str, int]) -> tuple[int, int]:
-    """
-    Input is the output of `isomorph_distribution`.
-    Returns `distincts` and `duplicates` for the input
+    """Input is the output of `isomorph_distribution`.
+    Returns `distincts` and `duplicates` for the input.
     """
     distinct: int = len(dist.keys())
     duplicate: int = sum([v for v in dist.values() if v > 1])
@@ -75,9 +68,7 @@ def random_isomorph_statistics(
     trace: bool = False,
     alphabetlen: int = 29,
 ) -> tuple[float, float, float, float]:
-    """
-    Returns the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs
-    """
+    """Returns the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs."""
     distincts: list[int] = []
     duplicates: list[int] = []
 
@@ -98,11 +89,10 @@ def random_isomorph_statistics(
 
 
 def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
-    """
-    Look for isomorphs in the sequence.
+    """Look for isomorphs in the sequence.
     Isomorphs are sequences that have the same number of unique characters:
     CDDE and LKKY are isomorphs, that can be generalized to the pattern ABBC
-    This function collects all isomorphs
+    This function collects all isomorphs.
     """
     startlength = 4
     endlength = 40

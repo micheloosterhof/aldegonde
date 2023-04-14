@@ -1,5 +1,4 @@
-"""IOC calculation
-"""
+"""IOC calculation."""
 
 from collections.abc import Sequence
 from math import sqrt
@@ -16,9 +15,10 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     Args:
         text: Sequence
         length: size of ngram
-        cut: where to start ngrams
+        cut: where to start ngrams.
 
-    Yields:
+    Yields
+    ------
         Output is the Index of Coincidence formatted as a float,
 
     Specify `cut=0` and it operates on sliding blocks of 2 text: ABC, BCD, CDE, ...
@@ -37,11 +37,10 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
 def nioc(
     text: Sequence[T], alphabetsize: int, length: int = 1, cut: int = 1
 ) -> tuple[float, float, float]:
-    """
-    Yields:
-        Output is the Index of Coincidence formatted as a float,
-        normalized to to alphabet size, and the number of standard
-        deviations away from random data
+    """Yields
+    Output is the Index of Coincidence formatted as a float,
+    normalized to to alphabet size, and the number of standard
+    deviations away from random data.
     """
     freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
     L: int = sum(x for x in freqs.values())
@@ -63,9 +62,7 @@ def nioc(
 
 
 def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
-    """
-    print IOC statistics
-    """
+    """Print IOC statistics."""
     for length in range(1, 6):
         for cut in range(0, length + 1):
             if length == 1 and cut == 1:
@@ -78,9 +75,7 @@ def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
 
 
 def sliding_window_ioc(text: Sequence[T], window: int = 100) -> list[float]:
-    """
-    calculate sliding window IOC of a large data set
-    """
+    """Calculate sliding window IOC of a large data set."""
     output: list[float] = []
     for i in range(0, len(text) - window):
         output.append(ioc(text[i : i + window]))
@@ -88,15 +83,15 @@ def sliding_window_ioc(text: Sequence[T], window: int = 100) -> list[float]:
 
 
 def ioc2(text: Sequence[T], cut: int = 0) -> float:
-    """Multigraphic Index of Coincidence: ΔIC"""
+    """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=2)
 
 
 def ioc3(text: Sequence[T], cut: int = 0) -> float:
-    """Multigraphic Index of Coincidence: ΔIC"""
+    """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=3)
 
 
 def ioc4(text: Sequence[T], cut: int = 0) -> float:
-    """Multigraphic Index of Coincidence: ΔIC"""
+    """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=4)

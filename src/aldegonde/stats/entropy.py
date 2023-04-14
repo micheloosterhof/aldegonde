@@ -1,4 +1,4 @@
-"""Entropy related functions"""
+"""Entropy related functions."""
 
 from collections import Counter
 from collections.abc import Sequence
@@ -9,9 +9,7 @@ T = TypeVar("T")
 
 
 def shannon_entropy(ciphertext: Sequence[T], base: int = 2) -> float:
-    """
-    shannon entropy. by default in bits.
-    """
+    """Shannon entropy. by default in bits."""
     f = Counter(ciphertext)
     N = len(ciphertext)
     H: float = 0.0
@@ -22,9 +20,7 @@ def shannon_entropy(ciphertext: Sequence[T], base: int = 2) -> float:
 
 
 def shannon2_entropy(ciphertext: Sequence[T], base: int = 2, cut: int = 0) -> float:
-    """
-    shannon entropy. by default in bits.
-    """
+    """Shannon entropy. by default in bits."""
     N = len(ciphertext)
     if N < 3:
         return 0.0

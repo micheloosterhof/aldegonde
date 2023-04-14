@@ -10,9 +10,7 @@ T = TypeVar("T")
 
 
 def print_dist(runes: Sequence[T]) -> None:
-    """
-    print frequency distribution
-    """
+    """Print frequency distribution."""
     N = len(runes)
     col = 0
     freqs = ngram_distribution(runes)

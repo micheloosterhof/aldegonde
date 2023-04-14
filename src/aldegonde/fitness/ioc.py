@@ -1,6 +1,4 @@
-"""
-IOC Scoring Function
-"""
+"""IOC Scoring Function."""
 
 from math import sqrt
 from collections.abc import Callable, Sequence
@@ -19,14 +17,16 @@ RUSSIAN = 0.0529
 
 
 def IocFitness(target_ioc: float) -> Callable[[Sequence[T]], float]:
-    """Score a text by evaluating its IOC score
+    """Score a text by evaluating its IOC score.
 
     Example:
+    -------
         >>> fitness = IOCScore(ENGLISH)
         >>> fitness("ABC")
         -32.2
 
     Args:
+    ----
         target_ioc (lfoat): symbol to frequency mapping of the distribution to compare with
     """
 

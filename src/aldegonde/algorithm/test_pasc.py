@@ -34,9 +34,7 @@ def test_variantbeaufort() -> None:
 
 
 def test_quagmire1() -> None:
-    """
-    is this quagmire1?
-    """
+    """Is this quagmire1?."""
     return
     # alphabet = masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT")
     # key = "BRANDT"
@@ -67,9 +65,7 @@ def test_quagmire3() -> None:
 
 
 def test_quagmire3_kryptos1() -> None:
-    """
-    K1
-    """
+    """K1."""
     alphabet = masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "KRYPTOS")
     key = "PALIMPSEST"
     ciphertext = "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJYQTQUXQBQVYUVLLTREVJYQTMKYRDMFD"
@@ -83,9 +79,7 @@ def test_quagmire3_kryptos1() -> None:
 
 
 def test_quagmire3_kryptos2() -> None:
-    """
-    K2 - this is the corrected version with the extra `S`
-    """
+    """K2 - this is the corrected version with the extra `S`."""
     alphabet = masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "KRYPTOS")
     key = "ABSCISSA"
     ciphertext = "VFPJUDEEHZWETZYVGWHKKQETGFQJNCEGGWHKKDQMCPFQZDQMMIAGPFXHQRLGTIMVMZJANQLVKQEDAGDVFRPJUNGEUNAQZGZLECGYUXUEENJTBJLBQCRTBJDFHRRYIZETKZEMVDUFKSJHKFWHKUWQLSZFTIHHDDDUVHDWKBFUFPWNTDFIYCUQZEREEVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDXFLGGTEZFKZBSFDQVGOGIPUFXHHDRKFFHQNTGPUAECNUVPDJMQCLQUMUNEDFQELZZVRRGKFFVOEEXBDMVPNFQXEZLGREDNQFMPNZGLFLPMRJQYALMGNUVPDXVKPDQUMEBEDMHDAFMJGZNUPLGESWJLLAETG"

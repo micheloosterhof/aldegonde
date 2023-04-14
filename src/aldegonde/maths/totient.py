@@ -10,9 +10,7 @@ def is_coprime(x: int, y: int) -> bool:
 
 
 def phi_func(x: int) -> int:
-    """
-    euler phi // totient
-    """
+    """Euler phi // totient."""
     if x == 1:
         return 1
     n = [y for y in range(1, x) if is_coprime(x, y)]

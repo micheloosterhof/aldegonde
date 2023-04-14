@@ -1,6 +1,4 @@
-"""
-Code to analyse doublets, triplets, etc
-"""
+"""Code to analyse doublets, triplets, etc."""
 
 from collections.abc import Sequence
 from math import sqrt
@@ -14,9 +12,7 @@ T = TypeVar("T")
 def print_doublets_statistics(
     runes: Sequence[T], alphabetsize: int, skip: int = 1
 ) -> None:
-    """
-    find the number of doublets. doublet is X followed by X for any X
-    """
+    """Find the number of doublets. doublet is X followed by X for any X."""
     dbls: list[int] = doublets(runes, skip=skip)
     l: int = len(dbls)
     mu = len(runes) / alphabetsize
@@ -26,9 +22,7 @@ def print_doublets_statistics(
 
 
 def doublets(runes: Sequence[T], skip: int = 1, trace: bool = False) -> list[int]:
-    """
-    find number of doublets. doublet is X followed by X for any X
-    """
+    """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
     for index in range(0, len(runes) - skip):
         if runes[index] == runes[index + skip]:
@@ -41,9 +35,7 @@ def doublets(runes: Sequence[T], skip: int = 1, trace: bool = False) -> list[int
 
 
 def triplets(runes: Sequence[T]) -> int:
-    """
-    find number of triplet. triplet is X followed by XX for any X
-    """
+    """Find number of triplet. triplet is X followed by XX for any X."""
     N = len(runes)
     trpl: int = 0
     for index in range(0, N - 2):

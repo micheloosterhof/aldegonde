@@ -1,5 +1,4 @@
-"""module description
-"""
+"""module description."""
 
 from collections.abc import Sequence
 from typing import TypeVar
@@ -10,7 +9,8 @@ T = TypeVar("T")
 def kappa(text: Sequence[T], shift: int) -> float:
     """The `Kappa` test. Overlay the ciphertext with itself shifted by a number
     of positions, then count the positions with the same character. Normalize by
-    text size."""
+    text size.
+    """
     dups: int = 0
     for i in range(0, len(text) - shift):
         if text[i] == text[i + shift]:
@@ -26,9 +26,7 @@ def print_kappa(
     threshold: float = 1.3,
     trace: bool = False,
 ) -> None:
-    """
-    Kappa test for a range
-    """
+    """Kappa test for a range."""
     assert maximum >= 0
     assert minimum >= 1
     MAX = alphabetsize

@@ -1,4 +1,4 @@
-"""tests for doublets.py"""
+"""tests for doublets.py."""
 
 from aldegonde.stats.isomorph import isomorph, isomorph_distribution
 

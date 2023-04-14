@@ -1,4 +1,4 @@
-"""tests for doublets.py"""
+"""tests for doublets.py."""
 
 from aldegonde.stats.doublets import doublets, triplets
 

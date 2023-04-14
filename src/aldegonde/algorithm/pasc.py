@@ -1,4 +1,4 @@
-"""polyalphabetic substitution cipher
+"""polyalphabetic substitution cipher.
 
 This contains all ciphers of this type. This includes Vigenere, Beaufort, Variant Beaufort, 
 Quagmire 1, 2, 3 and 4. And the generic polyalphabetic subsitution cipher.
@@ -32,17 +32,14 @@ TR = dict[T, dict[T, T]]
 def pasc_encrypt(
     plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]
 ) -> tuple[T, ...]:
-    """
-    Polyalphabetic substitution
-    """
+    """Polyalphabetic substitution."""
     return tuple(tr[keyword[i % len(keyword)]][e] for i, e in enumerate(plaintext))
 
 
 # This is a good candidate for functool caching
 def reverse_tr(tr: TR[T]) -> TR[T]:
-    """
-    Takes a dict containing all elements and reverses the index and the value
-    Returns output if the input contains valid values, else raises ValueError
+    """Takes a dict containing all elements and reverses the index and the value
+    Returns output if the input contains valid values, else raises ValueError.
     """
     output: TR = defaultdict(dict)
     for keyword in tr:
@@ -55,7 +52,7 @@ def pasc_decrypt(
     ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]
 ) -> tuple[T, ...]:
     """Polyalphabetic substitution
-    NOTE: tr input is the same as for encryption, this function will reverse the key
+    NOTE: tr input is the same as for encryption, this function will reverse the key.
     """
     reversed_tr: TR[T] = reverse_tr(tr)
     return tuple(
@@ -64,7 +61,7 @@ def pasc_decrypt(
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:
-    """Generate a random TR for use in the previous functions"""
+    """Generate a random TR for use in the previous functions."""
     tr: TR[T] = defaultdict(dict)
     for key in alphabet:
         shuffled = random.sample(alphabet, len(alphabet))
@@ -74,9 +71,7 @@ def random_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def vigenere_tr(alphabet: Sequence[T]) -> TR[T]:
-    """
-    Generate a Vigenere tabula recta with the standard alphabet
-    """
+    """Generate a Vigenere tabula recta with the standard alphabet."""
     tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
@@ -85,9 +80,7 @@ def vigenere_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def beaufort_tr(alphabet: Sequence[T]) -> TR[T]:
-    """
-    Generate a Beaufort tabula recta (reversed alphabet)
-    """
+    """Generate a Beaufort tabula recta (reversed alphabet)."""
     tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
@@ -96,9 +89,7 @@ def beaufort_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def variantbeaufort_tr(alphabet: Sequence[T]) -> TR[T]:
-    """
-    Generate a Variant Beaufort tabula recta
-    """
+    """Generate a Variant Beaufort tabula recta."""
     tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
@@ -135,9 +126,7 @@ def quagmire4_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def print_tr(tr: TR[T]) -> None:
-    """
-    print TR
-    """
+    """Print TR."""
     print("  | ", end="")
     for i in tr.keys():
         for j in tr[i].keys():

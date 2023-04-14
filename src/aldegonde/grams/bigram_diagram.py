@@ -1,4 +1,4 @@
-"""Bigram diagrams"""
+"""Bigram diagrams."""
 
 from collections import Counter, defaultdict
 from collections.abc import Sequence
@@ -12,9 +12,8 @@ T = TypeVar("T")
 def print_bigram_diagram(
     runes: Sequence[T], alphabet: Sequence[T], skip: int = 1, cut: int = 0
 ) -> None:
-    """
-    Input is a sequence of items
-    Output is the bigram frequency diagram printed to stdout
+    """Input is a sequence of items
+    Output is the bigram frequency diagram printed to stdout.
     """
     if len(runes) + skip < 2:
         return
@@ -77,10 +76,9 @@ def print_bigram_diagram(
 def bigram_diagram(
     runes: Sequence[T], skip: int = 1, cut: int = 0
 ) -> dict[T, dict[T, int]]:
-    """
-    Input is a sequence of symbols
+    """Input is a sequence of symbols
     Output is bigram frequency diagram as dictionary of dictionaries
-    skip is the gap between first and second rune
+    skip is the gap between first and second rune.
 
     Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE (all symbols)
     Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF (odd only)
