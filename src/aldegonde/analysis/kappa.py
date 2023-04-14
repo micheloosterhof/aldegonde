@@ -7,7 +7,7 @@ T = TypeVar("T")
 
 
 def kappa(text: Sequence[T], shift: int) -> float:
-    """The `Kappa` test. Overlay the ciphertext with itself shifted by a number
+    """Print the `Kappa` test. Overlay the ciphertext with itself shifted by a number
     of positions, then count the positions with the same character. Normalize by
     text size.
     """

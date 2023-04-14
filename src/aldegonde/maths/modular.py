@@ -4,7 +4,7 @@ import math
 
 
 def modInverse(b: int, m: int) -> int:
-    """Function to find modulo inverse of b. It returns -1 when inverse doesn't
+    """Find modulo inverse of b. It returns -1 when inverse doesn't
     modInverse works for prime m.
     """
     g = math.gcd(b, m)
@@ -17,7 +17,7 @@ def modInverse(b: int, m: int) -> int:
 
 
 def modDivide(a: int, b: int, m: int) -> int:
-    """Function to compute a/b under modulo m."""
+    """Return compute a/b under modulo m."""
     a = a % m
     inv = modInverse(b, m)
     if inv == -1:
@@ -27,5 +27,5 @@ def modDivide(a: int, b: int, m: int) -> int:
 
 
 def div29(a: int, b: int) -> int:
-    """Convenience function for 3301."""
+    """Return compute a/b under modulo 29."""
     return modDivide(a, b, 29)

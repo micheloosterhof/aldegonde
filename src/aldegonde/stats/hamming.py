@@ -5,8 +5,8 @@ T = TypeVar("T")
 
 
 def hamming_distance(s1: Sequence[T], s2: Sequence[T]) -> int:
-    """The Hamming distance between two equal-length strings of symbols
-    is the number of positions at which the corresponding symbols
+    """Return the Hamming distance between two equal-length strings of symbols.
+    It is the number of positions at which the corresponding symbols
     are different.
     """
     if len(s1) != len(s2):

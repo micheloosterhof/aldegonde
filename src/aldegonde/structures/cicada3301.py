@@ -90,7 +90,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
 
 
 def numberToBase(n: int, b: int) -> list[int]:
-    """Converts from base10 to any other base. outputs as list of int."""
+    """Convert from base10 to any other base. outputs as list of int."""
     if n == 0:
         return [0]
     digits = []
@@ -142,7 +142,7 @@ def print_all(runes: list[int], limit: int = 0) -> None:
 
 
 def print_english(runes: list[int], limit: int = 0) -> None:
-    """Prints rune output translated back to english letters."""
+    """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
@@ -154,7 +154,7 @@ def print_english(runes: list[int], limit: int = 0) -> None:
 
 
 def print_rune_index(runes: list[int], limit: int = 0) -> None:
-    """Prints rune output translated back to english letters."""
+    """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
@@ -165,7 +165,7 @@ def print_rune_index(runes: list[int], limit: int = 0) -> None:
 
 
 def print_rune(runes: list[int], limit: int = 0) -> None:
-    """Prints rune output translated back to english letters."""
+    """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 

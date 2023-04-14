@@ -37,7 +37,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
 def nioc(
     text: Sequence[T], alphabetsize: int, length: int = 1, cut: int = 1
 ) -> tuple[float, float, float]:
-    """Yields
+    """Yield
     Output is the Index of Coincidence formatted as a float,
     normalized to to alphabet size, and the number of standard
     deviations away from random data.

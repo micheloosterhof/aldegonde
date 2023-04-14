@@ -68,7 +68,7 @@ def random_isomorph_statistics(
     trace: bool = False,
     alphabetlen: int = 29,
 ) -> tuple[float, float, float, float]:
-    """Returns the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs."""
+    """Return the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs."""
     distincts: list[int] = []
     duplicates: list[int] = []
 

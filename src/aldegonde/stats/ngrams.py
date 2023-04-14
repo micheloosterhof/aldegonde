@@ -10,7 +10,7 @@ T = TypeVar("T")
 def iterngrams(
     runes: Sequence[T], length: int, cut: int = 0
 ) -> Generator[Sequence[T], None, None]:
-    """Returns ngrams for the given sequence
+    """Return ngrams for the given sequence
     Args:
         runes: Sequence
         length: size of ngram
@@ -47,46 +47,46 @@ def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
 
 
 def digraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for digraphs."""
+    """Return digraphs."""
     return ngrams(runes, length=2, cut=cut)
 
 
 def trigraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for trigraphs."""
+    """Return trigraphs."""
     return ngrams(runes, length=3, cut=cut)
 
 
 def tetragraphs(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for tetragraphs."""
+    """Return tetragraphs."""
     return ngrams(runes, length=4, cut=cut)
 
 
 def bigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for digrams."""
+    """Return digrams."""
     return ngrams(runes, length=2, cut=cut)
 
 
 def trigrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for trigrams."""
+    """Return trigrams."""
     return ngrams(runes, length=3, cut=cut)
 
 
 def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
-    """Convenience function for tetragrams."""
+    """Return tetragrams."""
     return ngrams(runes, length=4, cut=cut)
 
 
 def ngram_distribution(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, int]:
-    """Flexible dist function, returns ngrams by count, this could also be count_ngrams."""
+    """Return ngrams by count."""
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
 
 
 def ngram_positions(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, list[int]]:
-    """Flexible ngram positions function, returns each ngram and its starting locations in the source text."""
+    """Return each ngram and its starting locations in the source text."""
     out: dict[str, list[int]] = defaultdict(list)
     for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
         out[str(e)].append(i)

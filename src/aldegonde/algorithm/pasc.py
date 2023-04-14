@@ -38,7 +38,7 @@ def pasc_encrypt(
 
 # This is a good candidate for functool caching
 def reverse_tr(tr: TR[T]) -> TR[T]:
-    """Takes a dict containing all elements and reverses the index and the value
+    """Take a dict containing all elements and reverses the index and the value
     Returns output if the input contains valid values, else raises ValueError.
     """
     output: TR = defaultdict(dict)

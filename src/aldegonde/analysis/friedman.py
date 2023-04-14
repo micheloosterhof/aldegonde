@@ -15,7 +15,7 @@ def friedman_test(
     maxperiod: int = 20,
     trace: bool = False,
 ) -> None:
-    """This is the friedman test
+    """Print the friedman test
     https://crypto.stackexchange.com/questions/40066/finding-length-of-a-key-for-a-given-vigenere-cipher-using-index-of-coincidence.
     """
     # avgioc contains the key length as key. as value it's the avgioc

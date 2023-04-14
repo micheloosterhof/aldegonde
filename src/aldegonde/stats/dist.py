@@ -8,6 +8,10 @@ from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
 
+"""
+Functions for ngram distribution
+"""
+
 
 def print_dist(runes: Sequence[T]) -> None:
     """Print frequency distribution."""
