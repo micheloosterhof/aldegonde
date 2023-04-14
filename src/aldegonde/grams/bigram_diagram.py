@@ -9,7 +9,7 @@ from .color import Colors
 T = TypeVar("T")
 
 
-def print_header(width: int):
+def print_header(width: int) -> None:
     """print header"""
     print("---+-", end="")
     for _i in range(0, width):
