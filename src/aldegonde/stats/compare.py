@@ -46,7 +46,7 @@ def mychisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> floa
     total: float = 0.0
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
-    for key in d1.keys():
+    for key in d1:
         if key in d2:
             total += d1[key] * d2[key]
     return total / (len(d1.keys()) * len(d2.keys()))
@@ -62,7 +62,7 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
 
     obs: list[float] = []
     exp: list[float] = []
-    for k in d2.keys():
+    for k in d2:
         obs.append(d1[k])
         exp.append(d2[k])
     print(power_divergence(f_obs=obs, f_exp=exp, lambda_=0))
@@ -74,7 +74,7 @@ def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
     total: float = 0.0
-    for key in d1.keys():
+    for key in d1:
         if key in d2:
             total += log10(d1[key])
     return total
@@ -86,7 +86,7 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
     frequency_map = quadgrams.quadgrams
     ngrams = frequency_to_probability(frequency_map)
     d1 = ngram_distribution(text, length=length)
-    d2 = [ngrams.get(ngram, floor) for ngram in d1.keys()]
+    d2 = [ngrams.get(ngram, floor) for ngram in d1]
     return float(chisquare(f_obs=d1, f_exp=d2))
 
 

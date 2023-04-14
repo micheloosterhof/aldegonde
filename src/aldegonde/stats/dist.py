@@ -29,6 +29,6 @@ def print_dist(runes: Sequence[T]) -> None:
         col = col + 1
     print("")
 
-    observed = [freqs[i] for i in freqs.keys()]
+    observed = [freqs[i] for i in freqs]
     chi2, p = chisquare(f_obs=observed)
     print(f"chi2 goodness of fit for uniform distribution = {chi2:.5f} p-value={p:.5f}")

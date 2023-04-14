@@ -128,13 +128,13 @@ def quagmire4_tr(alphabet: Sequence[T]) -> TR[T]:
 def print_tr(tr: TR[T]) -> None:
     """Print TR."""
     print("  | ", end="")
-    for i in tr.keys():
-        for j in tr[i].keys():
+    for i in tr:
+        for j in tr[i]:
             print(f"{j} ", end="")
         break
     print("|\n--+-" + (len(tr.keys()) * "--") + "+-")
-    for i in tr.keys():
+    for i in tr:
         print(f"{i} | ", end="")
-        for j in tr[i].keys():
+        for j in tr[i]:
             print(f"{tr[i][j]} ", end="")
         print("|")
