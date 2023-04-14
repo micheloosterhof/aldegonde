@@ -102,7 +102,7 @@ def ngram_positions(
     text: Sequence[T], length: int = 1, cut: int = 0
 ) -> dict[str, list[int]]:
     """
-    flexible ngram positions function, returns each ngram and its starting location in the source text
+    flexible ngram positions function, returns each ngram and its starting locations in the source text
     """
     out: dict[str, list[int]] = defaultdict(list)
     for i, e in enumerate(iterngrams(text, length=length, cut=cut)):

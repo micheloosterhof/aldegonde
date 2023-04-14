@@ -37,7 +37,9 @@ def isomorph(text: Sequence[T]) -> str:
     return output
 
 
-def count_isomorphs(ciphertext: Sequence[T], length: int) -> dict[str, int]:
+def isomorph_distribution(
+    ciphertext: Sequence[T], length: int, cut: int = 0
+) -> dict[str, int]:
     """
     Return all isomorphs of a particular length from a sequence with their count
     """
@@ -56,13 +58,13 @@ def isomorph_positions(
     return out
 
 
-def isomorph_statistics(isomorphs: dict[str, int]) -> tuple[int, int]:
+def isomorph_statistics(dist: dict[str, int]) -> tuple[int, int]:
     """
-    Input is the output of `count_isomorphs`.
+    Input is the output of `isomorph_distribution`.
     Returns `distincts` and `duplicates` for the input
     """
-    distinct: int = len(isomorphs.keys())
-    duplicate: int = sum([x for x in isomorphs.values() if x > 1])
+    distinct: int = len(dist.keys())
+    duplicate: int = sum([v for v in dist.values() if v > 1])
     return (distinct, duplicate)
 
 
@@ -83,7 +85,7 @@ def random_isomorph_statistics(
         rand: list[int] = [
             random.randrange(0, alphabetlen) for _ in range(sequencelength)
         ]
-        isos = count_isomorphs(rand, isomorphlength)
+        isos = isomorph_distribution(rand, isomorphlength)
         (distinct, duplicate) = isomorph_statistics(isos)
         distincts.append(distinct)
         duplicates.append(duplicate)
@@ -107,7 +109,7 @@ def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
     isos: dict[str, int]  # normalized isomorph as key, count as value
 
     for length in range(startlength, endlength + 1):
-        isos = count_isomorphs(seq, length)
+        isos = isomorph_distribution(seq, length)
         (distinct, duplicate) = isomorph_statistics(isos)
         (
             avgdistinct,
