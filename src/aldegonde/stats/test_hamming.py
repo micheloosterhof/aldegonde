@@ -1,5 +1,3 @@
-#!/usr/bin/env p
-
 from aldegonde.stats.hamming import hamming_distance
 
 karolin = "karolin"

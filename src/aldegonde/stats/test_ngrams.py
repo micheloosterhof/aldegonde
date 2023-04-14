@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from aldegonde.stats.ngrams import (
     ngrams,
     iterngrams,

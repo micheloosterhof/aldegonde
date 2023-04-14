@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from aldegonde.stats.repeats import repeat_distribution, repeat_positions
 
 uniq = "ABCABC"

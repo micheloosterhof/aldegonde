@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from aldegonde.structures.cicada3301 import CICADA_ALPHABET
 
 

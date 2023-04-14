@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from aldegonde.stats.compare import quadgramscore
 
 am = "ABCDEFGHIJKLM"

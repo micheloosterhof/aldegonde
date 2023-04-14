@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from aldegonde.stats.ioc import ioc, ioc2, ioc3, ioc4
 
 nils = "A" * 300

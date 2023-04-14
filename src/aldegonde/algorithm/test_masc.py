@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from aldegonde.algorithm import masc
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
