@@ -17,6 +17,7 @@ def print_repeat_statistics(
     maximum: int = 10,
     cut: int = 0,
     alphabetsize: int = 26,
+    *,
     trace: bool = False,
 ) -> None:
     """Find repeating sequences in the list, up to `maximum`. Max defaults to 10

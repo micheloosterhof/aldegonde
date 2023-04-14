@@ -65,8 +65,9 @@ def random_isomorph_statistics(
     sequencelength: int,
     isomorphlength: int,
     samples: int = 20,
-    trace: bool = False,
     alphabetlen: int = 29,
+    *,
+    trace: bool = False,
 ) -> tuple[float, float, float, float]:
     """Return the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs."""
     distincts: list[int] = []
@@ -88,7 +89,7 @@ def random_isomorph_statistics(
     return (meandistinct, stdevdistinct, meanduplicate, stdevduplicate)
 
 
-def print_isomorph_statistics(seq: Sequence[T], trace: bool = False) -> None:
+def print_isomorph_statistics(seq: Sequence[T], *, trace: bool = False) -> None:
     """Look for isomorphs in the sequence.
     Isomorphs are sequences that have the same number of unique characters:
     CDDE and LKKY are isomorphs, that can be generalized to the pattern ABBC

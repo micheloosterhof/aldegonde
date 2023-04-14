@@ -21,7 +21,7 @@ def print_doublets_statistics(
     print(f"doublets={l} (skip={skip}) expected={mean:.2f} S={sigmage:.2f}σ")
 
 
-def doublets(runes: Sequence[T], skip: int = 1, trace: bool = False) -> list[int]:
+def doublets(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> list[int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
     for index in range(0, len(runes) - skip):

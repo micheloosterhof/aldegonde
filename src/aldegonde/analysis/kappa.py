@@ -24,6 +24,7 @@ def print_kappa(
     minimum: int = 1,
     maximum: int = 51,
     threshold: float = 1.3,
+    *,
     trace: bool = False,
 ) -> None:
     """Kappa test for a range."""

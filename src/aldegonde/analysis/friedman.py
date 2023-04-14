@@ -13,6 +13,7 @@ def friedman_test(
     ciphertext: Sequence[T],
     minperiod: int = 1,
     maxperiod: int = 20,
+    *,
     trace: bool = False,
 ) -> None:
     """Print the friedman test

@@ -1,4 +1,4 @@
-def print_modchecker(runes: list[int], trace: bool = False) -> None:
+def print_modchecker(runes: list[int], *, trace: bool = False) -> None:
     """For a list of integers, find the highest number where remainder of the modulus is constant."""
     if len(runes) < 2:
         return
