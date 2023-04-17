@@ -59,7 +59,7 @@ ignore_missing_imports = true
 line-length = 88
 
 # Enable Pyflakes `E` and `F` codes by default.
-select = ["E", "F", "UP"]
+select = ["A", "B", "C", "C4", "E", "EXE", "F", "FBT", "PIE", "PYI", "SIM", "UP", "YTT"]
 ignore = ["E501", "E741", "UP007"]
 
 # Assume Python 3.10.
