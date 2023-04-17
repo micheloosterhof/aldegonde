@@ -9,12 +9,26 @@ from .color import Colors
 T = TypeVar("T")
 
 
-def print_header(width: int) -> None:
-    """print header"""
+def print_separator(width: int) -> None:
+    """print separator"""
     print("---+-", end="")
     for _i in range(0, width):
         print("---", end="")
     print("+-------+------")
+
+
+def print_colored_value(v: int) -> None:
+    """print colored value"""
+    if v == 0:
+        print(Colors.bgRed, end="")
+    elif v < 5:
+        print(Colors.bgYellow, end="")
+    elif v < 10:
+        print(Colors.bgGreen, end="")
+    elif v > 25:
+        print(Colors.bgBlue, end="")
+    print(f"{v:02}", end="")
+    print(Colors.reset, end=" ")
 
 
 def print_bigram_diagram(
@@ -36,7 +50,7 @@ def print_bigram_diagram(
         print(f"{i:02d} ", end="")
     print("| IOC   | nIOC")
 
-    print_header(MAX)
+    print_separator(MAX)
 
     for i in range(0, MAX):
         print(f"{i:02} | ", end="")
@@ -45,16 +59,7 @@ def print_bigram_diagram(
                 v = bigram[alphabet[i]][alphabet[j]]
             except KeyError:
                 v = 0
-            if v == 0:
-                print(Colors.bgRed, end="")
-            elif v < 5:
-                print(Colors.bgYellow, end="")
-            elif v < 10:
-                print(Colors.bgGreen, end="")
-            elif v > 25:
-                print(Colors.bgBlue, end="")
-            print(f"{v:02}", end="")
-            print(Colors.reset, end=" ")
+            print_colored_value(v)
 
         # partial IOC (one rune), and total IOC
         pioc = (
@@ -65,7 +70,7 @@ def print_bigram_diagram(
         ioc += pioc
         print(f"| {pioc:.3f} | {MAX*pioc:.3f}")
 
-    print_header(MAX)
+    print_separator(MAX)
 
     print("   | ", end="")
     for _i in range(0, MAX):
