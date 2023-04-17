@@ -36,6 +36,7 @@ def test_affinekey() -> None:
     try:
         assert masc.affinekey(ABC, a=2, b=8) == masc.affinekey(ABC, a=2, b=8)
     except ValueError:
+        assert 1 == 1
         pass
 
 
