@@ -5,7 +5,7 @@ mypy-extensions==1.0.0
 mypy==1.2.0
 pipdeptree==2.7.0
 pur==7.1.0
-pytest==7.3.0
-ruff==0.0.261
+pytest==7.3.1
+ruff==0.0.262
 tox==4.4.12
 twine==4.0.2
