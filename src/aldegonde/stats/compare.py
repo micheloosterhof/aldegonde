@@ -1,15 +1,32 @@
 """Functions around comparing texts or distributions in texts."""
 
 from collections.abc import Sequence
+import importlib.resources
 from math import log10
 from typing import TypeVar
 
 from scipy.stats import power_divergence, chisquare
 
 from aldegonde.stats.ngrams import ngram_distribution, iterngrams
-from aldegonde.data.ngrams.english import quadgrams
+from aldegonde.data.ngrams.english import trigrams
+
 
 T = TypeVar("T")
+
+
+def loadquadgrams() -> dict[str, int]:
+    """load quadgrams from text file"""
+    quadgrams: dict[str, int] = {}
+    with importlib.resources.open_text(
+        "aldegonde.data.ngrams.english", "quadgrams.txt"
+    ) as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.startswith("#"):
+                continue
+            items = line.split()
+            quadgrams[items[0]] = int(items[1])
+    return quadgrams
 
 
 def frequency_to_probability(frequency_map, decorator=lambda f: f):
@@ -31,6 +48,11 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
     """
     total = sum(frequency_map.values())
     return {k: decorator(v / total) for k, v in frequency_map.items()}
+
+
+quadgrams = loadquadgrams()
+quadgrams_prob = frequency_to_probability(quadgrams, decorator=log10)
+quadgrams_floor = log10(0.001 / sum(quadgrams.values()))
 
 
 # use scipy.stats.chisquare?
@@ -83,7 +105,7 @@ def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
 def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
     """ """
     floor = 0.01
-    frequency_map = quadgrams.quadgrams
+    frequency_map = quadgrams
     ngrams = frequency_to_probability(frequency_map)
     d1 = ngram_distribution(text, length=length)
     d2 = [ngrams.get(ngram, floor) for ngram in d1]
@@ -92,10 +114,27 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
 
 def quadgramscore(text: Sequence[T], length: int = 4) -> float:
     """Quadgram score against test corpus."""
-    frequency_map = quadgrams.quadgrams
+    # frequency_map = quadgrams
+    # ngrams = frequency_to_probability(frequency_map, decorator=log10)
+    # floor = log10(0.001 / sum(frequency_map.values()))
+    # return float(sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length)))
+    return float(
+        sum(
+            quadgrams_prob.get(ngram, quadgrams_floor)
+            for ngram in iterngrams(text, length)
+        )
+    )
+
+
+def trigramscore(text: Sequence[T], length: int = 3) -> float:
+    """Trigram score against test corpus."""
+    frequency_map = trigrams.trigrams
     ngrams = frequency_to_probability(frequency_map, decorator=log10)
     floor = log10(0.001 / sum(frequency_map.values()))
     return float(sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length)))
+
+
+# def NgramScorer(frequency_map):
 
 
 # def NgramScorer(frequency_map):
