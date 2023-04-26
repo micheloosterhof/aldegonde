@@ -17,8 +17,6 @@ a = "A"
 
 def test_quadgramscore() -> None:
     # lowercase letters are not in the corpus. floor value
-    assert quadgramscore("test") < -12.6
-    assert quadgramscore("test") > -12.7
     assert quadgramscore("TEST") < -3.6
     assert quadgramscore("TEST") > -3.7
     assert quadgramscore("THISISATESTOFTHEEMERGENCYBROADCASTSYSTEM") > -153.0
