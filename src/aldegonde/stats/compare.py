@@ -1,6 +1,6 @@
 """Functions around comparing texts or distributions in texts."""
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 import importlib.resources
 from math import log10
 from typing import TypeVar
@@ -8,18 +8,15 @@ from typing import TypeVar
 from scipy.stats import power_divergence, chisquare
 
 from aldegonde.stats.ngrams import ngram_distribution, iterngrams
-from aldegonde.data.ngrams.english import trigrams
 
 
 T = TypeVar("T")
 
 
-def loadquadgrams() -> dict[str, int]:
+def loadgrams(module: str, filename: str) -> dict[str, int]:
     """load quadgrams from text file"""
     quadgrams: dict[str, int] = {}
-    with importlib.resources.open_text(
-        "aldegonde.data.ngrams.english", "quadgrams.txt"
-    ) as f:
+    with importlib.resources.open_text(module, filename) as f:
         lines = f.readlines()
         for line in lines:
             if line.startswith("#"):
@@ -29,7 +26,9 @@ def loadquadgrams() -> dict[str, int]:
     return quadgrams
 
 
-def frequency_to_probability(frequency_map, decorator=lambda f: f):
+def frequency_to_probability(
+    frequency_map: dict[str, int], decorator=lambda f: f
+) -> dict[str, float]:
     """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
     Example:
@@ -50,9 +49,8 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
     return {k: decorator(v / total) for k, v in frequency_map.items()}
 
 
-quadgrams = loadquadgrams()
-quadgrams_prob = frequency_to_probability(quadgrams, decorator=log10)
-quadgrams_floor = log10(0.001 / sum(quadgrams.values()))
+quadgrams = loadgrams("aldegonde.data.ngrams.english", "quadgrams.txt")
+trigrams = loadgrams("aldegonde.data.ngrams.english", "trigrams.txt")
 
 
 # use scipy.stats.chisquare?
@@ -112,53 +110,31 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
     return float(chisquare(f_obs=d1, f_exp=d2))
 
 
-def quadgramscore(text: Sequence[T], length: int = 4) -> float:
-    """Quadgram score against test corpus."""
-    # frequency_map = quadgrams
-    # ngrams = frequency_to_probability(frequency_map, decorator=log10)
-    # floor = log10(0.001 / sum(frequency_map.values()))
-    # return float(sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length)))
-    return float(
-        sum(
-            quadgrams_prob.get(ngram, quadgrams_floor)
-            for ngram in iterngrams(text, length)
-        )
-    )
+def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
+    """Compute the score of a text by using the frequencies of ngrams.
+    Example:
+        >>> fitness = NgramScore(english.unigrams)
+        >>> fitness("ABC")
+        -4.3622319742618245
+    Args:
+        frequency_map (dict): ngram to frequency mapping
+
+    http://practicalcryptography.com/media/cryptanalysis/files/ngram_score_1.py
+    """
+    length = len(next(iter(frequency_map)))
+    # TODO: 0.01 is a magic number. Needs to be better than that.
+    floor = log10(0.01 / sum(frequency_map.values()))
+    print(floor)
+    floor = -1000
+    newfloor = log10(min(frequency_map.values()) / 10000)
+    print(newfloor)
+    ngrams: dict[str, float] = frequency_to_probability(frequency_map, decorator=log10)
+
+    def inner(text: str) -> float:
+        return sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length))
+
+    return inner
 
 
-def trigramscore(text: Sequence[T], length: int = 3) -> float:
-    """Trigram score against test corpus."""
-    frequency_map = trigrams.trigrams
-    ngrams = frequency_to_probability(frequency_map, decorator=log10)
-    floor = log10(0.001 / sum(frequency_map.values()))
-    return float(sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length)))
-
-
-# def NgramScorer(frequency_map):
-
-
-# def NgramScorer(frequency_map):
-#     """Compute the score of a text by using the frequencies of ngrams.
-#
-#     Example:
-#         >>> fitness = NgramScore(english.unigrams)
-#         >>> fitness("ABC")
-#         -4.3622319742618245
-#
-#     Args:
-#         frequency_map (dict): ngram to frequency mapping
-#     """
-#     # Calculate the log probability
-#     length = len(next(iter(frequency_map)))
-#     # TODO: 0.01 is a magic number. Needs to be better than that.
-#     floor = math.log10(0.01 / sum(frequency_map.values()))
-#     ngrams = frequency.frequency_to_probability(frequency_map, decorator=math.log10)
-#
-#     def inner(text):
-#         # I dont like this, it is only for the .upper() to work,
-#         # But I feel as though this can be removed in later refactoring
-#         text = "".join(text)
-#         text = remove(text.upper(), string.whitespace + string.punctuation)
-#         return sum(ngrams.get(ngram, floor) for ngram in iterate_ngrams(text, length))
-#
-#     return inner
+quadgramscore = NgramScorer(quadgrams)
+trigramscore = NgramScorer(trigrams)
