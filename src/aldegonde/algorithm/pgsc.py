@@ -17,7 +17,7 @@ class Comparable(Protocol):
 
 
 T = TypeVar("T", bound=Comparable)
-function = Callable[[Sequence[T]],Sequence[T]]
+function = Callable[[Sequence[T]], Sequence[T]]
 
 
 def pgsc_encrypt(
