@@ -38,6 +38,13 @@ def test_affinekey() -> None:
     except ValueError:
         assert 1 == 1
         pass
+    AFFINE_CIPHERTEXT = "OYHYJLEVYQBLSRIJLYEC"
+    AFFINE_PLAINTEXT = "CELEBRATESPRINGBREAK"
+    AFFINE_KEY_A = 5
+    AFFINE_KEY_B = 4
+    affine = masc.affinekey(ABC, a=AFFINE_KEY_A, b=AFFINE_KEY_B)
+    assert "".join(masc.masc_encrypt(AFFINE_PLAINTEXT, key=affine)) == AFFINE_CIPHERTEXT
+    assert "".join(masc.masc_decrypt(AFFINE_CIPHERTEXT, key=affine)) == AFFINE_PLAINTEXT
 
 
 def test_keywordkey() -> None:
