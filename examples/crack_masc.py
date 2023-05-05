@@ -31,7 +31,7 @@ YGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWB
 AWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQIL
 IEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF"""
 
-CT = AFFINE.replace(" ", "").replace(",", "").replace(".", "").replace("\n", "")
+CT = S9.replace(" ", "").replace(",", "").replace(".", "").replace("\n", "")
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -145,7 +145,7 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
 
     # Outer climb reruns hill climb ntrials number of times each time at a different start location
     def next_node_outer_climb(node: list[int]) -> tuple[list[int], float, Decryption]:
-        random.shuffle(node)
+        # random.shuffle(node)
         key, best_score, outputs = hill_climb(nswaps, node[:], next_node_inner_climb)
         print("*", end="")
         return (
@@ -208,9 +208,11 @@ def climb():
     print(f"ciphertext: {CT}")
     print(f"ciphertext score: {compare.trigramscore(CT)}")
 
-    out = crack(CT, scorer, ntrials=30, nswaps=3000)
+    out = crack(CT, scorer, ntrials=30, nswaps=5000)
     print()
-    print(out)
+
+    for e in sorted(out, key=lambda x: x.node_score):
+        print(f"{e.node_score:.5f}: {e.plaintext}")
 
 
 if __name__ == "__main__":
