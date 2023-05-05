@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from collections.abc import Callable, Sequence
-import copy
 import random
 from typing import NamedTuple, TypeVar
 
@@ -185,14 +184,15 @@ def hill_climb(
     best_score = -float("inf")
 
     for _step in range(nsteps):
-        next_node, score, output = get_next_node(copy.deepcopy(start_node))
+        # next_node, score, output = get_next_node(copy.deepcopy(start_node))
+        next_node, score, output = get_next_node(start_node)  # shallow good enough?
 
         # Keep track of best score and the start node becomes finish node
         if score > best_score:
-            start_node = copy.deepcopy(next_node)
+            # start_node = copy.deepcopy(next_node)
+            start_node = next_node  # shallow copy should be sufficcient
             best_score = score
             outputs.append(output)
-            # print(score)
 
     return start_node, best_score, outputs
 
