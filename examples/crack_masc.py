@@ -2,6 +2,7 @@
 
 from collections.abc import Callable, Sequence
 import random
+import copy
 from typing import NamedTuple, TypeVar
 
 from aldegonde.stats import compare, ngrams
@@ -15,6 +16,11 @@ AFFINE = """LREKMEPQOCPCBOYGYWPPEHFIWPFZYQGDZERGYPWFYWECYOJEQCMYEGFGYPWFCYMJ
 YFGFMFGWPQGDZERGPGFFZEYCIEDBCGPFEHFBEFFERQCPJEEPQRODFEXFWCPOWPEWLY
 ETERCBXGLLEREPFQGDZERFEHFBEFFERYXEDEPXGPSWPGFYDWYGFGWPGPFZEIEYYCSE"""
 
+S = """JTQTIRVRBOZNVLBOTGWYZSBAFVPYZRNJAPEPVFATNLROMROSBAGNJRBONEBWJRJNVUTQQNVYBOJAREWJROMJBJZTOTTLSBARJNQSATLZRJYZYBYX"""
+
+S2 = """Z XIAY NYBNXZQYP. Z XZFY WCY SCIIPCZQM PIVQN WCYO KBFY BP WCYO GXO RO.  NIVMXBP BNBKP"""
+
+S9 = """TQJYZRCKX JIGC VR CIXVCK RQ HQ I BQR QP RLVENX, OZR JQXR QP RLC RLVENX RLCU JIGC VR CIXVCK RQ HQ HQER ECCH RQ OC HQEC.  IEHU KQQECU"""
 
 VIG = """DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFX
 KFCRG GLPFE TZMMM ZOZDE ADWVZ WMWKV GQSOH QSVHP WFKLS LEASE
@@ -25,7 +31,7 @@ YGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWB
 AWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQIL
 IEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF"""
 
-CT = AFFINE.replace(" ", "").replace("\n", "")
+CT = AFFINE.replace(" ", "").replace(",", "").replace(".", "").replace("\n", "")
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -139,7 +145,7 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
 
     # Outer climb reruns hill climb ntrials number of times each time at a different start location
     def next_node_outer_climb(node: list[int]) -> tuple[list[int], float, Decryption]:
-        # random.shuffle(node)
+        random.shuffle(node)
         key, best_score, outputs = hill_climb(nswaps, node[:], next_node_inner_climb)
         print("*", end="")
         return (
@@ -184,8 +190,9 @@ def hill_climb(
     best_score = -float("inf")
 
     for _step in range(nsteps):
-        # next_node, score, output = get_next_node(copy.deepcopy(start_node))
-        next_node, score, output = get_next_node(start_node)  # shallow good enough?
+        next_node, score, output = get_next_node(
+            copy.deepcopy(start_node)
+        )  # this must be deepcopy
 
         # Keep track of best score and the start node becomes finish node
         if score > best_score:
@@ -201,7 +208,7 @@ def climb():
     print(f"ciphertext: {CT}")
     print(f"ciphertext score: {compare.trigramscore(CT)}")
 
-    out = crack(CT, scorer, ntrials=30, nswaps=2000)
+    out = crack(CT, scorer, ntrials=30, nswaps=3000)
     print()
     print(out)
 
