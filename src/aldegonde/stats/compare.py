@@ -1,6 +1,7 @@
 """Functions around comparing texts or distributions in texts."""
 
 from collections.abc import Callable, Sequence
+from collections import defaultdict
 import importlib.resources
 from math import log10
 from typing import TypeVar
@@ -125,11 +126,13 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     """
     length = len(next(iter(frequency_map)))
     # TODO: 0.01 is a magic number. Needs to be better than that.
-    floor = log10(0.01 / sum(frequency_map.values()))
-    ngrams: dict[str, float] = frequency_to_probability(frequency_map, decorator=log10)
+    floor: float = log10(0.01 / sum(frequency_map.values()))
+    ngrams: dict[str, float] = defaultdict(
+        lambda: floor, frequency_to_probability(frequency_map, decorator=log10)
+    )
 
     def inner(text: str) -> float:
-        return sum(ngrams.get(str(ngram), floor) for ngram in iterngrams(text, length))
+        return sum(ngrams[ngram] for ngram in iterngrams(text, length))
 
     return inner
 
