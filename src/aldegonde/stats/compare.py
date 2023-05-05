@@ -15,15 +15,15 @@ T = TypeVar("T")
 
 def loadgrams(module: str, filename: str) -> dict[str, int]:
     """load quadgrams from text file"""
-    quadgrams: dict[str, int] = {}
+    grams: dict[str, int] = {}
     with importlib.resources.open_text(module, filename) as f:
         lines = f.readlines()
         for line in lines:
             if line.startswith("#"):
                 continue
             items = line.split()
-            quadgrams[items[0]] = int(items[1])
-    return quadgrams
+            grams[items[0]] = int(items[1])
+    return grams
 
 
 def frequency_to_probability(
@@ -49,8 +49,10 @@ def frequency_to_probability(
     return {k: decorator(v / total) for k, v in frequency_map.items()}
 
 
-quadgrams = loadgrams("aldegonde.data.ngrams.english", "quadgrams.txt")
+unigrams = loadgrams("aldegonde.data.ngrams.english", "unigrams.txt")
+bigrams = loadgrams("aldegonde.data.ngrams.english", "bigrams.txt")
 trigrams = loadgrams("aldegonde.data.ngrams.english", "trigrams.txt")
+quadgrams = loadgrams("aldegonde.data.ngrams.english", "quadgrams.txt")
 
 
 # use scipy.stats.chisquare?
@@ -124,14 +126,10 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     length = len(next(iter(frequency_map)))
     # TODO: 0.01 is a magic number. Needs to be better than that.
     floor = log10(0.01 / sum(frequency_map.values()))
-    print(floor)
-    floor = -1000
-    newfloor = log10(min(frequency_map.values()) / 10000)
-    print(newfloor)
     ngrams: dict[str, float] = frequency_to_probability(frequency_map, decorator=log10)
 
     def inner(text: str) -> float:
-        return sum(ngrams.get(ngram, floor) for ngram in iterngrams(text, length))
+        return sum(ngrams.get(str(ngram), floor) for ngram in iterngrams(text, length))
 
     return inner
 

@@ -5,7 +5,7 @@ import copy
 import random
 from typing import NamedTuple, TypeVar
 
-from aldegonde.stats import compare
+from aldegonde.stats import compare, ngrams
 from aldegonde.algorithm import masc
 
 T = TypeVar("T")
@@ -39,25 +39,27 @@ def take_step(pos: list[int]) -> list[int]:
     return pos
 
 
-# def startermapping(ciphertext: Sequence[T]) -> list[int]:
-#    """find a good starting point based on unigram count"""
-#    key: dict = {}
-#    dist = ngrams.ngram_distribution(ciphertext, length=1)
-#    # dist needs to be padded in case not all letters exist
-#    for e in set(unigrams.unigrams.keys()) - set(dist.keys()):
-#        dist[e] = 0
-#
-#    sorted_unigrams = sorted(unigrams.unigrams.items(), key=lambda x: x[1])
-#    sorted_ngrams = sorted(dist.items(), key=lambda x: x[1])
-#    assert len(sorted_unigrams) == len(sorted_ngrams)
-#
-#    for i, e in enumerate(sorted_unigrams):
-#        key[e[0]] = sorted_ngrams[i][0]
-#
-#    return key
+def startermapping(ciphertext: Sequence[str]) -> dict[str, str]:
+    """find a good starting point based on unigram distribution"""
+    dist: dict[str, int] = ngrams.ngram_distribution(ciphertext, length=1)
+    # dist needs to be padded in case not all letters exist
+    for e in set(compare.unigrams.keys()) - set(dist.keys()):
+        dist[e] = 0
+
+    sorted_unigrams: list[tuple[str, int]] = sorted(
+        compare.unigrams.items(), key=lambda x: x[1]
+    )
+    sorted_ngrams: list[tuple[str, int]] = sorted(dist.items(), key=lambda x: x[1])
+    assert len(sorted_unigrams) == len(sorted_ngrams)
+
+    key: dict[str, str] = {}
+    for i, e in enumerate(sorted_unigrams):
+        key[e[0]] = sorted_ngrams[i][0]
+
+    return key
 
 
-def pos2mapping(pos: Sequence[int]) -> dict[T, T]:
+def pos2mapping(pos: Sequence[int], alphabet: Sequence[T]) -> dict[T, T]:
     """turn position list into mapping dictionary"""
     mapping: dict[T, T] = {}
     for i in range(len(alphabet)):
@@ -65,9 +67,9 @@ def pos2mapping(pos: Sequence[int]) -> dict[T, T]:
     return mapping
 
 
-def mapping2pos(mapping: dict[T, T]) -> list[int]:
+def mapping2pos(mapping: dict[T, T], alphabet: Sequence[T]) -> list[int]:
     """turn mapping dict into position list"""
-    pos = []
+    pos: list[int] = []
     for i in range(len(alphabet)):
         pos.append(alphabet.index(mapping[alphabet[i]]))
     return pos
@@ -75,8 +77,8 @@ def mapping2pos(mapping: dict[T, T]) -> list[int]:
 
 def scorer(pos: Sequence[int]) -> float:
     """scorer function"""
-    dec = masc.masc_decrypt(CT, pos2mapping(pos))
-    score = compare.trigramscore(dec)
+    dec = masc.masc_decrypt(CT, pos2mapping(pos, alphabet))
+    score = float(compare.quadgramscore(dec))
     return score
 
 
@@ -84,7 +86,7 @@ def scorer(pos: Sequence[int]) -> float:
 
 
 class Decryption(NamedTuple):
-    plaintext: Sequence[T]
+    plaintext: str
     node: Sequence[int]
     node_score: float
 
@@ -123,25 +125,22 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
         raise ValueError("ntrials and nswaps must be positive integers")
 
     # starter node can be based on english frequencies E, T, A, O, I, N, S, R, H, and L.
-    # starter_node = mapping2pos(startermapping(ciphertext))
-    starter_node = list(range(0, 26))
+    starter_node = mapping2pos(startermapping(ciphertext), alphabet)
+    # starter_node = list(range(0, 26))
 
     # Find a local maximum by swapping two letters and scoring the decryption
     def next_node_inner_climb(node: list[int]) -> tuple[list[int], float, Decryption]:
         # Swap 2 characters in the key
         a, b = random.sample(range(len(node)), 2)
         node[a], node[b] = node[b], node[a]
-        plaintext = "".join(masc.masc_decrypt(CT, pos2mapping(node)))
+        plaintext = "".join(masc.masc_decrypt(CT, pos2mapping(node, alphabet)))
         node_score = compare.quadgramscore(plaintext)
-        # print(f"inner: {node_score}: ")
-        # print(node, end=" ")
-        # print(plaintext)
         # node_score = score(plaintext, *fitness_functions)
         return node, node_score, Decryption(plaintext, node, node_score)
 
     # Outer climb reruns hill climb ntrials number of times each time at a different start location
     def next_node_outer_climb(node: list[int]) -> tuple[list[int], float, Decryption]:
-        random.shuffle(node)
+        # random.shuffle(node)
         key, best_score, outputs = hill_climb(nswaps, node[:], next_node_inner_climb)
         print("*", end="")
         return (
@@ -202,12 +201,9 @@ def climb():
     print(f"ciphertext: {CT}")
     print(f"ciphertext score: {compare.trigramscore(CT)}")
 
-    out = crack(CT, scorer, ntrials=20, nswaps=2000)
+    out = crack(CT, scorer, ntrials=30, nswaps=2000)
+    print()
     print(out)
-
-
-# take_step = shuffle 2 vars
-# func = optimize function
 
 
 if __name__ == "__main__":
