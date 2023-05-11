@@ -82,8 +82,6 @@ def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
 def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     assert len(pair) == 2
 
-    print(f"debug pair:{pair} -> ", end="")
-
     # Get the row and column of each letter in the pair
     row1, col1 = playfair_get_position(pair[0], matrix)
     row2, col2 = playfair_get_position(pair[1], matrix)
@@ -103,14 +101,11 @@ def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     # Get the ciphertext pair
     ciphertext = matrix[row1][col1] + matrix[row2][col2]
 
-    print(f"debug pair:{ciphertext}")
     return ciphertext
 
 
 def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     assert len(pair) == 2
-
-    print(f"debug pair:{pair} -> ", end="")
 
     # Get the row and column of each letter in the pair
     row1, col1 = playfair_get_position(pair[0], matrix)
@@ -131,16 +126,15 @@ def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     # Get the plaintext pair
     plaintext = matrix[row1][col1] + matrix[row2][col2]
 
-    print(f"debug pair:{plaintext}")
     return plaintext
 
 
 def playfair_encrypt(plaintext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
     """playfair encrypt"""
     if len(plaintext) % 2 == 1:
-        print("adding padding")
         plaintext += "Z"
-    square = playfair_square(keyword, alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ")
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    square = playfair_square(keyword, alphabet=alphabet)
 
     def encryptfn(pair):
         return playfair_encrypt_pair(pair=pair, matrix=square)
@@ -150,7 +144,8 @@ def playfair_encrypt(plaintext: Sequence[T], keyword: Sequence[T]) -> tuple[T, .
 
 def playfair_decrypt(ciphertext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
     """playfair decrypt"""
-    square = playfair_square(keyword, alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ")
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    square = playfair_square(keyword, alphabet=alphabet)
 
     def decryptfn(pair):
         return playfair_decrypt_pair(pair=pair, matrix=square)
