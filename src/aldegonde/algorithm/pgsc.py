@@ -21,58 +21,34 @@ function = Callable[[Sequence[T]], Sequence[T]]
 
 
 def pgsc_encrypt(
-    plaintext: Sequence[T], length: int, encryptfn: function, padding: Sequence[T]
+    plaintext: Sequence[T], length: int, encryptfn: function
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
     ciphertext: list[T] = []
-    # TODO: padding
     for i in range(0, len(plaintext), length):
         ciphertext.extend(encryptfn(plaintext[i : i + length]))
     return tuple(ciphertext)
 
 
 def pgsc_decrypt(
-    ciphertext: Sequence[T], length: int, decryptfn: function, padding: Sequence[T]
+    ciphertext: Sequence[T], length: int, decryptfn: function
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
-    return tuple(ciphertext)
     plaintext: list[T] = []
-    for i in range(0, len(plaintext), length):
-        plaintext.extend(decryptfn(plaintext[i : i + length]))
+    for i in range(0, len(ciphertext), length):
+        plaintext.extend(decryptfn(ciphertext[i : i + length]))
     return tuple(plaintext)
 
 
-def playfair_get_position(letter: str, matrix: list[list[str]]) -> tuple[int, int]:
-    # Find the row and column of the letter in the matrix
+def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
+    """
+    Find the row and column of the letter in the matrix
+    """
     for i in range(5):
         for j in range(5):
             if matrix[i][j] == letter:
                 return (i, j)
-
-
-def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
-    # Get the row and column of each letter in the pair
-    row1, col1 = playfair_get_position(pair[0], matrix)
-    row2, col2 = playfair_get_position(pair[1], matrix)
-
-    # If the letters are in the same row, shift them to the left
-    if row1 == row2:
-        col1 = (col1 - 1) % 5
-        col2 = (col2 - 1) % 5
-    # If the letters are in the same column, shift them up
-    elif col1 == col2:
-        row1 = (row1 - 1) % 5
-        row2 = (row2 - 1) % 5
-    # If the letters are not in the same row or column, form a rectangle and swap the letters
-    else:
-        temp = col1
-        col1 = col2
-        col2 = temp
-
-    # Get the plaintext pair
-    plaintext = matrix[row1][col1] + matrix[row2][col2]
-
-    return plaintext
+    raise Exception
 
 
 def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
@@ -104,6 +80,10 @@ def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
 
 
 def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:
+    assert len(pair) == 2
+
+    print(f"debug pair:{pair} -> ", end="")
+
     # Get the row and column of each letter in the pair
     row1, col1 = playfair_get_position(pair[0], matrix)
     row2, col2 = playfair_get_position(pair[1], matrix)
@@ -118,25 +98,61 @@ def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:
         row2 = (row2 + 1) % 5
     # If the letters are not in the same row or column, form a rectangle and swap the letters
     else:
-        temp = col1
-        col1 = col2
-        col2 = temp
+        col1, col2 = col2, col1
 
     # Get the ciphertext pair
     ciphertext = matrix[row1][col1] + matrix[row2][col2]
 
+    print(f"debug pair:{ciphertext}")
     return ciphertext
+
+
+def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
+    assert len(pair) == 2
+
+    print(f"debug pair:{pair} -> ", end="")
+
+    # Get the row and column of each letter in the pair
+    row1, col1 = playfair_get_position(pair[0], matrix)
+    row2, col2 = playfair_get_position(pair[1], matrix)
+
+    # If the letters are in the same row, shift them to the left
+    if row1 == row2:
+        col1 = (col1 - 1) % 5
+        col2 = (col2 - 1) % 5
+    # If the letters are in the same column, shift them up
+    elif col1 == col2:
+        row1 = (row1 - 1) % 5
+        row2 = (row2 - 1) % 5
+    # If the letters are not in the same row or column, form a rectangle and swap the letters
+    else:
+        col1, col2 = col2, col1
+
+    # Get the plaintext pair
+    plaintext = matrix[row1][col1] + matrix[row2][col2]
+
+    print(f"debug pair:{plaintext}")
+    return plaintext
 
 
 def playfair_encrypt(plaintext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
     """playfair encrypt"""
-    square = playfair_square(keyword)
-    encryptfn = playfair_encrypt_pair(square)
+    if len(plaintext) % 2 == 1:
+        print("adding padding")
+        plaintext += "Z"
+    square = playfair_square(keyword, alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ")
+
+    def encryptfn(pair):
+        return playfair_encrypt_pair(pair=pair, matrix=square)
+
     return pgsc_encrypt(plaintext, length=2, encryptfn=encryptfn)
 
 
 def playfair_decrypt(ciphertext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
     """playfair decrypt"""
-    square = playfair_square(keyword)
-    decryptfn = playfair_decrypt_pair(square)
+    square = playfair_square(keyword, alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ")
+
+    def decryptfn(pair):
+        return playfair_decrypt_pair(pair=pair, matrix=square)
+
     return pgsc_decrypt(ciphertext, length=2, decryptfn=decryptfn)
