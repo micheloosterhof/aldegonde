@@ -1,5 +1,6 @@
 __pycache__
 build
+dist
 .direnv
 .ipynb_checkpoints
 .tox

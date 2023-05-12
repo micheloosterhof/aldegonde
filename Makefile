@@ -1,9 +1,10 @@
 .PHONY: all
-all: start
+all: build
 
-.PHONY: start
-start: ## Start Jupyter Notebook
-	jupyter notebook  --browser='open %s'
+.PHONY: build
+build: ## Build package
+	python -m build        
+	twine check dist/*
 
 .PHONY: direnv
 direnv:
