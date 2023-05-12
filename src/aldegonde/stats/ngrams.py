@@ -24,13 +24,13 @@ def iterngrams(
     Specify `cut=1` to return non-overlapping blocks of runes: ABC, DEF, ...
     Specify `cut=2` to return non-overlapping blocks of runes: BCD, EFG, ...
     """
-    assert length > 0
-    assert 0 <= cut <= length
+    # assert length > 0
+    # assert 0 <= cut <= length
     N = len(runes)  # size of sequence
     if cut == 0:  # pylint: disable=C2001
         for i in range(0, N - length + 1):
             yield runes[i : i + length]
-    elif cut in range(1, length + 1):
+    elif cut <= length and cut > 0:
         for i in range(cut - 1, N - length + 1, length):
             yield runes[i : i + length]
 
