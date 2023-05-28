@@ -3,6 +3,8 @@
 import random
 from collections.abc import Iterator
 
+from aldegonde.maths.primes import primes
+
 CICADA_ALPHABET = [
     "ᚠ",
     "ᚢ",
@@ -66,6 +68,56 @@ CICADA_ENGLISH_ALPHABET = [
     "IA",
     "EA",
 ]
+
+
+def r2i(rune: str) -> int:
+    """
+    rune to index
+    """
+    for i, e in enumerate(CICADA_ALPHABET):
+        if rune == e:
+            return i
+    raise Exception
+
+
+def i2r(rune: int) -> str:
+    """
+    index to rune
+    """
+    return CICADA_ALPHABET[rune]
+
+
+def r2v(rune: str) -> int:
+    """
+    rune to (prime) value
+    """
+    primelist = primes(110)
+    for i, e in enumerate(CICADA_ALPHABET):
+        if rune == e:
+            return primelist[i]
+    raise Exception
+
+
+def v2r(value: int) -> str:
+    """
+    (prime) value to rune
+    """
+    primelist = primes(110)
+    for i, e in enumerate(primelist):
+        if value == e:
+            return CICADA_ALPHABET[i]
+    raise Exception
+
+
+def v2i(value: int) -> int:
+    """
+    (prime) value to index
+    """
+    primelist = primes(110)
+    for i, e in enumerate(primelist):
+        if value == e:
+            return i
+    raise Exception
 
 
 def randomrunes(length: int, maximum: int = 29) -> list[int]:
