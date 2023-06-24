@@ -3,11 +3,10 @@ build==0.10.0
 build==0.10.0
 coverage==7.2.7
 mypy-extensions==1.0.0
-mypy==1.3.0
+mypy==1.4.0
 pipdeptree==2.9.3
 pur==7.1.0
-pytest==7.3.2
-ruff==0.0.272
-tox==4.6.2
-twine==4.0.2
+pytest==7.4.0
+ruff==0.0.275
+tox==4.6.3
 twine==4.0.2
