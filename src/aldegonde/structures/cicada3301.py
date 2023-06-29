@@ -2,8 +2,10 @@
 
 import random
 from collections.abc import Iterator
+from collections import defaultdict
 
 from aldegonde.maths.primes import primes
+from aldegonde.algorithm import pasc
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -225,3 +227,21 @@ def print_rune(runes: list[int], limit: int = 0) -> None:
     for i in range(0, limit):
         print(f"{CICADA_ALPHABET[runes[i]]:2} ", end="")
     print()
+
+
+def valueTR(t: str = "vigenere") -> pasc.TR:
+    """
+    funny TR that works by prime values
+    """
+    TR: pasc.TR = defaultdict(dict)
+    for key in CICADA_ALPHABET:
+        for plaintext in CICADA_ALPHABET:
+            if t == "vigenere":
+                TR[key][plaintext] = i2r((r2i(plaintext) + r2v(key)) % 29)
+            elif t == "beaufort":
+                TR[key][plaintext] = i2r((r2i(key) - r2v(plaintext)) % 29)
+            elif t == "variantbeaufort":
+                TR[key][plaintext] = i2r((r2i(plaintext) - r2v(key)) % 29)
+            else:
+                raise Exception
+    return TR
