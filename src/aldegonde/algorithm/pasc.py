@@ -45,6 +45,8 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     for keyword in tr:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
+        if len(output[keyword])!=len(tr[keyword]):
+            raise ValueError(f"TR ambiguous for key `{keyword}`")
     return output
 
 
