@@ -239,7 +239,7 @@ def valueTR(t: str = "vigenere") -> pasc.TR:
             if t == "vigenere":
                 TR[key][plaintext] = i2r((r2i(plaintext) + r2v(key)) % 29)
             elif t == "beaufort":
-                TR[key][plaintext] = i2r((r2i(key) - r2v(plaintext)) % 29)
+                TR[key][plaintext] = i2r((r2v(key) - r2i(plaintext)) % 29)
             elif t == "variantbeaufort":
                 TR[key][plaintext] = i2r((r2i(plaintext) - r2v(key)) % 29)
             else:
