@@ -5,9 +5,9 @@ All are monoalphabetic
 """
 
 
-from collections.abc import Sequence
+from collections.abc import Generator, Sequence
 import random
-from typing import Generator, TypeVar
+from typing import TypeVar
 
 T = TypeVar("T")
 

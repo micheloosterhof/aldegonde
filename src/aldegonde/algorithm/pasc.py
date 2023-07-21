@@ -6,10 +6,10 @@ Quagmire 1, 2, 3 and 4. And the generic polyalphabetic subsitution cipher.
 All are polyalphabetic substitution ciphers with a fixed key length
 """
 
-from collections.abc import Sequence
+from collections.abc import Generator, Sequence
 from collections import defaultdict
 import random
-from typing import Any, Generator, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar
 
 
 class Comparable(Protocol):
@@ -58,9 +58,8 @@ def pasc_decrypt(
     NOTE: tr input is the same as for encryption, this function will reverse the key.
     """
     reversed_tr: TR[T] = reverse_tr(tr)
-    return tuple(
-        reversed_tr[keyword[i % len(keyword)]][e] for i, e in enumerate(ciphertext)
-    )
+    for i, e in enumerate(ciphertext):
+        yield reversed_tr[keyword[i % len(keyword)]][e]
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:
