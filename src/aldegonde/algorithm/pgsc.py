@@ -69,6 +69,7 @@ def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
         if i not in elements:
             elements.append(i)
 
+    print(elements)
     assert len(elements) == 25
 
     square: list[list[T]] = []

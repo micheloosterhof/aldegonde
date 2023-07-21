@@ -9,7 +9,7 @@ All are polyalphabetic substitution ciphers with a fixed key length
 from collections.abc import Sequence
 from collections import defaultdict
 import random
-from typing import Any, Protocol, TypeVar
+from typing import Any, Generator, Protocol, TypeVar
 
 
 class Comparable(Protocol):
@@ -31,9 +31,10 @@ TR = dict[T, dict[T, T]]
 
 def pasc_encrypt(
     plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]
-) -> tuple[T, ...]:
+) -> Generator[T, None, None]:
     """Polyalphabetic substitution."""
-    return tuple(tr[keyword[i % len(keyword)]][e] for i, e in enumerate(plaintext))
+    for i, e in enumerate(plaintext):
+        yield tr[keyword[i % len(keyword)]][e]
 
 
 # This is a good candidate for functool caching
@@ -45,14 +46,14 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     for keyword in tr:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
-        if len(output[keyword])!=len(tr[keyword]):
+        if len(output[keyword]) != len(tr[keyword]):
             raise ValueError(f"TR ambiguous for key `{keyword}`")
     return output
 
 
 def pasc_decrypt(
     ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]
-) -> tuple[T, ...]:
+) -> Generator[T, None, None]:
     """Polyalphabetic substitution
     NOTE: tr input is the same as for encryption, this function will reverse the key.
     """

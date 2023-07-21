@@ -7,14 +7,15 @@ All are monoalphabetic
 
 from collections.abc import Sequence
 import random
-from typing import TypeVar
+from typing import Generator, TypeVar
 
 T = TypeVar("T")
 
 
-def masc_encrypt(plaintext: Sequence[T], key: dict[T, T]) -> tuple[T, ...]:
+def masc_encrypt(plaintext: Sequence[T], key: dict[T, T]) -> Generator[T, None, None]:
     """Encrypt with monalphabetic substitution."""
-    return tuple(key[e] for e in plaintext)
+    for e in plaintext:
+        yield key[e]
 
 
 def reverse_key(key: dict[T, T]) -> dict[T, T]:
@@ -28,13 +29,14 @@ def reverse_key(key: dict[T, T]) -> dict[T, T]:
     return output
 
 
-def masc_decrypt(ciphertext: Sequence[T], key: dict[T, T]) -> tuple[T, ...]:
+def masc_decrypt(ciphertext: Sequence[T], key: dict[T, T]) -> Generator[T, None, None]:
     """Decrypt monoalphabetic substitution.
 
     NOTE: key input is the same as for encryption, this function will reverse the key.
     """
     reversed_key: dict[T, T] = reverse_key(key)
-    return tuple(reversed_key[e] for e in ciphertext)
+    for e in ciphertext:
+        yield reversed_key[e]
 
 
 def randomkey(alphabet: Sequence[T]) -> dict[T, T]:
