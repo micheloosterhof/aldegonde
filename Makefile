@@ -21,8 +21,8 @@ upgrade: ## Upgrade Python requirements to latest version
 	python -m pip pip install --upgrade -r ./requirements.txt
 
 .PHONY: clean
-clean: ## Clean Jupyter Notebooks of output data
-	find notebooks -name '*.ipynb' | xargs -P 6 -n 1 jupyter nbconvert --clear-output --inplace
+clean: ## Clean generated data
+	find . -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
 
 .PHONY: lint
 lint: ## Various Linters
