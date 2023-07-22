@@ -5,7 +5,7 @@ Examples are Playfair, Two-Square, Four-Square and Hill Cipher
 """
 
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, TypeVar, Tuple
+from typing import Any, Protocol, TypeVar
 
 
 class Comparable(Protocol):
