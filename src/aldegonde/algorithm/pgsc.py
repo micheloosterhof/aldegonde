@@ -5,7 +5,7 @@ Examples are Playfair, Two-Square, Four-Square and Hill Cipher
 """
 
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar, Tuple
 
 
 class Comparable(Protocol):
@@ -130,7 +130,7 @@ def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     return plaintext
 
 
-def playfair_encrypt(plaintext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
+def playfair_encrypt(plaintext: str, keyword: str) -> str:
     """playfair encrypt"""
     if len(plaintext) % 2 == 1:
         plaintext += "Z"
@@ -140,10 +140,10 @@ def playfair_encrypt(plaintext: Sequence[T], keyword: Sequence[T]) -> tuple[T, .
     def encryptfn(pair):
         return playfair_encrypt_pair(pair=pair, matrix=square)
 
-    return pgsc_encrypt(plaintext, length=2, encryptfn=encryptfn)
+    return "".join(pgsc_encrypt(plaintext, length=2, encryptfn=encryptfn))
 
 
-def playfair_decrypt(ciphertext: Sequence[T], keyword: Sequence[T]) -> tuple[T, ...]:
+def playfair_decrypt(ciphertext: str, keyword: str) -> str:
     """playfair decrypt"""
     alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
     square = playfair_square(keyword, alphabet=alphabet)
@@ -151,4 +151,4 @@ def playfair_decrypt(ciphertext: Sequence[T], keyword: Sequence[T]) -> tuple[T, 
     def decryptfn(pair):
         return playfair_decrypt_pair(pair=pair, matrix=square)
 
-    return pgsc_decrypt(ciphertext, length=2, decryptfn=decryptfn)
+    return "".join(pgsc_decrypt(ciphertext, length=2, decryptfn=decryptfn))
