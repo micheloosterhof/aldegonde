@@ -6,7 +6,7 @@ Quagmire 1, 2, 3 and 4. And the generic polyalphabetic subsitution cipher.
 All are polyalphabetic substitution ciphers with a fixed key length
 """
 
-from collections.abc import Sequence
+from collections.abc import Generator, Iterable, Sequence
 from collections import defaultdict
 import random
 from typing import Any, Protocol, TypeVar
@@ -30,10 +30,11 @@ TR = dict[T, dict[T, T]]
 
 
 def pasc_encrypt(
-    plaintext: Sequence[T], keyword: Sequence[T], tr: TR[T]
-) -> tuple[T, ...]:
+    plaintext: Iterable[T], keyword: Sequence[T], tr: TR[T]
+) -> Generator[T, None, None]:
     """Polyalphabetic substitution."""
-    return tuple(tr[keyword[i % len(keyword)]][e] for i, e in enumerate(plaintext))
+    for i, e in enumerate(plaintext):
+        yield tr[keyword[i % len(keyword)]][e]
 
 
 # This is a good candidate for functool caching
@@ -45,19 +46,20 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     for keyword in tr:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
+        if len(output[keyword]) != len(tr[keyword]):
+            raise ValueError(f"TR ambiguous for key `{keyword}`")
     return output
 
 
 def pasc_decrypt(
-    ciphertext: Sequence[T], keyword: Sequence[T], tr: TR[T]
-) -> tuple[T, ...]:
+    ciphertext: Iterable[T], keyword: Sequence[T], tr: TR[T]
+) -> Generator[T, None, None]:
     """Polyalphabetic substitution
     NOTE: tr input is the same as for encryption, this function will reverse the key.
     """
     reversed_tr: TR[T] = reverse_tr(tr)
-    return tuple(
-        reversed_tr[keyword[i % len(keyword)]][e] for i, e in enumerate(ciphertext)
-    )
+    for i, e in enumerate(ciphertext):
+        yield reversed_tr[keyword[i % len(keyword)]][e]
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:

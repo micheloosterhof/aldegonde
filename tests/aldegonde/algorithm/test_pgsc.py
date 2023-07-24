@@ -12,9 +12,9 @@ CIPHER = "GATLMZCLRQTX"
 
 def test_playfair_encrypt() -> None:
     """ """
-    assert pgsc.playfair_encrypt(plaintext=PLAIN, keyword=KEY) == tuple(CIPHER)
+    assert pgsc.playfair_encrypt(plaintext=PLAIN, keyword=KEY) == CIPHER
 
 
 def test_playfair_decrypt() -> None:
     """ """
-    assert pgsc.playfair_decrypt(ciphertext=CIPHER, keyword=KEY) == tuple(PLAIN + "Z")
+    assert pgsc.playfair_decrypt(ciphertext=CIPHER, keyword=KEY) == PLAIN + "Z"

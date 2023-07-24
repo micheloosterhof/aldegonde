@@ -11,4 +11,4 @@ def hamming_distance(s1: Sequence[T], s2: Sequence[T]) -> int:
     """
     if len(s1) != len(s2):
         raise ValueError("Undefined for sequences of unequal length.")
-    return sum(el1 != el2 for el1, el2 in zip(s1, s2, strict=False))
+    return sum(el1 != el2 for el1, el2 in zip(s1, s2))
