@@ -8,6 +8,7 @@ All are polyalphabetic substitution ciphers with a fixed key length
 
 from collections.abc import Generator, Iterable, Sequence
 from collections import defaultdict
+from itertools import cycle
 import random
 from typing import Any, Protocol, TypeVar
 
@@ -33,8 +34,8 @@ def pasc_encrypt(
     plaintext: Iterable[T], keyword: Sequence[T], tr: TR[T]
 ) -> Generator[T, None, None]:
     """Polyalphabetic substitution."""
-    for i, e in enumerate(plaintext):
-        yield tr[keyword[i % len(keyword)]][e]
+    for e, k in zip(plaintext, cycle(keyword)):
+        yield tr[k][e]
 
 
 # This is a good candidate for functool caching
@@ -58,8 +59,8 @@ def pasc_decrypt(
     NOTE: tr input is the same as for encryption, this function will reverse the key.
     """
     reversed_tr: TR[T] = reverse_tr(tr)
-    for i, e in enumerate(ciphertext):
-        yield reversed_tr[keyword[i % len(keyword)]][e]
+    for e, k in zip(ciphertext, cycle(keyword)):
+        yield reversed_tr[k][e]
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:
