@@ -47,10 +47,10 @@ def test_ciphertext_autokey_vigenere_typewriter() -> None:
     primer = "TYPEWRITER"
     tr = pasc.vigenere_tr(ABC)
     plaintext = "NOTIFYQUARTERMASTER"
-    ciphertext = "GMIMBPYNEIGSKUFQJYR"
-    assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
+    ciphertext = "GMIMBPYNEIZQZYBHRRV"
+    assert list(auto.ciphertext_autokey_encrypt(plaintext, primer, tr)) == list(
         ciphertext
     )
-    assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
+    assert list(auto.ciphertext_autokey_decrypt(ciphertext, primer, tr)) == list(
         plaintext
     )
