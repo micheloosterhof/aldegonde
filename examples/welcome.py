@@ -31,7 +31,7 @@ def beaufort_decrypt_interrupted(
     """
     output: list[int] = []
     keypos = 0
-    azlen = len(ciphertext.alphabet)
+    azlen = 29
     keylen = len(primer)
     for pos in range(0, len(ciphertext)):
         if pos in interruptors:
