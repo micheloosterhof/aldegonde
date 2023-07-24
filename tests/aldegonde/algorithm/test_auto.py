@@ -9,8 +9,12 @@ def test_plaintext_autokey_vigenere_x() -> None:
     primer = "X"
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "KBHBNDOKURKXVDMSLXV"
-    assert auto.plaintext_autokey_encrypt(plaintext, primer, tr) == list(ciphertext)
-    assert auto.plaintext_autokey_decrypt(ciphertext, primer, tr) == list(plaintext)
+    assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
+        ciphertext
+    )
+    assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
+        plaintext
+    )
 
 
 def test_plaintext_autokey_vigenere_typewriter() -> None:
@@ -18,8 +22,12 @@ def test_plaintext_autokey_vigenere_typewriter() -> None:
     tr = pasc.vigenere_tr(ABC)
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "GMIMBPYNEIGSKUFQJYR"
-    assert auto.plaintext_autokey_encrypt(plaintext, primer, tr) == list(ciphertext)
-    assert auto.plaintext_autokey_decrypt(ciphertext, primer, tr) == list(plaintext)
+    assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
+        ciphertext
+    )
+    assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
+        plaintext
+    )
 
 
 def test_ciphertext_autokey_vigenere_x() -> None:
@@ -27,8 +35,12 @@ def test_ciphertext_autokey_vigenere_x() -> None:
     tr = pasc.vigenere_tr(ABC)
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "KYRZECSMMDWARDDVOSJ"
-    assert auto.ciphertext_autokey_encrypt(plaintext, primer, tr) == list(ciphertext)
-    assert auto.ciphertext_autokey_decrypt(ciphertext, primer, tr) == list(plaintext)
+    assert list(auto.ciphertext_autokey_encrypt(plaintext, primer, tr)) == list(
+        ciphertext
+    )
+    assert list(auto.ciphertext_autokey_decrypt(ciphertext, primer, tr)) == list(
+        plaintext
+    )
 
 
 def test_ciphertext_autokey_vigenere_typewriter() -> None:
@@ -36,5 +48,9 @@ def test_ciphertext_autokey_vigenere_typewriter() -> None:
     tr = pasc.vigenere_tr(ABC)
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "GMIMBPYNEIGSKUFQJYR"
-    assert auto.plaintext_autokey_encrypt(plaintext, primer, tr) == list(ciphertext)
-    assert auto.plaintext_autokey_decrypt(ciphertext, primer, tr) == list(plaintext)
+    assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
+        ciphertext
+    )
+    assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
+        plaintext
+    )
