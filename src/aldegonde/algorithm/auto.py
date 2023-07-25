@@ -37,7 +37,7 @@ def plaintext_autokey_encrypt(
 
 def plaintext_autokey_decrypt(
     ciphertext: Iterable[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
-) -> Sequence:
+) -> Generator[T, None, None]:
     """Plaintext Autokey Decryption primitive P[i] = DF(C[i], P[i-1])."""
     rtr = reverse_tr(tr)
     key: deque = deque(primer)
