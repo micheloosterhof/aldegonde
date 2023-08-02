@@ -43,7 +43,7 @@ def print_bigram_diagram(
     count = Counter(runes)
     ioc: float = 0.0
 
-    bigram = bigram_diagram(runes, skip=skip, cut=0)
+    bigram = bigram_diagram(runes, skip=skip, cut=cut)
 
     print("   | ", end="")
     for i in range(0, MAX):
