@@ -39,6 +39,14 @@ def masc_decrypt(ciphertext: Iterable[T], key: dict[T, T]) -> Generator[T, None,
         yield reversed_key[e]
 
 
+def atbashkey(alphabet: Sequence[T]) -> dict[T, T]:
+    """Generate a key that reverses everything in the alphabet"""
+    key: dict[T, T] = {}
+    for k, r in zip(alphabet, reversed(alphabet)):
+        key[k] = r
+    return key
+
+
 def randomkey(alphabet: Sequence[T]) -> dict[T, T]:
     """Generate a random key for use in the previous functions."""
     key: dict[T, T] = {}
