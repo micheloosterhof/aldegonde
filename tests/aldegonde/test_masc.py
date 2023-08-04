@@ -1,4 +1,4 @@
-from aldegonde.algorithm import masc
+from aldegonde import masc
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ALICE = (

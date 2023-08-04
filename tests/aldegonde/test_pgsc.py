@@ -1,4 +1,4 @@
-from aldegonde.algorithm import pgsc
+from aldegonde import pgsc
 
 """
 Key text: Monarchy

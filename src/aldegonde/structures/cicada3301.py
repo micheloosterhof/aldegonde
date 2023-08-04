@@ -5,7 +5,7 @@ from collections.abc import Iterator
 from collections import defaultdict
 
 from aldegonde.maths.primes import primes
-from aldegonde.algorithm import pasc
+from aldegonde import pasc
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -139,7 +139,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
         if rune == prev and random.randrange(0, 6) > 0:
             rune = random.randrange(0, maximum)
         prev = rune
-        output.append(rune)
+        output.append(CICADA_ALPHABET[rune])
     return output
 
 

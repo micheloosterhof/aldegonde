@@ -4,7 +4,7 @@ from collections.abc import Generator, Iterable, Sequence
 from collections import deque
 from itertools import chain
 
-from aldegonde.algorithm.pasc import reverse_tr, T, TR
+from aldegonde.pasc import reverse_tr, T, TR
 
 
 def ciphertext_autokey_encrypt(

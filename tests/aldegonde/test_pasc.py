@@ -1,4 +1,4 @@
-from aldegonde.algorithm import masc, pasc
+from aldegonde import masc, pasc
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
