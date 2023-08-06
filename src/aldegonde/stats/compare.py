@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from collections import defaultdict
 import importlib.resources
 from math import log10
-from typing import TypeVar
+from typing import Callable, TypeVar
 
 from scipy.stats import power_divergence, chisquare
 
@@ -28,7 +28,7 @@ def loadgrams(module: str, filename: str) -> dict[str, int]:
 
 
 def frequency_to_probability(
-    frequency_map: dict[str, int], decorator=lambda f: f
+    frequency_map: dict[str, int], decorator: Callable=lambda f: f
 ) -> dict[str, float]:
     """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
