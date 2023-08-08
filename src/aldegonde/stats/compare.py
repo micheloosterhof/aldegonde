@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from collections import defaultdict
 import importlib.resources
 from math import log10
-from typing import Callable, TypeVar
+from typing import TypeVar
 
 from scipy.stats import power_divergence, chisquare
 
