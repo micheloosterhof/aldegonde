@@ -113,17 +113,17 @@ def quagmire1_tr(alphabet: Sequence[T]) -> TR[T]:
 
 def doublekeywordtr(
     alphabet: Sequence[T], keyword1: Sequence[T], keyword2: Sequence[T]
-) -> dict[T, T]:
+) -> TR[T]:
     """
     i think this is actually quagmire 1
     """
     al1 = masc.mixedalphabet(alphabet, keyword1)
     al2 = masc.mixedalphabet(alphabet, keyword2)
-    output: dict[T, T] = {}
+    tr: TR[T] = defaultdict(dict)
     for i, e in enumerate(al1):
         for j, f in enumerate(al2):
-            output[e][f] = alphabet[(i + j) % len(alphabet)]
-    return output
+            tr[e][f] = alphabet[(i + j) % len(alphabet)]
+    return tr
 
 
 def quagmire2_tr(alphabet: Sequence[T]) -> TR[T]:
