@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# IDEAS: simmulated annealing
+# IDEAS: steepest ascent (is practical? 28x27=756 evaluations)
+
 from collections.abc import Callable, Sequence
 import random
 import copy
@@ -138,7 +141,9 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
         # Swap 2 characters in the key
         a, b = random.sample(range(len(node)), 2)
         node[a], node[b] = node[b], node[a]
+        # Decrypt
         plaintext = "".join(masc.masc_decrypt(CT, pos2mapping(node, alphabet)))
+        # Score
         node_score = compare.quadgramscore(plaintext)
         # node_score = score(plaintext, *fitness_functions)
         return node, node_score, Decryption(plaintext, node, node_score)
