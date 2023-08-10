@@ -83,7 +83,7 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
     return key
 
 
-def keywordkey(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
+def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
     """Return a custom alphabet based on a keyword.
 
     example: keyword:  PAULBRANDT

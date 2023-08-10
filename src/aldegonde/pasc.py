@@ -12,6 +12,8 @@ from itertools import cycle
 import random
 from typing import Any, Protocol, TypeVar
 
+from aldegonde import masc
+
 
 class Comparable(Protocol):
     def __lt__(self, __other: Any) -> bool:
@@ -107,6 +109,21 @@ def quagmire1_tr(alphabet: Sequence[T]) -> TR[T]:
         for j, e in enumerate(sorted(alphabet)):
             tr[key][e] = alphabet[(i + j) % len(alphabet)]
     return tr
+
+
+def doublekeywordtr(
+    alphabet: Sequence[T], keyword1: Sequence[T], keyword2: Sequence[T]
+) -> dict[T, T]:
+    """
+    i think this is actually quagmire 1
+    """
+    al1 = masc.mixedalphabet(alphabet, keyword1)
+    al2 = masc.mixedalphabet(alphabet, keyword2)
+    output: dict[T, T] = {}
+    for i, e in enumerate(al1):
+        for j, f in enumerate(al2):
+            output[e][f] = alphabet[(i + j) % len(alphabet)]
+    return output
 
 
 def quagmire2_tr(alphabet: Sequence[T]) -> TR[T]:
