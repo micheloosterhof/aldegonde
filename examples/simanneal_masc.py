@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-# IDEAS: simmulated annealing
 # IDEAS: steepest ascent (is practical? 28x27=756 evaluations)
 
 from collections.abc import Sequence
 import random
+import threading
 from typing import TypeVar
 
 from simanneal import Annealer
@@ -91,9 +91,9 @@ class crack_with_simanneal(Annealer):
 
 def solve_anneal(ciphertext: str) -> None:
     initial_state = mapping2pos(startermapping(ciphertext), alphabet)
+
     tsp = crack_with_simanneal(initial_state)
     tsp.copy_strategy = "slice"
-
     auto_schedule = tsp.auto(minutes=0.1)
     # {'tmin': ..., 'tmax': ..., 'steps': ...}
     print(auto_schedule)
