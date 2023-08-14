@@ -3,6 +3,7 @@
 # solve simple vigenere
 # IDEA: use threading
 
+import multiprocessing
 import random
 from typing import TypeVar
 
@@ -50,25 +51,45 @@ class crack_with_simanneal(Annealer):
         return -compare.quadgramscore(plaintext)
 
 
-def solve_anneal(ciphertext: str) -> None:
-    initial_state = [random.randrange(len(alphabet)) for idx in range(0, LEN)]
-
-    tsp = crack_with_simanneal(initial_state)
-    tsp.copy_strategy = "slice"
-    auto_schedule = tsp.auto(minutes=0.1)
-    # {'tmin': ..., 'tmax': ..., 'steps': ...}
-    print(auto_schedule)
-    tsp.set_schedule(auto_schedule)
-
+def determine_schedule(ciphertext: str) -> dict:
     # tsp.Tmax = 600
     # tsp.Tmin = 0.1
     # tsp.steps = 80000
+    initial_state = [random.randrange(len(alphabet)) for idx in range(0, LEN)]
+    tsp = crack_with_simanneal(initial_state)
+    tsp.copy_strategy = "slice"
+    auto_schedule = tsp.auto(minutes=0.1)
+    del tsp
+    print(auto_schedule)
+    return auto_schedule
+
+
+def threaded_solver(ciphertext: str, schedule: dict) -> tuple[list[int], int, str]:
+    """
+    this can run inside a thread
+    """
+    initial_state = [random.randrange(len(alphabet)) for idx in range(0, LEN)]
+    tsp = crack_with_simanneal(initial_state)
+    tsp.copy_strategy = "slice"
+    # tsp.set_schedule(schedule)
     out, score = tsp.anneal()
     keyword = [alphabet[i] for i in out]
     plaintext = "".join(pasc.pasc_decrypt(CT, keyword, TR))
-    print(out)
-    print(score)
-    print(plaintext)
+    return (out, score, plaintext)
+
+
+def solve_anneal(ciphertext: str) -> None:
+    # schedule = determine_schedule(ciphertext)
+    schedule = {}
+
+    with multiprocessing.Pool() as pool:
+        results = pool.starmap(threaded_solver, [[ciphertext, schedule]] * 8)
+        for r in results:
+            print(r)
+
+    # key, score, plaintext = threaded_solver(ciphertext, auto_schedule)
+
+    # pool.close()
 
 
 if __name__ == "__main__":
