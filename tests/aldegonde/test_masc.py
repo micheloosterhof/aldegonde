@@ -25,10 +25,11 @@ def test_reverse_key() -> None:
         masc.shiftedkey(ABC, shift=13)
     )
 
+
 def test_atbashkey() -> None:
     ATBASH_CIPHERTEXT = "ZGGZXPZGWZDM"
     ATBASH_PLAINTEXT = "ATTACKATDAWN"
-    assert masc.atbashkey("ABC") == { 'A': 'C', 'B': 'B', 'C': 'A' }
+    assert masc.atbashkey("ABC") == {"A": "C", "B": "B", "C": "A"}
     atbash = masc.atbashkey(ABC)
     assert "".join(masc.masc_encrypt(ATBASH_PLAINTEXT, key=atbash)) == ATBASH_CIPHERTEXT
     assert "".join(masc.masc_decrypt(ATBASH_CIPHERTEXT, key=atbash)) == ATBASH_PLAINTEXT
@@ -55,7 +56,7 @@ def test_affinekey() -> None:
     assert "".join(masc.masc_decrypt(AFFINE_CIPHERTEXT, key=affine)) == AFFINE_PLAINTEXT
 
 
-def test_keywordkey() -> None:
-    assert masc.keywordkey("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT") == list(
+def test_mixedalphabet() -> None:
+    assert masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT") == list(
         "PAULBRNDTCEFGHIJKMOQSVWXYZ"
     )
