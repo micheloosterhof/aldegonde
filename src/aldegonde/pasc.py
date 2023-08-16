@@ -106,6 +106,7 @@ def quagmire1_tr(
     alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T]
 ) -> TR[T]:
     """
+    https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireI.pdf
     keyword is the mixed alphabet for the plaintext
     key is the equivalent of the vigenere keyword
     the indicator letter is always the first in the alphabet, this could be a future parameter
@@ -124,7 +125,9 @@ def quagmire1_tr(
 def quagmire2_tr(
     alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T], indicator: T
 ) -> TR[T]:
-    """ """
+    """
+    https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireII.pdf
+    """
     al1 = masc.mixedalphabet(alphabet, keyword)
     tr: TR[T] = defaultdict(dict)
     index: int = alphabet.index(indicator)
@@ -137,7 +140,9 @@ def quagmire2_tr(
 
 
 def quagmire3_tr(alphabet: Sequence[T]) -> TR[T]:
-    """ """
+    """
+    https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIII.pdf
+    """
     tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
@@ -152,7 +157,9 @@ def quagmire4_tr(
     key: Sequence[T],
     indicator: T,
 ) -> TR[T]:
-    """ """
+    """
+    https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIV.pdf
+    """
     ptmixal = masc.mixedalphabet(alphabet, ptkeyword)
     ctmixal = masc.mixedalphabet(alphabet, ctkeyword)
     tr: TR[T] = defaultdict(dict)
