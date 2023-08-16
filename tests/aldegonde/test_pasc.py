@@ -117,6 +117,20 @@ def test_quagmire4() -> None:
     assert tuple(plaintext) == tuple(pasc.pasc_decrypt(ciphertext, key, TR))
 
 
+def test_quagmire4_aca() -> None:
+    """ """
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ptkeyword = "SENSORY"
+    ctkeyword = "PERCEPTION"
+    key = "EXTRA"
+    indicator = "S"
+    TR = pasc.quagmire4_tr(alphabet, ptkeyword, ctkeyword, key, indicator)
+    plaintext = "THISONEEMPLOYSTHREEKEYWORDS"
+    ciphertext = "VBMRFCYISPMPBRRHEICXRREIGDX"
+    assert tuple(ciphertext) == tuple(pasc.pasc_encrypt(plaintext, key, TR))
+    assert tuple(plaintext) == tuple(pasc.pasc_decrypt(ciphertext, key, TR))
+
+
 """
 From: https://sites.google.com/site/cryptocrackprogram/user-guide/cipher-types/substitution/quagmire
 
