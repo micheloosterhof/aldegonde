@@ -145,9 +145,24 @@ def quagmire3_tr(alphabet: Sequence[T]) -> TR[T]:
     return tr
 
 
-def quagmire4_tr(alphabet: Sequence[T]) -> TR[T]:
+def quagmire4_tr(
+    alphabet: Sequence[T],
+    ptkeyword: Sequence[T],
+    ctkeyword: Sequence[T],
+    key: Sequence[T],
+    indicator: T,
+) -> TR[T]:
     """ """
-    raise NotImplementedError
+    ptmixal = masc.mixedalphabet(alphabet, ptkeyword)
+    ctmixal = masc.mixedalphabet(alphabet, ctkeyword)
+    tr: TR[T] = defaultdict(dict)
+    index: int = ptmixal.index(indicator)
+    for i, e in enumerate(alphabet):
+        if e in key:
+            idx2: int = ctmixal.index(e)
+            for j, f in enumerate(ptmixal):
+                tr[e][f] = ctmixal[(j - index + idx2) % len(alphabet)]
+    return tr
 
 
 def print_tr(tr: TR[T]) -> None:

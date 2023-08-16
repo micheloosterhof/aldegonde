@@ -55,7 +55,6 @@ def test_quagmire2() -> None:
     keyword = "PAULBRANDT"
     key = "BRANDT"
     TR = pasc.quagmire2_tr(alphabet, keyword, key, indicator="C")
-    pasc.print_tr(TR)
     plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     ciphertext = "RMGXKEVLGUQQNWLJKBKXOFCYGADWYHNIDKHZYELMYHNSLBWEDMHXSXEKOWQQVELKQSJ"
     assert tuple(ciphertext) == tuple(pasc.pasc_encrypt(plaintext, key, TR))
@@ -106,14 +105,16 @@ def test_quagmire3_kryptos2() -> None:
 
 def test_quagmire4() -> None:
     """ """
-    return
-    alphabet = masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT")
-    tr = pasc.quagmire4_tr(alphabet)
-    key = "BRANDT"
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ptkeyword = "PAULBRANDT"
+    ctkeyword = "BRANDT"
+    key = "COUNTRY"
+    indicator = "P"
+    TR = pasc.quagmire4_tr(alphabet, ptkeyword, ctkeyword, key, indicator)
     plaintext = "DONTLETANYONETELLYOUTHESKYISTHELIMITWHENTHEREAREFOOTPRINTSONTHEMOON"
     ciphertext = "KFBIFICEWQVIICOSXRXNCSBLSNMQLNDCSQJLJEKIGIOVDDHIGYFANHMDLHJGKLFXFJG"
-    assert tuple(ciphertext) == pasc.pasc_encrypt(plaintext, key, tr)
-    assert tuple(plaintext) == pasc.pasc_decrypt(ciphertext, key, tr)
+    assert tuple(ciphertext) == tuple(pasc.pasc_encrypt(plaintext, key, TR))
+    assert tuple(plaintext) == tuple(pasc.pasc_decrypt(ciphertext, key, TR))
 
 
 """
