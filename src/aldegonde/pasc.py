@@ -128,10 +128,11 @@ def quagmire2_tr(
     al1 = masc.mixedalphabet(alphabet, keyword)
     tr: TR[T] = defaultdict(dict)
     index: int = alphabet.index(indicator)
-    for i, e in enumerate(alphabet):
+    for e in alphabet:
         if e in key:
-            for j, f in enumerate(al1):
-                tr[e][f] = alphabet[(i + j + index) % len(alphabet)]
+            idx2: int = al1.index(e)
+            for j, f in enumerate(alphabet):
+                tr[e][f] = al1[(j - index + idx2) % len(alphabet)]
     return tr
 
 

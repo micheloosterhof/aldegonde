@@ -51,7 +51,6 @@ def test_quagmire1() -> None:
 
 
 def test_quagmire2() -> None:
-    return
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     keyword = "PAULBRANDT"
     key = "BRANDT"
