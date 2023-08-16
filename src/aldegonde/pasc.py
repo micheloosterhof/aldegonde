@@ -102,27 +102,21 @@ def variantbeaufort_tr(alphabet: Sequence[T]) -> TR[T]:
     return tr
 
 
-def quagmire1_tr(alphabet: Sequence[T]) -> TR[T]:
-    """ """
-    tr: TR[T] = defaultdict(dict)
-    for i, key in enumerate(sorted(alphabet)):
-        for j, e in enumerate(sorted(alphabet)):
-            tr[key][e] = alphabet[(i + j) % len(alphabet)]
-    return tr
-
-
-def doublekeywordtr(
+def quagmire1_tr(
     alphabet: Sequence[T], keyword1: Sequence[T], keyword2: Sequence[T]
 ) -> TR[T]:
     """
-    i think this is actually quagmire 1
+    keyword1 is the mixed alphabet for the plaintext
+    keyword2 is the equivalent of the vigenere keyword
     """
     al1 = masc.mixedalphabet(alphabet, keyword1)
     al2 = masc.mixedalphabet(alphabet, keyword2)
     tr: TR[T] = defaultdict(dict)
-    for i, e in enumerate(al1):
-        for j, f in enumerate(al2):
-            tr[e][f] = alphabet[(i + j) % len(alphabet)]
+    index: int = al1.index(alphabet[0])
+    for i, e in enumerate(alphabet):
+        if e in keyword2:
+            for j, f in enumerate(al1):
+                tr[e][f] = alphabet[(i + j - index) % len(alphabet)]
     return tr
 
 
