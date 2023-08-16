@@ -103,28 +103,36 @@ def variantbeaufort_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def quagmire1_tr(
-    alphabet: Sequence[T], keyword1: Sequence[T], keyword2: Sequence[T]
+    alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T]
 ) -> TR[T]:
     """
-    keyword1 is the mixed alphabet for the plaintext
-    keyword2 is the equivalent of the vigenere keyword
+    keyword is the mixed alphabet for the plaintext
+    key is the equivalent of the vigenere keyword
     the indicator letter is always the first in the alphabet, this could be a future parameter
-    keyword2 could be optional, we can generate the entire TR without it but we would generate unused lines
+    key could be optional, we can generate the entire TR without it but we would generate unused lines
     """
-    al1 = masc.mixedalphabet(alphabet, keyword1)
-    al2 = masc.mixedalphabet(alphabet, keyword2)
+    al1 = masc.mixedalphabet(alphabet, keyword)
     tr: TR[T] = defaultdict(dict)
     index: int = al1.index(alphabet[0])
     for i, e in enumerate(alphabet):
-        if e in keyword2:
+        if e in key:
             for j, f in enumerate(al1):
                 tr[e][f] = alphabet[(i + j - index) % len(alphabet)]
     return tr
 
 
-def quagmire2_tr(alphabet: Sequence[T]) -> TR[T]:
+def quagmire2_tr(
+    alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T], indicator: T
+) -> TR[T]:
     """ """
-    raise NotImplementedError
+    al1 = masc.mixedalphabet(alphabet, keyword)
+    tr: TR[T] = defaultdict(dict)
+    index: int = alphabet.index(indicator)
+    for i, e in enumerate(alphabet):
+        if e in key:
+            for j, f in enumerate(al1):
+                tr[e][f] = alphabet[(i + j + index) % len(alphabet)]
+    return tr
 
 
 def quagmire3_tr(alphabet: Sequence[T]) -> TR[T]:
