@@ -108,6 +108,8 @@ def quagmire1_tr(
     """
     keyword1 is the mixed alphabet for the plaintext
     keyword2 is the equivalent of the vigenere keyword
+    the indicator letter is always the first in the alphabet, this could be a future parameter
+    keyword2 could be optional, we can generate the entire TR without it but we would generate unused lines
     """
     al1 = masc.mixedalphabet(alphabet, keyword1)
     al2 = masc.mixedalphabet(alphabet, keyword2)
