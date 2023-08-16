@@ -18,13 +18,13 @@ def split_by_slice(inp: Sequence[T], size: int) -> dict[int, Sequence[T]]:
     return outp
 
 
-def split_by_character(inp: Sequence[T]) -> dict[T, list[T]]:
+def split_by_character(inp: Sequence[T], skip: int = 1) -> dict[T, list[T]]:
     """By previous character."""
     outp: dict[T, list[T]] = {}
     for e in set(inp):
         outp[e] = []
-    for i in range(0, len(inp) - 1):
-        outp[inp[i]].append(inp[i + 1])
+    for i in range(0, len(inp) - skip):
+        outp[inp[i]].append(inp[i + skip])
     return outp
 
 
