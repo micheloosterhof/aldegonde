@@ -157,7 +157,7 @@ def quagmire4_tr(
     ctmixal = masc.mixedalphabet(alphabet, ctkeyword)
     tr: TR[T] = defaultdict(dict)
     index: int = ptmixal.index(indicator)
-    for i, e in enumerate(alphabet):
+    for _i, e in enumerate(alphabet):
         if e in key:
             idx2: int = ctmixal.index(e)
             for j, f in enumerate(ptmixal):
