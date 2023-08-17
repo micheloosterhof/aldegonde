@@ -50,6 +50,17 @@ def test_quagmire1() -> None:
     assert tuple(plaintext) == tuple(pasc.pasc_decrypt(ciphertext, key, TR))
 
 
+def test_quagmire1_aca() -> None:
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    keyword = "SPRINGFEVER"
+    key = "FLOWER"
+    TR = pasc.quagmire1_tr(alphabet, keyword, key)
+    plaintext  = "THEQUAGONEISAPERIODICCIPHERWITHAKEYEDPLAINALPHABETRUNAGAINSTASTRAIGHTCIPHERALPHABET"
+    ciphertext = "QPMGQRBUJUYIFDMPYAIFQYYJJJHJYCJLUUTPIDVWYMFSGAESDWHIZRBLIRVCFCZPELBPZYYJJJHWLJJLPUP"
+    assert tuple(ciphertext) == tuple(pasc.pasc_encrypt(plaintext, key, TR))
+    assert tuple(plaintext) == tuple(pasc.pasc_decrypt(ciphertext, key, TR))
+
+
 def test_quagmire2() -> None:
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     keyword = "PAULBRANDT"
