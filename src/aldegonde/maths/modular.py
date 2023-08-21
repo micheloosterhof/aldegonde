@@ -13,7 +13,7 @@ def modInverse(b: int, m: int) -> int:
         return -1
     # If b and m are relatively prime,
     # then modulo inverse is b^(m-2) mode m
-    return pow(b, m - 2, m)
+    return int(pow(b, m - 2, m))
 
 
 def modDivide(a: int, b: int, m: int) -> int:
