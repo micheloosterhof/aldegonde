@@ -1,5 +1,5 @@
 numpy==1.25.2
 pip==23.2.1
-scipy==1.11.1
+scipy==1.11.2
 setuptools==68.1.2
 wheel==0.41.1
