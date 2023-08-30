@@ -188,33 +188,33 @@ class RuneIterator:
         return base29(x, padding=self.length)
 
 
-def print_all(runes: list[int], limit: int = 0) -> None:
+def print_all(runes: str, limit: int = 0) -> None:
     """Print runes, rune indexes and english output."""
     print_rune(runes, limit)
     print_rune_index(runes, limit)
     print_english(runes, limit)
 
 
-def print_english(runes: list[int], limit: int = 0) -> None:
+def print_english(runes: str, limit: int = 0) -> None:
     """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
     print("ENGLISH: ", end="")
     for i in range(0, limit):
-        eng = CICADA_ENGLISH_ALPHABET[runes[i]]
+        eng = CICADA_ENGLISH_ALPHABET[r2i(runes[i])]
         print(f"{eng:>2} ", end="")
     print()
 
 
-def print_rune_index(runes: list[int], limit: int = 0) -> None:
+def print_rune_index(runes: str, limit: int = 0) -> None:
     """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
 
     print("RUNEIDX: ", end="")
     for i in range(0, limit):
-        print(f"{runes[i]:02} ", end="")
+        print(f"{r2i(runes[i]):02} ", end="")
     print()
 
 
@@ -225,7 +225,7 @@ def print_rune(runes: list[int], limit: int = 0) -> None:
 
     print("RUNES  :  ", end="")
     for i in range(0, limit):
-        print(f"{CICADA_ALPHABET[runes[i]]:2} ", end="")
+        print(f"{runes[i]:2} ", end="")
     print()
 
 
