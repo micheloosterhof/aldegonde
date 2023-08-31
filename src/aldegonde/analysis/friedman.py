@@ -24,7 +24,8 @@ def friedman_test(
     # delta is the difference between the avgioc and the max of avgioc of all lower values
     avgioc: dict[int, float] = {}
     medioc: dict[int, float] = {}
-    deltas: dict[int, float] = {}
+    avgdelta: dict[int, float] = {}
+    meddelta: dict[int, float] = {}
 
     if trace is True:
         print("Testing for periodicity using friedman test")
@@ -39,13 +40,26 @@ def friedman_test(
                 print(f"ioc of slice {k}/{period} = {ic:.3f}")
         medioc[period] = median(iocs)
         avgioc[period] = mean(iocs)
-        deltas[period] = avgioc[period] - max(avgioc.values())
+        avgdelta[period] = avgioc[period] - max(avgioc.values())
+        meddelta[period] = medioc[period] - max(medioc.values())
         print(
-            f"friedman: period {period:02d} medioc: {medioc[period]:.3f} avgioc: {avgioc[period]:.3f} delta: {deltas[period]:+.4f}",
+            f"friedman: period {period:02d} ",
             end="",
         )
-
-        if abs(deltas[period]) < 0.001:
-            print(" <===")
+        print(
+            f"avgioc: {avgioc[period]:.3f} delta: {avgdelta[period]:+.4f}",
+            end="",
+        )
+        if abs(avgdelta[period]) < 0.001:
+            print("* ", end="")
         else:
-            print()
+            print("  ", end="")
+
+        print(
+            f"  medioc: {medioc[period]:.3f} delta: {meddelta[period]:+.4f}",
+            end="",
+        )
+        if abs(meddelta[period]) < 0.001:
+            print("* ")
+        else:
+            print("  ")
