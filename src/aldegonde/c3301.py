@@ -130,7 +130,7 @@ def randomrunes(length: int, maximum: int = 29) -> list[int]:
     return output
 
 
-def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
+def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> str:
     """Random list of runes of lenth len, but with low doublets, like the LP."""
     output = []
     prev = None
@@ -140,7 +140,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
             rune = random.randrange(0, maximum)
         prev = rune
         output.append(CICADA_ALPHABET[rune])
-    return output
+    return "".join(output)
 
 
 def numberToBase(n: int, b: int) -> list[int]:
@@ -218,7 +218,7 @@ def print_rune_index(runes: str, limit: int = 0) -> None:
     print()
 
 
-def print_rune(runes: list[int], limit: int = 0) -> None:
+def print_rune(runes: str, limit: int = 0) -> None:
     """Print rune output translated back to english letters."""
     if limit == 0 or limit > len(runes):
         limit = len(runes)
