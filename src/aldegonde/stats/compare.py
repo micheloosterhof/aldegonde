@@ -132,7 +132,7 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     )
 
     def inner(text: str) -> float:
-        gen = (ngrams[ngram] for ngram in iterngrams(text, length))
+        gen = (ngrams[str(ngram)] for ngram in iterngrams(text, length))
         return sum(gen)
 
     return inner
