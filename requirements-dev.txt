@@ -7,6 +7,6 @@ mypy==1.5.1
 pipdeptree==2.13.0
 pytest==7.4.0
 ruff==0.0.285
-tox==4.10.0
+tox==4.11.1
 twine==4.0.2
 twine==4.0.2
