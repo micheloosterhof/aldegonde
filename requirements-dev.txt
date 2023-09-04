@@ -1,6 +1,6 @@
 black==23.7.0
-build==0.10.0
-build==0.10.0
+build==1.0.0
+build==1.0.0
 coverage==7.3.0
 mypy-extensions==1.0.0
 mypy==1.5.1
