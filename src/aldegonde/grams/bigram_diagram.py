@@ -32,7 +32,11 @@ def print_colored_value(v: int) -> None:
 
 
 def print_bigram_diagram(
-    runes: Sequence[T], alphabet: Sequence[T], skip: int = 1, cut: int = 0
+    runes: Sequence[T],
+    alphabet: Sequence[T],
+    skip: int = 1,
+    length: int = 1,
+    cut: int = 0,
 ) -> None:
     """Input is a sequence of items
     Output is the bigram frequency diagram printed to stdout.
@@ -43,7 +47,7 @@ def print_bigram_diagram(
     count = Counter(runes)
     ioc: float = 0.0
 
-    bigram = bigram_diagram(runes, skip=skip, cut=cut)
+    bigram = bigram_diagram(runes, skip=skip, length=length, cut=cut)
 
     print("   | ", end="")
     for i in range(0, MAX):
@@ -79,7 +83,7 @@ def print_bigram_diagram(
 
 
 def bigram_diagram(
-    runes: Sequence[T], skip: int = 1, cut: int = 0
+    runes: Sequence[T], skip: int = 1, length: int = 1, cut: int = 0
 ) -> dict[T, dict[T, int]]:
     """Input is a sequence of symbols
     Output is bigram frequency diagram as dictionary of dictionaries
@@ -92,17 +96,54 @@ def bigram_diagram(
     if len(runes) < 2:
         return {}
 
+    print(f"length={length} cut={cut}")
+
     if cut == 0:
         r = range(0, len(runes) - skip)
-    elif cut == 1:
-        r = range(0, len(runes) - skip, 2)
-    elif cut == 2:
-        r = range(1, len(runes) - skip, 2)
-    else:
-        raise Exception("`cut` variable can be 0, 1 or 2 only")
+    elif cut > 0:
+        r = range(cut - 1, len(runes) - skip, length)
+
+    print(r)
     res = Counter((runes[idx], runes[idx + skip]) for idx in r)
     bigram: dict[T, dict[T, int]] = defaultdict(dict)
     for k, v in res.items():
         bigram[k[0]][k[1]] = v
 
     return bigram
+
+
+def digraph_diagram(
+    rows: Sequence[T],
+    columns: Sequence[T],
+    skip: int = 0,
+    length: int = 1,
+    cut: int = 0,
+) -> dict[T, dict[T, int]]:
+    """Input is two sequences of symbols
+    Output is bigram frequency diagram as dictionary of dictionaries
+
+    skip is an offset between the two, defaults to 0
+
+    Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE (all symbols)
+    Specify `cut=1` and it operates on non-overlapping blocks of 2 runes: AB, CD, EF (odd only)
+    Specify `cut=2` and it operates on non-overlapping blocks of 2 runes: BC, DE, FG (even only)
+    """
+    res = Counter(
+        zip(
+            iterngrams(rows, cut=cut, length=length),
+            iterngrams(columsn, cut=cut, length=length),
+        )
+    )
+
+    # if cut == 0:
+    #    r = range(0, len(runes) - skip)
+    # elif cut > 0:
+    #    r = range(cut-1, len(runes) - skip, length)
+    #
+    # print(r)
+    # res = Counter((runes[idx], runes[idx + skip]) for idx in r)
+    digraph: dict[T, dict[T, int]] = defaultdict(dict)
+    for k, v in res.items():
+        digraph[k[0]][k[1]] = v
+
+    return digraph
