@@ -8,6 +8,7 @@ import random
 import math
 from scipy.stats import poisson
 
+from aldegonde import masc, pasc, auto
 from aldegonde.structures import cicada3301
 from aldegonde.stats import ioc, repeats, doublets, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
@@ -45,6 +46,9 @@ for i, s in enumerate(y):
     print(f"\n\nNEW SEGMENT {i} **************")
     seg = "".join([x for x in s if x in cicada3301.CICADA_ALPHABET])
 
+    TR = pasc.beaufort_tr(cicada3301.CICADA_ALPHABET)
+    auto = "".join( auto.ciphertext_autokey_decrypt(seg, cicada3301.CICADA_ALPHABET[0], TR))
+
     for skip in range(1, 2):
         # print(f"skip={skip}")
         if len(seg) == 0:
@@ -60,10 +64,20 @@ for i, s in enumerate(y):
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg, alphabetsize=29)
-        bigram_diagram.print_bigram_diagram(seg, alphabet=cicada3301.CICADA_ALPHABET)
-        bigram_diagram.print_bigram_diagram(
-            seg, skip=11, alphabet=cicada3301.CICADA_ALPHABET
-        )
+
+        for skip in range(0,10):
+            print(f"skip = {skip}")
+            print(f"rows")
+            bigram_diagram.print_digraph_diagram(rows=seg[0:-1-skip],columns=auto[skip:-1], alphabet=cicada3301.CICADA_ALPHABET)
+            print(f"columns")
+            bigram_diagram.print_digraph_diagram(columns=seg[0:-1-skip],rows=auto[skip:-1], alphabet=cicada3301.CICADA_ALPHABET)
+
+        #for skip in range(0,10):
+        #    bigram_diagram.print_digraph_diagram(seg[0:-1-skip], seg[skip:-1], alphabet=cicada3301.CICADA_ALPHABET)
+        #bigram_diagram.print_bigram_diagram(seg, alphabet=cicada3301.CICADA_ALPHABET)
+        #bigram_diagram.print_bigram_diagram(
+        #    seg, skip=11, alphabet=cicada3301.CICADA_ALPHABET
+        #)
         for i in range(1, 50):
             doublets.print_doublets_statistics(seg, skip=i, alphabetsize=29)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
