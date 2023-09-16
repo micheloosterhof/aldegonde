@@ -48,7 +48,7 @@ def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
         for j in range(5):
             if matrix[i][j] == letter:
                 return (i, j)
-    raise Exception
+    raise ValueError
 
 
 def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:

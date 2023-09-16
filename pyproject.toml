@@ -70,6 +70,11 @@ profile = "black"
 known_first_party = ["aldegonde"]
 sections=["FUTURE","STDLIB","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
 
+[tool.pylint]
+disable = ["invalid-name"]
+
+
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 

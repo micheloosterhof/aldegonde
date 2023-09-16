@@ -21,7 +21,7 @@ def modDivide(a: int, b: int, m: int) -> int:
     a = a % m
     inv = modInverse(b, m)
     if inv == -1:
-        raise Exception(f"Division not defined {a}/{b}%{m}")
+        raise ValueError(f"Division not defined {a}/{b}%{m}")
 
     return (inv * a) % m
 

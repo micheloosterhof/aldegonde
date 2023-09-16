@@ -4,9 +4,9 @@ from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
-from .color import Colors
-
 from aldegonde.stats import ngrams
+
+from .color import Colors
 
 T = TypeVar("T")
 
@@ -101,7 +101,7 @@ def bigram_diagram(
     elif cut == 2:
         r = range(1, len(runes) - skip, 2)
     else:
-        raise Exception("`cut` variable can be 0, 1 or 2 only")
+        raise ValueError("`cut` variable can be 0, 1 or 2 only")
     res = Counter((runes[idx], runes[idx + skip]) for idx in r)
     bigram: dict[T, dict[T, int]] = defaultdict(dict)
     for k, v in res.items():

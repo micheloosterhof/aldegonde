@@ -29,7 +29,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     L: int = sum(x for x in freqs.values())
     if L < 2:
         return 0.0
-    freqsum: float = sum([v * (v - 1) for v in freqs.values()])
+    freqsum: float = sum(v * (v - 1) for v in freqs.values())
     ic = freqsum / (L * (L - 1))
     return ic
 
@@ -46,7 +46,7 @@ def nioc(
     L: int = sum(x for x in freqs.values())
     if L < 2:
         return (0.0, 0.0, 0.0)
-    freqsum: float = sum([v * (v - 1) for v in freqs.values()])
+    freqsum: float = sum(v * (v - 1) for v in freqs.values())
     ic = freqsum / (L * (L - 1))
     C = pow(alphabetsize, length)  # size of alphabet
     nic = C * ic

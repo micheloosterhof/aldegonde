@@ -10,10 +10,10 @@ from collections import Counter, defaultdict
 from collections.abc import Sequence
 import random
 import statistics
+from typing import TypeVar
 
 from aldegonde.stats.ngrams import iterngrams
 
-from typing import TypeVar
 
 T = TypeVar("T")
 
@@ -57,7 +57,7 @@ def isomorph_statistics(dist: dict[str, int]) -> tuple[int, int]:
     Returns `distincts` and `duplicates` for the input.
     """
     distinct: int = len(dist.keys())
-    duplicate: int = sum([v for v in dist.values() if v > 1])
+    duplicate: int = sum(v for v in dist.values() if v > 1)
     return (distinct, duplicate)
 
 

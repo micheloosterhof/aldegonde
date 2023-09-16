@@ -32,7 +32,7 @@ def shannon2_entropy(ciphertext: Sequence[T], base: int = 2, cut: int = 0) -> fl
         for i in range(cut - 1, N - 1, 2):
             l.append((ciphertext[i], ciphertext[i + 1]))
     else:
-        raise Exception
+        raise ValueError
     f = Counter(l)
     H: float = 0.0
     for v in f.values():

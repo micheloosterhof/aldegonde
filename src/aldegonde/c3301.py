@@ -79,7 +79,7 @@ def r2i(rune: str) -> int:
     for i, e in enumerate(CICADA_ALPHABET):
         if rune == e:
             return i
-    raise Exception
+    raise ValueError
 
 
 def i2r(rune: int) -> str:
@@ -97,7 +97,7 @@ def r2v(rune: str) -> int:
     for i, e in enumerate(CICADA_ALPHABET):
         if rune == e:
             return primelist[i]
-    raise Exception
+    raise ValueError
 
 
 def v2r(value: int) -> str:
@@ -108,7 +108,7 @@ def v2r(value: int) -> str:
     for i, e in enumerate(primelist):
         if value == e:
             return CICADA_ALPHABET[i]
-    raise Exception
+    raise ValueError
 
 
 def v2i(value: int) -> int:
@@ -119,7 +119,7 @@ def v2i(value: int) -> int:
     for i, e in enumerate(primelist):
         if value == e:
             return i
-    raise Exception
+    raise ValueError
 
 
 def randomrunes(length: int, maximum: int = 29) -> list[int]:
@@ -243,5 +243,5 @@ def valueTR(t: str = "vigenere") -> pasc.TR:
             elif t == "variantbeaufort":
                 TR[key][plaintext] = i2r((r2i(plaintext) - r2v(key)) % 29)
             else:
-                raise Exception
+                raise ValueError
     return TR
