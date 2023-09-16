@@ -12,7 +12,7 @@ def kappa(text: Sequence[T], shift: int) -> float:
     text size.
     """
     dups: int = 0
-    for i in range(0, len(text) - shift):
+    for i in range(len(text) - shift):
         if text[i] == text[i + shift]:
             dups = dups + 1
     return dups / (len(text) - shift)

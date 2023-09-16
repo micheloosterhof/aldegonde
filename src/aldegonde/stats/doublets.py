@@ -24,7 +24,7 @@ def print_doublets_statistics(
 def doublets(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> list[int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
-    for index in range(0, len(runes) - skip):
+    for index in range(len(runes) - skip):
         if runes[index] == runes[index + skip]:
             positions.append(index)
             if trace:
@@ -38,7 +38,7 @@ def triplets(runes: Sequence[T]) -> int:
     """Find number of triplet. triplet is X followed by XX for any X."""
     N = len(runes)
     trpl: int = 0
-    for index in range(0, N - 2):
+    for index in range(N - 2):
         if runes[index] == runes[index + 1] and runes[index] == runes[index + 2]:
             trpl += 1
     # expected = N / MAX / MAX

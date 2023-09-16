@@ -64,7 +64,7 @@ def nioc(
 def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
     """Print IOC statistics."""
     for length in range(1, 6):
-        for cut in range(0, length + 1):
+        for cut in range(length + 1):
             if length == 1 and cut == 1:
                 continue
             _, nic, sigmage = nioc(
@@ -79,7 +79,7 @@ def sliding_window_ioc(
 ) -> list[float]:
     """Calculate sliding window IOC of a large data set."""
     output: list[float] = []
-    for i in range(0, len(text) - window):
+    for i in range(len(text) - window):
         output.append(ioc(text[i : i + window], length=length, cut=cut))
     return output
 
