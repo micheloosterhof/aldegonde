@@ -30,7 +30,7 @@ def iterngrams(
     # https://stackoverflow.com/questions/24527006/split-a-generator-into-chunks-without-pre-walking-it
     # this is like itertools.pairwise()
     if cut == 0:  # pylint: disable=C2001
-        for i in range(0, N - length + 1):
+        for i in range(N - length + 1):
             yield runes[i : i + length]
     # this is like itertools.batched()
     elif cut <= length and cut > 0:

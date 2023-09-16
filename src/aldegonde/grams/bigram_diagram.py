@@ -14,7 +14,7 @@ T = TypeVar("T")
 def print_separator(width: int) -> None:
     """print separator"""
     print("---+-", end="")
-    for _i in range(0, width):
+    for _i in range(width):
         print("---", end="")
     print("+-------+------")
 
@@ -52,15 +52,15 @@ def print_bigram_diagram(
     bigram = bigram_diagram(runes, skip=skip, length=length, cut=cut)
 
     print("   | ", end="")
-    for i in range(0, symbolcount):
+    for i in range(symbolcount):
         print(f"{i:02d} ", end="")
     print("| IOC   | nIOC")
 
     print_separator(symbolcount)
 
-    for i in range(0, symbolcount):
+    for i in range(symbolcount):
         print(f"{i:02} | ", end="")
-        for j in range(0, symbolcount):
+        for j in range(symbolcount):
             try:
                 v = bigram[alphabet[i]][alphabet[j]]
             except KeyError:
@@ -79,7 +79,7 @@ def print_bigram_diagram(
     print_separator(symbolcount)
 
     print("   | ", end="")
-    for _i in range(0, symbolcount):
+    for _i in range(symbolcount):
         print("   ", end="")
     print(f"| {ioc:0.3f}")
 
@@ -101,7 +101,7 @@ def bigram_diagram(
     print(f"length={length} cut={cut}")
 
     if cut == 0:
-        r = range(0, len(runes) - skip)
+        r = range(len(runes) - skip)
     elif cut > 0:
         r = range(cut - 1, len(runes) - skip, length)
 
@@ -170,15 +170,15 @@ def print_digraph_diagram(
     digraph = digraph_diagram(rows, columns, skip=skip, length=length, cut=cut)
 
     print("   | ", end="")
-    for i in range(0, symbolcount):
+    for i in range(symbolcount):
         print(f"{i:02d} ", end="")
     print("| IOC   | nIOC")
 
     print_separator(symbolcount)
 
-    for i in range(0, symbolcount):
+    for i in range(symbolcount):
         print(f"{i:02} | ", end="")
-        for j in range(0, symbolcount):
+        for j in range(symbolcount):
             try:
                 v = digraph[alphabet[i]][alphabet[j]]
             except KeyError:
@@ -197,6 +197,6 @@ def print_digraph_diagram(
     print_separator(symbolcount)
 
     print("   | ", end="")
-    for _i in range(0, symbolcount):
+    for _i in range(symbolcount):
         print("   ", end="")
     print(f"| {ioc:0.3f}")

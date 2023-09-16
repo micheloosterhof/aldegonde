@@ -30,7 +30,7 @@ def friedman_test(
     print("Candidates:")
     for period in range(minperiod, maxperiod + 1):
         iocsum: float = 0.0
-        for k in range(0, period):
+        for k in range(period):
             v = ciphertext[slice(k, len(ciphertext), period)]
             ic: float = ioc(v)  # note, perviously was normalized
             iocsum += ic

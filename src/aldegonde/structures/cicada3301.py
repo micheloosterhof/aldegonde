@@ -125,7 +125,7 @@ def v2i(value: int) -> int:
 def randomrunes(length: int, maximum: int = 29) -> list[int]:
     """Random list of runes of lenth len."""
     output: list[int] = []
-    for _ in range(0, length):
+    for _ in range(length):
         output.append(random.randrange(0, maximum))
     return output
 
@@ -134,7 +134,7 @@ def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> list[int]:
     """Random list of runes of lenth len, but with low doublets, like the LP."""
     output = []
     prev = None
-    for _ in range(0, length):
+    for _ in range(length):
         rune = random.randrange(0, maximum)
         if rune == prev and random.randrange(0, 6) > 0:
             rune = random.randrange(0, maximum)
@@ -201,7 +201,7 @@ def print_english(runes: list[int], limit: int = 0) -> None:
         limit = len(runes)
 
     print("ENGLISH: ", end="")
-    for i in range(0, limit):
+    for i in range(limit):
         eng = CICADA_ENGLISH_ALPHABET[runes[i]]
         print(f"{eng:>2} ", end="")
     print()
@@ -213,7 +213,7 @@ def print_rune_index(runes: list[int], limit: int = 0) -> None:
         limit = len(runes)
 
     print("RUNEIDX: ", end="")
-    for i in range(0, limit):
+    for i in range(limit):
         print(f"{runes[i]:02} ", end="")
     print()
 
@@ -224,7 +224,7 @@ def print_rune(runes: list[int], limit: int = 0) -> None:
         limit = len(runes)
 
     print("RUNES  :  ", end="")
-    for i in range(0, limit):
+    for i in range(limit):
         print(f"{CICADA_ALPHABET[runes[i]]:2} ", end="")
     print()
 

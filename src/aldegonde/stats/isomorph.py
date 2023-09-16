@@ -73,7 +73,7 @@ def random_isomorph_statistics(
     distincts: list[int] = []
     duplicates: list[int] = []
 
-    for _ in range(0, samples):
+    for _ in range(samples):
         rand: list[int] = [
             random.randrange(0, alphabetlen) for _ in range(sequencelength)
         ]
