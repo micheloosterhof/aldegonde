@@ -6,6 +6,8 @@ from typing import TypeVar
 
 from .color import Colors
 
+from aldegonde.stats import ngrams
+
 T = TypeVar("T")
 
 
@@ -43,22 +45,22 @@ def print_bigram_diagram(
     """
     if len(runes) + skip < 2:
         return
-    MAX = len(alphabet)
+    symbolcount = len(alphabet)
     count = Counter(runes)
     ioc: float = 0.0
 
     bigram = bigram_diagram(runes, skip=skip, length=length, cut=cut)
 
     print("   | ", end="")
-    for i in range(0, MAX):
+    for i in range(0, symbolcount):
         print(f"{i:02d} ", end="")
     print("| IOC   | nIOC")
 
-    print_separator(MAX)
+    print_separator(symbolcount)
 
-    for i in range(0, MAX):
+    for i in range(0, symbolcount):
         print(f"{i:02} | ", end="")
-        for j in range(0, MAX):
+        for j in range(0, symbolcount):
             try:
                 v = bigram[alphabet[i]][alphabet[j]]
             except KeyError:
@@ -69,15 +71,15 @@ def print_bigram_diagram(
         pioc = (
             (count[alphabet[i]] * (count[alphabet[i]] - 1))
             / (len(runes) * (len(runes) - 1))
-            * MAX
+            * symbolcount
         )
         ioc += pioc
-        print(f"| {pioc:.3f} | {MAX*pioc:.3f}")
+        print(f"| {pioc:.3f} | {symbolcount*pioc:.3f}")
 
-    print_separator(MAX)
+    print_separator(symbolcount)
 
     print("   | ", end="")
-    for _i in range(0, MAX):
+    for _i in range(0, symbolcount):
         print("   ", end="")
     print(f"| {ioc:0.3f}")
 
@@ -122,6 +124,7 @@ def digraph_diagram(
     """Input is two sequences of symbols
     Output is bigram frequency diagram as dictionary of dictionaries
 
+    length is the length of the segment
     skip is an offset between the two, defaults to 0
 
     Specify `cut=0` and it operates on sliding blocks of 2 runes: AB, BC, CD, DE (all symbols)
@@ -130,8 +133,8 @@ def digraph_diagram(
     """
     res = Counter(
         zip(
-            iterngrams(rows, cut=cut, length=length),
-            iterngrams(columsn, cut=cut, length=length),
+            ngrams.iterngrams(rows, cut=cut, length=length),
+            ngrams.iterngrams(columns, cut=cut, length=length),
         )
     )
 
@@ -147,3 +150,53 @@ def digraph_diagram(
         digraph[k[0]][k[1]] = v
 
     return digraph
+
+
+def print_digraph_diagram(
+    rows: Sequence[T],
+    columns: Sequence[T],
+    alphabet: Sequence[T],
+    skip: int = 0,
+    length: int = 1,
+    cut: int = 0,
+) -> None:
+    """Input is a sequence of items
+    Output is the bigram frequency diagram printed to stdout.
+    """
+    symbolcount = len(alphabet)
+    count = Counter(rows)
+    ioc: float = 0.0
+
+    digraph = digraph_diagram(rows, columns, skip=skip, length=length, cut=cut)
+
+    print("   | ", end="")
+    for i in range(0, symbolcount):
+        print(f"{i:02d} ", end="")
+    print("| IOC   | nIOC")
+
+    print_separator(symbolcount)
+
+    for i in range(0, symbolcount):
+        print(f"{i:02} | ", end="")
+        for j in range(0, symbolcount):
+            try:
+                v = digraph[alphabet[i]][alphabet[j]]
+            except KeyError:
+                v = 0
+            print_colored_value(v)
+
+        # partial IOC (one rune), and total IOC
+        pioc = (
+            (count[alphabet[i]] * (count[alphabet[i]] - 1))
+            / (len(rows) * (len(rows) - 1))
+            * symbolcount
+        )
+        ioc += pioc
+        print(f"| {pioc:.3f} | {symbolcount*pioc:.3f}")
+
+    print_separator(symbolcount)
+
+    print("   | ", end="")
+    for _i in range(0, symbolcount):
+        print("   ", end="")
+    print(f"| {ioc:0.3f}")
