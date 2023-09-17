@@ -26,8 +26,8 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     return diff
 
 
-with open("data/page54-55.txt") as f:
-    # with open("data/page0-58.txt") as f:
+# with open("data/page54-55.txt") as f:
+with open("data/page0-58.txt") as f:
     lp = f.read()
 
 segments = lp.split("$")
@@ -77,10 +77,8 @@ for i, s in enumerate(y):
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg, alphabetsize=29)
-        bigram_diagram.print_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
-        bigram_diagram.print_bigram_diagram(
-            seg, skip=11, alphabet=c3301.CICADA_ALPHABET
-        )
+        bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
+        bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
         for i in range(1, 50):
             doublets.print_doublets_statistics(seg, skip=i, alphabetsize=29)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
