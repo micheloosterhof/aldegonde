@@ -140,3 +140,4 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
 
 quadgramscore = NgramScorer(quadgrams)
 trigramscore = NgramScorer(trigrams)
+bigramscore = NgramScorer(bigrams)
