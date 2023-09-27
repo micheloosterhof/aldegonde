@@ -4,6 +4,8 @@ from collections.abc import Sequence
 from math import sqrt
 from typing import NamedTuple
 from typing import TypeVar
+from mypy_extensions import mypyc_attr
+
 
 from aldegonde.stats.ngrams import ngram_distribution
 
@@ -53,6 +55,7 @@ def nioc(
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
 
+    @mypyc_attr(allow_interpreted_subclasses=True)
     class Ioc(NamedTuple):
         ioc: float
         nioc: float
