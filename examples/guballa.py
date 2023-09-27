@@ -78,10 +78,10 @@ def bigram_break_pasc(ciphertext: str, tabularecta, key_len: int):
     rtr = pasc.reverse_tr(tabularecta)
 
     for key_idx in range(key_len):
-        best_fitness: float = 0.0
+        best_fitness: float = -10000000.0
         for key_ch1 in alphabet:
             for key_ch2 in alphabet:
-                fitness: float = 100000.0
+                fitness: float = 0.0
                 for text_idx in range(key_idx, len(ciphertext) - 1, key_len):
                     clear_ch1 = rtr[key_ch1][ciphertext[text_idx]]
                     clear_ch2 = rtr[key_ch2][ciphertext[text_idx + 1]]
@@ -125,9 +125,10 @@ def break_vig():
 
 def break_vb():
     for length in range(3, 20):
-        (out, score) = bigram_break_pasc(VARBEAU, VIGTR, length)
+        (out, score) = bigram_break_pasc(VARBEAU, VBTR, length)
         password = "".join(out)
-        plaintext = "".join(pasc.pasc_decrypt(VARBEAU, password, VIGTR))
+        plaintext = "".join(pasc.pasc_decrypt(VARBEAU, password, VBTR))
+        score = compare.quadgramscore(plaintext)
         print(score, length, password, plaintext)
 
 
