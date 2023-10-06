@@ -17,7 +17,7 @@ def isPrime(n: int) -> bool:
     return all(not (i * i <= n and n % i == 0) for i in range(2, n + 1))
 
 
-def mobius(N: int) -> int:
+def moebius(N: int) -> int:
     # Base Case
     if N == 1:
         return 1
@@ -50,6 +50,6 @@ def mobius(N: int) -> int:
 
 if __name__ == "__main__":
     N = 17
-    print(f"Mobius defs M(N) at N = {N} is: {mobius(N)}", end="\n")
-    print(f"Mobius defs M(N) at N = {25} is: {mobius(25)}", end="\n")
-    print(f"Mobius defs M(N) at N = {6} is: {mobius(6)}", end="\n")
+    print("Möbius defs M(N) at N = {} is: {}".format(N, moebius(N)), end="\n")
+    print("Möbius defs M(N) at N = {} is: {}".format(25, moebius(25)), end="\n")
+    print("Möbius defs M(N) at N = {} is: {}".format(6, moebius(6)), end="\n")
