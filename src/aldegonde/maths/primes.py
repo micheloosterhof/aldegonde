@@ -1,7 +1,7 @@
 """primes."""
 
 import itertools
-from collections.abc import Iterable, Iterator
+from collections.abc import Generator, Iterable, Iterator
 
 
 def primes(n: int) -> list[int]:
@@ -42,3 +42,18 @@ class PrimeGenerator(Iterable):
             candidate += 1
 
         return self.current
+
+
+def gen_primes_opt() -> Generator[int, None, None]:
+    yield 2
+    D: dict[int, int] = {}
+    for q in itertools.count(3, step=2):
+        p = D.pop(q, None)
+        if not p:
+            D[q * q] = q
+            yield q
+        else:
+            x = q + p + p  # get odd multiples
+            while x in D:
+                x += p + p
+            D[x] = p
