@@ -56,9 +56,10 @@ for i, s in enumerate(y):
         auto.ciphertext_autokey_decrypt(raw, primer=c3301.CICADA_ALPHABET[0], tr=BOF)
     )
 
-    # seg = "".join(pasc.pasc_decrypt(aut, keyword="ᚳᛁᚱᚳᚢᛗᚠᛖᚱᛖᚾᚳᛖ", tr=BOF))
-    seg = aut
+    FIRFUMFERENFE = "ᚠᛁᚱᚠᚢᛗᚠᛖᚱᛖᚾᚠᛖ"
+    seg = "".join(pasc.pasc_decrypt(aut, keyword=FIRFUMFERENFE, tr=BOF))
 
+    seg = aut
     print("SEG:")
     c3301.print_all(seg, limit=30)
 
@@ -83,6 +84,7 @@ for i, s in enumerate(y):
             doublets.print_doublets_statistics(seg, skip=i, alphabetsize=29)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
         friedman.friedman_test(seg, maxperiod=34)
+        friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
         repeats.print_repeat_positions(seg, minimum=5)
         isomorph.print_isomorph_statistics(seg)

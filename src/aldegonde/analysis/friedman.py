@@ -6,6 +6,7 @@ from statistics import mean, median
 from typing import TypeVar
 
 from aldegonde.stats.ioc import ioc
+from aldegonde.analysis.kappa import kappa
 
 T = TypeVar("T")
 
@@ -31,6 +32,7 @@ def friedman_test(
         print("Testing for periodicity using friedman test")
 
     for period in range(minperiod, maxperiod + 1):
+        kscore = kappa(ciphertext, period)
         iocs: list[float] = []
         for k in range(period):
             v = ciphertext[slice(k, len(ciphertext), period)]
@@ -110,6 +112,7 @@ def friedman_test_with_interrupter(
             )
 
         for period in range(minperiod, maxperiod + 1):
+            kscore = kappa(ciphertext, period) * len(alphabet)
             iocs: list[float] = []
             kv = interrupted_slices(ciphertext, step=period, interrupter=interrupter)
             # print(kv)
@@ -123,9 +126,10 @@ def friedman_test_with_interrupter(
             avgdelta[period] = avgioc[period] - max(avgioc.values())
             meddelta[period] = medioc[period] - max(medioc.values())
             print(
-                f"friedman interrupter {interrupter}({i}): period {period:02d} ",
+                f"friedman interrupter {interrupter}({i:02d}): period {period:02d} ",
                 end="",
             )
+            print( f"kappa={kscore:0.4f}  ", end="",)
             print(
                 f"avgioc: {avgioc[period]:.3f} delta: {avgdelta[period]:+.4f}",
                 end="",
