@@ -50,6 +50,6 @@ def moebius(N: int) -> int:
 
 if __name__ == "__main__":
     N = 17
-    print("Möbius defs M(N) at N = {} is: {}".format(N, moebius(N)), end="\n")
-    print("Möbius defs M(N) at N = {} is: {}".format(25, moebius(25)), end="\n")
-    print("Möbius defs M(N) at N = {} is: {}".format(6, moebius(6)), end="\n")
+    print(f"Möbius defs M(N) at N = {N} is: {moebius(N)}", end="\n")
+    print(f"Möbius defs M(N) at N = {25} is: {moebius(25)}", end="\n")
+    print(f"Möbius defs M(N) at N = {6} is: {moebius(6)}", end="\n")

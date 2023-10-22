@@ -49,6 +49,10 @@ def friedman_test(
             end="",
         )
         print(
+            f"kappa={kscore:0.4f}  ",
+            end="",
+        )
+        print(
             f"avgioc: {avgioc[period]:.3f} delta: {avgdelta[period]:+.4f}",
             end="",
         )
@@ -129,7 +133,10 @@ def friedman_test_with_interrupter(
                 f"friedman interrupter {interrupter}({i:02d}): period {period:02d} ",
                 end="",
             )
-            print( f"kappa={kscore:0.4f}  ", end="",)
+            print(
+                f"kappa={kscore:0.4f}  ",
+                end="",
+            )
             print(
                 f"avgioc: {avgioc[period]:.3f} delta: {avgdelta[period]:+.4f}",
                 end="",
