@@ -40,6 +40,24 @@ def pasc_encrypt(
         yield tr[k][e]
 
 
+def pasc_encrypt_interrupted(
+    plaintext: Iterable[T],
+    keyword: Sequence[T],
+    tr: TR[T],
+    ciphertext_interruptor: T,
+) -> Generator[T, None, None]:
+    """Polyalphabetic substitution."""
+    # assert ciphertext_interruptor is not None or plaintext_interruptor is not None
+    keyword_index = 0
+    for e in plaintext:
+        key: T = keyword[keyword_index % len(keyword)]
+        output = tr[key][e]
+        keyword_index = keyword_index + 1
+        if output == ciphertext_interruptor:
+            keyword_index = 0
+        yield output
+
+
 # This is a good candidate for functool caching
 def reverse_tr(tr: TR[T]) -> TR[T]:
     """Take a dict containing all elements and reverses the index and the value
@@ -63,6 +81,28 @@ def pasc_decrypt(
     reversed_tr: TR[T] = reverse_tr(tr)
     for e, k in zip(ciphertext, cycle(keyword)):
         yield reversed_tr[k][e]
+
+
+def pasc_decrypt_interrupted(
+    ciphertext: Iterable[T],
+    keyword: Sequence[T],
+    tr: TR[T],
+    ciphertext_interruptor: T | None,
+    #    plaintext_interruptor: T | None,
+) -> Generator[T, None, None]:
+    """Polyalphabetic substitution.
+    NOTE: tr input is the same as for encryption, this function will reverse the key.
+    """
+    # assert ciphertext_interruptor is not None or plaintext_interruptor is not None
+    reversed_tr: TR[T] = reverse_tr(tr)
+    keyword_index = 0
+    for e in ciphertext:
+        key: T = keyword[keyword_index % len(keyword)]
+        output = reversed_tr[key][e]
+        keyword_index = keyword_index + 1
+        if e == ciphertext_interruptor:
+            keyword_index = 0
+        yield output
 
 
 def random_tr(alphabet: Sequence[T]) -> TR[T]:

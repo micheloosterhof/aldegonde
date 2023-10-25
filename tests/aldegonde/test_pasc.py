@@ -15,6 +15,39 @@ def test_vigenere() -> None:
     )
 
 
+def test_vigenere_lanaki() -> None:
+    """
+    from Lanaki 13. This is the first part of the interruptor test without the interruptor
+    """
+    key = "BUSINESSMACHINES"
+    plaintext = "AMMUNITIONFORFIRSTARTILL"
+    ciphertext = "BOLYRPJDROJKXTPFYXSXBPUU"
+    TR = pasc.quagmire2_tr(ABC, "HYDRAULIC", key, "A")
+    assert tuple(ciphertext) == tuple(e for e in pasc.pasc_encrypt(plaintext, key, TR))
+    assert tuple(plaintext) == tuple(e for e in pasc.pasc_decrypt(ciphertext, key, TR))
+
+
+def test_vigenere_interrupted() -> None:
+    """
+    From Lanaki chapter 13
+    """
+    key = "BUSINESSMACHINES"
+    plaintext = (
+        "AMMUNITIONFORFIRSTARTILLERYWILLBELOADEDAFTERAMMUNITIONFORTHIRDARTILLERY"
+    )
+    ciphertext = (
+        "BOLYRPJDROJKXTPFYXSXBPUUQHRNMYTTXHPCRFQBEJFIELLBONQOQVECXBODFPAZQONUFIC"
+    )
+    TR = pasc.quagmire2_tr(ABC, "HYDRAULIC", key, "A")
+    interruptor = "Q"
+    assert tuple(ciphertext) == tuple(
+        e for e in pasc.pasc_encrypt_interrupted(plaintext, key, TR, interruptor)
+    )
+    assert tuple(plaintext) == tuple(
+        e for e in pasc.pasc_decrypt_interrupted(ciphertext, key, TR, interruptor)
+    )
+
+
 def test_beaufort() -> None:
     key = "FORTIFICATION"
     plaintext = "DEFENDTHEEASTWALLOFTHECASTLE"
