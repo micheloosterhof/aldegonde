@@ -17,8 +17,12 @@ install: ## Install Python requirements
 
 .PHONY: upgrade
 upgrade: ## Upgrade Python requirements to latest version
-	pur
-	python -m pip pip install --upgrade -r ./requirements.txt
+	python -m pur -r requirements.txt
+	python -m pip install --upgrade -r ./requirements.txt
+	python -m pur -r requirements-docs.txt
+	python -m pip install --upgrade -r ./requirements-docs.txt
+	python -m pur -r requirements-dev.txt
+	python -m pip install --upgrade -r ./requirements-dev.txt
 
 .PHONY: clean
 clean: ## Clean generated data

@@ -47,7 +47,6 @@ def moebius(N: int) -> int:
         return 1
 
 
-
 if __name__ == "__main__":
     N = 17
     print(f"Möbius defs M(N) at N = {N} is: {moebius(N)}", end="\n")
