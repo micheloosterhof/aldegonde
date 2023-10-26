@@ -27,7 +27,7 @@ def test_vigenere_lanaki() -> None:
     assert tuple(plaintext) == tuple(e for e in pasc.pasc_decrypt(ciphertext, key, TR))
 
 
-def test_vigenere_interrupted() -> None:
+def test_vigenere_ciphertext_interrupted() -> None:
     """
     From Lanaki chapter 13
     """
@@ -41,10 +41,43 @@ def test_vigenere_interrupted() -> None:
     TR = pasc.quagmire2_tr(ABC, "HYDRAULIC", key, "A")
     interruptor = "Q"
     assert tuple(ciphertext) == tuple(
-        e for e in pasc.pasc_encrypt_interrupted(plaintext, key, TR, interruptor)
+        e
+        for e in pasc.pasc_encrypt_interrupted(
+            plaintext, key, TR, ciphertext_interruptor=interruptor
+        )
     )
     assert tuple(plaintext) == tuple(
-        e for e in pasc.pasc_decrypt_interrupted(ciphertext, key, TR, interruptor)
+        e
+        for e in pasc.pasc_decrypt_interrupted(
+            ciphertext, key, TR, ciphertext_interruptor=interruptor
+        )
+    )
+
+
+def test_vigenere_plaintext_interrupted() -> None:
+    """
+    From Lanaki chapter 13
+    """
+    key = "BUSINESSMACHINES"
+    plaintext = (
+        "AMMUNITIONFORFIRSTARTILLERYWILLBELOADEDAFTERAMMUNITIONFORTHIRDARTILLERY"
+    )
+    ciphertext = (
+        "BOLYRPJDROJKXKJFYXSXDJUPSYIYDPYFXURAFAENMJJVBOLYRPJDROJKXDGDXGUFDJUPSYI"
+    )
+    TR = pasc.quagmire2_tr(ABC, "HYDRAULIC", key, "A")
+    interruptor = "R"
+    assert tuple(ciphertext) == tuple(
+        e
+        for e in pasc.pasc_encrypt_interrupted(
+            plaintext, key, TR, plaintext_interruptor=interruptor
+        )
+    )
+    assert tuple(plaintext) == tuple(
+        e
+        for e in pasc.pasc_decrypt_interrupted(
+            ciphertext, key, TR, plaintext_interruptor=interruptor
+        )
     )
 
 

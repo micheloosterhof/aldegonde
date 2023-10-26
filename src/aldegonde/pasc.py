@@ -88,20 +88,20 @@ def pasc_decrypt_interrupted(
     ciphertext: Iterable[T],
     keyword: Sequence[T],
     tr: TR[T],
-    ciphertext_interruptor: T | None,
-    #    plaintext_interruptor: T | None,
+    ciphertext_interruptor: T | None = None,
+    plaintext_interruptor: T | None = None,
 ) -> Generator[T, None, None]:
     """Polyalphabetic substitution.
     NOTE: tr input is the same as for encryption, this function will reverse the key.
     """
-    # assert ciphertext_interruptor is not None or plaintext_interruptor is not None
+    assert ciphertext_interruptor is not None or plaintext_interruptor is not None
     reversed_tr: TR[T] = reverse_tr(tr)
     keyword_index = 0
     for e in ciphertext:
         key: T = keyword[keyword_index % len(keyword)]
         output = reversed_tr[key][e]
         keyword_index = keyword_index + 1
-        if e == ciphertext_interruptor:
+        if e == ciphertext_interruptor or output == plaintext_interruptor:
             keyword_index = 0
         yield output
 
