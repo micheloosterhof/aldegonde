@@ -44,16 +44,17 @@ def pasc_encrypt_interrupted(
     plaintext: Iterable[T],
     keyword: Sequence[T],
     tr: TR[T],
-    ciphertext_interruptor: T,
+    ciphertext_interruptor: T | None = None,
+    plaintext_interruptor: T | None = None,
 ) -> Generator[T, None, None]:
     """Polyalphabetic substitution."""
-    # assert ciphertext_interruptor is not None or plaintext_interruptor is not None
+    assert ciphertext_interruptor is not None or plaintext_interruptor is not None
     keyword_index = 0
     for e in plaintext:
         key: T = keyword[keyword_index % len(keyword)]
         output = tr[key][e]
         keyword_index = keyword_index + 1
-        if output == ciphertext_interruptor:
+        if output == ciphertext_interruptor or e == plaintext_interruptor:
             keyword_index = 0
         yield output
 
