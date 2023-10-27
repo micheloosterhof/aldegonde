@@ -8,7 +8,9 @@ from aldegonde.pasc import TR, T, reverse_tr
 
 
 def ciphertext_autokey_encrypt(
-    plaintext: Iterable[T], primer: Sequence[T], tr: TR
+    plaintext: Iterable[T],
+    primer: Sequence[T],
+    tr: TR,
 ) -> Generator[T, None, None]:
     """Ciphertext Autokey Encryption."""
     key: deque = deque(primer)
@@ -19,7 +21,9 @@ def ciphertext_autokey_encrypt(
 
 
 def ciphertext_autokey_decrypt(
-    ciphertext: Sequence[T], primer: Sequence[T], tr: TR
+    ciphertext: Sequence[T],
+    primer: Sequence[T],
+    tr: TR,
 ) -> Generator[T, None, None]:
     """Ciphertext Autokey Decryption."""
     rtr: TR[T] = reverse_tr(tr)
@@ -28,7 +32,9 @@ def ciphertext_autokey_decrypt(
 
 
 def plaintext_autokey_encrypt(
-    plaintext: Sequence[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
+    plaintext: Sequence[T],
+    primer: Sequence[T],
+    tr: dict[T, dict[T, T]],
 ) -> Generator[T, None, None]:
     """Plaintext Autokey Encryption."""
     for e, k in zip(plaintext, chain(primer, plaintext)):
@@ -36,7 +42,9 @@ def plaintext_autokey_encrypt(
 
 
 def plaintext_autokey_decrypt(
-    ciphertext: Iterable[T], primer: Sequence[T], tr: dict[T, dict[T, T]]
+    ciphertext: Iterable[T],
+    primer: Sequence[T],
+    tr: dict[T, dict[T, T]],
 ) -> Generator[T, None, None]:
     """Plaintext Autokey Decryption primitive P[i] = DF(C[i], P[i-1])."""
     rtr = reverse_tr(tr)

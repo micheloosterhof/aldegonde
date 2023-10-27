@@ -34,7 +34,10 @@ def print_colored_value(v: int) -> None:
 
 
 def print_auto_bigram_diagram(
-    runes: Sequence[T], alphabet: Sequence[T], skip: int = 1, cut: int = 0
+    runes: Sequence[T],
+    alphabet: Sequence[T],
+    skip: int = 1,
+    cut: int = 0,
 ) -> None:
     """Input is a sequence of items
     Output is the bigram frequency diagram printed to stdout.
@@ -62,7 +65,7 @@ def bigram_diagram(
         zip(
             ngrams.iterngrams(rows, cut=cut, length=length),
             ngrams.iterngrams(columns, cut=cut, length=length),
-        )
+        ),
     )
     bigram: dict[T, dict[T, int]] = defaultdict(dict)
     for k, v in res.items():

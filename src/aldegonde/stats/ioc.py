@@ -36,7 +36,10 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
 
 
 def nioc(
-    text: Sequence[T], alphabetsize: int, length: int = 1, cut: int = 0
+    text: Sequence[T],
+    alphabetsize: int,
+    length: int = 1,
+    cut: int = 0,
 ) -> tuple[float, float, float]:
     """Yield
     Output is the Index of Coincidence formatted as a float,
@@ -70,14 +73,20 @@ def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
             if length == 1 and cut == 1:
                 continue
             _, nic, sigmage = nioc(
-                text, alphabetsize=alphabetsize, length=length, cut=cut
+                text,
+                alphabetsize=alphabetsize,
+                length=length,
+                cut=cut,
             )
             print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={sigmage:.3f}σ ", end="| ")
         print()
 
 
 def sliding_window_ioc(
-    text: Sequence[T], length: int = 1, cut: int = 0, window: int = 100
+    text: Sequence[T],
+    length: int = 1,
+    cut: int = 0,
+    window: int = 100,
 ) -> list[float]:
     """Calculate sliding window IOC of a large data set."""
     output: list[float] = []

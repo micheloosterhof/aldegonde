@@ -77,9 +77,8 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
         key[e] = alphabet[(a * i + b) % len(alphabet)]
     if set(key.keys()) != set(key.values()):
         print(f"{key.items()} {key.values()}")
-        raise ValueError(
-            "Invalid Affine cipher parameter: A={a} is not coprime with the size of the alphabet {len(alphabet)}"
-        )
+        msg = "Invalid Affine cipher parameter: A={a} is not coprime with the size of the alphabet {len(alphabet)}"
+        raise ValueError(msg)
     return key
 
 

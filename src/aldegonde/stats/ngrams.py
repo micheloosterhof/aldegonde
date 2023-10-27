@@ -8,7 +8,9 @@ T = TypeVar("T")
 
 
 def iterngrams(
-    runes: Sequence[T], length: int, cut: int = 0
+    runes: Sequence[T],
+    length: int,
+    cut: int = 0,
 ) -> Generator[Sequence[T], None, None]:
     """Return ngrams for the given sequence
     Args:
@@ -80,14 +82,18 @@ def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
 
 
 def ngram_distribution(
-    text: Sequence[T], length: int = 1, cut: int = 0
+    text: Sequence[T],
+    length: int = 1,
+    cut: int = 0,
 ) -> dict[str, int]:
     """Return ngrams by count."""
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
 
 
 def ngram_positions(
-    text: Sequence[T], length: int = 1, cut: int = 0
+    text: Sequence[T],
+    length: int = 1,
+    cut: int = 0,
 ) -> dict[str, list[int]]:
     """Return each ngram and its starting locations in the source text."""
     out: dict[str, list[int]] = defaultdict(list)

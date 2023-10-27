@@ -21,7 +21,9 @@ function = Callable[[Sequence[T]], Sequence[T]]
 
 
 def pgsc_encrypt(
-    plaintext: Sequence[T], length: int, encryptfn: function
+    plaintext: Sequence[T],
+    length: int,
+    encryptfn: function,
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
     ciphertext: list[T] = []
@@ -31,7 +33,9 @@ def pgsc_encrypt(
 
 
 def pgsc_decrypt(
-    ciphertext: Sequence[T], length: int, decryptfn: function
+    ciphertext: Sequence[T],
+    length: int,
+    decryptfn: function,
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
     plaintext: list[T] = []
@@ -41,8 +45,7 @@ def pgsc_decrypt(
 
 
 def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
-    """Find the row and column of the letter in the matrix
-    """
+    """Find the row and column of the letter in the matrix"""
     for i in range(5):
         for j in range(5):
             if matrix[i][j] == letter:
@@ -51,8 +54,7 @@ def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
 
 
 def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
-    """Generate the Playfair Square
-    """
+    """Generate the Playfair Square"""
     # deduplicate key
     key_letters: list[T] = []
     for letter in word:

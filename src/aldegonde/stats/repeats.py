@@ -40,12 +40,14 @@ def print_repeat_statistics(
         sigmage: float = abs(num - expected) / math.sqrt(var)
         # sigmage: float = abs(num - expected1) / poisson.std(mu)
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.2f} S={sigmage:.2f}σ"
+            f"repeats length {length}: observed={num:d} expected={expected:.2f} S={sigmage:.2f}σ",
         )
 
 
 def repeat_distribution(
-    ciphertext: Sequence[T], length: int = 2, cut: int = 0
+    ciphertext: Sequence[T],
+    length: int = 2,
+    cut: int = 0,
 ) -> dict[str, int]:
     """Find repeating sequences in the list, up to `maximum`. Max defaults to 10
     Returns dictionary with as key the sequence as a string, and as value the number of occurences.
@@ -58,7 +60,9 @@ def repeat_distribution(
 
 
 def print_repeat_positions(
-    ciphertext: Sequence[T], minimum: int = 2, maximum: int = 10
+    ciphertext: Sequence[T],
+    minimum: int = 2,
+    maximum: int = 10,
 ) -> None:
     """Print repeating sequences in the list, up to `maximum`. Max defaults to 10."""
     for length in range(minimum, maximum + 1):
@@ -67,7 +71,9 @@ def print_repeat_positions(
 
 
 def repeat_positions(
-    ciphertext: Sequence[T], length: int, cut: int = 0
+    ciphertext: Sequence[T],
+    length: int,
+    cut: int = 0,
 ) -> dict[str, list[int]]:
     """Repeat positions are just ngrams where each list has at least 2 entries."""
     return {
@@ -78,7 +84,9 @@ def repeat_positions(
 
 
 def odd_spaced_repeats(
-    ciphertext: Sequence[T], minimum: int = 3, maximum: int = 6
+    ciphertext: Sequence[T],
+    minimum: int = 3,
+    maximum: int = 6,
 ) -> None:
     """ROD = percentage of odd-spaced repeats to all repeats."""
     d = []

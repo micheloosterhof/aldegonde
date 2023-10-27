@@ -27,7 +27,8 @@ def loadgrams(module: str, filename: str) -> dict[str, int]:
 
 
 def frequency_to_probability(
-    frequency_map: dict[str, int], decorator: Callable = lambda f: f
+    frequency_map: dict[str, int],
+    decorator: Callable = lambda f: f,
 ) -> dict[str, float]:
     """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
@@ -129,7 +130,8 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     # TODO: 0.01 is a magic number. Needs to be better than that.
     floor: float = log10(0.01 / sum(frequency_map.values()))
     ngrams: dict[str, float] = defaultdict(
-        lambda: floor, frequency_to_probability(frequency_map, decorator=log10)
+        lambda: floor,
+        frequency_to_probability(frequency_map, decorator=log10),
     )
 
     def inner(text: str) -> float:

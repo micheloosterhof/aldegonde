@@ -35,14 +35,18 @@ def isomorph(text: Sequence[T]) -> str:
 
 
 def isomorph_distribution(
-    ciphertext: Sequence[T], length: int, cut: int = 0
+    ciphertext: Sequence[T],
+    length: int,
+    cut: int = 0,
 ) -> dict[str, int]:
     """Return all isomorphs of a particular length from a sequence with their count."""
     return Counter([isomorph(x) for x in iterngrams(ciphertext, length=length)])
 
 
 def isomorph_positions(
-    text: Sequence[T], length: int = 1, cut: int = 0
+    text: Sequence[T],
+    length: int = 1,
+    cut: int = 0,
 ) -> dict[str, list[int]]:
     """Flexible isomorph positions function, returns each ngram and its starting location in the source text."""
     out: dict[str, list[int]] = defaultdict(list)
@@ -125,7 +129,7 @@ def print_isomorph_statistics(seq: Sequence[T], *, trace: bool = False) -> None:
             )
         try:
             print(
-                f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} S={abs(avgduplicate-duplicate)/stdevduplicate:5.2f}σ) "
+                f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} S={abs(avgduplicate-duplicate)/stdevduplicate:5.2f}σ) ",
             )
         except ZeroDivisionError:
             print(f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f})")

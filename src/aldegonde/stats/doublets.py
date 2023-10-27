@@ -10,7 +10,9 @@ T = TypeVar("T")
 
 
 def print_doublets_statistics(
-    runes: Sequence[T], alphabetsize: int, skip: int = 1
+    runes: Sequence[T],
+    alphabetsize: int,
+    skip: int = 1,
 ) -> None:
     """Find the number of doublets. doublet is X followed by X for any X."""
     dbls: list[int] = doublets(runes, skip=skip)
@@ -29,7 +31,7 @@ def doublets(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> list[
             positions.append(index)
             if trace:
                 print(
-                    f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}"
+                    f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}",
                 )
     return positions
 

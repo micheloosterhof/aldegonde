@@ -33,7 +33,9 @@ TR = dict[T, dict[T, T]]
 
 
 def pasc_encrypt(
-    plaintext: Iterable[T], keyword: Sequence[T], tr: TR[T]
+    plaintext: Iterable[T],
+    keyword: Sequence[T],
+    tr: TR[T],
 ) -> Generator[T, None, None]:
     """Polyalphabetic substitution."""
     for e, k in zip(plaintext, cycle(keyword)):
@@ -69,12 +71,15 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
         if len(output[keyword]) != len(tr[keyword]):
-            raise ValueError(f"TR ambiguous for key `{keyword}`")
+            msg = "TR ambiguous for key `{keyword}`"
+            raise ValueError(msg)
     return output
 
 
 def pasc_decrypt(
-    ciphertext: Iterable[T], keyword: Sequence[T], tr: TR[T]
+    ciphertext: Iterable[T],
+    keyword: Sequence[T],
+    tr: TR[T],
 ) -> Generator[T, None, None]:
     """Polyalphabetic substitution
     NOTE: tr input is the same as for encryption, this function will reverse the key.
@@ -144,7 +149,9 @@ def variantbeaufort_tr(alphabet: Sequence[T]) -> TR[T]:
 
 
 def quagmire1_tr(
-    alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T]
+    alphabet: Sequence[T],
+    keyword: Sequence[T],
+    key: Sequence[T],
 ) -> TR[T]:
     """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireI.pdf
     keyword is the mixed alphabet for the plaintext
@@ -163,10 +170,12 @@ def quagmire1_tr(
 
 
 def quagmire2_tr(
-    alphabet: Sequence[T], keyword: Sequence[T], key: Sequence[T], indicator: T
+    alphabet: Sequence[T],
+    keyword: Sequence[T],
+    key: Sequence[T],
+    indicator: T,
 ) -> TR[T]:
-    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireII.pdf
-    """
+    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireII.pdf"""
     al1 = masc.mixedalphabet(alphabet, keyword)
     tr: TR[T] = defaultdict(dict)
     index: int = alphabet.index(indicator)
@@ -179,8 +188,7 @@ def quagmire2_tr(
 
 
 def quagmire3_tr(alphabet: Sequence[T]) -> TR[T]:
-    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIII.pdf
-    """
+    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIII.pdf"""
     tr: TR[T] = defaultdict(dict)
     for i, key in enumerate(alphabet):
         for j, e in enumerate(alphabet):
@@ -195,8 +203,7 @@ def quagmire4_tr(
     key: Sequence[T],
     indicator: T,
 ) -> TR[T]:
-    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIV.pdf
-    """
+    """https://www.cryptogram.org/downloads/aca.info/ciphers/QuagmireIV.pdf"""
     ptmixal = masc.mixedalphabet(alphabet, ptkeyword)
     ctmixal = masc.mixedalphabet(alphabet, ctkeyword)
     tr: TR[T] = defaultdict(dict)
