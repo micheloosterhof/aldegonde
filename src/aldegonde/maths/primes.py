@@ -30,7 +30,8 @@ class PrimeGenerator(Iterable):
         candidate = self.current + 1
         while True:
             for prime in itertools.takewhile(
-                lambda p: candidate >= p**2, self.primes  # noqa: B023
+                lambda p: candidate >= p**2,  # noqa: B023
+                self.primes,
             ):
                 if candidate % prime == 0:
                     break

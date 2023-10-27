@@ -1,7 +1,7 @@
 """monoalphabetic substitution cipher.
 
 This contains all ciphers of this type. This includes Caesar, ROT13, Affine ciphers, etc
-All are monoalphabetic 
+All are monoalphabetic
 """
 
 

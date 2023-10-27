@@ -1,6 +1,6 @@
 """polyalphabetic substitution cipher.
 
-This contains all ciphers of this type. This includes Vigenere, Beaufort, Variant Beaufort, 
+This contains all ciphers of this type. This includes Vigenere, Beaufort, Variant Beaufort,
 Quagmire 1, 2, 3 and 4. And the generic polyalphabetic subsitution cipher.
 
 All are polyalphabetic substitution ciphers with a fixed key length
