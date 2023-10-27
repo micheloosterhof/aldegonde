@@ -1,15 +1,14 @@
 """Functions around comparing texts or distributions in texts."""
 
-from collections.abc import Callable, Sequence
-from collections import defaultdict
 import importlib.resources
+from collections import defaultdict
+from collections.abc import Callable, Sequence
 from math import log10
 from typing import TypeVar
 
-from scipy.stats import power_divergence, chisquare
+from scipy.stats import chisquare, power_divergence
 
-from aldegonde.stats.ngrams import ngram_distribution, iterngrams
-
+from aldegonde.stats.ngrams import iterngrams, ngram_distribution
 
 T = TypeVar("T")
 

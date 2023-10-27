@@ -2,10 +2,9 @@
 
 from collections.abc import Sequence
 from math import sqrt
-from typing import NamedTuple
-from typing import TypeVar
-from mypy_extensions import mypyc_attr
+from typing import NamedTuple, TypeVar
 
+from mypy_extensions import mypyc_attr
 
 from aldegonde.stats.ngrams import ngram_distribution
 

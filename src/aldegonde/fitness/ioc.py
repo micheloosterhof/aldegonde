@@ -1,7 +1,7 @@
 """IOC Scoring Function."""
 
-from math import sqrt
 from collections.abc import Callable, Sequence
+from math import sqrt
 from typing import TypeVar
 
 from aldegonde.stats import ioc

@@ -1,10 +1,10 @@
 """ciphertext autokey variations."""
 
-from collections.abc import Generator, Iterable, Sequence
 from collections import deque
+from collections.abc import Generator, Iterable, Sequence
 from itertools import chain
 
-from aldegonde.pasc import reverse_tr, T, TR
+from aldegonde.pasc import TR, T, reverse_tr
 
 
 def ciphertext_autokey_encrypt(

@@ -1,11 +1,11 @@
 """Functions to deal with Cicada 3301."""
 
 import random
-from collections.abc import Iterator
 from collections import defaultdict
+from collections.abc import Iterator
 
-from aldegonde.maths.primes import primes
 from aldegonde import pasc
+from aldegonde.maths.primes import primes
 
 CICADA_ALPHABET = [
     "ᚠ",

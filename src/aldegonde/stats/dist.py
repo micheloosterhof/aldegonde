@@ -5,7 +5,6 @@ from scipy.stats import chisquare
 
 from aldegonde.stats.ngrams import ngram_distribution
 
-
 T = TypeVar("T")
 
 """

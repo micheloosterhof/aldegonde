@@ -6,10 +6,10 @@ Quagmire 1, 2, 3 and 4. And the generic polyalphabetic subsitution cipher.
 All are polyalphabetic substitution ciphers with a fixed key length
 """
 
-from collections.abc import Generator, Iterable, Sequence
-from collections import defaultdict
-from itertools import cycle
 import random
+from collections import defaultdict
+from collections.abc import Generator, Iterable, Sequence
+from itertools import cycle
 from typing import Any, Protocol, TypeVar
 
 from aldegonde import masc

@@ -5,8 +5,8 @@ from collections.abc import Sequence
 from statistics import mean, median
 from typing import TypeVar
 
-from aldegonde.stats.ioc import ioc
 from aldegonde.analysis.kappa import kappa
+from aldegonde.stats.ioc import ioc
 
 T = TypeVar("T")
 

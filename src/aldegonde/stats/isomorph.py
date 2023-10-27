@@ -6,14 +6,13 @@ length 3: AAA | AAB ABA ABB | ABC (5)
 length 4: AAAA | AAAB AABA AABB ABAA ABAB ABBA ABBB |
 AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 """
-from collections import Counter, defaultdict
-from collections.abc import Sequence
 import random
 import statistics
+from collections import Counter, defaultdict
+from collections.abc import Sequence
 from typing import TypeVar
 
 from aldegonde.stats.ngrams import iterngrams
-
 
 T = TypeVar("T")
 

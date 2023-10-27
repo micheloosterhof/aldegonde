@@ -1,8 +1,8 @@
 """Entropy related functions."""
 
+import math
 from collections import Counter
 from collections.abc import Sequence
-import math
 from typing import TypeVar
 
 T = TypeVar("T")

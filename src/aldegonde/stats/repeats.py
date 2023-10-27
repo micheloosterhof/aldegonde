@@ -1,12 +1,11 @@
+import math
 from collections import Counter
 from collections.abc import Sequence
-import math
 from typing import TypeVar
 
 from scipy.stats import poisson
 
 from aldegonde.stats.ngrams import iterngrams, ngram_distribution, ngram_positions
-
 
 T = TypeVar("T")
 
