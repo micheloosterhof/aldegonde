@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 
 def print_separator(width: int) -> None:
-    """print separator"""
+    """Print separator"""
     print("---+-", end="")
     for _i in range(width):
         print("---", end="")
@@ -20,7 +20,7 @@ def print_separator(width: int) -> None:
 
 
 def print_colored_value(v: int) -> None:
-    """print colored value"""
+    """Print colored value"""
     if v == 0:
         print(Colors.bgRed, end="")
     elif v < 5:

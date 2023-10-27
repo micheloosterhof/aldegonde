@@ -14,7 +14,7 @@ T = TypeVar("T")
 
 
 def loadgrams(module: str, filename: str) -> dict[str, int]:
-    """load quadgrams from text file"""
+    """Load quadgrams from text file"""
     grams: dict[str, int] = {}
     with importlib.resources.open_text(module, filename) as f:
         lines = f.readlines()
@@ -114,7 +114,9 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
 
 def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     """Compute the score of a text by using the frequencies of ngrams.
+
     Example:
+    -------
         >>> fitness = NgramScore(english.unigrams)
         >>> fitness("ABC")
         -4.3622319742618245

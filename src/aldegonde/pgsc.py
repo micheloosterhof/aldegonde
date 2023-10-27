@@ -41,8 +41,7 @@ def pgsc_decrypt(
 
 
 def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
-    """
-    Find the row and column of the letter in the matrix
+    """Find the row and column of the letter in the matrix
     """
     for i in range(5):
         for j in range(5):
@@ -52,8 +51,7 @@ def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
 
 
 def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
-    """
-    Generate the Playfair Square
+    """Generate the Playfair Square
     """
     # deduplicate key
     key_letters: list[T] = []
@@ -131,7 +129,7 @@ def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
 
 
 def playfair_encrypt(plaintext: str, keyword: str) -> str:
-    """playfair encrypt"""
+    """Playfair encrypt"""
     if len(plaintext) % 2 == 1:
         plaintext += "Z"
     alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
@@ -144,7 +142,7 @@ def playfair_encrypt(plaintext: str, keyword: str) -> str:
 
 
 def playfair_decrypt(ciphertext: str, keyword: str) -> str:
-    """playfair decrypt"""
+    """Playfair decrypt"""
     alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
     square = playfair_square(keyword, alphabet=alphabet)
 

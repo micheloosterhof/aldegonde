@@ -74,8 +74,7 @@ def friedman_test(
 def interrupted_slices(
     seq: Sequence[T], step: int, interrupter: T, start: int = 0
 ) -> dict[int, list[T]]:
-    """
-    similar to slice() but with ciphertext interrupters and it returns all slices for a step
+    """Similar to slice() but with ciphertext interrupters and it returns all slices for a step
     """
     counter = 0
     slices: dict[int, list[T]] = defaultdict(list)

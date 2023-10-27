@@ -73,8 +73,7 @@ CICADA_ENGLISH_ALPHABET = [
 
 
 def r2i(rune: str) -> int:
-    """
-    rune to index
+    """Rune to index
     """
     for i, e in enumerate(CICADA_ALPHABET):
         if rune == e:
@@ -83,15 +82,13 @@ def r2i(rune: str) -> int:
 
 
 def i2r(rune: int) -> str:
-    """
-    index to rune
+    """Index to rune
     """
     return CICADA_ALPHABET[rune]
 
 
 def r2v(rune: str) -> int:
-    """
-    rune to (prime) value
+    """Rune to (prime) value
     """
     primelist = primes(110)
     for i, e in enumerate(CICADA_ALPHABET):
@@ -101,8 +98,7 @@ def r2v(rune: str) -> int:
 
 
 def v2r(value: int) -> str:
-    """
-    (prime) value to rune
+    """(prime) value to rune
     """
     primelist = primes(110)
     for i, e in enumerate(primelist):
@@ -112,8 +108,7 @@ def v2r(value: int) -> str:
 
 
 def v2i(value: int) -> int:
-    """
-    (prime) value to index
+    """(prime) value to index
     """
     primelist = primes(110)
     for i, e in enumerate(primelist):
@@ -230,8 +225,7 @@ def print_rune(runes: str, limit: int = 0) -> None:
 
 
 def valueTR(t: str = "vigenere") -> pasc.TR:
-    """
-    funny TR that works by prime values
+    """Funny TR that works by prime values
     """
     TR: pasc.TR = defaultdict(dict)
     for key in CICADA_ALPHABET:
