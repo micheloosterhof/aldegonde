@@ -4,7 +4,7 @@
 Decode welcome message
 """
 
-from aldegonde.structures import alphabet, sequence, cicada3301
+from aldegonde import c3301
 from aldegonde.stats import ioc, doublets
 
 welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗᛠᛇᛏᚳᚾᚫᛝᛗᛡᛡᛗᛗᚹᚫᛈᛞᛝᛡᚱᚩᛠᛡᛗᛁᚠᚠᛖᚢᛝᛇᚢᚫᚣᛈᚱᚫᛁᛈᚫᚳᚫᚫᚾᚹᛒᛉ\
@@ -24,7 +24,7 @@ def beaufort_decrypt_interrupted(
     primer: list[int] = [0],
     interruptors: list[int] = [],
     trace: bool = False,
-):
+) -> list[int]:
     """
     Plain Beaufort
     interruptors is list of positions where encryption (re)starts
@@ -43,20 +43,46 @@ def beaufort_decrypt_interrupted(
     return output
 
 
-print(f"ciphertext: {welcome}")
-seq = sequence.Sequence.fromstr(welcome, alphabet=cicada3301.CICADA_ALPHABET)
-print(f"alphabet: {seq.alphabet}")
-# print(f"ciphertext: {seq.data}")
-print(f"length: {len(seq)} runes")
-ioc.print_ioc_statistics(seq)
+def beaufort_encrypt_interrupted(
+    plaintext: list[int],
+    primer: list[int] = [0],
+    trace: bool = False,
+) -> list[int]:
+    """
+    Plain Beaufort that interrupts on rune 0 in plaintext
+    """
+    output: list[int] = []
+    keypos = 0
+    azlen = 29
+    keylen = len(primer)
+    for pos in range(0, len(plaintext)):
+        if plaintext[pos] == 0:
+            # output `F` rune and do not increase key position
+            output.append(0)
+        else:
+            output.append((plaintext[pos] - primer[keypos % keylen]) % azlen)
+            keypos = keypos + 1
+    return output
 
-plain = beaufort_decrypt_interrupted(
-    seq, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
+
+print(f"ciphertext: {welcome}")
+ct = [c3301.r2i(e) for e in welcome]
+# print(f"length: {len(seq)} runes")
+# ioc.print_ioc_statistics(seq, alphabetsize=29)
+
+pt = beaufort_decrypt_interrupted(
+    ct, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
 )
 
-plainseq = sequence.Sequence.fromlist(plain, alphabet=cicada3301.CICADA_ALPHABET)
+plaintext = "".join(c3301.i2r(i) for i in pt)
 
-doublets.print_doublets_statistics(plainseq)
+c3301.print_english(plaintext, limit=0)
+ioc.print_ioc_statistics(plaintext, alphabetsize=29)
 
-cicada3301.print_english(plain, limit=0)
-ioc.print_ioc_statistics(plainseq)
+rct = beaufort_encrypt_interrupted(pt, key)
+
+reciphertext = "".join(c3301.i2r(i) for i in rct)
+
+print(f"reciphertext: {reciphertext}")
+
+assert reciphertext == welcome
