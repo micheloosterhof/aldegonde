@@ -6,6 +6,7 @@ from collections.abc import Iterator
 
 from aldegonde import pasc
 from aldegonde.maths.primes import primes
+from aldegonde.stats import compare
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -151,8 +152,7 @@ def base29(value: int, padding: int = -1) -> list[int]:
         return l
     pad_value = 0
     pad_size = padding - len(l)
-    final_list = [*[pad_value] * pad_size, *l]
-    return final_list
+    return [*[pad_value] * pad_size, *l]
 
 
 class RuneIterator:
@@ -233,3 +233,13 @@ def valueTR(t: str = "vigenere") -> pasc.TR:
             else:
                 raise ValueError
     return TR
+
+
+# unigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "unigrams.txt")
+bigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "bigrams.txt")
+trigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "trigrams.txt")
+quadgrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "quadgrams.txt")
+
+quadgramscore = compare.NgramScorer(quadgrams)
+trigramscore = compare.NgramScorer(trigrams)
+bigramscore = compare.NgramScorer(bigrams)
