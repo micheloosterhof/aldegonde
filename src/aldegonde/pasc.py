@@ -31,6 +31,11 @@ T = TypeVar("T", bound=Comparable)
 # the second key is the plaintext being encrypted
 TR = dict[T, dict[T, T]]
 
+# There is a similar type, the `key table`. This contains all permutations to decrypt a text.
+# It may have duplicates (for duplicate key letters) and probably will not have all key letters.
+# The size is the period of the substitution
+KT = dict[int, dict[T, T]]
+
 
 def pasc_encrypt(
     plaintext: Iterable[T],
