@@ -101,3 +101,12 @@ def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
 
     assert len(output) == len(alphabet)
     return output
+
+
+def cycles(key: dict[T, T]) -> list:
+    """
+    TODO: analyze a key to determine its cycles
+    example, key FLYINGSAUCERBDHJKMOPQTVWXZ
+    has cycles: (AFGSOH) (BLRM) (CYXWVTPJ) (DIUQKEN) (Z)
+    """
+    return []
