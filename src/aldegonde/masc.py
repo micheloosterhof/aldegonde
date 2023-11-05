@@ -103,10 +103,37 @@ def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
     return output
 
 
-def cycles(key: dict[T, T]) -> list:
+def mixedalphabet2key(
+    plainalphabet: Sequence[T],
+    cipheralphabet: Sequence[T],
+) -> dict[T, T]:
+    """
+    turn an alphabet into a dict structure
+    """
+    out: dict[T, T] = {}
+    for p, c in zip(plainalphabet, cipheralphabet):
+        out[p] = c
+    return out
+
+
+def cycles(key: dict[T, T]) -> list[list[T]]:
     """
     TODO: analyze a key to determine its cycles
     example, key FLYINGSAUCERBDHJKMOPQTVWXZ
     has cycles: (AFGSOH) (BLRM) (CYXWVTPJ) (DIUQKEN) (Z)
     """
-    return []
+    alphabet: list[T] = key.keys()
+    solved: set[T] = set()
+    loops: list[list[T]] = []
+    for letter in alphabet:
+        if letter in solved:
+            continue
+        loop: list[T] = [letter]
+        nextletter = key[letter]
+        while nextletter != loop[0]:
+            loop.append(nextletter)
+            solved.add(nextletter)
+            nextletter = key[nextletter]
+        print(loop)
+        loops.append(loop)
+    return loops

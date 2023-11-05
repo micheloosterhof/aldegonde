@@ -60,3 +60,14 @@ def test_mixedalphabet() -> None:
     assert masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT") == list(
         "PAULBRNDTCEFGHIJKMOQSVWXYZ"
     )
+
+
+def test_cycles() -> None:
+    """example, key FLYINGSAUCERBDHJKMOPQTVWXZ
+    has cycles: (AFGSOH) (BLRM) (CYXWVTPJ) (DIUQKEN) (Z)
+    """
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    mixedalphabet = "FLYINGSAUCERBDHJKMOPQTVWXZ"
+    key = masc.mixedalphabet2key(plainalphabet=alphabet, cipheralphabet=mixedalphabet)
+    cycles = [list(x) for x in ["AFGSOH", "BLRM", "CYXWVTPJ", "DIUQKEN", "Z"]]
+    assert masc.cycles(key) == cycles
