@@ -31,8 +31,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
     if L < 2:
         return 0.0
     freqsum: float = sum(v * (v - 1) for v in freqs.values())
-    ic = freqsum / (L * (L - 1))
-    return ic
+    return freqsum / (L * (L - 1))
 
 
 def nioc(

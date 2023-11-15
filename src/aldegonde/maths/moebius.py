@@ -32,10 +32,9 @@ def moebius(N: int) -> int:
             # divisible by i^2
             if N % (i * i) == 0:
                 return 0
-            else:
-                # i occurs only once,
-                # increase p
-                p = p + 1
+            # i occurs only once,
+            # increase p
+            p = p + 1
 
     # All prime factors are
     # contained only once
@@ -43,8 +42,7 @@ def moebius(N: int) -> int:
     # else -1
     if p % 2 != 0:
         return -1
-    else:
-        return 1
+    return 1
 
 
 if __name__ == "__main__":
