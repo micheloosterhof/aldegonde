@@ -122,7 +122,7 @@ def cycles(key: dict[T, T]) -> list[list[T]]:
     example, key FLYINGSAUCERBDHJKMOPQTVWXZ
     has cycles: (AFGSOH) (BLRM) (CYXWVTPJ) (DIUQKEN) (Z)
     """
-    alphabet: list[T] = key.keys()
+    alphabet: list[T] = list(key.keys())
     solved: set[T] = set()
     loops: list[list[T]] = []
     for letter in alphabet:
