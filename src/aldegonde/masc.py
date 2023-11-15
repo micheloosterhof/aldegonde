@@ -76,7 +76,6 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
     for i, e in enumerate(alphabet):
         key[e] = alphabet[(a * i + b) % len(alphabet)]
     if set(key.keys()) != set(key.values()):
-        print(f"{key.items()} {key.values()}")
         msg = "Invalid Affine cipher parameter: A={a} is not coprime with the size of the alphabet {len(alphabet)}"
         raise ValueError(msg)
     return key
@@ -134,6 +133,5 @@ def cycles(key: dict[T, T]) -> list[list[T]]:
             loop.append(nextletter)
             solved.add(nextletter)
             nextletter = key[nextletter]
-        print(loop)
         loops.append(loop)
     return loops
