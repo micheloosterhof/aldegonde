@@ -99,10 +99,8 @@ def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     else:
         col1, col2 = col2, col1
 
-    # Get the ciphertext pair
-    ciphertext = matrix[row1][col1] + matrix[row2][col2]
-
-    return ciphertext
+    # Return the ciphertext pair
+    return matrix[row1][col1] + matrix[row2][col2]
 
 
 def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
@@ -124,10 +122,8 @@ def playfair_decrypt_pair(pair: str, matrix: list[list[str]]) -> str:
     else:
         col1, col2 = col2, col1
 
-    # Get the plaintext pair
-    plaintext = matrix[row1][col1] + matrix[row2][col2]
-
-    return plaintext
+    # Return the plaintext pair
+    return matrix[row1][col1] + matrix[row2][col2]
 
 
 def playfair_encrypt(plaintext: str, keyword: str) -> str:
