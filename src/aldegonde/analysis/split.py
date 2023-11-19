@@ -1,5 +1,6 @@
 """Functions to split a text in various ways."""
 
+from collections import defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
@@ -16,6 +17,22 @@ def split_by_slice(inp: Sequence[T], size: int) -> dict[int, Sequence[T]]:
     for i in range(size):
         outp[i] = inp[slice(i, len(inp), size)]
     return outp
+
+
+def split_by_slice_interrupted(
+    seq: Sequence[T],
+    step: int,
+    interrupter: T,
+) -> dict[int, list[T]]:
+    """Similar to split_by_splice() but with ciphertext interrupters and it returns all slices for a step"""
+    counter = 0
+    slices: dict[int, list[T]] = defaultdict(list)
+    for e in seq:
+        if counter == step or e == interrupter:
+            counter = 0
+        slices[counter].append(e)
+        counter = counter + 1
+    return slices
 
 
 def split_by_character(inp: Sequence[T], skip: int = 1) -> dict[T, list[T]]:

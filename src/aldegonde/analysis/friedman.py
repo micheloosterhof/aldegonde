@@ -1,11 +1,11 @@
 """Friedman test to detect use of the same alphabet at regular intervals."""
 
-from collections import defaultdict
 from collections.abc import Sequence
 from statistics import mean, median
 from typing import TypeVar
 
 from aldegonde.analysis.kappa import kappa
+from aldegonde.analysis.split import split_by_slice_interrupted
 from aldegonde.stats.ioc import ioc
 
 T = TypeVar("T")
@@ -71,23 +71,6 @@ def friedman_test(
             print("  ")
 
 
-def interrupted_slices(
-    seq: Sequence[T],
-    step: int,
-    interrupter: T,
-    start: int = 0,
-) -> dict[int, list[T]]:
-    """Similar to slice() but with ciphertext interrupters and it returns all slices for a step"""
-    counter = 0
-    slices: dict[int, list[T]] = defaultdict(list)
-    for e in seq:
-        if counter == step or e == interrupter:
-            counter = 0
-        slices[counter].append(e)
-        counter = counter + 1
-    return slices
-
-
 def friedman_test_with_interrupter(
     ciphertext: Sequence[T],
     alphabet: Sequence[T],
@@ -119,7 +102,11 @@ def friedman_test_with_interrupter(
         for period in range(minperiod, maxperiod + 1):
             kscore = kappa(ciphertext, period) * len(alphabet)
             iocs: list[float] = []
-            kv = interrupted_slices(ciphertext, step=period, interrupter=interrupter)
+            kv = split_by_slice_interrupted(
+                ciphertext,
+                step=period,
+                interrupter=interrupter,
+            )
             # print(kv)
             for k, v in kv.items():
                 ic: float = ioc(v) * len(alphabet)

@@ -1,12 +1,10 @@
 """Twist test to detect use of the same alphabet at regular intervals."""
 
-from collections import Counter, defaultdict
-from collections.abc import Sequence
-from statistics import mean, median
+from collections import Counter
 from typing import TypeVar
 
-from aldegonde.analysis.split import split_by_slice
-from aldegonde.stats.compare import unigrams, frequency_to_probability
+from aldegonde.analysis.split import split_by_slice, split_by_slice_interrupted
+from aldegonde.stats.compare import frequency_to_probability, unigrams
 
 T = TypeVar("T")
 
@@ -29,7 +27,7 @@ def twist(afreqs: list[float], bfreqs: list[float]) -> float:
 
 
 def twist_test(
-    ciphertext: Sequence[T],
+    ciphertext: str,
     minperiod: int = 1,
     maxperiod: int = 20,
     *,
@@ -53,3 +51,32 @@ def twist_test(
         tw = twist(english, probs)
 
         print(f"period {period} TWIST:{tw}")
+
+
+def twist_test_with_interrupter(
+    ciphertext: str,
+    alphabet: str,
+    minperiod: int = 1,
+    maxperiod: int = 20,
+    *,
+    trace: bool = False,
+) -> None:
+    """Print the twist test"""
+    if trace is True:
+        print("Testing for periodicity using twist test")
+
+    for interrupter in alphabet:
+        for period in range(minperiod, maxperiod + 1):
+            slices = split_by_slice_interrupted(ciphertext, period, interrupter)
+            probs: list[float] = [0.0] * 26
+
+            for sl in slices.values():
+                prob = sorted(frequency_to_probability(dict(Counter(sl))).values())
+                padded = [0.0] * (26 - len(prob)) + prob
+                for x in range(len(probs)):
+                    probs[x] += padded[x] / period
+
+            english = sorted(frequency_to_probability(unigrams).values())
+            tw = twist(english, probs)
+
+            print(f"twist: period {period} interrupter: {interrupter} twist:{tw:0.5f}")
