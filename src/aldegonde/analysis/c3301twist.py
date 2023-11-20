@@ -82,7 +82,7 @@ def twist_test_with_interrupter(
                 for x in range(len(probs)):
                     probs[x] += padded[x] / period
 
-            english = sorted(frequency_to_probability(unigrams).values())
+            runeglish = sorted(frequency_to_probability(unigrams).values())
             twists[period] = c3301twist(runeglish, probs)
 
         for period in range(minperiod + 1, maxperiod):
