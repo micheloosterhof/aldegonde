@@ -37,6 +37,8 @@ def twist_test(
     if trace is True:
         print("Testing for periodicity using twist test")
 
+    twists: dict[int, float] = {}
+
     for period in range(minperiod, maxperiod + 1):
         slices = split_by_slice(ciphertext, period)
         probs: list[float] = [0.0] * 26
@@ -48,9 +50,15 @@ def twist_test(
                 probs[x] += padded[x] / period
 
         english = sorted(frequency_to_probability(unigrams).values())
-        tw = twist(english, probs)
+        # tw = twist(english, probs)
+        twists[period] = twist(english, probs)
 
-        print(f"period {period} TWIST:{tw}")
+        # print(f"twist: period={period:02} twist={tw:0.5f}")
+
+    for period in range(minperiod + 1, maxperiod):
+        print(f"twist: period: {period:02} twist: {twists[period]:0.5f}")
+        twistplusplus = twists[period] - (twists[period - 1] + twists[period + 1]) / 2
+        print(f"twist: period: {period:02} twist++: {twistplusplus:0.5f}")
 
 
 def twist_test_with_interrupter(
@@ -66,6 +74,7 @@ def twist_test_with_interrupter(
         print("Testing for periodicity using twist test")
 
     for interrupter in alphabet:
+        twists: dict[int, float] = {}
         for period in range(minperiod, maxperiod + 1):
             slices = split_by_slice_interrupted(ciphertext, period, interrupter)
             probs: list[float] = [0.0] * 26
@@ -77,6 +86,11 @@ def twist_test_with_interrupter(
                     probs[x] += padded[x] / period
 
             english = sorted(frequency_to_probability(unigrams).values())
-            tw = twist(english, probs)
+            twists[period] = twist(english, probs)
 
-            print(f"twist: period {period} interrupter: {interrupter} twist:{tw:0.5f}")
+        for period in range(minperiod + 1, maxperiod):
+            print(f"twist: period: {period:02} twist: {twists[period]:0.5f}")
+            twistplusplus = (
+                twists[period] - (twists[period - 1] + twists[period + 1]) / 2
+            )
+            print(f"twist: period: {period:02} twist++: {twistplusplus:0.5f}")
