@@ -235,7 +235,7 @@ def valueTR(t: str = "vigenere") -> pasc.TR:
     return TR
 
 
-# unigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "unigrams.txt")
+unigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "unigrams.txt")
 bigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "bigrams.txt")
 trigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "trigrams.txt")
 quadgrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "quadgrams.txt")
