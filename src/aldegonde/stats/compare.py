@@ -1,8 +1,8 @@
 """Functions around comparing texts or distributions in texts."""
 
-from importlib.resources import files
 from collections import defaultdict
 from collections.abc import Callable, Sequence
+from importlib.resources import files
 from math import log10
 from typing import TypeVar
 

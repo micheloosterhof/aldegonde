@@ -4,8 +4,8 @@ from collections import Counter
 from typing import TypeVar
 
 from aldegonde.analysis.split import split_by_slice, split_by_slice_interrupted
-from aldegonde.stats.compare import frequency_to_probability
 from aldegonde.c3301 import unigrams
+from aldegonde.stats.compare import frequency_to_probability
 
 T = TypeVar("T")
 
