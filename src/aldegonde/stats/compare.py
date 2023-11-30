@@ -1,6 +1,6 @@
 """Functions around comparing texts or distributions in texts."""
 
-import importlib.resources
+from importlib.resources import files
 from collections import defaultdict
 from collections.abc import Callable, Sequence
 from math import log10
@@ -16,7 +16,8 @@ T = TypeVar("T")
 def loadgrams(module: str, filename: str) -> dict[str, int]:
     """Load quadgrams from text file"""
     grams: dict[str, int] = {}
-    with importlib.resources.open_text(module, filename) as f:
+    with files(module).joinpath(filename).open() as f:
+        #    with importlib.resources.open_text(module, filename) as f:
         lines = f.readlines()
         for line in lines:
             if line.startswith("#"):
