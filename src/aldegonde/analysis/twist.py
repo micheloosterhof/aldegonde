@@ -1,4 +1,5 @@
-"""Twist test to detect use of the same alphabet at regular intervals."""
+"""Twist method (2015) by Barr and Simoson to detect use of the
+   same alphabet at regular intervals."""
 
 from collections import Counter
 from typing import TypeVar
@@ -23,6 +24,7 @@ def twist(afreqs: list[float], bfreqs: list[float]) -> float:
         twist += safreqs[r] - sbfreqs[r]
     for r in range(13, 26):
         twist += sbfreqs[r] - safreqs[r]
+
     return twist
 
 
