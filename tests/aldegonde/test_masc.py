@@ -22,7 +22,7 @@ def test_masc_encrypt_caesar() -> None:
 
 def test_reverse_key() -> None:
     assert masc.shiftedkey(ABC, shift=13) == masc.reverse_key(
-        masc.shiftedkey(ABC, shift=13)
+        masc.shiftedkey(ABC, shift=13),
     )
 
 
@@ -46,7 +46,6 @@ def test_affinekey() -> None:
         assert masc.affinekey(ABC, a=2, b=8) == masc.affinekey(ABC, a=2, b=8)
     except ValueError:
         assert 1 == 1
-        pass
     AFFINE_CIPHERTEXT = "OYHYJLEVYQBLSRIJLYEC"
     AFFINE_PLAINTEXT = "CELEBRATESPRINGBREAK"
     AFFINE_KEY_A = 5
@@ -58,7 +57,7 @@ def test_affinekey() -> None:
 
 def test_mixedalphabet() -> None:
     assert masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "PAULBRANDT") == list(
-        "PAULBRNDTCEFGHIJKMOQSVWXYZ"
+        "PAULBRNDTCEFGHIJKMOQSVWXYZ",
     )
 
 

@@ -1,8 +1,8 @@
 from aldegonde.stats.ngrams import (
-    ngrams,
     iterngrams,
-    ngram_positions,
     ngram_distribution,
+    ngram_positions,
+    ngrams,
 )
 
 uniq = [0, 1, 2, 3, 4]

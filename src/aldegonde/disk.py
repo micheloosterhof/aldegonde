@@ -1,13 +1,9 @@
 """disk cipher variations: Wheatstone Cryptograph, Wadsworth cipher
 disk, Urkryptografen"""
 
-"""http://www.jproc.ca/crypto/crypto_watch.html"""
-
-from collections import deque
 from collections.abc import Generator, Iterable, Sequence
-from itertools import chain
 
-from aldegonde.pasc import TR, T, reverse_tr
+from aldegonde.pasc import T
 
 """
 From: https://eprint.iacr.org/2020/1492.pdf
@@ -100,4 +96,10 @@ def disk_decrypt(
     cipherabc: Sequence[T],
 ) -> Generator[T, None, None]:
     """Disk Decryption."""
-    yield ""
+    state: int = 0
+    for e in ciphertext:
+        x = (plainabc.index(e) - state) % len(plainabc)
+        if x == 0:
+            x = len(plainabc)
+        state += x
+        yield cipherabc[state % len(cipherabc)]

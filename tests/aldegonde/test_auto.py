@@ -1,6 +1,5 @@
 from aldegonde import auto, pasc
 
-
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -10,10 +9,10 @@ def test_plaintext_autokey_vigenere_x() -> None:
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "KBHBNDOKURKXVDMSLXV"
     assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
-        ciphertext
+        ciphertext,
     )
     assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
-        plaintext
+        plaintext,
     )
 
 
@@ -23,10 +22,10 @@ def test_plaintext_autokey_vigenere_typewriter() -> None:
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "GMIMBPYNEIGSKUFQJYR"
     assert list(auto.plaintext_autokey_encrypt(plaintext, primer, tr)) == list(
-        ciphertext
+        ciphertext,
     )
     assert list(auto.plaintext_autokey_decrypt(ciphertext, primer, tr)) == list(
-        plaintext
+        plaintext,
     )
 
 
@@ -36,10 +35,10 @@ def test_ciphertext_autokey_vigenere_x() -> None:
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "KYRZECSMMDWARDDVOSJ"
     assert list(auto.ciphertext_autokey_encrypt(plaintext, primer, tr)) == list(
-        ciphertext
+        ciphertext,
     )
     assert list(auto.ciphertext_autokey_decrypt(ciphertext, primer, tr)) == list(
-        plaintext
+        plaintext,
     )
 
 
@@ -49,8 +48,8 @@ def test_ciphertext_autokey_vigenere_typewriter() -> None:
     plaintext = "NOTIFYQUARTERMASTER"
     ciphertext = "GMIMBPYNEIZQZYBHRRV"
     assert list(auto.ciphertext_autokey_encrypt(plaintext, primer, tr)) == list(
-        ciphertext
+        ciphertext,
     )
     assert list(auto.ciphertext_autokey_decrypt(ciphertext, primer, tr)) == list(
-        plaintext
+        plaintext,
     )

@@ -43,13 +43,13 @@ def test_vigenere_ciphertext_interrupted() -> None:
     assert tuple(ciphertext) == tuple(
         e
         for e in pasc.pasc_encrypt_interrupted(
-            plaintext, key, TR, ciphertext_interruptor=interruptor
+            plaintext, key, TR, ciphertext_interruptor=interruptor,
         )
     )
     assert tuple(plaintext) == tuple(
         e
         for e in pasc.pasc_decrypt_interrupted(
-            ciphertext, key, TR, ciphertext_interruptor=interruptor
+            ciphertext, key, TR, ciphertext_interruptor=interruptor,
         )
     )
 
@@ -70,13 +70,13 @@ def test_vigenere_plaintext_interrupted() -> None:
     assert tuple(ciphertext) == tuple(
         e
         for e in pasc.pasc_encrypt_interrupted(
-            plaintext, key, TR, plaintext_interruptor=interruptor
+            plaintext, key, TR, plaintext_interruptor=interruptor,
         )
     )
     assert tuple(plaintext) == tuple(
         e
         for e in pasc.pasc_decrypt_interrupted(
-            ciphertext, key, TR, plaintext_interruptor=interruptor
+            ciphertext, key, TR, plaintext_interruptor=interruptor,
         )
     )
 
