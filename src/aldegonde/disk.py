@@ -98,8 +98,8 @@ def disk_decrypt(
     """Disk Decryption."""
     state: int = 0
     for e in ciphertext:
-        x = (plainabc.index(e) - state) % len(plainabc)
-        if x == 0:
-            x = len(plainabc)
-        state += x
-        yield cipherabc[state % len(cipherabc)]
+        y = (cipherabc.index(e) - state) % len(cipherabc)
+        if y == 0:
+            y = len(cipherabc)
+        state += y
+        yield plainabc[state % len(plainabc)]

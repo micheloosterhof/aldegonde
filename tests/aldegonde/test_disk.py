@@ -8,7 +8,7 @@ def test_disk_wheatstone() -> None:
     plaintext = "SECRET MESQAGE "
     ciphertext = "YBRPUMDOGLMUTWA"
     assert list(disk.disk_encrypt(plaintext, plainabc, cipherabc)) == list(ciphertext)
-    # assert list(disk.disk_decrypt(ciphertext, plainabc, cipherabc)) == list(plaintext)
+    assert list(disk.disk_decrypt(ciphertext, plainabc, cipherabc)) == list(plaintext)
 
 
 # def test_disk_wadsworth() -> None:
