@@ -91,7 +91,7 @@ def disk_encrypt(
 
 
 def disk_decrypt(
-    ciphertext: Sequence[T],
+    ciphertext: Iterable[T],
     plainabc: Sequence[T],
     cipherabc: Sequence[T],
 ) -> Generator[T, None, None]:
