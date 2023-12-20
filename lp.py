@@ -9,10 +9,10 @@ import math
 from scipy.stats import poisson
 
 from aldegonde import pasc, masc, auto, c3301
-from aldegonde.stats import ioc, repeats, doublets, dist, ngrams, entropy, isomorph
+from aldegonde.stats import ioc, kappa, repeats, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
-from aldegonde.analysis import kappa, friedman
+from aldegonde.analysis import friedman
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -59,7 +59,7 @@ for i, s in enumerate(y):
     FIRFUMFERENFE = "ᚠᛁᚱᚠᚢᛗᚠᛖᚱᛖᚾᚠᛖ"
     seg = "".join(pasc.pasc_decrypt(aut, keyword=FIRFUMFERENFE, tr=BOF))
 
-    seg = aut
+    seg = raw
     print("SEG:")
     c3301.print_all(seg, limit=30)
 
@@ -80,8 +80,6 @@ for i, s in enumerate(y):
         ioc.print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
         #bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
-        for i in range(1, 50):
-            doublets.print_doublets_statistics(seg, skip=i, alphabetsize=29)
         kappa.print_kappa(seg, alphabetsize=29, trace=True)
         friedman.friedman_test(seg, maxperiod=34)
         friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)

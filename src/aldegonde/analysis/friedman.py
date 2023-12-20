@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from statistics import mean, median
 from typing import TypeVar
 
-from aldegonde.analysis.kappa import kappa
+from aldegonde.stats.kappa import kappa
 from aldegonde.analysis.split import split_by_slice_interrupted
 from aldegonde.stats.ioc import ioc
 
