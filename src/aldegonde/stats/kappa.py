@@ -27,7 +27,7 @@ def doublets(
 
 
 def kappa(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> float:
-    dbl, length = doublets(runes)
+    dbl, length = doublets(runes, skip=skip)
     return len(dbl) / length
 
 
