@@ -66,16 +66,18 @@ def triplets(runes: Sequence[T]) -> int:
 
 def print_kappa(
     ciphertext: Sequence[T],
-    alphabetsize: int,
+    alphabetsize: int = 0,
     minimum: int = 1,
     maximum: int = 51,
     threshold: float = 1.3,
     *,
     trace: bool = False,
 ) -> None:
-    """Kappa test for a range."""
+    """Kappa test for a range. if alphabet size is 0, it will determine this based on unique characters in ciphertext"""
     assert maximum >= 0
     assert minimum >= 1
+    if alphabetsize == 0:
+        alphabetsize = len(set(ciphertext))
     if maximum == 0:
         maximum = int(len(ciphertext) / 2)
     elif maximum > len(ciphertext):

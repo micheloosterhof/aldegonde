@@ -80,7 +80,7 @@ for i, s in enumerate(y):
         ioc.print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
         #bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
-        kappa.print_kappa(seg, alphabetsize=29, trace=True)
+        kappa.print_kappa(seg, trace=True)
         friedman.friedman_test(seg, maxperiod=34)
         friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
