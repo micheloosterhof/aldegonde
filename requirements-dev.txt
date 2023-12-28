@@ -3,7 +3,7 @@ build==1.0.3
 build==1.0.3
 coverage==7.3.4
 mypy-extensions==1.0.0
-mypy==1.7.1
+mypy==1.8.0
 pipdeptree==2.13.1
 pytest==7.4.3
 ruff==0.1.9
