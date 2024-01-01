@@ -1,7 +1,7 @@
 black==23.12.1
 build==1.0.3
 build==1.0.3
-coverage==7.3.4
+coverage==7.4.0
 mypy-extensions==1.0.0
 mypy==1.8.0
 pipdeptree==2.13.1
