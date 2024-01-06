@@ -1,23 +1,10 @@
 """
-Rail Fence Cipher Encryption and Decryption
+Various transposition ciphers
 """
-
-
-def transposition_encrypt(plaintext: str, key: str) -> str:
-    """
-    transposition encryption
-    """
-
-
-def transposition_decrypt(plaintext: str, key: str) -> str:
-    """
-    transposition decryption
-    """
-
 
 def rail_encrypt(plaintext: str, key: int) -> str:
     """
-    function to encrypt a message
+    function to encrypt a message with railfence
 
     # create the matrix to cipher
     # plain text key = rows ,
