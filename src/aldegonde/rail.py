@@ -77,3 +77,53 @@ def rail_decrypt(ciphertext: str, key: int) -> str:
             row -= 1
 
     return "".join(result)
+
+
+def scytale_encrypt(ciphertext: str, key: int) -> str:
+    """
+    This function receives cipher-text and key and returns the original
+    text after decryption
+    """
+    scytale: list[list[str]] = [["\n" for _i in ciphertext] for _j in range(key)]
+
+    # create the scytale matrix and fill with *'s
+    for col in range(len(ciphertext)):
+        scytale[col % key][col] = "*"
+
+    # now we can fill the scytale matrix with ciphertext values
+    index = 0
+    for i in range(key):
+        for j in range(len(ciphertext)):
+            if (scytale[i][j] == "*") and (index < len(ciphertext)):
+                scytale[i][j] = ciphertext[index]
+                index += 1
+
+    result = []
+    for col in range(len(ciphertext)):
+        result.append(scytale[col % key][col])
+
+    return "".join(result)
+
+
+def scytale_decrypt(plaintext: str, key: int) -> str:
+    """
+    function to encrypt a message
+
+    # create the matrix to cipher
+    # plain text key = rows ,
+    # length(text) = columns
+    # filling the scytale matrix to distinguish filled spaces from blank ones
+    """
+    scytale: list[list[str]] = [[None for _i in plaintext] for _j in range(key)]
+
+    for col, letter in enumerate(plaintext):
+        scytale[col % key][col] = letter
+
+    print(scytale)
+
+    result: list[str] = []
+    for line in scytale:
+        for letter in line:
+            if letter is not None:
+                result.append(letter)
+    return "".join(result)
