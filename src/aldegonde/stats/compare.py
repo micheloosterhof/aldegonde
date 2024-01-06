@@ -128,7 +128,7 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
     http://practicalcryptography.com/media/cryptanalysis/files/ngram_score_1.py
     """
     length = len(next(iter(frequency_map)))
-    # TODO: 0.01 is a magic number. Needs to be better than that.
+    # 0.01 is a magic number. Needs to be better than that.
     floor: float = log10(0.01 / sum(frequency_map.values()))
     ngrams: dict[str, float] = defaultdict(
         lambda: floor,
