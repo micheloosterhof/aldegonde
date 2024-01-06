@@ -23,3 +23,13 @@ def test_scytale() -> None:
     assert tuple(ciphertext) == tuple(e for e in CIPHER)
     plaintext = trns.scytale_decrypt(CIPHER, key=key)
     assert tuple(plaintext) == tuple(e for e in PLAIN)
+
+
+def test_columnar_transposition() -> None:
+    PLAIN = """THENOSEISPOINTINGDOWNANDTHEHOUSESAREGETTINGBIGGER"""
+    CIPHER = """TIIAOEGEPGDSEINODTETGHSNNUGBSNWEAIEETNHRNROIOHSTG"""
+    key = "1423756"
+    ciphertext = trns.columnar_transposition_encrypt(PLAIN, key=key)
+    assert tuple(ciphertext) == tuple(e for e in CIPHER)
+    plaintext = trns.columnar_transposition_decrypt(CIPHER, key=key)
+    assert tuple(plaintext) == tuple(e for e in PLAIN)
