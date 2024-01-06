@@ -1,9 +1,7 @@
 """module description."""
 
-from collections.abc import Iterator
 from collections.abc import Sequence
 from math import sqrt
-from typing import NamedTuple
 from typing import TypeVar
 
 from scipy.stats import poisson
@@ -12,7 +10,7 @@ T = TypeVar("T")
 
 
 def doublets(
-    runes: Sequence[T], skip: int = 1, *, trace: bool = False
+    runes: Sequence[T], skip: int = 1, *, trace: bool = False,
 ) -> tuple[list[int], int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
@@ -90,7 +88,7 @@ def print_kappa(
         mean, var = poisson.stats(mu, loc=0, moments="mv")
         sigmage: float = abs(l - mean) / sqrt(var)
         print(
-            f"kappa/doublets: skip={keylen:<2d} count={l:<3d} expected={mean:<3.2f} S={sigmage:.2f}σ ioc={ioc:1.3f}"
+            f"kappa/doublets: skip={keylen:<2d} count={l:<3d} expected={mean:<3.2f} S={sigmage:.2f}σ ioc={ioc:1.3f}",
         )
         # if k > threshold or trace is True:
         #    print(f"kappa: keylen={keylen:02d}," + f"ioc={k:.3f} ")
