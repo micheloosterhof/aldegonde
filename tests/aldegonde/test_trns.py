@@ -1,4 +1,4 @@
-from aldegonde import rail
+from aldegonde import trns
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -9,9 +9,9 @@ def test_rail() -> None:
     PLAIN = """WEAREDISCOVEREDFLEEATONCE"""
     CIPHER = """WECRLTEERDSOEEFEAOCAIVDEN"""
     key = 3
-    ciphertext = rail.rail_encrypt(PLAIN, key=key)
+    ciphertext = trns.rail_encrypt(PLAIN, key=key)
     assert tuple(ciphertext) == tuple(e for e in CIPHER)
-    plaintext = rail.rail_decrypt(CIPHER, key=key)
+    plaintext = trns.rail_decrypt(CIPHER, key=key)
     assert tuple(plaintext) == tuple(e for e in PLAIN)
 
 
@@ -19,7 +19,7 @@ def test_scytale() -> None:
     PLAIN = """WEAREDISCOVEREDFLEEATONCE"""
     CIPHER = """WOEEVEAEARRTEEODDNIFCSLEC"""
     key = 3
-    ciphertext = rail.scytale_encrypt(PLAIN, key=key)
+    ciphertext = trns.scytale_encrypt(PLAIN, key=key)
     assert tuple(ciphertext) == tuple(e for e in CIPHER)
-    plaintext = rail.scytale_decrypt(CIPHER, key=key)
+    plaintext = trns.scytale_decrypt(CIPHER, key=key)
     assert tuple(plaintext) == tuple(e for e in PLAIN)
