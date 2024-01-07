@@ -14,6 +14,8 @@ def doublets(
 ) -> tuple[list[int], int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
+    if len(runes) == skip:
+        return ([], 0)
     for index in range(len(runes) - skip):
         if runes[index] == runes[index + skip]:
             positions.append(index)
