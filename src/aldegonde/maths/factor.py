@@ -1,15 +1,30 @@
 """prime factorization."""
 
 
-def prime_factors(n: int) -> list[int]:
+def prime_factors(number: int) -> list[int]:
+    """
+    all prime factors of a number
+    """
     i = 2
     factors = []
-    while i * i <= n:
-        if n % i:
+    while i * i <= number:
+        if number % i:
             i += 1
         else:
-            n //= i
+            number //= i
             factors.append(i)
-    if n > 1:
-        factors.append(n)
+    if number > 1:
+        factors.append(number)
     return factors
+
+
+def two_factors(number: int) -> list[tuple[int, int]]:
+    """
+    Based on integer input, output all factors that make up this number
+    """
+    output = []
+    for factor1 in range(2, number // 2):
+        if number % factor1 == 0:
+            factor2 = number // factor1
+            output.append((factor1, factor2))
+    return output
