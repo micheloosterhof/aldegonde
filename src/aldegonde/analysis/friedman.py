@@ -31,6 +31,9 @@ def friedman_test(
     if trace is True:
         print("Testing for periodicity using friedman test")
 
+    if maxperiod > len(ciphertext):
+        maxperiod = len(ciphertext) -1
+
     for period in range(minperiod, maxperiod + 1):
         kscore = kappa(ciphertext, period)
         iocs: list[float] = []
