@@ -113,7 +113,7 @@ def scytale_decrypt(plaintext: str, key: int) -> str:
     # length(text) = columns
     # filling the scytale matrix to distinguish filled spaces from blank ones
     """
-    scytale: list[list[str]] = [[None for _i in plaintext] for _j in range(key)]
+    scytale: list[list[str]] = [["" for _i in plaintext] for _j in range(key)]
 
     for col, letter in enumerate(plaintext):
         scytale[col % key][col] = letter
