@@ -25,8 +25,8 @@ def two_factors(number: int) -> list[tuple[int, int]]:
     output = []
     highest = number
     for factor1 in range(2, number // 2):
-        if factor1 >= highest:
-            break
+        #if factor1 >= highest:
+        #    break
         if number % factor1 == 0:
             factor2 = number // factor1
             highest = factor2
