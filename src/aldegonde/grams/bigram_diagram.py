@@ -42,7 +42,7 @@ def print_auto_bigram_diagram(
     """Input is a sequence of items
     Output is the bigram frequency diagram printed to stdout.
     """
-    print_bigram_diagram(runes[0:-skip], runes[skip:-1], alphabet=alphabet, cut=cut)
+    print_bigram_diagram(runes[0:-skip], runes[skip:], alphabet=alphabet, cut=cut)
 
 
 def bigram_diagram(
