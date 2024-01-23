@@ -26,8 +26,8 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     return diff
 
 
-with open("data/page54-55.txt") as f:
-#with open("data/page0-58.txt") as f:
+# with open("data/page54-55.txt") as f:
+with open("data/page0-58.txt") as f:
     lp = f.read()
 
 segments = lp.split("$")
@@ -39,7 +39,7 @@ y = ["".join(z)]
 
 
 print(f"{len(segments)} segments")
-for i, s in enumerate(y):
+for i, s in enumerate(z):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
@@ -74,18 +74,20 @@ for i, s in enumerate(y):
         print(f"used alphabet: {set(seg)} ({len(set(seg))} symbols)")
         # print(f"ciphertext: {seg.elements}")
         print(f"length: {len(seg)} symbols")
+        print(f"   prime factors =: {factor.prime_factors(len(seg))}")
+        print(f"   factor pairs  =: {factor.factor_pairs(len(seg))[1:-1]}")
         # c3301.print_all(seg, limit=30)
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
         ioc.print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
-        #bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
+        # bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
         kappa.print_kappa(seg, trace=True)
         friedman.friedman_test(seg, maxperiod=34)
-        friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
+        # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
         repeats.print_repeat_positions(seg, minimum=5)
-        isomorph.print_isomorph_statistics(seg)
+        # isomorph.print_isomorph_statistics(seg)
 
         # slide = ioc.sliding_window_ioc(seg, window=100)
         # for i, e in enumerate(slide):
