@@ -10,7 +10,10 @@ T = TypeVar("T")
 
 
 def doublets(
-    runes: Sequence[T], skip: int = 1, *, trace: bool = False,
+    runes: Sequence[T],
+    skip: int = 1,
+    *,
+    trace: bool = False,
 ) -> tuple[list[int], int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
