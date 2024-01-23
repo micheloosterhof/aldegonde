@@ -18,17 +18,13 @@ def prime_factors(number: int) -> list[int]:
     return factors
 
 
-def two_factors(number: int) -> list[tuple[int, int]]:
+def factor_pairs(number: int) -> list[tuple[int, int]]:
     """
     Based on integer input, output all factors that make up this number
     """
     output = []
-    highest = number
-    for factor1 in range(2, number // 2):
-        #if factor1 >= highest:
-        #    break
+    for factor1 in range(1, number+1):
         if number % factor1 == 0:
             factor2 = number // factor1
-            highest = factor2
             output.append((factor1, factor2))
     return output
