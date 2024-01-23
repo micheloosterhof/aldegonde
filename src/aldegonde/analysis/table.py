@@ -1,6 +1,6 @@
+from aldegonde.maths import factor
 from aldegonde.pasc import T
 from aldegonde.stats import ioc
-from aldegonde.maths import factor
 
 
 def create_table(
