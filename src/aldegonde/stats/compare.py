@@ -48,7 +48,9 @@ def frequency_to_probability(
         Dictionary of ngrams to probability
     """
     total = sum(frequency_map.values())
-    return {k: decorator(v / total) for k, v in frequency_map.items()}
+    return defaultdict(
+        float, {k: decorator(v / total) for k, v in frequency_map.items()}
+    )
 
 
 unigrams = loadgrams("aldegonde.data.ngrams.english", "unigrams.txt")
@@ -81,15 +83,15 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     use scipy.stats.power_divergence with lambda_=0
     Calculate another comparison of 2 texts.
     """
-    d1 = ngram_distribution(text1, length=length)
-    d2 = ngram_distribution(text2, length=length)
+    d1 = frequency_to_probability(ngram_distribution(text1, length=length))
+    d2 = frequency_to_probability(ngram_distribution(text2, length=length))
 
     obs: list[float] = []
     exp: list[float] = []
-    for k in d2:
+    for k in set(list(d1.keys()) + list(d2.keys())):
         obs.append(d1[k])
         exp.append(d2[k])
-    print(power_divergence(f_obs=obs, f_exp=exp, lambda_=0))
+    # print(power_divergence(f_obs=obs, f_exp=exp, lambda_=0))
     return float(power_divergence(f_obs=obs, f_exp=exp, lambda_=0).statistic)
 
 
