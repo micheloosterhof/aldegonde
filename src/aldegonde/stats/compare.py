@@ -49,7 +49,8 @@ def frequency_to_probability(
     """
     total = sum(frequency_map.values())
     return defaultdict(
-        float, {k: decorator(v / total) for k, v in frequency_map.items()},
+        float,
+        {k: decorator(v / total) for k, v in frequency_map.items()},
     )
 
 
@@ -72,10 +73,10 @@ def mychisquare(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> floa
     total: float = 0.0
     d1 = ngram_distribution(text1, length=length)
     d2 = ngram_distribution(text2, length=length)
-    for key in d1:
-        if key in d2:
-            total += d1[key] * d2[key]
-    return total / (len(d1.keys()) * len(d2.keys()))
+    keys = set(list(d1.keys()) + list(d2.keys()))
+    for key in keys:
+        total += d1[key] * d2[key]
+    return total / (len(text1) * len(text2))
 
 
 def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
@@ -86,11 +87,9 @@ def gtest(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     d1 = frequency_to_probability(ngram_distribution(text1, length=length))
     d2 = frequency_to_probability(ngram_distribution(text2, length=length))
 
-    obs: list[float] = []
-    exp: list[float] = []
-    for k in set(list(d1.keys()) + list(d2.keys())):
-        obs.append(d1[k])
-        exp.append(d2[k])
+    keys = set(list(d1.keys()) + list(d2.keys()))
+    obs: list[float] = [d1[k] for k in keys]
+    exp: list[float] = [d2[k] for k in keys]
     # print(power_divergence(f_obs=obs, f_exp=exp, lambda_=0))
     return float(power_divergence(f_obs=obs, f_exp=exp, lambda_=0).statistic)
 
