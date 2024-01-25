@@ -57,10 +57,22 @@ def twist_test(
 
         # print(f"twist: period={period:02} twist={tw:0.5f}")
 
+    highest = 0.0
+    highestpp = 0.0
     for period in range(minperiod + 1, maxperiod):
-        print(f"twist: period: {period:02} twist: {twists[period]:0.5f}")
+        print(f"twist: period: {period:02} twist: {twists[period]:0.5f}", end="")
+        if twists[period] > highest:
+            print(" <-")
+            highest = twists[period]
+        else:
+            print("")
         twistplusplus = twists[period] - (twists[period - 1] + twists[period + 1]) / 2
-        print(f"twist: period: {period:02} twist++: {twistplusplus:0.5f}")
+        print(f"twist: period: {period:02} twist++: {twistplusplus:0.5f}", end="")
+        if twistplusplus > highestpp:
+            print(" <=")
+            highestpp = twistplusplus
+        else:
+            print("")
 
 
 def twist_test_with_interrupter(
