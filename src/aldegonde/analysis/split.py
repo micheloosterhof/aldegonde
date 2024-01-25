@@ -47,7 +47,7 @@ def split_by_character(inp: Sequence[T], skip: int = 1) -> dict[T, list[T]]:
 
 def trim(
     inp: Iterator[T],
-    whitespace: Sequence[T] = [" ", "\r", "\n", "\t"],
+    whitespace: Sequence[str] = [" ", "\r", "\n", "\t"],
 ) -> Generator[T, None, None]:
     """
     Trim whitespace from beginning and end
@@ -70,13 +70,13 @@ def trim(
 
 
 def split_by_whitespace(
-    inp: Sequence[T],
-    whitespace: Sequence[T] = [" ", "\r", "\n", "\t"],
-) -> list[list[T]]:
+    inp: Sequence[str],
+    whitespace: Sequence[str] = [" ", "\r", "\n", "\t"],
+) -> list[list[str]]:
     """
     split by whitespace
     """
-    return ""
+    return [[""]]
 
 
 def split_by_doublet(ciphertext: Sequence[T]) -> list[list[T]]:
