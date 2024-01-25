@@ -28,7 +28,9 @@ VBTR = pasc.variantbeaufort_tr(ALPHABET)
 LEN = 14
 
 
-def bigram_break_pasc(ciphertext: str, tabularecta, key_len: int):
+def bigram_break_pasc(
+    ciphertext: str, tabularecta: pasc.TR, key_len: int
+) -> tuple[str, float]:
     """
     Guballa's algorithm in PHP
 
@@ -111,12 +113,12 @@ def bigram_break_pasc(ciphertext: str, tabularecta, key_len: int):
     else:
         key[0] = best_key_ch1_0
 
-    return (key, best_fitness)
+    return ("".join(key), best_fitness)
 
 
 def break_vig():
     out = bigram_break_pasc(VIG, VIGTR, LEN)
-    password = "".join(out[0])
+    password = out[0]
     print(password, out[1])
 
     plaintext = "".join(pasc.pasc_decrypt(VIG, password, VIGTR))
