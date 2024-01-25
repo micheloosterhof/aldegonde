@@ -69,7 +69,7 @@ def bigram_diagram(
     )
     bigram: dict[T, dict[T, int]] = defaultdict(dict)
     for k, v in res.items():
-        bigram[k[0]][k[1]] = v
+        bigram[k[0][0]][k[1][0]] = v
 
     return bigram
 
