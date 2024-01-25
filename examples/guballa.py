@@ -6,8 +6,8 @@ Guballa's algorithm using piecemeal bigram scoring to break PASC
 
 from typing import TypeVar
 
-from aldegonde.stats import compare
 from aldegonde import pasc
+from aldegonde.stats import compare
 
 T = TypeVar("T")
 
@@ -29,7 +29,7 @@ LEN = 14
 
 
 def bigram_break_pasc(
-    ciphertext: str, tabularecta: pasc.TR, key_len: int
+    ciphertext: str, tabularecta: pasc.TR, key_len: int,
 ) -> tuple[str, float]:
     """
     Guballa's algorithm in PHP
