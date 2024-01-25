@@ -2,6 +2,7 @@
 Various transposition ciphers
 """
 
+
 def rail_encrypt(plaintext: str, key: int) -> str:
     """
     function to encrypt a message with railfence

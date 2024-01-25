@@ -23,7 +23,7 @@ def factor_pairs(number: int) -> list[tuple[int, int]]:
     Based on integer input, output all factors that make up this number
     """
     output = []
-    for factor1 in range(1, number+1):
+    for factor1 in range(1, number + 1):
         if number % factor1 == 0:
             factor2 = number // factor1
             output.append((factor1, factor2))
