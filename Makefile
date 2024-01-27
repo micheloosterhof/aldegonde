@@ -7,6 +7,10 @@ build: ## Build package
 	python -m build        
 	twine check dist/*
 
+.PHONY: upload
+upload: ## Upload to Pypi
+	twine upload dist/*
+
 .PHONY: direnv
 direnv:
 	[ -n "${DIRENV_DIR}" ] || ( echo Please activate direnv by typing "direnv allow ." && exit 1 )
