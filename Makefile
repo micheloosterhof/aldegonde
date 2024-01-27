@@ -3,6 +3,7 @@ all: build
 
 .PHONY: build
 build: ## Build package
+	python -m pip install --upgrade build
 	python -m build        
 	twine check dist/*
 
