@@ -14,6 +14,10 @@ classifiers = [
   "Programming Language :: Python"
 ]
 
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project.urls]
 homepage = "https://github.com/micheloosterhof/aldegonde"
 documentation = "https://readthedocs.org"
