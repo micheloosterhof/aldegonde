@@ -29,7 +29,9 @@ LEN = 14
 
 
 def bigram_break_pasc(
-    ciphertext: str, tabularecta: pasc.TR, key_len: int,
+    ciphertext: str,
+    tabularecta: pasc.TR,
+    key_len: int,
 ) -> tuple[str, float]:
     """
     Guballa's algorithm in PHP
@@ -133,7 +135,7 @@ def break_vb():
         score = compare.quadgramscore(plaintext)
         print(score, length, password, plaintext)
 
+
 if __name__ == "__main__":
     break_vig()
     break_vb()
-
