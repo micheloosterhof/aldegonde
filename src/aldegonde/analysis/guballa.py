@@ -128,10 +128,12 @@ def break_vig():
 def break_vb():
     for length in range(3, 20):
         (out, score) = bigram_break_pasc(VARBEAU, VBTR, length)
-        password = "".join(out)
+        password = out
         plaintext = "".join(pasc.pasc_decrypt(VARBEAU, password, VBTR))
         score = compare.quadgramscore(plaintext)
         print(score, length, password, plaintext)
 
+if __name__ == "__main__":
+    break_vig()
+    break_vb()
 
-break_vb()
