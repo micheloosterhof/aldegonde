@@ -94,7 +94,7 @@ def solve_anneal(ciphertext: str) -> None:
 
     tsp = crack_with_simanneal(initial_state)
     tsp.copy_strategy = "slice"
-    auto_schedule = tsp.auto(minutes=0.1)
+    auto_schedule = tsp.auto(minutes=0.15)
     # {'tmin': ..., 'tmax': ..., 'steps': ...}
     print(auto_schedule)
     tsp.set_schedule(auto_schedule)
