@@ -16,9 +16,10 @@ direnv:
 	[ -n "${DIRENV_DIR}" ] || ( echo Please activate direnv by typing "direnv allow ." && exit 1 )
 
 .PHONY: install
-install: ## Install Python requirements
-	python -m pip install --upgrade pip setuptools wheel
-	python -m pip install -r ./requirements.txt
+install: ## Install Python requirements + module in site-packages in editor mode
+	python -m pip install --no-index --require-virtualenv --upgrade pip setuptools wheel
+	python -m pip install --no-index --require-virtualenv -r ./requirements.txt
+	python -m pip install --no-index --require-virtualenv -e .
 
 .PHONY: upgrade
 upgrade: ## Upgrade Python requirements to latest version
@@ -31,7 +32,7 @@ upgrade: ## Upgrade Python requirements to latest version
 
 .PHONY: clean
 clean: ## Clean generated data
-	find . -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
+	find . -name '*-darwin.so' -or -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
 	rm -rf build dist
 
 .PHONY: lint
