@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Jens Guballa's algorithm using piecemeal bigram scoring to break PASC
 """
