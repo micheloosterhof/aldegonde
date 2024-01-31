@@ -6,7 +6,7 @@ Jens Guballa's algorithm using piecemeal bigram scoring to break PASC
 
 from typing import TypeVar
 
-from aldegonde import pasc
+from aldegonde import pasc, masc
 from aldegonde.stats import compare
 
 from aldegonde.analysis import guballa
@@ -22,8 +22,8 @@ def test_vig():
     out = guballa.bigram_break_pasc(VIG, VIGTR, LEN)
     password = out[0]
     assert password == "AMBROISETHOMAS"
-    #plaintext = "".join(pasc.pasc_decrypt(VIG, password, VIGTR))
-    #print(plaintext)
+    # plaintext = "".join(pasc.pasc_decrypt(VIG, password, VIGTR))
+    # print(plaintext)
 
 
 def test_beaufort():
@@ -48,3 +48,16 @@ def test_variantbeaufort():
     # score = compare.quadgramscore(plaintext)
     # print(score, length, password, plaintext)
     assert password == "FOUNDATION"
+
+
+def test_k2():
+    # key = "ABSCISSA" # (key len= 8)
+    K2 = """VFPJUDEEHZWETZYVGWHKKQETGFQJNCEGGWHKKDQMCPFQZDQMMIAGPFXHQRLGTIMVMZJANQLVKQEDAGDVFRPJUNGEUNAQZGZLECGYUXUEENJTBJLBQCRTBJDFHRRYIZETKZEMVDUFKSJHKFWHKUWQLSZFTIHHDDDUVHDWKBFUFPWNTDFIYCUQZEREEVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDXFLGGTEZFKZBSFDQVGOGIPUFXHHDRKFFHQNTGPUAECNUVPDJMQCLQUMUNEDFQELZZVRRGKFFVOEEXBDMVPNFQXEZLGREDNQFMPNZGLFLPMRJQYALMGNUVPDXVKPDQUMEBEDMHDAFMJGZNUPLGESWJLLAETG"""
+    KRYPTOSTR = pasc.quagmire3_tr(
+        masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "KRYPTOS")
+    )
+    length = 8
+    (password, score) = guballa.bigram_break_pasc(K2, KRYPTOSTR, length)
+    # plaintext = "".join(pasc.pasc_decrypt(K2, password, KRYPTOSTR))
+    # score = compare.quadgramscore(plaintext)
+    assert password == "ABSCISSA"
