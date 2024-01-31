@@ -11,6 +11,7 @@ from typing import TypeVar
 from simanneal import Annealer
 
 from aldegonde.stats import compare
+from aldegonde.analysis import guballa
 from aldegonde import pasc
 
 T = TypeVar("T")

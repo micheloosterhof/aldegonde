@@ -4,4 +4,5 @@ dist
 .direnv
 .ipynb_checkpoints
 .tox
+*darwin.so
 .idea
