@@ -22,9 +22,8 @@ def test_vig():
     out = guballa.bigram_break_pasc(VIG, VIGTR, LEN)
     password = out[0]
     assert password == "AMBROISETHOMAS"
-
-    plaintext = "".join(pasc.pasc_decrypt(VIG, password, VIGTR))
-    print(plaintext)
+    #plaintext = "".join(pasc.pasc_decrypt(VIG, password, VIGTR))
+    #print(plaintext)
 
 
 def test_beaufort():
