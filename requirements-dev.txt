@@ -6,6 +6,6 @@ mypy-extensions==1.0.0
 mypy==1.8.0
 pipdeptree==2.13.2
 pytest==8.0.0
-ruff==0.1.14
+ruff==0.2.0
 tox==4.12.1
 twine==4.0.2
