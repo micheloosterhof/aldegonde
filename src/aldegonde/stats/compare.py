@@ -112,7 +112,7 @@ def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
     ngrams = frequency_to_probability(frequency_map)
     d1 = ngram_distribution(text, length=length)
     d2 = [ngrams.get(ngram, floor) for ngram in d1]
-    return float(chisquare(f_obs=d1, f_exp=d2))
+    return float(chisquare(f_obs=d1, f_exp=d2).statistic)
 
 
 def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
