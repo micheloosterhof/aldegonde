@@ -16,7 +16,7 @@ ITALIAN = 0.0738
 RUSSIAN = 0.0529
 
 
-def IocFitness(target_ioc: float) -> Callable[[Sequence[T]], float]:
+def IocFitness(target_ioc: float) -> Callable[[Sequence[object]], float]:
     """Score a text by evaluating its IOC score.
 
     Example:
