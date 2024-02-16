@@ -17,6 +17,27 @@ classifiers = [
   "Topic :: Security :: Cryptography",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+  "numpy==1.26.4",
+  "pip==24.0",
+  "scipy==1.12.0",
+  "setuptools==69.1.0",
+  "wheel==0.42.0",
+]
+
+[project.optional-dependencies]
+tests =[
+  "black==24.1.1",
+  "build==1.0.3",
+  "coverage==7.4.1",
+  "mypy-extensions==1.0.0",
+  "mypy==1.8.0",
+  "pipdeptree==2.13.2",
+  "pytest==8.0.0",
+  "ruff==0.2.1",
+  "tox==4.12.1",
+  "twine==5.0.0",
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]
