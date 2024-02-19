@@ -5,7 +5,7 @@ coverage==7.4.1
 mypy-extensions==1.0.0
 mypy==1.8.0
 pipdeptree==2.13.2
-pytest==8.0.0
+pytest==8.0.1
 ruff==0.2.1
 tox==4.12.1
 twine==5.0.0
