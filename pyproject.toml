@@ -34,7 +34,7 @@ tests =[
   "mypy==1.8.0",
   "pipdeptree==2.13.2",
   "pytest==8.0.0",
-  "ruff==0.2.1",
+  "ruff==0.3.1",
   "tox==4.12.1",
   "twine==5.0.0",
 ]
@@ -88,8 +88,8 @@ ignore_missing_imports = true
 line-length = 88
 
 # Enable Pyflakes `E` and `F` codes by default.
-select = ["A", "B", "BLE", "C", "C4", "COM", "E", "EM", "EXE", "F", "FBT", "I", "ICN", "PIE", "PYI", "RET", "SIM", "T20", "TID", "TCH", "TRY", "FIX", "UP", "YTT", "W"]
-ignore = ["E501", "E741", "UP007", "B905", "T201"]
+lint.select = ["A", "B", "BLE", "C", "C4", "COM", "E", "EM", "EXE", "F", "FBT", "I", "ICN", "PIE", "PYI", "RET", "SIM", "T20", "TID", "TCH", "TRY", "FIX", "UP", "YTT", "W"]
+lint.ignore = ["E501", "E741", "UP007", "B905", "T201"]
 
 # Assume Python 3.10.
 target-version = "py310"
