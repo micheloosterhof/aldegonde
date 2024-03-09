@@ -1,7 +1,7 @@
 """IOC calculation."""
 
 from collections.abc import Sequence
-from math import sqrt
+from math import log, sqrt
 from typing import NamedTuple, TypeVar
 
 from mypy_extensions import mypyc_attr
@@ -107,3 +107,35 @@ def ioc3(text: Sequence[T], cut: int = 0) -> float:
 def ioc4(text: Sequence[T], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=4)
+
+
+def renyi(
+    text: Sequence[T], order: float = 2.0, length: int = 1, cut: int = 0
+) -> float:
+    """Renyi Entropy
+    Args:
+        text: Sequence of items
+        order: renyi order, default 2.0
+        length: size of ngram
+        cut: where to start ngrams.
+
+    Yields
+    ------
+        Output is the Renyi Entropy formatted as a float,
+
+    Specify `cut=0` and it operates on sliding blocks of 2 text: ABC, BCD, CDE, ...
+    Specify `cut=1` and it operates on non-overlapping blocks of 3 text: ABC, DEF, ...
+    Specify `cut=2` and it operates on non-overlapping blocks of 3 text: BCD, EFG, ...
+
+    order=1 converges to Shannon entropy
+    https://www.johndcook.com/blog/2021/08/14/index-of-coincidence
+    """
+    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
+    L: int = sum(x for x in freqs.values())
+    H: float
+    if order == 1:
+        H = -sum(v / L * log(v / L, 2) for v in freqs.values())
+    else:
+        freqsum: float = sum(pow(v / L, order) for v in freqs.values())
+        H = 1 / (1 - order) * log(freqsum, 2)
+    return H
