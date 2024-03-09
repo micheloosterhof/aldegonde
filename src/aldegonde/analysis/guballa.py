@@ -66,6 +66,8 @@ def bigram_break_pasc(
 
     for key_idx in range(key_len):
         best_fitness: float = -10000000.0
+        prev_best_score: float = best_fitness - 1.0
+        prev_best_key_ch2: str = ""
         for key_ch1 in alphabet:
             for key_ch2 in alphabet:
                 fitness: float = 0.0
@@ -82,7 +84,7 @@ def bigram_break_pasc(
         if key_idx == 0:
             best_score_0: float = best_fitness
             best_key_ch1_0: str = best_key_ch1
-            best_key_ch2_0: str = best_key_ch2
+            # best_key_ch2_0: str = best_key_ch2
             key.append("#")
         else:
             if prev_best_score > best_fitness:
@@ -91,7 +93,7 @@ def bigram_break_pasc(
                 key.append(best_key_ch1)
 
         prev_best_score: float = best_fitness
-        prev_best_key_ch2: str = best_key_ch2
+        prev_best_key_ch2 = best_key_ch2
 
     if best_fitness > best_score_0:
         key[0] = best_key_ch2
