@@ -110,7 +110,7 @@ def ioc4(text: Sequence[T], cut: int = 0) -> float:
 
 
 def renyi(
-    text: Sequence[T], order: float = 2.0, length: int = 1, cut: int = 0
+    text: Sequence[T], order: float = 2.0, length: int = 1, cut: int = 0,
 ) -> float:
     """Renyi Entropy
     Args:
