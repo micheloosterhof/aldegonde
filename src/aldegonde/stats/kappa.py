@@ -91,7 +91,7 @@ def print_kappa(
         ioc = alphabetsize * l / length
         mu = length / alphabetsize
         mean, var = poisson.stats(mu, loc=0, moments="mv")
-        sigmage: float = abs(l - mean[0]) / sqrt(var)
+        sigmage: float = abs(l - mean) / sqrt(var)
         print(
             f"kappa/doublets: skip={keylen:<2d} count={l:<3d} expected={mean:<3.2f} S={sigmage:.2f}σ ioc={ioc:1.3f}",
         )
