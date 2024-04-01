@@ -92,7 +92,7 @@ def bigram_break_pasc(
             else:
                 key.append(best_key_ch1)
 
-        prev_best_score: float = best_fitness
+        prev_best_score = best_fitness
         prev_best_key_ch2 = best_key_ch2
 
     if best_fitness > best_score_0:
