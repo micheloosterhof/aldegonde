@@ -105,7 +105,7 @@ def logdist(text1: Sequence[T], text2: Sequence[T], length: int = 1) -> float:
     return total
 
 
-def chisquarescipy(text: Sequence[T], length: int = 4) -> float:
+def chisquarescipy(text: Sequence[object], length: int = 4) -> float:
     """ """
     floor = 0.01
     frequency_map = quadgrams

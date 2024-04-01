@@ -82,7 +82,7 @@ def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
 
 
 def ngram_distribution(
-    text: Sequence[T],
+    text: Sequence[object],
     length: int = 1,
     cut: int = 0,
 ) -> dict[str, int]:
@@ -91,7 +91,7 @@ def ngram_distribution(
 
 
 def ngram_positions(
-    text: Sequence[T],
+    text: Sequence[object],
     length: int = 1,
     cut: int = 0,
 ) -> dict[str, list[int]]:
