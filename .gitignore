@@ -6,3 +6,4 @@ dist
 .tox
 *darwin.so
 .idea
+.vscode
