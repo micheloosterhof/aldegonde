@@ -4,7 +4,6 @@ This contains all ciphers of this type. This includes Caesar, ROT13, Affine ciph
 All are monoalphabetic
 """
 
-
 import random
 from collections.abc import Generator, Iterable, Sequence
 from typing import TypeVar

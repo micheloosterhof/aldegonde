@@ -4,8 +4,6 @@ from collections.abc import Sequence
 from math import log, sqrt
 from typing import NamedTuple, TypeVar
 
-from mypy_extensions import mypyc_attr
-
 from aldegonde.stats.ngrams import ngram_distribution
 
 T = TypeVar("T")
@@ -56,12 +54,9 @@ def nioc(
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
 
-    @mypyc_attr(allow_interpreted_subclasses=True)
-    class Ioc(NamedTuple):
-        ioc: float
-        nioc: float
-        sigmage: float
-
+    Ioc = NamedTuple(
+        "Ioc", [("ioc", float), ("nioc", float), ("sigmage", float)]
+    )  # noqa: UP014
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
@@ -110,7 +105,10 @@ def ioc4(text: Sequence[T], cut: int = 0) -> float:
 
 
 def renyi(
-    text: Sequence[T], order: float = 2.0, length: int = 1, cut: int = 0,
+    text: Sequence[T],
+    order: float = 2.0,
+    length: int = 1,
+    cut: int = 0,
 ) -> float:
     """Renyi Entropy
     Args:
