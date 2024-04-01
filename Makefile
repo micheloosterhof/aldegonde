@@ -32,7 +32,7 @@ upgrade: ## Upgrade Python requirements to latest version
 
 .PHONY: clean
 clean: ## Clean generated data
-	find . -name '*-darwin.so' -or -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
+	find . -name .coverage '*-darwin.so' -or -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
 	rm -rf build dist
 
 .PHONY: lint
