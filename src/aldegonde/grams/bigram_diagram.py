@@ -6,7 +6,7 @@ from typing import TypeVar
 
 from aldegonde.stats import ngrams
 
-from .color import Colors
+from . import color
 
 T = TypeVar("T")
 
@@ -22,15 +22,15 @@ def print_separator(width: int) -> None:
 def print_colored_value(v: int) -> None:
     """Print colored value"""
     if v == 0:
-        print(Colors.bgRed, end="")
+        print(color.bgRed, end="")
     elif v < 5:
-        print(Colors.bgYellow, end="")
+        print(color.bgYellow, end="")
     elif v < 10:
-        print(Colors.bgGreen, end="")
+        print(color.bgGreen, end="")
     elif v > 25:
-        print(Colors.bgBlue, end="")
+        print(color.bgBlue, end="")
     print(f"{v:02}", end="")
-    print(Colors.reset, end=" ")
+    print(color.reset, end=" ")
 
 
 def print_auto_bigram_diagram(

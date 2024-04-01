@@ -54,9 +54,9 @@ def nioc(
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
 
-    Ioc = NamedTuple(
-        "Ioc", [("ioc", float), ("nioc", float), ("sigmage", float)]
-    )  # noqa: UP014
+    Ioc = NamedTuple(  # noqa: UP014
+        "Ioc", [("ioc", float), ("nioc", float), ("sigmage", float)],
+    )
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
