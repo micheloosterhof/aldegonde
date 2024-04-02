@@ -8,7 +8,7 @@ from typing import TypeVar
 T = TypeVar("T")
 
 
-def shannon_entropy(ciphertext: Sequence[T], base: int = 2) -> float:
+def shannon_entropy(ciphertext: Sequence[object], base: int = 2) -> float:
     """Shannon entropy. by default in bits."""
     f = Counter(ciphertext)
     N = len(ciphertext)
