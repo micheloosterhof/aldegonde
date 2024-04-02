@@ -18,7 +18,7 @@ def print_dist(runes: Sequence[T]) -> None:
     col = 0
     freqs = ngram_distribution(runes)
     print("Frequency Distribution:")
-    for i, e in enumerate([x[0] for x in sorted(freqs.items(), key=lambda x: x[1])]):
+    for i, e in enumerate([x[0] for x in sorted(freqs.items(), key=lambda x: -x[1])]):
         if col > 0 and col % 5 == 0:
             print("")
         print(
