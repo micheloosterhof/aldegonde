@@ -87,7 +87,7 @@ def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
              alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ
              returns:  PAULBRNDTCEFGHIJKMOQSVWXYZ
     """
-    output: list = []
+    output: list[T] = []
     assert False not in [letter in alphabet for letter in keyword]
 
     for letter in keyword:
