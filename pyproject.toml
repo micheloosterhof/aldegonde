@@ -66,16 +66,16 @@ disallow_any_unimported     = true
 strict_equality             = true
 disallow_untyped_decorators = true
 disallow_subclassing_any    = true
+check_untyped_defs          = true
+disallow_any_generics       = true
+disallow_untyped_calls      = true
 
 # These are too strict for us at the moment
 
-check_untyped_defs          = true
 disallow_untyped_defs       = false
 disallow_any_decorated      = false
 disallow_any_explicit       = false
 disallow_any_expr           = false
-disallow_any_generics       = false
-disallow_untyped_calls      = false
 warn_unused_ignores         = false
 
 
