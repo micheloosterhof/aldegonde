@@ -21,7 +21,7 @@ function = Callable[[Sequence[T]], Sequence[T]]
 def pgsc_encrypt(
     plaintext: Sequence[T],
     length: int,
-    encryptfn: function,
+    encryptfn: function[T],
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
     ciphertext: list[T] = []
@@ -33,7 +33,7 @@ def pgsc_encrypt(
 def pgsc_decrypt(
     ciphertext: Sequence[T],
     length: int,
-    decryptfn: function,
+    decryptfn: function[T],
 ) -> tuple[T, ...]:
     """Polygraphic substitution."""
     plaintext: list[T] = []
