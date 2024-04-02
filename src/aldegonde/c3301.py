@@ -219,9 +219,9 @@ def print_rune(runes: str, limit: int = 0) -> None:
     print()
 
 
-def valueTR(t: str = "vigenere") -> pasc.TR:
+def valueTR(t: str = "vigenere") -> pasc.TR[str]:
     """Funny TR that works by prime values"""
-    TR: pasc.TR = defaultdict(dict)
+    TR: pasc.TR[str] = defaultdict(dict)
     for key in CICADA_ALPHABET:
         for plaintext in CICADA_ALPHABET:
             if t == "vigenere":
