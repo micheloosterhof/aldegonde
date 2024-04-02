@@ -14,7 +14,7 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def bigram_break_pasc(
     ciphertext: str,
-    tabularecta: pasc.TR,
+    tabularecta: pasc.TR[str],
     key_len: int,
 ) -> tuple[str, float]:
     """
