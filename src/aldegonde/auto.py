@@ -10,10 +10,10 @@ from aldegonde.pasc import TR, T, reverse_tr
 def ciphertext_autokey_encrypt(
     plaintext: Iterable[T],
     primer: Sequence[T],
-    tr: TR,
+    tr: TR[T],
 ) -> Generator[T, None, None]:
     """Ciphertext Autokey Encryption."""
-    key: deque = deque(primer)
+    key: deque[T] = deque(primer)
     for e in plaintext:
         c = tr[key.popleft()][e]
         key.append(c)
@@ -23,7 +23,7 @@ def ciphertext_autokey_encrypt(
 def ciphertext_autokey_decrypt(
     ciphertext: Sequence[T],
     primer: Sequence[T],
-    tr: TR,
+    tr: TR[T],
 ) -> Generator[T, None, None]:
     """Ciphertext Autokey Decryption."""
     rtr: TR[T] = reverse_tr(tr)
@@ -48,7 +48,7 @@ def plaintext_autokey_decrypt(
 ) -> Generator[T, None, None]:
     """Plaintext Autokey Decryption primitive P[i] = DF(C[i], P[i-1])."""
     rtr = reverse_tr(tr)
-    key: deque = deque(primer)
+    key: deque[T] = deque(primer)
     for e in ciphertext:
         p = rtr[key.popleft()][e]
         key.append(p)
