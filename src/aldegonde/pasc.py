@@ -69,7 +69,7 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     """Take a dict containing all elements and reverses the index and the value
     Returns output if the input contains valid values, else raises ValueError.
     """
-    output: TR = defaultdict(dict)
+    output: TR[T] = defaultdict(dict)
     for keyword in tr:
         for k, v in tr[keyword].items():
             output[keyword][v] = k
