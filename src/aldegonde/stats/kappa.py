@@ -10,26 +10,26 @@ T = TypeVar("T")
 
 
 def doublets(
-    runes: Sequence[T],
+    text: Sequence[object],
     skip: int = 1,
     *,
     trace: bool = False,
 ) -> tuple[list[int], int]:
     """Find number of doublets. doublet is X followed by X for any X."""
     positions: list[int] = []
-    if len(runes) == skip:
+    if len(text) == skip:
         return ([], 0)
-    for index in range(len(runes) - skip):
-        if runes[index] == runes[index + skip]:
+    for index in range(len(text) - skip):
+        if text[index] == text[index + skip]:
             positions.append(index)
             if trace:
                 print(
-                    f"doublet at {index}: {runes[index-1]}-{runes[index]}-{runes[index+1]}-{runes[index+2]}",
+                    f"doublet at {index}: {text[index-1]}-{text[index]}-{text[index+1]}-{text[index+2]}",
                 )
-    return (positions, len(runes) - skip)
+    return (positions, len(text) - skip)
 
 
-def kappa(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> float:
+def kappa(runes: Sequence[object], skip: int = 1, *, trace: bool = False) -> float:
     dbl, length = doublets(runes, skip=skip)
     return len(dbl) / length
 
@@ -56,19 +56,19 @@ def kappa(runes: Sequence[T], skip: int = 1, *, trace: bool = False) -> float:
 #    return (positions, index - skip)
 
 
-def triplets(runes: Sequence[T]) -> int:
+def triplets(text: Sequence[object]) -> int:
     """Find number of triplet. triplet is X followed by XX for any X."""
-    N = len(runes)
+    N = len(text)
     trpl: int = 0
     for index in range(N - 2):
-        if runes[index] == runes[index + 1] and runes[index] == runes[index + 2]:
+        if text[index] == text[index + 1] and text[index] == text[index + 2]:
             trpl += 1
     # expected = N / MAX / MAX
     return trpl
 
 
 def print_kappa(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     alphabetsize: int = 0,
     minimum: int = 1,
     maximum: int = 51,
