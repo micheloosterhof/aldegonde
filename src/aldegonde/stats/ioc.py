@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 from math import log, sqrt
-from typing import NamedTuple, TypeVar
+from typing import NamedTuple
 
 from aldegonde.stats.ngrams import ngram_distribution
 
