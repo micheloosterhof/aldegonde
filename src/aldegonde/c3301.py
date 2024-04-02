@@ -164,7 +164,7 @@ class RuneIterator:
 
     def __init__(self, length: int) -> None:
         self.length = length
-        self.maximum = 29**length
+        self.maximum = int(29**length)
 
     def __iter__(self) -> Iterator[list[int]]:
         self.i = 0
