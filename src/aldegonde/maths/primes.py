@@ -16,7 +16,7 @@ def primes(n: int) -> list[int]:
     return out
 
 
-class PrimeGenerator(Iterable):
+class PrimeGenerator(Iterable[int]):
     """primes as a generator."""
 
     def __init__(self) -> None:
