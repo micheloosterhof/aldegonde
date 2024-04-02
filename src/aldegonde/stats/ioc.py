@@ -6,10 +6,8 @@ from typing import NamedTuple, TypeVar
 
 from aldegonde.stats.ngrams import ngram_distribution
 
-T = TypeVar("T")
 
-
-def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
+def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC
     Args:
         text: Sequence
@@ -33,7 +31,7 @@ def ioc(text: Sequence[T], length: int = 1, cut: int = 0) -> float:
 
 
 def nioc(
-    text: Sequence[T],
+    text: Sequence[object],
     alphabetsize: int,
     length: int = 1,
     cut: int = 0,
@@ -61,7 +59,7 @@ def nioc(
     return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
-def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
+def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
     """Print IOC statistics."""
     for length in range(1, 6):
         for cut in range(length + 1):
@@ -78,7 +76,7 @@ def print_ioc_statistics(text: Sequence[T], alphabetsize: int) -> None:
 
 
 def sliding_window_ioc(
-    text: Sequence[T],
+    text: Sequence[object],
     length: int = 1,
     cut: int = 0,
     window: int = 100,
@@ -90,23 +88,23 @@ def sliding_window_ioc(
     return output
 
 
-def ioc2(text: Sequence[T], cut: int = 0) -> float:
+def ioc2(text: Sequence[object], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=2)
 
 
-def ioc3(text: Sequence[T], cut: int = 0) -> float:
+def ioc3(text: Sequence[object], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=3)
 
 
-def ioc4(text: Sequence[T], cut: int = 0) -> float:
+def ioc4(text: Sequence[object], cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC."""
     return ioc(text, cut=cut, length=4)
 
 
 def renyi(
-    text: Sequence[T],
+    text: Sequence[object],
     order: float = 2.0,
     length: int = 1,
     cut: int = 0,
@@ -135,6 +133,6 @@ def renyi(
     if order == 1:
         H = -sum(v / L * log(v / L, 2) for v in freqs.values())
     else:
-        freqsum: float = sum(pow(v / L, order) for v in freqs.values())
+        freqsum: float = sum(abs(pow(v / L, order)) for v in freqs.values())
         H = 1 / (1 - order) * log(freqsum, 2)
     return H
