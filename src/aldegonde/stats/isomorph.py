@@ -18,7 +18,7 @@ from aldegonde.stats.ngrams import iterngrams
 T = TypeVar("T")
 
 
-def isomorph(text: Sequence[T]) -> str:
+def isomorph(text: Sequence[object]) -> str:
     """Input is a piece of text as a sequence
     Output is this normalized as an isomorph, as a string in alphabet A-Z
     Example ATTACK and EFFECT both normalize to ABBACD
@@ -36,7 +36,7 @@ def isomorph(text: Sequence[T]) -> str:
 
 
 def isomorph_distribution(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     length: int,
     cut: int = 0,
 ) -> dict[str, int]:
