@@ -52,7 +52,7 @@ def trim(
     """
     Trim whitespace from beginning and end
     """
-    buffer: deque = deque()
+    buffer: deque[T] = deque()
     begin: bool = True
     for e in inp:
         if begin:
