@@ -12,12 +12,12 @@ Functions for ngram distribution
 """
 
 
-def print_dist(runes: Sequence[T]) -> None:
+def print_dist(runes: Sequence[T], length: int = 1, cut: int = 0) -> None:
     """Print frequency distribution."""
     N = len(runes)
     col = 0
-    freqs = ngram_distribution(runes)
-    print("Frequency Distribution:")
+    freqs = ngram_distribution(runes, length=length, cut=cut)
+    print(f"Frequency Distribution: (length={length} cut={cut})")
     for i, e in enumerate([x[0] for x in sorted(freqs.items(), key=lambda x: -x[1])]):
         if col > 0 and col % 5 == 0:
             print("")
