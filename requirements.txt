@@ -2,5 +2,5 @@ numpy==1.26.4; python_version<'3.13'
 numpy==2.0.0b1; python_version>='3.13'
 pip==24.0
 scipy==1.13.0
-setuptools==69.2.0
+setuptools==69.5.1
 wheel==0.43.0
