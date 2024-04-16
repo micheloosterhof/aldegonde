@@ -33,7 +33,7 @@ def brute_affine():
                 out.append(tuple([multiplier,shift,pt,score]))
             except:
                 pass
-    for p in sorted(out, key=lambda x: x[3]):
+    for p in sorted(out, key=lambda x: -x[3])[0]:
         print(p)
 
 
