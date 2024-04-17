@@ -19,13 +19,13 @@ def twist(afreqs: list[float], bfreqs: list[float]) -> float:
     assert len(bfreqs) == 26
     safreqs = sorted(afreqs)
     sbfreqs = sorted(bfreqs)
-    twist: float = 0.0
+    twistscore: float = 0.0
     for r in range(13):
-        twist += safreqs[r] - sbfreqs[r]
+        twistscore += safreqs[r] - sbfreqs[r]
     for r in range(13, 26):
-        twist += sbfreqs[r] - safreqs[r]
+        twistscore += sbfreqs[r] - safreqs[r]
 
-    return twist
+    return twistscore
 
 
 def twist_test(
