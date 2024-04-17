@@ -19,7 +19,7 @@ def rail_encrypt(plaintext: str, key: int) -> str:
     col: int
 
     for col, letter in enumerate(plaintext):
-        if (row == 0) or (row == key - 1):
+        if row in (0, key - 1):
             dir_down = not dir_down
         rail[row][col] = letter
         if dir_down:
@@ -47,7 +47,7 @@ def rail_decrypt(ciphertext: str, key: int) -> str:
     row: int = 0
     col: int
     for col in range(len(ciphertext)):
-        if (row == 0) or (row == key - 1):
+        if row in (0, key - 1):
             dir_down = not dir_down
         rail[row][col] = "*"
         if dir_down:
@@ -68,7 +68,7 @@ def rail_decrypt(ciphertext: str, key: int) -> str:
     dir_down = False
     row = 0
     for col in range(len(ciphertext)):
-        if (row == 0) or (row == key - 1):
+        if row in (0, key - 1):
             dir_down = not dir_down
         result.append(rail[row][col])
         if dir_down:
