@@ -37,7 +37,7 @@ tests =[
   "pytest-cov==5.0.0",
   "ruff==0.4.4",
   "tox==4.15.0",
-  "twine==5.0.0",
+  "twine==5.1.0",
 ]
 
 [build-system]
