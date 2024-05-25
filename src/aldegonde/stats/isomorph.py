@@ -45,7 +45,7 @@ def isomorph_distribution(
 
 
 def isomorph_positions(
-    text: Sequence[T],
+    text: Sequence[object],
     length: int = 1,
     cut: int = 0,
 ) -> dict[str, list[int]]:
@@ -93,7 +93,7 @@ def random_isomorph_statistics(
     return (meandistinct, stdevdistinct, meanduplicate, stdevduplicate)
 
 
-def print_isomorph_statistics(seq: Sequence[T], *, trace: bool = False) -> None:
+def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> None:
     """Look for isomorphs in the sequence.
     Isomorphs are sequences that have the same number of unique characters:
     CDDE and LKKY are isomorphs, that can be generalized to the pattern ABBC

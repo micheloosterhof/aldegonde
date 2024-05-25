@@ -19,12 +19,12 @@ def shannon_entropy(ciphertext: Sequence[object], base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(ciphertext: Sequence[T], base: int = 2, cut: int = 0) -> float:
+def shannon2_entropy(ciphertext: Sequence[object], base: int = 2, cut: int = 0) -> float:
     """Shannon entropy. by default in bits."""
     N = len(ciphertext)
     if N < 3:
         return 0.0
-    l: list[tuple[T, ...]] = []
+    l: list[tuple[object, ...]] = []
     if cut == 0:
         for i in range(N - 1):
             l.append((ciphertext[i], ciphertext[i + 1]))

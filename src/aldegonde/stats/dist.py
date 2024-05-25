@@ -12,7 +12,7 @@ Functions for ngram distribution
 """
 
 
-def print_dist(runes: Sequence[T], length: int = 1, cut: int = 0) -> None:
+def print_dist(runes: Sequence[object], length: int = 1, cut: int = 0) -> None:
     """Print frequency distribution."""
     N = len(runes)
     col = 0

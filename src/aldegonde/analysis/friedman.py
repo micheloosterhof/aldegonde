@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 
 def friedman_test(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     minperiod: int = 1,
     maxperiod: int = 20,
     *,
