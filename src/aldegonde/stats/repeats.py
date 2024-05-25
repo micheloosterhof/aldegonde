@@ -11,7 +11,7 @@ T = TypeVar("T")
 
 
 def print_repeat_statistics(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     minimum: int = 4,
     maximum: int = 10,
     cut: int = 0,
@@ -45,7 +45,7 @@ def print_repeat_statistics(
 
 
 def repeat_distribution(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     length: int = 2,
     cut: int = 0,
 ) -> dict[str, int]:
@@ -60,7 +60,7 @@ def repeat_distribution(
 
 
 def print_repeat_positions(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     minimum: int = 2,
     maximum: int = 10,
 ) -> None:
@@ -71,7 +71,7 @@ def print_repeat_positions(
 
 
 def repeat_positions(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     length: int,
     cut: int = 0,
 ) -> dict[str, list[int]]:
@@ -84,7 +84,7 @@ def repeat_positions(
 
 
 def odd_spaced_repeats(
-    ciphertext: Sequence[T],
+    ciphertext: Sequence[object],
     minimum: int = 3,
     maximum: int = 6,
 ) -> None:
