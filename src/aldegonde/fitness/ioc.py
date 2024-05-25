@@ -30,7 +30,7 @@ def IocFitness(target_ioc: float) -> Callable[[Sequence[object]], float]:
         target_ioc (lfoat): symbol to frequency mapping of the distribution to compare with
     """
 
-    def inner(text: Sequence[T]) -> float:
+    def inner(text: Sequence[object]) -> float:
         return -sqrt(abs(ioc.ioc(text) - target_ioc))
 
     return inner
