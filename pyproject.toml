@@ -18,7 +18,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-  "numpy==1.26.4",
+  "numpy==2.0.0",
   "pip==24.1",
   "scipy==1.13.1",
   "setuptools==70.0.0",
