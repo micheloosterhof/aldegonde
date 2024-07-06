@@ -69,10 +69,10 @@ disallow_subclassing_any    = true
 check_untyped_defs          = true
 disallow_any_generics       = true
 disallow_untyped_calls      = true
+disallow_untyped_defs       = true
 
 # These are too strict for us at the moment
 
-disallow_untyped_defs       = false
 disallow_any_decorated      = false
 disallow_any_explicit       = false
 disallow_any_expr           = false

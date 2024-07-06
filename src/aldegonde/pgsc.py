@@ -8,41 +8,31 @@ from collections.abc import Callable, Sequence
 from typing import Any, Protocol, TypeVar
 
 
-class Comparable(Protocol):
-    def __lt__(self, __other: Any) -> bool: ...
-
-    def __gt__(self, __other: Any) -> bool: ...
-
-
-T = TypeVar("T", bound=Comparable)
-function = Callable[[Sequence[T]], Sequence[T]]
-
-
 def pgsc_encrypt(
-    plaintext: Sequence[T],
+    plaintext: str,
     length: int,
-    encryptfn: function[T],
-) -> tuple[T, ...]:
+    encryptfn: Callable[[str], str],
+) -> str:
     """Polygraphic substitution."""
-    ciphertext: list[T] = []
+    ciphertext = ""
     for i in range(0, len(plaintext), length):
-        ciphertext.extend(encryptfn(plaintext[i : i + length]))
-    return tuple(ciphertext)
+        ciphertext += encryptfn(plaintext[i : i + length])
+    return ciphertext
 
 
 def pgsc_decrypt(
-    ciphertext: Sequence[T],
+    ciphertext: str,
     length: int,
-    decryptfn: function[T],
-) -> tuple[T, ...]:
+    decryptfn: Callable[[str], str],
+) -> str:
     """Polygraphic substitution."""
-    plaintext: list[T] = []
+    plaintext = ""
     for i in range(0, len(ciphertext), length):
-        plaintext.extend(decryptfn(ciphertext[i : i + length]))
-    return tuple(plaintext)
+        plaintext += decryptfn(ciphertext[i : i + length])
+    return plaintext
 
 
-def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
+def playfair_get_position(letter: str, matrix: list[list[str]]) -> tuple[int, int]:
     """Find the row and column of the letter in the matrix"""
     for i in range(5):
         for j in range(5):
@@ -51,15 +41,15 @@ def playfair_get_position(letter: T, matrix: list[list[T]]) -> tuple[int, int]:
     raise ValueError
 
 
-def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
+def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[str]]:
     """Generate the Playfair Square"""
     # deduplicate key
-    key_letters: list[T] = []
+    key_letters: list[str] = []
     for letter in word:
         if letter not in key_letters:
             key_letters.append(letter)
 
-    elements: list[T] = []
+    elements: list[str] = []
     for i in key_letters:
         if i not in elements:
             elements.append(i)
@@ -70,7 +60,7 @@ def playfair_square(word: Sequence[T], alphabet: Sequence[T]) -> list[list[T]]:
     print(elements)
     assert len(elements) == 25
 
-    square: list[list[T]] = []
+    square: list[list[str]] = []
     while elements:
         square.append(elements[:5])
         elements = elements[5:]
@@ -131,7 +121,7 @@ def playfair_encrypt(plaintext: str, keyword: str) -> str:
     alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
     square = playfair_square(keyword, alphabet=alphabet)
 
-    def encryptfn(pair):
+    def encryptfn(pair: str) -> str:
         return playfair_encrypt_pair(pair=pair, matrix=square)
 
     return "".join(pgsc_encrypt(plaintext, length=2, encryptfn=encryptfn))
@@ -142,7 +132,7 @@ def playfair_decrypt(ciphertext: str, keyword: str) -> str:
     alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
     square = playfair_square(keyword, alphabet=alphabet)
 
-    def decryptfn(pair):
+    def decryptfn(pair: str) -> str:
         return playfair_decrypt_pair(pair=pair, matrix=square)
 
     return "".join(pgsc_decrypt(ciphertext, length=2, decryptfn=decryptfn))
