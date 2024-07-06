@@ -5,7 +5,6 @@ Examples are Playfair, Two-Square, Four-Square and Hill Cipher
 """
 
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, TypeVar
 
 
 def pgsc_encrypt(
