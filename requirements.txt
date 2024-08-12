@@ -1,6 +1,6 @@
 numpy==1.26.4; python_version<'3.13'
 numpy==2.0.1; python_version>='3.13'
-pip==24.1.2
+pip==24.2
 scipy==1.14.0
 setuptools==72.1.0
 wheel==0.43.0
