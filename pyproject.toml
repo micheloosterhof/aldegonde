@@ -21,7 +21,7 @@ dependencies = [
   "numpy==2.2.3",
   "pip==24.3.1",
   "scipy==1.15.2",
-  "setuptools==75.6.0",
+  "setuptools==76.0.0",
   "wheel==0.45.1",
 ]
 
