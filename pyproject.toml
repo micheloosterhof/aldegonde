@@ -32,7 +32,7 @@ tests =[
   "coverage==7.6.10",
   "mypy-extensions==1.0.0",
   "mypy==1.15.0",
-  "pipdeptree==2.24.0",
+  "pipdeptree==2.25.0",
   "pytest==8.3.4",
   "pytest-cov==6.0.0",
   "ruff==0.9.10",
