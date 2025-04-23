@@ -35,7 +35,7 @@ tests =[
   "pipdeptree==2.26.1",
   "pytest==8.3.5",
   "pytest-cov==6.0.0",
-  "ruff==0.11.4",
+  "ruff==0.11.6",
   "tox==4.23.2",
   "twine==6.1.0",
 ]
