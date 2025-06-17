@@ -34,7 +34,7 @@ tests =[
   "mypy==1.16.0",
   "pipdeptree==2.26.1",
   "pytest==8.4.0",
-  "pytest-cov==6.1.1",
+  "pytest-cov==6.2.1",
   "ruff==0.11.13",
   "tox==4.26.0",
   "twine==6.1.0",
