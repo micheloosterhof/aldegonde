@@ -1,22 +1,23 @@
 """Tests for exception hierarchy and validation."""
 
 import pytest
+
 from aldegonde.exceptions import (
     AldegondeError,
-    CipherError,
-    KeyError,
+    AldegondeKeyError,
     AlphabetError,
-    InvalidInputError,
-    StatisticalAnalysisError,
+    CipherError,
     InsufficientDataError,
+    InvalidInputError,
     MathematicalError,
+    StatisticalAnalysisError,
 )
 from aldegonde.validation import (
     validate_alphabet,
-    validate_text_sequence,
     validate_key_length,
-    validate_tabula_recta,
     validate_positive_integer,
+    validate_tabula_recta,
+    validate_text_sequence,
 )
 
 
@@ -37,8 +38,8 @@ class TestExceptionHierarchy:
         assert isinstance(exc, AldegondeError)
 
     def test_key_error(self):
-        """Test KeyError with key and cipher type."""
-        exc = KeyError("invalid key", key="ABC", cipher_type="caesar")
+        """Test AldegondeKeyError with key and cipher type."""
+        exc = AldegondeKeyError("invalid key", key="ABC", cipher_type="caesar")
         assert str(exc) == "invalid key"
         assert exc.key == "ABC"
         assert exc.cipher_type == "caesar"
@@ -56,7 +57,7 @@ class TestExceptionHierarchy:
     def test_statistical_analysis_error(self):
         """Test StatisticalAnalysisError with analysis type and data length."""
         exc = StatisticalAnalysisError(
-            "analysis failed", analysis_type="IOC", data_length=10
+            "analysis failed", analysis_type="IOC", data_length=10,
         )
         assert str(exc) == "analysis failed"
         assert exc.analysis_type == "IOC"
@@ -102,7 +103,7 @@ class TestValidation:
     def test_validate_alphabet_too_small(self):
         """Test alphabet with single symbol."""
         with pytest.raises(
-            AlphabetError, match="Alphabet must contain at least 2 symbols"
+            AlphabetError, match="Alphabet must contain at least 2 symbols",
         ):
             validate_alphabet(["A"])
 
@@ -118,7 +119,7 @@ class TestValidation:
     def test_validate_text_sequence_too_short(self):
         """Test text sequence that's too short."""
         with pytest.raises(
-            InsufficientDataError, match="Text length 2 is below minimum required 5"
+            InsufficientDataError, match="Text length 2 is below minimum required 5",
         ):
             validate_text_sequence("HI", min_length=5)
 
@@ -134,7 +135,7 @@ class TestValidation:
     def test_validate_key_length_too_short(self):
         """Test key that's too short."""
         with pytest.raises(
-            InsufficientDataError, match="Key length 1 is below minimum required 3"
+            InsufficientDataError, match="Key length 1 is below minimum required 3",
         ):
             validate_key_length("A", min_length=3)
 
@@ -162,7 +163,7 @@ class TestValidation:
     def test_validate_tabula_recta_not_dict(self):
         """Test tabula recta that's not a dictionary."""
         with pytest.raises(
-            InvalidInputError, match="Tabula recta must be a dictionary"
+            InvalidInputError, match="Tabula recta must be a dictionary",
         ):
             validate_tabula_recta("not_a_dict", ["A", "B"])
 
@@ -186,7 +187,7 @@ class TestValidation:
             "C": {"A": "C", "B": "C", "C": "A"},
         }
         with pytest.raises(
-            AlphabetError, match="Tabula recta for key 'A' missing inner keys"
+            AlphabetError, match="Tabula recta for key 'A' missing inner keys",
         ):
             validate_tabula_recta(tr, alphabet)
 
@@ -198,6 +199,6 @@ class TestValidation:
             "B": {"A": "B", "B": "A"},
         }
         with pytest.raises(
-            AlphabetError, match="Tabula recta for key 'A' contains invalid values"
+            AlphabetError, match="Tabula recta for key 'A' contains invalid values",
         ):
             validate_tabula_recta(tr, alphabet)

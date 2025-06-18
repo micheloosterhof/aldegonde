@@ -120,7 +120,7 @@ def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> 
         print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
         try:
             print(
-                f"{distinct:5d} (avg: {avgdistinct:8.2f}, S={abs(avgdistinct-distinct)/stdevdistinct:5.2f}σ)",
+                f"{distinct:5d} (avg: {avgdistinct:8.2f}, S={abs(avgdistinct - distinct) / stdevdistinct:5.2f}σ)",
                 end=" ",
             )
         except ZeroDivisionError:
@@ -130,7 +130,7 @@ def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> 
             )
         try:
             print(
-                f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} S={abs(avgduplicate-duplicate)/stdevduplicate:5.2f}σ) ",
+                f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} S={abs(avgduplicate - duplicate) / stdevduplicate:5.2f}σ) ",
             )
         except ZeroDivisionError:
             print(f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f})")

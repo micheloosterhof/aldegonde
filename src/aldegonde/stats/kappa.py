@@ -24,7 +24,7 @@ def doublets(
             positions.append(index)
             if trace:
                 print(
-                    f"doublet at {index}: {text[index-1]}-{text[index]}-{text[index+1]}-{text[index+2]}",
+                    f"doublet at {index}: {text[index - 1]}-{text[index]}-{text[index + 1]}-{text[index + 2]}",
                 )
     return (positions, len(text) - skip)
 

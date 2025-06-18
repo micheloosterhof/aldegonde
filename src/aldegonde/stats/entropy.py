@@ -19,7 +19,9 @@ def shannon_entropy(ciphertext: Sequence[object], base: int = 2) -> float:
     return H
 
 
-def shannon2_entropy(ciphertext: Sequence[object], base: int = 2, cut: int = 0) -> float:
+def shannon2_entropy(
+    ciphertext: Sequence[object], base: int = 2, cut: int = 0,
+) -> float:
     """Shannon entropy. by default in bits."""
     N = len(ciphertext)
     if N < 3:

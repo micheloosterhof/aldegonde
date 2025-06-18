@@ -1,5 +1,5 @@
 from aldegonde import masc
-from aldegonde.exceptions import KeyError as AldegondeKeyError
+from aldegonde.exceptions import AldegondeKeyError
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ALICE = (

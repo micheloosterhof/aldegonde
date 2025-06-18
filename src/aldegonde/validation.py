@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 from typing import Any, TypeVar
 
-from aldegonde.exceptions import AlphabetError, InvalidInputError, InsufficientDataError
+from aldegonde.exceptions import AlphabetError, InsufficientDataError, InvalidInputError
 
 T = TypeVar("T")
 
@@ -18,18 +18,17 @@ def validate_alphabet(alphabet: Sequence[T]) -> None:
         AlphabetError: If alphabet is invalid
     """
     if not alphabet:
-        raise AlphabetError("Alphabet cannot be empty")
+        msg = "Alphabet cannot be empty"
+        raise AlphabetError(msg)
 
     if len(alphabet) < 2:
-        raise AlphabetError(
-            f"Alphabet must contain at least 2 symbols, got {len(alphabet)}"
-        )
+        msg = f"Alphabet must contain at least 2 symbols, got {len(alphabet)}"
+        raise AlphabetError(msg)
 
     if len(set(alphabet)) != len(alphabet):
         duplicates = [x for i, x in enumerate(alphabet) if x in alphabet[:i]]
-        raise AlphabetError(
-            f"Alphabet contains duplicate symbols: {duplicates}", alphabet=alphabet
-        )
+        msg = f"Alphabet contains duplicate symbols: {duplicates}"
+        raise AlphabetError(msg, alphabet=alphabet)
 
 
 def validate_text_sequence(text: Sequence[Any], min_length: int = 1) -> None:
@@ -44,15 +43,17 @@ def validate_text_sequence(text: Sequence[Any], min_length: int = 1) -> None:
         InsufficientDataError: If text is too short
     """
     if not isinstance(text, Sequence):
+        msg = f"Text must be a sequence, got {type(text).__name__}"
         raise InvalidInputError(
-            f"Text must be a sequence, got {type(text).__name__}",
+            msg,
             input_value=text,
             expected_type=Sequence,
         )
 
     if len(text) < min_length:
+        msg = f"Text length {len(text)} is below minimum required {min_length}"
         raise InsufficientDataError(
-            f"Text length {len(text)} is below minimum required {min_length}",
+            msg,
             required_length=min_length,
             actual_length=len(text),
         )
@@ -70,15 +71,17 @@ def validate_key_length(key: Sequence[Any], min_length: int = 1) -> None:
         InsufficientDataError: If key is too short
     """
     if not isinstance(key, Sequence):
+        msg = f"Key must be a sequence, got {type(key).__name__}"
         raise InvalidInputError(
-            f"Key must be a sequence, got {type(key).__name__}",
+            msg,
             input_value=key,
             expected_type=Sequence,
         )
 
     if len(key) < min_length:
+        msg = f"Key length {len(key)} is below minimum required {min_length}"
         raise InsufficientDataError(
-            f"Key length {len(key)} is below minimum required {min_length}",
+            msg,
             required_length=min_length,
             actual_length=len(key),
         )
@@ -96,8 +99,9 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
         AlphabetError: If tabula recta doesn't match alphabet
     """
     if not isinstance(tr, dict):
+        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
         raise InvalidInputError(
-            f"Tabula recta must be a dictionary, got {type(tr).__name__}",
+            msg,
             input_value=tr,
             expected_type=dict,
         )
@@ -107,32 +111,26 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
     # Check that all alphabet symbols are present as outer keys
     missing_outer = alphabet_set - set(tr.keys())
     if missing_outer:
-        raise AlphabetError(
-            f"Tabula recta missing outer keys: {missing_outer}", alphabet=alphabet
-        )
+        msg = f"Tabula recta missing outer keys: {missing_outer}"
+        raise AlphabetError(msg, alphabet=alphabet)
 
     # Check each inner dictionary
     for outer_key, inner_dict in tr.items():
         if not isinstance(inner_dict, dict):
-            raise InvalidInputError(
-                f"Inner tabula recta entry for '{outer_key}' must be a dictionary"
-            )
+            msg = f"Inner tabula recta entry for '{outer_key}' must be a dictionary"
+            raise InvalidInputError(msg)
 
         # Check that all alphabet symbols are present as inner keys
         missing_inner = alphabet_set - set(inner_dict.keys())
         if missing_inner:
-            raise AlphabetError(
-                f"Tabula recta for key '{outer_key}' missing inner keys: {missing_inner}",
-                alphabet=alphabet,
-            )
+            msg = f"Tabula recta for key '{outer_key}' missing inner keys: {missing_inner}"
+            raise AlphabetError(msg, alphabet=alphabet)
 
         # Check that all values are valid alphabet symbols
         invalid_values = set(inner_dict.values()) - alphabet_set
         if invalid_values:
-            raise AlphabetError(
-                f"Tabula recta for key '{outer_key}' contains invalid values: {invalid_values}",
-                alphabet=alphabet,
-            )
+            msg = f"Tabula recta for key '{outer_key}' contains invalid values: {invalid_values}"
+            raise AlphabetError(msg, alphabet=alphabet)
 
 
 def validate_positive_integer(value: Any, name: str) -> int:
@@ -149,15 +147,15 @@ def validate_positive_integer(value: Any, name: str) -> int:
         InvalidInputError: If value is not a positive integer
     """
     if not isinstance(value, int):
+        msg = f"{name} must be an integer, got {type(value).__name__}"
         raise InvalidInputError(
-            f"{name} must be an integer, got {type(value).__name__}",
+            msg,
             input_value=value,
             expected_type=int,
         )
 
     if value < 1:
-        raise InvalidInputError(
-            f"{name} must be positive, got {value}", input_value=value
-        )
+        msg = f"{name} must be positive, got {value}"
+        raise InvalidInputError(msg, input_value=value)
 
     return value

@@ -4,9 +4,9 @@ from collections import deque
 from collections.abc import Generator, Iterable, Sequence
 from itertools import chain
 
-from aldegonde.pasc import TR, T, reverse_tr
 from aldegonde.exceptions import CipherError, InvalidInputError
-from aldegonde.validation import validate_text_sequence, validate_key_length
+from aldegonde.pasc import TR, T, reverse_tr
+from aldegonde.validation import validate_key_length, validate_text_sequence
 
 
 def ciphertext_autokey_encrypt(
@@ -35,36 +35,30 @@ def ciphertext_autokey_encrypt(
     validate_key_length(primer)
 
     if not isinstance(tr, dict):
-        raise InvalidInputError(
-            f"Tabula recta must be a dictionary, got {type(tr).__name__}"
-        )
+        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
+        raise InvalidInputError(msg)
 
     try:
         key: deque[T] = deque(primer)
         for e in plaintext_seq:
             if not key:
-                raise CipherError(
-                    "Key deque is empty during encryption", cipher_type="autokey"
-                )
+                msg = "Key deque is empty during encryption"
+                raise CipherError(msg, cipher_type="autokey")
             k = key.popleft()
             if k not in tr:
-                raise CipherError(
-                    f"Key symbol '{k}' not found in tabula recta", cipher_type="autokey"
-                )
+                msg = f"Key symbol '{k}' not found in tabula recta"
+                raise CipherError(msg, cipher_type="autokey")
             if e not in tr[k]:
-                raise CipherError(
-                    f"Plaintext symbol '{e}' not found in tabula recta for key '{k}'",
-                    cipher_type="autokey",
-                )
+                msg = f"Plaintext symbol '{e}' not found in tabula recta for key '{k}'"
+                raise CipherError(msg, cipher_type="autokey")
             c = tr[k][e]
             key.append(c)
             yield c
     except Exception as exc:
-        if isinstance(exc, (CipherError, InvalidInputError)):
+        if isinstance(exc, CipherError | InvalidInputError):
             raise
-        raise CipherError(
-            f"Ciphertext autokey encryption failed: {exc}", cipher_type="autokey"
-        ) from exc
+        msg = f"Ciphertext autokey encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="autokey") from exc
 
 
 def ciphertext_autokey_decrypt(
@@ -93,22 +87,17 @@ def ciphertext_autokey_decrypt(
         rtr: TR[T] = reverse_tr(tr)
         for e, k in zip(ciphertext, chain(primer, ciphertext)):
             if k not in rtr:
-                raise CipherError(
-                    f"Key symbol '{k}' not found in reversed tabula recta",
-                    cipher_type="autokey",
-                )
+                msg = f"Key symbol '{k}' not found in reversed tabula recta"
+                raise CipherError(msg, cipher_type="autokey")
             if e not in rtr[k]:
-                raise CipherError(
-                    f"Ciphertext symbol '{e}' not found in reversed tabula recta for key '{k}'",
-                    cipher_type="autokey",
-                )
+                msg = f"Ciphertext symbol '{e}' not found in reversed tabula recta for key '{k}'"
+                raise CipherError(msg, cipher_type="autokey")
             yield rtr[k][e]
     except Exception as exc:
-        if isinstance(exc, (CipherError, InvalidInputError)):
+        if isinstance(exc, CipherError | InvalidInputError):
             raise
-        raise CipherError(
-            f"Ciphertext autokey decryption failed: {exc}", cipher_type="autokey"
-        ) from exc
+        msg = f"Ciphertext autokey decryption failed: {exc}"
+        raise CipherError(msg, cipher_type="autokey") from exc
 
 
 def plaintext_autokey_encrypt(

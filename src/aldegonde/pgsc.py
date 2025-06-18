@@ -7,7 +7,7 @@ Examples are Playfair, Two-Square, Four-Square and Hill Cipher
 from collections.abc import Callable, Sequence
 
 from aldegonde.exceptions import CipherError, InvalidInputError
-from aldegonde.validation import validate_text_sequence, validate_positive_integer
+from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 
 def pgsc_encrypt(
@@ -33,12 +33,12 @@ def pgsc_encrypt(
     validate_positive_integer(length, "length")
 
     if not callable(encryptfn):
-        raise InvalidInputError("encryptfn must be callable")
+        msg = "encryptfn must be callable"
+        raise InvalidInputError(msg)
 
     if len(plaintext) % length != 0:
-        raise InvalidInputError(
-            f"Plaintext length {len(plaintext)} must be divisible by block length {length}"
-        )
+        msg = f"Plaintext length {len(plaintext)} must be divisible by block length {length}"
+        raise InvalidInputError(msg)
 
     try:
         ciphertext = ""
@@ -47,9 +47,8 @@ def pgsc_encrypt(
             ciphertext += encryptfn(block)
         return ciphertext
     except Exception as exc:
-        raise CipherError(
-            f"Polygraphic encryption failed: {exc}", cipher_type="polygraphic"
-        ) from exc
+        msg = f"Polygraphic encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="polygraphic") from exc
 
 
 def pgsc_decrypt(
@@ -75,12 +74,12 @@ def pgsc_decrypt(
     validate_positive_integer(length, "length")
 
     if not callable(decryptfn):
-        raise InvalidInputError("decryptfn must be callable")
+        msg = "decryptfn must be callable"
+        raise InvalidInputError(msg)
 
     if len(ciphertext) % length != 0:
-        raise InvalidInputError(
-            f"Ciphertext length {len(ciphertext)} must be divisible by block length {length}"
-        )
+        msg = f"Ciphertext length {len(ciphertext)} must be divisible by block length {length}"
+        raise InvalidInputError(msg)
 
     try:
         plaintext = ""
@@ -89,9 +88,8 @@ def pgsc_decrypt(
             plaintext += decryptfn(block)
         return plaintext
     except Exception as exc:
-        raise CipherError(
-            f"Polygraphic decryption failed: {exc}", cipher_type="polygraphic"
-        ) from exc
+        msg = f"Polygraphic decryption failed: {exc}"
+        raise CipherError(msg, cipher_type="polygraphic") from exc
 
 
 def playfair_get_position(letter: str, matrix: list[list[str]]) -> tuple[int, int]:
@@ -111,9 +109,8 @@ def playfair_get_position(letter: str, matrix: list[list[str]]) -> tuple[int, in
         for j in range(5):
             if matrix[i][j] == letter:
                 return (i, j)
-    raise CipherError(
-        f"Letter '{letter}' not found in Playfair matrix", cipher_type="playfair"
-    )
+    msg = f"Letter '{letter}' not found in Playfair matrix"
+    raise CipherError(msg, cipher_type="playfair")
 
 
 def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[str]]:
@@ -131,9 +128,8 @@ def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[s
         CipherError: If square generation fails
     """
     if len(alphabet) != 25:
-        raise InvalidInputError(
-            f"Alphabet must be exactly 25 characters, got {len(alphabet)}"
-        )
+        msg = f"Alphabet must be exactly 25 characters, got {len(alphabet)}"
+        raise InvalidInputError(msg)
 
     try:
         # deduplicate key
@@ -151,10 +147,8 @@ def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[s
                 elements.append(i)
 
         if len(elements) != 25:
-            raise CipherError(
-                f"Generated square has {len(elements)} elements, expected 25",
-                cipher_type="playfair",
-            )
+            msg = f"Generated square has {len(elements)} elements, expected 25"
+            raise CipherError(msg, cipher_type="playfair")
 
         square: list[list[str]] = []
         while elements:
@@ -163,11 +157,10 @@ def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[s
 
         return square
     except Exception as exc:
-        if isinstance(exc, (InvalidInputError, CipherError)):
+        if isinstance(exc, InvalidInputError | CipherError):
             raise
-        raise CipherError(
-            f"Playfair square generation failed: {exc}", cipher_type="playfair"
-        ) from exc
+        msg = f"Playfair square generation failed: {exc}"
+        raise CipherError(msg, cipher_type="playfair") from exc
 
 
 def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:

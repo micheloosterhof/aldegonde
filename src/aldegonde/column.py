@@ -27,14 +27,17 @@ def encrypt_message(message: str, key: str, padding: str = " ") -> str:
 
     # Validate that key contains only digits and no duplicates
     if not key.isdigit():
-        raise InvalidInputError("Key must contain only digits")
+        msg = "Key must contain only digits"
+        raise InvalidInputError(msg)
 
     key_digits = [int(d) for d in key]
     if len(set(key_digits)) != len(key_digits):
-        raise InvalidInputError("Key must not contain duplicate digits")
+        msg = "Key must not contain duplicate digits"
+        raise InvalidInputError(msg)
 
     if not all(1 <= d <= len(key) for d in key_digits):
-        raise InvalidInputError(f"Key digits must be between 1 and {len(key)}")
+        msg = f"Key digits must be between 1 and {len(key)}"
+        raise InvalidInputError(msg)
 
     try:
         message = message.replace(" ", "").upper()
@@ -67,8 +70,9 @@ def encrypt_message(message: str, key: str, padding: str = " ") -> str:
     except Exception as exc:
         if isinstance(exc, InvalidInputError):
             raise
+        msg = f"Columnar transposition encryption failed: {exc}"
         raise CipherError(
-            f"Columnar transposition encryption failed: {exc}",
+            msg,
             cipher_type="columnar_transposition",
         ) from exc
 
@@ -93,14 +97,17 @@ def decrypt_message(ciphertext: str, key: str) -> str:
 
     # Validate key format
     if not key.isdigit():
-        raise InvalidInputError("Key must contain only digits")
+        msg = "Key must contain only digits"
+        raise InvalidInputError(msg)
 
     key_digits = [int(d) for d in key]
     if len(set(key_digits)) != len(key_digits):
-        raise InvalidInputError("Key must not contain duplicate digits")
+        msg = "Key must not contain duplicate digits"
+        raise InvalidInputError(msg)
 
     if not all(1 <= d <= len(key) for d in key_digits):
-        raise InvalidInputError(f"Key digits must be between 1 and {len(key)}")
+        msg = f"Key digits must be between 1 and {len(key)}"
+        raise InvalidInputError(msg)
 
     try:
         num_cols = len(key)
@@ -142,8 +149,9 @@ def decrypt_message(ciphertext: str, key: str) -> str:
     except Exception as exc:
         if isinstance(exc, InvalidInputError):
             raise
+        msg = f"Columnar transposition decryption failed: {exc}"
         raise CipherError(
-            f"Columnar transposition decryption failed: {exc}",
+            msg,
             cipher_type="columnar_transposition",
         ) from exc
 

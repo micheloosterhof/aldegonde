@@ -113,7 +113,7 @@ def print_bigram_diagram(
             * symbolcount
         )
         ioc += pioc
-        print(f"| {pioc:.3f} | {symbolcount*pioc:.3f}")
+        print(f"| {pioc:.3f} | {symbolcount * pioc:.3f}")
 
     print_separator(symbolcount)
 

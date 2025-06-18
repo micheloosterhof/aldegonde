@@ -1,4 +1,4 @@
-from aldegonde.stats.kappa import kappa, doublets, triplets
+from aldegonde.stats.kappa import doublets, kappa, triplets
 
 """
 """

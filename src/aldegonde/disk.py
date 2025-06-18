@@ -3,9 +3,9 @@ disk, Urkryptografen"""
 
 from collections.abc import Generator, Iterable, Sequence
 
-from aldegonde.pasc import T
 from aldegonde.exceptions import CipherError, InvalidInputError
-from aldegonde.validation import validate_text_sequence, validate_alphabet
+from aldegonde.pasc import T
+from aldegonde.validation import validate_alphabet, validate_text_sequence
 
 """
 From: https://eprint.iacr.org/2020/1492.pdf
@@ -108,10 +108,8 @@ def disk_encrypt(
         state: int = 0
         for e in plaintext_seq:
             if e not in plainabc:
-                raise CipherError(
-                    f"Plaintext character '{e}' not found in plaintext alphabet",
-                    cipher_type="disk",
-                )
+                msg = f"Plaintext character '{e}' not found in plaintext alphabet"
+                raise CipherError(msg, cipher_type="disk")
 
             x = (plainabc.index(e) - state) % len(plainabc)
             if x == 0:
@@ -120,9 +118,10 @@ def disk_encrypt(
             yield cipherabc[state % len(cipherabc)]
 
     except Exception as exc:
-        if isinstance(exc, (CipherError, InvalidInputError)):
+        if isinstance(exc, CipherError | InvalidInputError):
             raise
-        raise CipherError(f"Disk encryption failed: {exc}", cipher_type="disk") from exc
+        msg = f"Disk encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="disk") from exc
 
 
 def disk_decrypt(
@@ -155,10 +154,8 @@ def disk_decrypt(
         state: int = 0
         for e in ciphertext_seq:
             if e not in cipherabc:
-                raise CipherError(
-                    f"Ciphertext character '{e}' not found in ciphertext alphabet",
-                    cipher_type="disk",
-                )
+                msg = f"Ciphertext character '{e}' not found in ciphertext alphabet"
+                raise CipherError(msg, cipher_type="disk")
 
             y = (cipherabc.index(e) - state) % len(cipherabc)
             if y == 0:
@@ -167,6 +164,7 @@ def disk_decrypt(
             yield plainabc[state % len(plainabc)]
 
     except Exception as exc:
-        if isinstance(exc, (CipherError, InvalidInputError)):
+        if isinstance(exc, CipherError | InvalidInputError):
             raise
-        raise CipherError(f"Disk decryption failed: {exc}", cipher_type="disk") from exc
+        msg = f"Disk decryption failed: {exc}"
+        raise CipherError(msg, cipher_type="disk") from exc

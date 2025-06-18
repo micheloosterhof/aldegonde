@@ -104,4 +104,6 @@ def odd_spaced_repeats(
         else:
             odd += 1
     if even + odd > 0:
-        print(f"even {even:3d} odd {odd:3d}  percentage: {100*odd/(even+odd):02f}")
+        print(
+            f"even {even:3d} odd {odd:3d}  percentage: {100 * odd / (even + odd):02f}",
+        )

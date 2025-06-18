@@ -1,6 +1,6 @@
 """prime factorization."""
 
-from aldegonde.exceptions import MathematicalError, InvalidInputError
+from aldegonde.exceptions import MathematicalError
 from aldegonde.validation import validate_positive_integer
 
 
@@ -40,8 +40,9 @@ def prime_factors(number: int) -> list[int]:
         return factors
 
     except Exception as exc:
+        msg = f"Prime factorization failed for {original_number}"
         raise MathematicalError(
-            f"Prime factorization failed for {original_number}",
+            msg,
             operation="prime_factorization",
             operands=(original_number,),
         ) from exc
@@ -80,8 +81,9 @@ def factor_pairs(number: int) -> list[tuple[int, int]]:
         return output
 
     except Exception as exc:
+        msg = f"Factor pair computation failed for {number}"
         raise MathematicalError(
-            f"Factor pair computation failed for {number}",
+            msg,
             operation="factor_pairs",
             operands=(number,),
         ) from exc

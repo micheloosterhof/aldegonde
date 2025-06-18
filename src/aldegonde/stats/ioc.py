@@ -4,13 +4,13 @@ from collections.abc import Sequence
 from math import log, sqrt
 from typing import NamedTuple
 
-from aldegonde.stats.ngrams import ngram_distribution
 from aldegonde.exceptions import (
-    StatisticalAnalysisError,
     InsufficientDataError,
     InvalidInputError,
+    StatisticalAnalysisError,
 )
-from aldegonde.validation import validate_text_sequence, validate_positive_integer
+from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 
 def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
@@ -37,15 +37,17 @@ def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
     validate_positive_integer(length, "length")
 
     if cut < 0 or cut > length:
-        raise InvalidInputError(f"Cut value {cut} must be between 0 and {length}")
+        msg = f"Cut value {cut} must be between 0 and {length}"
+        raise InvalidInputError(msg)
 
     try:
         freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
         L: int = sum(x for x in freqs.values())
 
         if L < 2:
+            msg = f"Insufficient n-grams ({L}) for IOC calculation"
             raise InsufficientDataError(
-                f"Insufficient n-grams ({L}) for IOC calculation",
+                msg,
                 required_length=2,
                 actual_length=L,
                 analysis_type="IOC",
@@ -55,11 +57,10 @@ def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
         return freqsum / (L * (L - 1))
 
     except Exception as exc:
-        if isinstance(exc, (InvalidInputError, InsufficientDataError)):
+        if isinstance(exc, InvalidInputError | InsufficientDataError):
             raise
-        raise StatisticalAnalysisError(
-            f"IOC calculation failed: {exc}", analysis_type="IOC"
-        ) from exc
+        msg = f"IOC calculation failed: {exc}"
+        raise StatisticalAnalysisError(msg, analysis_type="IOC") from exc
 
 
 def nioc(
@@ -133,8 +134,9 @@ def sliding_window_ioc(
     validate_positive_integer(window, "window")
 
     if len(text) < window + length:
+        msg = f"Text length {len(text)} is insufficient for window size {window} with n-gram length {length}"
         raise InsufficientDataError(
-            f"Text length {len(text)} is insufficient for window size {window} with n-gram length {length}",
+            msg,
             required_length=window + length,
             actual_length=len(text),
             analysis_type="sliding window IOC",

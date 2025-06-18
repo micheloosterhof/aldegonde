@@ -13,11 +13,10 @@ from itertools import cycle
 from typing import Any, Protocol, TypeVar
 
 from aldegonde import masc
-from aldegonde.exceptions import CipherError, KeyError, InvalidInputError
+from aldegonde.exceptions import AldegondeKeyError, CipherError, InvalidInputError
 from aldegonde.validation import (
-    validate_text_sequence,
     validate_key_length,
-    validate_tabula_recta,
+    validate_text_sequence,
 )
 
 
@@ -70,23 +69,21 @@ def pasc_encrypt(
     try:
         for e, k in zip(plaintext_seq, cycle(keyword)):
             if k not in tr:
-                raise KeyError(
-                    f"Key symbol '{k}' not found in tabula recta",
+                msg = f"Key symbol '{k}' not found in tabula recta"
+                raise AldegondeKeyError(
+                    msg,
                     key=k,
                     cipher_type="polyalphabetic",
                 )
             if e not in tr[k]:
-                raise CipherError(
-                    f"Plaintext symbol '{e}' not found in tabula recta for key '{k}'",
-                    cipher_type="polyalphabetic",
-                )
+                msg = f"Plaintext symbol '{e}' not found in tabula recta for key '{k}'"
+                raise CipherError(msg, cipher_type="polyalphabetic")
             yield tr[k][e]
     except Exception as exc:
-        if isinstance(exc, (KeyError, CipherError)):
+        if isinstance(exc, AldegondeKeyError | CipherError):
             raise
-        raise CipherError(
-            f"Encryption failed: {exc}", cipher_type="polyalphabetic"
-        ) from exc
+        msg = f"Encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="polyalphabetic") from exc
 
 
 def pasc_encrypt_interrupted(
@@ -114,9 +111,8 @@ def pasc_encrypt_interrupted(
         CipherError: If encryption fails
     """
     if ciphertext_interruptor is None and plaintext_interruptor is None:
-        raise InvalidInputError(
-            "At least one interruptor (ciphertext or plaintext) must be specified"
-        )
+        msg = "At least one interruptor (ciphertext or plaintext) must be specified"
+        raise InvalidInputError(msg)
 
     plaintext_seq = (
         list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
@@ -129,16 +125,15 @@ def pasc_encrypt_interrupted(
         for e in plaintext_seq:
             key: T = keyword[keyword_index % len(keyword)]
             if key not in tr:
-                raise KeyError(
-                    f"Key symbol '{key}' not found in tabula recta",
+                msg = f"Key symbol '{key}' not found in tabula recta"
+                raise AldegondeKeyError(
+                    msg,
                     key=key,
                     cipher_type="polyalphabetic",
                 )
             if e not in tr[key]:
-                raise CipherError(
-                    f"Plaintext symbol '{e}' not found in tabula recta for key '{key}'",
-                    cipher_type="polyalphabetic",
-                )
+                msg = f"Plaintext symbol '{e}' not found in tabula recta for key '{key}'"
+                raise CipherError(msg, cipher_type="polyalphabetic")
 
             output = tr[key][e]
             keyword_index = keyword_index + 1
@@ -146,11 +141,10 @@ def pasc_encrypt_interrupted(
                 keyword_index = 0
             yield output
     except Exception as exc:
-        if isinstance(exc, (KeyError, CipherError, InvalidInputError)):
+        if isinstance(exc, AldegondeKeyError | CipherError | InvalidInputError):
             raise
-        raise CipherError(
-            f"Interrupted encryption failed: {exc}", cipher_type="polyalphabetic"
-        ) from exc
+        msg = f"Interrupted encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="polyalphabetic") from exc
 
 
 # This is a good candidate for functool caching
@@ -168,25 +162,21 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
         CipherError: If tabula recta is ambiguous
     """
     if not isinstance(tr, dict):
-        raise InvalidInputError(
-            f"Tabula recta must be a dictionary, got {type(tr).__name__}"
-        )
+        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
+        raise InvalidInputError(msg)
 
     output: TR[T] = defaultdict(dict)
     for keyword in tr:
         if not isinstance(tr[keyword], dict):
-            raise InvalidInputError(
-                f"Inner tabula recta for key '{keyword}' must be a dictionary"
-            )
+            msg = f"Inner tabula recta for key '{keyword}' must be a dictionary"
+            raise InvalidInputError(msg)
 
         for k, v in tr[keyword].items():
             output[keyword][v] = k
 
         if len(output[keyword]) != len(tr[keyword]):
-            raise CipherError(
-                f"Tabula recta is ambiguous for key '{keyword}' - contains duplicate values",
-                cipher_type="polyalphabetic",
-            )
+            msg = f"Tabula recta is ambiguous for key '{keyword}' - contains duplicate values"
+            raise CipherError(msg, cipher_type="polyalphabetic")
 
     return output
 

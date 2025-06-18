@@ -8,8 +8,8 @@ import random
 from collections.abc import Generator, Iterable, Sequence
 from typing import TypeVar
 
-from aldegonde.exceptions import CipherError, KeyError, InvalidInputError
-from aldegonde.validation import validate_text_sequence, validate_alphabet
+from aldegonde.exceptions import AldegondeKeyError, CipherError, InvalidInputError
+from aldegonde.validation import validate_alphabet, validate_text_sequence
 
 T = TypeVar("T")
 
@@ -29,7 +29,8 @@ def masc_encrypt(plaintext: Iterable[T], key: dict[T, T]) -> Generator[T, None, 
         CipherError: If encryption fails
     """
     if not isinstance(key, dict):
-        raise InvalidInputError(f"Key must be a dictionary, got {type(key).__name__}")
+        msg = f"Key must be a dictionary, got {type(key).__name__}"
+        raise InvalidInputError(msg)
 
     plaintext_seq = (
         list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
@@ -39,17 +40,14 @@ def masc_encrypt(plaintext: Iterable[T], key: dict[T, T]) -> Generator[T, None, 
     try:
         for e in plaintext_seq:
             if e not in key:
-                raise CipherError(
-                    f"Plaintext symbol '{e}' not found in substitution key",
-                    cipher_type="monoalphabetic",
-                )
+                msg = f"Plaintext symbol '{e}' not found in substitution key"
+                raise CipherError(msg, cipher_type="monoalphabetic")
             yield key[e]
     except Exception as exc:
-        if isinstance(exc, (CipherError, InvalidInputError)):
+        if isinstance(exc, CipherError | InvalidInputError):
             raise
-        raise CipherError(
-            f"Monoalphabetic encryption failed: {exc}", cipher_type="monoalphabetic"
-        ) from exc
+        msg = f"Monoalphabetic encryption failed: {exc}"
+        raise CipherError(msg, cipher_type="monoalphabetic") from exc
 
 
 def reverse_key(key: dict[T, T]) -> dict[T, T]:
@@ -66,15 +64,14 @@ def reverse_key(key: dict[T, T]) -> dict[T, T]:
         CipherError: If key contains duplicate values
     """
     if not isinstance(key, dict):
-        raise InvalidInputError(f"Key must be a dictionary, got {type(key).__name__}")
+        msg = f"Key must be a dictionary, got {type(key).__name__}"
+        raise InvalidInputError(msg)
 
     output: dict[T, T] = {}
     for k, v in key.items():
         if v in output:
-            raise CipherError(
-                f"Key contains duplicate value '{v}', cannot reverse",
-                cipher_type="monoalphabetic",
-            )
+            msg = f"Key contains duplicate value '{v}', cannot reverse"
+            raise CipherError(msg, cipher_type="monoalphabetic")
         output[v] = k
     return output
 
@@ -135,15 +132,17 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
     validate_alphabet(alphabet)
 
     if not isinstance(a, int) or not isinstance(b, int):
-        raise InvalidInputError("Parameters 'a' and 'b' must be integers")
+        msg = "Parameters 'a' and 'b' must be integers"
+        raise InvalidInputError(msg)
 
     key: dict[T, T] = {}
     for i, e in enumerate(alphabet):
         key[e] = alphabet[(a * i + b) % len(alphabet)]
 
     if set(key.keys()) != set(key.values()):
-        raise KeyError(
-            f"Invalid Affine cipher parameter: a={a} is not coprime with alphabet length {len(alphabet)}",
+        msg = f"Invalid Affine cipher parameter: a={a} is not coprime with alphabet length {len(alphabet)}"
+        raise AldegondeKeyError(
+            msg,
             key=a,
             cipher_type="affine",
         )
@@ -174,9 +173,8 @@ def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
     alphabet_set = set(alphabet)
     invalid_chars = [letter for letter in keyword if letter not in alphabet_set]
     if invalid_chars:
-        raise InvalidInputError(
-            f"Keyword contains characters not in alphabet: {invalid_chars}"
-        )
+        msg = f"Keyword contains characters not in alphabet: {invalid_chars}"
+        raise InvalidInputError(msg)
 
     output: list[T] = []
     for letter in keyword:

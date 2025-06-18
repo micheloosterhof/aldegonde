@@ -1,12 +1,12 @@
 """Custom exception hierarchy for Aldegonde cryptography library."""
 
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 
 class AldegondeError(Exception):
     """Base exception class for all Aldegonde-related errors."""
 
-    pass
 
 
 class CipherError(AldegondeError):
@@ -17,7 +17,7 @@ class CipherError(AldegondeError):
         super().__init__(message)
 
 
-class KeyError(CipherError):
+class AldegondeKeyError(CipherError):
     """Exception raised for key-related errors in ciphers."""
 
     def __init__(
