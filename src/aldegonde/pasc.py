@@ -13,6 +13,8 @@ from itertools import cycle
 from typing import Any, Protocol, TypeVar
 
 from aldegonde import masc
+from aldegonde.exceptions import CipherError, KeyError, InvalidInputError
+from aldegonde.validation import validate_text_sequence, validate_key_length, validate_tabula_recta
 
 
 class Comparable(Protocol):
@@ -40,9 +42,36 @@ def pasc_encrypt(
     keyword: Sequence[T],
     tr: TR[T],
 ) -> Generator[T, None, None]:
-    """Polyalphabetic substitution."""
-    for e, k in zip(plaintext, cycle(keyword)):
-        yield tr[k][e]
+    """Polyalphabetic substitution.
+    
+    Args:
+        plaintext: Text to encrypt
+        keyword: Encryption key sequence
+        tr: Tabula recta for the cipher
+        
+    Yields:
+        Encrypted characters
+        
+    Raises:
+        KeyError: If key is invalid
+        CipherError: If encryption fails
+    """
+    # Convert to sequences for validation
+    plaintext_seq = list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
+    validate_text_sequence(plaintext_seq)
+    validate_key_length(keyword)
+    
+    try:
+        for e, k in zip(plaintext_seq, cycle(keyword)):
+            if k not in tr:
+                raise KeyError(f"Key symbol '{k}' not found in tabula recta", key=k, cipher_type="polyalphabetic")
+            if e not in tr[k]:
+                raise CipherError(f"Plaintext symbol '{e}' not found in tabula recta for key '{k}'", cipher_type="polyalphabetic")
+            yield tr[k][e]
+    except Exception as exc:
+        if isinstance(exc, (KeyError, CipherError)):
+            raise
+        raise CipherError(f"Encryption failed: {exc}", cipher_type="polyalphabetic") from exc
 
 
 def pasc_encrypt_interrupted(
@@ -52,30 +81,78 @@ def pasc_encrypt_interrupted(
     ciphertext_interruptor: T | None = None,
     plaintext_interruptor: T | None = None,
 ) -> Generator[T, None, None]:
-    """Polyalphabetic substitution."""
-    assert ciphertext_interruptor is not None or plaintext_interruptor is not None
-    keyword_index = 0
-    for e in plaintext:
-        key: T = keyword[keyword_index % len(keyword)]
-        output = tr[key][e]
-        keyword_index = keyword_index + 1
-        if output == ciphertext_interruptor or e == plaintext_interruptor:
-            keyword_index = 0
-        yield output
+    """Polyalphabetic substitution with interruptor.
+    
+    Args:
+        plaintext: Text to encrypt
+        keyword: Encryption key sequence
+        tr: Tabula recta for the cipher
+        ciphertext_interruptor: Symbol that resets key position in ciphertext
+        plaintext_interruptor: Symbol that resets key position in plaintext
+        
+    Yields:
+        Encrypted characters
+        
+    Raises:
+        InvalidInputError: If no interruptor is specified
+        KeyError: If key is invalid
+        CipherError: If encryption fails
+    """
+    if ciphertext_interruptor is None and plaintext_interruptor is None:
+        raise InvalidInputError("At least one interruptor (ciphertext or plaintext) must be specified")
+    
+    plaintext_seq = list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
+    validate_text_sequence(plaintext_seq)
+    validate_key_length(keyword)
+    
+    try:
+        keyword_index = 0
+        for e in plaintext_seq:
+            key: T = keyword[keyword_index % len(keyword)]
+            if key not in tr:
+                raise KeyError(f"Key symbol '{key}' not found in tabula recta", key=key, cipher_type="polyalphabetic")
+            if e not in tr[key]:
+                raise CipherError(f"Plaintext symbol '{e}' not found in tabula recta for key '{key}'", cipher_type="polyalphabetic")
+            
+            output = tr[key][e]
+            keyword_index = keyword_index + 1
+            if output == ciphertext_interruptor or e == plaintext_interruptor:
+                keyword_index = 0
+            yield output
+    except Exception as exc:
+        if isinstance(exc, (KeyError, CipherError, InvalidInputError)):
+            raise
+        raise CipherError(f"Interrupted encryption failed: {exc}", cipher_type="polyalphabetic") from exc
 
 
 # This is a good candidate for functool caching
 def reverse_tr(tr: TR[T]) -> TR[T]:
-    """Take a dict containing all elements and reverses the index and the value
-    Returns output if the input contains valid values, else raises ValueError.
+    """Take a dict containing all elements and reverses the index and the value.
+    
+    Args:
+        tr: Tabula recta to reverse
+        
+    Returns:
+        Reversed tabula recta
+        
+    Raises:
+        InvalidInputError: If tabula recta format is invalid
+        CipherError: If tabula recta is ambiguous
     """
+    if not isinstance(tr, dict):
+        raise InvalidInputError(f"Tabula recta must be a dictionary, got {type(tr).__name__}")
+    
     output: TR[T] = defaultdict(dict)
     for keyword in tr:
+        if not isinstance(tr[keyword], dict):
+            raise InvalidInputError(f"Inner tabula recta for key '{keyword}' must be a dictionary")
+        
         for k, v in tr[keyword].items():
             output[keyword][v] = k
+        
         if len(output[keyword]) != len(tr[keyword]):
-            msg = "TR ambiguous for key `{keyword}`"
-            raise ValueError(msg)
+            raise CipherError(f"Tabula recta is ambiguous for key '{keyword}' - contains duplicate values", cipher_type="polyalphabetic")
+    
     return output
 
 

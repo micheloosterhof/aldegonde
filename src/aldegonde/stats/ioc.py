@@ -5,29 +5,55 @@ from math import log, sqrt
 from typing import NamedTuple
 
 from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.exceptions import StatisticalAnalysisError, InsufficientDataError, InvalidInputError
+from aldegonde.validation import validate_text_sequence, validate_positive_integer
 
 
 def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC
+    
     Args:
-        text: Sequence
+        text: Sequence to analyze
         length: size of ngram
-        cut: where to start ngrams.
+        cut: where to start ngrams
 
-    Yields
-    ------
-        Output is the Index of Coincidence formatted as a float,
+    Returns:
+        Index of Coincidence as a float
+        
+    Raises:
+        InvalidInputError: If parameters are invalid
+        InsufficientDataError: If text is too short for analysis
+        StatisticalAnalysisError: If analysis fails
 
     Specify `cut=0` and it operates on sliding blocks of 2 text: ABC, BCD, CDE, ...
     Specify `cut=1` and it operates on non-overlapping blocks of 3 text: ABC, DEF, ...
     Specify `cut=2` and it operates on non-overlapping blocks of 3 text: BCD, EFG, ...
     """
-    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-    L: int = sum(x for x in freqs.values())
-    if L < 2:
-        return 0.0
-    freqsum: float = sum(v * (v - 1) for v in freqs.values())
-    return freqsum / (L * (L - 1))
+    validate_text_sequence(text, min_length=2)
+    validate_positive_integer(length, "length")
+    
+    if cut < 0 or cut > length:
+        raise InvalidInputError(f"Cut value {cut} must be between 0 and {length}")
+    
+    try:
+        freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
+        L: int = sum(x for x in freqs.values())
+        
+        if L < 2:
+            raise InsufficientDataError(
+                f"Insufficient n-grams ({L}) for IOC calculation",
+                required_length=2,
+                actual_length=L,
+                analysis_type="IOC"
+            )
+        
+        freqsum: float = sum(v * (v - 1) for v in freqs.values())
+        return freqsum / (L * (L - 1))
+    
+    except Exception as exc:
+        if isinstance(exc, (InvalidInputError, InsufficientDataError)):
+            raise
+        raise StatisticalAnalysisError(f"IOC calculation failed: {exc}", analysis_type="IOC") from exc
 
 
 def nioc(
@@ -81,9 +107,35 @@ def sliding_window_ioc(
     cut: int = 0,
     window: int = 100,
 ) -> list[float]:
-    """Calculate sliding window IOC of a large data set."""
+    """Calculate sliding window IOC of a large data set.
+    
+    Args:
+        text: Sequence to analyze
+        length: size of ngram
+        cut: where to start ngrams
+        window: size of sliding window
+        
+    Returns:
+        List of IOC values for each window position
+        
+    Raises:
+        InvalidInputError: If parameters are invalid
+        InsufficientDataError: If text is too short for analysis
+    """
+    validate_text_sequence(text, min_length=window + length)
+    validate_positive_integer(length, "length")
+    validate_positive_integer(window, "window")
+    
+    if len(text) < window + length:
+        raise InsufficientDataError(
+            f"Text length {len(text)} is insufficient for window size {window} with n-gram length {length}",
+            required_length=window + length,
+            actual_length=len(text),
+            analysis_type="sliding window IOC"
+        )
+    
     output: list[float] = []
-    for i in range(len(text) - window):
+    for i in range(len(text) - window + 1):
         output.append(ioc(text[i : i + window], length=length, cut=cut))
     return output
 
