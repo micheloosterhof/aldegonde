@@ -1,4 +1,5 @@
 from aldegonde import masc
+from aldegonde.exceptions import KeyError as AldegondeKeyError
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ALICE = (
@@ -44,7 +45,7 @@ def test_affinekey() -> None:
     assert masc.affinekey(ABC, a=3, b=8) == masc.affinekey(ABC, a=3, b=8)
     try:
         assert masc.affinekey(ABC, a=2, b=8) == masc.affinekey(ABC, a=2, b=8)
-    except ValueError:
+    except (ValueError, AldegondeKeyError):
         assert 1 == 1
     AFFINE_CIPHERTEXT = "OYHYJLEVYQBLSRIJLYEC"
     AFFINE_PLAINTEXT = "CELEBRATESPRINGBREAK"

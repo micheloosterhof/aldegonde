@@ -8,22 +8,73 @@ import random
 from collections.abc import Generator, Iterable, Sequence
 from typing import TypeVar
 
+from aldegonde.exceptions import CipherError, KeyError, InvalidInputError
+from aldegonde.validation import validate_text_sequence, validate_alphabet
+
 T = TypeVar("T")
 
 
 def masc_encrypt(plaintext: Iterable[T], key: dict[T, T]) -> Generator[T, None, None]:
-    """Encrypt with monalphabetic substitution."""
-    for e in plaintext:
-        yield key[e]
+    """Encrypt with monoalphabetic substitution.
+
+    Args:
+        plaintext: Text to encrypt
+        key: Substitution key dictionary
+
+    Yields:
+        Encrypted characters
+
+    Raises:
+        InvalidInputError: If key format is invalid
+        CipherError: If encryption fails
+    """
+    if not isinstance(key, dict):
+        raise InvalidInputError(f"Key must be a dictionary, got {type(key).__name__}")
+
+    plaintext_seq = (
+        list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
+    )
+    validate_text_sequence(plaintext_seq)
+
+    try:
+        for e in plaintext_seq:
+            if e not in key:
+                raise CipherError(
+                    f"Plaintext symbol '{e}' not found in substitution key",
+                    cipher_type="monoalphabetic",
+                )
+            yield key[e]
+    except Exception as exc:
+        if isinstance(exc, (CipherError, InvalidInputError)):
+            raise
+        raise CipherError(
+            f"Monoalphabetic encryption failed: {exc}", cipher_type="monoalphabetic"
+        ) from exc
 
 
 def reverse_key(key: dict[T, T]) -> dict[T, T]:
     """Take a dict containing all elements and reverses the index and the value.
 
-    Returns output if the input contains valid values, else raises ValueError.
+    Args:
+        key: Dictionary to reverse
+
+    Returns:
+        Reversed dictionary
+
+    Raises:
+        InvalidInputError: If key format is invalid
+        CipherError: If key contains duplicate values
     """
+    if not isinstance(key, dict):
+        raise InvalidInputError(f"Key must be a dictionary, got {type(key).__name__}")
+
     output: dict[T, T] = {}
     for k, v in key.items():
+        if v in output:
+            raise CipherError(
+                f"Key contains duplicate value '{v}', cannot reverse",
+                cipher_type="monoalphabetic",
+            )
         output[v] = k
     return output
 
@@ -69,27 +120,65 @@ def shiftedkey(alphabet: Sequence[T], shift: int = 3) -> dict[T, T]:
 def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
     """Generate an affine key for use in the previous functions.
 
-    Parameter A must be coprime to the alphabet length to generate a valid encoding.
+    Args:
+        alphabet: The alphabet to use
+        a: Multiplicative parameter (must be coprime to alphabet length)
+        b: Additive parameter
+
+    Returns:
+        Affine cipher key dictionary
+
+    Raises:
+        InvalidInputError: If parameters are invalid
+        KeyError: If 'a' is not coprime with alphabet length
     """
+    validate_alphabet(alphabet)
+
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise InvalidInputError("Parameters 'a' and 'b' must be integers")
+
     key: dict[T, T] = {}
     for i, e in enumerate(alphabet):
         key[e] = alphabet[(a * i + b) % len(alphabet)]
+
     if set(key.keys()) != set(key.values()):
-        msg = "Invalid Affine cipher parameter: A={a} is not coprime with the size of the alphabet {len(alphabet)}"
-        raise ValueError(msg)
+        raise KeyError(
+            f"Invalid Affine cipher parameter: a={a} is not coprime with alphabet length {len(alphabet)}",
+            key=a,
+            cipher_type="affine",
+        )
+
     return key
 
 
 def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
     """Return a custom alphabet based on a keyword.
 
-    example: keyword:  PAULBRANDT
-             alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ
-             returns:  PAULBRNDTCEFGHIJKMOQSVWXYZ
-    """
-    output: list[T] = []
-    assert False not in [letter in alphabet for letter in keyword]
+    Args:
+        alphabet: Base alphabet
+        keyword: Keyword to use for alphabet mixing
 
+    Returns:
+        Mixed alphabet as a list
+
+    Raises:
+        InvalidInputError: If keyword contains invalid characters
+
+    Example:
+        keyword:  PAULBRANDT
+        alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        returns:  PAULBRNDTCEFGHIJKMOQSVWXYZ
+    """
+    validate_alphabet(alphabet)
+
+    alphabet_set = set(alphabet)
+    invalid_chars = [letter for letter in keyword if letter not in alphabet_set]
+    if invalid_chars:
+        raise InvalidInputError(
+            f"Keyword contains characters not in alphabet: {invalid_chars}"
+        )
+
+    output: list[T] = []
     for letter in keyword:
         if letter not in output:
             output.append(letter)
@@ -97,7 +186,6 @@ def mixedalphabet(alphabet: Sequence[T], keyword: Sequence[T]) -> list[T]:
         if letter not in output:
             output.append(letter)
 
-    assert len(output) == len(alphabet)
     return output
 
 

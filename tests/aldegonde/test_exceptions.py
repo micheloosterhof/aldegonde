@@ -2,7 +2,7 @@
 
 import pytest
 from aldegonde.exceptions import (
-    AldegendeError,
+    AldegondeError,
     CipherError,
     KeyError,
     AlphabetError,
@@ -24,8 +24,8 @@ class TestExceptionHierarchy:
     """Test the exception class hierarchy."""
 
     def test_base_exception(self):
-        """Test base AldegendeError."""
-        exc = AldegendeError("test message")
+        """Test base AldegondeError."""
+        exc = AldegondeError("test message")
         assert str(exc) == "test message"
         assert isinstance(exc, Exception)
 
@@ -34,7 +34,7 @@ class TestExceptionHierarchy:
         exc = CipherError("cipher failed", cipher_type="vigenere")
         assert str(exc) == "cipher failed"
         assert exc.cipher_type == "vigenere"
-        assert isinstance(exc, AldegendeError)
+        assert isinstance(exc, AldegondeError)
 
     def test_key_error(self):
         """Test KeyError with key and cipher type."""
@@ -51,19 +51,26 @@ class TestExceptionHierarchy:
         assert str(exc) == "invalid alphabet"
         assert exc.alphabet == alphabet
         assert exc.expected_size == 26
-        assert isinstance(exc, AldegendeError)
+        assert isinstance(exc, AldegondeError)
 
     def test_statistical_analysis_error(self):
         """Test StatisticalAnalysisError with analysis type and data length."""
-        exc = StatisticalAnalysisError("analysis failed", analysis_type="IOC", data_length=10)
+        exc = StatisticalAnalysisError(
+            "analysis failed", analysis_type="IOC", data_length=10
+        )
         assert str(exc) == "analysis failed"
         assert exc.analysis_type == "IOC"
         assert exc.data_length == 10
-        assert isinstance(exc, AldegendeError)
+        assert isinstance(exc, AldegondeError)
 
     def test_insufficient_data_error(self):
         """Test InsufficientDataError with required and actual lengths."""
-        exc = InsufficientDataError("not enough data", required_length=100, actual_length=50, analysis_type="IOC")
+        exc = InsufficientDataError(
+            "not enough data",
+            required_length=100,
+            actual_length=50,
+            analysis_type="IOC",
+        )
         assert str(exc) == "not enough data"
         assert exc.required_length == 100
         assert exc.actual_length == 50
@@ -76,7 +83,7 @@ class TestExceptionHierarchy:
         assert str(exc) == "math failed"
         assert exc.operation == "division"
         assert exc.operands == (10, 0)
-        assert isinstance(exc, AldegendeError)
+        assert isinstance(exc, AldegondeError)
 
 
 class TestValidation:
@@ -94,7 +101,9 @@ class TestValidation:
 
     def test_validate_alphabet_too_small(self):
         """Test alphabet with single symbol."""
-        with pytest.raises(AlphabetError, match="Alphabet must contain at least 2 symbols"):
+        with pytest.raises(
+            AlphabetError, match="Alphabet must contain at least 2 symbols"
+        ):
             validate_alphabet(["A"])
 
     def test_validate_alphabet_duplicates(self):
@@ -108,7 +117,9 @@ class TestValidation:
 
     def test_validate_text_sequence_too_short(self):
         """Test text sequence that's too short."""
-        with pytest.raises(InsufficientDataError, match="Text length 2 is below minimum required 5"):
+        with pytest.raises(
+            InsufficientDataError, match="Text length 2 is below minimum required 5"
+        ):
             validate_text_sequence("HI", min_length=5)
 
     def test_validate_text_sequence_invalid_type(self):
@@ -122,7 +133,9 @@ class TestValidation:
 
     def test_validate_key_length_too_short(self):
         """Test key that's too short."""
-        with pytest.raises(InsufficientDataError, match="Key length 1 is below minimum required 3"):
+        with pytest.raises(
+            InsufficientDataError, match="Key length 1 is below minimum required 3"
+        ):
             validate_key_length("A", min_length=3)
 
     def test_validate_positive_integer_valid(self):
@@ -143,15 +156,14 @@ class TestValidation:
     def test_validate_tabula_recta_valid(self):
         """Test valid tabula recta validation."""
         alphabet = ["A", "B"]
-        tr = {
-            "A": {"A": "A", "B": "B"},
-            "B": {"A": "B", "B": "A"}
-        }
+        tr = {"A": {"A": "A", "B": "B"}, "B": {"A": "B", "B": "A"}}
         validate_tabula_recta(tr, alphabet)  # Should not raise
 
     def test_validate_tabula_recta_not_dict(self):
         """Test tabula recta that's not a dictionary."""
-        with pytest.raises(InvalidInputError, match="Tabula recta must be a dictionary"):
+        with pytest.raises(
+            InvalidInputError, match="Tabula recta must be a dictionary"
+        ):
             validate_tabula_recta("not_a_dict", ["A", "B"])
 
     def test_validate_tabula_recta_missing_outer_keys(self):
@@ -159,7 +171,7 @@ class TestValidation:
         alphabet = ["A", "B", "C"]
         tr = {
             "A": {"A": "A", "B": "B", "C": "C"},
-            "B": {"A": "B", "B": "A", "C": "C"}
+            "B": {"A": "B", "B": "A", "C": "C"},
             # Missing "C"
         }
         with pytest.raises(AlphabetError, match="Tabula recta missing outer keys"):
@@ -171,9 +183,11 @@ class TestValidation:
         tr = {
             "A": {"A": "A", "B": "B"},  # Missing "C"
             "B": {"A": "B", "B": "A", "C": "C"},
-            "C": {"A": "C", "B": "C", "C": "A"}
+            "C": {"A": "C", "B": "C", "C": "A"},
         }
-        with pytest.raises(AlphabetError, match="Tabula recta for key 'A' missing inner keys"):
+        with pytest.raises(
+            AlphabetError, match="Tabula recta for key 'A' missing inner keys"
+        ):
             validate_tabula_recta(tr, alphabet)
 
     def test_validate_tabula_recta_invalid_values(self):
@@ -181,7 +195,9 @@ class TestValidation:
         alphabet = ["A", "B"]
         tr = {
             "A": {"A": "A", "B": "X"},  # "X" not in alphabet
-            "B": {"A": "B", "B": "A"}
+            "B": {"A": "B", "B": "A"},
         }
-        with pytest.raises(AlphabetError, match="Tabula recta for key 'A' contains invalid values"):
+        with pytest.raises(
+            AlphabetError, match="Tabula recta for key 'A' contains invalid values"
+        ):
             validate_tabula_recta(tr, alphabet)

@@ -2,7 +2,14 @@
 
 import pytest
 from aldegonde import pasc
-from aldegonde.exceptions import CipherError, KeyError, InvalidInputError, StatisticalAnalysisError, InsufficientDataError, MathematicalError
+from aldegonde.exceptions import (
+    CipherError,
+    KeyError,
+    InvalidInputError,
+    StatisticalAnalysisError,
+    InsufficientDataError,
+    MathematicalError,
+)
 from aldegonde.stats import ioc
 from aldegonde.maths import factor
 
@@ -14,14 +21,18 @@ class TestPascErrorHandling:
         """Test encryption with empty plaintext."""
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
-        with pytest.raises(InsufficientDataError, match="Text length 0 is below minimum required"):
+        with pytest.raises(
+            InsufficientDataError, match="Text length 0 is below minimum required"
+        ):
             list(pasc.pasc_encrypt("", "KEY", tr))
 
     def test_pasc_encrypt_empty_keyword(self):
         """Test encryption with empty keyword."""
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
-        with pytest.raises(InsufficientDataError, match="Key length 0 is below minimum required"):
+        with pytest.raises(
+            InsufficientDataError, match="Key length 0 is below minimum required"
+        ):
             list(pasc.pasc_encrypt("HELLO", "", tr))
 
     def test_pasc_encrypt_invalid_key_symbol(self):
@@ -30,14 +41,16 @@ class TestPascErrorHandling:
         tr = pasc.vigenere_tr(alphabet)
         with pytest.raises(KeyError, match="Key symbol 'X' not found in tabula recta"):
             # Create a TR that doesn't have 'X' as a key
-            limited_tr = {k: v for k, v in tr.items() if k != 'X'}
+            limited_tr = {k: v for k, v in tr.items() if k != "X"}
             list(pasc.pasc_encrypt("HELLO", "XYZ", limited_tr))
 
     def test_pasc_encrypt_invalid_plaintext_symbol(self):
         """Test encryption with invalid plaintext symbol."""
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
-        with pytest.raises(CipherError, match="Plaintext symbol '1' not found in tabula recta"):
+        with pytest.raises(
+            CipherError, match="Plaintext symbol '1' not found in tabula recta"
+        ):
             list(pasc.pasc_encrypt("HELLO1", "KEY", tr))
 
     def test_pasc_encrypt_interrupted_no_interruptor(self):
@@ -49,7 +62,9 @@ class TestPascErrorHandling:
 
     def test_reverse_tr_invalid_input(self):
         """Test reverse_tr with invalid input."""
-        with pytest.raises(InvalidInputError, match="Tabula recta must be a dictionary"):
+        with pytest.raises(
+            InvalidInputError, match="Tabula recta must be a dictionary"
+        ):
             pasc.reverse_tr("not_a_dict")
 
     def test_reverse_tr_ambiguous(self):
@@ -57,7 +72,7 @@ class TestPascErrorHandling:
         # Create a TR where one key maps to duplicate values
         tr = {
             "A": {"X": "A", "Y": "A"},  # Duplicate values
-            "B": {"X": "B", "Y": "C"}
+            "B": {"X": "B", "Y": "C"},
         }
         with pytest.raises(CipherError, match="Tabula recta is ambiguous for key 'A'"):
             pasc.reverse_tr(tr)
@@ -68,12 +83,16 @@ class TestIocErrorHandling:
 
     def test_ioc_empty_text(self):
         """Test IOC with empty text."""
-        with pytest.raises(InsufficientDataError, match="Text length 0 is below minimum required"):
+        with pytest.raises(
+            InsufficientDataError, match="Text length 0 is below minimum required"
+        ):
             ioc.ioc([])
 
     def test_ioc_single_character(self):
         """Test IOC with single character."""
-        with pytest.raises(InsufficientDataError, match="Text length 1 is below minimum required"):
+        with pytest.raises(
+            InsufficientDataError, match="Text length 1 is below minimum required"
+        ):
             ioc.ioc(["A"])
 
     def test_ioc_invalid_length(self):
@@ -88,12 +107,16 @@ class TestIocErrorHandling:
 
     def test_ioc_invalid_cut(self):
         """Test IOC with invalid cut parameter."""
-        with pytest.raises(InvalidInputError, match="Cut value 5 must be between 0 and 2"):
+        with pytest.raises(
+            InvalidInputError, match="Cut value 5 must be between 0 and 2"
+        ):
             ioc.ioc("HELLO", length=2, cut=5)
 
     def test_sliding_window_ioc_insufficient_data(self):
         """Test sliding window IOC with insufficient data."""
-        with pytest.raises(InsufficientDataError, match="Text length .* is below minimum required"):
+        with pytest.raises(
+            InsufficientDataError, match="Text length .* is below minimum required"
+        ):
             ioc.sliding_window_ioc("ABC", window=100)
 
     def test_sliding_window_ioc_invalid_window(self):
@@ -149,7 +172,7 @@ class TestErrorHandlingIntegration:
         """Test that errors chain properly through function calls."""
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
-        
+
         # This should raise a validation error that gets wrapped
         with pytest.raises(InsufficientDataError):
             list(pasc.pasc_encrypt("", "KEY", tr))

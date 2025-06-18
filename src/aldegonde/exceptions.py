@@ -3,13 +3,13 @@
 from typing import Any, Sequence
 
 
-class AldegendeError(Exception):
+class AldegondeError(Exception):
     """Base exception class for all Aldegonde-related errors."""
 
     pass
 
 
-class CipherError(AldegendeError):
+class CipherError(AldegondeError):
     """Base exception for cipher-related errors."""
 
     def __init__(self, message: str, cipher_type: str | None = None) -> None:
@@ -30,7 +30,7 @@ class KeyError(CipherError):
         super().__init__(message, cipher_type)
 
 
-class AlphabetError(AldegendeError):
+class AlphabetError(AldegondeError):
     """Exception raised for alphabet-related errors."""
 
     def __init__(
@@ -44,7 +44,7 @@ class AlphabetError(AldegendeError):
         super().__init__(message)
 
 
-class InvalidInputError(AldegendeError):
+class InvalidInputError(AldegondeError):
     """Exception raised for invalid input to cryptographic functions."""
 
     def __init__(
@@ -58,7 +58,7 @@ class InvalidInputError(AldegendeError):
         super().__init__(message)
 
 
-class StatisticalAnalysisError(AldegendeError):
+class StatisticalAnalysisError(AldegondeError):
     """Exception raised during statistical analysis operations."""
 
     def __init__(
@@ -87,7 +87,7 @@ class InsufficientDataError(StatisticalAnalysisError):
         super().__init__(message, analysis_type, actual_length)
 
 
-class MathematicalError(AldegendeError):
+class MathematicalError(AldegondeError):
     """Exception raised for mathematical computation errors."""
 
     def __init__(

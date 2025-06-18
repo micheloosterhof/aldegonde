@@ -6,62 +6,62 @@ from aldegonde.validation import validate_positive_integer
 
 def prime_factors(number: int) -> list[int]:
     """Find all prime factors of a number.
-    
+
     Args:
         number: Positive integer to factorize
-        
+
     Returns:
         List of prime factors
-        
+
     Raises:
         InvalidInputError: If number is not a positive integer
         MathematicalError: If factorization fails
     """
     validate_positive_integer(number, "number")
-    
+
     if number == 1:
         return []
-    
+
     try:
         i = 2
         factors = []
         original_number = number
-        
+
         while i * i <= number:
             if number % i:
                 i += 1
             else:
                 number //= i
                 factors.append(i)
-        
+
         if number > 1:
             factors.append(number)
-        
+
         return factors
-    
+
     except Exception as exc:
         raise MathematicalError(
             f"Prime factorization failed for {original_number}",
             operation="prime_factorization",
-            operands=(original_number,)
+            operands=(original_number,),
         ) from exc
 
 
 def factor_pairs(number: int) -> list[tuple[int, int]]:
     """Find all factor pairs of a number.
-    
+
     Args:
         number: Positive integer to find factor pairs for
-        
+
     Returns:
         List of tuples containing factor pairs
-        
+
     Raises:
         InvalidInputError: If number is not a positive integer
         MathematicalError: If factor computation fails
     """
     validate_positive_integer(number, "number")
-    
+
     try:
         output = []
         # Only check up to sqrt(number) for efficiency
@@ -74,14 +74,14 @@ def factor_pairs(number: int) -> list[tuple[int, int]]:
                 if i != factor2:
                     output.append((factor2, i))
             i += 1
-        
+
         # Sort pairs by first element
         output.sort()
         return output
-    
+
     except Exception as exc:
         raise MathematicalError(
             f"Factor pair computation failed for {number}",
             operation="factor_pairs",
-            operands=(number,)
+            operands=(number,),
         ) from exc

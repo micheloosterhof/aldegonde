@@ -4,6 +4,8 @@ disk, Urkryptografen"""
 from collections.abc import Generator, Iterable, Sequence
 
 from aldegonde.pasc import T
+from aldegonde.exceptions import CipherError, InvalidInputError
+from aldegonde.validation import validate_text_sequence, validate_alphabet
 
 """
 From: https://eprint.iacr.org/2020/1492.pdf
@@ -75,19 +77,52 @@ def disk_encrypt(
     plainabc: Sequence[T],
     cipherabc: Sequence[T],
 ) -> Generator[T, None, None]:
-    """Disk Encryption:
+    """Disk Encryption using cipher disk algorithm.
+
+    Args:
+        plaintext: Text to encrypt
+        plainabc: Plaintext alphabet
+        cipherabc: Ciphertext alphabet
+
+    Yields:
+        Encrypted characters
+
+    Raises:
+        InvalidInputError: If inputs are invalid
+        CipherError: If encryption fails
+
+    Algorithm:
     1. Calculate xi = (pi − I) modulo m
     2. If xi = 0, then set xi = m
     3. Add xi to I
     4. Output yi = I modulo n
     """
-    state: int = 0
-    for e in plaintext:
-        x = (plainabc.index(e) - state) % len(plainabc)
-        if x == 0:
-            x = len(plainabc)
-        state += x
-        yield cipherabc[state % len(cipherabc)]
+    plaintext_seq = (
+        list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
+    )
+    validate_text_sequence(plaintext_seq)
+    validate_alphabet(plainabc)
+    validate_alphabet(cipherabc)
+
+    try:
+        state: int = 0
+        for e in plaintext_seq:
+            if e not in plainabc:
+                raise CipherError(
+                    f"Plaintext character '{e}' not found in plaintext alphabet",
+                    cipher_type="disk",
+                )
+
+            x = (plainabc.index(e) - state) % len(plainabc)
+            if x == 0:
+                x = len(plainabc)
+            state += x
+            yield cipherabc[state % len(cipherabc)]
+
+    except Exception as exc:
+        if isinstance(exc, (CipherError, InvalidInputError)):
+            raise
+        raise CipherError(f"Disk encryption failed: {exc}", cipher_type="disk") from exc
 
 
 def disk_decrypt(
@@ -95,11 +130,43 @@ def disk_decrypt(
     plainabc: Sequence[T],
     cipherabc: Sequence[T],
 ) -> Generator[T, None, None]:
-    """Disk Decryption."""
-    state: int = 0
-    for e in ciphertext:
-        y = (cipherabc.index(e) - state) % len(cipherabc)
-        if y == 0:
-            y = len(cipherabc)
-        state += y
-        yield plainabc[state % len(plainabc)]
+    """Disk Decryption using cipher disk algorithm.
+
+    Args:
+        ciphertext: Text to decrypt
+        plainabc: Plaintext alphabet
+        cipherabc: Ciphertext alphabet
+
+    Yields:
+        Decrypted characters
+
+    Raises:
+        InvalidInputError: If inputs are invalid
+        CipherError: If decryption fails
+    """
+    ciphertext_seq = (
+        list(ciphertext) if not isinstance(ciphertext, Sequence) else ciphertext
+    )
+    validate_text_sequence(ciphertext_seq)
+    validate_alphabet(plainabc)
+    validate_alphabet(cipherabc)
+
+    try:
+        state: int = 0
+        for e in ciphertext_seq:
+            if e not in cipherabc:
+                raise CipherError(
+                    f"Ciphertext character '{e}' not found in ciphertext alphabet",
+                    cipher_type="disk",
+                )
+
+            y = (cipherabc.index(e) - state) % len(cipherabc)
+            if y == 0:
+                y = len(cipherabc)
+            state += y
+            yield plainabc[state % len(plainabc)]
+
+    except Exception as exc:
+        if isinstance(exc, (CipherError, InvalidInputError)):
+            raise
+        raise CipherError(f"Disk decryption failed: {exc}", cipher_type="disk") from exc
