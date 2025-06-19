@@ -5,6 +5,7 @@ from statistics import mean, median
 from typing import TypeVar
 
 from aldegonde.analysis.split import split_by_slice_interrupted
+from aldegonde.exceptions import InsufficientDataError
 from aldegonde.stats.ioc import ioc
 from aldegonde.stats.kappa import kappa
 
@@ -39,7 +40,10 @@ def friedman_test(
         iocs: list[float] = []
         for k in range(period):
             v = ciphertext[slice(k, len(ciphertext), period)]
-            ic: float = ioc(v)  # note, perviously was normalized
+            try:
+                ic: float = ioc(v)  # note, perviously was normalized
+            except InsufficientDataError:
+                ic = 0.0  # Use 0.0 for slices with insufficient data
             iocs.append(ic)
             if trace is True:
                 print(f"ioc of slice {k}/{period} = {ic:.3f}")
@@ -112,7 +116,10 @@ def friedman_test_with_interrupter(
             )
             # print(kv)
             for k, v in kv.items():
-                ic: float = ioc(v) * len(alphabet)
+                try:
+                    ic: float = ioc(v) * len(alphabet)
+                except InsufficientDataError:
+                    ic = 0.0  # Use 0.0 for slices with insufficient data
                 iocs.append(ic)
                 if trace is True:
                     print(f"ioc of slice {k}/{period} = {ic:.3f}")
