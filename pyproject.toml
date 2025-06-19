@@ -90,7 +90,7 @@ line-length = 88
 
 # Enable Pyflakes `E` and `F` codes by default.
 lint.select = ["A", "B", "BLE", "C", "C4", "COM", "E", "EM", "EXE", "F", "FBT", "I", "ICN", "PIE", "PYI", "RET", "SIM", "T20", "TID", "TCH", "TRY", "FIX", "UP", "YTT", "W"]
-lint.ignore = ["E501", "E741", "UP007", "B905", "T201"]
+lint.ignore = ["E501", "E741", "UP007", "B905", "T201", "TRY301", "C901"]
 
 # Assume Python 3.10.
 target-version = "py310"
