@@ -65,16 +65,13 @@ def encrypt_message(message: str, key: str, padding: str = " ") -> str:
             for row in range(num_rows):
                 ciphertext += matrix[row][col_index]
 
-        return ciphertext
-
     except Exception as exc:
         if isinstance(exc, InvalidInputError):
             raise
         msg = f"Columnar transposition encryption failed: {exc}"
-        raise CipherError(
-            msg,
-            cipher_type="columnar_transposition",
-        ) from exc
+        raise CipherError(msg, cipher_type="columnar") from exc
+    else:
+        return ciphertext
 
 
 def decrypt_message(ciphertext: str, key: str) -> str:
@@ -144,16 +141,13 @@ def decrypt_message(ciphertext: str, key: str) -> str:
             for col in range(num_cols):
                 plaintext += matrix[row][col]
 
-        return plaintext
-
     except Exception as exc:
         if isinstance(exc, InvalidInputError):
             raise
         msg = f"Columnar transposition decryption failed: {exc}"
-        raise CipherError(
-            msg,
-            cipher_type="columnar_transposition",
-        ) from exc
+        raise CipherError(msg, cipher_type="columnar_transposition") from exc
+    else:
+        return plaintext
 
 
 if __name__ == "__main__":

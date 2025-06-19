@@ -45,10 +45,11 @@ def pgsc_encrypt(
         for i in range(0, len(plaintext), length):
             block = plaintext[i : i + length]
             ciphertext += encryptfn(block)
-        return ciphertext
     except Exception as exc:
         msg = f"Polygraphic encryption failed: {exc}"
         raise CipherError(msg, cipher_type="polygraphic") from exc
+    else:
+        return ciphertext
 
 
 def pgsc_decrypt(
@@ -86,10 +87,11 @@ def pgsc_decrypt(
         for i in range(0, len(ciphertext), length):
             block = ciphertext[i : i + length]
             plaintext += decryptfn(block)
-        return plaintext
     except Exception as exc:
         msg = f"Polygraphic decryption failed: {exc}"
         raise CipherError(msg, cipher_type="polygraphic") from exc
+    else:
+        return plaintext
 
 
 def playfair_get_position(letter: str, matrix: list[list[str]]) -> tuple[int, int]:
@@ -155,12 +157,13 @@ def playfair_square(word: Sequence[str], alphabet: Sequence[str]) -> list[list[s
             square.append(elements[:5])
             elements = elements[5:]
 
-        return square
     except Exception as exc:
         if isinstance(exc, InvalidInputError | CipherError):
             raise
         msg = f"Playfair square generation failed: {exc}"
         raise CipherError(msg, cipher_type="playfair") from exc
+    else:
+        return square
 
 
 def playfair_encrypt_pair(pair: str, matrix: list[list[str]]) -> str:

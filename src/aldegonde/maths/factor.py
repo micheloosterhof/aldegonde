@@ -37,8 +37,6 @@ def prime_factors(number: int) -> list[int]:
         if number > 1:
             factors.append(number)
 
-        return factors
-
     except Exception as exc:
         msg = f"Prime factorization failed for {original_number}"
         raise MathematicalError(
@@ -46,6 +44,8 @@ def prime_factors(number: int) -> list[int]:
             operation="prime_factorization",
             operands=(original_number,),
         ) from exc
+    else:
+        return factors
 
 
 def factor_pairs(number: int) -> list[tuple[int, int]]:
@@ -78,7 +78,6 @@ def factor_pairs(number: int) -> list[tuple[int, int]]:
 
         # Sort pairs by first element
         output.sort()
-        return output
 
     except Exception as exc:
         msg = f"Factor pair computation failed for {number}"
@@ -87,3 +86,5 @@ def factor_pairs(number: int) -> list[tuple[int, int]]:
             operation="factor_pairs",
             operands=(number,),
         ) from exc
+    else:
+        return output
