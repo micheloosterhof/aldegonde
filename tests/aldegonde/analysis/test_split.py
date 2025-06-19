@@ -1,5 +1,4 @@
-"""
-"""
+""" """
 
 from aldegonde.analysis.split import split_by_slice_interrupted, trim
 

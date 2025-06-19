@@ -1,14 +1,9 @@
-#!/usr/bin/env python3
-
 """
 Jens Guballa's algorithm using piecemeal bigram scoring to break PASC
 """
 
-from typing import TypeVar
 
-from aldegonde import pasc, masc
-from aldegonde.stats import compare
-
+from aldegonde import masc, pasc
 from aldegonde.analysis import guballa
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -54,7 +49,7 @@ def test_kryptos2():
     # key = "ABSCISSA" # (key len= 8)
     K2 = """VFPJUDEEHZWETZYVGWHKKQETGFQJNCEGGWHKKDQMCPFQZDQMMIAGPFXHQRLGTIMVMZJANQLVKQEDAGDVFRPJUNGEUNAQZGZLECGYUXUEENJTBJLBQCRTBJDFHRRYIZETKZEMVDUFKSJHKFWHKUWQLSZFTIHHDDDUVHDWKBFUFPWNTDFIYCUQZEREEVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDXFLGGTEZFKZBSFDQVGOGIPUFXHHDRKFFHQNTGPUAECNUVPDJMQCLQUMUNEDFQELZZVRRGKFFVOEEXBDMVPNFQXEZLGREDNQFMPNZGLFLPMRJQYALMGNUVPDXVKPDQUMEBEDMHDAFMJGZNUPLGESWJLLAETG"""
     KRYPTOSTR = pasc.quagmire3_tr(
-        masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "KRYPTOS")
+        masc.mixedalphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "KRYPTOS"),
     )
     length = 8
     (password, score) = guballa.bigram_break_pasc(K2, KRYPTOSTR, length)

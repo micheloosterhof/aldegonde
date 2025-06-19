@@ -22,7 +22,7 @@ def print_dist(runes: Sequence[object], length: int = 1, cut: int = 0) -> None:
         if col > 0 and col % 5 == 0:
             print("")
         print(
-            f"#{i:02d}: {e:4s}: {freqs[e]:03d}: {freqs[e]/N*100:.3f}% | ",
+            f"#{i:02d}: {e:4s}: {freqs[e]:03d}: {freqs[e] / N * 100:.3f}% | ",
             end="",
         )
         col = col + 1

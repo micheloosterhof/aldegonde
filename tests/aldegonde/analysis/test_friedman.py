@@ -1,5 +1,4 @@
-"""
-"""
+""" """
 
 from aldegonde.analysis.friedman import friedman_test
 

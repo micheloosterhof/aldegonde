@@ -29,7 +29,7 @@ def loadgrams(module: str, filename: str) -> dict[str, int]:
 
 def frequency_to_probability(
     frequency_map: dict[str, int],
-    decorator: Callable[[float],float] = lambda f: f,
+    decorator: Callable[[float], float] = lambda f: f,
 ) -> defaultdict[str, float]:
     """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
