@@ -31,7 +31,7 @@ tests =[
   "build==1.2.2.post1",
   "coverage==7.10.4",
   "mypy-extensions==1.1.0",
-  "mypy==1.16.0",
+  "mypy==1.17.1",
   "pipdeptree==2.26.1",
   "pytest==8.4.1",
   "pytest-cov==6.1.1",
