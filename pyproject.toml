@@ -29,7 +29,7 @@ dependencies = [
 tests =[
   "black==25.1.0",
   "build==1.3.0",
-  "coverage==7.10.4",
+  "coverage==7.10.7",
   "mypy-extensions==1.1.0",
   "mypy==1.18.2",
   "pipdeptree==2.26.1",
