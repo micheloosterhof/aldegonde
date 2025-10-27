@@ -19,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
   "numpy==2.0.2",
-  "pip==25.2",
+  "pip==25.3",
   "scipy==1.15.2",
   "setuptools==80.9.0",
   "wheel==0.45.1",
