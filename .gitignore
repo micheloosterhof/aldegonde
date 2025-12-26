@@ -7,3 +7,5 @@ dist
 *darwin.so
 .idea
 .vscode
+.coverage
+*.egg-info/
