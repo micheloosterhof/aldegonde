@@ -1,6 +1,0 @@
-numpy==2.0.2; python_version<'3.13'
-numpy==2.2.3; python_version>='3.13'
-pip==25.3
-scipy==1.15.2
-setuptools==80.9.0
-wheel==0.45.1
