@@ -3,9 +3,9 @@
 # IDEAS: simmulated annealing
 # IDEAS: steepest ascent (is practical? 28x27=756 evaluations)
 
-from collections.abc import Callable, Sequence
-import random
 import copy
+import random
+from collections.abc import Callable, Sequence
 from typing import NamedTuple, TypeVar
 
 from aldegonde import masc
@@ -59,7 +59,7 @@ def startermapping(ciphertext: Sequence[str]) -> dict[str, str]:
         dist[e] = 0
 
     sorted_unigrams: list[tuple[str, int]] = sorted(
-        compare.unigrams.items(), key=lambda x: x[1]
+        compare.unigrams.items(), key=lambda x: x[1],
     )
     sorted_ngrams: list[tuple[str, int]] = sorted(dist.items(), key=lambda x: x[1])
     assert len(sorted_unigrams) == len(sorted_ngrams)
@@ -165,7 +165,7 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
 
     _, _, decryptions = hill_climb(ntrials, starter_node, next_node_outer_climb)
     return sorted(
-        decryptions, reverse=True
+        decryptions, reverse=True,
     )  # We sort the list to ensure the best results are at the front of the list
 
 
@@ -173,7 +173,7 @@ def crack(ciphertext, *fitness_functions, ntrials=6, nswaps=300):
 
 
 def hill_climb(
-    nsteps: int, start_node: list[int], get_next_node: Callable
+    nsteps: int, start_node: list[int], get_next_node: Callable,
 ) -> tuple[list[int], float, list[Decryption]]:
     """Modular hill climbing algorithm.
 
@@ -200,7 +200,7 @@ def hill_climb(
 
     for _step in range(nsteps):
         next_node, score, output = get_next_node(
-            copy.deepcopy(start_node)
+            copy.deepcopy(start_node),
         )  # this must be deepcopy
 
         # Keep track of best score and the start node becomes finish node

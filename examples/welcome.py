@@ -5,7 +5,7 @@ Decode welcome message
 """
 
 from aldegonde import c3301
-from aldegonde.stats import ioc, doublets
+from aldegonde.stats import ioc
 
 welcome = "ᚢᛠᛝᛋᛇᚠᚳᚱᛇᚢᚷᛈᛠᛠᚠᚹᛉᛏᚳᛚᛠᚣᛗᛠᛇᛏᚳᚾᚫᛝᛗᛡᛡᛗᛗᚹᚫᛈᛞᛝᛡᚱᚩᛠᛡᛗᛁᚠᚠᛖᚢᛝᛇᚢᚫᚣᛈᚱᚫᛁᛈᚫᚳᚫᚫᚾᚹᛒᛉ\
 ᛗᛞᚱᛡᛁᚠᛈᚳᛇᛇᚫᚳᚱᚦᛈᚠᛄᛗᚩᛇᚳᚹᛡᛒᚫᚹᛒᛠᛚᛋᚱᚣᛄᚫᚱᛗᚳᚦᛇᚫᛏᚳᛈᚹᛗᚷᛇᚳᛝᛈᚢᛇᚳᚱᛖᚹᛡᛈᛁᛒᚣᛒᛉᚠᛚᛁᚱᚱᛗᚳ\
@@ -33,7 +33,7 @@ def beaufort_decrypt_interrupted(
     keypos = 0
     azlen = 29
     keylen = len(primer)
-    for pos in range(0, len(ciphertext)):
+    for pos in range(len(ciphertext)):
         if pos in interruptors:
             # output `F` rune and do not increase key position
             output.append(0)
@@ -55,7 +55,7 @@ def beaufort_encrypt_interrupted(
     keypos = 0
     azlen = 29
     keylen = len(primer)
-    for pos in range(0, len(plaintext)):
+    for pos in range(len(plaintext)):
         if plaintext[pos] == 0:
             # output `F` rune and do not increase key position
             output.append(0)
@@ -71,7 +71,7 @@ ct = [c3301.r2i(e) for e in welcome]
 # ioc.print_ioc_statistics(seq, alphabetsize=29)
 
 pt = beaufort_decrypt_interrupted(
-    ct, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514]
+    ct, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514],
 )
 
 plaintext = "".join(c3301.i2r(i) for i in pt)

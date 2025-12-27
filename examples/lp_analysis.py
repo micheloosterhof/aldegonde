@@ -5,10 +5,7 @@ This script performs cryptanalysis on Liber Primus segments using various
 statistical methods including IOC, Kappa test, Friedman test, and repeat analysis.
 """
 
-import math
 import os
-
-from scipy.stats import poisson
 
 from aldegonde import auto, c3301, pasc
 from aldegonde.analysis import friedman
@@ -23,7 +20,7 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     DIFF = C_K+1 - C_K % MAX
     """
     diff = []
-    for i in range(0, len(runes) - skip):
+    for i in range(len(runes) - skip):
         diff.append((runes[i + skip] - runes[i]) % 29)
     return diff
 
@@ -56,8 +53,8 @@ def main() -> None:
 
         aut = "".join(
             auto.ciphertext_autokey_decrypt(
-                raw, primer=c3301.CICADA_ALPHABET[0], tr=BOF
-            )
+                raw, primer=c3301.CICADA_ALPHABET[0], tr=BOF,
+            ),
         )
 
         FIRFUMFERENFE = "ᚠᛁᚱᚠᚢᛗᚠᛖᚱᛖᚾᚠᛖ"
@@ -79,7 +76,7 @@ def main() -> None:
             entropy.shannon_entropy(seg)
             ioc.print_ioc_statistics(seg, alphabetsize=29)
             bigram_diagram.print_auto_bigram_diagram(
-                seg, alphabet=c3301.CICADA_ALPHABET
+                seg, alphabet=c3301.CICADA_ALPHABET,
             )
             kappa.print_kappa(seg, trace=True)
             friedman.friedman_test(seg, maxperiod=34)

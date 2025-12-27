@@ -6,9 +6,9 @@ from aldegonde.maths.modular import modDivide
 
 
 def divtable(size: int = 29):
-    for row in range(0, size + 1):
+    for row in range(size + 1):
         print(f"{row:02d} | ", end="")
-        for col in range(0, size + 1):
+        for col in range(size + 1):
             div = col * row % size
             try:
                 div = modDivide(col, row, size)

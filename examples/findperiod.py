@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-from collections.abc import Callable, Sequence
-import random
-import copy
-from typing import NamedTuple, TypeVar
+from typing import TypeVar
 
-from aldegonde import masc
-from aldegonde.stats import compare, ngrams, repeats, kappa
 from aldegonde.analysis import friedman, twist
+from aldegonde.stats import kappa, repeats
 
 T = TypeVar("T")
 
