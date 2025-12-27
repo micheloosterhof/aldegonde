@@ -13,7 +13,7 @@ from aldegonde.stats.compare import (
     trigramscore,
 )
 from aldegonde.stats.dist import print_dist
-from aldegonde.stats.entropy import shannon_entropy, shannon2_entropy
+from aldegonde.stats.entropy import shannon2_entropy, shannon_entropy
 from aldegonde.stats.hamming import hamming_distance
 from aldegonde.stats.ioc import (
     ioc,
