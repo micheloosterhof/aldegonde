@@ -16,6 +16,7 @@ The library includes:
 aldegonde/
 ├── src/aldegonde/           # Main library source code
 │   ├── __init__.py
+│   ├── py.typed             # PEP 561 typed package marker
 │   ├── masc.py              # Monoalphabetic substitution ciphers
 │   ├── pasc.py              # Polyalphabetic substitution ciphers
 │   ├── pgsc.py              # Polygraphic substitution ciphers
@@ -27,11 +28,13 @@ aldegonde/
 │   ├── exceptions.py        # Custom exception hierarchy
 │   ├── validation.py        # Input validation utilities
 │   ├── analysis/            # Cryptanalysis algorithms
+│   │   ├── __init__.py      # Exports: friedman_test, bigram_break_pasc, twist, etc.
 │   │   ├── friedman.py      # Friedman test for period detection
 │   │   ├── guballa.py       # Guballa attack
 │   │   ├── twist.py         # Twist analysis
-│   │   └── ...
+│   │   └── split.py         # Text splitting utilities
 │   ├── stats/               # Statistical analysis
+│   │   ├── __init__.py      # Exports: ioc, kappa, ngrams, entropy, etc.
 │   │   ├── ioc.py           # Index of Coincidence
 │   │   ├── kappa.py         # Kappa test
 │   │   ├── ngrams.py        # N-gram analysis
@@ -39,6 +42,7 @@ aldegonde/
 │   │   ├── hamming.py       # Hamming distance
 │   │   └── ...
 │   ├── maths/               # Mathematical utilities
+│   │   ├── __init__.py      # Exports: primes, factor_pairs, gcd, etc.
 │   │   ├── primes.py        # Prime number operations
 │   │   ├── factor.py        # Factorization
 │   │   ├── modular.py       # Modular arithmetic
@@ -53,10 +57,11 @@ aldegonde/
 │   │       └── runeglish/
 │   └── fitness/             # Fitness functions for optimization
 ├── tests/aldegonde/         # Test suite (mirrors src structure)
+│   └── test_hypothesis.py   # Property-based tests with Hypothesis
 ├── examples/                # Example scripts
+│   └── lp_analysis.py       # Liber Primus analysis script
 ├── data/                    # External data files (Liber Primus, etc.)
 ├── docs/                    # Documentation
-├── lp.py                    # Liber Primus analysis script
 └── lp_section_data.py       # Liber Primus section metadata
 ```
 
@@ -65,12 +70,8 @@ aldegonde/
 ### Setup
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-
-# Install package in development mode
-pip install -e .
+# Install package with development dependencies
+pip install -e ".[dev]"
 ```
 
 ### Running Tests
@@ -119,7 +120,7 @@ black src/ tests/
 
 ### Type Annotations
 
-The project uses **strict mypy configuration**. All functions require:
+The project uses **strict mypy configuration** and is a PEP 561 typed package (`py.typed`). All functions require:
 - Full type annotations for parameters and return types
 - Generic type parameters using `TypeVar`
 - Use `Sequence[T]` for read-only sequences, `list[T]` for mutable
@@ -231,35 +232,50 @@ def function(param: int) -> str:
 
 ### stats/ - Statistical Analysis
 
-- `ioc.py` - Index of Coincidence calculations
-- `kappa.py` - Kappa test for period detection
-- `ngrams.py` - N-gram distribution analysis
-- `entropy.py` - Shannon entropy
-- `repeats.py` - Repeated sequence analysis
-- `hamming.py` - Hamming distance calculations
+Import directly from the package: `from aldegonde.stats import ioc, kappa, ngrams`
+
+- `ioc` - Index of Coincidence calculations
+- `kappa` - Kappa test for period detection
+- `ngrams`, `bigrams`, `trigrams` - N-gram analysis
+- `shannon_entropy` - Shannon entropy
+- `hamming_distance` - Hamming distance calculations
+- `repeat_positions`, `repeat_distribution` - Repeated sequence analysis
 
 ### analysis/ - Cryptanalysis
 
-- `friedman.py` - Friedman test for determining cipher key length
-- `guballa.py` - Attack on autokey ciphers
-- `twist.py` - Twist analysis for detecting patterns
+Import directly from the package: `from aldegonde.analysis import friedman_test`
+
+- `friedman_test` - Friedman test for determining cipher key length
+- `bigram_break_pasc` - Guballa's attack on polyalphabetic ciphers
+- `twist`, `twist_test` - Twist analysis for detecting patterns
+
+### maths/ - Mathematical Utilities
+
+Import directly from the package: `from aldegonde.maths import primes, prime_factors`
+
+- `primes` - Prime number generation
+- `prime_factors`, `factor_pairs` - Factorization
+- `gcd`, `is_coprime`, `phi_func` - Number theory functions
 
 ## Testing Patterns
 
-Tests mirror the source structure under `tests/aldegonde/`:
+Tests mirror the source structure under `tests/aldegonde/`. The project uses **Hypothesis** for property-based testing:
 
 ```python
-# tests/aldegonde/test_masc.py
+# tests/aldegonde/test_hypothesis.py
+from hypothesis import given
+from hypothesis import strategies as st
 from aldegonde import masc
-from aldegonde.exceptions import AldegondeKeyError
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-def test_masc_encrypt_caesar() -> None:
-    caesar = masc.shiftedkey(ABC, shift=3)
-    ciphertext = masc.masc_encrypt("HELLO", key=caesar)
-    plaintext = masc.masc_decrypt(ciphertext, key=caesar)
-    assert tuple("HELLO") == tuple(plaintext)
+@given(st.text(alphabet=ABC, min_size=1, max_size=100))
+def test_caesar_roundtrip(plaintext: str) -> None:
+    """Test that Caesar cipher encryption and decryption are inverse operations."""
+    key = masc.shiftedkey(ABC, shift=3)
+    ciphertext = list(masc.masc_encrypt(plaintext, key=key))
+    decrypted = list(masc.masc_decrypt(ciphertext, key=key))
+    assert list(plaintext) == decrypted
 ```
 
 ## CI/CD
@@ -272,6 +288,9 @@ GitHub Actions workflow (`.github/workflows/tox.yml`) runs on push/PR:
 ## Common Commands Quick Reference
 
 ```bash
+# Setup
+pip install -e ".[dev]"            # Install with dev dependencies
+
 # Testing
 pytest tests/aldegonde -v          # Run tests
 pytest --cov=aldegonde             # Run with coverage
@@ -283,9 +302,8 @@ ruff check src/ --fix              # Lint + autofix
 mypy src/                          # Type check
 black src/ tests/                  # Format
 
-# Development
-pip install -e .                   # Install in dev mode
-python lp.py                       # Run Liber Primus analysis
+# Examples
+python examples/lp_analysis.py     # Run Liber Primus analysis
 ```
 
 ## Important Notes for AI Assistants
@@ -294,7 +312,7 @@ python lp.py                       # Run Liber Primus analysis
 
 2. **Generator Usage**: Many functions return generators, not lists. Convert with `list()` or `"".join()` when needed.
 
-3. **Type Safety**: Maintain strict type annotations. The mypy config is strict.
+3. **Type Safety**: Maintain strict type annotations. The mypy config is strict. The package is PEP 561 typed.
 
 4. **Exception Handling**: Use the custom exception hierarchy. Don't use bare `ValueError` or `KeyError`.
 
@@ -304,4 +322,6 @@ python lp.py                       # Run Liber Primus analysis
 
 7. **Performance**: N-gram scoring and statistical analysis can be expensive. Consider caching for repeated operations.
 
-8. **Test Coverage**: Maintain comprehensive tests. The project targets >95% coverage.
+8. **Test Coverage**: Maintain comprehensive tests. The project uses Hypothesis for property-based testing.
+
+9. **Module Imports**: Use package-level imports when possible: `from aldegonde.stats import ioc` instead of `from aldegonde.stats.ioc import ioc`.

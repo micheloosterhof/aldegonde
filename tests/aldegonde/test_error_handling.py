@@ -10,7 +10,8 @@ from aldegonde.exceptions import (
     InvalidInputError,
 )
 from aldegonde.maths import factor
-from aldegonde.stats import ioc
+from aldegonde.stats import ioc as ioc_func
+from aldegonde.stats import sliding_window_ioc
 
 
 class TestPascErrorHandling:
@@ -85,43 +86,43 @@ class TestIocErrorHandling:
         with pytest.raises(
             InsufficientDataError, match="Text length 0 is below minimum required",
         ):
-            ioc.ioc([])
+            ioc_func([])
 
     def test_ioc_single_character(self):
         """Test IOC with single character."""
         with pytest.raises(
             InsufficientDataError, match="Text length 1 is below minimum required",
         ):
-            ioc.ioc(["A"])
+            ioc_func(["A"])
 
     def test_ioc_invalid_length(self):
         """Test IOC with invalid n-gram length."""
         with pytest.raises(InvalidInputError, match="length must be an integer"):
-            ioc.ioc("HELLO", length="invalid")
+            ioc_func("HELLO", length="invalid")
 
     def test_ioc_negative_length(self):
         """Test IOC with negative n-gram length."""
         with pytest.raises(InvalidInputError, match="length must be positive"):
-            ioc.ioc("HELLO", length=-1)
+            ioc_func("HELLO", length=-1)
 
     def test_ioc_invalid_cut(self):
         """Test IOC with invalid cut parameter."""
         with pytest.raises(
             InvalidInputError, match="Cut value 5 must be between 0 and 2",
         ):
-            ioc.ioc("HELLO", length=2, cut=5)
+            ioc_func("HELLO", length=2, cut=5)
 
     def test_sliding_window_ioc_insufficient_data(self):
         """Test sliding window IOC with insufficient data."""
         with pytest.raises(
             InsufficientDataError, match="Text length .* is below minimum required",
         ):
-            ioc.sliding_window_ioc("ABC", window=100)
+            sliding_window_ioc("ABC", window=100)
 
     def test_sliding_window_ioc_invalid_window(self):
         """Test sliding window IOC with invalid window size."""
         with pytest.raises(InvalidInputError, match="window must be positive"):
-            ioc.sliding_window_ioc("HELLO" * 100, window=0)
+            sliding_window_ioc("HELLO" * 100, window=0)
 
 
 class TestFactorErrorHandling:

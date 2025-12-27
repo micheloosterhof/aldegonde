@@ -30,8 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --progress-bar off --upgrade pip setuptools wheel
-          python -m pip install --progress-bar off -r requirements.txt
-          python -m pip install --progress-bar off -r requirements-dev.txt
+          python -m pip install --progress-bar off -e ".[dev]"
           python -m pip install --progress-bar off tox-gh-actions
       - name: Test with tox
         run: tox

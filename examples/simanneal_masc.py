@@ -2,15 +2,14 @@
 
 # IDEAS: steepest ascent (is practical? 28x27=756 evaluations)
 
-from collections.abc import Sequence
 import random
-import threading
+from collections.abc import Sequence
 from typing import TypeVar
 
 from simanneal import Annealer
 
-from aldegonde.stats import compare, ngrams
 from aldegonde import masc
+from aldegonde.stats import compare, ngrams
 
 T = TypeVar("T")
 
@@ -39,7 +38,7 @@ def startermapping(ciphertext: Sequence[str]) -> dict[str, str]:
         dist[e] = 0
 
     sorted_unigrams: list[tuple[str, int]] = sorted(
-        compare.unigrams.items(), key=lambda x: x[1]
+        compare.unigrams.items(), key=lambda x: x[1],
     )
     sorted_ngrams: list[tuple[str, int]] = sorted(dist.items(), key=lambda x: x[1])
     assert len(sorted_unigrams) == len(sorted_ngrams)

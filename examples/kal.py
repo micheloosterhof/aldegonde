@@ -4,16 +4,12 @@
 """
 
 import itertools
-import random
-import math
-from scipy.stats import poisson
 
-from aldegonde.structures import alphabet, sequence, cicada3301
-from aldegonde.stats import ioc, repeats, doublets, dist, ngrams
+from aldegonde.analysis import friedman, isomorph, kappa
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor
-from aldegonde.analysis import kappa, isomorph, friedman
-from aldegonde.algorithm import autokey
+from aldegonde.stats import dist, doublets, ioc, repeats
+from aldegonde.structures import alphabet, cicada3301, sequence
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -22,13 +18,13 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     DIFF = C_K+1 - C_K % MAX
     """
     diff = []
-    for i in range(0, len(runes) - skip):
+    for i in range(len(runes) - skip):
         diff.append((runes[i + skip] + runes[i]) % 29)
     return diff
 
 
 k = [
-    "FOROFJIEOFKGMVQIFORRIFRWMQWERPPIFRIFORFOASDIKJDGHJOIKOPASDEWUIOKPKOIJLPOIEQRETYUUINMHGHTYUIOKLPREDFSXDRTFQAWSZRDXCFVGYUHNJIOKQPWOLEORIKTIORITUGJITUHDGASEFLQPOIEXCZIFASDOFGHIRFASPQEPOIRPMNCCOASDFKQPOIRMNBVXIKFRIROEWJKIOLKLPOIUQAWSEDRFTGGYHUJJIKOLZSERDMLOKNLPOOPLKJHBFGJHKCVBNMNJKHFLKOILSEWDXQLASWNBJMB"
+    "FOROFJIEOFKGMVQIFORRIFRWMQWERPPIFRIFORFOASDIKJDGHJOIKOPASDEWUIOKPKOIJLPOIEQRETYUUINMHGHTYUIOKLPREDFSXDRTFQAWSZRDXCFVGYUHNJIOKQPWOLEORIKTIORITUGJITUHDGASEFLQPOIEXCZIFASDOFGHIRFASPQEPOIRPMNCCOASDFKQPOIRMNBVXIKFRIROEWJKIOLKLPOIUQAWSEDRFTGGYHUJJIKOLZSERDMLOKNLPOOPLKJHBFGJHKCVBNMNJKHFLKOILSEWDXQLASWNBJMB",
 ]
 
 print(f"{len(k)} segments")
@@ -64,7 +60,7 @@ for i, s in enumerate(k):
             positions = reps[key]
             for v in itertools.combinations(positions, 2):
                 print(
-                    f"repeat: {key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}"
+                    f"repeat: {key} loc={v[1]},{v[0]} diff={abs(v[1]-v[0])} factors={factor.prime_factors(abs(v[1]-v[0]))}",
                 )
 
         print("\n")

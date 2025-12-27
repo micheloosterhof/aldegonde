@@ -3,16 +3,15 @@
 # solve simple vigenere
 # IDEA: use threading
 
-from collections import defaultdict
 import multiprocessing
 import random
+from collections import defaultdict
 from typing import TypeVar
 
 from simanneal import Annealer
 
-from aldegonde.stats import compare
-from aldegonde.analysis import guballa
 from aldegonde import pasc
+from aldegonde.stats import compare
 
 T = TypeVar("T")
 
@@ -118,7 +117,7 @@ def determine_schedule(ciphertext: str) -> dict:
     # tsp.Tmax = 600
     # tsp.Tmin = 0.1
     # tsp.steps = 80000
-    initial_state = [random.randrange(len(alphabet)) for idx in range(0, LEN)]
+    initial_state = [random.randrange(len(alphabet)) for idx in range(LEN)]
     tsp = simple_vigenere_solver(initial_state)
     tsp.copy_strategy = "slice"
     auto_schedule = tsp.auto(minutes=0.1)
@@ -128,12 +127,12 @@ def determine_schedule(ciphertext: str) -> dict:
 
 
 def threaded_simple_solver(
-    ciphertext: str, schedule: dict
+    ciphertext: str, schedule: dict,
 ) -> tuple[list[int], int, str]:
     """
     this can run inside a thread
     """
-    initial_state = [random.randrange(len(alphabet)) for idx in range(0, LEN)]
+    initial_state = [random.randrange(len(alphabet)) for idx in range(LEN)]
     tsp = simple_vigenere_solver(initial_state)
     tsp.copy_strategy = "slice"
     # tsp.set_schedule(schedule)
@@ -144,7 +143,7 @@ def threaded_simple_solver(
 
 
 def threaded_custom_solver(
-    ciphertext: str, schedule: dict
+    ciphertext: str, schedule: dict,
 ) -> tuple[list[int], int, str]:
     """
     this can run inside a thread
