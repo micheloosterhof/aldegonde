@@ -8,3 +8,5 @@ dist
 *darwin.so
 .idea
 .vscode
+.coverage
+htmlcov/
