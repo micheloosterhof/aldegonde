@@ -25,13 +25,8 @@ def masc_encrypt(plaintext: Iterable[T], key: dict[T, T]) -> Generator[T, None, 
         Encrypted characters
 
     Raises:
-        InvalidInputError: If key format is invalid
         CipherError: If encryption fails
     """
-    if not isinstance(key, dict):
-        msg = f"Key must be a dictionary, got {type(key).__name__}"
-        raise InvalidInputError(msg)
-
     plaintext_seq = (
         list(plaintext) if not isinstance(plaintext, Sequence) else plaintext
     )
@@ -60,13 +55,8 @@ def reverse_key(key: dict[T, T]) -> dict[T, T]:
         Reversed dictionary
 
     Raises:
-        InvalidInputError: If key format is invalid
         CipherError: If key contains duplicate values
     """
-    if not isinstance(key, dict):
-        msg = f"Key must be a dictionary, got {type(key).__name__}"
-        raise InvalidInputError(msg)
-
     output: dict[T, T] = {}
     for k, v in key.items():
         if v in output:
@@ -126,14 +116,9 @@ def affinekey(alphabet: Sequence[T], a: int = 3, b: int = 8) -> dict[T, T]:
         Affine cipher key dictionary
 
     Raises:
-        InvalidInputError: If parameters are invalid
-        KeyError: If 'a' is not coprime with alphabet length
+        AldegondeKeyError: If 'a' is not coprime with alphabet length
     """
     validate_alphabet(alphabet)
-
-    if not isinstance(a, int) or not isinstance(b, int):
-        msg = "Parameters 'a' and 'b' must be integers"
-        raise InvalidInputError(msg)
 
     key: dict[T, T] = {}
     for i, e in enumerate(alphabet):

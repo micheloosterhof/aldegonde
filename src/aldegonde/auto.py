@@ -25,7 +25,6 @@ def ciphertext_autokey_encrypt(
         Encrypted characters
 
     Raises:
-        InvalidInputError: If inputs are invalid
         CipherError: If encryption fails
     """
     plaintext_seq = (
@@ -33,10 +32,6 @@ def ciphertext_autokey_encrypt(
     )
     validate_text_sequence(plaintext_seq)
     validate_key_length(primer)
-
-    if not isinstance(tr, dict):
-        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
-        raise InvalidInputError(msg)
 
     try:
         key: deque[T] = deque(primer)

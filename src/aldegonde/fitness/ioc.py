@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from math import sqrt
 from typing import TypeVar
 
-from aldegonde.stats import ioc as ioc_func
+from aldegonde.stats.ioc import ioc as ioc_func
 
 T = TypeVar("T")
 

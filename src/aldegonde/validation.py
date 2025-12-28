@@ -39,17 +39,8 @@ def validate_text_sequence(text: Sequence[Any], min_length: int = 1) -> None:
         min_length: Minimum required length
 
     Raises:
-        InvalidInputError: If text is invalid
         InsufficientDataError: If text is too short
     """
-    if not isinstance(text, Sequence):
-        msg = f"Text must be a sequence, got {type(text).__name__}"
-        raise InvalidInputError(
-            msg,
-            input_value=text,
-            expected_type=Sequence,
-        )
-
     if len(text) < min_length:
         msg = f"Text length {len(text)} is below minimum required {min_length}"
         raise InsufficientDataError(
@@ -67,17 +58,8 @@ def validate_key_length(key: Sequence[Any], min_length: int = 1) -> None:
         min_length: Minimum required length
 
     Raises:
-        InvalidInputError: If key format is invalid
         InsufficientDataError: If key is too short
     """
-    if not isinstance(key, Sequence):
-        msg = f"Key must be a sequence, got {type(key).__name__}"
-        raise InvalidInputError(
-            msg,
-            input_value=key,
-            expected_type=Sequence,
-        )
-
     if len(key) < min_length:
         msg = f"Key length {len(key)} is below minimum required {min_length}"
         raise InsufficientDataError(
@@ -95,17 +77,8 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
         alphabet: The expected alphabet
 
     Raises:
-        InvalidInputError: If tabula recta format is invalid
         AlphabetError: If tabula recta doesn't match alphabet
     """
-    if not isinstance(tr, dict):
-        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
-        raise InvalidInputError(
-            msg,
-            input_value=tr,
-            expected_type=dict,
-        )
-
     alphabet_set = set(alphabet)
 
     # Check that all alphabet symbols are present as outer keys
@@ -116,9 +89,6 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
 
     # Check each inner dictionary
     for outer_key, inner_dict in tr.items():
-        if not isinstance(inner_dict, dict):
-            msg = f"Inner tabula recta entry for '{outer_key}' must be a dictionary"
-            raise InvalidInputError(msg)
 
         # Check that all alphabet symbols are present as inner keys
         missing_inner = alphabet_set - set(inner_dict.keys())

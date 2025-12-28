@@ -32,10 +32,6 @@ def pgsc_encrypt(
     validate_text_sequence(plaintext, min_length=1)
     validate_positive_integer(length, "length")
 
-    if not callable(encryptfn):
-        msg = "encryptfn must be callable"
-        raise InvalidInputError(msg)
-
     if len(plaintext) % length != 0:
         msg = f"Plaintext length {len(plaintext)} must be divisible by block length {length}"
         raise InvalidInputError(msg)
@@ -73,10 +69,6 @@ def pgsc_decrypt(
     """
     validate_text_sequence(ciphertext, min_length=1)
     validate_positive_integer(length, "length")
-
-    if not callable(decryptfn):
-        msg = "decryptfn must be callable"
-        raise InvalidInputError(msg)
 
     if len(ciphertext) % length != 0:
         msg = f"Ciphertext length {len(ciphertext)} must be divisible by block length {length}"
