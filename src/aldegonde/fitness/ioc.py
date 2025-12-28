@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from math import sqrt
 from typing import TypeVar
 
-from aldegonde.stats import ioc
+from aldegonde.stats import ioc as ioc_func
 
 T = TypeVar("T")
 
@@ -31,6 +31,6 @@ def IocFitness(target_ioc: float) -> Callable[[Sequence[object]], float]:
     """
 
     def inner(text: Sequence[object]) -> float:
-        return -sqrt(abs(ioc.ioc(text) - target_ioc))
+        return -sqrt(abs(ioc_func(text) - target_ioc))
 
     return inner

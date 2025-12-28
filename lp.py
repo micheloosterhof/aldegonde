@@ -9,10 +9,11 @@ import math
 from scipy.stats import poisson
 
 from aldegonde import pasc, masc, auto, c3301
-from aldegonde.stats import ioc, kappa, repeats, dist, ngrams, entropy, isomorph
+from aldegonde.stats import print_ioc_statistics, print_kappa
+from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
-from aldegonde.analysis import friedman
+from aldegonde.analysis import friedman, krakup
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -39,7 +40,7 @@ y = ["".join(z)]
 
 
 print(f"{len(segments)} segments")
-for i, s in enumerate(z):
+for i, s in enumerate(y):
     if len(s) == 0:
         continue
     print(f"\n\nNEW SEGMENT {i} **************")
@@ -79,17 +80,20 @@ for i, s in enumerate(z):
         # c3301.print_all(seg, limit=30)
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
-        ioc.print_ioc_statistics(seg, alphabetsize=29)
+        print_ioc_statistics(seg, alphabetsize=29)
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
         # bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
-        kappa.print_kappa(seg, trace=False)
-        kappa.print_kappa(seg, length=2, trace=False)  # digraphic kappa
-        kappa.print_kappa(seg, length=3, trace=False)  # trigraphic kappa
+        print_kappa(seg, trace=False)
+        print_kappa(seg, length=2, trace=False)  # digraphic kappa
+        print_kappa(seg, length=3, trace=False)  # trigraphic kappa
         friedman.friedman_test(seg, maxperiod=34)
         # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
         repeats.print_repeat_positions(seg, minimum=5)
         # isomorph.print_isomorph_statistics(seg)
+
+        # KRAKUP: Cyclic phenomena in nonhomogeneous material
+        krakup.print_krakup_analysis(seg, min_period=2, max_period=40, window_size=100, step=10)
 
         # slide = ioc.sliding_window_ioc(seg, window=100)
         # for i, e in enumerate(slide):

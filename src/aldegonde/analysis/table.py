@@ -1,6 +1,6 @@
 from aldegonde.maths import factor
 from aldegonde.pasc import T
-from aldegonde.stats import ioc
+from aldegonde.stats import ioc as ioc_func
 
 
 def create_table(
@@ -28,6 +28,6 @@ def print_tables(sequence: list[T]) -> None:
         rows, columns = create_table(sequence, size[0], size[1])
         print(f"height: {size[0]} width: {size[1]}")
         for i, row in enumerate(rows):
-            print(f"row {i}/{size[0]}: ioc: {29 * ioc.ioc(row)}")
+            print(f"row {i}/{size[0]}: ioc: {29 * ioc_func(row)}")
         for i, column in enumerate(columns):
-            print(f"col {i}/{size[1]}: ioc: {29 * ioc.ioc(column)}")
+            print(f"col {i}/{size[1]}: ioc: {29 * ioc_func(column)}")

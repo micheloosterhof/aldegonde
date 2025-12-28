@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
-from aldegonde.stats import ngrams
+from aldegonde.stats import iterngrams
 
 from . import color
 
@@ -63,8 +63,8 @@ def bigram_diagram(
     """
     res = Counter(
         zip(
-            ngrams.iterngrams(rows, cut=cut, length=length),
-            ngrams.iterngrams(columns, cut=cut, length=length),
+            iterngrams(rows, cut=cut, length=length),
+            iterngrams(columns, cut=cut, length=length),
         ),
     )
     bigram: dict[T, dict[T, int]] = defaultdict(dict)
