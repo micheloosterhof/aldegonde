@@ -188,26 +188,50 @@ This suggests the cipher might:
 
 ---
 
-## CRITICAL FINDING: No Rune Matches Doublet Rate
+## CRITICAL FINDING: Runeglish Frequencies Match Doublet Rate!
 
-**This rules out simple Quagmire autokey!**
+**CORRECTION**: I initially confused CIPHERTEXT frequencies with PLAINTEXT frequencies.
 
-Actual LP statistics:
+- **CIPHERTEXT** has flat frequencies (3.05% - 3.75%) - this is EXPECTED from autokey
+- **PLAINTEXT** (Runeglish from English) has very different frequencies!
+
+Actual LP ciphertext statistics:
 - Total runes: 13,136
 - Doublets: 89 (0.678%)
 - Suppression: 5.09x
 - Triplets: 0
 
-**Frequency distribution is FLAT:**
-- Rarest: ᛇ (EO) at 3.05%
-- Most common: ᛟ (OE) at 3.75%
-- All 29 runes within 3.05% - 3.75% range
-- **NO RUNE is anywhere near 0.68%!**
+**Runeglish frequencies from English text (2M+ characters):**
+```
+ᛟ (OE   ):  0.08%  <-- extremely rare
+ᛄ (J    ):  0.15%  <-- very rare
+ᛇ (EO   ):  0.18%  <-- very rare
+ᚫ (AE   ):  0.18%  <-- very rare
+ᛉ (X    ):  0.32%  <-- very rare
+ᛠ (EA   ):  0.45%  <-- rare
+ᚦ (TH   ):  0.56%  <-- CLOSE TO 0.68%!
+ᛝ (NG   ):  0.60%  <-- MATCHES 0.68%! ✓
+ᚹ (W    ):  0.64%  <-- MATCHES 0.68%! ✓
+ᚠ (F    ):  1.11%
+ᛡ (IA/IO):  1.41%
+...
+ᛖ (E    ):  9.94%  <-- most common
+```
 
-If simple Quagmire autokey were used:
-- Doublet rate should equal identity character frequency
-- But the rarest rune (3.05%) would give 3.05% doublets, not 0.68%
-- This is 4.5x too high
+**The doublet rate of 0.68% matches NG (0.60%) or W (0.64%) almost exactly!**
+
+---
+
+## CONFIRMED: Simple Quagmire Autokey IS Consistent
+
+For ciphertext autokey: `doublet_rate = frequency(identity_char_in_PLAINTEXT)`
+
+If the Quagmire keyword starts with:
+- **ᛝ (NG)**: plaintext frequency 0.60% → expect ~0.60% doublets ✓
+- **ᚹ (W)**: plaintext frequency 0.64% → expect ~0.64% doublets ✓
+- **ᚦ (TH)**: plaintext frequency 0.56% → expect ~0.56% doublets ✓
+
+The observed 0.68% is within statistical noise of these values!
 
 **Per-segment doublet rates vary:**
 ```
@@ -215,72 +239,32 @@ Segments 0-4: 0.52-0.55% (6.3-6.6x suppression) ← more suppressed
 Segments 5-9: 0.60-1.08% (3.2-5.8x suppression) ← less suppressed
 ```
 
+This variation could indicate:
+1. Different keywords per segment (different identity characters)
+2. Different plaintext content (more/fewer NG/W/TH occurrences)
+3. Or different encryption methods entirely
+
 **All 29 runes appear as doublets** (1-7 occurrences each), which IS consistent with autokey (the doublet symbol depends on previous ciphertext, not on the identity character).
 
 ---
 
-## Revised Hypotheses After Data Analysis
+## Primary Hypothesis: Quagmire III Autokey with Rare Digraph Identity
 
-### The Core Problem
+The cipher is likely:
+1. **Quagmire III** (keyed Beaufort) with **ciphertext autokey**
+2. **Keyword starts with NG, W, or TH** (or letter that maps to position 0)
+3. This makes the identity character one with ~0.6% frequency in Runeglish
 
-Simple ciphertext autokey: doublet_rate = frequency(identity_char)
+Why this explains everything:
+- ✓ Flat ciphertext distribution (autokey property)
+- ✓ Suppressed doublets (rare identity character)
+- ✓ Zero triplets (probability ≈ 0.006² ≈ 0.004%)
+- ✓ No pattern in single-key decryption (wrong tableau without keyword)
+- ✓ Matches known Cicada use of Beaufort + keywords
 
-But we observe:
-- doublet_rate = 0.68%
-- min(frequency) = 3.05% (ᛇ/EO)
+---
 
-Therefore: **simple autokey is insufficient**
-
-### Hypothesis A: Nested/Double Autokey
-
-Two layers of autokey encryption:
-```
-Intermediate = Autokey1(Plaintext, key1)
-Ciphertext = Autokey2(Intermediate, key2)
-```
-
-For a doublet to occur in final ciphertext, BOTH layers must allow it.
-
-If probabilities are independent:
-- doublet_rate = p1 × p2
-- √0.0068 ≈ 0.082 ≈ 8.2%
-
-If both identity characters have ~8% frequency (like common English letters), this works!
-
-### Hypothesis B: MASC + Autokey with Hidden Frequencies
-
-```
-Transformed = MASC1(Plaintext)
-Ciphertext = Autokey(Transformed, key)
-Final = MASC2(Ciphertext)
-```
-
-- MASC1 creates a character at 0.68% frequency
-- Autokey produces few doublets (based on that character)
-- MASC2 scrambles output but preserves doublet relationships
-- We see flat frequencies because of the scrambling
-
-### Hypothesis C: Conditional Doublet Suppression Rule
-
-Something in the cipher explicitly prevents doublets except in rare cases:
-- "Add 1 if would repeat" but with exceptions
-- Complex feedback mechanism
-- State-dependent transformation
-
-### Hypothesis D: Digraphic/Polygraphic Element
-
-The cipher operates on pairs or larger groups:
-- Input is digraphs, output is digraphs
-- Doublet in output requires special digraph alignment
-- Random digraph input → 0.68% doublets through pair mechanics
-
-### Hypothesis E: Progressive/Running Elements
-
-```
-Cᵢ = f(Pᵢ, Kᵢ, i, Cᵢ₋₁, ...)
-```
-
-A complex function that naturally suppresses doublets through its structure.
+## Alternative Hypotheses (Lower Probability)
 
 ---
 
