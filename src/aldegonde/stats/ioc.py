@@ -13,6 +13,14 @@ from aldegonde.stats.ngrams import ngram_distribution
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 
+class IocResult(NamedTuple):
+    """Result of normalized IOC calculation."""
+
+    ioc: float
+    nioc: float
+    sigmage: float
+
+
 def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
     """Multigraphic Index of Coincidence: ΔIC
 
@@ -68,16 +76,17 @@ def nioc(
     alphabetsize: int,
     length: int = 1,
     cut: int = 0,
-) -> tuple[float, float, float]:
-    """Yield
+) -> IocResult:
+    """Return normalized IOC with sigmage.
+
     Output is the Index of Coincidence formatted as a float,
-    normalized to to alphabet size, and the number of standard
+    normalized to alphabet size, and the number of standard
     deviations away from random data.
     """
     freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
     L: int = sum(x for x in freqs.values())
     if L < 2:
-        return (0.0, 0.0, 0.0)
+        return IocResult(ioc=0.0, nioc=0.0, sigmage=0.0)
     freqsum: float = sum(v * (v - 1) for v in freqs.values())
     ic = freqsum / (L * (L - 1))
     C = pow(alphabetsize, length)  # size of alphabet
@@ -85,11 +94,7 @@ def nioc(
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
     sigmage = abs(nic - 1.0) / sd
 
-    Ioc = NamedTuple(  # noqa: UP014
-        "Ioc",
-        [("ioc", float), ("nioc", float), ("sigmage", float)],
-    )
-    return Ioc(ioc=ic, nioc=nic, sigmage=sigmage)
+    return IocResult(ioc=ic, nioc=nic, sigmage=sigmage)
 
 
 def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
