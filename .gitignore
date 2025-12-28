@@ -5,7 +5,7 @@ dist
 .direnv
 .ipynb_checkpoints
 .tox
-*darwin.so
+*.so
 .idea
 .vscode
 .coverage
