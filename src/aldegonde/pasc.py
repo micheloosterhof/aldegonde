@@ -132,7 +132,9 @@ def pasc_encrypt_interrupted(
                     cipher_type="polyalphabetic",
                 )
             if e not in tr[key]:
-                msg = f"Plaintext symbol '{e}' not found in tabula recta for key '{key}'"
+                msg = (
+                    f"Plaintext symbol '{e}' not found in tabula recta for key '{key}'"
+                )
                 raise CipherError(msg, cipher_type="polyalphabetic")
 
             output = tr[key][e]

@@ -8,7 +8,6 @@ class AldegondeError(Exception):
     """Base exception class for all Aldegonde-related errors."""
 
 
-
 class CipherError(AldegondeError):
     """Base exception for cipher-related errors."""
 

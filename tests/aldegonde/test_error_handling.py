@@ -22,7 +22,8 @@ class TestPascErrorHandling:
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
         with pytest.raises(
-            InsufficientDataError, match="Text length 0 is below minimum required",
+            InsufficientDataError,
+            match="Text length 0 is below minimum required",
         ):
             list(pasc.pasc_encrypt("", "KEY", tr))
 
@@ -31,7 +32,8 @@ class TestPascErrorHandling:
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
         with pytest.raises(
-            InsufficientDataError, match="Key length 0 is below minimum required",
+            InsufficientDataError,
+            match="Key length 0 is below minimum required",
         ):
             list(pasc.pasc_encrypt("HELLO", "", tr))
 
@@ -39,7 +41,9 @@ class TestPascErrorHandling:
         """Test encryption with invalid key symbol."""
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
-        with pytest.raises(AldegondeKeyError, match="Key symbol 'X' not found in tabula recta"):
+        with pytest.raises(
+            AldegondeKeyError, match="Key symbol 'X' not found in tabula recta"
+        ):
             # Create a TR that doesn't have 'X' as a key
             limited_tr = {k: v for k, v in tr.items() if k != "X"}
             list(pasc.pasc_encrypt("HELLO", "XYZ", limited_tr))
@@ -49,7 +53,8 @@ class TestPascErrorHandling:
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         tr = pasc.vigenere_tr(alphabet)
         with pytest.raises(
-            CipherError, match="Plaintext symbol '1' not found in tabula recta",
+            CipherError,
+            match="Plaintext symbol '1' not found in tabula recta",
         ):
             list(pasc.pasc_encrypt("HELLO1", "KEY", tr))
 
@@ -63,7 +68,8 @@ class TestPascErrorHandling:
     def test_reverse_tr_invalid_input(self):
         """Test reverse_tr with invalid input."""
         with pytest.raises(
-            InvalidInputError, match="Tabula recta must be a dictionary",
+            InvalidInputError,
+            match="Tabula recta must be a dictionary",
         ):
             pasc.reverse_tr("not_a_dict")
 
@@ -84,14 +90,16 @@ class TestIocErrorHandling:
     def test_ioc_empty_text(self):
         """Test IOC with empty text."""
         with pytest.raises(
-            InsufficientDataError, match="Text length 0 is below minimum required",
+            InsufficientDataError,
+            match="Text length 0 is below minimum required",
         ):
             ioc_func([])
 
     def test_ioc_single_character(self):
         """Test IOC with single character."""
         with pytest.raises(
-            InsufficientDataError, match="Text length 1 is below minimum required",
+            InsufficientDataError,
+            match="Text length 1 is below minimum required",
         ):
             ioc_func(["A"])
 
@@ -108,14 +116,16 @@ class TestIocErrorHandling:
     def test_ioc_invalid_cut(self):
         """Test IOC with invalid cut parameter."""
         with pytest.raises(
-            InvalidInputError, match="Cut value 5 must be between 0 and 2",
+            InvalidInputError,
+            match="Cut value 5 must be between 0 and 2",
         ):
             ioc_func("HELLO", length=2, cut=5)
 
     def test_sliding_window_ioc_insufficient_data(self):
         """Test sliding window IOC with insufficient data."""
         with pytest.raises(
-            InsufficientDataError, match="Text length .* is below minimum required",
+            InsufficientDataError,
+            match="Text length .* is below minimum required",
         ):
             sliding_window_ioc("ABC", window=100)
 

@@ -112,8 +112,8 @@ mypy src/
 ### Code Formatting
 
 ```bash
-# Format with black
-black src/ tests/
+# Format with ruff
+ruff format src/ tests/
 ```
 
 ## Code Conventions
@@ -300,7 +300,7 @@ tox                                # Full test matrix
 ruff check src/                    # Lint
 ruff check src/ --fix              # Lint + autofix
 mypy src/                          # Type check
-black src/ tests/                  # Format
+ruff format src/ tests/             # Format
 
 # Examples
 python examples/lp_analysis.py     # Run Liber Primus analysis
