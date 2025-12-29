@@ -2,7 +2,6 @@
 Jens Guballa's algorithm using piecemeal bigram scoring to break PASC
 """
 
-
 from aldegonde import masc, pasc
 from aldegonde.analysis import guballa
 
