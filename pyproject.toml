@@ -37,7 +37,7 @@ dev = [
   "pipdeptree==2.30.0",
   "pytest==9.0.2",
   "pytest-cov==7.0.0",
-  "ruff==0.14.11",
+  "ruff==0.14.13",
   "tox==4.34.1",
   "twine==6.2.0",
 ]
