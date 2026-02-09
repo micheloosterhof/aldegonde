@@ -30,7 +30,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "build==1.4.0",
-  "coverage==7.13.1",
+  "coverage==7.13.2",
   "hypothesis>=6.100.0",
   "mypy-extensions==1.1.0",
   "mypy==1.19.1",

@@ -1,5 +1,5 @@
 build==1.4.0
-coverage==7.13.1
+coverage==7.13.2
 mypy-extensions==1.1.0
 mypy==1.19.1
 pipdeptree==2.30.0
