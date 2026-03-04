@@ -516,20 +516,169 @@ for seg_idx, s in enumerate(y):
         print(f"{rank:4d} {score:10.2f} {name:<18} {pc:>3} {pp:>3} {pt_eng}")
 
     # ========================================================================
-    # PHASE 3: Full analysis on overall best
+    # PHASE 3: Affine alphabet remapping + top cipher variants
+    # v' = a*v + b mod 29.  Fast pre-filter: score first 500 chars only,
+    # then full-score top candidates.
+    #
+    # Math insight for additive autokeys:
+    #   Beaufort: P'(i) = (a*C(i-1)+b)-(a*C(i)+b) = a*(C(i-1)-C(i))
+    #   The b cancels! So for additive variants, only a matters (28 values).
+    #   For multiplicative variants, both a and b matter (812 combos).
+    # ========================================================================
+    print("\n" + "=" * 90)
+    print("PHASE 3: AFFINE ALPHABET REMAPPING (v'=a*v+b mod 29)")
+    print("Fast pre-filter on first 500 chars, then full-score top 200")
+    print("=" * 90)
+
+    PREFILTER_LEN = 500
+    C_short = C[:PREFILTER_LEN]
+
+    # Stage 1: Pre-filter with short text
+    prefilter: list[tuple[float, str, int, int, int]] = []
+
+    # Additive variants: b cancels, only need a × primer
+    additive_affine = [
+        ("Ci-1-P", decrypt_beaufort_ct_autokey),
+        ("P+Ci-1", decrypt_additive_ct_autokey),
+        ("P+Pi-1", decrypt_additive_pt_autokey),
+        ("Pi-1-P", decrypt_beaufort_pt_autokey),
+    ]
+    for a in range(1, N):
+        C_aff_short = [(a * c) % N for c in C_short]  # b=0, it cancels
+        for name, func in additive_affine:
+            for pv in range(N):
+                P = func(C_aff_short, pv)
+                pt = runes(P)
+                score = c3301.quadgramscore(pt)
+                prefilter.append((score, name, a, 0, pv))
+
+    # Multiplicative variants: both a and b matter
+    mult_affine = [
+        ("P*Ci-1", decrypt_mult_ct_autokey),
+        ("P*Pi-1", decrypt_mult_pt_autokey),
+    ]
+    for a in range(1, N):
+        for b in range(N):
+            C_aff_short = [(a * c + b) % N for c in C_short]
+            for name, func in mult_affine:
+                for pv in range(N):
+                    P = func(C_aff_short, pv)
+                    pt = runes(P)
+                    score = c3301.quadgramscore(pt)
+                    prefilter.append((score, name, a, b, pv))
+
+    prefilter.sort(key=lambda x: x[0], reverse=True)
+    print(f"Pre-filter: {len(prefilter)} candidates scored on {PREFILTER_LEN} chars")
+
+    # Stage 2: Full-score top 200 candidates
+    results3: list[tuple[float, str, int, int, int, str]] = []
+    for _, name, a, b, pv, in prefilter[:200]:
+        C_affine = [(a * c + b) % N for c in C]
+        # Re-find the right function
+        func_map = {
+            "Ci-1-P": decrypt_beaufort_ct_autokey,
+            "P+Ci-1": decrypt_additive_ct_autokey,
+            "P+Pi-1": decrypt_additive_pt_autokey,
+            "Pi-1-P": decrypt_beaufort_pt_autokey,
+            "P*Ci-1": decrypt_mult_ct_autokey,
+            "P*Pi-1": decrypt_mult_pt_autokey,
+        }
+        P = func_map[name](C_affine, pv)
+        pt = runes(P)
+        score = c3301.quadgramscore(pt)
+        results3.append((score, name, a, b, pv, pt))
+
+    results3.sort(key=lambda x: x[0], reverse=True)
+
+    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<12} {'a':>3} {'b':>3} {'pr':>3} {'Decrypted (first 60 runeglish)'}")
+    print("-" * 120)
+    for rank, (score, name, a, b, pv, pt) in enumerate(results3[:60], 1):
+        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
+        print(f"{rank:4d} {score:10.2f} {name:<12} {a:>3} {b:>3} {pv:>3} {pt_eng}")
+
+    # ========================================================================
+    # PHASE 4: Top affine remaps × two-primer mixed variants
+    # Use top 10 unique (a,b) from phase 3, × 4 mixed variants × 841 primers
+    # Pre-filter on short text, full-score top 200
+    # ========================================================================
+    print("\n" + "=" * 90)
+    print("PHASE 4: TOP AFFINE REMAPS × TWO-PRIMER MIXED VARIANTS")
+    print("=" * 90)
+
+    top_affine_params: list[tuple[int, int]] = []
+    seen_ab: set[tuple[int, int]] = set()
+    for _, _, a, b, _, _ in results3[:100]:
+        if (a, b) not in seen_ab:
+            seen_ab.add((a, b))
+            top_affine_params.append((a, b))
+        if len(top_affine_params) >= 10:
+            break
+
+    print(f"Top affine params: {top_affine_params}")
+
+    mixed_for_affine = [
+        ("C+P*Pi-1", decrypt_c_plus_pp),
+        ("P*(C+Pi-1)", decrypt_p_times_c_plus_p),
+        ("C*(P+Pi-1)", decrypt_pc_plus_cp),
+        ("P*Pi-1*C", decrypt_pp_times_c),
+    ]
+
+    # Pre-filter on short text
+    prefilter4: list[tuple[float, str, int, int, int, int]] = []
+    for a, b in top_affine_params:
+        C_aff_short = [(a * c + b) % N for c in C_short]
+        for func_name, func in mixed_for_affine:
+            for pc in range(N):
+                for pp in range(N):
+                    P = func(C_aff_short, pc, pp)
+                    pt = runes(P)
+                    score = c3301.quadgramscore(pt)
+                    prefilter4.append((score, func_name, a, b, pc, pp))
+
+    prefilter4.sort(key=lambda x: x[0], reverse=True)
+    print(f"Pre-filter: {len(prefilter4)} candidates scored on {PREFILTER_LEN} chars")
+
+    # Full-score top 200
+    results4: list[tuple[float, str, int, int, int, int, str]] = []
+    mixed_func_map = {
+        "C+P*Pi-1": decrypt_c_plus_pp,
+        "P*(C+Pi-1)": decrypt_p_times_c_plus_p,
+        "C*(P+Pi-1)": decrypt_pc_plus_cp,
+        "P*Pi-1*C": decrypt_pp_times_c,
+    }
+    for _, func_name, a, b, pc, pp in prefilter4[:200]:
+        C_affine = [(a * c + b) % N for c in C]
+        pt = runes(mixed_func_map[func_name](C_affine, pc, pp))
+        score = c3301.quadgramscore(pt)
+        results4.append((score, func_name, a, b, pc, pp, pt))
+
+    results4.sort(key=lambda x: x[0], reverse=True)
+
+    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<14} {'a':>3} {'b':>3} {'pc':>3} {'pp':>3} {'Decrypted (first 60 runeglish)'}")
+    print("-" * 130)
+    for rank, (score, name, a, b, pc, pp, pt) in enumerate(results4[:60], 1):
+        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
+        print(f"{rank:4d} {score:10.2f} {name:<14} {a:>3} {b:>3} {pc:>3} {pp:>3} {pt_eng}")
+
+    # ========================================================================
+    # PHASE 5: Full analysis on overall best
     # ========================================================================
     all_results: list[tuple[float, str, str]] = []
     for score, name, pv, pt in results:
         all_results.append((score, f"{name} primer={pv}", pt))
     for score, name, pc, pp, pt in results2:
         all_results.append((score, f"{name} pc={pc},pp={pp}", pt))
+    for score, name, a, b, pv, pt in results3:
+        all_results.append((score, f"{name} affine({a},{b}) primer={pv}", pt))
+    for score, name, a, b, pc, pp, pt in results4:
+        all_results.append((score, f"{name} affine({a},{b}) pc={pc},pp={pp}", pt))
 
     all_results.sort(key=lambda x: x[0], reverse=True)
 
     best_score, best_desc, seg = all_results[0]
 
     print(f"\n\n{'=' * 90}")
-    print(f"FULL ANALYSIS OF BEST RESULT")
+    print(f"PHASE 5: FULL ANALYSIS OF BEST RESULT")
     print(f"{'=' * 90}")
     print(f"Cipher: {best_desc}")
     print(f"Score: {best_score:.2f}\n")
