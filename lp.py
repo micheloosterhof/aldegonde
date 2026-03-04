@@ -16,6 +16,7 @@ from aldegonde.stats import print_ioc_statistics, print_kappa
 from aldegonde.stats import repeats, dist, entropy
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor
+from aldegonde.maths.primes import primes as generate_primes
 from aldegonde.analysis import friedman, krakup
 
 N = 29  # GF(29)
@@ -516,6 +517,104 @@ for seg_idx, s in enumerate(y):
         print(f"{rank:4d} {score:10.2f} {name:<18} {pc:>3} {pp:>3} {pt_eng}")
 
     # ========================================================================
+    # PHASE 2b: Running primes as key stream
+    # Strip off prime(i+offset) mod 29 via /, *, +, - before autokey.
+    # Primes mod 29 are quasi-random (equidistributed by Dirichlet),
+    # cyclical through residues but with specific ordering.
+    # Try offsets 0..99 into the prime sequence × 4 operations × top variants.
+    # ========================================================================
+    print("\n" + "=" * 90)
+    print("PHASE 2b: RUNNING PRIMES KEY STREAM")
+    print("C'(i) = C(i) op prime(i+offset) mod 29, then autokey")
+    print("=" * 90)
+
+    # Generate enough primes
+    MAX_PRIME_OFFSET = 100
+    prime_list = generate_primes(200000)
+
+    PREFILTER_LEN = 500
+    C_short = C[:PREFILTER_LEN]
+
+    results_prime: list[tuple[float, str, str, int, int, str]] = []
+
+    prime_ops: list[tuple[str, object]] = [
+        ("C/pr", lambda c, p: safe_div(c, p % N)),
+        ("C*pr", lambda c, p: (c * (p % N)) % N),
+        ("C-pr", lambda c, p: (c - (p % N)) % N),
+        ("C+pr", lambda c, p: (c + (p % N)) % N),
+    ]
+
+    # Stage 1: Quick scan with primer=0, find best (offset, op, variant) combos
+    prime_autokeys = [
+        ("Ci-1-P", decrypt_beaufort_ct_autokey),
+        ("P+Ci-1", decrypt_additive_ct_autokey),
+        ("P+Pi-1", decrypt_additive_pt_autokey),
+    ]
+
+    quick_scan: list[tuple[float, str, str, int]] = []
+
+    for offset in range(MAX_PRIME_OFFSET):
+        for op_name, op_func in prime_ops:
+            C_prime_short = [op_func(C_short[i], prime_list[i + offset])
+                            for i in range(len(C_short))]
+
+            # Direct (no autokey)
+            pt_direct = runes(C_prime_short)
+            score_direct = c3301.quadgramscore(pt_direct)
+            quick_scan.append((score_direct, op_name, "direct", offset))
+
+            # With autokey, primer=0
+            for ak_name, ak_func in prime_autokeys:
+                P = ak_func(C_prime_short, 0)
+                pt = runes(P)
+                score = c3301.quadgramscore(pt)
+                quick_scan.append((score, op_name, ak_name, offset))
+
+    quick_scan.sort(key=lambda x: x[0], reverse=True)
+    print(f"Quick scan: {len(quick_scan)} combos, top score: {quick_scan[0][0]:.2f}")
+
+    # Stage 2: Expand top 50 combos across all 29 primers, full-score
+    seen_combos: set[tuple[str, str, int]] = set()
+    top_combos: list[tuple[str, str, int]] = []
+    for _, op_name, ak_name, offset in quick_scan:
+        key = (op_name, ak_name, offset)
+        if key not in seen_combos:
+            seen_combos.add(key)
+            top_combos.append(key)
+        if len(top_combos) >= 50:
+            break
+
+    op_func_map = {name: func for name, func in prime_ops}
+    ak_func_map = {name: func for name, func in prime_autokeys}
+    ak_func_map["direct"] = None
+
+    for op_name, ak_name, offset in top_combos:
+        op_func = op_func_map[op_name]
+        C_prime_full = [op_func(C[i], prime_list[i + offset])
+                       for i in range(len(C))]
+
+        if ak_name == "direct":
+            pt_full = runes(C_prime_full)
+            score_full = c3301.quadgramscore(pt_full)
+            results_prime.append((score_full, op_name, "direct", offset, 0, pt_full))
+        else:
+            ak_func = ak_func_map[ak_name]
+            for pv in range(N):
+                P_full = ak_func(C_prime_full, pv)
+                pt_full = runes(P_full)
+                score_full = c3301.quadgramscore(pt_full)
+                results_prime.append((score_full, op_name, ak_name, offset, pv, pt_full))
+
+    results_prime.sort(key=lambda x: x[0], reverse=True)
+
+    print(f"\nTotal prime-stream full-scored: {len(results_prime)}")
+    print(f"\n{'Rank':>4} {'Score':>10} {'PrOp':<10} {'Autokey':<12} {'Off':>4} {'Pr':>3} {'Decrypted (first 60 runeglish)'}")
+    print("-" * 120)
+    for rank, (score, op_name, ak_name, offset, pv, pt) in enumerate(results_prime[:60], 1):
+        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
+        print(f"{rank:4d} {score:10.2f} {op_name:<10} {ak_name:<12} {offset:>4} {pv:>3} {pt_eng}")
+
+    # ========================================================================
     # PHASE 3: Affine alphabet remapping + top cipher variants
     # v' = a*v + b mod 29.  Fast pre-filter: score first 500 chars only,
     # then full-score top candidates.
@@ -672,6 +771,8 @@ for seg_idx, s in enumerate(y):
         all_results.append((score, f"{name} affine({a},{b}) primer={pv}", pt))
     for score, name, a, b, pc, pp, pt in results4:
         all_results.append((score, f"{name} affine({a},{b}) pc={pc},pp={pp}", pt))
+    for score, op_name, ak_name, offset, pv, pt in results_prime:
+        all_results.append((score, f"{op_name}+{ak_name} prime_off={offset} pr={pv}", pt))
 
     all_results.sort(key=lambda x: x[0], reverse=True)
 
