@@ -41,6 +41,10 @@ def validate_text_sequence(text: Sequence[Any], min_length: int = 1) -> None:
     Raises:
         InsufficientDataError: If text is too short
     """
+    if not isinstance(text, Sequence) or isinstance(text, (bytes,)):
+        msg = f"Text must be a sequence, got {type(text).__name__}"
+        raise InvalidInputError(msg, input_value=text, expected_type=Sequence)
+
     if len(text) < min_length:
         msg = f"Text length {len(text)} is below minimum required {min_length}"
         raise InsufficientDataError(
@@ -79,6 +83,10 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
     Raises:
         AlphabetError: If tabula recta doesn't match alphabet
     """
+    if not isinstance(tr, dict):
+        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
+        raise InvalidInputError(msg, input_value=tr, expected_type=dict)
+
     alphabet_set = set(alphabet)
 
     # Check that all alphabet symbols are present as outer keys

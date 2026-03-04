@@ -162,6 +162,10 @@ def reverse_tr(tr: TR[T]) -> TR[T]:
     Raises:
         CipherError: If tabula recta is ambiguous
     """
+    if not isinstance(tr, dict):
+        msg = f"Tabula recta must be a dictionary, got {type(tr).__name__}"
+        raise InvalidInputError(msg, input_value=tr, expected_type=dict)
+
     output: TR[T] = defaultdict(dict)
     for keyword in tr:
         for k, v in tr[keyword].items():

@@ -66,11 +66,11 @@ class TestPascErrorHandling:
             list(pasc.pasc_encrypt_interrupted("HELLO", "KEY", tr))
 
     def test_reverse_tr_invalid_input(self):
-        """Test reverse_tr with invalid input."""
-        with pytest.raises(
-            InvalidInputError,
-            match="Tabula recta must be a dictionary",
-        ):
+        """Test reverse_tr with invalid input.
+
+        Accepts TypeError because mypyc enforces type annotations at the C level.
+        """
+        with pytest.raises((InvalidInputError, TypeError)):
             pasc.reverse_tr("not_a_dict")
 
     def test_reverse_tr_ambiguous(self):
@@ -104,8 +104,11 @@ class TestIocErrorHandling:
             ioc_func(["A"])
 
     def test_ioc_invalid_length(self):
-        """Test IOC with invalid n-gram length."""
-        with pytest.raises(InvalidInputError, match="length must be an integer"):
+        """Test IOC with invalid n-gram length.
+
+        Accepts TypeError because mypyc enforces type annotations at the C level.
+        """
+        with pytest.raises((InvalidInputError, TypeError)):
             ioc_func("HELLO", length="invalid")
 
     def test_ioc_negative_length(self):
