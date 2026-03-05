@@ -448,27 +448,10 @@ C = vals(raw)
 from collections import Counter
 
 # ========================================================================
-# DOUBLET ANALYSIS
-# In additive ct autokey: C(i) = P(i) + C(i-1)  =>  P(i) = C(i) - C(i-1)
-# When C(i) = C(i-1) (doublet), P(i) = 0 = EA.
-# So ciphertext doublets pin P(i) = EA for additive autokey.
-#
-# For Beaufort: P(i) = C(i-1) - C(i), doublet => P(i) = 0 = EA. Same.
-#
-# For multiplicative ct autokey: C(i) = P(i) * C(i-1)
-#   P(i) = C(i) / C(i-1). When C(i)=C(i-1), P(i) = 1 (not 0).
-#   So doublet => P(i) = 1 for multiplicative.
-#
-# For C(i) = C(i-1) + P(i)*P(i-1):
-#   P(i)*P(i-1) = C(i) - C(i-1) = 0 when doublet
-#   So either P(i)=0 (EA) or P(i-1)=0 (EA) at doublets.
-#
-# This means: at every doublet, we know the plaintext or get a
-# strong constraint. We can check if the word boundaries are
-# consistent with EA appearing at those positions.
+# DOUBLET AND RATIO ANALYSIS
 # ========================================================================
 print("=" * 90)
-print("DOUBLET ANALYSIS: C(i) = C(i-1) implies P(i) = EA for additive autokey")
+print("DOUBLET & RATIO ANALYSIS")
 print("=" * 90)
 
 # Find all doublets (consecutive identical ciphertext values)
@@ -482,12 +465,6 @@ print(f"Total runes: {len(C)}")
 print(f"Doublet rate: {len(doublets)/len(C)*100:.2f}%")
 print(f"Expected for random (1/29): {100/29:.2f}%")
 
-# For each word, check if any doublet position falls inside it.
-# If it does, and it's additive autokey, then that position in
-# the decrypted word = EA.
-print(f"\n--- Where do doublets land in words? ---")
-print("(For additive autokey, doublet pos => plaintext EA at that pos)")
-
 # Build word lookup: for each rune position, which word is it in?
 pos_to_word: dict[int, tuple[int, int]] = {}  # pos -> (word_idx, offset_in_word)
 for widx, (w, start) in enumerate(words):
@@ -495,155 +472,206 @@ for widx, (w, start) in enumerate(words):
         pos_to_word[start + offset] = (widx, offset)
 
 # Annotate doublets with word context
-doublet_in_words: list[tuple[int, int, int, str, int]] = []  # (pos, word_idx, offset, word, word_len)
+doublet_in_words: list[tuple[int, int, int, str, int]] = []
 for dpos in doublets:
     if dpos in pos_to_word:
         widx, offset = pos_to_word[dpos]
         w, _ = words[widx]
         doublet_in_words.append((dpos, widx, offset, w, len(w)))
 
-# How many doublets fall at word boundaries?
-doublet_at_word_start = sum(1 for _, _, off, _, _ in doublet_in_words if off == 0)
-doublet_at_word_end = sum(1 for _, _, off, _, wl in doublet_in_words if off == wl - 1)
-doublet_at_word_mid = len(doublet_in_words) - doublet_at_word_start - doublet_at_word_end
+# ========================================================================
+# KEY FINDING: DUAL SUPPRESSION
+# Both additive delta=0 AND multiplicative ratio=1 are suppressed ~5x.
+# Everything else is perfectly flat in both distributions.
+# ========================================================================
+print(f"\n{'=' * 90}")
+print("DUAL SUPPRESSION: additive delta AND multiplicative ratio")
+print("=" * 90)
 
-print(f"\nDoublets at word start (offset 0): {doublet_at_word_start}")
-print(f"Doublets at word end (last pos):   {doublet_at_word_end}")
-print(f"Doublets at word middle:           {doublet_at_word_mid}")
+# Additive delta distribution: C(i) - C(i-1) mod 29
+add_deltas = Counter()
+for i in range(1, len(C)):
+    add_deltas[(C[i] - C[i - 1]) % N] += 1
 
-# For additive autokey: doublet means EA at that position.
-# EA is the 29th rune (index 28). In runeglish it maps to 'EA'.
-# If EA appears at start of a word, the word starts with 'EA'.
-# If EA appears mid-word, the word contains 'EA'.
-# 'EA' is actually common in English: EACH, FEAR, HEART, NEAR, etc.
-# And EA as a rune represents the phoneme /ea/ in runeglish.
+# Multiplicative ratio distribution: C(i) / C(i-1) mod 29
+mult_ratios = Counter()
+zero_prev = 0
+for i in range(1, len(C)):
+    if C[i - 1] == 0:
+        zero_prev += 1
+        continue
+    mult_ratios[(C[i] * pow(C[i - 1], N - 2, N)) % N] += 1
 
-# Show the word context for first 50 doublets
-print(f"\nFirst 50 doublets with word context:")
-print(f"{'Pos':>6} {'C[i]':>5} {'WIdx':>5} {'Off':>4} {'WLen':>5} {'Cipher word':<20} {'If additive: EA at off'}")
-print("-" * 80)
-for dpos, widx, offset, w, wl in doublet_in_words[:50]:
+print(f"\n{'val':>4} {'add_delta':>10} {'pct':>7} {'mult_ratio':>11} {'pct':>7}  rune")
+total_add = sum(add_deltas.values())
+total_mult = sum(mult_ratios.values())
+for v in range(N):
+    eng = c3301.CICADA_ENGLISH_ALPHABET[(v - 1) % N]
+    ac = add_deltas.get(v, 0)
+    mc = mult_ratios.get(v, 0)
+    ap = ac / total_add * 100
+    mp = mc / total_mult * 100
+    marker = " *** SUPPRESSED" if (ap < 1.5 or mp < 1.5) else ""
+    print(f"{v:4d} {ac:10d} {ap:6.2f}% {mc:11d} {mp:6.2f}%  {eng}{marker}")
+
+print(f"\nAdditive delta=0 (doublets): {add_deltas[0]} = {add_deltas[0]/total_add*100:.2f}%")
+print(f"Mult ratio=1 (value 1=F):    {mult_ratios.get(1,0)} = {mult_ratios.get(1,0)/total_mult*100:.2f}%")
+print(f"Expected if random:          {100/N:.2f}%")
+print(f"\nBOTH are suppressed ~5x below expected!")
+print(f"This strongly suggests a cipher with BOTH additive and multiplicative components.")
+
+# ========================================================================
+# DOUBLET SUPPRESSION: within-word vs cross-boundary
+# Tests whether the cipher resets at word boundaries
+# ========================================================================
+print(f"\n{'=' * 90}")
+print("DOUBLET SUPPRESSION: within-word vs cross-boundary")
+print("=" * 90)
+
+pos_to_widx: dict[int, int] = {}
+for widx, (w, start) in enumerate(words):
+    for off in range(len(w)):
+        pos_to_widx[start + off] = widx
+
+within_pairs = within_doublets = cross_pairs = cross_doublets = 0
+for i in range(1, len(C)):
+    if i in pos_to_widx and (i - 1) in pos_to_widx:
+        if pos_to_widx[i] == pos_to_widx[i - 1]:
+            within_pairs += 1
+            if C[i] == C[i - 1]:
+                within_doublets += 1
+        else:
+            cross_pairs += 1
+            if C[i] == C[i - 1]:
+                cross_doublets += 1
+
+print(f"\nWithin-word:     {within_doublets}/{within_pairs} = {within_doublets/within_pairs*100:.2f}%")
+print(f"Cross-boundary:  {cross_doublets}/{cross_pairs} = {cross_doublets/cross_pairs*100:.2f}%")
+print(f"Expected random: {100/N:.2f}%")
+print(f"\nBoth equally suppressed => cipher chain runs THROUGH word boundaries")
+
+# ========================================================================
+# 2-RUNE DOUBLET WORDS
+# Only 1 exists out of 621 two-rune words (expected ~21)
+# ========================================================================
+print(f"\n{'=' * 90}")
+print("2-RUNE DOUBLET WORDS")
+print("=" * 90)
+
+two_rune_words = [(widx, w, start) for widx, (w, start) in enumerate(words) if len(w) == 2]
+two_rune_doublets = [(widx, w, start) for widx, w, start in two_rune_words if C[start] == C[start + 1]]
+
+print(f"\nTotal 2-rune words: {len(two_rune_words)}")
+print(f"2-rune doublet words: {len(two_rune_doublets)}  (expected ~{len(two_rune_words)//N})")
+
+for widx, w, start in two_rune_doublets:
     eng = rune_to_eng(w)
-    # Show what the word looks like with EA inserted at offset
-    ea_marker = eng[:offset*2] + "[EA]" + eng[(offset+1)*2:]  # approximate
-    print(f"{dpos:6d} {C[dpos]:5d} {widx:5d} {offset:4d} {wl:5d} {eng:<20} EA at position {offset}")
+    print(f"  w{widx:4d} pos={start:5d} cipher='{eng}' val={C[start]}")
 
 # ========================================================================
-# KEY INSIGHT: For multiplicative mixed autokey like C(i) = C(i-1) + P(i)*P(i-1):
-# Doublet => P(i)*P(i-1) = 0  =>  P(i)=EA OR P(i-1)=EA
-# So at a doublet, one of two adjacent plaintext positions is EA.
-# If we have consecutive doublets (triplet in ciphertext),
-# then we know both positions are EA.
+# 3-RUNE WORDS STARTING WITH BOUNDARY DOUBLET
+# C[start] == C[start-1] => for additive autokey, first rune = EA
+# EACH in runeglish = EA+C+H = 3 runes
 # ========================================================================
+print(f"\n{'=' * 90}")
+print("3-RUNE WORDS WITH BOUNDARY DOUBLET (could be EACH = EA+C+H)")
+print("=" * 90)
 
-# Find triplets (3+ consecutive identical values)
-triplets = []
-i = 0
-while i < len(C) - 2:
-    if C[i] == C[i+1] == C[i+2]:
-        start = i
-        while i < len(C) - 1 and C[i] == C[i+1]:
-            i += 1
-        triplets.append((start, i + 1))  # (start, end_exclusive)
+ea_start_3: list[tuple[int, str, int]] = []
+for widx, (w, start) in enumerate(words):
+    if len(w) == 3 and start > 0 and C[start] == C[start - 1]:
+        ea_start_3.append((widx, w, start))
+
+print(f"\nCount: {len(ea_start_3)}")
+print(f"\nEACH = EA(val=0) + C(val=6) + H(val=9)")
+print()
+
+for widx, w, start in ea_start_3:
+    c0, c1, c2 = C[start], C[start + 1], C[start + 2]
+    cprev = C[start - 1]
+    eng = rune_to_eng(w)
+
+    # Additive ct autokey: P(i) = C(i) - C(i-1)
+    d1 = (c1 - c0) % N
+    d2 = (c2 - c1) % N
+    d1_eng = c3301.CICADA_ENGLISH_ALPHABET[(d1 - 1) % N]
+    d2_eng = c3301.CICADA_ENGLISH_ALPHABET[(d2 - 1) % N]
+
+    # Beaufort: P(i) = C(i-1) - C(i)
+    b1 = (c0 - c1) % N
+    b2 = (c1 - c2) % N
+    b1_eng = c3301.CICADA_ENGLISH_ALPHABET[(b1 - 1) % N]
+    b2_eng = c3301.CICADA_ENGLISH_ALPHABET[(b2 - 1) % N]
+
+    # Multiplicative: P(i) = C(i) / C(i-1)
+    m1 = safe_div(c1, c0)
+    m2 = safe_div(c2, c1)
+    m1_eng = c3301.CICADA_ENGLISH_ALPHABET[(m1 - 1) % N]
+    m2_eng = c3301.CICADA_ENGLISH_ALPHABET[(m2 - 1) % N]
+
+    # C(i)=C(i-1)*(1+P(i)): P(i) = C(i)/C(i-1) - 1
+    if c0 != 0:
+        h1 = (safe_div(c1, c0) - 1) % N
     else:
-        i += 1
+        h1 = -1
+    if c1 != 0:
+        h2 = (safe_div(c2, c1) - 1) % N
+    else:
+        h2 = -1
 
-print(f"\n\nTriplets (3+ consecutive identical): {len(triplets)}")
-for start, end in triplets[:20]:
-    length = end - start
-    if start in pos_to_word:
-        widx, off = pos_to_word[start]
-        w, _ = words[widx]
-        eng = rune_to_eng(w)
-        print(f"  pos={start}-{end-1} len={length} val={C[start]} word={eng}")
-
-# ========================================================================
-# DOUBLET POSITION ANALYSIS WITHIN WORDS
-# For C(i) = C(i-1) + P(i)*P(i-1), doublet => P(i)*P(i-1) = 0.
-# In a word of length L, if doublet at offset k (1<=k<L):
-#   P(k)=EA or P(k-1)=EA
-# If word has no doublets, no EA in word (likely for short common words).
-# ========================================================================
-
-# Count words with/without doublets
-words_with_doublets = set()
-for dpos, widx, offset, w, wl in doublet_in_words:
-    words_with_doublets.add(widx)
-
-print(f"\n\nWords containing a doublet: {len(words_with_doublets)} of {len(words)}")
-print(f"Words WITHOUT any doublet: {len(words) - len(words_with_doublets)}")
-
-# Short words without doublets - these have NO EA in the plaintext
-# (for the C(i) = C(i-1) + P(i)*P(i-1) model)
-no_doublet_1 = [(w, pos) for i, (w, pos) in enumerate(words) if len(w) == 1 and i not in words_with_doublets]
-no_doublet_2 = [(w, pos) for i, (w, pos) in enumerate(words) if len(w) == 2 and i not in words_with_doublets]
-
-print(f"\n1-rune words with NO doublet (no EA constraint): {len(no_doublet_1)}")
-for w, pos in no_doublet_1:
-    eng = rune_to_eng(w)
-    v = val(w)
-    print(f"  pos={pos:5d} cipher={eng} val={v}")
-
-print(f"\n2-rune words with NO doublet: {len(no_doublet_2)} (showing first 20)")
-for w, pos in no_doublet_2[:20]:
-    eng = rune_to_eng(w)
-    v = [val(r) for r in w]
-    print(f"  pos={pos:5d} cipher={eng} vals={v}")
+    print(f"  w{widx:4d} pos={start:5d} cipher='{eng}' vals=[{c0:2d},{c1:2d},{c2:2d}]")
+    print(f"         additive:  EA+{d1_eng}+{d2_eng}  [{0},{d1},{d2}]  {'<= EACH!' if d1==6 and d2==9 else ''}")
+    print(f"         beaufort:  EA+{b1_eng}+{b2_eng}  [{0},{b1},{b2}]  {'<= EACH!' if b1==6 and b2==9 else ''}")
+    print(f"         mult ct:   {m1_eng}+{m2_eng}     [{m1},{m2}]")
+    print(f"         C*(1+P):   [{h1},{h2}]")
+    print()
 
 # ========================================================================
-# EA POSITION MAP: For additive autokey, map where EA must appear
+# TEST CIPHER: C(i) = C(i-1) * (1 + P(i))
+# This model explains BOTH suppressions:
+#   additive delta = C(i-1)*P(i), zero when P(i)=0 (EA)
+#   mult ratio = 1+P(i), one when P(i)=0 (EA)
 # ========================================================================
-print(f"\n\n{'=' * 90}")
-print("EA POSITION MAP (additive ct autokey: doublet => P[i] = EA)")
-print("Show how EA falls within word boundaries")
+print(f"\n{'=' * 90}")
+print("CIPHER MODEL: C(i) = C(i-1) * (1 + P(i))")
+print("Decryption: P(i) = C(i)/C(i-1) - 1")
+print("Explains both additive and multiplicative suppression")
 print("=" * 90)
 
-# For each word, show its plaintext pattern with EA marked
-print(f"\nFirst 100 words with EA annotations:")
-for widx in range(min(100, len(words))):
-    w, start = words[widx]
-    eng = rune_to_eng(w)
-    # Build pattern: show which positions are pinned to EA
-    pattern = list(eng)
-    ea_positions_in_word = []
-    for dpos, dwidx, offset, _, _ in doublet_in_words:
-        if dwidx == widx:
-            ea_positions_in_word.append(offset)
-    if ea_positions_in_word:
-        # Build display with EA marked
-        display = ""
-        for j, r in enumerate(w):
-            if j in ea_positions_in_word:
-                display += "[EA]"
-            else:
-                display += rune_to_eng(r)
-        print(f"  w{widx:4d} pos={start:5d} len={len(w):2d} cipher={eng:<15} pattern={display}")
+def decrypt_c_times_1pp(C: list[int], primer: int) -> list[int]:
+    """C(i) = C(i-1) * (1+P(i)) => P(i) = C(i)/C(i-1) - 1"""
+    P = []
+    prev = primer
+    for c in C:
+        if prev == 0:
+            P.append(EA)
+        else:
+            P.append((safe_div(c, prev) - 1) % N)
+        prev = c
+    return P
 
-# ========================================================================
-# MULTIPLICATIVE ANALYSIS: C(i)=C(i-1)+P(i)*P(i-1)
-# Doublet at pos i => P(i)*P(i-1) = 0 => P(i)=EA or P(i-1)=EA
-# Check consistency: if word starts at a doublet (offset 0),
-# then P(0) of word = EA, or last rune of previous word = EA.
-# ========================================================================
-print(f"\n\n{'=' * 90}")
-print("MULTIPLICATIVE MIXED AUTOKEY: C(i) = C(i-1) + P(i)*P(i-1)")
-print("Doublet => P(i)*P(i-1) = 0 => P(i)=EA OR P(i-1)=EA")
-print("=" * 90)
+best_score = -float("inf")
+best_primer = 0
+for primer in range(N):
+    P = decrypt_c_times_1pp(C[:500], primer)
+    pt = [c3301.CICADA_ALPHABET[(v - 1) % N] for v in P]
+    score = c3301.quadgramscore(pt)
+    if score > best_score:
+        best_score = score
+        best_primer = primer
 
-# For this model, we can try to propagate EA assignments.
-# At each doublet, either current or previous position is EA.
-# If a word starts with a doublet and the previous word ends with EA,
-# that's consistent. Otherwise the first rune of the word = EA.
+P = decrypt_c_times_1pp(C, best_primer)
+pt_runes = [c3301.CICADA_ALPHABET[(v - 1) % N] for v in P]
+full_score = c3301.quadgramscore(pt_runes)
+preview = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt_runes[:50])
 
-# Let's analyze: given word boundaries, how many assignments are forced?
-# Start with doublets and see which are at word boundaries
-print("\nDoublets at word starts (first rune of word):")
-boundary_doublets = [(dpos, widx, offset, w, wl) for dpos, widx, offset, w, wl in doublet_in_words if offset == 0]
-print(f"  Count: {len(boundary_doublets)}")
-for dpos, widx, offset, w, wl in boundary_doublets[:20]:
-    eng = rune_to_eng(w)
-    # Previous word
-    if widx > 0:
-        pw, pstart = words[widx - 1]
-        peng = rune_to_eng(pw)
-        print(f"  pos={dpos:5d} word='{eng}' prev_word='{peng}' => '{eng}' starts with EA, or '{peng}' ends with EA")
+print(f"\nBest primer: {best_primer}  full_score: {full_score:.0f}")
+print(f"Preview: {preview}")
+
+dist_p = Counter(P)
+print(f"\nPlaintext dist (top 5 most common):")
+for v, cnt in dist_p.most_common(5):
+    eng = c3301.CICADA_ENGLISH_ALPHABET[(v - 1) % N]
+    print(f"  {eng}: {cnt} ({cnt/len(P)*100:.2f}%)")
+print(f"EA count: {dist_p.get(0, 0)} ({dist_p.get(0,0)/len(P)*100:.2f}%)")
+print(f"\nStill flat => model alone is not the full cipher, but dual suppression is real.")
