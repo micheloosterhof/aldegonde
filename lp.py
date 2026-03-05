@@ -405,403 +405,245 @@ def decrypt_p_times_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 with open("data/page0-58.txt") as f:
     lp = f.read()
 
+# ============================================================================
+# PARSE WORD STRUCTURE: preserving word boundaries
+# Separators: - (word), . (sentence), / (line), % (page), & (para), $ (section)
+# ============================================================================
+SEPARATORS = set("-./&%$\n")
+
+def parse_words(text: str) -> list[tuple[str, int]]:
+    """Parse text into (word_runes, start_position).
+    Position is index into the rune-only stream."""
+    words = []
+    current_word: list[str] = []
+    rune_pos = 0
+    word_start = 0
+    for ch in text:
+        if ch in c3301.CICADA_ALPHABET:
+            if not current_word:
+                word_start = rune_pos
+            current_word.append(ch)
+            rune_pos += 1
+        elif ch in SEPARATORS:
+            if current_word:
+                words.append(("".join(current_word), word_start))
+                current_word = []
+    if current_word:
+        words.append(("".join(current_word), word_start))
+    return words
+
+def rune_to_eng(rune_str: str) -> str:
+    """Convert rune string to runeglish English."""
+    return "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in rune_str)
+
+
 segments = lp.split("$")
 z = segments[0:10]
-y = ["".join(z)]
+full_text = "".join(z)
 
-print(f"{len(segments)} segments")
-for seg_idx, s in enumerate(y):
-    if len(s) == 0:
-        continue
-    print(f"\n\nNEW SEGMENT {seg_idx} **************")
+words = parse_words(full_text)
+raw = "".join([x for x in full_text if x in c3301.CICADA_ALPHABET])
+C = vals(raw)
 
-    raw = "".join([x for x in s if x in c3301.CICADA_ALPHABET])
-    C = vals(raw)
+from collections import Counter
 
-    print("RAW:")
-    c3301.print_all(raw, limit=30)
-    print(f"length: {len(raw)} symbols")
+# ========================================================================
+# DOUBLET ANALYSIS
+# In additive ct autokey: C(i) = P(i) + C(i-1)  =>  P(i) = C(i) - C(i-1)
+# When C(i) = C(i-1) (doublet), P(i) = 0 = EA.
+# So ciphertext doublets pin P(i) = EA for additive autokey.
+#
+# For Beaufort: P(i) = C(i-1) - C(i), doublet => P(i) = 0 = EA. Same.
+#
+# For multiplicative ct autokey: C(i) = P(i) * C(i-1)
+#   P(i) = C(i) / C(i-1). When C(i)=C(i-1), P(i) = 1 (not 0).
+#   So doublet => P(i) = 1 for multiplicative.
+#
+# For C(i) = C(i-1) + P(i)*P(i-1):
+#   P(i)*P(i-1) = C(i) - C(i-1) = 0 when doublet
+#   So either P(i)=0 (EA) or P(i-1)=0 (EA) at doublets.
+#
+# This means: at every doublet, we know the plaintext or get a
+# strong constraint. We can check if the word boundaries are
+# consistent with EA appearing at those positions.
+# ========================================================================
+print("=" * 90)
+print("DOUBLET ANALYSIS: C(i) = C(i-1) implies P(i) = EA for additive autokey")
+print("=" * 90)
 
-    # ========================================================================
-    # PHASE 1: Single-primer variants (29 trials each)
-    # ========================================================================
-    print("\n" + "=" * 90)
-    print("PHASE 1: SINGLE-PRIMER GF(29) VARIANTS")
-    print("EA fallback: div-by-zero => EA (val 0, outside GF(29)*)")
-    print("=" * 90)
+# Find all doublets (consecutive identical ciphertext values)
+doublets = []
+for i in range(1, len(C)):
+    if C[i] == C[i - 1]:
+        doublets.append(i)
 
-    results: list[tuple[float, str, int, str]] = []
+print(f"\nTotal doublets (C[i]=C[i-1]): {len(doublets)}")
+print(f"Total runes: {len(C)}")
+print(f"Doublet rate: {len(doublets)/len(C)*100:.2f}%")
+print(f"Expected for random (1/29): {100/29:.2f}%")
 
-    single_primer_funcs_ct: list[tuple[str, object]] = [
-        ("P+Ci-1 (add ct)", decrypt_additive_ct_autokey),
-        ("Ci-1-P (beau ct)", decrypt_beaufort_ct_autokey),
-        ("P*Ci-1 (mult ct)", decrypt_mult_ct_autokey),
-        ("P+Ci-1*Ci-2", decrypt_p_plus_c_times_c),
-        ("P*Ci-1+Ci-2", decrypt_p_times_c_plus_c),
-    ]
-    single_primer_funcs_pt: list[tuple[str, object]] = [
-        ("P+Pi-1 (add pt)", decrypt_additive_pt_autokey),
-        ("Pi-1-P (beau pt)", decrypt_beaufort_pt_autokey),
-        ("P*Pi-1 (mult pt)", decrypt_mult_pt_autokey),
-        ("P*(1+Pi-1)", decrypt_p_times_1_plus_p),
-    ]
+# For each word, check if any doublet position falls inside it.
+# If it does, and it's additive autokey, then that position in
+# the decrypted word = EA.
+print(f"\n--- Where do doublets land in words? ---")
+print("(For additive autokey, doublet pos => plaintext EA at that pos)")
 
-    for name, func in single_primer_funcs_ct:
-        for pv in range(N):
-            pt = runes(func(C, pv))
-            score = c3301.quadgramscore(pt)
-            results.append((score, name, pv, pt))
+# Build word lookup: for each rune position, which word is it in?
+pos_to_word: dict[int, tuple[int, int]] = {}  # pos -> (word_idx, offset_in_word)
+for widx, (w, start) in enumerate(words):
+    for offset in range(len(w)):
+        pos_to_word[start + offset] = (widx, offset)
 
-    for name, func in single_primer_funcs_pt:
-        for pv in range(N):
-            pt = runes(func(C, pv))
-            score = c3301.quadgramscore(pt)
-            results.append((score, name, pv, pt))
+# Annotate doublets with word context
+doublet_in_words: list[tuple[int, int, int, str, int]] = []  # (pos, word_idx, offset, word, word_len)
+for dpos in doublets:
+    if dpos in pos_to_word:
+        widx, offset = pos_to_word[dpos]
+        w, _ = words[widx]
+        doublet_in_words.append((dpos, widx, offset, w, len(w)))
 
-    results.sort(key=lambda x: x[0], reverse=True)
+# How many doublets fall at word boundaries?
+doublet_at_word_start = sum(1 for _, _, off, _, _ in doublet_in_words if off == 0)
+doublet_at_word_end = sum(1 for _, _, off, _, wl in doublet_in_words if off == wl - 1)
+doublet_at_word_mid = len(doublet_in_words) - doublet_at_word_start - doublet_at_word_end
 
-    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<20} {'Primer':>6} {'Decrypted (first 60 runeglish)'}")
-    print("-" * 110)
-    for rank, (score, name, pv, pt) in enumerate(results[:40], 1):
-        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
-        print(f"{rank:4d} {score:10.2f} {name:<20} {pv:>6} {pt_eng}")
+print(f"\nDoublets at word start (offset 0): {doublet_at_word_start}")
+print(f"Doublets at word end (last pos):   {doublet_at_word_end}")
+print(f"Doublets at word middle:           {doublet_at_word_mid}")
 
-    # ========================================================================
-    # PHASE 2: Two-primer variants (29x29 = 841 trials each)
-    # All with EA fallback on div-by-zero
-    # ========================================================================
-    print("\n" + "=" * 90)
-    print("PHASE 2: TWO-PRIMER GF(29) MIXED VARIANTS (841 trials each)")
-    print("EA fallback: div-by-zero => EA (val 0, outside GF(29)*)")
-    print("=" * 90)
+# For additive autokey: doublet means EA at that position.
+# EA is the 29th rune (index 28). In runeglish it maps to 'EA'.
+# If EA appears at start of a word, the word starts with 'EA'.
+# If EA appears mid-word, the word contains 'EA'.
+# 'EA' is actually common in English: EACH, FEAR, HEART, NEAR, etc.
+# And EA as a rune represents the phoneme /ea/ in runeglish.
 
-    results2: list[tuple[float, str, int, int, str]] = []
+# Show the word context for first 50 doublets
+print(f"\nFirst 50 doublets with word context:")
+print(f"{'Pos':>6} {'C[i]':>5} {'WIdx':>5} {'Off':>4} {'WLen':>5} {'Cipher word':<20} {'If additive: EA at off'}")
+print("-" * 80)
+for dpos, widx, offset, w, wl in doublet_in_words[:50]:
+    eng = rune_to_eng(w)
+    # Show what the word looks like with EA inserted at offset
+    ea_marker = eng[:offset*2] + "[EA]" + eng[(offset+1)*2:]  # approximate
+    print(f"{dpos:6d} {C[dpos]:5d} {widx:5d} {offset:4d} {wl:5d} {eng:<20} EA at position {offset}")
 
-    two_primer_funcs = [
-        # User's suggestion and variations
-        ("C+P*Pi-1", decrypt_c_plus_pp),         # C(i) = C(i-1) + P(i)*P(i-1)
-        ("C-P*Pi-1", decrypt_c_minus_pp),         # C(i) = C(i-1) - P(i)*P(i-1)
-        ("P*Pi-1-C", decrypt_pp_minus_c),         # C(i) = P(i)*P(i-1) - C(i-1)
-        ("P*Pi-1+C", decrypt_pp_plus_c),          # C(i) = P(i)*P(i-1) + C(i-1)
-        # Mixed additive + multiplicative
-        ("P+C*Pi-1", decrypt_p_plus_cp),          # C(i) = P(i) + C(i-1)*P(i-1)
-        ("C*Pi-1+P", decrypt_c_times_p_plus_p),   # C(i) = C(i-1)*P(i-1) + P(i)
-        ("C*Pi-1-P", decrypt_cp_minus_p),         # C(i) = C(i-1)*P(i-1) - P(i)
-        ("P*C+Pi-1", decrypt_pc_plus_p),          # C(i) = P(i)*C(i-1) + P(i-1)
-        # Multiplicative with sum/diff key
-        ("P*(C+Pi-1)", decrypt_p_times_c_plus_p), # C(i) = P(i)*(C(i-1)+P(i-1))
-        ("P*(C-Pi-1)", decrypt_p_times_c_minus_p),# C(i) = P(i)*(C(i-1)-P(i-1))
-        # Triple products
-        ("P*Pi-1*C", decrypt_pp_times_c),         # C(i) = P(i)*P(i-1)*C(i-1)
-        # Factored forms
-        ("C*(P+Pi-1)", decrypt_pc_plus_cp),       # C(i) = C(i-1)*(P(i)+P(i-1))
-        # Quadratic feedback
-        ("P+Pi-1^2", decrypt_p_plus_pp),          # C(i) = P(i) + P(i-1)^2
-        # P with scaled ct
-        ("P+C*P", decrypt_p_plus_c_times_p),      # C(i) = P(i)*(1+C(i-1))
-    ]
+# ========================================================================
+# KEY INSIGHT: For multiplicative mixed autokey like C(i) = C(i-1) + P(i)*P(i-1):
+# Doublet => P(i)*P(i-1) = 0  =>  P(i)=EA OR P(i-1)=EA
+# So at a doublet, one of two adjacent plaintext positions is EA.
+# If we have consecutive doublets (triplet in ciphertext),
+# then we know both positions are EA.
+# ========================================================================
 
-    for func_name, func in two_primer_funcs:
-        for pc in range(N):
-            for pp in range(N):
-                pt = runes(func(C, pc, pp))
-                score = c3301.quadgramscore(pt)
-                results2.append((score, func_name, pc, pp, pt))
+# Find triplets (3+ consecutive identical values)
+triplets = []
+i = 0
+while i < len(C) - 2:
+    if C[i] == C[i+1] == C[i+2]:
+        start = i
+        while i < len(C) - 1 and C[i] == C[i+1]:
+            i += 1
+        triplets.append((start, i + 1))  # (start, end_exclusive)
+    else:
+        i += 1
 
-    results2.sort(key=lambda x: x[0], reverse=True)
+print(f"\n\nTriplets (3+ consecutive identical): {len(triplets)}")
+for start, end in triplets[:20]:
+    length = end - start
+    if start in pos_to_word:
+        widx, off = pos_to_word[start]
+        w, _ = words[widx]
+        eng = rune_to_eng(w)
+        print(f"  pos={start}-{end-1} len={length} val={C[start]} word={eng}")
 
-    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<18} {'Pc':>3} {'Pp':>3} {'Decrypted (first 60 runeglish)'}")
-    print("-" * 120)
-    for rank, (score, name, pc, pp, pt) in enumerate(results2[:60], 1):
-        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
-        print(f"{rank:4d} {score:10.2f} {name:<18} {pc:>3} {pp:>3} {pt_eng}")
+# ========================================================================
+# DOUBLET POSITION ANALYSIS WITHIN WORDS
+# For C(i) = C(i-1) + P(i)*P(i-1), doublet => P(i)*P(i-1) = 0.
+# In a word of length L, if doublet at offset k (1<=k<L):
+#   P(k)=EA or P(k-1)=EA
+# If word has no doublets, no EA in word (likely for short common words).
+# ========================================================================
 
-    # ========================================================================
-    # PHASE 2b: Running primes as key stream
-    # Strip off prime(i+offset) mod 29 via /, *, +, - before autokey.
-    # Primes mod 29 are quasi-random (equidistributed by Dirichlet),
-    # cyclical through residues but with specific ordering.
-    # Try offsets 0..99 into the prime sequence × 4 operations × top variants.
-    # ========================================================================
-    print("\n" + "=" * 90)
-    print("PHASE 2b: RUNNING PRIMES KEY STREAM")
-    print("C'(i) = C(i) op prime(i+offset) mod 29, then autokey")
-    print("=" * 90)
+# Count words with/without doublets
+words_with_doublets = set()
+for dpos, widx, offset, w, wl in doublet_in_words:
+    words_with_doublets.add(widx)
 
-    # Generate enough primes
-    MAX_PRIME_OFFSET = 100
-    prime_list = generate_primes(200000)
+print(f"\n\nWords containing a doublet: {len(words_with_doublets)} of {len(words)}")
+print(f"Words WITHOUT any doublet: {len(words) - len(words_with_doublets)}")
 
-    PREFILTER_LEN = 500
-    C_short = C[:PREFILTER_LEN]
+# Short words without doublets - these have NO EA in the plaintext
+# (for the C(i) = C(i-1) + P(i)*P(i-1) model)
+no_doublet_1 = [(w, pos) for i, (w, pos) in enumerate(words) if len(w) == 1 and i not in words_with_doublets]
+no_doublet_2 = [(w, pos) for i, (w, pos) in enumerate(words) if len(w) == 2 and i not in words_with_doublets]
 
-    results_prime: list[tuple[float, str, str, int, int, str]] = []
+print(f"\n1-rune words with NO doublet (no EA constraint): {len(no_doublet_1)}")
+for w, pos in no_doublet_1:
+    eng = rune_to_eng(w)
+    v = val(w)
+    print(f"  pos={pos:5d} cipher={eng} val={v}")
 
-    prime_ops: list[tuple[str, object]] = [
-        ("C/pr", lambda c, p: safe_div(c, p % N)),
-        ("C*pr", lambda c, p: (c * (p % N)) % N),
-        ("C-pr", lambda c, p: (c - (p % N)) % N),
-        ("C+pr", lambda c, p: (c + (p % N)) % N),
-    ]
+print(f"\n2-rune words with NO doublet: {len(no_doublet_2)} (showing first 20)")
+for w, pos in no_doublet_2[:20]:
+    eng = rune_to_eng(w)
+    v = [val(r) for r in w]
+    print(f"  pos={pos:5d} cipher={eng} vals={v}")
 
-    # Stage 1: Quick scan with primer=0, find best (offset, op, variant) combos
-    prime_autokeys = [
-        ("Ci-1-P", decrypt_beaufort_ct_autokey),
-        ("P+Ci-1", decrypt_additive_ct_autokey),
-        ("P+Pi-1", decrypt_additive_pt_autokey),
-    ]
+# ========================================================================
+# EA POSITION MAP: For additive autokey, map where EA must appear
+# ========================================================================
+print(f"\n\n{'=' * 90}")
+print("EA POSITION MAP (additive ct autokey: doublet => P[i] = EA)")
+print("Show how EA falls within word boundaries")
+print("=" * 90)
 
-    quick_scan: list[tuple[float, str, str, int]] = []
+# For each word, show its plaintext pattern with EA marked
+print(f"\nFirst 100 words with EA annotations:")
+for widx in range(min(100, len(words))):
+    w, start = words[widx]
+    eng = rune_to_eng(w)
+    # Build pattern: show which positions are pinned to EA
+    pattern = list(eng)
+    ea_positions_in_word = []
+    for dpos, dwidx, offset, _, _ in doublet_in_words:
+        if dwidx == widx:
+            ea_positions_in_word.append(offset)
+    if ea_positions_in_word:
+        # Build display with EA marked
+        display = ""
+        for j, r in enumerate(w):
+            if j in ea_positions_in_word:
+                display += "[EA]"
+            else:
+                display += rune_to_eng(r)
+        print(f"  w{widx:4d} pos={start:5d} len={len(w):2d} cipher={eng:<15} pattern={display}")
 
-    for offset in range(MAX_PRIME_OFFSET):
-        for op_name, op_func in prime_ops:
-            C_prime_short = [op_func(C_short[i], prime_list[i + offset])
-                            for i in range(len(C_short))]
+# ========================================================================
+# MULTIPLICATIVE ANALYSIS: C(i)=C(i-1)+P(i)*P(i-1)
+# Doublet at pos i => P(i)*P(i-1) = 0 => P(i)=EA or P(i-1)=EA
+# Check consistency: if word starts at a doublet (offset 0),
+# then P(0) of word = EA, or last rune of previous word = EA.
+# ========================================================================
+print(f"\n\n{'=' * 90}")
+print("MULTIPLICATIVE MIXED AUTOKEY: C(i) = C(i-1) + P(i)*P(i-1)")
+print("Doublet => P(i)*P(i-1) = 0 => P(i)=EA OR P(i-1)=EA")
+print("=" * 90)
 
-            # Direct (no autokey)
-            pt_direct = runes(C_prime_short)
-            score_direct = c3301.quadgramscore(pt_direct)
-            quick_scan.append((score_direct, op_name, "direct", offset))
+# For this model, we can try to propagate EA assignments.
+# At each doublet, either current or previous position is EA.
+# If a word starts with a doublet and the previous word ends with EA,
+# that's consistent. Otherwise the first rune of the word = EA.
 
-            # With autokey, primer=0
-            for ak_name, ak_func in prime_autokeys:
-                P = ak_func(C_prime_short, 0)
-                pt = runes(P)
-                score = c3301.quadgramscore(pt)
-                quick_scan.append((score, op_name, ak_name, offset))
-
-    quick_scan.sort(key=lambda x: x[0], reverse=True)
-    print(f"Quick scan: {len(quick_scan)} combos, top score: {quick_scan[0][0]:.2f}")
-
-    # Stage 2: Expand top 50 combos across all 29 primers, full-score
-    seen_combos: set[tuple[str, str, int]] = set()
-    top_combos: list[tuple[str, str, int]] = []
-    for _, op_name, ak_name, offset in quick_scan:
-        key = (op_name, ak_name, offset)
-        if key not in seen_combos:
-            seen_combos.add(key)
-            top_combos.append(key)
-        if len(top_combos) >= 50:
-            break
-
-    op_func_map = {name: func for name, func in prime_ops}
-    ak_func_map = {name: func for name, func in prime_autokeys}
-    ak_func_map["direct"] = None
-
-    for op_name, ak_name, offset in top_combos:
-        op_func = op_func_map[op_name]
-        C_prime_full = [op_func(C[i], prime_list[i + offset])
-                       for i in range(len(C))]
-
-        if ak_name == "direct":
-            pt_full = runes(C_prime_full)
-            score_full = c3301.quadgramscore(pt_full)
-            results_prime.append((score_full, op_name, "direct", offset, 0, pt_full))
-        else:
-            ak_func = ak_func_map[ak_name]
-            for pv in range(N):
-                P_full = ak_func(C_prime_full, pv)
-                pt_full = runes(P_full)
-                score_full = c3301.quadgramscore(pt_full)
-                results_prime.append((score_full, op_name, ak_name, offset, pv, pt_full))
-
-    results_prime.sort(key=lambda x: x[0], reverse=True)
-
-    print(f"\nTotal prime-stream full-scored: {len(results_prime)}")
-    print(f"\n{'Rank':>4} {'Score':>10} {'PrOp':<10} {'Autokey':<12} {'Off':>4} {'Pr':>3} {'Decrypted (first 60 runeglish)'}")
-    print("-" * 120)
-    for rank, (score, op_name, ak_name, offset, pv, pt) in enumerate(results_prime[:60], 1):
-        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
-        print(f"{rank:4d} {score:10.2f} {op_name:<10} {ak_name:<12} {offset:>4} {pv:>3} {pt_eng}")
-
-    # ========================================================================
-    # PHASE 3: Affine alphabet remapping + top cipher variants
-    # v' = a*v + b mod 29.  Fast pre-filter: score first 500 chars only,
-    # then full-score top candidates.
-    #
-    # Math insight for additive autokeys:
-    #   Beaufort: P'(i) = (a*C(i-1)+b)-(a*C(i)+b) = a*(C(i-1)-C(i))
-    #   The b cancels! So for additive variants, only a matters (28 values).
-    #   For multiplicative variants, both a and b matter (812 combos).
-    # ========================================================================
-    print("\n" + "=" * 90)
-    print("PHASE 3: AFFINE ALPHABET REMAPPING (v'=a*v+b mod 29)")
-    print("Fast pre-filter on first 500 chars, then full-score top 200")
-    print("=" * 90)
-
-    PREFILTER_LEN = 500
-    C_short = C[:PREFILTER_LEN]
-
-    # Stage 1: Pre-filter with short text
-    prefilter: list[tuple[float, str, int, int, int]] = []
-
-    # Additive variants: b cancels, only need a × primer
-    additive_affine = [
-        ("Ci-1-P", decrypt_beaufort_ct_autokey),
-        ("P+Ci-1", decrypt_additive_ct_autokey),
-        ("P+Pi-1", decrypt_additive_pt_autokey),
-        ("Pi-1-P", decrypt_beaufort_pt_autokey),
-    ]
-    for a in range(1, N):
-        C_aff_short = [(a * c) % N for c in C_short]  # b=0, it cancels
-        for name, func in additive_affine:
-            for pv in range(N):
-                P = func(C_aff_short, pv)
-                pt = runes(P)
-                score = c3301.quadgramscore(pt)
-                prefilter.append((score, name, a, 0, pv))
-
-    # Multiplicative variants: both a and b matter
-    mult_affine = [
-        ("P*Ci-1", decrypt_mult_ct_autokey),
-        ("P*Pi-1", decrypt_mult_pt_autokey),
-    ]
-    for a in range(1, N):
-        for b in range(N):
-            C_aff_short = [(a * c + b) % N for c in C_short]
-            for name, func in mult_affine:
-                for pv in range(N):
-                    P = func(C_aff_short, pv)
-                    pt = runes(P)
-                    score = c3301.quadgramscore(pt)
-                    prefilter.append((score, name, a, b, pv))
-
-    prefilter.sort(key=lambda x: x[0], reverse=True)
-    print(f"Pre-filter: {len(prefilter)} candidates scored on {PREFILTER_LEN} chars")
-
-    # Stage 2: Full-score top 200 candidates
-    results3: list[tuple[float, str, int, int, int, str]] = []
-    for _, name, a, b, pv, in prefilter[:200]:
-        C_affine = [(a * c + b) % N for c in C]
-        # Re-find the right function
-        func_map = {
-            "Ci-1-P": decrypt_beaufort_ct_autokey,
-            "P+Ci-1": decrypt_additive_ct_autokey,
-            "P+Pi-1": decrypt_additive_pt_autokey,
-            "Pi-1-P": decrypt_beaufort_pt_autokey,
-            "P*Ci-1": decrypt_mult_ct_autokey,
-            "P*Pi-1": decrypt_mult_pt_autokey,
-        }
-        P = func_map[name](C_affine, pv)
-        pt = runes(P)
-        score = c3301.quadgramscore(pt)
-        results3.append((score, name, a, b, pv, pt))
-
-    results3.sort(key=lambda x: x[0], reverse=True)
-
-    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<12} {'a':>3} {'b':>3} {'pr':>3} {'Decrypted (first 60 runeglish)'}")
-    print("-" * 120)
-    for rank, (score, name, a, b, pv, pt) in enumerate(results3[:60], 1):
-        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
-        print(f"{rank:4d} {score:10.2f} {name:<12} {a:>3} {b:>3} {pv:>3} {pt_eng}")
-
-    # ========================================================================
-    # PHASE 4: Top affine remaps × two-primer mixed variants
-    # Use top 10 unique (a,b) from phase 3, × 4 mixed variants × 841 primers
-    # Pre-filter on short text, full-score top 200
-    # ========================================================================
-    print("\n" + "=" * 90)
-    print("PHASE 4: TOP AFFINE REMAPS × TWO-PRIMER MIXED VARIANTS")
-    print("=" * 90)
-
-    top_affine_params: list[tuple[int, int]] = []
-    seen_ab: set[tuple[int, int]] = set()
-    for _, _, a, b, _, _ in results3[:100]:
-        if (a, b) not in seen_ab:
-            seen_ab.add((a, b))
-            top_affine_params.append((a, b))
-        if len(top_affine_params) >= 10:
-            break
-
-    print(f"Top affine params: {top_affine_params}")
-
-    mixed_for_affine = [
-        ("C+P*Pi-1", decrypt_c_plus_pp),
-        ("P*(C+Pi-1)", decrypt_p_times_c_plus_p),
-        ("C*(P+Pi-1)", decrypt_pc_plus_cp),
-        ("P*Pi-1*C", decrypt_pp_times_c),
-    ]
-
-    # Pre-filter on short text
-    prefilter4: list[tuple[float, str, int, int, int, int]] = []
-    for a, b in top_affine_params:
-        C_aff_short = [(a * c + b) % N for c in C_short]
-        for func_name, func in mixed_for_affine:
-            for pc in range(N):
-                for pp in range(N):
-                    P = func(C_aff_short, pc, pp)
-                    pt = runes(P)
-                    score = c3301.quadgramscore(pt)
-                    prefilter4.append((score, func_name, a, b, pc, pp))
-
-    prefilter4.sort(key=lambda x: x[0], reverse=True)
-    print(f"Pre-filter: {len(prefilter4)} candidates scored on {PREFILTER_LEN} chars")
-
-    # Full-score top 200
-    results4: list[tuple[float, str, int, int, int, int, str]] = []
-    mixed_func_map = {
-        "C+P*Pi-1": decrypt_c_plus_pp,
-        "P*(C+Pi-1)": decrypt_p_times_c_plus_p,
-        "C*(P+Pi-1)": decrypt_pc_plus_cp,
-        "P*Pi-1*C": decrypt_pp_times_c,
-    }
-    for _, func_name, a, b, pc, pp in prefilter4[:200]:
-        C_affine = [(a * c + b) % N for c in C]
-        pt = runes(mixed_func_map[func_name](C_affine, pc, pp))
-        score = c3301.quadgramscore(pt)
-        results4.append((score, func_name, a, b, pc, pp, pt))
-
-    results4.sort(key=lambda x: x[0], reverse=True)
-
-    print(f"\n{'Rank':>4} {'Score':>10} {'Variant':<14} {'a':>3} {'b':>3} {'pc':>3} {'pp':>3} {'Decrypted (first 60 runeglish)'}")
-    print("-" * 130)
-    for rank, (score, name, a, b, pc, pp, pt) in enumerate(results4[:60], 1):
-        pt_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.r2i(r)] for r in pt[:60])
-        print(f"{rank:4d} {score:10.2f} {name:<14} {a:>3} {b:>3} {pc:>3} {pp:>3} {pt_eng}")
-
-    # ========================================================================
-    # PHASE 5: Full analysis on overall best
-    # ========================================================================
-    all_results: list[tuple[float, str, str]] = []
-    for score, name, pv, pt in results:
-        all_results.append((score, f"{name} primer={pv}", pt))
-    for score, name, pc, pp, pt in results2:
-        all_results.append((score, f"{name} pc={pc},pp={pp}", pt))
-    for score, name, a, b, pv, pt in results3:
-        all_results.append((score, f"{name} affine({a},{b}) primer={pv}", pt))
-    for score, name, a, b, pc, pp, pt in results4:
-        all_results.append((score, f"{name} affine({a},{b}) pc={pc},pp={pp}", pt))
-    for score, op_name, ak_name, offset, pv, pt in results_prime:
-        all_results.append((score, f"{op_name}+{ak_name} prime_off={offset} pr={pv}", pt))
-
-    all_results.sort(key=lambda x: x[0], reverse=True)
-
-    best_score, best_desc, seg = all_results[0]
-
-    print(f"\n\n{'=' * 90}")
-    print(f"PHASE 5: FULL ANALYSIS OF BEST RESULT")
-    print(f"{'=' * 90}")
-    print(f"Cipher: {best_desc}")
-    print(f"Score: {best_score:.2f}\n")
-
-    print("DECRYPTED:")
-    c3301.print_all(seg, limit=30)
-
-    if len(seg) == 0:
-        print("EMPTY SEGMENT")
-        continue
-    print(f"used alphabet: {set(seg)} ({len(set(seg))} symbols)")
-    print(f"length: {len(seg)} symbols")
-    print(f"   prime factors =: {factor.prime_factors(len(seg))}")
-    print(f"   factor pairs  =: {factor.factor_pairs(len(seg))[1:-1]}")
-    dist.print_dist(seg)
-    entropy.shannon_entropy(seg)
-    print_ioc_statistics(seg, alphabetsize=29)
-    bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
-    print_kappa(seg, trace=False)
-    print_kappa(seg, length=2, trace=False)
-    print_kappa(seg, length=3, trace=False)
-    friedman.friedman_test(seg, maxperiod=34)
-    repeats.print_repeat_statistics(seg, minimum=2)
-    repeats.print_repeat_positions(seg, minimum=5)
-    krakup.print_krakup_analysis(seg, min_period=2, max_period=40, window_size=100, step=10)
+# Let's analyze: given word boundaries, how many assignments are forced?
+# Start with doublets and see which are at word boundaries
+print("\nDoublets at word starts (first rune of word):")
+boundary_doublets = [(dpos, widx, offset, w, wl) for dpos, widx, offset, w, wl in doublet_in_words if offset == 0]
+print(f"  Count: {len(boundary_doublets)}")
+for dpos, widx, offset, w, wl in boundary_doublets[:20]:
+    eng = rune_to_eng(w)
+    # Previous word
+    if widx > 0:
+        pw, pstart = words[widx - 1]
+        peng = rune_to_eng(pw)
+        print(f"  pos={dpos:5d} word='{eng}' prev_word='{peng}' => '{eng}' starts with EA, or '{peng}' ends with EA")
