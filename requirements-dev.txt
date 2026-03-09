@@ -6,6 +6,6 @@ pipdeptree==2.30.0
 pytest==9.0.2
 pytest-cov==7.0.0
 ruff==0.14.13
-tox==4.34.1
+tox==4.44.0
 twine==6.2.0
 ty==0.0.14
