@@ -22,22 +22,22 @@
 ## Decision Tree Overview
 
 ```
-                    2017 Subaru Forester
-                    COE expires Feb 2027
-                           |
-       +-------------------+-------------------+
-       |                   |                   |
-  ACT BEFORE           LET COE           GO CARLESS
-  COE EXPIRY            EXPIRE          (sell/scrap,
-       |                   |             don't replace)
-       |             Car scrapped.            |
-       |             ALL rebates         Use Grab/MRT/
-       |             forfeited.          car-sharing.
-       |                   |
-  +----+----+-----+   BUY NEW CAR
-  |         |     |   (no rebates)
-SELL     DEREGISTER  RENEW COE
-NOW      & SCRAP     (top up)
+                        2017 Subaru Forester
+                        COE expires Feb 2027
+                               |
+       +--------------+--------+--------+--------------+
+       |              |                 |              |
+  ACT BEFORE      LET COE          GO CARLESS     BUY USED
+  COE EXPIRY       EXPIRE         (sell/scrap,    (sell old,
+       |              |            don't replace)  buy 2nd-hand)
+       |        Car scrapped.           |              |
+       |        ALL rebates        Use Grab/MRT/  Inherit
+       |        forfeited.         car-sharing.   seller's COE
+       |              |                            |
+  +----+----+-----+  BUY NEW CAR           +------+------+
+  |         |     |  (no rebates)           |      |      |
+SELL     DEREGISTER  RENEW COE           USED   USED   USED
+NOW      & SCRAP     (top up)             EV   HYBRID  PETROL
 (private    |            |
  sale)  Collect     +----+----+
   |     S$12,686    |         |
@@ -278,7 +278,108 @@ Current Cat B PQP: **~S$126,131** (Jan 2026 figure, subject to monthly changes)
 
 ---
 
-## Option 4: Go Carless (Sell/Scrap, Don't Replace)
+## Option 4: Buy Second-Hand Car
+
+### How It Works
+
+- Sell or deregister your Forester (collecting private sale proceeds or PARF+COE rebates)
+- Buy a used car from another owner with remaining COE
+- You inherit the seller's remaining COE tenure — no need to bid for a new COE
+
+### The Sweet Spot
+
+Look for **3-5 year old cars with 5-7 years COE remaining**. This gives enough tenure to spread the cost while avoiding the steepest new-car depreciation.
+
+### Sub-Option 4A: Used EV (e.g. 3-year-old BYD Atto 3 or Tesla Model 3 with ~7 years COE)
+
+| Cost Item | Amount |
+|-----------|--------|
+| Purchase price | ~S$90,000-120,000 |
+| Less: Forester private sale proceeds | -S$35,000 |
+| **Net outlay** | **~S$55,000-85,000** |
+
+**7-Year TCO (remaining COE life):**
+
+| Annual Cost | Amount | 7-Year Total |
+|-------------|--------|--------------|
+| Depreciation (purchase price / 7yr) | ~S$12,900-17,100/yr | S$90,000-120,000 |
+| Road tax (EV, ~110kW) | ~S$742/yr | S$5,194 |
+| Insurance | ~S$1,800-2,500/yr | S$12,600-17,500 |
+| Electricity (20,000km/yr) | ~S$1,250-1,560/yr | S$8,750-10,920 |
+| Maintenance | ~S$600-800/yr | S$4,200-5,600 |
+| Parking/ERP | ~S$2,400/yr | S$16,800 |
+| **Total 7-year TCO** | | **~S$137,500-175,000** |
+| **Annualised** | **~S$19,600-25,000/yr** | |
+
+**Normalised 10-year estimate** (must buy again after 7 years with ~3 years remaining): **~S$175,000-230,000**
+
+### Sub-Option 4B: Used Hybrid (e.g. 3-year-old Toyota Corolla Cross Hybrid with ~7 years COE)
+
+| Cost Item | Amount |
+|-----------|--------|
+| Purchase price | ~S$100,000-130,000 |
+| Less: Forester private sale proceeds | -S$35,000 |
+| **Net outlay** | **~S$65,000-95,000** |
+
+**7-Year TCO:**
+
+| Annual Cost | Amount | 7-Year Total |
+|-------------|--------|--------------|
+| Depreciation (purchase price / 7yr) | ~S$14,300-18,600/yr | S$100,000-130,000 |
+| Road tax (~1,800cc hybrid) | ~S$500-700/yr | S$3,500-4,900 |
+| Insurance | ~S$1,200-1,600/yr | S$8,400-11,200 |
+| Fuel (20,000km/yr, ~4.8L/100km) | ~S$2,300/yr | S$16,100 |
+| Maintenance | ~S$1,000-1,400/yr | S$7,000-9,800 |
+| Parking/ERP | ~S$2,400/yr | S$16,800 |
+| **Total 7-year TCO** | | **~S$151,800-188,800** |
+| **Annualised** | **~S$21,700-27,000/yr** | |
+
+### Sub-Option 4C: Used Petrol Car (e.g. 3-year-old SUV with ~7 years COE)
+
+| Cost Item | Amount |
+|-----------|--------|
+| Purchase price | ~S$100,000-150,000 |
+| Less: Forester private sale proceeds | -S$35,000 |
+| **Net outlay** | **~S$65,000-115,000** |
+
+**7-Year TCO:**
+
+| Annual Cost | Amount | 7-Year Total |
+|-------------|--------|--------------|
+| Depreciation (purchase price / 7yr) | ~S$14,300-21,400/yr | S$100,000-150,000 |
+| Road tax (~2,000-2,500cc) | ~S$1,200-1,848/yr | S$8,400-12,936 |
+| Insurance | ~S$1,000-1,400/yr | S$7,000-9,800 |
+| Fuel (20,000km/yr, ~9L/100km) | ~S$4,300/yr | S$30,100 |
+| Maintenance | ~S$1,400-1,800/yr | S$9,800-12,600 |
+| Parking/ERP | ~S$2,400/yr | S$16,800 |
+| **Total 7-year TCO** | | **~S$172,100-232,236** |
+| **Annualised** | **~S$24,600-33,200/yr** | |
+
+### Pros & Cons
+
+**Advantages:**
+- Lower upfront cost than new — no new COE premium (S$100k+)
+- Less depreciation — steepest years already absorbed by first owner
+- More car for the money — can get higher-spec vehicle for same budget
+- Faster availability — no waiting for factory delivery
+- Lowest net outlay if combined with private sale of Forester
+
+**Disadvantages:**
+- Buying someone else's ticking COE clock — shorter tenure means you face this decision again sooner
+- No new car warranty (unless certified pre-owned with transferable warranty)
+- Higher maintenance costs than new (though lower than your aging Forester)
+- Used EV supply in Singapore is still relatively thin
+- Battery health uncertainty on used EVs (check battery health report)
+- Must budget for a second car purchase when the inherited COE expires
+
+### Best For
+- Those who want a car but with the **lowest upfront cash outlay**
+- Buyers comfortable with **shorter ownership horizons** (5-7 years)
+- Those seeking **better value per dollar** than a new car
+
+---
+
+## Option 5: Go Carless (Sell/Scrap, Don't Replace)
 
 ### What It Costs
 
@@ -310,7 +411,7 @@ Plus you collect S$12,686 in rebates (or ~S$35k if sold privately).
 
 ---
 
-## Option 5: Let COE Expire & Then Buy New
+## Option 6: Let COE Expire & Then Buy New
 
 ### What Happens
 
@@ -339,6 +440,8 @@ Plus you collect S$12,686 in rebates (or ~S$35k if sold privately).
 | Deregister + buy EV | ~S$130,000 | S$12,686 (rebates) | ~S$117,000 |
 | Deregister + buy hybrid | ~S$160,000 | S$12,686 (rebates) | ~S$147,000 |
 | Deregister + buy petrol | ~S$200,000 | S$12,686 (rebates) | ~S$187,000 |
+| Sell privately + buy used EV | ~S$90,000-120,000 | ~S$35,000 (sale) | ~S$55,000-85,000 |
+| Sell privately + buy used hybrid | ~S$100,000-130,000 | ~S$35,000 (sale) | ~S$65,000-95,000 |
 | Renew COE 5yr | S$63,066 | S$0 (PARF forfeited) | S$63,066 |
 | Renew COE 10yr | S$126,131 | S$0 (PARF forfeited) | S$126,131 |
 | Go carless (deregister) | S$0 | S$12,686 (rebates) | -S$12,686 (net gain) |
@@ -351,12 +454,14 @@ All options normalised to the same 10-year period for fair comparison.
 | Option | 10-Year TCO | Monthly Cost | Notes |
 |--------|-------------|-------------|-------|
 | Go carless (sell privately) | ~S$97,000-180,000 | ~S$808-1,500 | Grab/MRT/rental. Lowest if low usage. |
-| New EV (sell old privately) | ~S$154,000-177,000 | ~S$1,283-1,475 | Best if you need a car. Offset by S$35k sale. |
+| New EV (sell old privately) | ~S$154,000-177,000 | ~S$1,283-1,475 | Best new car option. Offset by S$35k sale. |
+| Used EV (sell old privately) | ~S$175,000-230,000 | ~S$1,458-1,917 | Lower upfront but shorter COE; must buy again. |
 | New EV (deregister + scrap) | ~S$189,000-212,000 | ~S$1,575-1,767 | S$12.7k rebates offset. |
-| New hybrid (deregister) | ~S$226,000-254,000 | ~S$1,883-2,117 | No charging dependency. |
+| Used hybrid (sell old privately) | ~S$190,000-250,000 | ~S$1,583-2,083 | No charging dependency; shorter tenure. |
+| New hybrid (deregister) | ~S$226,000-254,000 | ~S$1,883-2,117 | No charging dependency; full 10yr COE. |
 | Renew 5yr then buy EV (5yr) | ~S$136k + ~S$100k = ~S$236,000+ | ~S$1,967+ | Highest combined cost; two transactions. |
-| New petrol SUV (deregister) | ~S$280,000-335,000 | ~S$2,333-2,792 | Most expensive car option. |
 | Renew 10yr (keep Forester) | ~S$274,000-299,000 | ~S$2,283-2,492 | Rising maintenance risk. |
+| New petrol SUV (deregister) | ~S$280,000-335,000 | ~S$2,333-2,792 | Most expensive car option. |
 
 ### Opportunity Cost of Capital
 
@@ -364,7 +469,9 @@ Money spent on a car could be invested. At a conservative 4% annual return:
 
 | Option | Capital Deployed | 10-Year Opportunity Cost |
 |--------|-----------------|-------------------------|
+| Used EV (after private sale) | ~S$55,000-85,000 upfront | ~S$25,000-39,000 foregone |
 | Renew COE 5yr | S$63,066 upfront | ~S$29,000 foregone |
+| Used hybrid (after private sale) | ~S$65,000-95,000 upfront | ~S$30,000-44,000 foregone |
 | New EV (after private sale) | ~S$95,000 upfront | ~S$44,000 foregone |
 | New EV (after deregister) | ~S$117,000 upfront | ~S$54,000 foregone |
 | Renew COE 10yr | S$126,131 upfront | ~S$58,000 foregone |
@@ -378,14 +485,14 @@ Money spent on a car could be invested. At a conservative 4% annual return:
 
 Each option carries different risks. Consider which risks you can tolerate:
 
-| Risk | Renew 5yr | Renew 10yr | New EV | New Hybrid | New Petrol | Go Carless |
-|------|-----------|------------|--------|------------|------------|------------|
-| Major mechanical failure | **HIGH** (CVT, head gasket on aging boxer engine) | **VERY HIGH** | Low (warranty) | Low (warranty) | Low (warranty) | N/A |
-| Battery replacement cost | N/A | N/A | **MEDIUM** (S$10-15k+) | Low (small battery) | N/A | N/A |
-| COE price risk (future purchase) | **HIGH** (must buy car in 5yr at unknown COE price) | Low | Low | Low | Low | Low |
-| Policy/regulatory risk | **MEDIUM** (ICE restrictions may tighten) | **HIGH** (20yr-old ICE by end) | Low (gov favours EVs) | Low-Medium | **HIGH** | N/A |
-| Lifestyle disruption | None | None | Medium (charging habits) | None | None | **HIGH** |
-| Depreciation surprise | None (worth S$0) | None (worth S$0) | Medium | Medium | Medium | N/A |
+| Risk | Renew 5yr | Renew 10yr | New EV | New Hybrid | New Petrol | Used Car | Go Carless |
+|------|-----------|------------|--------|------------|------------|----------|------------|
+| Major mechanical failure | **HIGH** (CVT, head gasket on aging boxer engine) | **VERY HIGH** | Low (warranty) | Low (warranty) | Low (warranty) | **MEDIUM** (no/limited warranty) | N/A |
+| Battery replacement cost | N/A | N/A | **MEDIUM** (S$10-15k+) | Low (small battery) | N/A | **MEDIUM-HIGH** (used EV, unknown degradation) | N/A |
+| COE price risk (future purchase) | **HIGH** (must buy car in 5yr at unknown COE price) | Low | Low | Low | Low | **MEDIUM** (shorter COE = must buy again sooner) | Low |
+| Policy/regulatory risk | **MEDIUM** (ICE restrictions may tighten) | **HIGH** (20yr-old ICE by end) | Low (gov favours EVs) | Low-Medium | **HIGH** | Depends on fuel type | N/A |
+| Lifestyle disruption | None | None | Medium (charging habits) | None | None | None-Medium | **HIGH** |
+| Depreciation surprise | None (worth S$0) | None (worth S$0) | Medium | Medium | Medium | Low (less to lose) | N/A |
 
 ---
 
@@ -405,6 +512,13 @@ Each option carries different risks. Consider which risks you can tolerate:
 - 10-year transport cost: ~S$97,000-180,000 (depends heavily on usage)
 
 ### If your priority is **lowest upfront cash outlay (but still need a car):**
+**Sell privately + buy used EV**
+- Net outlay as low as ~S$55,000-85,000 (after S$35k private sale)
+- Lower than COE renewal and much lower than new car
+- Caveat: shorter COE tenure means you'll need to buy again in 5-7 years
+- Check battery health report before purchasing a used EV
+
+### If your priority is **lowest upfront outlay and you want to keep driving immediately:**
 **Renew COE 5 years**
 - Only ~S$63k upfront
 - But you face COE price risk in 5 years when you MUST buy a new car
@@ -448,10 +562,12 @@ Each option carries different risks. Consider which risks you can tolerate:
 1. **Check exact road tax** on [OneMotoring](https://vrl.lta.gov.sg/lta/vrl/action/pubfunc?ID=EnquireRoadTaxByEngCap) using your plate number
 2. **Get private sale quotes** from SGCarMart, Carousell, or dealers to understand your car's market value
 3. **Test drive EVs** - BYD Atto 3, BYD Dolphin, or Hyundai Kona Electric
-4. **Check home charging feasibility** - does your HDB/condo have EV charger access?
-5. **Compare insurance quotes** for your shortlisted replacement cars
-6. **Act before 31 Dec 2026** if going EV (to capture EEAI rebate)
-7. **Act before 17 Feb 2027** regardless of decision (to avoid forfeiting rebates)
+4. **Browse used car listings** on SGCarMart/Carousell for 3-5 year old EVs and hybrids with 5-7 years COE remaining
+5. **Check home charging feasibility** - does your HDB/condo have EV charger access?
+6. **Compare insurance quotes** for your shortlisted replacement cars (new and used)
+7. **If considering used EV** - request battery health report and check remaining warranty transferability
+8. **Act before 31 Dec 2026** if going new EV (to capture EEAI rebate — not available for used cars)
+9. **Act before 17 Feb 2027** regardless of decision (to avoid forfeiting rebates)
 
 ---
 
