@@ -8,13 +8,12 @@ doublets.
 
 ## Status
 
-**Status**: plausible
+**Status**: disproved
 
 ## Mechanism
 
-Cicada 3301 uses 1-indexed rune numbering throughout their materials (Gematria
-Primus assigns values 1-29 rather than 0-28). Under 1-indexed arithmetic, the
-autokey formula becomes:
+Cicada 3301 uses 1-indexed rune numbering in their Gematria Primus. Under
+1-indexed arithmetic, the autokey formula becomes:
 
 C[i] = C[i-1] - P[i] + 28 mod 29  (Beaufort variant)
 
@@ -22,41 +21,43 @@ This is equivalent to standard Beaufort autokey with a constant key offset of
 28. The identity element shifts from index 0 (F) to index 28 (EA): a doublet
 C[i] = C[i+1] implies P[i+1] = EA.
 
-The self-referential property that key = 28 = EA's own 0-based index is
-thematically consistent with Cicada's style.
-
 ## Evidence for
 
 - **All 89 doublets map to EA**: Under this model, every doublet in the
-  ciphertext corresponds to EA in the plaintext. This is algebraically certain.
+  ciphertext corresponds to EA in the plaintext. Algebraically certain.
 - **EA frequency is plausible at 0.68%**: EA appears in runeglish words like
-  "each", "ear", "eat", "earth", "east", typically as a word-initial rune. A
-  frequency of 0.68% is plausible for this rare digraph-rune.
-- **1-indexing precedent**: Cicada uses 1-indexed rune numbering throughout
-  their published materials.
+  "each", "ear", "eat". A frequency of 0.68% is plausible for this rare
+  digraph-rune.
+- **Historical precedent**: Cicada used Beaufort autokey in solved LP sections.
 - **Self-reference**: Key = 28 = EA's index. Cicada favors self-referential
   constructions.
-- **Historical precedent**: Cicada used Beaufort autokey in solved LP sections.
 
 ## Evidence against
 
-- **Simple decryption fails**: Decrypting with Beaufort autokey key=28 does not
-  produce readable English. An additional transformation or unknown primer is
-  needed.
-- **0.68% is on the low side**: Even for a rare digraph-rune, 0.68% might be
-  lower than expected depending on the plaintext's vocabulary.
-- **1-indexing assumption is unverified for the cipher**: While Cicada uses
-  1-indexing for labeling, it is not proven they use it in cipher arithmetic.
+- **Preceding-rune split disproof**: This is a specific instance of ciphertext
+  autokey. Splitting the ciphertext by C[i-1] should produce 29 streams with
+  English-like IOC (permuted English letter frequencies). Measured: mean IOC
+  0.0354, indistinguishable from random (1/29 = 0.0345). This rules out ALL
+  ciphertext autokey variants, including this one.
+- **Single-letter word contradiction**: 6-13 distinct values per preceding-rune
+  group, far exceeding the 2-3 expected for "a"/"I" under continuous autokey.
+
+## Predictions
+
+Same as general ciphertext autokey: the preceding-rune split should produce
+English-like IOC. It does not.
 
 ## Scripts
 
-- `experiments/lp_ea_hypothesis.py` — Tests this specific model: decrypts with
-  Beaufort autokey key=28 and checks plaintext statistics.
+- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+
+## Related
+
+- `ciphertext-autokey.md` — General ciphertext autokey. Disproved by the same
+  evidence.
 
 ## Verdict
 
-Plausible. The algebraic fit is clean and the construction is thematically
-Cicada-like. The main weakness is that simple decryption does not produce
-readable text, implying either an additional cipher layer or the hypothesis is
-wrong. This is a refinement of the general ciphertext autokey hypothesis (see
-`ciphertext-autokey.md`) with a specific claim about the indexing scheme.
+Disproved. This is a special case of ciphertext autokey, which is ruled out by
+the preceding-rune split test. The algebraic elegance of the EA identity and
+1-based indexing was suggestive, but the data is conclusive.

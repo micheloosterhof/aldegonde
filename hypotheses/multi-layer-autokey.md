@@ -30,16 +30,23 @@ Beaufort). Decryption requires reversing both passes in the correct order.
   suppression, pushing the rate from ~3.45% to ~0.12%. The observed 0.68% is
   higher than this prediction, suggesting either single-layer autokey with a
   rare identity rune, or a more complex interaction between layers.
-- **Parsimony**: A single-layer explanation is simpler and should be preferred
-  unless single-layer autokey is definitively ruled out.
+- Note: Single-layer ciphertext autokey is disproved by the preceding-rune
+  split test (see `ciphertext-autokey.md`). Multi-layer autokey survives this
+  test because the first layer already flattens the intermediate text, so
+  splitting the final ciphertext by C[i-1] gives flat IOC as expected.
 
 ## Scripts
 
 - Try decrypting with autokey twice (Vigenere then Beaufort, Beaufort then
   Vigenere, etc.) and check the resulting text for English-like statistics.
 
+## Related
+
+- `ciphertext-autokey.md` — Single-layer case is disproved.
+
 ## Verdict
 
-Unresolved. The doublet rate arithmetic weakly disfavors double autokey, but
-the exact suppression depends on the interaction between layers and the
-plaintext statistics. Worth testing computationally.
+Unresolved. Survives the preceding-rune split test (first layer already
+flattens). The doublet rate arithmetic weakly disfavors it (predicted ~0.12%
+vs observed 0.68%). Worth testing computationally but the doublet rate mismatch
+is a concern.

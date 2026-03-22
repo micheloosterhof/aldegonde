@@ -8,7 +8,7 @@ additive arithmetic.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -30,18 +30,21 @@ The codebase includes `valueTR()` which builds this kind of tabula recta.
 
 ## Evidence against
 
-- No specific statistical evidence distinguishes this from standard additive
-  autokey
-- The identity element under prime-value arithmetic may not correspond to a
-  plausible plaintext rune frequency
+- **Preceding-rune split disproof**: This is a ciphertext autokey with a
+  specific fixed TR. Splitting the ciphertext by C[i-1] should give 29 streams
+  with English-like IOC (permutations preserve IOC). Measured: mean IOC 0.0354,
+  indistinguishable from random. See `disprove_autokey_split.py`.
 
 ## Scripts
 
-- Compute the identity element of the prime-value TR and check if it maps to a
-  rune whose expected frequency matches the observed 0.68% doublet rate
+- `hypotheses/disprove_autokey_split.py` — Definitive disproof of all
+  single-layer ciphertext autokey variants.
+
+## Related
+
+- `ciphertext-autokey.md` — General disproof applies here.
 
 ## Verdict
 
-Unresolved. A natural extension of the autokey hypothesis using Cicada's own
-mathematical framework. Needs computational testing to determine the identity
-element and whether the resulting decryption produces any signal.
+Disproved. This is a specific case of ciphertext autokey with a fixed TR,
+ruled out by the preceding-rune split test.

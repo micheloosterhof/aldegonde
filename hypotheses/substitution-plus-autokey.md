@@ -8,7 +8,7 @@ autokey cipher.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -29,20 +29,23 @@ the autokey primer.
 
 ## Evidence against
 
-- No specific evidence in the ciphertext statistics distinguishes this from
-  single-layer autokey (the substitution is invisible after autokey flattening)
-- Large key space (29!) makes brute force infeasible without cribs
-- Parsimony: no positive evidence for the substitution layer beyond explaining
-  why simple autokey fails
+- **Preceding-rune split disproof**: The substitution layer maps P to M =
+  subst[P], which has the same IOC as English (permutations preserve IOC). The
+  autokey layer then gives C[i] = TR[C[i-1]][M[i]]. Splitting by C[i-1] gives
+  permuted versions of M, which has English-like IOC. Measured: mean IOC 0.0354,
+  indistinguishable from random. See `disprove_autokey_split.py`.
 
 ## Scripts
 
-None yet. Testing would require crib-based attacks: for known plaintext
-fragments, try autokey decryption and look for consistent monoalphabetic
-mappings.
+- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+
+## Related
+
+- `ciphertext-autokey.md` — General disproof applies here. The substitution
+  layer does not help because it preserves IOC.
 
 ## Verdict
 
-Unresolved. A natural explanation for why simple autokey decryption fails, but
-the substitution layer is essentially invisible in the statistics. Testable
-only through crib-based approaches.
+Disproved. The substitution layer preserves letter frequency structure (IOC),
+so the autokey layer still operates on non-uniform input. The preceding-rune
+split test detects this and rules it out.

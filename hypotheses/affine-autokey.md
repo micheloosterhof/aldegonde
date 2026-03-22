@@ -7,7 +7,7 @@ and b are constants, adding a multiplicative component to standard autokey.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -30,18 +30,22 @@ would then reflect the natural English/runeglish plaintext doublet rate.
 
 ## Evidence against
 
-- The doublet-causing condition (plaintext doublet) is different from the
-  standard autokey identity-element condition. Need to verify whether the
-  natural runeglish doublet rate actually matches 0.68%.
-- More parameters (a, b) without additional evidence pointing to specific
-  values
+- **Preceding-rune split disproof**: For fixed C[i-1] = c, C[i] = a*P[i] + b*c
+  mod 29, which is an affine transformation of P[i]. Affine transformations are
+  permutations and preserve IOC. So each group's IOC should match English IOC.
+  Measured: mean IOC 0.0354, indistinguishable from random. See
+  `disprove_autokey_split.py`.
 
 ## Scripts
 
-- Compute the expected doublet rate in runeglish-encoded English text to check
-  if ~0.68% is plausible.
+- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+
+## Related
+
+- `ciphertext-autokey.md` — General disproof applies here.
 
 ## Verdict
 
-Unresolved. An interesting generalization but the key test is whether
-runeglish plaintext naturally has a ~0.68% doublet rate.
+Disproved. Affine autokey is a single-layer ciphertext autokey with a fixed
+relationship between C[i-1], P[i], and C[i]. The preceding-rune split test
+rules it out.

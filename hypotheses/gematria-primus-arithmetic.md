@@ -8,7 +8,7 @@ C[i] = (prime(P[i]) + prime(C[i-1])) mod 29.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -29,19 +29,22 @@ the two are mathematically related).
 
 ## Evidence against
 
-- The identity element under prime arithmetic is different and may not
-  correspond to a plausible plaintext rune frequency
-- No statistical evidence distinguishes this from standard autokey
-- The prime mapping is non-linear, making cryptanalysis harder but also making
-  it harder to verify
+- **Preceding-rune split disproof**: This is a ciphertext autokey with a
+  specific fixed TR (defined by prime arithmetic). Splitting the ciphertext by
+  C[i-1] should give 29 streams with English-like IOC. Measured: mean IOC
+  0.0354, indistinguishable from random. See `disprove_autokey_split.py`.
 
 ## Scripts
 
-- Compute what the "doublet-causing" plaintext rune would be under this
-  arithmetic and check its expected frequency.
+- `hypotheses/disprove_autokey_split.py` — Definitive disproof of all
+  single-layer ciphertext autokey variants.
 - See also `src/aldegonde/pasc.py` for `valueTR()` implementation.
+
+## Related
+
+- `ciphertext-autokey.md` — General disproof applies here.
 
 ## Verdict
 
-Unresolved. Thematically appealing given Cicada's prime obsession, but needs
-computational work to test.
+Disproved. This is a specific case of ciphertext autokey with a fixed TR,
+ruled out by the preceding-rune split test.

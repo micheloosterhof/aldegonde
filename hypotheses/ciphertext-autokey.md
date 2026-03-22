@@ -3,11 +3,11 @@
 ## Claim
 
 The unsolved sections use a ciphertext autokey cipher (Vigenere or Beaufort
-variant) with standard 0-indexed arithmetic.
+variant), with either standard or custom tabula recta.
 
 ## Status
 
-**Status**: plausible
+**Status**: disproved
 
 ## Mechanism
 
@@ -16,46 +16,63 @@ encrypting the next plaintext rune:
 
 - Vigenere autokey: C[i] = P[i] + C[i-1] mod 29
 - Beaufort autokey: C[i] = C[i-1] - P[i] mod 29
+- Custom TR autokey: C[i] = TR[C[i-1]][P[i]]
 
-Under either variant, C[i] = C[i+1] (a doublet) implies that the plaintext
-rune at position i+1 is the additive identity element (index 0, i.e. F/feh).
+Under any of these, C[i] = C[i+1] (a doublet) implies that the plaintext
+rune at position i+1 is the identity element of the TR.
 
 ## Evidence for
 
 - **Doublet-identity property**: Under ciphertext autokey, all 89 doublets
-  decrypt to index 0 (the identity element). This is a mathematical certainty,
-  not a statistical observation.
+  decrypt to the identity element. This is a mathematical certainty.
 - **Flat distribution**: Autokey feedback naturally produces near-uniform output
   distributions from structured input.
-- **No Friedman period**: Autokey ciphers have no fixed period, consistent with
-  the Friedman test finding nothing.
-- **Scrambled single-letter words**: Each word's encryption depends on the
-  preceding ciphertext, explaining why single-letter words are uniformly
-  distributed rather than concentrated on "a"/"I".
+- **No Friedman period**: Autokey ciphers have no fixed period.
 - **Historical precedent**: Cicada used Beaufort autokey in the solved LP
   sections.
 
 ## Evidence against
 
-- **Simple autokey decryption has not cracked the text**: Decrypting with
-  straightforward autokey (any key value) does not produce readable English.
-  This suggests either additional layers, an unknown primer, or this hypothesis
-  is wrong.
-- **F frequency**: Under 0-indexed autokey, doublets correspond to F (feh) in
-  the plaintext. The 0.68% frequency seems low for F in English text (~2.2%).
+- **Preceding-rune split disproof**: Under ciphertext autokey with ANY TR,
+  grouping all C[i] values by C[i-1] should produce 29 streams that are
+  permuted versions of the plaintext. Since permutations preserve IOC, each
+  stream's IOC should match English/runeglish IOC (well above 1/29 = 0.0345).
+  Measured result: mean IOC across all 29 groups is 0.0354, indistinguishable
+  from random. Every group is within 1.00-1.07x of random IOC. This rules out
+  ciphertext autokey with any TR, standard or custom.
+- **Single-letter word contradiction**: Under continuous autokey, grouping
+  single-letter words by their preceding ciphertext rune should produce at most
+  2-3 distinct values per group (for "a", "I", and possibly "O"). Observed:
+  6-13 distinct values per group, all 29 groups exceeding 2. Independently
+  rules out continuous ciphertext autokey.
+- **Bigram split also random**: Splitting by (C[i-2], C[i-1]) gives mean IOC
+  0.0348, also random. Rules out 2-deep autokey variants.
+
+## Predictions
+
+Under autokey, the preceding-rune split should produce English-like IOC.
+It does not.
 
 ## Scripts
 
-- `experiments/lp_ea_hypothesis.py` — Tests the autokey identity property and
-  checks what plaintext rune doublets correspond to under various autokey
-  models.
-- `experiments/lp_deep_analysis.py` — General statistical analysis including
-  doublet context and conditional probabilities.
+- `hypotheses/disprove_autokey_split.py` — Splits ciphertext by preceding rune
+  and computes IOC per group. Definitive disproof.
+- `hypotheses/crib_single_letter_words.py` — Groups single-letter words by
+  preceding rune. Shows 6-13 distinct values per group, far exceeding the 2-3
+  expected.
+
+## Related
+
+- `beaufort-autokey-ea.md` — Specific variant with 1-based indexing. Also
+  disproved by the same evidence.
+- `plaintext-autokey.md` — Plaintext feedback variant, separately disproved.
+- `multi-layer-autokey.md` — Multiple autokey passes, needs re-evaluation.
+- `autokey-with-keyword.md` — Autokey + keyword, needs re-evaluation.
 
 ## Verdict
 
-Plausible. The statistical properties are all consistent with ciphertext
-autokey, and Cicada has used it before. However, simple autokey decryption does
-not produce readable text, and the F frequency mismatch (0.68% observed vs
-~2.2% expected) is a concern. See also `beaufort-autokey-ea.md` for the
-1-indexed variant where the identity element is EA instead of F.
+Disproved. The preceding-rune split test is definitive: under ciphertext
+autokey with any tabula recta, splitting by C[i-1] must recover permuted
+English letter frequencies (and thus English-like IOC). The observed IOC is
+random. This applies to standard Beaufort, standard Vigenere, and any custom
+TR.
