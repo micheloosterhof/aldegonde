@@ -224,6 +224,72 @@ def beaufort_two_ct_feedback(
     return pt
 
 
+def beaufort_mult_ct2(
+    ct: list[int], *, primer: int, offset: int = 0,
+) -> list[int]:
+    """Beaufort autokey with multiplicative C[i-2] factor.
+
+    k[i] = ((C[i-2] + offset) % 28) + 1
+    C[i] = C[i-1] - P[i] * k[i] mod 29
+    Preserves EA identity. Defeats C[i-1]-only split test because
+    the multiplier varies within each C[i-1] group.
+    """
+    pt = []
+    prev1 = primer
+    prev2 = primer
+    for c in ct:
+        k = _nonzero_k(prev2, offset)
+        p = ((prev1 - c) * _INVERSES[k]) % N
+        pt.append(p)
+        prev2 = prev1
+        prev1 = c
+    return pt
+
+
+def beaufort_mult_ct2_sum(
+    ct: list[int], *, primer: int, offset: int = 0,
+) -> list[int]:
+    """Beaufort autokey with multiplier from C[i-2] + C[i-3].
+
+    k[i] = ((C[i-2] + C[i-3] + offset) % 28) + 1
+    C[i] = C[i-1] - P[i] * k[i] mod 29
+    Window w=3. Preserves EA identity.
+    """
+    pt = []
+    prev1 = primer
+    prev2 = primer
+    prev3 = primer
+    for c in ct:
+        k = _nonzero_k((prev2 + prev3) % N, offset)
+        p = ((prev1 - c) * _INVERSES[k]) % N
+        pt.append(p)
+        prev3 = prev2
+        prev2 = prev1
+        prev1 = c
+    return pt
+
+
+def beaufort_mult_ct2_prod(
+    ct: list[int], *, primer: int, offset: int = 0,
+) -> list[int]:
+    """Beaufort autokey with multiplier from C[i-2] * C[i-1].
+
+    k[i] = ((C[i-2] * C[i-1] + offset) % 28) + 1
+    C[i] = C[i-1] - P[i] * k[i] mod 29
+    Uses product of two preceding CT runes. Preserves EA identity.
+    """
+    pt = []
+    prev1 = primer
+    prev2 = primer
+    for c in ct:
+        k = _nonzero_k((prev2 * prev1) % N, offset)
+        p = ((prev1 - c) * _INVERSES[k]) % N
+        pt.append(p)
+        prev2 = prev1
+        prev1 = c
+    return pt
+
+
 def vigenere_mult_prev_pt(
     ct: list[int], *, primer_c: int, primer_p: int, offset: int = 0,
 ) -> list[int]:
@@ -385,6 +451,25 @@ MODELS: list[Model] = [
         vigenere_mult_prev_pt,
         {"primer_c": _r(N), "primer_p": _r(N), "offset": _r(N - 1)},
         "Vigenere * ((prev_pt + offset) % 28 + 1), EA-preserving",
+    ),
+    # ---- Window-2 and window-3 multiplicative autokey ----
+    Model(
+        "beaufort_mult_ct2",
+        beaufort_mult_ct2,
+        {"primer": _r(N), "offset": _r(N - 1)},
+        "Beaufort * ((C[i-2] + offset) % 28 + 1), w=2, EA-preserving",
+    ),
+    Model(
+        "beaufort_mult_ct2_sum",
+        beaufort_mult_ct2_sum,
+        {"primer": _r(N), "offset": _r(N - 1)},
+        "Beaufort * ((C[i-2]+C[i-3] + offset) % 28 + 1), w=3, EA-preserving",
+    ),
+    Model(
+        "beaufort_mult_ct2_prod",
+        beaufort_mult_ct2_prod,
+        {"primer": _r(N), "offset": _r(N - 1)},
+        "Beaufort * ((C[i-2]*C[i-1] + offset) % 28 + 1), w=2, EA-preserving",
     ),
     # ---- Periodic non-autokey ----
     Model(
