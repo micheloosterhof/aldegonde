@@ -7,7 +7,7 @@ C[i] = P[i+1] - P[i] mod 29.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -30,20 +30,18 @@ than random, naturally suppressing doublets.
 
 ## Evidence against
 
-- Does not produce the specific "all doublets map to one identity element"
-  property that autokey does. Under differencing, doublets occur whenever three
-  plaintext values form an arithmetic progression, regardless of which specific
-  values are involved.
-- The doublet suppression rate depends on plaintext statistics in a complex way
-  that has not been quantified for runeglish
+- **Cumulative sum disproof**: Under first-difference, the running cumulative
+  sum of the ciphertext IS the plaintext (offset by the primer). The IOC of
+  this cumulative sum is 0.0345 for all 29 primers, indistinguishable from
+  random. English runeglish IOC is 0.055-0.067.
+- Does not produce the "all doublets map to one identity element" property.
 
 ## Scripts
 
-- Try decrypting by computing cumulative sums with each possible starting
-  value (0-28) and check resulting text for English-like statistics.
+None needed. The cumulative sum test is trivial.
 
 ## Verdict
 
-Unresolved. A clean alternative to autokey that deserves computational testing.
-The key distinguishing test: under autokey, doublets always decrypt to a single
-specific rune; under differencing, they do not.
+Disproved. The cumulative sum of the ciphertext has random IOC (0.0345) for
+every primer, but under first-difference it should equal the plaintext and
+have English-like IOC (0.055-0.067).
