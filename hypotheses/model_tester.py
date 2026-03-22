@@ -245,6 +245,78 @@ def vigenere_mult_prev_pt(
     return pt
 
 
+# ---- Periodic models ----
+
+
+def periodic_beaufort(
+    ct: list[int], *, k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+) -> list[int]:
+    """Periodic Beaufort (non-autokey).
+
+    P[i] = (K[i mod L] - C[i]) mod 29
+    Standard periodic cipher, no feedback.
+    """
+    key = [k0, k1, k2][:period]
+    return [(key[i % period] - c) % N for i, c in enumerate(ct)]
+
+
+def periodic_vigenere(
+    ct: list[int], *, k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+) -> list[int]:
+    """Periodic Vigenere (non-autokey).
+
+    P[i] = (C[i] - K[i mod L]) mod 29
+    """
+    key = [k0, k1, k2][:period]
+    return [(c - key[i % period]) % N for i, c in enumerate(ct)]
+
+
+def periodic_mult_autokey(
+    ct: list[int], *, primer: int,
+    k0: int, k1: int = 1, k2: int = 1, period: int = 2,
+) -> list[int]:
+    """Beaufort ciphertext autokey with periodic multiplier.
+
+    K[i] = key[i mod L]   (each in {1..28}, non-zero)
+    C[i] = C[i-1] - P[i] * K[i] mod 29
+    P[i] = (C[i-1] - C[i]) * inverse(K[i]) mod 29
+
+    Preserves EA identity: P[i]=0 => C[i]=C[i-1] regardless of K.
+    Friedman test cannot detect the period (autokey feedback dominates).
+    """
+    key = [k0, k1, k2][:period]
+    pt = []
+    prev_c = primer
+    for i, c in enumerate(ct):
+        k = key[i % period]
+        p = ((prev_c - c) * _INVERSES[k]) % N
+        pt.append(p)
+        prev_c = c
+    return pt
+
+
+def periodic_add_autokey(
+    ct: list[int], *, primer: int,
+    k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+) -> list[int]:
+    """Beaufort ciphertext autokey with periodic additive key.
+
+    C[i] = C[i-1] - P[i] + K[i mod L] mod 29
+    P[i] = (C[i-1] - C[i] + K[i mod L]) mod 29
+
+    Does NOT preserve EA identity (C[i] = C[i-1] + K, not C[i-1]).
+    Friedman test cannot detect the period.
+    """
+    key = [k0, k1, k2][:period]
+    pt = []
+    prev_c = primer
+    for i, c in enumerate(ct):
+        p = (prev_c - c + key[i % period]) % N
+        pt.append(p)
+        prev_c = c
+    return pt
+
+
 # ---- Model Registry ----
 
 
@@ -258,9 +330,11 @@ class Model:
     description: str
 
 
-def _r(n: int) -> list[int]:
-    """Shorthand for list(range(n))."""
-    return list(range(n))
+def _r(start_or_n: int, stop: int | None = None) -> list[int]:
+    """Shorthand for list(range(...)). _r(n) or _r(start, stop)."""
+    if stop is None:
+        return list(range(start_or_n))
+    return list(range(start_or_n, stop))
 
 
 MODELS: list[Model] = [
@@ -311,6 +385,45 @@ MODELS: list[Model] = [
         vigenere_mult_prev_pt,
         {"primer_c": _r(N), "primer_p": _r(N), "offset": _r(N - 1)},
         "Vigenere * ((prev_pt + offset) % 28 + 1), EA-preserving",
+    ),
+    # ---- Periodic non-autokey ----
+    Model(
+        "periodic_beaufort_L2",
+        lambda ct, **kw: periodic_beaufort(ct, period=2, **kw),
+        {"k0": _r(N), "k1": _r(N)},
+        "Periodic Beaufort, period 2 (non-autokey, Friedman-disproved baseline)",
+    ),
+    Model(
+        "periodic_beaufort_L3",
+        lambda ct, **kw: periodic_beaufort(ct, period=3, **kw),
+        {"k0": _r(N), "k1": _r(N), "k2": _r(N)},
+        "Periodic Beaufort, period 3 (non-autokey)",
+    ),
+    # ---- Periodic multiplicative autokey (EA-preserving) ----
+    Model(
+        "periodic_mult_autokey_L2",
+        lambda ct, **kw: periodic_mult_autokey(ct, period=2, **kw),
+        {"primer": _r(N), "k0": _r(1, N), "k1": _r(1, N)},
+        "Beaufort autokey * periodic key, L=2, EA-preserving",
+    ),
+    Model(
+        "periodic_mult_autokey_L3",
+        lambda ct, **kw: periodic_mult_autokey(ct, period=3, **kw),
+        {"primer": _r(N), "k0": _r(1, N), "k1": _r(1, N), "k2": _r(1, N)},
+        "Beaufort autokey * periodic key, L=3, EA-preserving",
+    ),
+    # ---- Periodic additive autokey ----
+    Model(
+        "periodic_add_autokey_L2",
+        lambda ct, **kw: periodic_add_autokey(ct, period=2, **kw),
+        {"primer": _r(N), "k0": _r(N), "k1": _r(N)},
+        "Beaufort autokey + periodic key, L=2 (no EA identity)",
+    ),
+    Model(
+        "periodic_add_autokey_L3",
+        lambda ct, **kw: periodic_add_autokey(ct, period=3, **kw),
+        {"primer": _r(N), "k0": _r(N), "k1": _r(N), "k2": _r(N)},
+        "Beaufort autokey + periodic key, L=3 (no EA identity)",
     ),
 ]
 
