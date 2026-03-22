@@ -90,6 +90,22 @@ def plaintext_summary(pt: Sequence[int], n: int = 40) -> str:
 # Returns None if the model is inconsistent for these parameters.
 
 
+# Precompute GF(29) discrete log table (base 2)
+_G = 2  # generator of GF(29)*
+_LOG = [0] * N  # _LOG[x] = discrete_log_2(x) for x in 1..28
+_EXP = [0] * (N - 1)  # _EXP[k] = 2^k mod 29
+_v = 1
+for _k in range(N - 1):
+    _EXP[_k] = _v
+    _LOG[_v] = _k
+    _v = (_v * _G) % N
+
+# GP prime values for each rune (by library index 0-28)
+_GP_PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
+              47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109]
+_GP_MOD29 = [p % N for p in _GP_PRIMES]  # GP prime values mod 29
+
+
 def beaufort_ct_autokey(ct: list[int], *, primer: int) -> list[int]:
     """Standard Beaufort ciphertext autokey.
 
@@ -290,6 +306,116 @@ def beaufort_mult_ct2_prod(
     return pt
 
 
+def multiplicative_autokey(ct: list[int], *, primer: int) -> list[int] | None:
+    """Multiplicative ciphertext autokey in GF(29)*.
+
+    C[i] = C[i-1] * P[i] mod 29  (for non-zero values)
+    P[i] = C[i] * inverse(C[i-1]) mod 29
+    Identity: P[i]=1 => C[i]=C[i-1]. Doublets mean P=1 (rune U, index 1).
+    Fails if any C[i-1] = 0.
+    """
+    pt = []
+    prev_c = primer
+    if prev_c == 0:
+        return None
+    for c in ct:
+        if prev_c == 0:
+            return None
+        if c == 0:
+            # C[i] = 0 means P[i] = 0 (only if we allow 0)
+            # But then all subsequent C values are 0. Check.
+            pt.append(0)
+            prev_c = c
+        else:
+            p = (c * _INVERSES[prev_c]) % N
+            pt.append(p)
+            prev_c = c
+    return pt
+
+
+def log_domain_autokey(ct: list[int], *, primer: int) -> list[int] | None:
+    """Autokey in the log domain of GF(29)*.
+
+    log(C[i]) = log(C[i-1]) + P_log[i] mod 28
+    Equivalent to: C[i] = C[i-1] * 2^P_log[i] mod 29
+    Decrypt: P_log[i] = (log(C[i]) - log(C[i-1])) mod 28
+    Then map P_log back to rune index via some mapping.
+
+    Identity: P_log=0 => C[i]=C[i-1]. Doublets mean P_log=0.
+    Fails if any ciphertext rune is 0 (EA in 0-based).
+    """
+    pt = []
+    prev_c = primer
+    if prev_c == 0:
+        return None
+    for c in ct:
+        if c == 0 or prev_c == 0:
+            return None
+        p_log = (_LOG[c] - _LOG[prev_c]) % (N - 1)
+        # Map log-domain value (0-27) back to rune index
+        # p_log=0 is identity. Use p_log directly as rune index
+        # (values 0-27, missing 28=EA)
+        pt.append(p_log)
+        prev_c = c
+    return pt
+
+
+def gp_beaufort_autokey(ct: list[int], *, primer: int) -> list[int] | None:
+    """Beaufort autokey using GP prime values.
+
+    C_val = GP_prime(C[i]) mod 29
+    P_val = (C_val[i-1] - C_val[i]) mod 29
+    Then P[i] = reverse_GP_lookup(P_val)
+
+    Problem: GP primes mod 29 are not injective (collisions exist),
+    so reverse lookup may be ambiguous. Returns None if ambiguous.
+    """
+    # Build reverse lookup (GP_mod29 -> rune_index)
+    # Since GP mod 29 has collisions, this is multi-valued
+    rev: dict[int, list[int]] = {}
+    for idx, val in enumerate(_GP_MOD29):
+        rev.setdefault(val, []).append(idx)
+
+    pt = []
+    prev_val = _GP_MOD29[primer]
+    for c in ct:
+        c_val = _GP_MOD29[c]
+        p_val = (prev_val - c_val) % N
+        candidates = rev.get(p_val, [])
+        if len(candidates) != 1:
+            return None  # Ambiguous or impossible
+        pt.append(candidates[0])
+        prev_val = c_val
+    return pt
+
+
+def power_autokey(ct: list[int], *, primer: int, exponent: int) -> list[int] | None:
+    """Power-map autokey: C[i] = (C[i-1] + P[i])^e mod 29.
+
+    Decrypt: P[i] = C[i]^(e_inv) - C[i-1] mod 29
+    where e_inv satisfies e * e_inv = 1 mod 28.
+    Only works for e coprime to 28.
+    Fails if C[i] = 0 (since 0 has no e-th root for e > 1).
+    """
+    from math import gcd
+    if gcd(exponent, N - 1) != 1:
+        return None
+    e_inv = pow(exponent, -1, N - 1)
+
+    pt = []
+    prev_c = primer
+    for c in ct:
+        if c == 0:
+            # 0^(e_inv) = 0
+            root = 0
+        else:
+            root = pow(c, e_inv, N)
+        p = (root - prev_c) % N
+        pt.append(p)
+        prev_c = c
+    return pt
+
+
 def vigenere_mult_prev_pt(
     ct: list[int], *, primer_c: int, primer_p: int, offset: int = 0,
 ) -> list[int]:
@@ -451,6 +577,43 @@ MODELS: list[Model] = [
         vigenere_mult_prev_pt,
         {"primer_c": _r(N), "primer_p": _r(N), "offset": _r(N - 1)},
         "Vigenere * ((prev_pt + offset) % 28 + 1), EA-preserving",
+    ),
+    # ---- GF(29) exotic operations ----
+    Model(
+        "multiplicative_autokey",
+        multiplicative_autokey,
+        {"primer": _r(1, N)},  # primer must be non-zero
+        "Multiplicative autokey: C[i]=C[i-1]*P[i] mod 29, identity=1",
+    ),
+    Model(
+        "log_domain_autokey",
+        log_domain_autokey,
+        {"primer": _r(1, N)},
+        "Log-domain autokey: log(C[i])=log(C[i-1])+P_log mod 28",
+    ),
+    Model(
+        "gp_beaufort_autokey",
+        gp_beaufort_autokey,
+        {"primer": _r(N)},
+        "Beaufort autokey using GP prime values mod 29",
+    ),
+    Model(
+        "power_autokey_e3",
+        lambda ct, **kw: power_autokey(ct, exponent=3, **kw),
+        {"primer": _r(N)},
+        "Power-map autokey: C[i]=(C[i-1]+P[i])^3 mod 29",
+    ),
+    Model(
+        "power_autokey_e5",
+        lambda ct, **kw: power_autokey(ct, exponent=5, **kw),
+        {"primer": _r(N)},
+        "Power-map autokey: C[i]=(C[i-1]+P[i])^5 mod 29",
+    ),
+    Model(
+        "power_autokey_e11",
+        lambda ct, **kw: power_autokey(ct, exponent=11, **kw),
+        {"primer": _r(N)},
+        "Power-map autokey: C[i]=(C[i-1]+P[i])^11 mod 29",
     ),
     # ---- Window-2 and window-3 multiplicative autokey ----
     Model(
