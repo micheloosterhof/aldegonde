@@ -8,7 +8,7 @@ fails.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -28,25 +28,26 @@ Beaufort). Decryption requires reversing both passes in the correct order.
 
 - **Doublet rate arithmetic**: Double autokey would square the doublet
   suppression, pushing the rate from ~3.45% to ~0.12%. The observed 0.68% is
-  higher than this prediction, suggesting either single-layer autokey with a
-  rare identity rune, or a more complex interaction between layers.
-- Note: Single-layer ciphertext autokey is disproved by the preceding-rune
-  split test (see `ciphertext-autokey.md`). Multi-layer autokey survives this
-  test because the first layer already flattens the intermediate text, so
-  splitting the final ciphertext by C[i-1] gives flat IOC as expected.
+  much higher.
+- **Peel-and-split disproof**: After peeling the outer layer (trying both
+  Beaufort and Vigenere), the intermediate text M was split by M[i-1]. If the
+  inner layer were standard autokey, each group's IOC should be English-like
+  (0.055-0.067). Measured: mean IOC 0.0352, random. The inner layer is not
+  standard autokey.
+- **Double-peel IOC**: Fully decrypting with two standard autokey layers
+  (all 4 Beaufort/Vigenere combinations) gives IOC 0.0345, dead random.
 
 ## Scripts
 
-- Try decrypting with autokey twice (Vigenere then Beaufort, Beaufort then
-  Vigenere, etc.) and check the resulting text for English-like statistics.
+None yet. The peel-and-split test was run inline.
 
 ## Related
 
-- `ciphertext-autokey.md` — Single-layer case is disproved.
+- `ciphertext-autokey.md` — Single-layer case disproved by split test.
 
 ## Verdict
 
-Unresolved. Survives the preceding-rune split test (first layer already
-flattens). The doublet rate arithmetic weakly disfavors it (predicted ~0.12%
-vs observed 0.68%). Worth testing computationally but the doublet rate mismatch
-is a concern.
+Disproved. Peeling the outer autokey layer and applying the split test to the
+intermediate text shows random IOC, ruling out standard autokey as the inner
+layer. Combined with the doublet rate mismatch (0.68% vs predicted 0.12%),
+double standard autokey is eliminated.
