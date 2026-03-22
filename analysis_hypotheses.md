@@ -172,25 +172,222 @@ If the plaintext-to-rune mapping is not 1:1 (some English letters map to rune bi
 
 ---
 
-## Ranking by Plausibility
+## Additional Observations from Deep Analysis
 
-Given the constraints (word boundaries match English, flat distribution, 5x doublet suppression, zero triplets, no periodic structure), the most plausible hypotheses are:
+### New Statistical Evidence (from `experiments/lp_deep_analysis.py` and `experiments/lp_ea_hypothesis.py`)
 
-### Tier 1 — Most Likely
-- **#6 (First-Difference Cipher)**: Elegantly explains flat output from non-flat input, and doublet suppression from the arithmetic progression constraint
-- **#1/#2 (Autokey variants)**: Known to Cicada (used in solved sections), produces flat output, feedback naturally suppresses doublets
-- **#22 (Markov Chain / state-dependent cipher)**: Directly models the observed statistical property
-- **#20 (Explicit doublet avoidance)**: Simplest explanation; Cicada may have added a post-processing step
+| Property | Observed | Significance |
+|---|---|---|
+| **Autokey identity** | Under ANY autokey (Vig or Beau), 2nd rune of every doublet decrypts to index 0 (F) | All 89/89 doublets → F. Mathematical certainty. |
+| Conditional entropy H(C[i]\|C[i-1]) | 4.786 bits | Close to log₂(28) = 4.807 (perfect no-doublet Markov) |
+| Mutual information I(C[i];C[i-1]) | 0.070 bits | Small but nonzero — only the doublet suppression |
+| Autocorrelation lag=1 | -0.030 | Slightly negative (consistent with doublet avoidance) |
+| Autocorrelation lag≥2 | ~0 | No other lag anomalies |
+| Off-diagonal bigrams | chi2 p=0.23 | **Uniform** — no structure beyond doublet suppression |
+| Delta stream Δ=0 | 89 (0.68%) vs ~453 expected | Confirms doublet suppression in difference domain |
+| Delta stream Δ≠0 | Perfectly uniform | All 28 non-zero deltas equally likely |
+| Delta-of-delta doublets | 443 vs 453 expected | Normal — no second-order suppression |
+| Doublet spacing | Mean 147.1, geometric distribution | **Doublets are independent random events** (p≈0.0068) |
+| Doublets within words | 62 (70%) | Most doublets fall inside words |
+| Doublets across word boundaries | 27 (30%) vs 116 expected random | **Also suppressed at boundaries** |
+| Single-letter words | 324 total, nearly uniform across 29 runes | NOT concentrated on "a"/"I" — cipher scrambles word-initial |
+| Word length distribution | Mean 3.90, mode 3, matches English in runeglish | Compatible with English plaintext |
+| EA word-initial | 144 (4.3%) — highest of all runes | Slight excess, not statistically significant |
+| EA word-final | 121 (3.6%) — near expected | Normal |
+| First-rune chi2 | p=0.11 | Marginally non-uniform — possible weak signal |
+| Bigram asymmetry | Average 0.148 | Normal for random text — no directional bias |
+| Skip=11 kappa | 395 (ratio 0.873, -2.7σ) | Minor secondary dip, likely noise |
+
+### Critical Autokey Discovery
+
+Under ciphertext autokey (both Vigenere and Beaufort variants):
+- **C[i] = C[i+1]** always implies **P[i+1] = 0 (index 0 = F rune)**
+- This is a mathematical identity: the second element of a doublet, when decrypted via autokey, is always the identity element
+- The 89 doublets are therefore not "errors" — they are places where **the plaintext contains F (ᚠ)** after a specific preceding plaintext value
+- Under a **shifted autokey with offset +1**: doublets would map to index 28 = **EA (ᛠ)** instead of F
+
+### The EA Hypothesis Refined
+
+Your hunch about EA connects to a specific cipher variant:
+- Standard autokey → doublet = F (index 0) in plaintext
+- Autokey with +1 offset → doublet = EA (index 28) in plaintext
+- Autokey with +K offset → doublet = (29-K) in plaintext
+- Beaufort autokey with key=28 → doublet = EA in plaintext
+
+If EA is the doublet-causing rune, the cipher is an **offset autokey** where the offset equals 1 (Vigenere) or 28 (Beaufort).
+
+---
+
+## Hypotheses 41–80
+
+### Category K: Autokey Variants (Informed by New Analysis)
+
+**41. Standard Ciphertext Autokey (Doublet = F)**
+The simplest autokey: C[i] = P[i] + C[i-1] mod 29. Under this model, every doublet in the ciphertext corresponds to plaintext F (ᚠ, index 0). F appears in English runeglish as the initial letter of "for", "from", "first", etc. The observed 89 doublets in ~13,000 runes gives an F-rate of 0.68% — but English F frequency is ~2.2%. This is too low for F, suggesting either the autokey has an offset, or the model isn't pure autokey.
+
+**42. Offset Ciphertext Autokey (Doublet = EA)**
+C[i] = P[i] + C[i-1] + 1 mod 29 (or equivalently, Beaufort autokey with constant 28). Under this model, doublets correspond to EA (ᛠ, index 28) in the plaintext. EA appears in runeglish in words like "each", "ear", "eat", "earth", "east" — typically as the first rune. The 89 doublets / 13,136 runes = 0.68% frequency would mean EA appears in ~0.68% of positions, which is plausible for a rare digraph-rune.
+
+**43. Primer-Dependent Autokey with Variable Offset**
+An autokey where each segment uses a different primer (initial key value), and the primer implicitly determines an offset. Different segments could have slightly different doublet rates because the primer changes. The per-segment doublet rates (0.52% to 1.08%) could reflect different primer choices.
+
+**44. Double Autokey (Autokey of Autokey)**
+First apply ciphertext autokey, then apply it again to the result. The double application would square the doublet suppression effect. Under single autokey, doublets occur at rate ~p(F). Under double autokey, doublets require both layers to produce the identity simultaneously, making them even rarer — matching the 5x suppression.
+
+**45. Autokey with Keyword Interleaving**
+A periodic keyword K is added on top of the autokey: C[i] = P[i] + C[i-1] + K[i mod L] mod 29. This makes the "identity rune" (the one causing doublets) cycle through different values depending on position mod L. The doublet rate would be the average frequency of L different runes in the plaintext.
+
+### Category L: Identity-Rune / Fixed-Point Ciphers
+
+**46. Fixed-Point Cipher where EA Maps to Previous Ciphertext**
+A cipher where one specific plaintext rune (EA) always maps to the same value as the previous ciphertext symbol. All other runes map to something different from the previous ciphertext. This directly produces doublets only when EA appears, and suppresses them otherwise.
+
+**47. Shifted Substitution with Self-Mapping Exception**
+Each position uses a shifted alphabet, but one rune (EA) always maps to itself regardless of position. When EA follows a position that also produced the same rune value, a doublet occurs. The rarity of this coincidence produces the low doublet rate.
+
+**48. Cipher Disk with One Fixed Point**
+A Cicada cipher disk where one pin is fixed (EA). As the disk rotates with each encryption, most plaintext symbols map to different ciphertext values, but the fixed pin creates occasional doublets when EA appears at the right phase.
+
+**49. Beaufort Autokey with Key = 28 (EA's Index)**
+C[i] = C[i-1] - P[i] + 28 mod 29. This makes doublets correspond exactly to P[i] = 28 = EA. The key value 28 is itself EA's index, creating a self-referential structure Cicada might find appealing.
+
+**50. Autokey Where Doublet Rate Encodes a Message**
+The 89 doublets at specific positions could themselves encode a secondary message. The doublet positions form a binary stream (1 at doublet, 0 elsewhere) that could carry hidden information, while the primary channel carries the main message.
+
+### Category M: Word-Boundary-Aware Ciphers
+
+**51. Word-Boundary-Reset Autokey**
+An autokey that resets its state (key feedback) at word boundaries. Since word boundaries are preserved, the autokey restarts with a primer at each word. This would suppress cross-boundary doublets (observed: 27 vs 116 expected) because the primer at each word is chosen to differ from the previous ciphertext.
+
+**52. Position-in-Word Dependent Cipher**
+The substitution alphabet varies based on position within the current word (pos 0, 1, 2, ...). Since adjacent positions use different alphabets, doublets are suppressed. The nearly uniform single-letter word distribution (all 29 runes used) supports position-dependent keying.
+
+**53. Word-Length-Keyed Cipher**
+The cipher key rotates based on the current word length. Since consecutive characters within the same word get different key offsets, doublets are suppressed within words. Cross-boundary doublets require coincidental alignment between words.
+
+**54. Delimiter-Encoded Cipher**
+Word delimiters (-,.,/) are not just punctuation but carry cryptographic meaning. The delimiter type could encode additional information or reset the cipher state. The observed doublet pattern in words vs across boundaries would reflect different reset behaviors.
+
+### Category N: Crib-Informed Hypotheses
+
+**55. Autokey with Runeglish "THE" Crib**
+"THE" in runeglish is ᚦᛖ (2 runes). It's the most common English word. Under autokey, if we assume ᚦᛖ appears frequently, we can test whether common 2-rune ciphertext words decrypt to ᚦᛖ under various autokey parameters. The 635 two-rune words with 4 each as max frequency suggest heavy scrambling — consistent with autokey.
+
+**56. Single-Letter Word Crib Failure Implies Strong Cipher**
+If the cipher were simple substitution, single-letter words would concentrate on 2 values (a→ᚪ, I→ᛁ). Instead, all 29 runes appear roughly equally as single-letter words. This RULES OUT simple monoalphabetic or periodic polyalphabetic ciphers and strongly supports position-dependent (autokey) or stream cipher encryption.
+
+**57. Isomorphic Pattern Matching (ABA Pattern)**
+32 three-rune words have pattern ABA (like ᛇᛞᛇ, ᛁᛄᛁ, ᚻᛠᚻ). In English, 3-letter ABA words include "did", "mom", "pop", "nun", "eve". Under autokey, the ABA pattern in ciphertext constrains the plaintext — these could be used as cribs to deduce autokey parameters.
+
+**58. Cross-Boundary Doublet Crib**
+The 27 cross-boundary doublets tell us the last rune of one word encrypts to the same value as the first rune of the next word. Under autokey, this constrains the plaintext relationship across the boundary, providing cribs where we know both the word-ending and word-beginning plaintext.
+
+**59. Rare Long Repeated Sequence Crib**
+The 6-gram ᛞᛄᚢᛒᛖᛁ repeats at positions 6555 and 12950. Under autokey, identical ciphertext sequences require specific plaintext relationships. This repeat constrains the cipher — it could be the same plaintext word at both positions, or the autokey state coincidentally aligned.
+
+### Category O: Non-Standard Tabula Recta
+
+**60. Prime-Value Beaufort TR**
+The codebase includes `valueTR()` which constructs a tabula recta using prime values. Under this TR: C[i] = TR[C[i-1]][P[i]] where TR is built from prime-index arithmetic. The prime-value TR has different algebraic properties than standard Vigenere/Beaufort — the doublet-causing plaintext rune would be determined by the TR structure, not necessarily index 0.
+
+**61. Totient-Shifted TR**
+A tabula recta where row shifts are φ(p) mod 29 instead of p, where φ is Euler's totient and p is the prime associated with the key rune. The totient values create irregular shifts that break standard cryptanalysis patterns while maintaining the doublet suppression property.
+
+**62. Multiplicative TR (Decimation)**
+Instead of additive shifts, each row of the TR is a multiplicative permutation: TR[k][p] = (k * p) mod 29. Since 29 is prime, every non-zero multiplier produces a valid permutation. The identity element under multiplication is 1, so doublets would correspond to plaintext rune index 1 (U/ᚢ) — not 0.
+
+**63. Gödel-Prime TR**
+Each plaintext rune is first mapped to its associated prime, the key rune's prime is added/subtracted, and the result is mapped back to a rune index mod 29. This non-linear mapping preserves uniformity (primes mod 29 are well-distributed) but changes which plaintext value produces the identity.
+
+### Category P: Markov / State Machine Models
+
+**64. De Bruijn Sequence Keystream**
+A de Bruijn sequence over alphabet size 29 generates the keystream. De Bruijn sequences contain every possible n-gram exactly once, and by construction, the transition structure avoids excessive self-transitions. When used as a keystream in additive cipher, this produces slightly suppressed doublets.
+
+**65. Markov Chain with Forbidden Self-Transition**
+The cipher implements a first-order Markov chain where the transition matrix has zeros on the diagonal and uniform 1/28 on off-diagonal entries. This is the maximum-entropy distribution subject to the "no doublets" constraint. The observed conditional entropy (4.786 bits) is close to log₂(28) = 4.807, consistent with this model but with ~0.68% leakage.
+
+**66. Finite State Machine Cipher**
+A deterministic FSM with 29 states, where each plaintext input causes a state transition and the output is the new state. The transition function is designed so that no input can keep the machine in the same state (no self-loops), producing doublet-free output. The 89 observed doublets represent segment boundaries where the FSM resets.
+
+**67. Evolving Permutation (Heap's Algorithm)**
+The cipher maintains a permutation of 29 elements that evolves after each character. Each plaintext is mapped through the current permutation. The evolution rule (like one step of Heap's algorithm) ensures the permutation changes enough that consecutive identical outputs are rare.
+
+### Category Q: Information-Theoretic Models
+
+**68. Maximum Entropy Cipher Subject to Doublet Constraint**
+The ciphertext was generated by a process that maximizes entropy subject to the constraint that P(C[i]=C[i-1]) ≤ ε for some small ε. The solution to this constrained optimization is exactly the near-uniform distribution with suppressed diagonal that we observe.
+
+**69. Entropy-Spreading Cipher**
+A cipher designed to spread the entropy of the plaintext uniformly across the ciphertext, like a cryptographic hash function but reversible. The doublet suppression is a side effect of the entropy spreading — correlated inputs (like repeated characters) are decorrelated.
+
+**70. Shannon's Perfect Secrecy with No-Repeat Key**
+A one-time pad where the pad is constrained to never repeat the same value consecutively (K[i] ≠ K[i+1]). This provides perfect secrecy for the message content while the doublet suppression leaks only the information that K[i] ≠ K[i+1], which is a minor information leak of log₂(29/28) ≈ 0.051 bits per character.
+
+### Category R: Composite / Multi-Layer Ciphers
+
+**71. Substitution + Autokey Layering**
+First apply a monoalphabetic substitution (to scramble frequencies), then apply ciphertext autokey. The substitution ensures no single rune dominates, and the autokey produces the flat distribution and doublet suppression. Decryption requires knowing both the substitution key and the autokey primer.
+
+**72. Transposition + Autokey**
+First rearrange the plaintext via columnar transposition, then apply autokey. The transposition breaks word structure (but word delimiters are preserved separately), and the autokey flattens the distribution. Doublet suppression comes from the autokey layer.
+
+**73. Two-Pass Autokey (Different TRs)**
+First encrypt with Beaufort autokey using TR₁, then encrypt the result with Vigenere autokey using TR₂. Each pass suppresses doublets, and the composition of two autokeys with different tabula rectae makes cryptanalysis much harder.
+
+**74. Autokey + Null Cipher**
+An autokey cipher with inserted null characters (non-meaningful runes) at specific positions. The nulls expand the alphabet usage and further flatten the distribution. Doublets that "should" occur are broken by null insertion. Identifying and removing the nulls is part of the decryption.
+
+**75. Gronsfeld Variant with Autokey**
+A Gronsfeld cipher (digit-keyed Vigenere) combined with autokey, where the numeric key is derived from the prime values of runes. K[i] = prime(C[i-1]) mod 29. The prime-value feedback creates a non-linear autokey that has different algebraic properties than standard linear autokey.
+
+### Category S: Cicada-Specific / Thematic Hypotheses
+
+**76. Gematria-Based Cipher**
+Cicada's Gematria assigns prime values to runes. The cipher could operate entirely in the prime domain: encrypt by multiplying/adding prime values, then reduce mod 29 to get the output rune index. The multiplicative structure of primes modulo a prime (29) has rich algebraic properties that could produce the observed statistics.
+
+**77. Totient Autokey**
+C[i] = φ(prime(P[i]) + prime(C[i-1])) mod 29 where φ is Euler's totient. The totient function is irregular and one-way-ish, making the cipher hard to break while the compositional structure with autokey produces flat output.
+
+**78. Liber Primus Page-Number Key**
+The cipher key incorporates the page number or section number of the Liber Primus. Each page/section uses a different key derived from the page number's mathematical properties (prime factorization, totient, etc.). This would explain the per-segment variation in doublet rates (3.2x to 6.6x suppression).
+
+**79. Sacred Geometry Cipher**
+Cicada often references sacred geometry. A cipher based on geometric transformations on a 29-point structure (e.g., a cyclic group visualized as points on a circle). Encryption is a rotation + reflection that depends on the previous output, creating state-dependent behavior that avoids fixed points.
+
+**80. Recursive Self-Reference Cipher**
+A cipher where the ciphertext of each section is used as the key for the next section, creating a chain. The solved early sections would provide the key for section N, which provides the key for section N+1, etc. The deep recursion produces increasingly flat distributions and doublet suppression accumulates.
+
+---
+
+## Updated Ranking by Plausibility
+
+Given all evidence — word boundaries match English, flat distribution, 5x doublet suppression, zero triplets, no periodic structure, autokey identity proof, geometric doublet spacing, uniform off-diagonal bigrams, scrambled single-letter words:
+
+### Tier 1 — Most Likely (Strong Evidence)
+- **#42 (Offset Autokey, Doublet = EA)**: Your hunch + the math. Under Beaufort autokey with key=28 or Vigenere autokey with offset +1, doublets correspond exactly to EA in plaintext. EA frequency ~0.68% is plausible for a rare digraph rune. Cicada is known to use autokey. The self-referential property (key=28=EA's index) is thematically perfect.
+- **#41 (Standard Autokey, Doublet = F)**: Same mechanism, just F instead of EA. F at 0.68% is too low for English F (~2.2%), which makes the offset variant (#42) more attractive.
+- **#49 (Beaufort Autokey with Key=28)**: The specific implementation: Beaufort autokey is already used in solved LP sections, and key=28 makes doublets = EA.
+- **#60 (Prime-Value TR Autokey)**: Uses Cicada's prime-rune mapping in the TR structure. Different identity element than standard autokey, potentially mapping doublets to EA through the prime arithmetic.
 
 ### Tier 2 — Plausible
-- **#10 (Stream cipher with no-repeat keystream)**: Clean mechanism, easy to implement
-- **#15 (Derangement cipher)**: Algebraically elegant, fits Cicada's mathematical style
-- **#25 (Playfair variant)**: Classical cipher that naturally suppresses doublets
-- **#39 (Runeglish encoding effect + cipher)**: The encoding itself contributes to suppression
-- **#29 (Affine autokey)**: Mathematically appealing, uses mod-29 arithmetic
+- **#51 (Word-Boundary-Reset Autokey)**: Explains the extra suppression of cross-boundary doublets (27 vs 116)
+- **#56 (Single-Letter Word Evidence)**: Not a hypothesis itself, but the uniform distribution of single-letter words across all 29 runes RULES OUT simple substitution ciphers, strongly supporting autokey or stream ciphers
+- **#6 (First-Difference Cipher)**: Still elegant but doesn't explain the specific autokey algebraic identity
+- **#71 (Substitution + Autokey)**: Could explain why simple autokey decryption hasn't worked
+- **#75 (Gronsfeld + Prime Autokey)**: Non-linear autokey using prime values, harder to break
 
 ### Tier 3 — Worth Investigating
-- **#4 (Prime-indexed TR autokey)**: Fits Cicada's prime obsession
-- **#11 (LFSR mod 29)**: Good pseudorandom properties
-- **#30 (Prime multiplication)**: Uses Cicada's prime-rune mapping
-- **#23 (Bigram substitution)**: Could explain the digraphic kappa anomaly
+- **#44 (Double Autokey)**: Explains the extreme doublet suppression (squared effect)
+- **#45 (Autokey + Keyword)**: Adds periodic structure on top of autokey
+- **#57 (ABA Pattern Cribs)**: 32 ABA-pattern words provide crib material for parameter recovery
+- **#59 (Repeated 6-gram Crib)**: ᛞᛄᚢᛒᛖᛁ at two positions constrains the key
+- **#65 (Markov with forbidden diagonal)**: Exact statistical model of the observation
+- **#78 (Page-Number Key)**: Explains per-segment variation in doublet rates
+
+### Key Experimental Predictions
+
+1. **If #42 is correct**: Decrypt with Beaufort autokey key=28 (or Vig+1), replace every doublet's 2nd rune with EA, and check if the resulting text has English-like statistics
+2. **If #51 is correct**: Doublet rate should differ within words vs at word boundaries (already observed: 70% vs 30%)
+3. **If #60 is correct**: The prime-value TR changes which plaintext produces the identity; need to compute the specific identity element
+4. **Cribbing test**: Single-letter words under autokey should decode to "a" or "I" — test all 324 single-letter words against autokey variants
