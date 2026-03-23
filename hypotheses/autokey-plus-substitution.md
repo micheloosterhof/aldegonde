@@ -22,28 +22,28 @@ layer.
 
 ## Evidence for
 
-- **Delta text has structure**: The delta text's bigrams are significantly
-  non-uniform (chi-sq 1433 vs 840 expected), unlike the ciphertext's
-  uniform bigrams (chi-sq ~840). Peeling the autokey layer reveals structure.
-- **F suppression in delta**: Delta value F (index 0) occurs at 0.68% instead
-  of 3.45%. ALL bigrams involving F are suppressed. This is the "shadow" of
-  the ciphertext's doublet suppression.
 - **Normal doublets/triplets in delta**: The delta text has 443 doublets (vs
   453 expected) and 16 triplets — perfectly normal. The autokey layer is what
   creates the doublet suppression in the ciphertext.
-- **Second-order delta is uniform**: The delta-of-delta has uniform
-  distribution including F. The structure exists only in the first-order delta.
-- **28-symbol effective alphabet**: The delta text excluding F has IOC =
+- **F suppression in delta**: Delta value 0 (= EA under 1-based indexing)
+  occurs at 0.68% instead of 3.45%. This is the "shadow" of the ciphertext's
+  doublet suppression: C[i]=C[i-1] iff delta=0.
+- **28-symbol effective alphabet**: The delta text excluding value 0 has IOC =
   0.03576, matching 1/28 = 0.03571 perfectly. The inner layer output avoids
-  value 0 (F), living in a 28-symbol alphabet.
+  the identity value.
 
 ## Evidence against
 
-- The delta text IOC (0.0353 for 29 symbols, 0.0358 for 28 symbols) is still
-  random — not English-like. So the inner layer is not a simple monoalphabetic
-  substitution (which would preserve IOC).
-- The split test on the delta text (group delta[i] by delta[i-1]) gives random
-  IOC (0.0352). So the inner layer is not itself another autokey.
+- **Bigram structure is only from F suppression**: The delta bigram chi-sq
+  (1433 vs 840) is entirely explained by the rarity of value 0. Non-zero
+  bigrams are perfectly uniform (chi-sq 766 vs 783 expected). No hidden
+  bigram structure beyond the F/EA suppression.
+- **Delta text is random over 28 symbols**: IOC 0.03576 = 1/28 exactly.
+  Repeat counts match 28-symbol random text. No word-boundary effects.
+- The split test on the delta text (group by delta[i-1]) gives random IOC.
+  So the inner layer is not another autokey.
+- A monoalphabetic inner layer is ruled out (would preserve IOC at
+  English-like levels, not flatten to 1/28).
 
 ## Predictions
 
