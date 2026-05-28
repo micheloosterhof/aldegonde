@@ -1,5 +1,6 @@
 """Cryptanalysis algorithms."""
 
+from aldegonde.analysis.delta import DeltaOp, delta, delta2
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
 from aldegonde.analysis.guballa import bigram_break_pasc
 from aldegonde.analysis.split import (
@@ -13,6 +14,10 @@ from aldegonde.analysis.split import (
 from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrupter
 
 __all__ = [
+    # delta
+    "DeltaOp",
+    "delta",
+    "delta2",
     # friedman
     "friedman_test",
     "friedman_test_with_interrupter",
