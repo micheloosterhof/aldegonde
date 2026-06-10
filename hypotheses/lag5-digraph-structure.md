@@ -44,6 +44,36 @@ Caveat: the pattern family (separations {1, L-1}) was chosen after seeing the
 data; the d=4 margin was measured after d=1 flagged, but it is an orthogonal
 component and landed exactly on the complementary separation 5-1=4.
 
+## Re-assessment (fresh look, family-blind)
+
+A re-examination without the hand-picked pattern family
+(`/tmp` analysis re-run; key numbers below):
+
+- **Family-blind 2D scan**: over ALL 174 cells (lag L = 2..30, separation
+  d = 1..6), the top two cells of the entire grid are (5,1) = 29 and
+  (5,4) = 28 — both at lag 5. Monte Carlo asking only "does any lag have
+  two cells jointly >= (29,28)" gives p ~= 0.033. This is the fairest
+  global significance: roughly 1-in-30 of being noise, weaker than the
+  earlier family-chosen p ~= 0.01.
+- **Cluster decomposition**: maximal clusters of lag-5 matches (gaps <= 4):
+  observed sizes {2: 59, 3: 8, 6: 1} vs null {2: 50, 3: 7, 4: 1}.
+  Three-clusters are AT CHANCE — earlier remarks about '(1,4) chains' carry
+  no significance. The excess is ~20 extra isolated two-match objects at
+  separations exactly 1 or 4, plus one extraordinary size-6 cluster (the
+  image-verified page-50 SDNG repeat; p ~= 4% alone). Removing that cluster
+  leaves d1 = 27, d4 = 26 — the signal is not one passage.
+- **Locality**: corpus-wide, not a section-4 artifact: T5 z = +3.67 with
+  section 4 excluded, +2.28 with sections 4 and 8 both excluded.
+- **Delta-histogram caveat**: at lag 5 the full delta distribution is
+  uniform (chi2 24.2, df 28) and delta = 0 (479) TIES with delta = 23 (479)
+  with delta = 22 just behind (477). The monographic excess is not even the
+  top bin of its own histogram. The anomaly is exclusively the PAIRING of
+  matches at separations 1 and 4; every monographic statistic is ordinary.
+
+Bottom line after the fresh look: a modest, corpus-wide, image-verified
+pairing anomaly with fair-test significance ~ 1-in-30. Strong enough to
+keep on the books, not strong enough to build castles on.
+
 **Image-verified**: the highest-value events (the chained page-50 cluster
 and the densest pocket-1 events on page 16) were checked glyph-by-glyph
 against the source page scans (rtkd/iddqd) and all match the transcription
