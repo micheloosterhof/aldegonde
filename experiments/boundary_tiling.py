@@ -25,6 +25,8 @@ Results:
 """
 
 
+import random
+
 from aldegonde import c3301
 
 AB = c3301.CICADA_ALPHABET
@@ -92,7 +94,6 @@ for ls in LSETS:
     print(f"  lengths {ls}: {bad} infeasible constraints {badlist[:6]}")
 
 print("\n=== C. null comparison: how often would random positions pass? ===")
-import random
 
 ok56 = expressible_set((5, 6), n)
 def count_bad(positions: list[int]) -> int:
