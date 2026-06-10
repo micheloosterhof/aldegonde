@@ -73,11 +73,17 @@ Two consequences of the table that prune whole mechanism families
    0.66%. The encryptor must see the previous ciphertext rune (or
    equivalently select keys plaintext-aware) and avoid doublets ~80% of the
    time.
-2. **The lag-5 paired-match structure is unexplained.** No simulated
-   mechanism (autokey families, running keys, bifid p5/p7/p10, lag-5-tapped
-   lagged-Fibonacci keystreams, output-avoidance streams) reproduces the
-   selective d=1/d=4 pattern of `lag5-digraph-structure.md`. It is the
-   primary open discriminator for new hypotheses.
+2. **The lag-5 paired-match structure has one surviving explanation.** No
+   per-rune mechanism (autokey families, running keys, bifid p5/p7/p10,
+   lag-5-tapped lagged-Fibonacci keystreams, output-avoidance streams,
+   Hill variants, group-edge carryover) reproduces the selective d=1/d=4
+   pattern of `lag5-digraph-structure.md` — and information theory forbids
+   deterministic copies from carrying plaintext. The opportunistic
+   back-reference model (`lag5-back-reference.md`: the events fire only
+   where the plaintext itself repeats at lag 5) is the first and so far
+   only mechanism to reproduce the COMPLETE fingerprint in simulation, and
+   yields 114 deterministic plaintext constraints at the verified event
+   positions.
 
 ## Status values
 
