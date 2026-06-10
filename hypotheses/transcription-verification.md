@@ -12,6 +12,38 @@ shown in the index below for matching against the JPEGs.
 Image mapping: our page N = N.jpg for N <= 49 and (N+1).jpg for N >= 50
 (part 50 of the transcription file is a runeless art page).
 
+### Full-document machine comparison (`experiments/ocr_verify.py`)
+
+A forced-alignment OCR pipeline (page-native glyph templates bootstrapped
+from the scans themselves, FFT correlation + DP with a whole-line
+reconstruction objective) compared every transcription line against its
+image line:
+
+- **44 of 57 pages fully machine-verified** (mean reconstruction cover
+  ~0.97): every glyph either matched its claimed rune or beat all
+  slot-compatible alternatives. ~83% of the corpus's ~684 lines verified
+  glyph-by-glyph.
+- **13 section-start pages** (0, 3, 6, 8, 15, 23, 27, 33, 39, 40, 53, 55,
+  56) have 117 lines that fail structural alignment (giant decorative
+  initials, red text, layout); their remaining lines verified normally.
+- **6 single-glyph disagreements were flagged; all resolved on visual
+  inspection as non-rune page elements, ZERO transcription errors**: the
+  giant red initial (page 0), an embedded literal digit '7' on page 10
+  (present in the transcription as `-7-` — faithful), and decorative
+  sentence-mark ornaments (double-bars + dot-diamond rendering of the `.`
+  separator) on pages 22, 42 (x2), and 52.
+- Source-chain check: the rune content of our master transcription is
+  byte-identical to the iddqd master, and `page0-58.txt` is an exact
+  rune-substring of it.
+
+Conclusion: the transcription is error-free everywhere machine
+verification reached, including every statistical anomaly position in
+those regions. The earlier targeted manual checks below covered the
+highest-value event positions, several of which lie on the
+structurally-unverified pages.
+
+### Targeted manual checks
+
 Verified glyph-by-glyph on the source scans (2400x3600, cropped and
 upscaled per line):
 
