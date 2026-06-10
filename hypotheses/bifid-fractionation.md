@@ -8,7 +8,7 @@ then recombined into ciphertext runes.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -60,6 +60,14 @@ interleaving patterns.
 
 ## Verdict
 
-Unresolved. The variable-length words are the main obstacle — standard
-fractionation uses fixed blocks. Per-word fractionation with a 29-symbol
-alphabet is unusual but worth investigating.
+Disproved for fixed-period bifid (periods 5, 7, 10 tested over keyed 6x5
+grids; `experiments/mechanism_fingerprint.py`): output retains residual
+language structure with nIoC 1.19-1.26 (observed: exactly 1.000), doublet
+rate 3.6-4.3% (observed: 0.66%), and 20+ triplets (observed: 0). Notably,
+period-5 bifid DOES couple lag-5 positions strongly (T5 z ~ +7), but with
+the wrong shape: it elevates all separations d=1..4 and the monographic
+lag-5 kappa (1.45 vs observed 1.07), unlike the selective d=1/d=4 pattern in
+`lag5-digraph-structure.md`. The doublet and IoC failures are structural for
+fractionation (it has no mechanism to avoid output doublets and preserves
+coordinate-level language statistics), so other periods and per-word
+variants are very unlikely to survive, though not individually simulated.

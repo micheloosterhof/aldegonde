@@ -81,11 +81,21 @@ The constraint for future hypotheses: a mechanism must generate consecutive
 5-grams agreeing in (1st,2nd) or (1st,5th) positions ~85% above chance,
 concentrated in (but not exclusive to) section 4, while leaving every other
 statistic in `README.md` flat — including doublet suppression and zero
-triplets. Directions not yet tested:
+triplets. Tested since via `experiments/mechanism_fingerprint.py`, all
+negative:
 
-- Bifid/trifid-like fractionation with period 10 (classical bifid produces
-  digraphic coincidence bumps at half the period; a 29-symbol fractionation
-  scheme is nonstandard but Cicada-plausible).
+- Bifid fractionation periods 5/7/10: period 5 couples lag-5 strongly but
+  with the wrong shape (all separations d=1..4 elevated, mono kappa 1.45 vs
+  observed 1.07) and fails doublets/IoC. See `bifid-fractionation.md`.
+- Word-structure correlation: events ignore 5-letter words, word starts,
+  and word positions entirely (nulls matched on all four measures).
+- Lag-5-tapped lagged-Fibonacci keystreams (taps {1,5}, {4,5}, {2,5}), with
+  and without output doublet-avoidance: no d=1/d=4 excess.
+- Output-avoidance OTP (the only mechanism matching the base fingerprint):
+  no d=1/d=4 excess.
+
+Still open:
+
 - Per-word or per-line cipher state where 5-rune-distant positions share key
   material as a side effect of typical word lengths (avg word ~3.9 runes).
 - Section 4 having a different (or buggier) cipher than other sections.

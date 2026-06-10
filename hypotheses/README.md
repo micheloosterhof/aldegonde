@@ -48,6 +48,25 @@ Any valid hypothesis must account for all of these:
 | Word boundaries | Preserved | — | Match English word-length distribution |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 
+## Structural constraints
+
+Two consequences of the table that prune whole mechanism families
+(derivations and simulations in `experiments/mechanism_fingerprint.py`):
+
+1. **Doublet suppression requires output feedback.** A ciphertext doublet
+   needs dP = -dK; constraining only the keystream (e.g. K[i] != K[i+1])
+   leaves the rate at ~3.46%. Any key schedule fixed before a rune is
+   emitted — running keys, math sequences, word-level keys,
+   position-within-word keys, fractionation — cannot produce the observed
+   0.66%. The encryptor must see the previous ciphertext rune (or
+   equivalently select keys plaintext-aware) and avoid doublets ~80% of the
+   time.
+2. **The lag-5 paired-match structure is unexplained.** No simulated
+   mechanism (autokey families, running keys, bifid p5/p7/p10, lag-5-tapped
+   lagged-Fibonacci keystreams, output-avoidance streams) reproduces the
+   selective d=1/d=4 pattern of `lag5-digraph-structure.md`. It is the
+   primary open discriminator for new hypotheses.
+
 ## Status values
 
 | Status | Meaning |

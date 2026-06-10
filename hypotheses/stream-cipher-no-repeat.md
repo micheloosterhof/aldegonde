@@ -1,45 +1,85 @@
-# Hypothesis: Additive Stream Cipher with No-Repeat Keystream
+# Hypothesis: Additive Stream Cipher with Ciphertext-Doublet Avoidance
 
 ## Claim
 
-The ciphertext is produced by adding a keystream to the plaintext:
-C[i] = P[i] + K[i] mod 29, where the keystream K has the property that
-consecutive values are never equal (K[i] != K[i+1]).
+The ciphertext is produced by adding a keystream to the plaintext,
+C[i] = P[i] + K[i] mod 29, where the encryption process partially avoids
+emitting C[i] == C[i-1] (re-keying or nudging when a doublet would occur).
+
+Earlier formulation — "the KEYSTREAM has no repeats, K[i] != K[i+1]" — is
+**mathematically incapable of producing the observed doublet suppression**
+and has been corrected (see below).
 
 ## Status
 
-**Status**: unresolved
+**Status**: unresolved (reformulated; keystream-only variant disproved)
 
 ## Mechanism
 
-A pseudorandom keystream (e.g. LFSR over GF(29), or a de Bruijn sequence) is
-generated with the constraint that no two consecutive keystream values are the
-same. Adding this keystream to plaintext mod 29 produces ciphertext with
-suppressed doublets.
+A ciphertext doublet requires dP[i] = -dK[i] (mod 29). Forbidding dK = 0
+only blocks the channel where a plaintext doublet passes through unchanged;
+all 28 nonzero dK values remain available to cancel nonzero plaintext
+deltas, giving a doublet rate of about (1 - 3.2%)/28 = 3.46% — i.e. no
+suppression at all. Verified by simulation
+(`experiments/mechanism_fingerprint.py`): a K[i] != K[i+1] keystream yields
+3.4-3.5% ciphertext doublets vs the observed 0.66%.
+
+To suppress ciphertext doublets the encryptor must look at what it is
+emitting: when P[i] + K[i] would equal C[i-1], it re-draws or modifies the
+key with high probability (~80% avoidance reproduces the observed 0.66%
+rate and zero triplets). Equivalently, the key selection is plaintext-aware.
+This is a structural requirement for ANY additive-stream explanation of the
+corpus, not just this hypothesis.
 
 ## Evidence for
 
-- An LFSR over GF(29) with a primitive polynomial generates maximum-length
-  sequences where consecutive values are never equal
-- Produces flat output distribution (additive stream cipher with uniform
-  keystream)
-- Doublet suppression arises naturally from the keystream constraint
+- Simulated output-avoidance stream (80% re-key on would-be doublet) matches
+  the base fingerprint: doublet rate ~0.70% (observed 0.66%), ~0 triplets
+  (observed 0), nIoC 1.000 (observed 1.000), flat kappa at all skips.
+- Flat distribution and the absence of any split-test signal are automatic
+  for OTP-like keystreams.
 
 ## Evidence against
 
-- The suppression rate depends on the interaction between plaintext statistics
-  and the keystream constraint. It is unclear whether this produces the specific
-  0.68% doublet rate observed.
-- Does not produce the clean "all doublets map to identity element" algebraic
-  property seen under autokey models
-- Requires knowledge of the specific PRNG to test or break
+- Does not explain the lag-5 paired-match structure
+  (`lag5-digraph-structure.md`): simulated avoidance streams show no d=1/d=4
+  excess. Lag-5-tapped lagged-Fibonacci keystreams (taps {1,5}, {4,5}, with
+  and without avoidance) also fail to produce it.
+- A truly random keystream would make the cipher unsolvable, which
+  contradicts Cicada's stated intent that the Liber Primus can be read;
+  the keystream must be a derivable PRNG, and no candidate construction has
+  been identified.
+
+## Predictions
+
+- Doublet positions should look content-independent and Poisson — consistent
+  with `doublet-spacing-poisson.md` (confirmed).
+- The ~86 surviving doublets are the ~20% acceptance leak; under re-key-once
+  semantics the rate would be (1/29)^2 = 0.12%, too low, so the avoidance is
+  probabilistic or rule-based rather than absolute.
+- If the PRNG is identified, subtracting trial keystreams must account for
+  re-key events, so naive positional subtraction will fail even with the
+  right generator (same loophole as the AN END interrupts).
 
 ## Scripts
 
-None yet. Testing would require hypothesizing a specific PRNG construction.
+- `experiments/mechanism_fingerprint.py` — disproves the keystream-only
+  variant, validates the output-avoidance fingerprint.
+
+## Related
+
+- `explicit-doublet-avoidance.md` — absolute avoidance, disproved (doublets
+  exist); this hypothesis is the probabilistic version.
+- `lag5-digraph-structure.md` — the structure any surviving variant must
+  also explain.
+- `running-key-math-sequence.md`, `running-key-text.md` — fixed keystreams
+  without feedback, both disproved.
 
 ## Verdict
 
-Unresolved. Plausible mechanism but hard to test without knowing the specific
-keystream generator. The lack of a clean algebraic signature makes it harder to
-confirm or deny than the autokey hypothesis.
+The original keystream-constraint formulation is disproved by direct
+calculation and simulation. The corrected formulation — additive stream with
+probabilistic ciphertext-doublet avoidance — is the only mechanism family
+tested so far that matches the base fingerprint (flatness, doublet rate,
+triplets), but it does not yet explain the lag-5 paired-match structure and
+offers no specific keystream construction to attack.

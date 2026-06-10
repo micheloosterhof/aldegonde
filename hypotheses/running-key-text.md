@@ -8,7 +8,7 @@ well-known text converted to runeglish).
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -32,6 +32,11 @@ Simple additive or subtractive combination.
 - The output distribution of English+English mod 29 would not be perfectly
   flat — it would have slight peaks
 - The doublet suppression mechanism is unclear for simple additive running key
+- **Simulation** (`experiments/mechanism_fingerprint.py`): Markov runeglish
+  plaintext + Markov runeglish key, C = P + K mod 29, at full corpus length:
+  doublet rate 3.55-3.63% (observed: 0.66%), nIoC 1.048-1.050 (observed:
+  1.000 — at 13k runes a 1.05 ratio is many sigma), 17-19 triplets
+  (observed: 0). Three independent contradictions.
 
 ## Predictions
 
@@ -40,11 +45,13 @@ English. Known candidate key texts can be tested directly.
 
 ## Scripts
 
-None yet. Should test: solved LP sections as key, reversed LP, Cicada's
-other published texts.
+- `experiments/mechanism_fingerprint.py` — simulated fingerprint comparison.
 
 ## Verdict
 
-Unresolved. The near-perfect flatness of the distribution argues against
-English+English running key (which would show slight non-uniformity). But
-the key source might not be English.
+Disproved for any language-text key (runeglish/English statistics): the
+simulated fingerprint contradicts the observed corpus on doublet rate, IoC,
+and triplets simultaneously. A non-language key source is not covered by
+this hypothesis — that is a generic stream cipher, see
+`stream-cipher-no-repeat.md` (where the doublet constraint requires
+ciphertext feedback that a fixed key text cannot provide).
