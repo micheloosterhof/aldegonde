@@ -21,6 +21,9 @@ Results (see the hypothesis files for verdicts):
 | word pt/ct autokey | 3.5-3.6% | ~1.00 | no                  |
 | wordpos-key        | 3.7%     | 1.118 | no                  |
 | bifid p5/p7/p10    | 3.6-4.0% | 1.19+ | wrong shape         |
+| bits5-p5 (binary)  | 3.3%     | 1.21  | closest shape: d1=d4~27, but d2 also up |
+| gf841 seriation    | 3.3-3.5% | 1.01  | no                  |
+| sparse linear k=5  | 3.5%     | 1.02  | no                  |
 | K[i]!=K[i+1] only  | 3.48%    | 1.000 | no                  |
 | LFG lag-5 taps     | 3.4-3.5% | 1.000 | no                  |
 | output-avoidance   | 0.70%    | 1.000 | no                  |
@@ -181,6 +184,80 @@ def make_bifid(period: int) -> Mechanism:
     return enc
 
 
+def make_bits5(period: int) -> Mechanism:
+    """Binary fractionation: rune -> 5 bits (29 of 32 patterns), transpose
+    the period x 5 bit-matrix of each block, regroup 5-bit chunks mod 29.
+
+    The natural bifid analog for a prime alphabet via 2^5 >= 29; very
+    Cicada-plausible. Closest tested match to the lag-5 d1/d4 shape, but
+    not selective (d2 also rises) and fails doublets/IoC/triplets.
+    """
+
+    def enc(pt: str, wl: list[int]) -> str:
+        out = []
+        for b in range(0, len(pt) - period + 1, period):
+            block = pt[b : b + period]
+            bits = [[(r2i(c) >> k) & 1 for k in range(4, -1, -1)] for c in block]
+            stream = [bits[i][j] for j in range(5) for i in range(period)]
+            for j in range(period):
+                v = 0
+                for bit in stream[5 * j : 5 * j + 5]:
+                    v = (v << 1) | bit
+                out.append(i2r(v % MOD))
+        rem = len(pt) % period
+        if rem:
+            out.extend(pt[len(pt) - rem :])
+        return "".join(out)
+
+    return enc
+
+
+def make_gf841_seriation(width: int) -> Mechanism:
+    """Seriated GF(29^2) cipher: write 2*width runes in two rows, treat each
+    vertical pair as a + b*x in GF(841) = GF(29)[x]/(x^2 - 2), multiply by a
+    fixed key unit, read back rows. The 'go up a field extension' bifid
+    analog; diffuses well but is linear and stateless."""
+
+    def enc(pt: str, wl: list[int]) -> str:
+        t = 2  # quadratic non-residue mod 29
+        u, v = 0, 0
+        while u == 0 and v == 0:
+            u, v = random.randrange(MOD), random.randrange(MOD)
+        out = []
+        blk = 2 * width
+        for b in range(0, len(pt) - blk + 1, blk):
+            top, bot = pt[b : b + width], pt[b + width : b + blk]
+            ntop, nbot = [], []
+            for ar, br in zip(top, bot):
+                a, bb = r2i(ar), r2i(br)
+                ntop.append(i2r((a * u + bb * v * t) % MOD))
+                nbot.append(i2r((a * v + bb * u) % MOD))
+            out.extend(ntop)
+            out.extend(nbot)
+        rem = len(pt) % blk
+        if rem:
+            out.extend(pt[len(pt) - rem :])
+        return "".join(out)
+
+    return enc
+
+
+def make_sparse_linear(k: int) -> Mechanism:
+    """C[i] = alpha*P[i] + beta*P[i+k] mod 29: the degenerate 'bifid spirit'
+    inside the prime field itself (each output mixes two positions)."""
+
+    def enc(pt: str, wl: list[int]) -> str:
+        alpha = 1 + random.randrange(MOD - 1)
+        beta = 1 + random.randrange(MOD - 1)
+        n = len(pt)
+        return "".join(
+            i2r((alpha * r2i(pt[i]) + beta * r2i(pt[(i + k) % n])) % MOD)
+            for i in range(n)
+        )
+
+    return enc
+
+
 def enc_norepeat_keystream(pt: str, wl: list[int]) -> str:
     """Keystream with K[i] != K[i+1] but NO ciphertext feedback."""
     k = random.randrange(MOD)
@@ -263,6 +340,11 @@ def main() -> None:
         ("bifid-p5", make_bifid(5)),
         ("bifid-p7", make_bifid(7)),
         ("bifid-p10", make_bifid(10)),
+        ("bits5-p5", make_bits5(5)),
+        ("bits5-p10", make_bits5(10)),
+        ("gf841-w5", make_gf841_seriation(5)),
+        ("gf841-w10", make_gf841_seriation(10)),
+        ("sparse-lin-k5", make_sparse_linear(5)),
         ("norepeat-keystrm", enc_norepeat_keystream),
         ("lfg-1-5", make_lfg(1, 5, avoid=False)),
         ("lfg-4-5", make_lfg(4, 5, avoid=False)),

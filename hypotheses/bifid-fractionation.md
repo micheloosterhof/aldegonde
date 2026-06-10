@@ -71,3 +71,23 @@ lag-5 kappa (1.45 vs observed 1.07), unlike the selective d=1/d=4 pattern in
 fractionation (it has no mechanism to avoid output doublets and preserves
 coordinate-level language statistics), so other periods and per-word
 variants are very unlikely to survive, though not individually simulated.
+
+GF(29)-native constructions also tested (29 is prime, GF(29) has no
+subfields, so a rune cannot be split losslessly into two field digits;
+these are the principled alternatives):
+
+- **Binary 5-bit fractionation** (rune -> 5 bits via 2^5 >= 29, transpose
+  the block bit-matrix, regroup): the closest tested match to the lag-5
+  shape — period 5 gives d1 and d4 near observed levels (T5z +3.5 to +4.1)
+  — but it is not selective (d2 rises equally) and fails the base
+  fingerprint (doublets 3.3-3.5%, nIoC ~1.20, 20+ triplets).
+- **GF(841) seriation** (vertical pairs as a + b*x in GF(29^2), multiplied
+  by a key unit): diffuses well (nIoC ~1.01) but no doublet suppression and
+  no lag-5 signature.
+- **Sparse linear mix** C[i] = aP[i] + bP[i+5] (the degenerate bifid analog
+  inside the prime field): flat-ish, no signature, full doublets.
+
+All stateless fractionation variants share the fatal flaw: no output
+feedback, hence no way to produce the observed doublet suppression. And
+composing them with a doublet-avoiding output stream would erase the very
+lag-5 coupling that makes them interesting.
