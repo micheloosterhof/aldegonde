@@ -26,10 +26,24 @@ suppression at all. Verified by simulation
 
 To suppress ciphertext doublets the encryptor must look at what it is
 emitting: when P[i] + K[i] would equal C[i-1], it re-draws or modifies the
-key with high probability (~80% avoidance reproduces the observed 0.66%
-rate and zero triplets). Equivalently, the key selection is plaintext-aware.
-This is a structural requirement for ANY additive-stream explanation of the
-corpus, not just this hypothesis.
+key with high probability. Equivalently, the key selection is
+plaintext-aware. This is a structural requirement for ANY additive-stream
+explanation of the corpus, not just this hypothesis.
+
+The avoidance parameter is now pinned (`experiments/unit5_telex_tests.py`):
+the doublet rate fits P(doublet) = (1/5) x (1/29) with NO free parameters
+(86 observed vs 89.3 predicted, z = -0.36). The acceptance probability is
+exactly 1/5 — a suspiciously clean design constant, and the second
+independent appearance of the number 5 in the fingerprint (after the lag-5
+paired-match structure). The 1/5 is realized memorylessly: doublet positions
+are uniform mod 5, gaps have no mod-5 lattice, and word-position rates show
+no period-5 comb — so it is a per-event probability, not a positional
+"units of 5" grid (consistent with the confirmed Poisson spacing). Soft
+hint: the minimum observed doublet gap is 6 where Poisson expects ~2.8 gaps
+of 5 or less (p ~= 0.06). On avoidance, the replacement output is drawn
+uniformly: the missing doublet mass redistributes across Hamming distances
+(canonical 5-bit encoding) in proportion to chance, ruling out a
+single-bit-flip nudge.
 
 ## Evidence for
 

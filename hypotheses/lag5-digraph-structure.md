@@ -93,6 +93,19 @@ negative:
   and without output doublet-avoidance: no d=1/d=4 excess.
 - Output-avoidance OTP (the only mechanism matching the base fingerprint):
   no d=1/d=4 excess.
+- Reversed text (`experiments/unit5_telex_tests.py`): the d1..d4 counts are
+  identical, but this is mathematically forced — equality matches are
+  reflection-symmetric and pair separations are preserved — so direction
+  tests carry no information about this structure.
+- 5-bit telex framing: lag-5 pairs show no Hamming-distance structure under
+  the canonical index encoding (all |z| <= 1.5), and the doublet-avoidance
+  redraws are Hamming-uniform. No evidence of bitwise mechanics, with the
+  caveat that the rune-to-code assignment is unknown.
+
+Note the constant 5 now appears twice independently in the corpus
+fingerprint: this lag-5 window coupling, and the doublet acceptance
+probability of exactly 1/5 (see `stream-cipher-no-repeat.md`). A mechanism
+explaining both with one "5" would be strongly preferred.
 
 Still open:
 

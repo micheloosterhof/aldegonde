@@ -36,7 +36,7 @@ Any valid hypothesis must account for all of these:
 | Distribution | Uniform (chi-sq p=0.55) | 1/29 per rune | |
 | Shannon entropy | 4.857 bits | 4.858 (max) | 99.98% of maximum |
 | IOC | 0.0345 | 1/29 = 0.0345 | Indistinguishable from random |
-| Doublet rate | 0.68% | 3.45% (1/29) | 5.09x suppressed |
+| Doublet rate | 0.66% | 3.45% (1/29) | Fits (1/5)x(1/29) with no free parameters (z=-0.36): acceptance probability exactly 1/5, realized memorylessly (no positional mod-5 frame) |
 | Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
 | Digraphic kappa skip=5 | 29 | 15.4 | Part of a confirmed paired-match structure: lag-5 matches pair up at separations 1 and 4 (joint z=+4.1, global p~=0.01, split-half stable). See `lag5-digraph-structure.md` |
