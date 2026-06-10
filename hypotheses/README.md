@@ -39,6 +39,10 @@ Any valid hypothesis must account for all of these:
 | Doublet rate | 0.68% | 3.45% (1/29) | 5.09x suppressed |
 | Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
+| Digraphic kappa skip=5 | 29 | 15.4 | +3.5 sigma; replicates in both halves; diffuse (no mod-5 phase, no page/word pattern); ~p=0.01 after look-elsewhere; unexplained |
+| Bigram IOC | 1.0256 (normalized) | 1.0251 (doublet-suppressed null) | The +8 sigma elevation vs plain uniform is fully explained by doublet suppression |
+| N-gram repeat counts | Match doublet-suppressed null | — | Apparent trigram-repeat deficit vs uniform null is an artifact |
+| Page-aligned kappa | ratio 1.002 (z=+0.2) | 1.0 | No shared keystream resetting at page/section boundaries |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
 | Word boundaries | Preserved | — | Match English word-length distribution |
