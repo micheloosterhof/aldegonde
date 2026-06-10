@@ -26,6 +26,7 @@ Results (see the hypothesis files for verdicts):
 | sparse linear k=5  | 3.5%     | 1.02  | no                  |
 | K[i]!=K[i+1] only  | 3.48%    | 1.000 | no                  |
 | LFG lag-5 taps     | 3.4-3.5% | 1.000 | no                  |
+| Lorenz SZ42-style  | 3.9%     | 1.081 | no (Tutte leak in basic; flat with rejection, still no lag-5) |
 | output-avoidance   | 0.70%    | 1.000 | no                  |
 
 Two structural conclusions:
@@ -258,6 +259,72 @@ def make_sparse_linear(k: int) -> Mechanism:
     return enc
 
 
+def make_lorenz(*, motor: bool, reject_invalid: bool,
+                reject_doublet: bool) -> Mechanism:
+    """Lorenz SZ42-style telex cipher on 5-bit rune codes.
+
+    C = P xor chi xor psi per bit; chi wheels (periods 41,31,29,26,23) step
+    every character, psi wheels (43,47,51,53,59) step together under motor
+    control (mu61/mu37 total motor). Invalid outputs (>= 29) optionally
+    re-step the machine; optional 80% doublet rejection stage.
+
+    Result: basic version leaks the classic psi-limitation signature
+    (nIoC ~1.08, the Tutte delta weakness); with rejection stages it matches
+    the base fingerprint but produces NO lag-5 structure — Baudot's "5" is
+    intra-character and does not couple positions five runes apart.
+    """
+
+    chi_periods = [41, 31, 29, 26, 23]
+    psi_periods = [43, 47, 51, 53, 59]
+
+    def enc(pt: str, wl: list[int]) -> str:
+        chi = [[random.randint(0, 1) for _ in range(p)] for p in chi_periods]
+        psi = [[random.randint(0, 1) for _ in range(p)] for p in psi_periods]
+        m61 = [random.randint(0, 1) for _ in range(61)]
+        m37 = [random.randint(0, 1) for _ in range(37)]
+        cpos = [0] * 5
+        ppos = [0] * 5
+        p61 = p37 = 0
+        out: list[str] = []
+
+        def key() -> int:
+            k = 0
+            for b in range(5):
+                k |= (chi[b][cpos[b]] ^ psi[b][ppos[b]]) << b
+            return k
+
+        def step() -> None:
+            nonlocal p61, p37
+            for b in range(5):
+                cpos[b] = (cpos[b] + 1) % chi_periods[b]
+            do_psi = True
+            if motor:
+                p61 = (p61 + 1) % 61
+                if m61[p61]:
+                    p37 = (p37 + 1) % 37
+                do_psi = m37[p37] == 1
+            if do_psi:
+                for b in range(5):
+                    ppos[b] = (ppos[b] + 1) % psi_periods[b]
+
+        for ch in pt:
+            p = r2i(ch)
+            c = p ^ key()
+            for _ in range(60):
+                bad = (reject_invalid and c >= MOD) or (
+                    reject_doublet and out and i2r(c % MOD) == out[-1]
+                    and random.random() > 0.2)
+                if not bad:
+                    break
+                step()
+                c = p ^ key()
+            out.append(i2r(c % MOD))
+            step()
+        return "".join(out)
+
+    return enc
+
+
 def enc_norepeat_keystream(pt: str, wl: list[int]) -> str:
     """Keystream with K[i] != K[i+1] but NO ciphertext feedback."""
     k = random.randrange(MOD)
@@ -345,6 +412,10 @@ def main() -> None:
         ("gf841-w5", make_gf841_seriation(5)),
         ("gf841-w10", make_gf841_seriation(10)),
         ("sparse-lin-k5", make_sparse_linear(5)),
+        ("lorenz-basic", make_lorenz(motor=True, reject_invalid=False,
+                                     reject_doublet=False)),
+        ("lorenz-rej32+dbl", make_lorenz(motor=True, reject_invalid=True,
+                                         reject_doublet=True)),
         ("norepeat-keystrm", enc_norepeat_keystream),
         ("lfg-1-5", make_lfg(1, 5, avoid=False)),
         ("lfg-4-5", make_lfg(4, 5, avoid=False)),
