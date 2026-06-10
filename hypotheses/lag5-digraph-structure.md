@@ -44,6 +44,12 @@ Caveat: the pattern family (separations {1, L-1}) was chosen after seeing the
 data; the d=4 margin was measured after d=1 flagged, but it is an orthogonal
 component and landed exactly on the complementary separation 5-1=4.
 
+**Image-verified**: the highest-value events (the chained page-50 cluster
+and the densest pocket-1 events on page 16) were checked glyph-by-glyph
+against the source page scans (rtkd/iddqd) and all match the transcription
+— see `transcription-verification.md`. The structure is in Cicada's ink,
+not transcription noise.
+
 ## Spatial distribution
 
 - Per-section lag-5 digraph kappa: section 4 (positions 3612..5506, LP pages

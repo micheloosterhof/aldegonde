@@ -7,6 +7,29 @@ mistranscribed rune destroys or creates an event. 'page N' = the
 rune lines on that page, top to bottom. First line of each page is
 shown in the index below for matching against the JPEGs.
 
+## Verification results (against rtkd/iddqd liber-primus__images--unsolved)
+
+Image mapping: our page N = N.jpg for N <= 49 and (N+1).jpg for N >= 50
+(part 50 of the transcription file is a runeless art page).
+
+Verified glyph-by-glyph on the source scans (2400x3600, cropped and
+upscaled per line):
+
+| Target | Image | Result |
+|--------|-------|--------|
+| Page 50 cluster: d1@12157, d1@12158, d4@12159, d4@12163 (the repeated trigram S-D-NG at distance 5, line 11 end + line 12 start) | 51.jpg | **CONFIRMED** — the repeat sits inside one 8-rune word ᛋᛞᛝᚷᛚᛋᛞᛝ spanning the line break |
+| Page 16 d4@3768 + d1@3772 (EA..C/EA..C frame + C-EA digraph, line 1) | 16.jpg | **CONFIRMED** — all four EA glyphs and both C-EA pairs present |
+| Page 16 d1@3840 (H-G digraph repeat, line 4) | 16.jpg | **CONFIRMED** — H G L OE F H G as transcribed; the G-G doublet ending the line also confirmed |
+| Page 16 d4@4004 (F..G/F..G frame, lines 11-12) | 16.jpg | **CONFIRMED** — and the event spans a sentence boundary (the ':' sits mid-event) |
+| Page 7 doubled word ᛞᛝ ᛞᛝ (line 7) | 7.jpg | **CONFIRMED** — E · NYIE · DNG · DNG · LULX with clear word dots |
+
+Conclusion: the highest-value targets — the chained page-50 cluster and
+the densest pocket-1 events — are all in Cicada's ink, not transcription
+error. The lag-5 paired-match structure is a property of the source
+document. (Unverified remainder: pocket-2 events on pages 21-22, ~10
+other events, and most of the 86 doublets; the calibration reads matched
+the transcription everywhere examined, so the error rate is low.)
+
 ## Page index (first line of each page containing events)
 
   page  0: ᛋᚻᛖᚩᚷᛗᛡᚠᛋᚣᛖᛝᚳᚦᛄᚷᚫᚠᛄᛟ
