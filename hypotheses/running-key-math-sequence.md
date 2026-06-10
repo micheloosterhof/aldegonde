@@ -29,6 +29,17 @@ the key depends only on the position i.
   ~0.0345, indistinguishable from random. English target: 0.055-0.067.
 - These sequences are too "structured" to act as good keystreams — they have
   patterns that would partially cancel with English frequencies.
+- **Interrupt-tolerant test** (`experiments/lp_attack_battery.py`): the solved
+  "AN END" page used K[n] = prime(n) - 1 *with ᚠ-rune keystream interrupts*
+  (some ciphertext ᚠ are literal plaintext F and consume no key). Interrupts
+  desynchronize the keystream, so a plain positional IOC subtraction test
+  would fail even with the correct sequence — a loophole in the evidence
+  above. A beam search over interrupt choices (scored by runeglish trigram
+  fitness) closes it: run per page with K[n] = prime(n) - 1 in both Vigenere
+  and Beaufort sense, with and without atbash, it fully recovers the "AN END"
+  plaintext from scratch (fitness -3.42 vs plaintext reference -3.31), but
+  every unsolved page stays at random-level fitness (~ -6.2 vs random
+  reference -6.84).
 
 ## Predictions
 

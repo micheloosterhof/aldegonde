@@ -13,7 +13,7 @@ All paths are relative to the repository root.
 
 | File | Contents |
 |------|----------|
-| `data/page0-58.txt` | Unsolved ciphertext (13,136 runes, 3,367 words) |
+| `data/page0-58.txt` | Unsolved ciphertext (13,136 runes, 3,367 words). Caution: the final two `%`-pages in this file are NOT unsolved — they are the solved "AN END" page (85 runes, prime-1 keystream with ᚠ interrupts) and the plaintext parable page (95 runes). Exclude them when computing statistics of the unsolved cipher. |
 | `data/liber-primus__transcription--master.txt` | Full transcription (solved + unsolved, 15,933 runes total) |
 | `lp_section_data.py` | Per-section word lists and page ranges for all 13 sections |
 

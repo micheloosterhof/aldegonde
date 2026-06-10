@@ -10,7 +10,10 @@ statistical properties table and status definitions.
 ## Key context
 
 - The unsolved ciphertext is in `data/page0-58.txt` (13,136 runes, 3,367
-  words). All file paths are relative to the repository root.
+  words). All file paths are relative to the repository root. The final two
+  `%`-pages of this file are solved (the "AN END" page and the plaintext
+  parable page, ~180 runes) — exclude them from statistics of the unsolved
+  cipher.
 - The full transcription (solved + unsolved) is in
   `data/liber-primus__transcription--master.txt`. Do NOT analyze the solved
   early pages as if they were unsolved ciphertext.
