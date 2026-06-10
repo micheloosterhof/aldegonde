@@ -9,7 +9,15 @@ Tests and results:
    diagonal). Result: lag-1 full-table z=+6.7 driven entirely by the
    diagonal (doublet suppression); off-diagonal z=+0.17. Every other lag is
    flat both ways. There is NO pairwise structure at any distance beyond
-   doublet suppression.
+   doublet suppression. Note: this test does NOT contradict the lag-5
+   pairing anomaly and could never have found it - the pairing is a
+   4-point correlation (two coincidence events at adjacent positions).
+   Its entire 2-point footprint is the +1.5 sigma diagonal excess at lag
+   5 (chi2 contribution ~38, under a +/-41 noise floor at df=840). The
+   anomaly only becomes visible in statistics over PAIRS of lag-5 match
+   indicators - confirming the order hierarchy: 1-point flat, 2-point
+   flat except doublets, 3-point flat, and the cipher's only other
+   signature lives at 4th order.
 2. Isomorph duplicates, lengths 6-12 (catches key reuse through different
    substitution alphabets - quagmire-style - which aligned kappa cannot
    see). Against the library's uniform-random baseline this shows a FAKE
