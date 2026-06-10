@@ -11,7 +11,8 @@ positions back instead of encrypting normally.
 
 ## Status
 
-**Status**: plausible
+**Status**: unresolved (unfalsifiable from ciphertext statistics alone —
+see the degrees-of-freedom audit below)
 
 ## Mechanism
 
@@ -31,6 +32,30 @@ echo pattern (paired lag-5 ciphertext repeat) they emit the plaintext from
 either cause ~0.5% tolerable corruption, or are suppressed by the encoder
 (the same output-watching machinery as doublet avoidance), with identical
 observable statistics at higher marking rates.
+
+## Degrees-of-freedom audit (read before the evidence)
+
+The "full-fingerprint match" below is weaker than it looks. The model has
+three fitted parameters (doublet acceptance probability, u1, u4) and the
+fingerprint contains effectively three independent numbers (doublet rate,
+d1, d4). Everything else follows automatically: nIoC = 1.000 and flat
+split tests come free with ANY OTP-based construction; ~0 triplets follows
+from doublet avoidance; mono kappa-5 and T5z are arithmetic consequences
+of the d1/d4 counts; d2/d3 are at chance in model and data alike. Three
+knobs fitting three numbers is a re-parameterization of the observations,
+not a confirmed mechanism.
+
+The model's distinguishing claims — plaintext repeats at the event
+positions, section 4 is repetitive text — are unobservable without a
+decryption. It therefore forbids nothing measurable from the ciphertext,
+and it cannot currently be distinguished from the nulls variant (a) or
+from author-side copy-paste artifacts during page composition. Its honest
+content is: (i) the information-theoretic trichotomy (nulls /
+key+plaintext coincidence / plaintext-repeat marking) is exhaustive for
+deterministic copies, and coincidence is disfavored by the mono kappa-5
+rate check; (ii) IF assumed, it supplies conditional constraints
+(P[i] = P[i-5] at events) usable to prune key searches — conclusions from
+such searches are conditional on this unverified assumption.
 
 ## Evidence for
 
@@ -93,10 +118,15 @@ observable statistics at higher marking rates.
 
 ## Verdict
 
-Plausible — the first mechanism to reproduce the complete statistical
-fingerprint of the unsolved corpus, and the only known resolution of the
-information-theoretic problem posed by deterministic ciphertext copies.
-The cipher picture becomes: an additive stream with 1/5-acceptance doublet
-avoidance, plus a designed lag-5 back-reference escape for plaintext
-repetitions. The keystream itself remains unidentified, but the event
-positions now carry exploitable plaintext constraints.
+Unresolved, and honestly: a consistent re-description rather than a tested
+mechanism. Its simulation "match" spends three fitted parameters on the
+three independent fingerprint numbers (see the audit above), and its
+distinguishing claims are unobservable without a decryption. What survives
+scrutiny: the information-theoretic trichotomy for deterministic copies is
+sound, the coincidence branch is rate-disfavored, and the opportunity-rate
+feasibility check passed (it could have failed: had runeglish offered
+fewer than 29 digraph-repeat opportunities, the model would be dead). The
+model earns no status beyond that until it makes a ciphertext-observable
+prediction that was not used in its construction — or until a key search
+conditioned on its P[i] = P[i-5] constraints produces readable text, which
+would be the only real confirmation.
