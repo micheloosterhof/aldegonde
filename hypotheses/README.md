@@ -48,6 +48,18 @@ Any valid hypothesis must account for all of these:
 | Word boundaries | Preserved | — | Match English word-length distribution |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 
+## Negative results from the gap audit
+
+`experiments/gap_audit.py` closed eight previously untested angles, all
+clean: no keystream reuse at any lag 1-6400 (rules out keystreams continuing
+across pages and periods up to ~6400); doublet suppression present in every
+section with no per-section periodicity or split signal (one corpus-wide
+mechanism, not different cipher families per section); reversed-direction
+(right-to-left) autokey excluded by split tests on the reversed corpus; no
+acrostics in first runes of words/lines/sentences/pages; doublet rune values
+uniform (no marker rune); no per-line keystream reset; zero compressible
+redundancy (zlib); word GP-sums unremarkable under the proper null.
+
 ## Structural constraints
 
 Two consequences of the table that prune whole mechanism families
