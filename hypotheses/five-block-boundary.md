@@ -130,14 +130,29 @@ fingerprint:
   explain.
 - `bifid-fractionation.md` — disproved block-of-5 alternative.
 
+## Co-tiling test (the unified version is dead)
+
+`experiments/cotiling_test.py` asks whether the doublets (as group
+boundaries) and the lag-5 events (as group edges) sit on ONE shared {5,6}
+grid: every close doublet-to-event distance would have to be
+{5,6}-expressible (chance for unrelated positions ~47%; a shared grid
+demands 100%). Observed: 4/22 = 18%, below even the unrelated null
+(binomial p ~ 0.006), with encounters at distances 1, 3, and 9 that are
+impossible on any shared tiling. Boundary-tiling facts that survive:
+strict periodic length patterns are excluded; free-choice {5,6} fits all
+doublet gaps except two gaps of exactly 7; the WW doublet at page 50's
+first rune pair excludes page resets (the stream flows across pages).
+
 ## Verdict
 
-Unresolved, half-confirmed by simulation: the block structure
-(consecutive-distinct outputs, free boundaries, dead time) reproduces the
-ENTIRE base fingerprint including the mono lag-5 excess — it is the best
-generative model of the cipher's doublet behavior to date. But none of the
-tested echo mechanisms produce the selective d1/d4 pair structure: that
-part of the fingerprint requires atomic two-symbol copy events (an output
-digraph, or a first+last-of-5 frame, repeated five positions later with
-certainty), and what operation in the cipher produces those remains the
-central open question.
+The SINGLE-grid version — one group structure explaining doublet
+suppression AND the lag-5 echoes — is disproved by the co-tiling test.
+The components survive separately: (a) the doublet machinery
+(consecutive-distinct within ~5-unit spans, or equivalently memoryless 1/5
+acceptance with positional dead time) reproduces the entire base
+fingerprint in simulation and remains the best generative model of the
+doublet behavior; (b) the lag-5 copy events are a DISTINCT mechanism —
+atomic two-symbol echoes (an output digraph, or a first+last-of-5 frame,
+repeated five positions later with certainty) that do not align with the
+doublet grid. Why both mechanisms involve the constant 5 — shared design
+aesthetic or deeper connection — is the open question.
