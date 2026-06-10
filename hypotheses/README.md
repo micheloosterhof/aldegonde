@@ -60,6 +60,22 @@ acrostics in first runes of words/lines/sentences/pages; doublet rune values
 uniform (no marker rune); no per-line keystream reset; zero compressible
 redundancy (zlib); word GP-sums unremarkable under the proper null.
 
+`experiments/missed_tests.py` added the remaining unused tests, all
+negative: full 29x29 contingency chi2 at every lag 1-60 is flat
+off-diagonal (the ONLY pairwise structure at any distance is the lag-1
+doublet diagonal); isomorph duplicates are flat against a
+doublet-suppressed null (the library's uniform baseline shows a FAKE +6
+sigma — third artifact of the doublet-suppression trap, after bigram IoC
+and trigram repeats: any null for this corpus must include the doublet
+rate); delete-marker periodicity scans (29 interrupter candidates x
+periods 2-30) close the "periodic key hidden by AN-END-style interrupts"
+loophole; marker-reset keying flat; numeric autocorrelation flat (lag-1
+r = -0.0297 is quantitatively the doublet artifact); DFT spectrum has no
+lines; per-rune positions uniform; sliding-window nIoC homogeneous
+(retiring KRAKUP's nonhomogeneity hint); cross-section distributions
+identical. The corpus has exactly two statistical departures from
+randomness: doublet suppression and the lag-5 pairing.
+
 ## Structural constraints
 
 Two consequences of the table that prune whole mechanism families
