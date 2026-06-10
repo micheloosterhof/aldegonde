@@ -47,6 +47,13 @@ rune at position i+1 is the identity element of the TR.
   rules out continuous ciphertext autokey.
 - **Bigram split also random**: Splitting by (C[i-2], C[i-1]) gives mean IOC
   0.0348, also random. Rules out 2-deep autokey variants.
+- **Depth-L split random for L=1..8**: Splitting C[i] by C[i-L] (which under
+  C[i] = f(P[i], C[i-L]) with any TR must yield permuted-plaintext groups
+  with IOC ~1.7 normalized) gives mean group nIOC of 0.99-1.03 for every
+  depth 1 through 8, on the corpus and within sections 4 and 8 separately.
+  Rules out lagged ciphertext autokey with feedback depth up to 8 — tested
+  while chasing the lag-5 anomaly (see `lag5-digraph-structure.md`), which a
+  depth-5 ciphertext autokey would have explained elegantly. It does not.
 
 ## Predictions
 
