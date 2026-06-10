@@ -66,6 +66,31 @@ design element.
 - No algebraic relation found inside the d1/d4 events (anchor values,
   B-A deltas, and middle-position deltas all uniform).
 
+## Simulator results
+
+`experiments/five_block_simulator.py` implements the mechanism with
+variable round lengths (no fixed phase), consecutive-distinct outputs,
+5-position dead time, and three tunable echo mechanisms (adjacent slot-pair
+carryover qA, edge-slot carryover qB, output echo e = avoidance resolving
+to C[i-5]). Grid search over 64 parameter settings against the full
+fingerprint:
+
+- **Base fingerprint: reproduced exactly.** Best setting: doublets 0.640%
+  +/- 0.032 (LP 0.664), triplets 0 (LP 0), nIoC 1.000 (LP 1.000), mono
+  kappa-5 1.070 +/- 0.041 (LP 1.073). Four of four base statistics, the
+  mono lag-5 excess included, from the block structure plus a 10% output
+  echo.
+- **The d1/d4 selectivity: NOT reproduced anywhere in the grid.** All echo
+  mechanisms spread the match excess across separations roughly evenly
+  (best: d1=19, d2=18, d3=18, d4=17, d5=22 vs LP's 29, 15, 14, 28, 19).
+  The carryover excess is diluted by the plaintext-match requirement
+  (~6% visibility per carried slot), and chained carryovers leak into d5,
+  which the data forbids. The LP excess is concentrated in atomic PAIRS at
+  separations exactly 1 and 4 with no singles and no longer-range
+  correlation — as if discrete events copy either an adjacent output
+  digraph or a (first,last)-of-5 frame from five positions back, with
+  certainty rather than through a plaintext coincidence.
+
 ## Predictions
 
 - Doublet gaps of exactly 5 should remain absent as more text is analyzed
@@ -73,13 +98,13 @@ design element.
 - If unit phase is locally stable over short ranges, nearby lag-5 event
   pairs should show consistent relative phase; measuring phase coherence
   length could localize the reset trigger (word? line? doublet emission?).
-- A simulated implementation (5-round keystream, consecutive-distinct
-  outputs, edge carryover at a tunable rate, phase reset on some trigger)
-  should reproduce doublet rate, dead time, AND the d1/d4 shape
-  simultaneously. Building this simulator is the direct next step.
+- Any refinement must generate d1/d4 events as atomic deterministic copy
+  events (not plaintext-coincidence-gated), at a rate of ~1 per 600 runes,
+  while leaving d2, d3, and d5 exactly at baseline.
 
 ## Scripts
 
+- `experiments/five_block_simulator.py` — generative simulator + grid search.
 - `experiments/unit5_telex_tests.py` — rate fit, phase frames, cooldown.
 - `experiments/lag5_digraph_chase.py` — the d1/d4 structure.
 - `experiments/mechanism_fingerprint.py` — harness for the simulator test.
@@ -94,8 +119,12 @@ design element.
 
 ## Verdict
 
-Unresolved. Currently the only single-mechanism explanation for all three
-independent appearances of the constant 5 in the fingerprint. Needs a
-concrete simulator implementation to test whether one parameter setting can
-hit the full fingerprint, and a phase-coherence measurement to constrain
-the unit reset rule.
+Unresolved, half-confirmed by simulation: the block structure
+(consecutive-distinct outputs, free boundaries, dead time) reproduces the
+ENTIRE base fingerprint including the mono lag-5 excess — it is the best
+generative model of the cipher's doublet behavior to date. But none of the
+tested echo mechanisms produce the selective d1/d4 pair structure: that
+part of the fingerprint requires atomic two-symbol copy events (an output
+digraph, or a first+last-of-5 frame, repeated five positions later with
+certainty), and what operation in the cipher produces those remains the
+central open question.
