@@ -65,6 +65,19 @@ design element.
   positive confirmation.
 - No algebraic relation found inside the d1/d4 events (anchor values,
   B-A deltas, and middle-position deltas all uniform).
+- **Ciphertext-value-driven block lengths excluded**
+  (`experiments/value_blocking_tests.py`): the natural source for the 4/5/6
+  length variation — packing runes into a fixed capacity so high values
+  overflow earlier — is testable when the rule consumes ciphertext values,
+  because the 86 doublets mark boundaries. Rune values (index and GP) in
+  windows before doublets and before lag-5 events are at corpus baseline
+  (all |z| < 1), and a scan of ~600 capacity-accumulation rules tops out at
+  z = +3.0, the expected maximum of the scan (a true rule would put all 86
+  doublets on boundaries; the best rule catches 24 vs 15 chance). A
+  PLAINTEXT-value-driven rule remains open — it is progressively
+  decryptable, so design-plausible — but it is invisible to ciphertext
+  statistics, and block-length quantization washes out of the doublet gap
+  distribution by the CLT at the observed ~151 mean gap.
 
 ## Simulator results
 
