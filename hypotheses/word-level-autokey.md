@@ -37,6 +37,14 @@ Possible forms:
 
 ## Evidence against
 
+- **Additive/affine per-word variants are disproved** by the word transform
+  census (`word-transform-census.md`): a constant shift, Beaufort, affine,
+  reversal, rotation, or transposition per word would turn the plaintext's
+  ~8,000 repeated word pairs into pairs of its transform class; every class
+  sits at the doublet-corrected random baseline. Whatever the key schedule,
+  the per-word transform cannot be a constant additive/affine map. Only a
+  general substitution alphabet per word (or position-varying keys within
+  words) survives.
 - If the per-word key is derived from the previous word's ciphertext, the
   within-word cipher would still be f(word_key, P[i]) for each rune, and
   the word_key is derivable from the ciphertext. So within each word, the
