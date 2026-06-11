@@ -56,6 +56,18 @@ explain ALL of these (see `README.md` for exact numbers):
 
 ## Common pitfalls
 
+- The last 95 runes of `data/page0-58.txt` are the solved plaintext Parable
+  page. Exclude them: the cipher stream is 13,041 runes with 88 doublets.
+- `aldegonde.stats.isomorph` compares against *uniform random* text. The
+  doublet suppression alone collapses pattern diversity, which makes the
+  cipher look 6-11 sigma anomalous on isomorphs. Under a doublet-corrected
+  Markov null the anomaly vanishes entirely
+  (`experiments/isomorph_corrected.py`). Always use a doublet-corrected
+  null for pattern-class statistics.
+- Line-initial rune frequencies are strongly non-uniform. This is a
+  typesetting artifact (present in solved pages too), not cipher structure.
+
+
 - The rune numbering question is unresolved. The cipher could use 0-based
   indices, GP prime values, or some other mapping. Do not assume any scheme.
 - Many simple cipher classes are already disproved. Check existing hypothesis

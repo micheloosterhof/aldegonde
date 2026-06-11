@@ -27,6 +27,11 @@ suppressed doublets.
 
 ## Evidence against
 
+- The word-aligned repeated 7-gram (`repeated-phrase-dju-bei.md`) is hard to
+  reconcile with a position-driven keystream: if the keystream states at the
+  two locations were equal they would stay synchronized past the 7 runes
+  (LFSR-style states evolve deterministically), but the match dies
+  immediately. Under any keystream-only model the event is chance (p < 1e-3).
 - The suppression rate depends on the interaction between plaintext statistics
   and the keystream constraint. It is unclear whether this produces the specific
   0.68% doublet rate observed.

@@ -32,6 +32,8 @@ Simple additive or subtractive combination.
 - The output distribution of English+English mod 29 would not be perfectly
   flat — it would have slight peaks
 - The doublet suppression mechanism is unclear for simple additive running key
+- The word-aligned repeated phrase ᛞᛄᚢ-ᛒᛖᛁ (`repeated-phrase-dju-bei.md`)
+  would be pure chance (p < 1e-3) under a non-repeating running key
 
 ## Predictions
 

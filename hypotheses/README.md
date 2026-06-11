@@ -17,6 +17,13 @@ All paths are relative to the repository root.
 | `data/liber-primus__transcription--master.txt` | Full transcription (solved + unsolved, 15,933 runes total) |
 | `lp_section_data.py` | Per-section word lists and page ranges for all 13 sections |
 
+**Caution — plaintext contamination**: the last 95 runes of `page0-58.txt`
+are the solved plaintext "Parable" page (ᛈᚪᚱᚪᛒᛚᛖ. = "PARABLE. LIKE THE
+INSTAR..."). The true unsolved cipher stream is the first **13,041 runes**
+(with **88** doublets, not 89). Exclude the final section before computing
+statistics. In the master transcription the solved pages are the *first*
+2,797 runes; `page0-58.txt` is the remainder (rune offset 2,797 onward).
+
 In the transcription files, delimiters are: `-` = word boundary, `.` = sentence
 boundary, `%` = line break within a page, `&` = page break, `$` = section
 break (red rune divider).
@@ -41,8 +48,12 @@ Any valid hypothesis must account for all of these:
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
-| Word boundaries | Preserved | — | Match English word-length distribution |
+| Word boundaries | Preserved | — | Word-length shape is English-like but words run longer than solved pages (mean 4.42 vs 3.62, KS p<1e-4); the solved Parable page (4.75) suggests style, not cipher |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
+| Repeated 7-gram ᛞᛄᚢᛒᛖᛁᚫ | 1 (word-aligned) | 0.005 | Key-state recurrence; see `repeated-phrase-dju-bei.md` |
+| Pairwise dependence C[i] vs C[i+d] | None for d=2..100 (full 29x29 contingency) | — | Only d=1 (doublets) is anomalous |
+| DFT spectrum (all multipliers, all real frequencies) | White noise | — | No periodic additive keystream of any period |
+| Line-initial runes | Non-uniform (chi-sq p~1e-7) | Uniform | Layout artifact: solved pages show the same bias (p=0.009, r=0.41 correlation); line-final runes uniform — consistent with glyph-width-driven line wrap, not cipher structure |
 
 ## Status values
 
