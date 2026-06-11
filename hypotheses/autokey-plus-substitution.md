@@ -60,11 +60,39 @@ Possible inner layer mechanisms:
 
 ## Scripts
 
-None yet. Key next steps:
-- Analyze the delta text bigram structure in detail — which bigrams are
-  elevated may reveal the inner substitution
-- Check if the delta text's word-level statistics differ from the ciphertext
-- Try frequency analysis on the 28-symbol delta text
+- `experiments/jstream_battery.py` — full test battery on the 28-symbol
+  inner stream J[t] = (C[i] - C[i-1] - 1) mod 28 (the delta text's live
+  values), June 2026. Tests BOTH interrupter alignments: doublet steps
+  deleted (EA-as-ditto reading: the marked rare rune consumes plaintext but
+  no key, so deleting doublets re-aligns a periodic inner key) and doublet
+  steps as gaps (the marked rune consumes key). Results, all flat:
+  - kappa at every shift, both alignments: max |z| ~3.8 of 6,475 shifts,
+    below the expected extreme for that many trials
+  - Friedman column IoC, periods 2-120, compressed stream: top 1.0155
+    (~1.7 sigma). Column IoC is permutation-invariant, so this excludes a
+    periodic inner key for ANY mixed alphabet, in both alignments
+  - CRT projections mod 2/4/7/14 (28 = 4 x 7): marginals and kappa flat
+    (a mod-14 marginal blip at p=0.006 is noise projection: no step-size
+    wheel-distance trend, r=0.08 p=0.68, and no clockwise vs
+    counterclockwise asymmetry, p=0.12)
+  - linear functionals (J[t+d] + a*J[t] + b) mod 28, d <= 20: none
+  - pairwise contingency J[t] vs J[t+d], d <= 50: none (flatness at d=1
+    argues against an inner layer g(P[i], P[i-1]) with generic mixing)
+  - DFT, all multipliers x all real frequencies: white
+  - J grouped by position-in-word: flat (no word-keyed inner layer)
+  - repeated J n-grams: at chance except the DJU-BEI repeat
+
+## Additional constraint (June 2026)
+
+Any cipher of the form **C[i] = f(C[i-1], P[i])** with f(c, .) a
+permutation for each c — which includes this model with a memoryless inner
+layer, for EVERY alphabet family — is excluded analytically: given
+C[i-1] = c, the next-symbol distribution would be a permuted mixture of
+English conditional letter distributions (strongly non-uniform), but the
+observed bigram rows are uniform off the diagonal. The inner layer
+therefore needs at least one more symbol of hidden context beyond
+(C[i-1], P[i]), and by the DJU-BEI depth (`repeated-phrase-dju-bei.md`)
+that context must be SHORT and plaintext-driven so the state can recur.
 
 ## Related
 
@@ -72,10 +100,44 @@ None yet. Key next steps:
 - `substitution-plus-autokey.md` — Substitution before autokey doesn't flatten
   IOC (preserves it). The inner layer here must be something that DOES flatten.
 
+## Simulation exclusion of bounded-context inner layers (June 2026)
+
+`experiments/inner_layer_sim.py` generates runeglish-like plaintext from
+the repo's trigram/quadgram tables, encrypts with C[i] = C[i-1] - M[i]
+where M[i] = g(P[i], ..., P[i-k]) for random tables g, and measures the
+same J statistics observed on the real cipher:
+
+| inner layer | J marginal chi2 (obs 41.7) | J d=1 contingency (obs ~729) |
+|-------------|---------------------------:|------------------------------:|
+| memoryless g(P) | 27,164 ± 6,947 | 6,563 ± 836 |
+| lag-1 g(P,P') | 2,276 ± 522 | 6,601 ± 410 |
+| lag-2 g(3 runes) | 356 ± 82 | 1,749 ± 117 |
+| lag-3 g(4 runes) | 89 ± 25 | 1,067 ± 59 |
+
+Every generic bounded-context table up to 4 runes of plaintext context is
+excluded (lag-3 by 5.7 sigma on the d=1 contingency). Real plaintext has
+longer-range structure than the order-3 simulator, which would only make
+real lag-3 more detectable. Caveat: a *designed* (balanced) table rather
+than a random one could suppress these statistics, but flattening the d=1
+joint alone imposes ~729 simultaneous design constraints; pushing all
+measured statistics to chance requires g to approach a strong
+pseudo-random function of its context.
+
 ## Verdict
 
-Unresolved. The delta text analysis provides the strongest signal we've seen:
-significant bigram structure, F suppression, and a clean 28-symbol alphabet.
-This suggests the outer layer IS autokey, and there's an inner layer that
-flattens the English frequency distribution before autokey is applied. The
-inner layer is the key unknown.
+Unresolved, but boxed in hard. The inner 28-symbol stream is flat against
+every periodicity, recurrence, CRT, functional, positional, and
+bounded-context test. What survives:
+
+1. **Uniform keystream + rare-rune ditto**: J[t] = img(P[t]) + K[t] with
+   K effectively uniform-iid (true pad or strong PRNG), plus the doublet
+   rule marking a rare plaintext event. This fits every observed statistic;
+   under it the DJU-BEI depth is a ~0.5% coincidence and the only
+   recoverable plaintext information is the 89 marked positions and the
+   word lengths.
+2. **A designed, balanced inner table with >= 5 runes of context** (or
+   equivalent mixing) — enough to defeat the simulation bounds — whose
+   state recurred once to produce the DJU-BEI depth, which this variant
+   explains better than chance.
+
+The DJU-BEI repeat is the main evidence discriminating (2) over (1).
