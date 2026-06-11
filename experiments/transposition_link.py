@@ -42,6 +42,7 @@ copies, and no tested geometry yields a more natural pre-stream. The
 mystery is geometry-invariant: whatever produced the stream, it contained
 deterministic short-range copies and a 5x coincidence suppression."""
 
+import random
 from math import sqrt
 
 import numpy as np
@@ -60,7 +61,6 @@ n = len(text)
 a = np.array([c3301.r2i(c) for c in text])
 
 def profile(s: np.ndarray) -> dict:
-    m = len(s)
     out = {}
     out["dbl%"] = 100 * float(np.mean(s[:-1] == s[1:]))
     out["tripl"] = int(np.sum((s[:-2] == s[1:-1]) & (s[1:-1] == s[2:])))
@@ -109,10 +109,9 @@ for width in list(range(2, 31)) + [n // 5]:
 for width in (2, 3, 4, 6, 10):
     pre = untranspose_block(a, width, 5)
     p = profile(pre)
-    print(f"{'%d rows x 5' % width:22s} {p['dbl%']:5.2f} {p['tripl']:5d} {p['AABB']:4d}  {p['top-pair']}")
+    print(f"{f'{width} rows x 5':22s} {p['dbl%']:5.2f} {p['tripl']:5d} {p['AABB']:4d}  {p['top-pair']}")
 
 # baseline for AABB/triplets in doublet-suppressed random (visible-like)
-import random
 
 rate = 86 / (n - 1)
 sims = []
