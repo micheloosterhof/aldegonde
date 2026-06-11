@@ -39,11 +39,22 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
   with a sentence stop. The 7th matching rune ᚫ is then the *first rune of
   the next section* — if sections are independent units this last rune is a
   1/29 bonus coincidence; if the stream is continuous the depth is 7.
+- The third word continues the pattern: ᚫᚠ (occ 1) vs ᚫᛄ (occ 2) — both
+  2 runes, sharing the first rune and diverging at the second. The
+  word-length pattern of the match is 3,3,2 in both places. Under an
+  aligned additive state, ciphertext diverges exactly where plaintext
+  diverges — consistent with third words sharing their first letter
+  (e.g. AN vs AD).
 - The secondary repeat: `...ᛝᛉᛞᛁ-ᛗᛝᚣᚪᛝᚠᛉᛁᛟᚷᛚ...` vs
   `...ᛏᛝᛁ-ᛗᛝᚣᚪᚫ-ᛝ...` — the word boundary after ᛁ aligns, ᛗᛝᚣᚪ is
   word-initial in both, and the match diverges where the two words would
   diverge (consistent with two plaintext words sharing a 4-rune prefix
   encrypted from the same state).
+- The ciphertext *before* the phrase differs in both occurrences, so the
+  matching key state arose from different recent history: the state is
+  either a short-memory function of local plaintext or a draw from a
+  finite pool that collided. It is not a long-window hash of everything
+  preceding.
 
 ## Significance
 
@@ -94,6 +105,30 @@ All measured on the 13,041-rune cipher stream (parable excluded):
    large enough to look random everywhere except (a) adjacent repeats
    (doublet suppression) and (b) rare exact state collisions on repeated
    plaintext phrases.
+
+## Additional negative space (deep scans, June 2026)
+
+Later batteries widened the search and came back flat, which tightens the
+constraint set further (`experiments/deep_scan.py`,
+`experiments/covert_channels.py`):
+
+- **Word-length channel**: word lengths are cipher-independent plaintext
+  evidence. The longest repeated word-length run is 7 words — exactly the
+  shuffled-null expectation. The plaintext repeats no passage of >= 8
+  words; the DJU-BEI repeat is a short phrase, not part of a repeated
+  paragraph.
+- **Doublet covert channel**: the 88 doubled runes are uniform
+  (nIoC 0.992), their gaps mod 29 uniform, and no shift/flip maps their
+  frequencies onto runeglish (P=0.25 vs uniform-random baseline). The
+  doublets do not carry a direct hidden message.
+- No cross-correlation with the solved pages' rune stream at any of
+  15,439 alignments (no pad/keystream sharing with solved sections).
+- No affine-class key reuse (length >= 8), no Beaufort-style reuse
+  (delta vs negated/reversed delta), no bigram antisymmetry, no
+  word-counter periodicity of word-initial/final runes (k <= 60), no
+  positional drift per rune (KS), sections statistically homogeneous,
+  no embedded all-29 key table window, sentence-initial/final runes
+  uniform, word-length sequence spectrum white.
 
 ## Scripts
 
