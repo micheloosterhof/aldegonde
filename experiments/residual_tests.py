@@ -116,60 +116,67 @@ def main() -> None:
         for absz, s, hits, exp in worst[:4]:
             print(f"    shift {s}: hits={hits} exp={exp:.1f} z={(hits-exp)/math.sqrt(exp):+.2f}")
 
-    print("\n=== SENTENCE STRUCTURE ===")
-    # sentence lengths in words for cipher vs solved
-    def sentence_lengths(text_words_seps):
-        return text_words_seps
-    # rebuild from seps: word boundaries 'w'/'l' end words; 's' ends sentence
-    slens = []
-    cur = 1
-    for sp in seps[: n - 1]:
-        if sp == "s":
-            slens.append(cur)
-            cur = 1
-        elif sp in ("w", "l", "p", "S", "x"):
-            cur += 1
-    print(f"  cipher sentences: {len(slens)}, mean len {np.mean(slens):.1f} words, "
-          f"median {np.median(slens)}, max {max(slens)}")
-    # solved sentences from master tail
-    swl = []
-    cur = 0
-    sl = []
-    inword = 0
-    for ch in solved:
-        if ch in RUNESET:
-            if not inword:
-                inword = 1
+    print("\n=== SENTENCE / WORD STRUCTURE (consistent conventions) ===")
+    # Both the solved prefix and the unsolved section wrap words across line
+    # breaks (bare '/' mid-word). Compare both texts under the SAME
+    # convention. merge_lines=True joins line-wrapped words ('/' ignored);
+    # False treats '/' as a word boundary.
+    u_raw = open("data/page0-58.txt").read()
+    u_cipher = u_raw[: u_raw.rfind("$")]  # drop the plaintext parable
+
+    def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
+        seps_ = "-.%&$" + ("" if merge_lines else "/")
+        out: list[int] = []
+        cur = 0
+        for ch in text:
+            if ch in RUNESET:
                 cur += 1
-        elif ch == "-" or ch == "/" or ch == "%":
-            inword = 0
-        elif ch == ".":
-            inword = 0
-            if cur:
-                sl.append(cur)
+            elif ch in seps_:
+                if cur:
+                    out.append(cur)
                 cur = 0
-    if cur:
-        sl.append(cur)
-    print(f"  solved sentences: {len(sl)}, mean len {np.mean(sl):.1f} words, "
-          f"median {np.median(sl)}, max {max(sl)}")
-    ks, p = ks_2samp(slens, sl)
-    print(f"  KS test cipher vs solved sentence lengths: D={ks:.3f} p={p:.4f}")
-    # word lengths comparison
-    cw = [len(w) for w in words[:2953]]
-    sw = []
-    cur = 0
-    for ch in solved:
-        if ch in RUNESET:
-            cur += 1
-        elif ch in "-./%&$":
-            if cur:
-                sw.append(cur)
-            cur = 0
-    if cur:
-        sw.append(cur)
-    ks, p = ks_2samp(cw, sw)
-    print(f"  cipher words: {len(cw)} mean {np.mean(cw):.2f}; "
-          f"solved words: {len(sw)} mean {np.mean(sw):.2f}; KS p={p:.4f}")
+        if cur:
+            out.append(cur)
+        return out
+
+    def sentence_lengths(text: str) -> list[int]:
+        """Sentence lengths in (line-merged) words."""
+        out: list[int] = []
+        nw = 0
+        cur = 0
+        for ch in text:
+            if ch in RUNESET:
+                cur = 1
+            elif ch in "-%&$":
+                if cur:
+                    nw += 1
+                cur = 0
+            elif ch == ".":
+                if cur:
+                    nw += 1
+                cur = 0
+                if nw:
+                    out.append(nw)
+                nw = 0
+        if cur:
+            nw += 1
+        if nw:
+            out.append(nw)
+        return out
+
+    for merge in (True, False):
+        uw = word_lengths(u_cipher, merge_lines=merge)
+        sw = word_lengths(solved, merge_lines=merge)
+        ks, p = ks_2samp(uw, sw)
+        print(f"  words (merge_lines={merge}): unsolved n={len(uw)} "
+              f"mean={np.mean(uw):.2f} | solved n={len(sw)} "
+              f"mean={np.mean(sw):.2f} | KS D={ks:.3f} p={p:.2e}")
+    su = sentence_lengths(u_cipher)
+    ss = sentence_lengths(solved)
+    ks, p = ks_2samp(su, ss)
+    print(f"  sentences: unsolved n={len(su)} mean={np.mean(su):.1f} "
+          f"median={np.median(su)} | solved n={len(ss)} mean={np.mean(ss):.1f} "
+          f"median={np.median(ss)} | KS D={ks:.3f} p={p:.2e}")
 
 
 if __name__ == "__main__":

@@ -55,9 +55,11 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
   **0 of 1000** samples (length >= 6: 1.0%). Counting both observed runs,
   P(count >= 2 of length >= 5) = 0.075; the joint configuration (one len-7 +
   one len-5) is < 1e-3.
-- The trigraphic-kappa scan over all 6,517 shifts flags shift 6395 at ~9
-  sigma; it is the only shift whose excess survives multiple-comparison
-  correction, and all of its hits come from this single repeat.
+- A trigraphic-kappa scan over all 6,517 shifts flags shift 6395 as the
+  strongest outlier (5 hits vs 0.33 expected); all 5 hits are the
+  consecutive trigrams of this single 7-gram, so the kappa scan is only the
+  detector — the significance figures above come from the maximal-repeat
+  framing, which correctly treats the 7-gram as one event.
 
 ## Negative results that bound the mechanism
 
@@ -67,7 +69,7 @@ All measured on the 13,041-rune cipher stream (parable excluded):
 |-------|--------|
 | local kappa profile at shift 6395 around the match | flat outside the 7 runes — the depth is exactly 7, keystreams do NOT stay aligned |
 | structural coordinates | unrelated: section 8+28 vs 14+302, page offset 28 vs 70, line offset 8 vs 2 — no restart alignment |
-| preceding words | differ in length (2 vs 6 runes) — key state is not simply f(previous plaintext word) |
+| preceding words | ambiguous: the word before the second occurrence wraps across a line (ᚳᛠᛁᛗ\|ᚳᛉ). Merging the wrap, the preceding words differ (2 vs 6 runes), arguing against key = f(previous plaintext word). Treating the line break as a boundary, both preceding fragments are 2 runes (ᛒᚠ vs ᚳᛉ) — which a word-keyed model would predict |
 | shifted key reuse (repeats in the delta stream, len >= 6) | only this same phrase (shift 0) — no Vigenere-style reuse at a nonzero additive offset |
 | reversed / atbash / atbash-reversed common substrings (len >= 6) | none (0 observed, 0.29 expected each) |
 | global identical-word pairs | 289 observed vs 317 expected from chance — word repetition is otherwise at the random rate, so this is NOT a codebook |

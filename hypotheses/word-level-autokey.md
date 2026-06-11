@@ -27,9 +27,11 @@ Possible forms:
 - The 7-gram repeat spans aligned word boundaries, suggesting word-level
   structure (now fully characterized in `repeated-phrase-dju-bei.md`:
   p < 0.001, word-initial both times, plus a second aligned repeat
-  ᛁ-ᛗᛝᚣᚪ; but note the words *preceding* the two occurrences differ in
-  length (2 vs 6 runes), so the key is not simply the previous plaintext
-  word verbatim)
+  ᛁ-ᛗᛝᚣᚪ. The words *preceding* the two occurrences are ᛒᚠ and
+  ᚳᛠᛁᛗ|ᚳᛉ — if the line-wrapped word is merged they differ in length,
+  weighing against key = previous plaintext word; if line breaks are word
+  boundaries, both preceding fragments are 2 runes, which this model would
+  predict)
 - Cross-word doublets are more suppressed than within-word doublets,
   suggesting different behavior at word boundaries
 

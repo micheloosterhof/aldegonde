@@ -48,7 +48,7 @@ Any valid hypothesis must account for all of these:
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
-| Word boundaries | Preserved | — | Word-length shape is English-like but words run longer than solved pages (mean 4.42 vs 3.62, KS p<1e-4); the solved Parable page (4.75) suggests style, not cipher |
+| Word boundaries | Preserved | — | Word-length shape is English-like; words run somewhat longer than solved pages (mean 4.42 vs 4.01 with line-wrapped words merged, KS p=5e-4) and sentences much longer (17.3 vs 8.0 words, p=7e-6); the solved Parable page (mean 4.75) suggests style, not cipher. NB: word counts depend on whether line-wrapped words are merged (2,953 cipher words) or split at line breaks (3,344; the 3,367 above includes the Parable) |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 | Repeated 7-gram ᛞᛄᚢᛒᛖᛁᚫ | 1 (word-aligned) | 0.005 | Key-state recurrence; see `repeated-phrase-dju-bei.md` |
 | Pairwise dependence C[i] vs C[i+d] | None for d=2..100 (full 29x29 contingency) | — | Only d=1 (doublets) is anomalous |
