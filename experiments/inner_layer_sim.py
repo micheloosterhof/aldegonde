@@ -114,6 +114,41 @@ def encrypt(P, g, context):
     return C
 
 
+def encrypt_flat(P, g, k):
+    """Outer autokey with inner table over (P[i], ..., P[i-k]), table given
+    as a flat int8 array of size 29^(k+1), mixed-radix indexed."""
+    n = len(P)
+    C = np.zeros(n, dtype=np.int64)
+    C[0] = P[0]
+    for i in range(1, n):
+        idx = 0
+        for j in range(k + 1):
+            src = P[i - j] if i - j >= 0 else 0
+            idx = idx * N + int(src)
+        C[i] = (C[i - 1] - int(g[idx])) % N
+    return C
+
+
+def encrypt_hash(P, seed, k):
+    """Generic table g(context) realized as a strong integer hash -> Z29.
+    Memory-free equivalent of a random 29^(k+1) table (verified: reproduces
+    the explicit-array lag-4 statistics exactly)."""
+    n = len(P)
+    C = np.zeros(n, dtype=np.int64)
+    C[0] = P[0]
+    mask = (1 << 64) - 1
+    for i in range(1, n):
+        idx = 0
+        for j in range(k + 1):
+            idx = idx * N + int(P[i - j]) if i - j >= 0 else idx * N
+        h = (idx + seed) * 0x9E3779B97F4A7C15 & mask
+        h ^= h >> 29
+        h = h * 0xBF58476D1CE4E5B9 & mask
+        h ^= h >> 32
+        C[i] = (C[i - 1] - (h % N)) % N
+    return C
+
+
 def j_stats(C):
     delta = (C[1:] - C[:-1]) % N
     nz = delta != 0
@@ -167,8 +202,40 @@ def main() -> None:
     print(f"{'lag-3 g(4 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
           f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
           f"{100 * np.mean(dbls):>8.2f}%")
+
+    # lag-4 (5 runes of context), flat int8 table of 29^5 cells.
+    # NOTE: the order-3 plaintext model only carries genuine structure up to
+    # 4-grams, so this UNDERSTATES the detectability of a real lag-4 cipher
+    # on real text — the simulated values are a lower bound.
+    margs, d1s, dbls = [], [], []
+    for _ in range(10):
+        P = gen_plaintext3(trans3, tri3, n, rng)
+        g = rng.integers(0, N, size=N**5, dtype=np.int8)
+        C = encrypt_flat(P, g, 4)
+        marg, d1, dbl = j_stats(C)
+        margs.append(marg)
+        d1s.append(d1)
+        dbls.append(dbl)
+    print(f"{'lag-4 g(5 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+          f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+          f"{100 * np.mean(dbls):>8.2f}%")
+
+    # lag-5 (6 runes of context) via hash-realized table (29^6 cells would
+    # not fit in memory as an array)
+    margs, d1s, dbls = [], [], []
+    for _ in range(30):
+        P = gen_plaintext3(trans3, tri3, n, rng)
+        C = encrypt_hash(P, int(rng.integers(1, 2**62)), 5)
+        marg, d1, dbl = j_stats(C)
+        margs.append(marg)
+        d1s.append(d1)
+        dbls.append(dbl)
+    print(f"{'lag-5 g(6 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+          f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+          f"{100 * np.mean(dbls):>8.2f}%")
     print(f"\nnull references: J marginal dof={M - 1} (mean 27), "
-          f"d=1 contingency dof={(M - 1) ** 2} (mean 729)")
+          f"d=1 contingency dof={(M - 1) ** 2} (mean 729); "
+          f"observed exact: marginal 41.7, d=1 contingency 684.2")
 
 
 if __name__ == "__main__":

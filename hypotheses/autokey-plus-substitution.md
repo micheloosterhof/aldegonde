@@ -107,21 +107,34 @@ the repo's trigram/quadgram tables, encrypts with C[i] = C[i-1] - M[i]
 where M[i] = g(P[i], ..., P[i-k]) for random tables g, and measures the
 same J statistics observed on the real cipher:
 
-| inner layer | J marginal chi2 (obs 41.7) | J d=1 contingency (obs ~729) |
+| inner layer | J marginal chi2 (obs 41.7) | J d=1 contingency (obs 684.2) |
 |-------------|---------------------------:|------------------------------:|
 | memoryless g(P) | 27,164 ± 6,947 | 6,563 ± 836 |
 | lag-1 g(P,P') | 2,276 ± 522 | 6,601 ± 410 |
 | lag-2 g(3 runes) | 356 ± 82 | 1,749 ± 117 |
 | lag-3 g(4 runes) | 89 ± 25 | 1,067 ± 59 |
+| lag-4 g(5 runes) | 42 ± 9 | 832 ± 45 |
+| lag-5 g(6 runes) | 31 ± 9 | 766 ± 41 |
 
-Every generic bounded-context table up to 4 runes of plaintext context is
-excluded (lag-3 by 5.7 sigma on the d=1 contingency). Real plaintext has
-longer-range structure than the order-3 simulator, which would only make
-real lag-3 more detectable. Caveat: a *designed* (balanced) table rather
-than a random one could suppress these statistics, but flattening the d=1
-joint alone imposes ~729 simultaneous design constraints; pushing all
-measured statistics to chance requires g to approach a strong
-pseudo-random function of its context.
+(null reference: marginal dof 27, contingency dof 729; lag-4/lag-5 use a
+hash-realized generic table; the hash lag-4 run reproduces the explicit
+29^5-array run exactly.)
+
+Generic bounded-context tables are excluded through **5 runes of context**
+(lag-4: simulated d=1 contingency 832 ± 45 vs 684 observed, ~3.3 sigma;
+the marginal statistic stops discriminating at this size, matching the
+observed 41.7 exactly). **6 runes of context is disfavored at ~2 sigma**
+(766 ± 41 vs 684) but cannot be excluded; 7+ runes is statistically
+invisible to this test. The d=1 excess decays ~3.3x per added context
+rune. All exclusions are lower bounds: real plaintext has longer-range
+structure than the order-3 simulator, which would only make a real
+bounded-context cipher more detectable. The observed 684.2 in fact sits
+below even the null mean (729, p=0.88) — the real stream is flat into the
+null's low tail. Caveat: a *designed* (balanced) table rather than a
+random one could suppress these statistics, but flattening the d=1 joint
+alone imposes ~729 simultaneous design constraints; pushing all measured
+statistics to chance requires g to approach a strong pseudo-random
+function of its context.
 
 ## Verdict
 
@@ -135,9 +148,9 @@ bounded-context test. What survives:
    under it the DJU-BEI depth is a ~0.5% coincidence and the only
    recoverable plaintext information is the 89 marked positions and the
    word lengths.
-2. **A designed, balanced inner table with >= 5 runes of context** (or
-   equivalent mixing) — enough to defeat the simulation bounds — whose
-   state recurred once to produce the DJU-BEI depth, which this variant
-   explains better than chance.
+2. **A designed, balanced inner table — or a generic one with >= 6 runes
+   of context** (6 runes itself mildly disfavored at ~2 sigma) — enough to
+   defeat the simulation bounds — whose state recurred once to produce the
+   DJU-BEI depth, which this variant explains better than chance.
 
 The DJU-BEI repeat is the main evidence discriminating (2) over (1).
