@@ -137,6 +137,28 @@ statistics, but flattening the d=1 joint alone imposes ~729 simultaneous
 design constraints; pushing all measured statistics to chance requires g
 to approach a strong pseudo-random function of its context.
 
+## GF(29)* reading and multiplicative battery (June 2026)
+
+The 28 live delta values {1..28} are exactly **GF(29)\* — the
+multiplicative group of the field, cyclic of order 28 = phi(29)**. Every
+element is invertible; the suppressed value 0 is the unique element that
+would break invertibility. This gives the doublet suppression a clean
+design reading: it is not a quirk but **group closure** — the cipher keeps
+its step symbols inside the multiplicative group.
+
+This framing enables tests that are NOT relabeling-invariant (and were
+therefore not covered by the J battery, which used the arbitrary labeling
+J = delta-1). In discrete-log coordinates L[t] = dlog_2(delta[t]):
+Legendre/power-residue characters (L mod 2/4/7/14), monomial relations
+delta[t+d]*delta[t]^a (540 tests), multiplicative lagged-Fibonacci
+delta[t] = delta[t-a]*delta[t-b]^(+-1) (312 tap sets), geometric
+keystreams delta[t] = c*g^(at), and the multiplicative-character DFT at
+all frequencies. **All flat** (`experiments/gf29_battery.py`): the
+Legendre sequence is balanced with normal runs and no autocorrelation;
+no monomial, recurrence, or geometric structure; white spectrum. The
+delta stream is uniform on GF(29)* in multiplicative coordinates exactly
+as it is in additive ones.
+
 ## Verdict
 
 Unresolved, but boxed in hard. The inner 28-symbol stream is flat against
