@@ -132,6 +132,32 @@ The insertion/chaff model is disfavored at ~2 sigma; the doublets behave
 like events that occupy plaintext positions
 (`experiments/doublet_insertion_test.py`).
 
+## Ciphertext-conditioned triggers — tested, excluded (June 2026)
+
+Generalizing further: could the trigger involve a CIPHERTEXT condition —
+a pair of ciphertext runes, or one ciphertext rune plus one plaintext
+rune (`experiments/doublet_context_test.py`)?
+
+- **Mixed trigger P[i+1] = g(C[i]) with bijective g**: excluded by rate
+  alone (predicts 1/29 = 3.45% vs observed 0.675%).
+- **Trigger forcing the doubled value into a subset** (e.g. doublet fires
+  only when C[i] = x and the incoming plaintext is some common letter):
+  excluded by the uniform doubled-rune identities (chi2 p=0.50, spread
+  over 28 of 29 values).
+- **Trigger conditioned on nearby ciphertext runes**: identity
+  distributions of C[i-2], C[i-1], C[i+2], C[i+3] at the 88 doublets are
+  all uniform (p = 0.40-0.64; detects condition sets up to ~15 runes).
+- **Trigger = small set of ciphertext pairs**: pair-collision counts
+  among the doublet contexts at all tested offset combinations are at
+  chance (3-5 collisions vs 4.6 expected; a 6-pair trigger set would
+  give ~600).
+
+What survives is exactly the class with NO small ciphertext-visible
+condition: a rare plaintext event (rune or bigram), a context-dependent
+marker g(C) whose range is rare letters with a LARGE ciphertext domain
+(observationally identical to the plain marker), or a rare key event.
+From the ciphertext alone these remain indistinguishable.
+
 ## Verdict
 
 Unresolved, and weaker than it first looks. EA is the least-refuted candidate
