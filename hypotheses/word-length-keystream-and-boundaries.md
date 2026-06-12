@@ -78,6 +78,50 @@ match rather than real word structure, and cribbing on word identity is
 futile. **If refuted**, boundaries are real and the lattice remains the
 best crib surface.
 
+## C. Sentence-mark channel fails English semantics — confirmed (~5.9 sigma)
+
+The sharpest authenticity result (`experiments/sentence_forensics.py`).
+English sentences end on content words, almost never on 1-2 letter
+function words. The solved pages show this signature overwhelmingly; the
+unsolved '.' marks show NONE of it:
+
+| | sentence-final mean | overall mean | permutation z | finals 1-2 runes |
+|---|---|---|---|---|
+| solved LP pages (n=86 finals) | **5.56** | 4.01 | **+7.06** | **2.3%** (vs 27.9% baseline) |
+| unsolved cipher (n=149 finals) | 4.19 | 4.42 | -1.21 | 20.8% (vs 19.4% baseline) |
+
+Contrast between the two effects: **z = +5.86**. The words before '.' in
+the unsolved section are statistically indistinguishable from words at
+random positions — consistent across every section with >= 8 marks
+(per-section final means 3.91-4.91, none elevated). Supporting facts:
+"sentences" average 19.7 words (median 14, max 182) vs 8.9 in the solved
+pages, '.'-density varies four-fold across sections, and two sections
+have no marks at all.
+
+**Conclusion: the '.' marks in the unsolved section do not mark English
+sentence ends.** Either the marks are synthetic/decorative, they denote a
+different unit (verse, breath, counting), or the visible segmentation is
+not aligned with plaintext semantics. Unlike the autocorrelation lead in
+B, this is not register-fragile: avoiding 1-2 letter sentence-final words
+is near-universal in English, and the same author's solved register shows
+the effect at z=+7.
+
+This materially weakens the foundational reading of the metadata channel:
+of the three visible plaintext-metadata structures (word boundaries, word
+lengths, sentence marks), the sentence marks now demonstrably do NOT carry
+English sentence semantics, and the word-boundary sequential structure (B)
+is independently suspicious at ~2 sigma. The word-length HISTOGRAM remains
+English-like — exactly what a cosmetic segmentation designed to look like
+language would preserve.
+
+## Other negatives from the same battery
+
+- Near-repeats: zero pairs of length >= 11 with <= 2 mismatches anywhere
+  (null expectation ~0). The DJU-BEI repeat is exact and unique; there is
+  no population of "almost-depths" from a drifting state.
+- Doublet-deleted stream: repeat census unchanged (no repeats rejoined by
+  removing doublets).
+
 ## Other checks (null)
 
 - Doublet-containing words: length distribution matches the per-length

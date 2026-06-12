@@ -54,7 +54,8 @@ Any valid hypothesis must account for all of these:
 | Word transform pairs (shift/beaufort/affine/reversal/rotation/anagram) | At chance | — | Excludes ALL per-word constant-transform ciphers; see `word-transform-census.md` |
 | Running-key depth (difference-IOC, all lags) | None (= doublet-suppressed surrogate) | spike to nIoC~1.05 at key period | Excludes all repeating/self-referential keys; see `running-key-text.md` |
 | Word-length-context keystream | At chance (1/29) | — | Key is not a function of word-length metadata; see `word-length-keystream-and-boundaries.md` |
-| Word-length sequence autocorrelation | ~0 (flat, high power) | English: ±0.06-0.09 (register-dependent) | Flatter than solved pages (~1.9σ) — possible synthetic boundaries, unresolved |
+| Word-length sequence autocorrelation | ~0 (flat, high power) | English: ±0.06-0.09 (register-dependent) | Flatter than solved pages (~2σ) — possible synthetic boundaries, unresolved |
+| Sentence-final word lengths | = random words (z=-1.2) | English: strongly elevated (solved: z=+7.1) | **'.' marks do not mark English sentence ends** (contrast z=+5.9); see `word-length-keystream-and-boundaries.md` |
 | Pairwise dependence C[i] vs C[i+d] | None for d=2..100 (full 29x29 contingency) | — | Only d=1 (doublets) is anomalous |
 | DFT spectrum (all multipliers, all real frequencies) | White noise | — | No periodic additive keystream of any period |
 | Line-initial runes | Non-uniform (chi-sq p~1e-7) | Uniform | Layout artifact: solved pages show the same bias (p=0.009, r=0.41 correlation); line-final runes uniform — consistent with glyph-width-driven line wrap, not cipher structure |
