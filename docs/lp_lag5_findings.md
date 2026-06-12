@@ -100,14 +100,62 @@ so the LP remains unbroken here; but the lag-5 hypothesis is *supported*,
 localized (it lives in adjacent-pair correlations, not in any global period),
 and bounded (≤ ~15% residual alignment).
 
-## Suggested next steps
+## The attack (and what it excluded)
 
-* Brute-force 29^5 5-element increment schedules against single pages under
-  an interruptor model, scoring with the runeglish n-gram tables in
-  `src/aldegonde/data/ngrams/runeglish/`.
-* Treat the 28 lag-5 repeat sites (listed by the script) as cribs: under an
-  interruptor model these are the positions where key alignment most likely
-  survived, so plaintext there should repeat at distance 5
-  (`THE·xx·THE`-style patterns).
-* Examine `DJUBEI` (pages 27/55, distance 5 × 1279; 1279 is prime) for a
-  shared key-schedule phase between those two pages.
+`examples/lp_lag5_attack.py` attacks the interruptor hypothesis directly.
+Key idea: for shift-family ciphers the 5 key elements decouple per coset,
+so the 29^5 key space collapses to 5 independent chi-square fits — provided
+the key-phase sequence is computable from ciphertext alone, which holds for
+ciphertext-rune-triggered schedules (the rule Cicada used on solved pages).
+
+Tested per page (0–55), per cipher family (additive `c=p+k` covering
+Vigenère/variant-Beaufort; reflective `c=k−p` covering Beaufort and
+atbash-composed shifts), under 61 key schedules:
+
+* plain period 5 (no interruptor)
+* `skip:R` for each of the 29 runes — ciphertext rune R emitted literally,
+  key paused (the solved-page interruptor rule)
+* `reset:R` for each of the 29 runes — rune R resets the key phase
+* key restart at every word, and at every sentence
+
+**Positive control:** the known page-57 plaintext encrypted with a random
+5-shift key plus an ᚠ interruptor is cracked *exactly* — key and full
+plaintext recovered at only 95 runes, z ≈ +7 against the strict null. So
+the method has ample power at LP page lengths.
+
+**Null model matters.** Against a naive shuffled-page null, real pages
+produce z up to +13 with gibberish "decryptions" — a false positive caused
+entirely by the doublet deficit (shuffling reintroduces doublets, which
+runeglish trigrams penalize). All significance is therefore measured
+against a doublet-preserving null (shuffle the lag-1 delta stream, rebuild
+the walk). Anyone scoring LP decryption attempts with n-grams should use
+such a null; plausible-looking score gains otherwise come for free.
+
+**Result: excluded.** Over 6,710 attack runs, verified scores top out at
+z ≈ +3.5 (noise for that many trials), versus z > +7 for a true crack of
+even the shortest pages. A second, detection-only sweep — mean coset IOC
+per schedule, aggregated corpus-wide — covers *any* period-5 polyalphabetic
+substitution including Quagmire-style keyed alphabets, and also comes back
+flat (max z = +1.8 across 61 rules, threshold ≈ 3.2).
+
+So: no page is a period-5 shift cipher, and no page is any period-5
+polyalphabetic substitution, under any single-rune interruptor/reset,
+word-restart, or sentence-restart schedule.
+
+## Where this leaves the lag-5 hypothesis
+
+The lag-5 digraph excess is real but its mechanism is not a period-5 key
+over runes with a ciphertext-computable schedule. Remaining directions:
+
+* schedules not computable from ciphertext (plaintext-triggered
+  interruptors, or irregular schedules keyed by something external), which
+  no coset method can align;
+* a 5-element structure in a different domain (e.g. the 28-valued delta
+  domain suggested by the doublet deficit, with a non-shift increment
+  cipher);
+* the 28 lag-5 repeat sites as cribs: under any surviving-alignment model
+  the plaintext should repeat at distance 5 there (`THE·xx·THE`-style);
+* `DJUBEI` (pages 27/55, distance 5 × 1279; 1279 is prime) as a shared
+  key-phase anchor between those two pages;
+* the possibility that lag 5 is simply the luckiest of 60 lags
+  (corrected chance probability ~0.3–0.5).
