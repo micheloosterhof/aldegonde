@@ -331,6 +331,35 @@ the LP is solvable from statistics alone, the entry point is the 86 doublet
 positions; otherwise the key is external (a true pad or a passphrase-seeded
 CSPRNG) and the plaintext does not leak through the ciphertext at all.
 
+## 11. Doublet-removed streams (battery 17)
+
+Removing the 86 doublets and analysing what remains closes the last
+statistical door:
+
+- **Stream A (deduped values, 12,870 runes, zero doublets by
+  construction — the corpus has no triplets):** unigram χ² 26.9, nIoC
+  0.9999, kappa flat to lag 3000, no periodicity 2–80. Its distance-1
+  digram IoC is **1.0381, in quantitative agreement with the theoretical
+  value 841/812 ≈ 1.0357 for a process that is uniform over the 28
+  non-equal successors**. The deduped LP is, to measurement precision,
+  exactly a no-zero-step random walk on Z/29 — the maximally
+  information-free object consistent with all earlier findings.
+- **Stream D (nonzero differences as base-28 symbols, 12,869):** unigram
+  χ² 41.4 (the same marginal p≈0.04 noise as before), digram IoC flat at
+  all distances, kappa flat to lag 3000, no periodicity, no subgroup
+  structure (mod 2/4/7/14 and quotient buckets all flat — nothing rides
+  on 28 = 4×7), keystream sweeps (primes/totient/index/fib/π mod 28) all
+  dead. Notably D's *own* doublet rate is normal (440 vs 460 expected):
+  the generator avoids repeating the previous *output*, but not the
+  previous *step* — another constraint on the mechanism (no "don't repeat
+  the advance" rule, only "don't repeat the glyph").
+- **The 86 splice neighbourhoods carry nothing:** the new adjacencies
+  created by deletion have a uniform difference distribution (χ² 27.3 on
+  27 df), and nothing was hiding at former lag 2.
+
+So the doublets were not masking deeper structure; they are statistically
+inert residue, consistent with the lapse/error interpretation of §8.
+
 ## Reproduction
 
 ```
@@ -351,4 +380,5 @@ python lp_battery13.py    # deterministic collision-restep decryption
 python lp_battery14.py    # per-page keystream offset brute force (16.5M trials)
 python lp_battery15.py    # crib drag + key-fragment structure test
 python lp_battery16.py    # cross-page key reuse + final mechanism kills
+python lp_battery17.py    # doublet-removed streams (dedup + base-28 diffs)
 ```
