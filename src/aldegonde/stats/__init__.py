@@ -48,6 +48,7 @@ from aldegonde.stats.ngrams import (
     trigrams,
     trigraphs,
 )
+from aldegonde.stats.position import PositionChiSquare, position_frequency_chi2
 from aldegonde.stats.repeats import (
     odd_spaced_repeats,
     print_repeat_positions,
@@ -113,6 +114,9 @@ __all__ = [
     "tetragraphs",
     "trigrams",
     "trigraphs",
+    # position
+    "PositionChiSquare",
+    "position_frequency_chi2",
     # repeats
     "odd_spaced_repeats",
     "print_repeat_positions",
