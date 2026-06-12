@@ -3,6 +3,7 @@
 from aldegonde.analysis.delta import DeltaOp, delta, delta2
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
 from aldegonde.analysis.guballa import bigram_break_pasc
+from aldegonde.analysis.indepth import AlignmentResult, alignment_coincidence
 from aldegonde.analysis.kasiski import (
     distance_spectrum,
     kasiski_examination,
@@ -29,6 +30,9 @@ __all__ = [
     "friedman_test_with_interrupter",
     # guballa
     "bigram_break_pasc",
+    # indepth
+    "AlignmentResult",
+    "alignment_coincidence",
     # kasiski
     "distance_spectrum",
     "kasiski_examination",
