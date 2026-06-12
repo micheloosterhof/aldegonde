@@ -143,18 +143,22 @@ Coincidence rate at distance d between runes **of the same word**:
 | 5 | **104/2097** | **+3.8** |
 | 6 | 32/1281 | -1.9 |
 
-Cross-word pairs at distance 5 are *exactly* random (overall skip-5 kappa
-z = +1.6); the excess lives only inside words. By word length it concentrates
-in **length-10 words: 21/255 = 8.2%, z = +4.2** — and within those, three
-words repeat a *bigram* at distance 5 (ᚹᛡ…ᚹᛡ / ᚾᚪ…ᚾᚪ / ᛈᛋ…ᛈᛋ; 0.24 expected)
-and one word (ᛈᛟᛄᚪᛝᛈᚦᛈᚪᛝ, word 1987) matches its halves at 3 of 5 positions
-(P OE J A NG / P TH P A NG). The clean half-length-key prediction (excess at
-d = L/2 for all even L) **fails** — L=6/d=3, L=8/d=4, L=12/d=6 are normal —
-so the mechanism, if real, is specific to d=5 or to ~10-rune words.
+Cross-word pairs at distance 5 are *exactly* random (377/10,878 = 3.466%);
+the excess lives only inside words. By word length it concentrates in
+**length-10 words: 21/255 = 8.2%, exact P = 2.4e-4**. The clean
+half-length-key prediction (excess at d = L/2 for all even L) **fails** —
+L=6/d=3, L=8/d=4, L=12/d=6 are normal — so the mechanism, if real, is
+specific to d=5.
 
-Caveat: this was found by scanning a (length × distance) grid, so the
-post-selection significance is roughly p ≈ 10⁻³, not the nominal 10⁻⁵.
-It is a lead to test on independent structure, not a result.
+**Update (verified)**: this lead survived rigorous re-verification —
+decontamination, a boundary-permutation null that preserves the entire rune
+stream (p = 0.0014, only d=5 fires among d=1..8), per-section consistency
+(8 of 9 sections positive), spread over 91 distinct words, and a sharper
+sub-statistic: nine words repeat a bigram/trigram at distance exactly 5
+(`XY···XY`), vs 2.8 ± 1.6 under the permutation null (p = 0.0019) and 1.5
+under uniform randomness. Full writeup with all numbers:
+`within-word-d5-coincidence.md`; reproduction:
+`experiments/within_word_d5.py`.
 
 ### Minor notes
 

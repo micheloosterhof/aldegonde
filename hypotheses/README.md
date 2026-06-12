@@ -54,7 +54,7 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Word boundaries | Preserved | — | 2,973 words, plausible English lengths |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 | Repeated phrase | ᛞᛄᚢ-ᛒᛖᛁ twice, word-aligned | ~0.005 expected | 6,395 runes apart; see `cryptodiagnostics-page0-58.md` |
-| Within-word d=5 coincidences | z=+3.8 (8.2% in 10-rune words) | 3.45% | Post-hoc lead, cross-word d=5 is random |
+| Within-word d=5 coincidences | 4.92% (102/2073); 9 `XY···XY` repeats | 3.45%; 1.5 repeats | Permutation-verified p~0.001; cross-word d=5 random; see `within-word-d5-coincidence.md` |
 
 ## Status values
 
