@@ -10,10 +10,15 @@ from scipy.stats import poisson
 
 from aldegonde import pasc, masc, auto, c3301
 from aldegonde.stats import print_ioc_statistics, print_kappa
-from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph
+from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph, position
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
-from aldegonde.analysis import friedman, kasiski, krakup
+from aldegonde.analysis import friedman, kasiski, krakup, indepth
+
+
+def runes_only(text: str) -> str:
+    """Keep only Cicada runes, dropping separators and Latin annotations."""
+    return "".join(ch for ch in text if ch in c3301.CICADA_ALPHABET)
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -40,6 +45,28 @@ y = ["".join(z)]
 
 
 print(f"{len(segments)} segments")
+
+# Structural units for in-depth and position tests, same scope as the analysis
+source = "".join(z)
+words = [w for w in (runes_only(w) for w in source.split("-")) if w]
+lines = [l for l in (runes_only(l) for l in source.split("/")) if l]
+sections = [s for s in (runes_only(s) for s in z) if s]
+
+print("\n=== IN-DEPTH ALIGNMENT (shared keystream at unit boundaries) ===")
+for units, name in ((words, "words"), (lines, "lines"), (sections, "sections")):
+    for align in ("left", "right"):
+        r = indepth.alignment_coincidence(
+            units, alphabetsize=29, align=align, min_length=5
+        )
+        print(
+            f"  {name:8s} {align:5s}: hits={r.hits} opp={r.opportunities} "
+            f"exp={r.expected:.1f} z={r.z_score:+.2f}"
+        )
+
+print("\n=== POSITION-IN-WORD frequency chi-square ===")
+for r in position.position_frequency_chi2(words, min_count=100):
+    print(f"  pos={r.position} n={r.n} chi2={r.chi2:.1f} p={r.pvalue:.4f}")
+
 for i, s in enumerate(y):
     if len(s) == 0:
         continue
