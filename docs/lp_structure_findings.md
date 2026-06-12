@@ -260,6 +260,77 @@ Concrete next experiments worth the compute:
   pooled column IoC. Negative so far on raw alignment, but not yet tested
   with collision-drift compensation.
 
+## 9. Active attacks executed (all negative)
+
+The three "next experiments" from §8, plus crib dragging and more mechanism
+families, were all run. Every one is clean-negative, which tightens the
+exclusion of additive ciphers from "the statistics don't support it" to
+"direct key-recovery attacks find nothing."
+
+**Deterministic collision-restep decryption** (`lp_battery13.py`). The
+"disk re-steps on collision" hypothesis made concrete: advance the key
+index by an extra +1/+2/+29 at each observed doublet (before/after the
+emit), for nine streams (primes, totient, index, triangular, Fibonacci,
+Lucas, π, e, 2^i), both signs, scored by runeglish unigram log-likelihood.
+Corpus-wide best z = +1.99; per-page best z = +3.22 (page 40, index key) —
+below the multiple-test threshold for 4,950 page-tests. The restep model
+does not unlock anything.
+
+**Per-page keystream offset brute force** (`lp_battery14.py`). For each
+page, every starting offset 0–25,000 of {totient, primes, primes-stride-2,
+π, e, totient-reversed}, both signs — 16.5 M vectorized trials, each
+self-calibrated against its own offset distribution. Exactly one trial
+crossed z = 5.5 (page 42, primes−, offset 9943, z = 5.53), at the expected
+noise ceiling for 16.5 M trials. Its decryption reads
+`LCAEJNGBGOEIORAEE…` — gibberish, and its bigram-LL z (+4.9) merely tracks
+the unigram letter frequencies. No real hit. (The solved page 55 reaches
+only z = 4.0 against this *per-page-normalized* null even at its true
+offset, which sets the scale: a genuine solution here would not necessarily
+scream, but nothing even reached the known-good page's level.)
+
+**Crib dragging** (`lp_battery15.py`). For an additive cipher, a correctly
+placed crib yields a key fragment `k = c ∓ crib` that should itself read as
+runeglish. 36 cribs (THE, WITHIN, PRIMES, TOTIENT, CIRCUMFERENCE, MOBIUS,
+CABAL, …) dragged across all 12,956 positions, both signs (906 k
+placements), key fragments scored by runeglish bigram fitness. Best
+z = +3.06 (CIRCUMFERENCE) against a Bonferroni threshold of 5.2; all
+fragments gibberish; arithmetic-key placements at chance. **No additive
+key, of any structure, places any crib** — an independent confirmation of
+the §3 floor argument.
+
+**Cross-page key reuse with drift compensation** (`lp_battery16.py`).
+Pooled column coincidence across all 55 pages aligned at index 0: raw
+z = +0.22; with collision-drift index shifts (step 1/2/29) z = +0.5…+1.4;
+difference-stream alignment showed an apparent z = +3.24 **but this is
+entirely the global doublet-suppression artifact** — against the honest
+null (the diff stream's own marginal coincidence, and a within-page
+permutation null) it falls to z = +0.58. No key is reused across pages in
+any domain.
+
+**More mechanism kills** (`lp_battery16.py`): fractionation+transposition
+(digIoC 1.70, dbl 5.2 %), VIC-style straddle+chain-addition (digIoC 1.62,
+uni-χ² 1682), and columnar transposition of an OTP stream (dbl 3.75 % —
+transposition reintroduces doublets, confirming the LP's suppression is a
+property of the *generator*, not of any rearrangement) are all excluded.
+Removing the rarest rune leaves the suppression intact (0.77 %), so it is
+not an artifact of one symbol acting as a removed null/space.
+
+## 10. Bottom line
+
+Across 16 batteries — periodicity, alignment, difference-domain,
+keystream sweeps, prefix/Viterbi/restep/offset/crib attacks, cross-page
+reuse, and ~25 simulated mechanism families — **the unsolved LP is
+indistinguishable from a one-time-pad in every measurable channel except a
+single 5× suppression of adjacent equal runes** (z = −17.4), and that lone
+anomaly is uniform, memory-1, boundary-transparent, and provably below the
+floor of any plaintext-independent additive cipher. The surviving model is
+narrow and specific: a **strong (OTP-grade) stream plus a weak,
+plaintext-dependent anti-doublet rule that lapses ~20 % of the time**, with
+no recoverable additive layer in either the value or difference domain. If
+the LP is solvable from statistics alone, the entry point is the 86 doublet
+positions; otherwise the key is external (a true pad or a passphrase-seeded
+CSPRNG) and the plaintext does not leak through the ciphertext at all.
+
 ## Reproduction
 
 ```
@@ -276,4 +347,8 @@ python lp_battery9.py     # prefix attack + Viterbi drift attack
 python lp_battery10.py    # Cicada plaintext doubling profile; keystream dbl rates
 python lp_battery11.py    # mechanism kill-table (20 simulated mechanisms)
 python lp_battery12.py    # difference-domain attack; fractionation/Playfair kills
+python lp_battery13.py    # deterministic collision-restep decryption
+python lp_battery14.py    # per-page keystream offset brute force (16.5M trials)
+python lp_battery15.py    # crib drag + key-fragment structure test
+python lp_battery16.py    # cross-page key reuse + final mechanism kills
 ```
