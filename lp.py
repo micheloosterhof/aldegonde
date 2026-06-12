@@ -13,7 +13,7 @@ from aldegonde.stats import print_ioc_statistics, print_kappa
 from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph, position
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
-from aldegonde.analysis import friedman, kasiski, krakup, indepth
+from aldegonde.analysis import friedman, kasiski, krakup, indepth, coincidence
 
 
 def runes_only(text: str) -> str:
@@ -116,6 +116,14 @@ for i, s in enumerate(y):
         for length in range(1, 5):
             print(f"kasiski ngram length={length}:")
             kasiski.print_kasiski_statistics(seg, min_length=length, max_length=length)
+        print("higher-order coincidence (observed/expected joint lag matches):")
+        for lag in range(2, 11):
+            seps = sorted({1, lag - 1})
+            jc = coincidence.joint_coincidence(seg, lag, seps)
+            parts = " ".join(
+                f"sep{s}={jc[s].observed}/{jc[s].expected:.1f}" for s in seps
+            )
+            print(f"  lag={lag:2d}: {parts}")
         friedman.friedman_test(seg, maxperiod=34)
         # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
