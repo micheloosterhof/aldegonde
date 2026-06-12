@@ -114,6 +114,43 @@ is independently suspicious at ~2 sigma. The word-length HISTOGRAM remains
 English-like — exactly what a cosmetic segmentation designed to look like
 language would preserve.
 
+### What the marks ARE: layout-coupled (`experiments/mark_forensics.py`)
+
+The '.' marks cluster strongly at line ends — **19.9% sit exactly at a
+line end vs the 3.7% baseline** for '-' word marks (z = +11.3). The solved
+pages show the same typographic habit (26.7% vs 5.5%, z = +8.6). Combined
+with the sentence-final result this yields a sharp dissociation:
+
+| | layout coupling ('.' at line end) | language coupling (final-word signature) |
+|---|---|---|
+| solved pages | present (z=+8.6) | present (z=+7.1) |
+| unsolved | present (z=+11.3) | **absent** (z=-1.2) |
+
+The unsolved marks inherit the book's typographic behavior but not the
+linguistic content. Splitting the final-word test by mark position
+sharpens this into a possible MIXTURE:
+
+- **mid-line marks (n=120)**: final mean 4.03 vs 4.42 overall, z=-1.85,
+  23.3% short finals — definitively no English signature (if anything the
+  words before them are short);
+- **line-end marks (n=29)**: final mean 4.86, only 10.3% short finals,
+  z=+1.05 — weakly English-ward but underpowered.
+
+So the marks may be two populations: a minority of genuine sentence ends
+that the typesetting aligned with line ends (as in the solved pages,
+where 26.7% of real sentence marks sit at line ends), plus a majority of
+mid-line marks that are not linguistic punctuation. A transcription
+artifact (dots conjured at visually ambiguous line ends) cannot be fully
+excluded without the page scans, but it is the mid-line majority — where
+dots are visually unambiguous — that carries the anomaly.
+
+The rest of the mark process is structureless: inter-mark gaps are
+roughly exponential (cv=1.11) with no autocorrelation; no prime bias in
+gaps (z=-1.3), sentence word-counts (z=+1.5), or mark positions (18
+prime vs 18.1 expected); block checksums uniform (rune sums mod 29
+p=0.19, GP sums mod 29 p=0.70, GP-sum primality z=+0.6); doublets per
+block consistent with opportunity.
+
 ## Other negatives from the same battery
 
 - Near-repeats: zero pairs of length >= 11 with <= 2 mismatches anywhere
