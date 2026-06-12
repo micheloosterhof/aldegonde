@@ -7,6 +7,37 @@ from typing import TypeVar
 T = TypeVar("T")
 
 
+def iterngram_positions(
+    runes: Sequence[T],
+    length: int,
+    cut: int = 0,
+) -> Generator[tuple[int, Sequence[T]], None, None]:
+    """Return (position, ngram) pairs for the given sequence
+    Args:
+        runes: Sequence
+        length: size of ngram
+        cut: where to start ngrams.
+
+    Yields
+    ------
+        pairs of (starting position in the source text, ngram)
+
+    Specify `cut=0` to return sliding blocks of runes: ABC, BCD, CDE, ...
+    Specify `cut=1` to return non-overlapping blocks of runes: ABC, DEF, ...
+    Specify `cut=2` to return non-overlapping blocks of runes: BCD, EFG, ...
+    """
+    N = len(runes)  # size of sequence
+    # https://stackoverflow.com/questions/24527006/split-a-generator-into-chunks-without-pre-walking-it
+    # this is like itertools.pairwise()
+    if cut == 0:  # pylint: disable=C2001
+        for i in range(N - length + 1):
+            yield i, runes[i : i + length]
+    # this is like itertools.batched()
+    elif cut <= length and cut > 0:
+        for i in range(cut - 1, N - length + 1, length):
+            yield i, runes[i : i + length]
+
+
 def iterngrams(
     runes: Sequence[T],
     length: int,
@@ -26,18 +57,8 @@ def iterngrams(
     Specify `cut=1` to return non-overlapping blocks of runes: ABC, DEF, ...
     Specify `cut=2` to return non-overlapping blocks of runes: BCD, EFG, ...
     """
-    # assert length > 0
-    # assert 0 <= cut <= length
-    N = len(runes)  # size of sequence
-    # https://stackoverflow.com/questions/24527006/split-a-generator-into-chunks-without-pre-walking-it
-    # this is like itertools.pairwise()
-    if cut == 0:  # pylint: disable=C2001
-        for i in range(N - length + 1):
-            yield runes[i : i + length]
-    # this is like itertools.batched()
-    elif cut <= length and cut > 0:
-        for i in range(cut - 1, N - length + 1, length):
-            yield runes[i : i + length]
+    for _, gram in iterngram_positions(runes, length=length, cut=cut):
+        yield gram
 
 
 def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:
@@ -97,6 +118,6 @@ def ngram_positions(
 ) -> dict[str, list[int]]:
     """Return each ngram and its starting locations in the source text."""
     out: dict[str, list[int]] = defaultdict(list)
-    for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
+    for i, e in iterngram_positions(text, length=length, cut=cut):
         out[str(e)].append(i)
     return out

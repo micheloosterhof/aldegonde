@@ -38,6 +38,7 @@ from aldegonde.stats.mioc import MiocTuple, mioc, nmioc, print_mioc_statistics
 from aldegonde.stats.ngrams import (
     bigrams,
     digraphs,
+    iterngram_positions,
     iterngrams,
     ngram_distribution,
     ngram_positions,
@@ -103,6 +104,7 @@ __all__ = [
     # ngrams
     "bigrams",
     "digraphs",
+    "iterngram_positions",
     "iterngrams",
     "ngram_distribution",
     "ngram_positions",

@@ -1,4 +1,5 @@
 from aldegonde.stats.ngrams import (
+    iterngram_positions,
     iterngrams,
     ngram_distribution,
     ngram_positions,
@@ -38,3 +39,19 @@ def test_dist() -> None:
 
 def test_dist_positions() -> None:
     assert ngram_positions(abc) == {"A": [0], "B": [1], "C": [2]}
+
+
+def test_dist_positions_cut() -> None:
+    """With cut != 0, positions are text offsets, not block indices."""
+    assert ngram_positions("ABCABC", length=3, cut=1) == {"ABC": [0, 3]}
+    assert ngram_positions("ABCDEFG", length=3, cut=2) == {"BCD": [1], "EFG": [4]}
+
+
+def test_iterngram_positions() -> None:
+    assert list(iterngram_positions("ABCD", length=2)) == [
+        (0, "AB"),
+        (1, "BC"),
+        (2, "CD"),
+    ]
+    assert list(iterngram_positions("ABCD", length=2, cut=1)) == [(0, "AB"), (2, "CD")]
+    assert list(iterngram_positions(uniq, length=4, cut=4)) == []
