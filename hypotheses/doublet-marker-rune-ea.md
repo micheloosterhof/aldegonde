@@ -112,6 +112,26 @@ argues against word-boundary-reset autokey (see `word-boundary-reset-autokey.md`
 - `position-within-word.md`, `word-boundary-reset-autokey.md` — word-structure
   hypotheses tested here.
 
+## Insertion (chaff/null) alternative — tested, disfavored (June 2026)
+
+The strongest premise-free alternative to any marker reading: the true
+cipher stream NEVER repeats a rune (strict GF(29)* closure) and the
+doublets are deliberately inserted dittographs — removable chaff with the
+receiver rule "collapse any doublet". This fits the Poisson positions,
+uniform doubled-rune identities, and structureless context just as well
+as a marker does.
+
+Discriminator: an INSERTION inflates its host word by one rune; a marker
+(an event occupying a plaintext position) does not. Observed mean length
+of the 63 within-word doublet-containing words: **5.97 +- 0.31**.
+
+- occupying-event (marker-class) prediction: 5.62 -> z = +1.1, p = 0.27
+- insertion prediction: 6.62 -> z = -2.1, **p = 0.042**
+
+The insertion/chaff model is disfavored at ~2 sigma; the doublets behave
+like events that occupy plaintext positions
+(`experiments/doublet_insertion_test.py`).
+
 ## Verdict
 
 Unresolved, and weaker than it first looks. EA is the least-refuted candidate
@@ -121,5 +141,14 @@ disproof. The frequency match is loose and the word-initial argument is itself
 premise-dependent, so the filters establish only that EA is *not refuted* — not
 that it is correct. Doublet spacing is content-driven Poisson
 (`doublet-spacing-poisson.md`), consistent with a single-rune trigger but
-equally with a fixed n-gram trigger. EA-as-marker remains an open starting
-hypothesis, not a result.
+equally with a fixed n-gram trigger.
+
+The June 2026 insertion test narrows the field by one: deliberate
+chaff/dittograph insertion is disfavored at ~2 sigma. The viable
+interpretation class is now: (a) a rare PLAINTEXT event (a rune in the
+EA/NG/IO frequency band, or a rare bigram class), or (b) a rare KEY event
+(the keystream step hitting the forbidden zero value ~0.7% of the time) —
+the two are indistinguishable by every position/identity/context test run
+so far, because both occupy a stream position and both are
+content-uncorrelated to the observables. EA-as-marker specifically
+remains an open starting hypothesis, not a result.
