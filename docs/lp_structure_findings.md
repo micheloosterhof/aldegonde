@@ -133,6 +133,133 @@ What information remains exploitable:
 - All 55 pages are statistically identical: one scheme, one continuous or
   per-page-unique keying; solving any page likely solves all.
 
+## 5. Mechanism kill-table (simulated fingerprints)
+
+Every candidate mechanism was simulated on Markov-1 runeglish plaintext at
+the corpus length and fingerprinted on the same seven statistics measured
+on the LP. The target row is the LP itself. A mechanism is viable only if
+it matches **all** columns, the decisive one being the doublet rate.
+
+| mechanism | nIoC | uni-χ² | dbl % | off-χ² | digIoC | lag2 z | maxPeriod |
+|---|---|---|---|---|---|---|---|
+| **LP unsolved corpus (target)** | 1.000 | 26 | **0.66** | 41 | 1.026 | −0.3 | 1.009 |
+| plaintext itself | 1.759 | 9860 | 3.27 | 1544 | 4.92 | +19.7 | 1.765 |
+| OTP (control) | 0.999 | 20 | 3.70 | 27 | 1.003 | +0.5 | 1.008 |
+| no-repeat-key OTP (k[i]≠k[i−1]) | 1.001 | 36 | 3.55 | 35 | 0.998 | −1.2 | 1.009 |
+| running key (Vigenère) | 1.048 | 650 | 3.69 | 47 | 1.109 | +1.1 | 1.053 |
+| running key (quagmire s(p)+t(k)) | 1.016 | 231 | 3.44 | 42 | 1.040 | −0.5 | 1.022 |
+| running key (Beaufort) | 1.051 | 686 | 3.62 | 32 | 1.116 | +1.7 | 1.057 |
+| plaintext autokey L=1/3/7 | 1.05–1.11 | 646–1493 | 3.5–6.6 | 48–496 | 1.13–1.48 | +0.8…+3.2 | 1.05–1.12 |
+| key autokey (k += p) | 1.000 | 24 | 2.68 | 9757 | 1.752 | −7.1 | 1.005 |
+| c = p + c_prev + random k | 1.000 | 31 | 3.45 | 28 | 1.001 | +0.2 | 1.005 |
+| ciphertext autokey (mixed TR) | 1.000 | 31 | 4.02 | 455 | 1.762 | −0.8 | 1.012 |
+| progressive quagmire perm(p)+i | 0.999 | 21 | 3.98 | 1144 | 1.084 | −0.5 | 1.752 |
+| Gromark (chain-addition digits) | 1.124 | 1635 | 3.74 | 95 | 1.272 | +3.1 | 1.188 |
+| Hill 2×2 | 1.032 | 439 | 3.73 | 285 | 2.013 | −0.2 | 1.075 |
+| Chaocipher-29 | 1.000 | 22 | 3.53 | 26 | 1.004 | −1.4 | 1.005 |
+| **S1 skip-key-on-collision** | 1.000 | 24 | 0.20 | 46 | 1.031 | +0.3 | 1.005 |
+| **S2 stream + reroll, 19 % lapse** | 1.000 | 25 | **0.70** | 35 | 1.021 | −0.2 | 1.006 |
+| S3 two-stream choice | 1.000 | 22 | 0.07 | 22 | 1.033 | +0.9 | 1.003 |
+| **post-encryption deletion 81 %** | 1.000 | 31 | **0.59** | 36 | 1.023 | +1.3 | 1.007 |
+
+Reading the table:
+
+- Anything with **digIoC ≫ 1.03 or off-χ² ≫ 50** is dead: ciphertext
+  autokey, plaintext autokey, key-autokey, Hill, progressive quagmire,
+  running keys. These all leak adjacent-pair structure the LP does not have.
+- Anything with **uni-χ² in the hundreds/thousands or nIoC > 1.02** is
+  dead: running keys, Gromark, autokey — they leave a unigram bias.
+- Everything with a clean fingerprint (OTP, no-repeat-key OTP, Chaocipher,
+  c=p+c_prev+random) still has a **~3.5 % doublet rate** and is therefore
+  excluded by the one statistic the LP fails by 5×.
+- **Only three mechanisms reproduce the sub-1 % doublet rate**, and of
+  those only two hit the *exact* 0.66 % naturally rather than driving it to
+  ~0: a strong stream with a **probabilistic anti-doublet lapse (~19–25 %)**
+  and **post-encryption deletion of ~81 % of doublets**. S1/S3 (strict
+  skip) over-suppress to near zero, so whatever rule is in play is
+  *deliberately inconsistent* — consistent with a human carver applying it
+  by hand, or with the rule only firing under a secondary condition.
+
+## 6. The difference-domain reframing (the strongest remaining lead)
+
+Because the only structure is exactly the suppressed diagonal, the cipher
+is equivalent to a **first-difference stream**: define
+`d[i] = (c[i] − c[i−1]) mod 29`. Then the LP is `d` uniform over {1..28}
+with the value 0 suppressed. So the *real* message channel is `d`, and the
+86 doublets are the 86 surviving `d = 0` events.
+
+Attacking `d` directly (`lp_battery12.py`):
+
+- The **nonzero-d stream is uniform over its 28 values** (base-28
+  nIoC 1.0011; χ² 41.4 on 27 df — a single ~p=0.04 result among dozens of
+  tests, i.e. noise).
+- **No periodicity** in `d` at any period 2–60, and **no short-key
+  Vigenère** on `d` (per-column χ² never significant, periods 2–29).
+- **No keystream correlation** in `d`: primes, totient, index, Fibonacci,
+  π, primes-mod-29, both signs — best nIoC 1.002.
+
+So the plaintext is OTP-grade *even in the difference domain*. This is the
+sharpest statement of the problem: there is no additive layer to peel in
+either the value domain or the difference domain.
+
+## 7. Provenance of the doublets: residue, not plaintext
+
+Tested against Cicada's *own* solved plaintext (the plain/mono `$`-segments
+of the master transcription, 2,058 runes, `lp_battery10.py`):
+
+- Cicada plaintext doubles at **2.33 %**, concentrated on specific runes
+  (ᛚ ᛏ ᛋ dominate, matching English ll/tt/ss), **62 % interior / 38 %
+  cross-word / 0 % word-initial**.
+- The LP's 86 doublets are **uniform over all 29 runes** and their
+  position mix (17 % first-pair / 52 % interior / 30 % cross-word) is
+  statistically identical to the by-opportunity null (χ² 1.95, 2 df).
+
+The LP doublets therefore do **not** look like surviving plaintext doubles
+(which would be rune-biased and word-structured) — they look like the
+random residue of a stream process whose anti-doublet rule occasionally
+lapsed. This **excludes the monoalphabetic / doubling-preserving family**
+(any cipher where a plaintext double shows as a cipher double): such a
+cipher would inherit Cicada's 2.33 %, rune-biased, word-structured profile,
+not a flat 0.66 %.
+
+Also killed in battery 10/12: **fractionation / tomographic** ciphers (no
+2-periodic bigram structure; even/odd-aligned bigram IoC both ≈ 1.03) and
+**digraphic (Playfair-type)** ciphers (no excess of repeated even-aligned
+bigrams; even-aligned doublets present at 37, whereas Playfair forbids
+them). Triplets in the corpus: **0** (vs 15 expected uniform), consistent
+with a memory-1 anti-doublet rule and inconsistent with any independent
+stream.
+
+## 8. Updated verdict and where to point compute
+
+Ranked surviving hypotheses, all of the same shape — *strong stream +
+weak, plaintext-dependent anti-doublet perturbation*:
+
+1. **Disk/keystream that re-steps on collision** (Wheatstone- or
+   Alberti-style: "if the next output equals the last, advance one more
+   step"), applied ~80 % of the time. Makes key alignment drift by the
+   running count of collisions — defeats subtraction unless the base stream
+   *and* every collision point are reconstructed jointly.
+2. **OTP-grade stream + manual no-doubles touch-up** during carving.
+3. **Post-encryption deletion** of ~81 % of doubled glyphs (changes the
+   length relationship to plaintext; the other two preserve length).
+
+Concrete next experiments worth the compute:
+
+- **Joint stream+drift search restricted to the 49 short pages** (< 130
+  runes, e.g. pages 22, 32, 49, 54): few collisions, so a brute force over
+  a small key space *with* collision-resteps is tractable where the full
+  pages are not.
+- **Test the resteps-on-collision model against the known streams with the
+  drift counter keyed to observed doublets** rather than a free HMM: at
+  each doublet, bump the key index by +1 (or by 29) and re-score with
+  unigram+bigram runeglish fitness. This is a deterministic variant of the
+  Viterbi attack and is cheap to run for primes/totient/index/π.
+- **Cross-page key reuse**: align all 55 pages at index 0 and test whether
+  a single per-position key (mod the per-page collision drift) raises the
+  pooled column IoC. Negative so far on raw alignment, but not yet tested
+  with collision-drift compensation.
+
 ## Reproduction
 
 ```
@@ -146,4 +273,7 @@ python lp_battery6.py     # Monte-Carlo nulls, transition independence, repeats
 python lp_battery7.py     # long repeats, solved-page confirmation, clean corpus
 python lp_battery8.py     # boundary homogeneity + mechanism simulations
 python lp_battery9.py     # prefix attack + Viterbi drift attack
+python lp_battery10.py    # Cicada plaintext doubling profile; keystream dbl rates
+python lp_battery11.py    # mechanism kill-table (20 simulated mechanisms)
+python lp_battery12.py    # difference-domain attack; fractionation/Playfair kills
 ```
