@@ -360,6 +360,28 @@ statistical door:
 So the doublets were not masking deeper structure; they are statistically
 inert residue, consistent with the lapse/error interpretation of §8.
 
+## 12. i.i.d. runes vs no-zero-step walk (battery 18)
+
+The two competing null models — i.i.d. uniform runes vs the no-repeat walk
+(next rune uniform over the 28 ≠ previous, with the fitted 19 % lapse) —
+have identical uniform marginals and differ only in their lag-k coincidence:
+the walk predicts 1/29 + (28/29)·q^k with q = −0.0288, i.e. a huge deficit
+at lag 1, a +10-count whisper at lag 2, and nothing beyond.
+
+| lag | observed | IID expects | WALK expects | z(IID) | z(WALK) |
+|---|---|---|---|---|---|
+| 1 | 86 | 446.7 | 86.0 | **−17.4** | 0.0 |
+| 2 | 441 | 446.7 | 457.1 | −0.3 | −0.8 |
+| 3 | 439 | 446.7 | 446.4 | −0.4 | −0.4 |
+
+Verdict: at lag 1 the LP is emphatically the **walk** (i.i.d. rejected at
+17σ); at lag 2 — the only other statistic that differs — the model
+separation is 10.4 counts against a noise sd of 20.8 (0.5σ), so the corpus
+cannot distinguish them there: a 3σ lag-2 verdict would need ~465,000 runes
+(36× the LP). Everywhere else the two processes are mathematically
+indistinguishable. The LP behaves exactly like the no-repeat walk and
+nothing in it behaves like plain i.i.d. runes.
+
 ## Reproduction
 
 ```
@@ -381,4 +403,5 @@ python lp_battery14.py    # per-page keystream offset brute force (16.5M trials)
 python lp_battery15.py    # crib drag + key-fragment structure test
 python lp_battery16.py    # cross-page key reuse + final mechanism kills
 python lp_battery17.py    # doublet-removed streams (dedup + base-28 diffs)
+python lp_battery18.py    # iid runes vs no-zero-step walk discrimination
 ```
