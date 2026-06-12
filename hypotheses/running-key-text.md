@@ -32,6 +32,12 @@ Simple additive or subtractive combination.
 - The output distribution of English+English mod 29 would not be perfectly
   flat — it would have slight peaks
 - The doublet suppression mechanism is unclear for simple additive running key
+- **Tested negative (2026-06)**: the Parable (forward and reversed) and the
+  full master transcription were slid across the clean unsolved corpus at
+  every alignment, both Vigenere (C-K) and Beaufort (C+K). Max |z| 6.2, but
+  shuffled-key null scans reach 5.2-8.4 — noise, and the best-hit decrypt is
+  gibberish. Keystream reuse *within* the corpus is also ruled out at every
+  lag (diff/sum IOC scan). See `cryptodiagnostics-page0-58.md`.
 
 ## Predictions
 
@@ -40,11 +46,14 @@ English. Known candidate key texts can be tested directly.
 
 ## Scripts
 
-None yet. Should test: solved LP sections as key, reversed LP, Cicada's
-other published texts.
+- `experiments/lp_cryptodiagnostics.py` (section H3) — Parable and master
+  transcription as keys at all alignments. Still untested: decrypted
+  plaintexts of the keyword-solved sections, Cicada's other published texts.
 
 ## Verdict
 
-Unresolved. The near-perfect flatness of the distribution argues against
-English+English running key (which would show slight non-uniformity). But
-the key source might not be English.
+Unresolved but weakened. The near-perfect flatness of the distribution argues
+against English+English running key, and the directly testable candidate key
+texts (Parable, master transcription, the corpus against itself at every lag)
+are now ruled out. The key source, if any, is not among Cicada's available
+rune texts and is statistically indistinguishable from uniform random.

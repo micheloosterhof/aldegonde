@@ -13,13 +13,22 @@ All paths are relative to the repository root.
 
 | File | Contents |
 |------|----------|
-| `data/page0-58.txt` | Unsolved ciphertext (13,136 runes, 3,367 words) |
+| `data/page0-58.txt` | "Unsolved" ciphertext (13,136 runes, 2,973 words) — see contamination note |
 | `data/liber-primus__transcription--master.txt` | Full transcription (solved + unsolved, 15,933 runes total) |
 | `lp_section_data.py` | Per-section word lists and page ranges for all 13 sections |
 
 In the transcription files, delimiters are: `-` = word boundary, `.` = sentence
 boundary, `%` = line break within a page, `&` = page break, `$` = section
-break (red rune divider).
+break (red rune divider). `/` and newlines are line wraps, **not** word
+boundaries — words span them (verified in the readable sections:
+`ᛋᚪᚳ/ᚱᛖᛞ` = SAC/RED). Tokenizing correctly gives 2,973 words, mean length
+4.42; the previously documented 3,367 counted line-wrap fragments.
+
+**Contamination note**: `page0-58.txt` is not all unsolved. Of its 12
+`$`-sections, section 10 (85 runes) is the **solved** AN END page
+(`P = C - (p_n - 1) mod 29`) and section 11 (95 runes) is the **unencrypted**
+Parable. The clean unsolved cipher corpus is sections 0-9 = **12,956 runes,
+86 doublets**. See `cryptodiagnostics-page0-58.md`.
 
 The early pages of the master transcription are already solved. You can
 recognize them because they decode to readable runeglish (e.g.
@@ -30,19 +39,22 @@ recognize them because they decode to readable runeglish (e.g.
 
 Any valid hypothesis must account for all of these:
 
+Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
+
 | Property | Observed | Expected (random) | Notes |
 |----------|----------|--------------------|-------|
 | Alphabet | 29 runes, all used | — | Elder Futhark |
 | Distribution | Uniform (chi-sq p=0.55) | 1/29 per rune | |
 | Shannon entropy | 4.857 bits | 4.858 (max) | 99.98% of maximum |
 | IOC | 0.0345 | 1/29 = 0.0345 | Indistinguishable from random |
-| Doublet rate | 0.68% | 3.45% (1/29) | 5.09x suppressed |
-| Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |
+| Doublet rate | 0.66% (86) | 3.45% (1/29, 447) | 5.19x suppressed, 17 sigma |
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
-| Word boundaries | Preserved | — | Match English word-length distribution |
+| Word boundaries | Preserved | — | 2,973 words, plausible English lengths |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
+| Repeated phrase | ᛞᛄᚢ-ᛒᛖᛁ twice, word-aligned | ~0.005 expected | 6,395 runes apart; see `cryptodiagnostics-page0-58.md` |
+| Within-word d=5 coincidences | z=+3.8 (8.2% in 10-rune words) | 3.45% | Post-hoc lead, cross-word d=5 is random |
 
 ## Status values
 

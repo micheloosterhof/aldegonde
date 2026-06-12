@@ -47,6 +47,10 @@ rune at position i+1 is the identity element of the TR.
   rules out continuous ciphertext autokey.
 - **Bigram split also random**: Splitting by (C[i-2], C[i-1]) gives mean IOC
   0.0348, also random. Rules out 2-deep autokey variants.
+- **Reverse direction and lags also random**: Splitting C[i] by the
+  *following* rune C[i+1] gives mean IOC 0.0354 (max group 0.0364); splits
+  by C[i±L] for L = 1..12 are all random. Rules out backwards-running and
+  lagged autokey too (see `cryptodiagnostics-page0-58.md`).
 
 ## Predictions
 
