@@ -13,7 +13,7 @@ from aldegonde.stats import print_ioc_statistics, print_kappa
 from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
-from aldegonde.analysis import friedman, krakup
+from aldegonde.analysis import friedman, kasiski, krakup
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -86,6 +86,9 @@ for i, s in enumerate(y):
         print_kappa(seg, trace=False)
         print_kappa(seg, length=2, trace=False)  # digraphic kappa
         print_kappa(seg, length=3, trace=False)  # trigraphic kappa
+        for length in range(1, 5):
+            print(f"kasiski ngram length={length}:")
+            kasiski.print_kasiski_statistics(seg, min_length=length, max_length=length)
         friedman.friedman_test(seg, maxperiod=34)
         # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
