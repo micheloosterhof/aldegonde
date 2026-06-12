@@ -171,7 +171,7 @@ def main() -> None:
     SAMPLES = 12
 
     print(f"{'model':<22} {'J marginal chi2':>16} {'J d=1 chi2':>12} {'dbl rate':>9}")
-    print(f"{'observed cipher':<22} {41.7:>16.1f} {729.0:>12.0f} {'0.675%':>9}")
+    print(f"{'observed cipher':<22} {41.7:>16.1f} {684.2:>12.1f} {'0.675%':>9}")
     for context, label in ((0, "memoryless g(P)"), (1, "lag-1 g(P,P')"),
                            (2, "lag-2 g(P,P',P'')")):
         margs, d1s, dbls = [], [], []

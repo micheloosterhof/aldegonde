@@ -121,20 +121,21 @@ hash-realized generic table; the hash lag-4 run reproduces the explicit
 29^5-array run exactly.)
 
 Generic bounded-context tables are excluded through **5 runes of context**
-(lag-4: simulated d=1 contingency 832 ± 45 vs 684 observed, ~3.3 sigma;
-the marginal statistic stops discriminating at this size, matching the
-observed 41.7 exactly). **6 runes of context is disfavored at ~2 sigma**
-(766 ± 41 vs 684) but cannot be excluded; 7+ runes is statistically
-invisible to this test. The d=1 excess decays ~3.3x per added context
-rune. All exclusions are lower bounds: real plaintext has longer-range
-structure than the order-3 simulator, which would only make a real
-bounded-context cipher more detectable. The observed 684.2 in fact sits
-below even the null mean (729, p=0.88) — the real stream is flat into the
-null's low tail. Caveat: a *designed* (balanced) table rather than a
-random one could suppress these statistics, but flattening the d=1 joint
-alone imposes ~729 simultaneous design constraints; pushing all measured
-statistics to chance requires g to approach a strong pseudo-random
-function of its context.
+(lag-4: simulated d=1 contingency 838 ± 49 over 40 samples vs 684.2
+observed, z = -3.1, with 0/40 samples reaching the observed value — the
+simulated minimum was 730; the marginal statistic stops discriminating at
+this size, matching the observed 41.7 exactly). **6 runes of context is
+disfavored at ~2 sigma** (766 ± 41 vs 684) but cannot be excluded; 7+
+runes is statistically invisible to this test. The d=1 excess decays
+~3.3x per added context rune. All exclusions are lower bounds: real
+plaintext has longer-range structure than the order-3 simulator, which
+would only make a real bounded-context cipher more detectable. The
+observed 684.2 in fact sits below even the null mean (729, p=0.88) — the
+real stream is flat into the null's low tail. Caveat: a *designed*
+(balanced) table rather than a random one could suppress these
+statistics, but flattening the d=1 joint alone imposes ~729 simultaneous
+design constraints; pushing all measured statistics to chance requires g
+to approach a strong pseudo-random function of its context.
 
 ## Verdict
 

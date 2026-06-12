@@ -25,8 +25,12 @@ plaintext's within-word adjacent letter repeats. The solved pages (the LP
 author's own plaintext, mostly monoalphabetic so repeats are preserved)
 double letters within words at **2.43%** (51/2,099 adjacencies), which
 predicts ~245 within-word doublets in the cipher; observed: **64** — an
-11.6 sigma deficit. The cipher's ABA rate (3.46%) also matches random
-(3.33%), not the plaintext (3.92%).
+11.6 sigma deficit. Robustness: the runeglish corpus bigram table gives a
+3.23% doubling rate (predicting ~326, a 14.5 sigma deficit), and every
+individual solved section lies between 1.67% and 3.34% — even the most
+conservative section-level baseline (1.67%, possibly Vigenere-diluted)
+predicts ~168 vs 64 observed, an 8 sigma deficit. The cipher's ABA rate
+(3.46%) also matches random (3.33%), not the plaintext (3.92%).
 
 **Net result: no cipher that applies one fixed transformation per word —
 additive, affine, reversal, transposition, or arbitrary substitution —
