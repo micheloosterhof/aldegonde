@@ -122,6 +122,32 @@ language would preserve.
 - Doublet-deleted stream: repeat census unchanged (no repeats rejoined by
   removing doublets).
 
+## D. Convention check: mid-word PAGE breaks
+
+Line breaks (`/`) are not word breaks — words wrap across lines — and the
+same holds for **page breaks**: 46 of 57 `%` page breaks in the unsolved
+file are mid-word (plus 3 of 19 `&` and 1 of 11 `$`). The correct word
+segmentation ends words ONLY at `-` and `.`. Under this full merge,
+applied consistently to both texts:
+
+| convention | unsolved | solved | KS p |
+|------------|----------|--------|------|
+| split at line breaks | 3,344 words, mean 3.90 | 772, mean 3.62 | 9e-3 |
+| merge lines only | 2,953 words, mean 4.42 | 698, mean 4.01 | 5e-4 |
+| full merge (lines+pages+&) | **2,921 words, mean 4.47** | **694, mean 4.03** | **2e-4** |
+
+Merging does NOT close the unsolved-vs-solved word-length gap — it widens
+it slightly (the unsolved text has far more mid-word page wraps). The
+~0.4 rune/word gap is convention-independent; the Parable (4.75) keeps it
+within the author's stylistic range. All conclusions in this file are
+robust under the full merge: the word-length autocorrelation stays flat
+(lags 1-3, |z| <= 1.2), and the sentence-final null stays null (finals
+4.20 vs overall 4.46, permutation z = -1.52, vs solved +7 sigma).
+
+NB: `experiments/anomaly_scan.py::parse()` splits words at page breaks;
+its word stats (2,953 words, mean 4.42) differ immaterially (~50 words of
+2,953) from the full-merge values. No earlier z-score moves materially.
+
 ## Other checks (null)
 
 - Doublet-containing words: length distribution matches the per-length
