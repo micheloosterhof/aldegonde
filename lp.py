@@ -28,7 +28,7 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
 
 
 # with open("data/page54-55.txt") as f:
-with open("data/page0-54.txt") as f:
+with open("data/page0-56.txt") as f:
     lp = f.read()
 
 segments = lp.split("$")
