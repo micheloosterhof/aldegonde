@@ -15,11 +15,24 @@ All functions work on arbitrary alphabets (runes, integers, letters).
 """
 
 from collections.abc import Sequence
-from typing import TypeVar
+from typing import NamedTuple, TypeVar
 
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 T = TypeVar("T")
+
+
+class JointCount(NamedTuple):
+    """A joint match count alongside its chance expectation.
+
+    Attributes:
+        observed: Pairs of lag-L matches actually found at the separation
+        expected: Pairs expected if the matches fell independently at the
+            observed per-position rate
+    """
+
+    observed: int
+    expected: float
 
 
 def match_indicator(text: Sequence[T], lag: int) -> list[bool]:
@@ -49,13 +62,15 @@ def joint_coincidence(
     text: Sequence[T],
     lag: int,
     separations: Sequence[int],
-) -> dict[int, int]:
-    """Count pairs of lag-L matches at each requested separation.
+) -> dict[int, JointCount]:
+    """Count pairs of lag-L matches at each separation, against chance.
 
-    For each separation s the count is the number of positions i where the
-    lag-L match indicator is True at both i and i + s. An excess at a
-    separation tied to a period reveals a higher-order periodic structure
-    that the plain kappa test averages away.
+    For each separation s the observed count is the number of positions i
+    where the lag-L match indicator is True at both i and i + s. The expected
+    count is what that would be if the matches fell independently at the
+    observed per-position rate: the number of available pairs times the
+    squared rate. An observed count well above its expectation reveals a
+    higher-order periodic structure that the plain kappa test averages away.
 
     Args:
         text: Sequence to analyze
@@ -63,7 +78,8 @@ def joint_coincidence(
         separations: Separations between matches to count pairs for
 
     Returns:
-        A dictionary mapping each separation to its joint match count
+        A dictionary mapping each separation to its observed and expected
+        joint match counts
 
     Raises:
         InvalidInputError: If lag or any separation is not a positive integer
@@ -71,11 +87,17 @@ def joint_coincidence(
     """
     indicator = match_indicator(text, lag)
     length = len(indicator)
-    counts: dict[int, int] = {}
+    rate = sum(indicator) / length
+    counts: dict[int, JointCount] = {}
     for separation in separations:
         validate_positive_integer(separation, "separation")
-        counts[separation] = sum(
+        observed = sum(
             indicator[i] and indicator[i + separation]
             for i in range(length - separation)
+        )
+        available_pairs = max(0, length - separation)
+        counts[separation] = JointCount(
+            observed=observed,
+            expected=available_pairs * rate * rate,
         )
     return counts

@@ -2,7 +2,11 @@
 
 import pytest
 
-from aldegonde.analysis.coincidence import joint_coincidence, match_indicator
+from aldegonde.analysis.coincidence import (
+    JointCount,
+    joint_coincidence,
+    match_indicator,
+)
 from aldegonde.exceptions import InsufficientDataError, InvalidInputError
 
 
@@ -14,18 +18,36 @@ def test_match_indicator_basic() -> None:
 
 
 def test_joint_coincidence_all_match() -> None:
-    """In a constant stream every lag-1 match is adjacent to the next."""
-    assert joint_coincidence("AAAA", 1, [1, 2]) == {1: 2, 2: 1}
+    """In a constant stream every lag-1 match is adjacent to the next.
+
+    The indicator is all True, so the match rate is 1 and the expected count
+    equals the number of available pairs, matching the observed count.
+    """
+    assert joint_coincidence("AAAA", 1, [1, 2]) == {
+        1: JointCount(observed=2, expected=2.0),
+        2: JointCount(observed=1, expected=1.0),
+    }
 
 
 def test_joint_coincidence_isolated_matches() -> None:
-    """Matches that never sit at separation 1 contribute zero there."""
-    assert joint_coincidence("AABBA", 1, [1, 2]) == {1: 0, 2: 1}
+    """Matches that never sit at separation 1 contribute zero observed there.
+
+    For "AABBA" at lag 1 the indicator is [True, False, True, False]: length
+    4, two matches, match rate 0.5. No two matches are adjacent, so observed
+    at separation 1 is 0 against an expectation of 3 * 0.25 = 0.75. At
+    separation 2 the two matches pair up, giving observed 1 against 2 * 0.25.
+    """
+    assert joint_coincidence("AABBA", 1, [1, 2]) == {
+        1: JointCount(observed=0, expected=0.75),
+        2: JointCount(observed=1, expected=0.5),
+    }
 
 
 def test_separation_beyond_indicator_is_zero() -> None:
-    """A separation wider than the match stream yields zero, not an error."""
-    assert joint_coincidence("AAAA", 1, [10]) == {10: 0}
+    """A separation wider than the match stream has no available pairs."""
+    assert joint_coincidence("AAAA", 1, [10]) == {
+        10: JointCount(observed=0, expected=0.0),
+    }
 
 
 def test_match_indicator_invalid_lag_raises() -> None:

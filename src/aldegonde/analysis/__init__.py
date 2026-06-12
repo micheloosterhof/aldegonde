@@ -1,6 +1,10 @@
 """Cryptanalysis algorithms."""
 
-from aldegonde.analysis.coincidence import joint_coincidence, match_indicator
+from aldegonde.analysis.coincidence import (
+    JointCount,
+    joint_coincidence,
+    match_indicator,
+)
 from aldegonde.analysis.delta import DeltaOp, delta, delta2
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
 from aldegonde.analysis.guballa import bigram_break_pasc
@@ -23,6 +27,7 @@ from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrup
 
 __all__ = [
     # coincidence
+    "JointCount",
     "joint_coincidence",
     "match_indicator",
     # delta
