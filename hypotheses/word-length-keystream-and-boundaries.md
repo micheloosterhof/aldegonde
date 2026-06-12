@@ -36,31 +36,38 @@ synthetic length sequence (placed to mimic an English length *distribution*
 without sequential structure) would lack the lag autocorrelation real prose
 carries.
 
-**Measurement** (lag-1 word-length autocorrelation, permutation z):
+**Measurement** (word-length autocorrelation, permutation z, lags 1-6):
 
-| text | n | lag-1 r | z |
-|------|---|---------|---|
-| unsolved cipher | 2953 | -0.007 | -0.37 |
-| solved LP pages | 698 | -0.086 | -2.23 |
-| generic English prose | 13512 | +0.059 | +6.92 |
+| lag | unsolved (n=2953) | solved LP (n=698) | English prose (n=13512) |
+|-----|-------------------|-------------------|--------------------------|
+| 1 | -0.007 (z=-0.4) | **-0.086 (z=-2.2)** | **+0.056 (z=+6.5)** |
+| 2 | +0.018 (z=+1.0) | **+0.092 (z=+2.5)** | **+0.021 (z=+2.4)** |
+| 3 | -0.017 (z=-0.9) | +0.015 (z=+0.4) | **+0.062 (z=+7.3)** |
+| 4 | +0.012 (z=+0.6) | +0.037 (z=+1.0) | **+0.062 (z=+7.4)** |
+| 5 | +0.024 (z=+1.3) | +0.014 (z=+0.4) | **+0.060 (z=+6.0)** |
+| 6 | -0.018 (z=-1.0) | +0.002 (z=+0.1) | **+0.049 (z=+5.9)** |
 
-The unsolved length sequence has **no detectable sequential structure** at
-high power (all lags 1-3, |z| < 1.1), while both the solved LP pages and
-generic English prose do (|z| = 2.2 to 6.9). With 2953 words, the solved
-pages' autocorrelation would surface at ~4.7 sigma if shared; it does not.
+Three distinct signatures. Generic prose is positive at every lag (topic
+clustering). The solved LP register shows a short-range -/+ ALTERNATION at
+lags 1-2 only (function/content word alternation, no long-range drift).
+The unsolved cipher is flat at all six lags. With 2953 words, the solved
+pages' lag-1 autocorrelation would surface at ~4.7 sigma if shared; it
+does not. Register-matched joint test on the two informative lags (solved
+vs unsolved, lags 1+2): chi2 ~ 6.6 on 2 df, **p ~ 0.036**.
 
 **Why this is NOT yet a finding**: English word-length autocorrelation is
 **register-dependent and not even a fixed sign** — generic prose is
-positive (+0.06), the solved LP koans are negative (-0.086). A flat
-sequence sits between them, so flatness alone cannot prove synthetic
-boundaries. The register-matched comparison (solved vs unsolved LP, same
-author/work) gives only z = -1.86 for the lag-1 difference — suggestive,
-not significant.
+positive (+0.06 at every lag), the solved LP koans alternate -/+ at lags
+1-2 only. A flat sequence sits between them, so flatness alone cannot
+prove synthetic boundaries. The register-matched joint comparison (solved
+vs unsolved LP, same author/work, lags 1+2) reaches p ~ 0.036 —
+suggestive, not conclusive.
 
 **Status: unresolved.** The unsolved word-length sequence is flatter than
-both the solved pages and generic English, which would be expected if the
-boundaries were placed to match a length histogram without copying English
-word *order* — but the evidence is ~1.9 sigma and confounded by register.
+both the solved pages and generic English at every lag through 6, which
+would be expected if the boundaries were placed to match a length
+histogram without copying English word *order* — but the register-matched
+evidence is ~2 sigma and confounded by the small solved sample.
 This is the one assumption-questioning lead worth revisiting with a
 register-matched runeglish corpus (philosophical/koan prose with word
 boundaries), which the repo does not currently contain.
