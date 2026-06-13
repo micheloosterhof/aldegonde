@@ -31,6 +31,18 @@ def test_print_ioc_with_injected_null_keeps_grid_and_label(
     assert "z=" in out
 
 
+def test_print_repeats_with_injected_null_keeps_format_and_label(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    print_repeat_statistics(
+        TEXT, minimum=2, maximum=4, null=shuffle, null_label="shuffle null", trials=20
+    )
+    out = capsys.readouterr().out
+    assert "null hypothesis: shuffle null" in out
+    assert "repeats length 2:" in out
+    assert "z=" in out
+
+
 def test_print_mioc_states_null(capsys: pytest.CaptureFixture[str]) -> None:
     print_mioc_statistics(TEXT, TEXT, alphabetsize=26)
     assert "null hypothesis:" in capsys.readouterr().out
