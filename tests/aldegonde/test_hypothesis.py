@@ -1,9 +1,15 @@
 """Property-based tests using Hypothesis."""
 
+import random
+from collections import Counter
+
+import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from aldegonde import masc, pasc
+from aldegonde.exceptions import InvalidInputError
+from aldegonde.stats.nulls import no_doublet_shuffle, shuffle
 
 # Standard English alphabet for testing
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -109,3 +115,30 @@ def test_shifted_key_inverse(shift: int) -> None:
     # Composing forward and backward should give identity
     for c in ABC:
         assert key_backward[key_forward[c]] == c
+
+
+@given(st.text(alphabet=ABC, min_size=1, max_size=200))
+@settings(max_examples=200)
+def test_shuffle_preserves_multiset(data: str) -> None:
+    """Test that shuffle is a permutation: the multiset of symbols is unchanged."""
+    out = shuffle(data, random.Random(0))
+    assert Counter(out) == Counter(data)
+
+
+@given(st.text(alphabet=ABC, min_size=1, max_size=200))
+@settings(max_examples=200)
+def test_no_doublet_shuffle_invariants(data: str) -> None:
+    """Test that no_doublet_shuffle preserves frequencies and removes doublets.
+
+    For an infeasible multiset (a symbol exceeding ceil(n/2)) it must raise
+    rather than return an arrangement with a forced doublet.
+    """
+    counts = Counter(data)
+    feasible = max(counts.values()) <= (len(data) + 1) // 2
+    if feasible:
+        out = no_doublet_shuffle(data, random.Random(0))
+        assert Counter(out) == counts
+        assert all(a != b for a, b in zip(out, out[1:]))
+    else:
+        with pytest.raises(InvalidInputError):
+            no_doublet_shuffle(data, random.Random(0))
