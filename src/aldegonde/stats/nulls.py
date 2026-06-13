@@ -20,7 +20,6 @@ trials are independent; the resampler is a pure function of (data, rng).
 
 from __future__ import annotations
 
-import heapq
 import random
 from collections import Counter
 from collections.abc import Callable, Sequence
@@ -79,24 +78,33 @@ def no_doublet_shuffle(data: Sequence[T], rng: random.Random) -> list[T]:
         msg = "no doublet-free arrangement exists: a symbol exceeds ceil(n/2)"
         raise InvalidInputError(msg)
 
-    # Max-heap on remaining count, with a random tie-break so equally frequent
-    # symbols arrange differently across seeds. The just-placed symbol is held
-    # aside for one step so it cannot be chosen again immediately; feasibility
-    # guarantees the heap is never empty while a symbol is still held.
-    heap: list[tuple[int, float, T]] = [
-        (-count, rng.random(), symbol) for symbol, count in counts.items()
-    ]
-    heapq.heapify(heap)
-
+    # Fill positions left to right, weighting each choice by the symbol's
+    # remaining count so surrogates are representative rather than a single
+    # greedy arrangement. A symbol whose count exceeds half the remaining slots
+    # would strand, so it must be placed now; feasibility guarantees at most one
+    # such symbol and that it is never the previous symbol, so no doublet forms.
+    remaining = dict(counts)
     out: list[T] = []
-    held: tuple[int, float, T] | None = None
-    while heap:
-        neg_count, _, symbol = heapq.heappop(heap)
-        out.append(symbol)
-        if held is not None:
-            heapq.heappush(heap, held)
-            held = None
-        remaining = -neg_count - 1
-        if remaining > 0:
-            held = (-remaining, rng.random(), symbol)
+    previous: T | None = None
+    for slots in range(n, 0, -1):
+        forced = [s for s, count in remaining.items() if count > slots // 2]
+        if forced:
+            chosen = forced[0]
+        else:
+            candidates = [s for s, count in remaining.items() if count > 0 and s != previous]
+            chosen = _weighted_choice(candidates, [remaining[s] for s in candidates], rng)
+        out.append(chosen)
+        remaining[chosen] -= 1
+        previous = chosen
     return out
+
+
+def _weighted_choice(items: list[T], weights: list[int], rng: random.Random) -> T:
+    """Pick an item with probability proportional to its weight."""
+    target = rng.random() * sum(weights)
+    cumulative = 0.0
+    for item, weight in zip(items, weights):
+        cumulative += weight
+        if target < cumulative:
+            return item
+    return items[-1]
