@@ -12,7 +12,7 @@ class MiocTuple(NamedTuple):
 
     mioc: float
     nmioc: float
-    sigmage: float
+    z_score: float
 
 
 def mioc(
@@ -74,7 +74,7 @@ def nmioc(
         A MiocTuple containing:
         - mioc: The raw Mutual Index of Coincidence.
         - nmioc: The Normalized Mutual Index of Coincidence.
-        - sigmage: The number of standard deviations away from random data.
+        - z_score: The signed number of standard deviations away from random data.
     """
     raw_mioc_value = mioc(text1, text2, length=length, cut=cut)
 
@@ -85,7 +85,7 @@ def nmioc(
     L2: int = sum(freqs2.values())
 
     if L1 < 2 or L2 < 2:
-        return MiocTuple(mioc=0.0, nmioc=0.0, sigmage=0.0)
+        return MiocTuple(mioc=0.0, nmioc=0.0, z_score=0.0)
 
     C = pow(alphabetsize, length)  # Size of the ngram alphabet
 
@@ -97,17 +97,17 @@ def nmioc(
     # where the expected NMIOC is 1.0.
     sd = float("inf") if C <= 1 or L1 * L2 == 0 else sqrt((C - 1) / (L1 * L2))
 
-    # Calculate sigmage (signed standard deviations from the random expectation of 1.0)
+    # Calculate z_score (signed standard deviations from the random expectation of 1.0)
     if sd == 0.0:
-        sigmage = (
+        z_score = (
             copysign(float("inf"), normalized_mioc_value - 1.0)
             if normalized_mioc_value != 1.0
             else 0.0
         )
     else:
-        sigmage = (normalized_mioc_value - 1.0) / sd
+        z_score = (normalized_mioc_value - 1.0) / sd
 
-    return MiocTuple(mioc=raw_mioc_value, nmioc=normalized_mioc_value, sigmage=sigmage)
+    return MiocTuple(mioc=raw_mioc_value, nmioc=normalized_mioc_value, z_score=z_score)
 
 
 def print_mioc_statistics(
@@ -141,7 +141,7 @@ def print_mioc_statistics(
                 cut=cut,
             )
             print(
-                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} S={mioc_result.sigmage:+.3f}σ ",
+                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} S={mioc_result.z_score:+.3f}σ ",
                 end="| ",
             )
         print()

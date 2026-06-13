@@ -219,7 +219,7 @@ def print_kasiski_statistics(
 
     For each candidate period, prints the number of repeat distances it
     divides, the count expected by chance (total/period), the ratio (the
-    same score returned by kasiski_examination), and the Poisson sigmage.
+    same score returned by kasiski_examination), and the Poisson z-score.
     A ratio well above 1.0 marks the period and its divisors.
 
     Args:
@@ -244,8 +244,8 @@ def print_kasiski_statistics(
     for period, count in _count_divisible(distances, min_period, max_period).items():
         mu = total / period
         mean, var = poisson.stats(mu, loc=0, moments="mv")
-        sigmage: float = (count - mean) / sqrt(var)
+        z_score: float = (count - mean) / sqrt(var)
         print(
             f"kasiski: period={period:<3d} count={count:<6d} "
-            f"expected={mu:<8.1f} ratio={count / mu:.2f} S={sigmage:+5.2f}σ",
+            f"expected={mu:<8.1f} ratio={count / mu:.2f} S={z_score:+5.2f}σ",
         )

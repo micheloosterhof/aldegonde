@@ -18,7 +18,7 @@ class IocResult(NamedTuple):
 
     ioc: float
     nioc: float
-    sigmage: float
+    z_score: float
 
 
 def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
@@ -77,24 +77,24 @@ def nioc(
     length: int = 1,
     cut: int = 0,
 ) -> IocResult:
-    """Return normalized IOC with sigmage.
+    """Return normalized IOC with z-score.
 
     Output is the Index of Coincidence formatted as a float,
-    normalized to alphabet size, and the number of standard
+    normalized to alphabet size, and the signed number of standard
     deviations away from random data.
     """
     freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
     L: int = sum(x for x in freqs.values())
     if L < 2:
-        return IocResult(ioc=0.0, nioc=0.0, sigmage=0.0)
+        return IocResult(ioc=0.0, nioc=0.0, z_score=0.0)
     freqsum: float = sum(v * (v - 1) for v in freqs.values())
     ic = freqsum / (L * (L - 1))
     C = pow(alphabetsize, length)  # size of alphabet
     nic = C * ic
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
-    sigmage = (nic - 1.0) / sd
+    z_score = (nic - 1.0) / sd
 
-    return IocResult(ioc=ic, nioc=nic, sigmage=sigmage)
+    return IocResult(ioc=ic, nioc=nic, z_score=z_score)
 
 
 def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
@@ -103,13 +103,13 @@ def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
         for cut in range(length + 1):
             if length == 1 and cut == 1:
                 continue
-            _, nic, sigmage = nioc(
+            _, nic, z_score = nioc(
                 text,
                 alphabetsize=alphabetsize,
                 length=length,
                 cut=cut,
             )
-            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={sigmage:+.3f}σ ", end="| ")
+            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={z_score:+.3f}σ ", end="| ")
         print()
 
 
