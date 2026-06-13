@@ -1,3 +1,6 @@
+import random
+from collections import Counter
+
 from aldegonde import c3301
 
 
@@ -28,36 +31,25 @@ def test_v2i() -> None:
 
 
 def test_low_doublet_null_preserves_length_and_alphabet() -> None:
-    import random
-
     data = [i % 7 for i in range(200)]
-    model = c3301.low_doublet_null()
-    out = model(data, random.Random(0))
+    out = c3301.low_doublet_null()(data, random.Random(0))
     assert len(out) == len(data)
     assert all(0 <= r < len(c3301.CICADA_ALPHABET) for r in out)
 
 
-def test_low_doublet_null_zero_rate_has_no_doublets() -> None:
-    import random
-
+def test_low_doublet_null_preserves_frequencies_exactly() -> None:
     data = [i % 7 for i in range(200)]
-    model = c3301.low_doublet_null(doublet_rate=0.0)
-    out = model(data, random.Random(1))
+    out = c3301.low_doublet_null()(data, random.Random(0))
+    assert Counter(out) == Counter(data)
+
+
+def test_low_doublet_null_has_no_doublets() -> None:
+    data = [i % 7 for i in range(200)]
+    out = c3301.low_doublet_null()(data, random.Random(1))
     assert all(a != b for a, b in zip(out, out[1:]))
 
 
-def test_low_doublet_null_matches_observed_alphabet() -> None:
-    import random
-
-    data = [0, 1, 2, 0, 1, 2, 0, 1, 2, 1]
-    model = c3301.low_doublet_null(doublet_rate=0.0)
-    out = model(data, random.Random(2))
-    assert set(out) <= {0, 1, 2}
-
-
 def test_low_doublet_null_is_reproducible() -> None:
-    import random
-
     data = [i % 5 for i in range(100)]
     model = c3301.low_doublet_null()
     assert model(data, random.Random(4)) == model(data, random.Random(4))

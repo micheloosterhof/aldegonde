@@ -121,56 +121,26 @@ def randomrunes(length: int, maximum: int = 29) -> list[int]:
     return output
 
 
-def _observed_doublet_rate(data: Sequence[int]) -> float:
-    """Fraction of adjacent positions holding equal runes."""
-    pairs = len(data) - 1
-    if pairs <= 0:
-        return 0.0
-    doublets = sum(1 for a, b in zip(data, data[1:]) if a == b)
-    return doublets / pairs
+def low_doublet_null() -> nulls.NullModel[int]:
+    """Exact-frequency, doublet-free null for Liber Primus analysis.
 
-
-def low_doublet_null(
-    *,
-    doublet_rate: float | None = None,
-    smoothing: float = 0.0,
-) -> nulls.NullModel[int]:
-    """Frequency-matched, doublet-suppressed null over the Cicada alphabet.
-
-    Returns a general null model (aldegonde.stats.nulls) configured for Liber
-    Primus analysis: it matches the observed unigram frequencies over the 29
-    Cicada runes and suppresses adjacent doublets to a chosen rate, randomizing
-    everything else. Each surrogate is a first-order Markov walk whose diagonal
-    is pinned to the doublet rate and whose off-diagonal mass is split in
-    proportion to the observed frequencies, so deviation from this null is order
-    structure beyond frequencies and doublet suppression. Surrogates are
-    rune-index sequences of the observed length, drawn from the injected random
-    source the harness supplies.
-
-    Args:
-        doublet_rate: Target rate of adjacent equal runes; None measures it from
-            each call's observed sequence
-        smoothing: Pseudo-count passed to the frequency estimate
+    The Liber Primus suppresses adjacent equal runes to a near-zero rate, so the
+    appropriate null preserves the exact rune frequencies while forbidding
+    doublets. That is a frequency-exact permutation, so this preset names it for
+    Liber Primus work and delegates to the general resampler. Each surrogate
+    holds the observed runes in a random doublet-free order, drawn from the
+    injected random source the harness supplies.
 
     Returns:
-        A null model emitting a surrogate rune-index sequence of the observed
-        length
+        A null model that permutes the observed runes with no adjacent equal pair
+
+    Raises:
+        InvalidInputError: When a surrogate is drawn, if a rune occurs more than
+            ceil(n/2) times so no doublet-free arrangement exists
     """
-    alphabet = list(range(len(CICADA_ALPHABET)))
 
     def model(data: Sequence[int], rng: random.Random) -> Sequence[int]:
-        rate = _observed_doublet_rate(data) if doublet_rate is None else doublet_rate
-        frequencies = nulls.unigram_distribution(data, alphabet, smoothing=smoothing)
-        matrix: list[list[float]] = []
-        for i, stay in enumerate(frequencies):
-            off_total = 1.0 - stay
-            row = [
-                rate if j == i else (1.0 - rate) * freq / off_total if off_total > 0 else 0.0
-                for j, freq in enumerate(frequencies)
-            ]
-            matrix.append(row)
-        sampler = nulls.from_transition_matrix(alphabet, matrix, frequencies)
-        return sampler(data, rng)
+        return nulls.no_doublet_shuffle(data, rng)
 
     return model
 
