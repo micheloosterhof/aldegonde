@@ -50,12 +50,8 @@ from aldegonde.stats.ngrams import (
 )
 from aldegonde.stats.nulls import (
     NullModel,
-    estimate_transitions,
-    from_transition_matrix,
-    markov1,
     no_doublet_shuffle,
     shuffle,
-    unigram_distribution,
 )
 from aldegonde.stats.position import PositionChiSquare, position_frequency_chi2
 from aldegonde.stats.repeats import (
@@ -133,12 +129,8 @@ __all__ = [
     "trigraphs",
     # nulls
     "NullModel",
-    "estimate_transitions",
-    "from_transition_matrix",
-    "markov1",
     "no_doublet_shuffle",
     "shuffle",
-    "unigram_distribution",
     # position
     "PositionChiSquare",
     "position_frequency_chi2",
