@@ -14,6 +14,7 @@ from collections.abc import Sequence
 from typing import TypeVar
 
 from aldegonde.stats.ngrams import iterngrams
+from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
 
@@ -118,19 +119,12 @@ def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> 
             break
 
         print(f"isomorphs length {length:2d}: distinct isomorphs:", end=" ")
-        try:
-            print(
-                f"{distinct:5d} (avg: {avgdistinct:8.2f}, z={(distinct - avgdistinct) / stdevdistinct:+5.2f})",
-                end=" ",
-            )
-        except ZeroDivisionError:
-            print(
-                f"{distinct:5d} (avg: {avgdistinct:8.2f}",
-                end=" ",
-            )
-        try:
-            print(
-                f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} z={(duplicate - avgduplicate) / stdevduplicate:+5.2f}) ",
-            )
-        except ZeroDivisionError:
-            print(f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f})")
+        print(
+            f"{distinct:5d} (avg: {avgdistinct:8.2f}, "
+            f"z={z_score(distinct, avgdistinct, stdevdistinct):+5.2f})",
+            end=" ",
+        )
+        print(
+            f"duplicate: {duplicate:5d} (avg: {avgduplicate:8.2f} "
+            f"z={z_score(duplicate, avgduplicate, stdevduplicate):+5.2f}) ",
+        )

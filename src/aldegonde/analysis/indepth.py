@@ -22,6 +22,7 @@ from math import sqrt
 from typing import TypeVar
 
 from aldegonde.exceptions import InsufficientDataError, InvalidInputError
+from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer
 
 T = TypeVar("T")
@@ -105,10 +106,9 @@ def alignment_coincidence(
     probability = 1 / alphabetsize
     expected = opportunities * probability
     sd = sqrt(opportunities * probability * (1 - probability))
-    z_score = (hits - expected) / sd if sd > 0 else 0.0
     return AlignmentResult(
         hits=hits,
         opportunities=opportunities,
         expected=expected,
-        z_score=z_score,
+        z_score=z_score(hits, expected, sd),
     )

@@ -1,8 +1,9 @@
 from collections.abc import Sequence
-from math import copysign, sqrt
+from math import sqrt
 from typing import NamedTuple
 
 from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.zscore import z_score
 
 # --- Mutual Index of Coincidence (MIOC) Implementation ---
 
@@ -97,17 +98,11 @@ def nmioc(
     # where the expected NMIOC is 1.0.
     sd = float("inf") if C <= 1 or L1 * L2 == 0 else sqrt((C - 1) / (L1 * L2))
 
-    # Calculate z_score (signed standard deviations from the random expectation of 1.0)
-    if sd == 0.0:
-        z_score = (
-            copysign(float("inf"), normalized_mioc_value - 1.0)
-            if normalized_mioc_value != 1.0
-            else 0.0
-        )
-    else:
-        z_score = (normalized_mioc_value - 1.0) / sd
-
-    return MiocTuple(mioc=raw_mioc_value, nmioc=normalized_mioc_value, z_score=z_score)
+    return MiocTuple(
+        mioc=raw_mioc_value,
+        nmioc=normalized_mioc_value,
+        z_score=z_score(normalized_mioc_value, 1.0, sd),
+    )
 
 
 def print_mioc_statistics(

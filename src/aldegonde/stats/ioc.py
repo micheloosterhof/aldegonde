@@ -10,6 +10,7 @@ from aldegonde.exceptions import (
     StatisticalAnalysisError,
 )
 from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 
@@ -92,9 +93,8 @@ def nioc(
     C = pow(alphabetsize, length)  # size of alphabet
     nic = C * ic
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
-    z_score = (nic - 1.0) / sd
 
-    return IocResult(ioc=ic, nioc=nic, z_score=z_score)
+    return IocResult(ioc=ic, nioc=nic, z_score=z_score(nic, 1.0, sd))
 
 
 def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
@@ -103,13 +103,13 @@ def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
         for cut in range(length + 1):
             if length == 1 and cut == 1:
                 continue
-            _, nic, z_score = nioc(
+            result = nioc(
                 text,
                 alphabetsize=alphabetsize,
                 length=length,
                 cut=cut,
             )
-            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} z={z_score:+.3f} ", end="| ")
+            print(f"ΔIC{length} (cut={cut}) = {result.nioc:.3f} z={result.z_score:+.3f} ", end="| ")
         print()
 
 

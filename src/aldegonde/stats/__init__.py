@@ -56,6 +56,7 @@ from aldegonde.stats.repeats import (
     repeat_distribution,
     repeat_positions,
 )
+from aldegonde.stats.zscore import z_score
 
 __all__ = [
     # compare
@@ -123,4 +124,6 @@ __all__ = [
     "print_repeat_statistics",
     "repeat_distribution",
     "repeat_positions",
+    # zscore
+    "z_score",
 ]

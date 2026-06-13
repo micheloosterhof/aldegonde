@@ -6,6 +6,7 @@ from typing import TypeVar
 from scipy.stats import poisson
 
 from aldegonde.stats.ngrams import iterngrams, ngram_distribution, ngram_positions
+from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
 
@@ -37,10 +38,9 @@ def print_repeat_statistics(
         mu: float = len(ciphertext) / pow(MAX, length)
         expected = pow(MAX, length) * poisson.sf(k=1, mu=mu, loc=0)
         var = poisson.stats(mu, loc=0, moments="v") * pow(MAX, length)
-        z_score: float = (num - expected) / math.sqrt(var)
-        # z_score: float = (num - expected1) / poisson.std(mu)
+        z = z_score(num, expected, math.sqrt(var))
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.2f} z={z_score:+.2f}",
+            f"repeats length {length}: observed={num:d} expected={expected:.2f} z={z:+.2f}",
         )
 
 
