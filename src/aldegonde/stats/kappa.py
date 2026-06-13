@@ -9,6 +9,8 @@ from collections.abc import Sequence
 from math import sqrt
 from typing import TypeVar
 
+from aldegonde.stats.nulls import NullModel
+from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
@@ -150,13 +152,20 @@ def print_kappa(
     length: int = 1,
     threshold: float = 1.3,
     *,
+    null: NullModel[object] | None = None,
+    null_label: str | None = None,
+    trials: int = 1000,
+    seed: int = 0,
     trace: bool = False,
 ) -> None:
-    """Kappa test for a range of skip values.
+    """Kappa test for a range of skip values, against a null hypothesis.
 
-    Prints kappa statistics for each skip value, including observed count,
-    expected count (Poisson), statistical significance (z_score), and
-    normalized IOC.
+    Prints the observed doublet count, expected count, z-score, and normalized
+    IOC for each skip. By default the null is uniform random text and z is the
+    closed-form Poisson standard score. Pass `null` (a resampler) to compare
+    instead against a Monte Carlo null, for example one that preserves
+    frequencies and the doublet rate; the expected count and z are then taken
+    from that null, in the same format, and `null_label` names it in the header.
 
     Args:
         ciphertext: Sequence to analyze
@@ -165,7 +174,11 @@ def print_kappa(
         maximum: Maximum skip value to test
         length: Size of n-gram (1=monographic, 2=digraphic, etc.)
         threshold: Significance threshold (unused, kept for compatibility)
-        trace: Print debug information
+        null: Optional resampler; None uses the analytic Poisson null
+        null_label: Description of the null printed in the header
+        trials: Monte Carlo surrogates when null is given
+        seed: Base seed for the Monte Carlo surrogates
+        trace: Print debug information (analytic null only)
     """
     assert maximum >= 0
     assert minimum >= 1
@@ -184,27 +197,59 @@ def print_kappa(
     length_names = {1: "mono", 2: "di", 3: "tri", 4: "tetra"}
     length_name = length_names.get(length, f"{length}-")
 
+    skips = [
+        skip
+        for skip in range(minimum, maximum)
+        if len(ciphertext) - skip - length + 1 > 0
+    ]
+
+    if null is None:
+        print(
+            f"null hypothesis: uniform random text "
+            f"(kappa = 1/{effective_alphabet} by chance, Poisson); "
+            f"z = standard deviations from this null"
+        )
+        for skip in skips:
+            dbl, num_comparisons = doublets(ciphertext, skip=skip, length=length)
+            count = len(dbl)
+            normalized_ioc = effective_alphabet * count / num_comparisons
+            mu = num_comparisons / effective_alphabet
+            z = z_score(count, mu, sqrt(mu))
+            print(
+                f"kappa({length_name}): skip={skip:<2d} count={count:<3d} "
+                f"expected={mu:<6.2f} z={z:+5.2f} ioc={normalized_ioc:1.3f}",
+            )
+            if trace and count > 0:
+                for pos in dbl:
+                    ngram = "".join(str(x) for x in ciphertext[pos : pos + length])
+                    print(f"  pos {pos}: {ngram}")
+        print()
+        return
+
     print(
-        f"null hypothesis: uniform random text "
-        f"(kappa = 1/{effective_alphabet} by chance, Poisson); "
+        f"null hypothesis: {null_label or 'injected null model'}; "
         f"z = standard deviations from this null"
     )
-    for skip in range(minimum, maximum):
-        dbl, num_comparisons = doublets(ciphertext, skip=skip, length=length)
-        if num_comparisons == 0:
-            continue
-        count = len(dbl)
+
+    def statistic(sample: Sequence[object]) -> dict[int, float]:
+        return {
+            skip: float(len(doublets(sample, skip=skip, length=length)[0]))
+            for skip in skips
+        }
+
+    results = monte_carlo_map(
+        statistic, null, ciphertext, keys=skips, trials=trials, seed=seed
+    )
+    for skip in skips:
+        comparison = results[skip]
+        count = int(comparison.observed)
+        num_comparisons = len(ciphertext) - skip - length + 1
         normalized_ioc = effective_alphabet * count / num_comparisons
-        mu = num_comparisons / effective_alphabet
-        z = z_score(count, mu, sqrt(mu))
         print(
             f"kappa({length_name}): skip={skip:<2d} count={count:<3d} "
-            f"expected={mu:<6.2f} z={z:+5.2f} ioc={normalized_ioc:1.3f}",
+            f"expected={comparison.null_mean:<6.2f} z={comparison.z:+5.2f} "
+            f"ioc={normalized_ioc:1.3f}",
         )
-        if trace and count > 0:
-            for pos in dbl:
-                ngram = "".join(str(x) for x in ciphertext[pos : pos + length])
-                print(f"  pos {pos}: {ngram}")
     print()
 
 

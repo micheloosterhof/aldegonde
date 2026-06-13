@@ -22,6 +22,8 @@ from typing import TypeVar
 
 from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.ngrams import iterngram_positions
+from aldegonde.stats.nulls import NullModel
+from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
@@ -213,13 +215,23 @@ def print_kasiski_statistics(
     min_period: int = 2,
     max_period: int = 20,
     max_distance: int | None = None,
+    *,
+    null: NullModel[object] | None = None,
+    null_label: str | None = None,
+    trials: int = 1000,
+    seed: int = 0,
 ) -> None:
     """Print Kasiski examination results for a range of candidate periods.
 
     For each candidate period, prints the number of repeat distances it
-    divides, the count expected by chance (total/period), the ratio (the
-    same score returned by kasiski_examination), and the Poisson z-score.
-    A ratio well above 1.0 marks the period and its divisors.
+    divides, the expected count, the ratio (observed / expected), and the
+    z-score. By default the null is uniform repeat distances and z is the
+    closed-form Poisson standard score. Pass `null` (a resampler) to compare
+    instead against a Monte Carlo null, for example one that preserves
+    frequencies and the doublet rate; expected and z then come from that null,
+    and `null_label` names it in the header. The Monte Carlo path recomputes the
+    O(n^2) distance spectrum per surrogate, so it is costly on long texts; cap
+    trials and max_distance accordingly.
 
     Args:
         text: Sequence to analyze
@@ -228,6 +240,10 @@ def print_kasiski_statistics(
         min_period: Smallest candidate period to score
         max_period: Largest candidate period to score
         max_distance: Ignore repeats further apart than this; None keeps all
+        null: Optional resampler; None uses the analytic Poisson null
+        null_label: Description of the null printed in the header
+        trials: Monte Carlo surrogates when null is given
+        seed: Base seed for the Monte Carlo surrogates
 
     Raises:
         InvalidInputError: If length or period bounds are invalid
@@ -240,14 +256,44 @@ def print_kasiski_statistics(
         print("kasiski: no repeated ngrams found")
         return
 
+    periods = list(range(min_period, max_period + 1))
+    observed = _count_divisible(distances, min_period, max_period)
+
+    if null is None:
+        print(
+            "null hypothesis: no period; repeat distances fall uniformly (Poisson); "
+            "z = standard deviations from this null"
+        )
+        for period in periods:
+            count = observed[period]
+            mu = total / period
+            z = z_score(count, mu, sqrt(mu))
+            print(
+                f"kasiski: period={period:<3d} count={count:<6d} "
+                f"expected={mu:<8.1f} ratio={count / mu:.2f} z={z:+5.2f}",
+            )
+        return
+
     print(
-        "null hypothesis: no period; repeat distances fall uniformly (Poisson); "
-        "z = standard deviations from this null"
+        f"null hypothesis: {null_label or 'injected null model'}; "
+        f"z = standard deviations from this null"
     )
-    for period, count in _count_divisible(distances, min_period, max_period).items():
-        mu = total / period
-        z = z_score(count, mu, sqrt(mu))
+
+    def statistic(sample: Sequence[object]) -> dict[int, float]:
+        spectrum = _collect_distances(sample, min_length, max_length, max_distance)
+        divisible = _count_divisible(spectrum, min_period, max_period)
+        return {period: float(divisible[period]) for period in periods}
+
+    observed_seq: Sequence[object] = text
+    results = monte_carlo_map(
+        statistic, null, observed_seq, keys=periods, trials=trials, seed=seed
+    )
+    for period in periods:
+        comparison = results[period]
+        count = observed[period]
+        expected = comparison.null_mean
+        ratio = count / expected if expected > 0 else 0.0
         print(
             f"kasiski: period={period:<3d} count={count:<6d} "
-            f"expected={mu:<8.1f} ratio={count / mu:.2f} z={z:+5.2f}",
+            f"expected={expected:<8.1f} ratio={ratio:.2f} z={comparison.z:+5.2f}",
         )

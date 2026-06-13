@@ -53,6 +53,36 @@ def test_print_kappa_states_null(capsys: pytest.CaptureFixture[str]) -> None:
     assert "null hypothesis:" in capsys.readouterr().out
 
 
+def test_print_kappa_with_injected_null_keeps_format_and_label(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    print_kappa(
+        TEXT, alphabetsize=26, maximum=6, null=shuffle, null_label="shuffle null", trials=20
+    )
+    out = capsys.readouterr().out
+    assert "null hypothesis: shuffle null" in out
+    assert "kappa(mono): skip=1" in out
+    assert "z=" in out
+
+
+def test_print_kasiski_with_injected_null_keeps_format_and_label(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    print_kasiski_statistics(
+        TEXT,
+        min_length=3,
+        max_length=4,
+        max_period=6,
+        null=shuffle,
+        null_label="shuffle null",
+        trials=20,
+    )
+    out = capsys.readouterr().out
+    assert "null hypothesis: shuffle null" in out
+    assert "period=2" in out
+    assert "z=" in out
+
+
 def test_print_kasiski_states_null(capsys: pytest.CaptureFixture[str]) -> None:
     print_kasiski_statistics(TEXT, min_length=3, max_length=4, max_period=10)
     assert "null hypothesis:" in capsys.readouterr().out
