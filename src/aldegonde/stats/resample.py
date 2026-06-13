@@ -28,6 +28,7 @@ from dataclasses import dataclass
 from math import sqrt
 from typing import TYPE_CHECKING, TypeVar
 
+from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.zscore import z_score
 
 if TYPE_CHECKING:
@@ -126,6 +127,16 @@ def _max_over_keys(values: Mapping[int, float]) -> float:
     return max(values.values())
 
 
+def _validate_run(observed: Sequence[object], trials: int) -> None:
+    """Reject runs that cannot produce a null distribution."""
+    if trials < 1:
+        msg = f"trials must be at least 1, got {trials}"
+        raise InvalidInputError(msg)
+    if len(observed) == 0:
+        msg = "observed sequence must be non-empty"
+        raise InvalidInputError(msg)
+
+
 def monte_carlo(
     statistic: Statistic[T],
     null_model: NullModel[T],
@@ -146,6 +157,7 @@ def monte_carlo(
     Returns:
         A NullComparison locating the observed value in the null distribution
     """
+    _validate_run(observed, trials)
     observed_value = statistic(observed)
     accumulator = _Accumulator()
     for trial in range(trials):
@@ -180,6 +192,7 @@ def monte_carlo_map(
     Returns:
         A NullComparison per key
     """
+    _validate_run(observed, trials)
     observed_values = statistic(observed)
     accumulators = {key: _Accumulator() for key in keys}
     for trial in range(trials):
@@ -228,6 +241,7 @@ def family_pvalue(
         A FamilyResult with the observed reduction, its key, and the
         family-wise p-value
     """
+    _validate_run(observed, trials)
     observed_stat = statistic(observed)
     observed_values = {key: observed_stat.get(key, 0.0) for key in keys}
     observed_reduced = reduce(observed_values)

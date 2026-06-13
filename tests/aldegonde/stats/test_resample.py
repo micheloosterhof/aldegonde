@@ -4,6 +4,7 @@ from collections.abc import Mapping, Sequence
 
 import pytest
 
+from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.resample import (
     family_pvalue,
     monte_carlo,
@@ -83,6 +84,26 @@ def test_family_pvalue_max_reduction() -> None:
     assert fam.observed == 0.9
     assert fam.key == 1
     assert fam.p_value == pytest.approx(expected_p)
+
+
+def test_monte_carlo_rejects_zero_trials() -> None:
+    with pytest.raises(InvalidInputError):
+        monte_carlo(_scalar, _rng_null, [0.5], trials=0)
+
+
+def test_monte_carlo_rejects_empty_observed() -> None:
+    with pytest.raises(InvalidInputError):
+        monte_carlo(_scalar, _rng_null, [], trials=10)
+
+
+def test_monte_carlo_map_rejects_zero_trials() -> None:
+    with pytest.raises(InvalidInputError):
+        monte_carlo_map(_stat_map, _rng_null, [0.5], keys=[1], trials=0)
+
+
+def test_family_pvalue_rejects_zero_trials() -> None:
+    with pytest.raises(InvalidInputError):
+        family_pvalue(_stat_map, _rng_null, [0.5], keys=[1], trials=0)
 
 
 def test_family_pvalue_custom_reduce_has_no_key() -> None:
