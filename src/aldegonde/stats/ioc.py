@@ -10,6 +10,8 @@ from aldegonde.exceptions import (
     StatisticalAnalysisError,
 )
 from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.nulls import NullModel
+from aldegonde.stats.resample import monte_carlo
 from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
@@ -97,23 +99,64 @@ def nioc(
     return IocResult(ioc=ic, nioc=nic, z_score=z_score(nic, 1.0, sd))
 
 
-def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
-    """Print IOC statistics."""
-    print(
-        f"null hypothesis: uniform random text over {alphabetsize} symbols "
-        f"(normalized IOC = 1.0); z = standard deviations from this null"
-    )
+def _nioc_against_null(
+    text: Sequence[object],
+    alphabetsize: int,
+    length: int,
+    cut: int,
+    null: NullModel[object],
+    trials: int,
+    seed: int,
+) -> tuple[float, float]:
+    """Return the observed normalized IOC and its z-score against a resampled null."""
+
+    def statistic(sample: Sequence[object]) -> float:
+        return nioc(sample, alphabetsize=alphabetsize, length=length, cut=cut).nioc
+
+    comparison = monte_carlo(statistic, null, text, trials=trials, seed=seed)
+    return comparison.observed, comparison.z
+
+
+def print_ioc_statistics(
+    text: Sequence[object],
+    alphabetsize: int,
+    *,
+    null: NullModel[object] | None = None,
+    null_label: str | None = None,
+    trials: int = 1000,
+    seed: int = 0,
+) -> None:
+    """Print the multigraphic IOC grid with z-scores against a null hypothesis.
+
+    By default the null is uniform random text and z is the closed-form standard
+    score. Pass `null` (a resampler) to compare instead against a Monte Carlo
+    null, for example one that preserves frequencies and suppresses doublets;
+    z is then standard deviations from that null's distribution, and `null_label`
+    names it in the header. A frequency-preserving null leaves monographic IOC
+    invariant (z = 0), so only multigraphic IOC carries signal against it.
+    """
+    if null is None:
+        print(
+            f"null hypothesis: uniform random text over {alphabetsize} symbols "
+            f"(normalized IOC = 1.0); z = standard deviations from this null"
+        )
+    else:
+        print(
+            f"null hypothesis: {null_label or 'injected null model'}; "
+            f"z = standard deviations from this null"
+        )
     for length in range(1, 6):
         for cut in range(length + 1):
             if length == 1 and cut == 1:
                 continue
-            result = nioc(
-                text,
-                alphabetsize=alphabetsize,
-                length=length,
-                cut=cut,
-            )
-            print(f"ΔIC{length} (cut={cut}) = {result.nioc:.3f} z={result.z_score:+.3f} ", end="| ")
+            if null is None:
+                result = nioc(text, alphabetsize=alphabetsize, length=length, cut=cut)
+                value, z = result.nioc, result.z_score
+            else:
+                value, z = _nioc_against_null(
+                    text, alphabetsize, length, cut, null, trials, seed
+                )
+            print(f"ΔIC{length} (cut={cut}) = {value:.3f} z={z:+.3f} ", end="| ")
         print()
 
 
