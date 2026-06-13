@@ -127,7 +127,7 @@ for i, s in enumerate(y):
             seg,
             alphabetsize=29,
             null=null,
-            null_label="low-doublet null (rune frequencies fixed, no doublets)",
+            null_label="low-doublet null (rune frequencies and doublet rate matched to the text)",
             trials=300,
         )
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)

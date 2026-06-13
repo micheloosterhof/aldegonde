@@ -43,10 +43,20 @@ def test_low_doublet_null_preserves_frequencies_exactly() -> None:
     assert Counter(out) == Counter(data)
 
 
-def test_low_doublet_null_has_no_doublets() -> None:
-    data = [i % 7 for i in range(200)]
+def test_low_doublet_null_matches_observed_doublet_rate() -> None:
+    # Data with a low but nonzero doublet rate, like the Liber Primus.
+    rng = random.Random(0)
+    data: list[int] = []
+    while len(data) < 3000:
+        r = rng.randrange(12)
+        if data and r == data[-1] and rng.random() < 0.85:
+            continue  # suppress most doublets
+        data.append(r)
+    observed = c3301._observed_doublet_rate(data)
     out = c3301.low_doublet_null()(data, random.Random(1))
-    assert all(a != b for a, b in zip(out, out[1:]))
+    rate = sum(1 for a, b in zip(out, out[1:]) if a == b) / (len(out) - 1)
+    assert 0.0 < observed < 0.03  # genuinely low but nonzero
+    assert abs(rate - observed) < 0.01
 
 
 def test_low_doublet_null_is_reproducible() -> None:

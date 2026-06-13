@@ -121,26 +121,34 @@ def randomrunes(length: int, maximum: int = 29) -> list[int]:
     return output
 
 
-def low_doublet_null() -> nulls.NullModel[int]:
-    """Exact-frequency, doublet-free null for Liber Primus analysis.
+def _observed_doublet_rate(data: Sequence[int]) -> float:
+    """Fraction of adjacent positions holding equal runes."""
+    pairs = len(data) - 1
+    if pairs <= 0:
+        return 0.0
+    doublets = sum(1 for a, b in zip(data, data[1:]) if a == b)
+    return doublets / pairs
 
-    The Liber Primus suppresses adjacent equal runes to a near-zero rate, so the
-    appropriate null preserves the exact rune frequencies while forbidding
-    doublets. That is a frequency-exact permutation, so this preset names it for
-    Liber Primus work and delegates to the general resampler. Each surrogate
-    holds the observed runes in a random doublet-free order, drawn from the
-    injected random source the harness supplies.
+
+def low_doublet_null() -> nulls.NullModel[int]:
+    """Frequency-exact null matching the text's own doublet rate.
+
+    The Liber Primus suppresses adjacent equal runes to about a fifth of the
+    frequency-matched chance rate (roughly 0.7%), but not to zero. The
+    appropriate null preserves the exact rune frequencies and reproduces that
+    observed doublet rate, so the suppression is held fixed rather than mistaken
+    for signal; only structure beyond frequencies and doublets survives. Each
+    surrogate is drawn from the injected random source the harness supplies.
 
     Returns:
-        A null model that permutes the observed runes with no adjacent equal pair
-
-    Raises:
-        InvalidInputError: When a surrogate is drawn, if a rune occurs more than
-            ceil(n/2) times so no doublet-free arrangement exists
+        A null model whose surrogates match the observed rune frequencies and
+        adjacent-doublet rate
     """
 
     def model(data: Sequence[int], rng: random.Random) -> Sequence[int]:
-        return nulls.no_doublet_shuffle(data, rng)
+        rate = _observed_doublet_rate(data)
+        sampler: nulls.NullModel[int] = nulls.doublet_shuffle(rate)
+        return sampler(data, rng)
 
     return model
 
