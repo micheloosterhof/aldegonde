@@ -184,6 +184,11 @@ def print_kappa(
     length_names = {1: "mono", 2: "di", 3: "tri", 4: "tetra"}
     length_name = length_names.get(length, f"{length}-")
 
+    print(
+        f"null hypothesis: uniform random text "
+        f"(kappa = 1/{effective_alphabet} by chance, Poisson); "
+        f"z = standard deviations from this null"
+    )
     for skip in range(minimum, maximum):
         dbl, num_comparisons = doublets(ciphertext, skip=skip, length=length)
         if num_comparisons == 0:

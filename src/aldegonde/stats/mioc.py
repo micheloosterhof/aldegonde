@@ -122,6 +122,10 @@ def print_mioc_statistics(
         alphabetsize: The size of the underlying alphabet (e.g., 26 for English letters).
     """
     print("\n--- Mutual Index of Coincidence Statistics ---")
+    print(
+        "null hypothesis: two independent uniform random texts "
+        "(normalized MIOC = 1.0); z = standard deviations from this null"
+    )
     for length in range(1, 6):
         for cut in range(length + 1):
             # Skip cut=1 for length=1 to align with original print_ioc_statistics behavior

@@ -99,6 +99,10 @@ def nioc(
 
 def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
     """Print IOC statistics."""
+    print(
+        f"null hypothesis: uniform random text over {alphabetsize} symbols "
+        f"(normalized IOC = 1.0); z = standard deviations from this null"
+    )
     for length in range(1, 6):
         for cut in range(length + 1):
             if length == 1 and cut == 1:

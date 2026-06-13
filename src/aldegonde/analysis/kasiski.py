@@ -240,6 +240,10 @@ def print_kasiski_statistics(
         print("kasiski: no repeated ngrams found")
         return
 
+    print(
+        "null hypothesis: no period; repeat distances fall uniformly (Poisson); "
+        "z = standard deviations from this null"
+    )
     for period, count in _count_divisible(distances, min_period, max_period).items():
         mu = total / period
         z = z_score(count, mu, sqrt(mu))

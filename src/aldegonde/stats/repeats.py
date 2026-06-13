@@ -25,6 +25,10 @@ def print_repeat_statistics(
     The expected formula works best for length 3 or larger.
     """
     MAX = alphabetsize
+    print(
+        f"null hypothesis: uniform random text over {alphabetsize} symbols "
+        f"(Poisson repeat counts); z = standard deviations from this null"
+    )
     for length in range(minimum, maximum + 1):
         l = []
         num = 0

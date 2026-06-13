@@ -104,6 +104,10 @@ def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> 
     endlength = 40
     isos: dict[str, int]  # normalized isomorph as key, count as value
 
+    print(
+        "null hypothesis: uniform random text "
+        "(isomorph counts from random data); z = standard deviations from this null"
+    )
     for length in range(startlength, endlength + 1):
         isos = isomorph_distribution(seq, length)
         (distinct, duplicate) = isomorph_statistics(isos)
