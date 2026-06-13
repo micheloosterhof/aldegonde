@@ -247,5 +247,5 @@ def print_kasiski_statistics(
         z_score: float = (count - mean) / sqrt(var)
         print(
             f"kasiski: period={period:<3d} count={count:<6d} "
-            f"expected={mu:<8.1f} ratio={count / mu:.2f} S={z_score:+5.2f}σ",
+            f"expected={mu:<8.1f} ratio={count / mu:.2f} z={z_score:+5.2f}",
         )

@@ -109,7 +109,7 @@ def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
                 length=length,
                 cut=cut,
             )
-            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={z_score:+.3f}σ ", end="| ")
+            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} z={z_score:+.3f} ", end="| ")
         print()
 
 

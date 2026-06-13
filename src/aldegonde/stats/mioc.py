@@ -141,7 +141,7 @@ def print_mioc_statistics(
                 cut=cut,
             )
             print(
-                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} S={mioc_result.z_score:+.3f}σ ",
+                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} z={mioc_result.z_score:+.3f} ",
                 end="| ",
             )
         print()

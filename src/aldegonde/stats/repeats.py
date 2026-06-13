@@ -40,7 +40,7 @@ def print_repeat_statistics(
         z_score: float = (num - expected) / math.sqrt(var)
         # z_score: float = (num - expected1) / poisson.std(mu)
         print(
-            f"repeats length {length}: observed={num:d} expected={expected:.2f} S={z_score:+.2f}σ",
+            f"repeats length {length}: observed={num:d} expected={expected:.2f} z={z_score:+.2f}",
         )
 
 

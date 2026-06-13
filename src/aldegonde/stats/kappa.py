@@ -195,7 +195,7 @@ def print_kappa(
         z_score: float = (count - mean) / sqrt(var) if var > 0 else 0.0
         print(
             f"kappa({length_name}): skip={skip:<2d} count={count:<3d} "
-            f"expected={mean:<6.2f} S={z_score:+5.2f}σ ioc={normalized_ioc:1.3f}",
+            f"expected={mean:<6.2f} z={z_score:+5.2f} ioc={normalized_ioc:1.3f}",
         )
         if trace and count > 0:
             for pos in dbl:
