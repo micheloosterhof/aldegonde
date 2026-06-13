@@ -20,10 +20,9 @@ from collections.abc import Sequence
 from math import sqrt
 from typing import TypeVar
 
-from scipy.stats import poisson
-
 from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.ngrams import iterngram_positions
+from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 T = TypeVar("T")
@@ -243,9 +242,8 @@ def print_kasiski_statistics(
 
     for period, count in _count_divisible(distances, min_period, max_period).items():
         mu = total / period
-        mean, var = poisson.stats(mu, loc=0, moments="mv")
-        z_score: float = (count - mean) / sqrt(var)
+        z = z_score(count, mu, sqrt(mu))
         print(
             f"kasiski: period={period:<3d} count={count:<6d} "
-            f"expected={mu:<8.1f} ratio={count / mu:.2f} z={z_score:+5.2f}",
+            f"expected={mu:<8.1f} ratio={count / mu:.2f} z={z:+5.2f}",
         )

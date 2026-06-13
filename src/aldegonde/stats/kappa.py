@@ -9,7 +9,7 @@ from collections.abc import Sequence
 from math import sqrt
 from typing import TypeVar
 
-from scipy.stats import poisson
+from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
 
@@ -191,11 +191,10 @@ def print_kappa(
         count = len(dbl)
         normalized_ioc = effective_alphabet * count / num_comparisons
         mu = num_comparisons / effective_alphabet
-        mean, var = poisson.stats(mu, loc=0, moments="mv")
-        z_score: float = (count - mean) / sqrt(var) if var > 0 else 0.0
+        z = z_score(count, mu, sqrt(mu))
         print(
             f"kappa({length_name}): skip={skip:<2d} count={count:<3d} "
-            f"expected={mean:<6.2f} z={z_score:+5.2f} ioc={normalized_ioc:1.3f}",
+            f"expected={mu:<6.2f} z={z:+5.2f} ioc={normalized_ioc:1.3f}",
         )
         if trace and count > 0:
             for pos in dbl:
