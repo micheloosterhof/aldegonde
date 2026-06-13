@@ -48,6 +48,15 @@ from aldegonde.stats.ngrams import (
     trigrams,
     trigraphs,
 )
+from aldegonde.stats.nulls import (
+    NullModel,
+    estimate_transitions,
+    from_transition_matrix,
+    markov1,
+    no_doublet_shuffle,
+    shuffle,
+    unigram_distribution,
+)
 from aldegonde.stats.position import PositionChiSquare, position_frequency_chi2
 from aldegonde.stats.repeats import (
     odd_spaced_repeats,
@@ -55,6 +64,13 @@ from aldegonde.stats.repeats import (
     print_repeat_statistics,
     repeat_distribution,
     repeat_positions,
+)
+from aldegonde.stats.resample import (
+    FamilyResult,
+    NullComparison,
+    family_pvalue,
+    monte_carlo,
+    monte_carlo_map,
 )
 from aldegonde.stats.zscore import z_score
 
@@ -115,6 +131,14 @@ __all__ = [
     "tetragraphs",
     "trigrams",
     "trigraphs",
+    # nulls
+    "NullModel",
+    "estimate_transitions",
+    "from_transition_matrix",
+    "markov1",
+    "no_doublet_shuffle",
+    "shuffle",
+    "unigram_distribution",
     # position
     "PositionChiSquare",
     "position_frequency_chi2",
@@ -124,6 +148,12 @@ __all__ = [
     "print_repeat_statistics",
     "repeat_distribution",
     "repeat_positions",
+    # resample
+    "FamilyResult",
+    "NullComparison",
+    "family_pvalue",
+    "monte_carlo",
+    "monte_carlo_map",
     # zscore
     "z_score",
 ]
