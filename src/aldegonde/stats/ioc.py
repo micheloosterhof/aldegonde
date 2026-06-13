@@ -11,7 +11,7 @@ from aldegonde.exceptions import (
 )
 from aldegonde.stats.ngrams import ngram_distribution
 from aldegonde.stats.nulls import NullModel
-from aldegonde.stats.resample import monte_carlo
+from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
@@ -99,22 +99,33 @@ def nioc(
     return IocResult(ioc=ic, nioc=nic, z_score=z_score(nic, 1.0, sd))
 
 
-def _nioc_against_null(
+def _nioc_grid_against_null(
     text: Sequence[object],
     alphabetsize: int,
-    length: int,
-    cut: int,
+    cells: list[tuple[int, int]],
     null: NullModel[object],
     trials: int,
     seed: int,
-) -> tuple[float, float]:
-    """Return the observed normalized IOC and its z-score against a resampled null."""
+) -> dict[tuple[int, int], tuple[float, float]]:
+    """Score every (length, cut) cell against one shared set of surrogates.
 
-    def statistic(sample: Sequence[object]) -> float:
-        return nioc(sample, alphabetsize=alphabetsize, length=length, cut=cut).nioc
+    A single monte_carlo_map pass draws each surrogate once and evaluates the
+    whole grid on it, rather than regenerating surrogates per cell.
+    """
 
-    comparison = monte_carlo(statistic, null, text, trials=trials, seed=seed)
-    return comparison.observed, comparison.z
+    def statistic(sample: Sequence[object]) -> dict[int, float]:
+        return {
+            index: nioc(sample, alphabetsize=alphabetsize, length=length, cut=cut).nioc
+            for index, (length, cut) in enumerate(cells)
+        }
+
+    results = monte_carlo_map(
+        statistic, null, text, keys=list(range(len(cells))), trials=trials, seed=seed
+    )
+    return {
+        cell: (results[index].observed, results[index].z)
+        for index, cell in enumerate(cells)
+    }
 
 
 def print_ioc_statistics(
@@ -135,27 +146,33 @@ def print_ioc_statistics(
     names it in the header. A frequency-preserving null leaves monographic IOC
     invariant (z = 0), so only multigraphic IOC carries signal against it.
     """
+    cells = [
+        (length, cut)
+        for length in range(1, 6)
+        for cut in range(length + 1)
+        if not (length == 1 and cut == 1)
+    ]
+    scored: dict[tuple[int, int], tuple[float, float]]
     if null is None:
         print(
             f"null hypothesis: uniform random text over {alphabetsize} symbols "
             f"(normalized IOC = 1.0); z = standard deviations from this null"
         )
+        scored = {}
+        for length, cut in cells:
+            result = nioc(text, alphabetsize=alphabetsize, length=length, cut=cut)
+            scored[(length, cut)] = (result.nioc, result.z_score)
     else:
         print(
             f"null hypothesis: {null_label or 'injected null model'}; "
             f"z = standard deviations from this null"
         )
+        scored = _nioc_grid_against_null(text, alphabetsize, cells, null, trials, seed)
     for length in range(1, 6):
         for cut in range(length + 1):
             if length == 1 and cut == 1:
                 continue
-            if null is None:
-                result = nioc(text, alphabetsize=alphabetsize, length=length, cut=cut)
-                value, z = result.nioc, result.z_score
-            else:
-                value, z = _nioc_against_null(
-                    text, alphabetsize, length, cut, null, trials, seed
-                )
+            value, z = scored[(length, cut)]
             print(f"ΔIC{length} (cut={cut}) = {value:.3f} z={z:+.3f} ", end="| ")
         print()
 
