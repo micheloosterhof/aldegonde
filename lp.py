@@ -61,20 +61,20 @@ words = [w for w in (runes_only(w) for w in source.split("-")) if w]
 lines = [l for l in (runes_only(l) for l in source.split("/")) if l]
 sections = [s for s in (runes_only(s) for s in z) if s]
 
-print("\n=== IN-DEPTH ALIGNMENT (shared keystream at unit boundaries) ===")
-for units, name in ((words, "words"), (lines, "lines"), (sections, "sections")):
-    for align in ("left", "right"):
-        r = indepth.alignment_coincidence(
-            units, alphabetsize=29, align=align, min_length=5
-        )
-        print(
-            f"  {name:8s} {align:5s}: hits={r.hits} opp={r.opportunities} "
-            f"exp={r.expected:.1f} z={r.z_score:+.2f}"
-        )
-
-print("\n=== POSITION-IN-WORD frequency chi-square ===")
-for r in position.position_frequency_chi2(words, min_count=100):
-    print(f"  pos={r.position} n={r.n} chi2={r.chi2:.1f} p={r.pvalue:.4f}")
+# print("\n=== IN-DEPTH ALIGNMENT (shared keystream at unit boundaries) ===")
+# for units, name in ((words, "words"), (lines, "lines"), (sections, "sections")):
+#     for align in ("left", "right"):
+#         r = indepth.alignment_coincidence(
+#             units, alphabetsize=29, align=align, min_length=5
+#         )
+#         print(
+#             f"  {name:8s} {align:5s}: hits={r.hits} opp={r.opportunities} "
+#             f"exp={r.expected:.1f} z={r.z_score:+.2f}"
+#         )
+# 
+# print("\n=== POSITION-IN-WORD frequency chi-square ===")
+# for r in position.position_frequency_chi2(words, min_count=100):
+#     print(f"  pos={r.position} n={r.n} chi2={r.chi2:.1f} p={r.pvalue:.4f}")
 
 for i, s in enumerate(y):
     if len(s) == 0:
@@ -172,11 +172,18 @@ for i, s in enumerate(y):
         friedman.friedman_test(seg, maxperiod=34)
         # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
         repeats.print_repeat_statistics(seg, minimum=2)
+        repeats.print_repeat_statistics(
+            seg,
+            minimum=2,
+            null=null,
+            null_label="low-doublet null (rune frequencies and doublet rate matched to the text)",
+            trials=300,
+        )
         repeats.print_repeat_positions(seg, minimum=5)
         # isomorph.print_isomorph_statistics(seg)
 
         # KRAKUP: Cyclic phenomena in nonhomogeneous material
-        krakup.print_krakup_analysis(seg, min_period=2, max_period=40, window_size=100, step=10)
+        # krakup.print_krakup_analysis(seg, min_period=2, max_period=40, window_size=100, step=10)
 
         # slide = ioc.sliding_window_ioc(seg, window=100)
         # for i, e in enumerate(slide):
