@@ -50,6 +50,7 @@ from aldegonde.stats.ngrams import (
 )
 from aldegonde.stats.nulls import (
     NullModel,
+    doublet_shuffle,
     no_doublet_shuffle,
     shuffle,
 )
@@ -129,6 +130,7 @@ __all__ = [
     "trigraphs",
     # nulls
     "NullModel",
+    "doublet_shuffle",
     "no_doublet_shuffle",
     "shuffle",
     # position

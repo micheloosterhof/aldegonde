@@ -13,6 +13,7 @@ The nulls implemented here both preserve the exact multiset of symbols:
 
     shuffle             exact unigram frequencies, order destroyed
     no_doublet_shuffle  exact frequencies and no adjacent equal symbols
+    doublet_shuffle     exact frequencies at a chosen adjacent-doublet rate
 
 Randomness is injected as a random.Random so a seeded run is reproducible and
 trials are independent; the resampler is a pure function of (data, rng).
@@ -57,9 +58,7 @@ def no_doublet_shuffle(data: Sequence[T], rng: random.Random) -> list[T]:
     """Return a random arrangement of the observed symbols with no doublets.
 
     Preserves the exact multiset and forbids two equal symbols in adjacent
-    positions. This is the frequency-matched, doublet-suppressed null: it
-    holds frequencies fixed while removing the adjacency structure, so a
-    surviving signal is order structure beyond nearest-neighbour suppression.
+    positions. This is the rate = 0 case of doublet_shuffle.
 
     Args:
         data: Observed sequence
@@ -72,17 +71,53 @@ def no_doublet_shuffle(data: Sequence[T], rng: random.Random) -> list[T]:
         InvalidInputError: If no doublet-free arrangement exists, i.e. the most
             frequent symbol occurs more than ceil(len(data) / 2) times
     """
+    return _doublet_fill(data, rng, 0.0)
+
+
+def doublet_shuffle(rate: float) -> NullModel[T]:
+    """Build a frequency-exact null targeting a given adjacent-doublet rate.
+
+    The returned resampler preserves the exact multiset and reproduces, in
+    expectation, a target fraction of equal adjacent symbols. rate = 0 forbids
+    doublets entirely; the frequency-matched chance rate (the sum of squared
+    symbol frequencies) leaves them unsuppressed. The rate is hit approximately,
+    by down-weighting the just-placed symbol relative to that chance rate, so a
+    surrogate matches the observed frequencies and doublet rate while
+    randomizing everything else.
+
+    Args:
+        rate: Target fraction of adjacent positions holding equal symbols
+
+    Returns:
+        A null model whose surrogates approximate the target doublet rate
+    """
+
+    def model(data: Sequence[T], rng: random.Random) -> list[T]:
+        counts = Counter(data)
+        n = len(data)
+        chance = sum((count / n) ** 2 for count in counts.values()) if n else 0.0
+        factor = rate / chance if chance > 0 else 0.0
+        return _doublet_fill(data, rng, factor)
+
+    return model
+
+
+def _doublet_fill(data: Sequence[T], rng: random.Random, factor: float) -> list[T]:
+    """Fill positions left to right, down-weighting the previous symbol by factor.
+
+    Weighting each choice by the symbol's remaining count keeps surrogates
+    representative rather than a single greedy arrangement. A symbol whose count
+    exceeds half the remaining slots would strand, so it must be placed now.
+    With factor = 0 the previous symbol is never chosen freely and, since the
+    forced symbol is never the previous one for a feasible multiset, no doublet
+    forms; larger factors admit doublets in proportion to factor.
+    """
     counts = Counter(data)
     n = len(data)
-    if counts and max(counts.values()) > (n + 1) // 2:
+    if factor == 0.0 and counts and max(counts.values()) > (n + 1) // 2:
         msg = "no doublet-free arrangement exists: a symbol exceeds ceil(n/2)"
         raise InvalidInputError(msg)
 
-    # Fill positions left to right, weighting each choice by the symbol's
-    # remaining count so surrogates are representative rather than a single
-    # greedy arrangement. A symbol whose count exceeds half the remaining slots
-    # would strand, so it must be placed now; feasibility guarantees at most one
-    # such symbol and that it is never the previous symbol, so no doublet forms.
     remaining = dict(counts)
     out: list[T] = []
     previous: T | None = None
@@ -91,15 +126,23 @@ def no_doublet_shuffle(data: Sequence[T], rng: random.Random) -> list[T]:
         if forced:
             chosen = forced[0]
         else:
-            candidates = [s for s, count in remaining.items() if count > 0 and s != previous]
-            chosen = _weighted_choice(candidates, [remaining[s] for s in candidates], rng)
+            candidates: list[T] = []
+            weights: list[float] = []
+            for symbol, count in remaining.items():
+                if count == 0:
+                    continue
+                weight = count * (factor if symbol == previous else 1.0)
+                if weight > 0:
+                    candidates.append(symbol)
+                    weights.append(weight)
+            chosen = _weighted_choice(candidates, weights, rng)
         out.append(chosen)
         remaining[chosen] -= 1
         previous = chosen
     return out
 
 
-def _weighted_choice(items: list[T], weights: list[int], rng: random.Random) -> T:
+def _weighted_choice(items: list[T], weights: Sequence[float], rng: random.Random) -> T:
     """Pick an item with probability proportional to its weight."""
     target = rng.random() * sum(weights)
     cumulative = 0.0

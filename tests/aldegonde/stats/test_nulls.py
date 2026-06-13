@@ -6,7 +6,11 @@ import pytest
 
 from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats import kappa
-from aldegonde.stats.nulls import no_doublet_shuffle, shuffle
+from aldegonde.stats.nulls import doublet_shuffle, no_doublet_shuffle, shuffle
+
+
+def _doublet_rate(seq: list[object]) -> float:
+    return sum(1 for a, b in zip(seq, seq[1:]) if a == b) / (len(seq) - 1)
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -51,6 +55,23 @@ def test_no_doublet_shuffle_boundary_feasible() -> None:
     out = no_doublet_shuffle("AAABB", random.Random(0))
     assert Counter(out) == Counter("AAABB")
     assert all(a != b for a, b in zip(out, out[1:]))
+
+
+def test_doublet_shuffle_preserves_multiset() -> None:
+    out = doublet_shuffle(0.05)("AABBBCCCCDDDD", random.Random(0))
+    assert Counter(out) == Counter("AABBBCCCCDDDD")
+
+
+def test_doublet_shuffle_zero_rate_has_no_doublets() -> None:
+    out = doublet_shuffle(0.0)("AABBBCCCCDDDD", random.Random(0))
+    assert all(a != b for a, b in zip(out, out[1:]))
+
+
+def test_doublet_shuffle_targets_low_rate() -> None:
+    data = random.Random(0).choices(range(20), weights=[3] * 5 + [1] * 15, k=4000)
+    out = doublet_shuffle(0.01)(data, random.Random(0))
+    assert Counter(out) == Counter(data)
+    assert abs(_doublet_rate(out) - 0.01) < 0.01
 
 
 def test_no_doublet_shuffle_has_no_long_range_structure() -> None:
