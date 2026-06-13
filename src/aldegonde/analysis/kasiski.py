@@ -244,8 +244,8 @@ def print_kasiski_statistics(
     for period, count in _count_divisible(distances, min_period, max_period).items():
         mu = total / period
         mean, var = poisson.stats(mu, loc=0, moments="mv")
-        sigmage: float = abs(count - mean) / sqrt(var)
+        sigmage: float = (count - mean) / sqrt(var)
         print(
             f"kasiski: period={period:<3d} count={count:<6d} "
-            f"expected={mu:<8.1f} ratio={count / mu:.2f} S={sigmage:5.2f}σ",
+            f"expected={mu:<8.1f} ratio={count / mu:.2f} S={sigmage:+5.2f}σ",
         )

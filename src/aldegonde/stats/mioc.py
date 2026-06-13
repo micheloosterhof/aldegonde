@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from math import sqrt
+from math import copysign, sqrt
 from typing import NamedTuple
 
 from aldegonde.stats.ngrams import ngram_distribution
@@ -97,11 +97,15 @@ def nmioc(
     # where the expected NMIOC is 1.0.
     sd = float("inf") if C <= 1 or L1 * L2 == 0 else sqrt((C - 1) / (L1 * L2))
 
-    # Calculate sigmage (number of standard deviations from the random expectation of 1.0)
+    # Calculate sigmage (signed standard deviations from the random expectation of 1.0)
     if sd == 0.0:
-        sigmage = float("inf") if normalized_mioc_value != 1.0 else 0.0
+        sigmage = (
+            copysign(float("inf"), normalized_mioc_value - 1.0)
+            if normalized_mioc_value != 1.0
+            else 0.0
+        )
     else:
-        sigmage = abs(normalized_mioc_value - 1.0) / sd
+        sigmage = (normalized_mioc_value - 1.0) / sd
 
     return MiocTuple(mioc=raw_mioc_value, nmioc=normalized_mioc_value, sigmage=sigmage)
 
@@ -137,7 +141,7 @@ def print_mioc_statistics(
                 cut=cut,
             )
             print(
-                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} S={mioc_result.sigmage:.3f}σ ",
+                f"MIOC{length} (cut={cut}) = {mioc_result.nmioc:.3f} S={mioc_result.sigmage:+.3f}σ ",
                 end="| ",
             )
         print()

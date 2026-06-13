@@ -92,7 +92,7 @@ def nioc(
     C = pow(alphabetsize, length)  # size of alphabet
     nic = C * ic
     sd = sqrt(2 * (C - 1)) / sqrt(L * (L - 1))
-    sigmage = abs(nic - 1.0) / sd
+    sigmage = (nic - 1.0) / sd
 
     return IocResult(ioc=ic, nioc=nic, sigmage=sigmage)
 
@@ -109,7 +109,7 @@ def print_ioc_statistics(text: Sequence[object], alphabetsize: int) -> None:
                 length=length,
                 cut=cut,
             )
-            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={sigmage:.3f}σ ", end="| ")
+            print(f"ΔIC{length} (cut={cut}) = {nic:.3f} S={sigmage:+.3f}σ ", end="| ")
         print()
 
 
