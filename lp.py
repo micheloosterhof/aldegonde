@@ -6,10 +6,12 @@
 import itertools
 import random
 import math
+from functools import partial
 from scipy.stats import poisson
 
 from aldegonde import pasc, masc, auto, c3301
-from aldegonde.stats import print_ioc_statistics, print_kappa
+from aldegonde.stats import print_ioc_statistics, print_kappa, kappa
+from aldegonde.stats import monte_carlo_map, family_pvalue
 from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph, position
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
@@ -30,6 +32,11 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
     for i in range(0, len(runes) - skip):
         diff.append((runes[i + skip] - runes[i]) % 29)
     return diff
+
+
+def kappa_profile(runes: list[int], skips: list[int]) -> dict[int, float]:
+    """Monographic kappa at each skip, shaped as a keyed statistic."""
+    return {skip: kappa(runes, skip=skip) for skip in skips}
 
 
 # with open("data/page54-55.txt") as f:
@@ -113,6 +120,31 @@ for i, s in enumerate(y):
         print_kappa(seg, trace=False)
         print_kappa(seg, length=2, trace=False)  # digraphic kappa
         print_kappa(seg, length=3, trace=False)  # trigraphic kappa
+
+        # Compare kappa periodicity against the low-doublet null: it holds rune
+        # frequencies fixed and removes doublets, so elevated kappa at a skip is
+        # period structure rather than a frequency or doublet artifact. skip=1
+        # stays significant because the null forces zero doublets while the text
+        # keeps a few; the informative peaks are at skip > 1.
+        print("\n=== KAPPA vs LOW-DOUBLET NULL ===")
+        runes = [c3301.r2i(ch) for ch in seg]
+        skips = list(range(1, 21))
+        null = c3301.low_doublet_null()
+        profile = partial(kappa_profile, skips=skips)
+        per_skip = monte_carlo_map(profile, null, runes, keys=skips, trials=300, seed=0)
+        for sk in skips:
+            nc = per_skip[sk]
+            print(
+                f"  skip={sk:2d} kappa={nc.observed:.4f} "
+                f"null={nc.null_mean:.4f} z={nc.z:+5.2f} p_upper={nc.p_upper:.4f}"
+            )
+        # Family-wise test of the strongest period, skip>=2 (skip 1 is the
+        # doublet artifact, not periodicity).
+        fam = family_pvalue(profile, null, runes, keys=skips[1:], trials=300, seed=0)
+        print(
+            f"  strongest: skip={fam.key} kappa={fam.observed:.4f} "
+            f"family p={fam.p_value:.4f}"
+        )
         for length in range(1, 5):
             print(f"kasiski ngram length={length}:")
             kasiski.print_kasiski_statistics(seg, min_length=length, max_length=length)
