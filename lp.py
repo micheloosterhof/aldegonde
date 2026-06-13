@@ -10,8 +10,8 @@ from functools import partial
 from scipy.stats import poisson
 
 from aldegonde import pasc, masc, auto, c3301
-from aldegonde.stats import print_ioc_statistics, print_kappa, kappa
-from aldegonde.stats import monte_carlo_map, family_pvalue
+from aldegonde.stats import print_ioc_statistics, print_kappa, kappa, nioc
+from aldegonde.stats import monte_carlo, monte_carlo_map, family_pvalue
 from aldegonde.stats import repeats, dist, ngrams, entropy, isomorph, position
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor, primes, totient, modular, moebius
@@ -37,6 +37,11 @@ def deltastream(runes: list[int], skip: int = 1) -> list[int]:
 def kappa_profile(runes: list[int], skips: list[int]) -> dict[int, float]:
     """Monographic kappa at each skip, shaped as a keyed statistic."""
     return {skip: kappa(runes, skip=skip) for skip in skips}
+
+
+def nioc_value(runes: list[int], length: int, cut: int) -> float:
+    """Normalized multigraphic IOC, as a scalar statistic for the null harness."""
+    return nioc(runes, alphabetsize=29, length=length, cut=cut).nioc
 
 
 # with open("data/page54-55.txt") as f:
@@ -114,7 +119,26 @@ for i, s in enumerate(y):
         # c3301.print_all(seg, limit=30)
         dist.print_dist(seg)
         entropy.shannon_entropy(seg)
+        runes = [c3301.r2i(ch) for ch in seg]
+        null = c3301.low_doublet_null()
         print_ioc_statistics(seg, alphabetsize=29)
+
+        # IOC vs the low-doublet null: it preserves rune frequencies exactly, so
+        # monographic IOC is invariant (z~0, p~1) and only multigraphic IOC
+        # carries signal beyond frequencies and doublets.
+        print("\n=== IOC vs LOW-DOUBLET NULL ===")
+        for length in range(1, 6):
+            nc = monte_carlo(
+                partial(nioc_value, length=length, cut=0),
+                null,
+                runes,
+                trials=300,
+                seed=0,
+            )
+            print(
+                f"  ΔIC{length} (cut=0) = {nc.observed:.3f} "
+                f"null={nc.null_mean:.3f} z={nc.z:+5.2f} p_upper={nc.p_upper:.4f}"
+            )
         bigram_diagram.print_auto_bigram_diagram(seg, alphabet=c3301.CICADA_ALPHABET)
         # bigram_diagram.print_bigram_diagram(seg, aut, alphabet=c3301.CICADA_ALPHABET)
         print_kappa(seg, trace=False)
@@ -127,9 +151,7 @@ for i, s in enumerate(y):
         # stays significant because the null forces zero doublets while the text
         # keeps a few; the informative peaks are at skip > 1.
         print("\n=== KAPPA vs LOW-DOUBLET NULL ===")
-        runes = [c3301.r2i(ch) for ch in seg]
         skips = list(range(1, 21))
-        null = c3301.low_doublet_null()
         profile = partial(kappa_profile, skips=skips)
         per_skip = monte_carlo_map(profile, null, runes, keys=skips, trials=300, seed=0)
         for sk in skips:
