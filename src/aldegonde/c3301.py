@@ -2,11 +2,11 @@
 
 import random
 from collections import defaultdict
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 
 from aldegonde import pasc
 from aldegonde.maths.primes import primes
-from aldegonde.stats import compare
+from aldegonde.stats import compare, nulls
 
 CICADA_ALPHABET = [
     "ᚠ",
@@ -121,17 +121,58 @@ def randomrunes(length: int, maximum: int = 29) -> list[int]:
     return output
 
 
-def randomrunes_with_low_doublets(length: int, maximum: int = 29) -> str:
-    """Random list of runes of lenth len, but with low doublets, like the LP."""
-    output: list[str] = []
-    prev: int | None = None
-    for _ in range(length):
-        rune = random.randrange(0, maximum)
-        if rune == prev and random.randrange(0, 6) > 0:
-            rune = random.randrange(0, maximum)
-        prev = rune
-        output.append(CICADA_ALPHABET[rune])
-    return "".join(output)
+def _observed_doublet_rate(data: Sequence[int]) -> float:
+    """Fraction of adjacent positions holding equal runes."""
+    pairs = len(data) - 1
+    if pairs <= 0:
+        return 0.0
+    doublets = sum(1 for a, b in zip(data, data[1:]) if a == b)
+    return doublets / pairs
+
+
+def low_doublet_null(
+    *,
+    doublet_rate: float | None = None,
+    smoothing: float = 0.0,
+) -> nulls.NullModel[int]:
+    """Frequency-matched, doublet-suppressed null over the Cicada alphabet.
+
+    Returns a general null model (aldegonde.stats.nulls) configured for Liber
+    Primus analysis: it matches the observed unigram frequencies over the 29
+    Cicada runes and suppresses adjacent doublets to a chosen rate, randomizing
+    everything else. Each surrogate is a first-order Markov walk whose diagonal
+    is pinned to the doublet rate and whose off-diagonal mass is split in
+    proportion to the observed frequencies, so deviation from this null is order
+    structure beyond frequencies and doublet suppression. Surrogates are
+    rune-index sequences of the observed length, drawn from the injected random
+    source the harness supplies.
+
+    Args:
+        doublet_rate: Target rate of adjacent equal runes; None measures it from
+            each call's observed sequence
+        smoothing: Pseudo-count passed to the frequency estimate
+
+    Returns:
+        A null model emitting a surrogate rune-index sequence of the observed
+        length
+    """
+    alphabet = list(range(len(CICADA_ALPHABET)))
+
+    def model(data: Sequence[int], rng: random.Random) -> Sequence[int]:
+        rate = _observed_doublet_rate(data) if doublet_rate is None else doublet_rate
+        frequencies = nulls.unigram_distribution(data, alphabet, smoothing=smoothing)
+        matrix: list[list[float]] = []
+        for i, stay in enumerate(frequencies):
+            off_total = 1.0 - stay
+            row = [
+                rate if j == i else (1.0 - rate) * freq / off_total if off_total > 0 else 0.0
+                for j, freq in enumerate(frequencies)
+            ]
+            matrix.append(row)
+        sampler = nulls.from_transition_matrix(alphabet, matrix, frequencies)
+        return sampler(data, rng)
+
+    return model
 
 
 def numberToBase(n: int, b: int) -> list[int]:
