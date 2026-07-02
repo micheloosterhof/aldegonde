@@ -188,7 +188,7 @@ for i, s in enumerate(y):
             print(f"  lag={lag:2d}: {parts}")
         friedman.friedman_test(seg, maxperiod=34)
         # friedman.friedman_test_with_interrupter(seg, alphabet=c3301.CICADA_ALPHABET, maxperiod=34)
-        repeats.print_repeat_statistics(seg, minimum=2)
+        repeats.print_repeat_statistics(seg, minimum=2, alphabetsize=29)
         repeats.print_repeat_statistics(
             seg,
             minimum=2,
