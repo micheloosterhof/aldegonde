@@ -149,6 +149,18 @@ for i, s in enumerate(y):
             null_label="low-doublet null (rune frequencies and doublet rate matched to the text)",
             trials=300,
         )
+        # Digraphic kappa against the same low-doublet null: this is where the
+        # lag-5 paired-match signal lives, so the null must include the doublet
+        # rate to show the excess is not a doublet artifact.
+        print_kappa(
+            seg,
+            alphabetsize=29,
+            maximum=21,
+            length=2,
+            null=null,
+            null_label="low-doublet null (rune frequencies and doublet rate matched to the text)",
+            trials=300,
+        )
         # Family-wise test of the strongest period, skip>=2.
         skips = list(range(1, 21))
         profile = partial(kappa_profile, skips=skips)
