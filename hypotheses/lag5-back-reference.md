@@ -190,7 +190,18 @@ Three structural conclusions:
    5-window's edges only — either a second escape code ("this 5-frame
    repeats") or brackets around a unit; it is NOT a fully copied 5-gram.
    5 of 28 d4 events share a match with a d1 event (the page-50 cluster
-   family).
+   family). Full interior forensics
+   (`experiments/frame_interior_forensics.py`) close every remaining
+   relation between the two 3-rune interiors A and B: identity 0,
+   constant additive shift 0 (chance 0.9), reversal 0, multiset
+   permutation 0, shared-glyph count 10 vs 8.2 — the interiors are
+   fresh, mutually independent cipher. The edges are unrelated to each
+   other too (X == Y in 0/28, Y-X spread over 18 values), interior rune
+   frequencies are corpus-typical (chi2 25.9, df 28), doublets inside
+   spans normal (1 vs 1.7), and the word-boundary geometry of the
+   10-rune span is unremarkable (mean 1.96 boundaries vs null 2.04; no
+   preference for a boundary between X and Y). The frame code copies
+   exactly two glyphs and nothing else.
 
 Usage fractions under branch (c): in-word digrams ~100% (every in-word
 plaintext digram repeat got marked), in-word singles ~55%, frames ~30%.
