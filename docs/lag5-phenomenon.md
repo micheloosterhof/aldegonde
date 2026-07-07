@@ -324,6 +324,18 @@ alongside every additive mechanism; the surviving trichotomy is nulls /
 back-references / composition stutters, all with literal word-scoped copy
 semantics.
 
+Completing the update: (i) a word-scoped copy simulator with five
+calibrated rates reproduces the entire fingerprint — twelve emergent
+statistics all within noise — at a copy budget of ~39 events / ~66
+copied glyphs (~0.5% of the corpus); (ii) class projections of the
+alphabet (index mod 5/2/7, block-of-6 rows, gematria value mod 5/3, last
+digit) are all flat, so the corpus's recurring "5" is not a symbol-class
+partition; (iii) all event coordinates are frozen in
+`hypotheses/lag5-event-catalog.json` for downstream key searches;
+(iv) one watched hint: within-word distance-6 matches are LOW (31 vs
+44.5 ± 6.2, look-elsewhere-corrected p ~ 0.09), replicating in both
+halves and not produced by the copy model.
+
 ## 10. How to strengthen or kill this
 
 - **Independent transcription**: re-transcribe pages 15–16, 21–22, 50 from

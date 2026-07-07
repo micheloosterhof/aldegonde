@@ -1,0 +1,4476 @@
+{
+ "corpus": {
+  "source": "data/page0-58.txt sections 0-9 (runes only)",
+  "length": 12956,
+  "note": "index = 0-based offset into the clean rune stream; a match at i means C[i] == C[i+5]; under the back-reference branch the plaintext satisfies P[i+5] = P[i] at marked events; under the nulls branch C[i+5] is skipped on decryption"
+ },
+ "counts": {
+  "matches": 479,
+  "d1_events": 29,
+  "d4_events": 28,
+  "within_word_matches": 102,
+  "doublets": 86
+ },
+ "d1_events": [
+  254,
+  687,
+  1150,
+  2359,
+  2387,
+  3118,
+  3675,
+  3772,
+  3840,
+  3889,
+  4025,
+  4780,
+  4887,
+  5493,
+  6290,
+  6552,
+  6707,
+  7601,
+  8142,
+  8750,
+  9587,
+  10230,
+  10351,
+  10648,
+  11756,
+  12157,
+  12158,
+  12514,
+  12935
+ ],
+ "d4_events": [
+  255,
+  1982,
+  2100,
+  2189,
+  2676,
+  3505,
+  3768,
+  4004,
+  4442,
+  4446,
+  5759,
+  6286,
+  6447,
+  6913,
+  7029,
+  7235,
+  8682,
+  8747,
+  8826,
+  9771,
+  9926,
+  10414,
+  10708,
+  10904,
+  11249,
+  12159,
+  12163,
+  12221
+ ],
+ "doublets": [
+  121,
+  206,
+  455,
+  652,
+  781,
+  908,
+  931,
+  978,
+  1037,
+  1590,
+  1980,
+  2015,
+  2025,
+  2191,
+  2240,
+  2344,
+  2579,
+  2739,
+  3139,
+  3851,
+  4388,
+  4579,
+  4606,
+  4671,
+  4712,
+  4773,
+  5074,
+  5260,
+  5475,
+  5633,
+  5770,
+  5777,
+  5824,
+  5835,
+  5969,
+  6019,
+  6080,
+  6223,
+  6322,
+  6364,
+  6541,
+  6610,
+  6616,
+  6649,
+  6755,
+  7117,
+  7143,
+  7169,
+  7231,
+  7380,
+  7568,
+  7868,
+  7942,
+  8111,
+  8141,
+  8195,
+  8308,
+  8384,
+  8630,
+  8637,
+  8699,
+  8725,
+  8775,
+  8933,
+  9595,
+  9916,
+  10139,
+  10165,
+  10507,
+  10568,
+  10611,
+  10749,
+  10760,
+  10841,
+  10953,
+  11102,
+  11188,
+  11343,
+  11598,
+  11658,
+  11844,
+  12114,
+  12373,
+  12667,
+  12803,
+  12938
+ ],
+ "matches": [
+  {
+   "i": 82,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 0,
+   "word": 17,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 132,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 0,
+   "word": 30,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 192,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 0,
+   "word": 43,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 234,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 0,
+   "word": 51,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 254,
+   "rune": "ᛗ",
+   "class": "paired-d1",
+   "section": 0,
+   "word": 56,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 255,
+   "rune": "ᚱ",
+   "class": "paired-d1",
+   "section": 0,
+   "word": 56,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 259,
+   "rune": "ᛗ",
+   "class": "paired-d4",
+   "section": 0,
+   "word": 57,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 267,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 0,
+   "word": 60,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 312,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 0,
+   "word": 68,
+   "within_word": false,
+   "pos_in_word": 8
+  },
+  {
+   "i": 330,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 0,
+   "word": 73,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 361,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 0,
+   "word": 84,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 374,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 0,
+   "word": 86,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 401,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 0,
+   "word": 91,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 426,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 0,
+   "word": 96,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 457,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 0,
+   "word": 103,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 462,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 0,
+   "word": 105,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 506,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 0,
+   "word": 116,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 512,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 0,
+   "word": 118,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 533,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 0,
+   "word": 125,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 591,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 0,
+   "word": 134,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 632,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 0,
+   "word": 142,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 657,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 0,
+   "word": 147,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 662,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 0,
+   "word": 148,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 687,
+   "rune": "ᚷ",
+   "class": "paired-d1",
+   "section": 0,
+   "word": 152,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 688,
+   "rune": "ᚦ",
+   "class": "paired-d1",
+   "section": 0,
+   "word": 152,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 750,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 1,
+   "word": 164,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 759,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 1,
+   "word": 165,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 798,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 171,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 831,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 1,
+   "word": 178,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 853,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 183,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 874,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 1,
+   "word": 189,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 969,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 1,
+   "word": 209,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 978,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 1,
+   "word": 211,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 984,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 1,
+   "word": 213,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 993,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 1,
+   "word": 216,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1044,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 1,
+   "word": 231,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1119,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 1,
+   "word": 246,
+   "within_word": false,
+   "pos_in_word": 8
+  },
+  {
+   "i": 1132,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 249,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1140,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 1,
+   "word": 250,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 1150,
+   "rune": "ᛝ",
+   "class": "paired-d1",
+   "section": 1,
+   "word": 253,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1151,
+   "rune": "ᛒ",
+   "class": "paired-d1",
+   "section": 1,
+   "word": 253,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 1166,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 256,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1314,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 1,
+   "word": 289,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 1322,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 293,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1329,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 1,
+   "word": 295,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1394,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 1,
+   "word": 307,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1416,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 1,
+   "word": 311,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1442,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 1,
+   "word": 315,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 1493,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 1,
+   "word": 330,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 1544,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 1,
+   "word": 339,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 1567,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 1,
+   "word": 345,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 1733,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 1,
+   "word": 384,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1740,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 1,
+   "word": 385,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 1780,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 1,
+   "word": 394,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 1827,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 1,
+   "word": 407,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 1832,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 1,
+   "word": 409,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1869,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 1,
+   "word": 417,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1874,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 2,
+   "word": 419,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1898,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 2,
+   "word": 424,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 1976,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 2,
+   "word": 443,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 1982,
+   "rune": "ᚩ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 445,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 1986,
+   "rune": "ᚪ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 446,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2078,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 2,
+   "word": 460,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2100,
+   "rune": "ᛟ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 463,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 2104,
+   "rune": "ᛒ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 464,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2168,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 2,
+   "word": 480,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2174,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 2,
+   "word": 480,
+   "within_word": false,
+   "pos_in_word": 9
+  },
+  {
+   "i": 2189,
+   "rune": "ᛟ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 483,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2193,
+   "rune": "ᚣ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 484,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2211,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 2,
+   "word": 488,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2239,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 2,
+   "word": 495,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2291,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 2,
+   "word": 508,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2348,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 2,
+   "word": 519,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2359,
+   "rune": "ᛝ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 520,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2360,
+   "rune": "ᛈ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 520,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2387,
+   "rune": "ᚹ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 526,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2388,
+   "rune": "ᛡ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 526,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2404,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 2,
+   "word": 529,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 2416,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 2,
+   "word": 532,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2467,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 2,
+   "word": 546,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 2487,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 2,
+   "word": 551,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 2515,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 2,
+   "word": 560,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2638,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 2,
+   "word": 588,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2676,
+   "rune": "ᚠ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 596,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2680,
+   "rune": "ᚾ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 597,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2692,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 2,
+   "word": 599,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2731,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 2,
+   "word": 608,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2749,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 2,
+   "word": 613,
+   "within_word": true,
+   "pos_in_word": 5
+  },
+  {
+   "i": 2763,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 2,
+   "word": 616,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2771,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 2,
+   "word": 618,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2808,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 2,
+   "word": 625,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 2826,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 2,
+   "word": 629,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2838,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 2,
+   "word": 631,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 2887,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 2,
+   "word": 639,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 2912,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 2,
+   "word": 643,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 2951,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 2,
+   "word": 653,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 2970,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 2,
+   "word": 656,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3035,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 2,
+   "word": 672,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3042,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 2,
+   "word": 674,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3049,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 2,
+   "word": 676,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3118,
+   "rune": "ᛏ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 696,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3119,
+   "rune": "ᚢ",
+   "class": "paired-d1",
+   "section": 2,
+   "word": 696,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 3131,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 2,
+   "word": 699,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 3179,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 2,
+   "word": 708,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 3188,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 2,
+   "word": 710,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3214,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 2,
+   "word": 715,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3222,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 2,
+   "word": 717,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3235,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 2,
+   "word": 722,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3247,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 2,
+   "word": 725,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3332,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 2,
+   "word": 746,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3354,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 2,
+   "word": 753,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3368,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 2,
+   "word": 755,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3370,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 2,
+   "word": 756,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3391,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 2,
+   "word": 759,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3405,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 2,
+   "word": 762,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3454,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 2,
+   "word": 770,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 3470,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 2,
+   "word": 774,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3505,
+   "rune": "ᚫ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 782,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 3509,
+   "rune": "ᚣ",
+   "class": "paired-d4",
+   "section": 2,
+   "word": 783,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3523,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 2,
+   "word": 786,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3599,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 2,
+   "word": 803,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3637,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 4,
+   "word": 811,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 3649,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 4,
+   "word": 814,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3675,
+   "rune": "ᛈ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 819,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3676,
+   "rune": "ᚻ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 819,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3711,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 4,
+   "word": 828,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3722,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 4,
+   "word": 830,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3730,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 4,
+   "word": 832,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3768,
+   "rune": "ᛠ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 841,
+   "within_word": true,
+   "pos_in_word": 6
+  },
+  {
+   "i": 3772,
+   "rune": "ᚳ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 841,
+   "within_word": false,
+   "pos_in_word": 10
+  },
+  {
+   "i": 3773,
+   "rune": "ᛠ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 841,
+   "within_word": false,
+   "pos_in_word": 11
+  },
+  {
+   "i": 3802,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 4,
+   "word": 849,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3811,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 4,
+   "word": 850,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3840,
+   "rune": "ᚻ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 858,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3841,
+   "rune": "ᚷ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 858,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3846,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 4,
+   "word": 860,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3854,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 4,
+   "word": 862,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 3861,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 4,
+   "word": 864,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3864,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 864,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3889,
+   "rune": "ᚦ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 872,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 3890,
+   "rune": "ᛄ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 873,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 3916,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 877,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 3947,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 4,
+   "word": 882,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 3953,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 4,
+   "word": 882,
+   "within_word": false,
+   "pos_in_word": 9
+  },
+  {
+   "i": 3975,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 888,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4004,
+   "rune": "ᚠ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 894,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4008,
+   "rune": "ᚷ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 896,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4019,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 4,
+   "word": 898,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4025,
+   "rune": "ᚦ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 899,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4026,
+   "rune": "ᛈ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 899,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4080,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 915,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4091,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 4,
+   "word": 917,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4194,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 944,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4202,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 4,
+   "word": 945,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 4204,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 4,
+   "word": 946,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4232,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 4,
+   "word": 953,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 4280,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 4,
+   "word": 964,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4283,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 4,
+   "word": 965,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4323,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 4,
+   "word": 976,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4364,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 987,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4405,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 4,
+   "word": 993,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 4442,
+   "rune": "ᛟ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 1003,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 4446,
+   "rune": "ᚢ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 1003,
+   "within_word": false,
+   "pos_in_word": 9
+  },
+  {
+   "i": 4450,
+   "rune": "ᛇ",
+   "class": "paired-d4",
+   "section": 4,
+   "word": 1004,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4504,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1017,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4552,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1028,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4581,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1034,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4583,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1035,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4599,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1039,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4624,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1044,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4673,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1054,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 4729,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1067,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 4748,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1072,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4780,
+   "rune": "ᛒ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1080,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4781,
+   "rune": "ᚪ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1081,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4807,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1089,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 4829,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1095,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 4858,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1102,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 4887,
+   "rune": "ᚣ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1111,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4888,
+   "rune": "ᛇ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1111,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 4931,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1122,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 4937,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1123,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 4958,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1129,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4984,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1135,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 4991,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1136,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5083,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1157,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5086,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1158,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5091,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1158,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 5098,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1161,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5233,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1186,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5265,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1192,
+   "within_word": false,
+   "pos_in_word": 8
+  },
+  {
+   "i": 5279,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1196,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 5305,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1203,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5337,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1211,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5345,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1212,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 5363,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1215,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5370,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1216,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 5386,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1220,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 5391,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1222,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5396,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1223,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5398,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1223,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 5449,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1232,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5451,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1232,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 5459,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1233,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5473,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 4,
+   "word": 1236,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 5493,
+   "rune": "ᚦ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1241,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5494,
+   "rune": "ᚠ",
+   "class": "paired-d1",
+   "section": 4,
+   "word": 1241,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5593,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1262,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5680,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1281,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 5685,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1283,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5703,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1287,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 5728,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1293,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 5733,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1294,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 5759,
+   "rune": "ᛝ",
+   "class": "paired-d4",
+   "section": 5,
+   "word": 1301,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5763,
+   "rune": "ᚢ",
+   "class": "paired-d4",
+   "section": 5,
+   "word": 1302,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5782,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1306,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 5841,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1318,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5863,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1325,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5866,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1326,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5893,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1333,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 5944,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1344,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 5947,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1345,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 5994,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1357,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6020,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1364,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6041,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1367,
+   "within_word": true,
+   "pos_in_word": 6
+  },
+  {
+   "i": 6048,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1367,
+   "within_word": false,
+   "pos_in_word": 13
+  },
+  {
+   "i": 6065,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1370,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6092,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1374,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6125,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1381,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6138,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1384,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 6150,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1388,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6162,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1390,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6257,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1412,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6260,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1412,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6286,
+   "rune": "ᛈ",
+   "class": "paired-d4",
+   "section": 5,
+   "word": 1418,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6290,
+   "rune": "ᚣ",
+   "class": "paired-d1",
+   "section": 5,
+   "word": 1420,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6291,
+   "rune": "ᛈ",
+   "class": "paired-d1",
+   "section": 5,
+   "word": 1420,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6312,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1424,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 6385,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1440,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6447,
+   "rune": "ᛗ",
+   "class": "paired-d4",
+   "section": 5,
+   "word": 1454,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6451,
+   "rune": "ᚪ",
+   "class": "paired-d4",
+   "section": 5,
+   "word": 1454,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 6456,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1456,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6476,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1460,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6488,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1462,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 6518,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 5,
+   "word": 1470,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6536,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1473,
+   "within_word": true,
+   "pos_in_word": 6
+  },
+  {
+   "i": 6552,
+   "rune": "ᚢ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1475,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 6553,
+   "rune": "ᛒ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1476,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6571,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1483,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6592,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1486,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6630,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1496,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6663,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1504,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6707,
+   "rune": "ᚾ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1515,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 6708,
+   "rune": "ᚪ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1515,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6781,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1528,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6865,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1545,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6890,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1549,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 6913,
+   "rune": "ᛇ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1555,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6917,
+   "rune": "ᛄ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1556,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 6933,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1561,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 6970,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1568,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 6986,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1570,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 6989,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1570,
+   "within_word": false,
+   "pos_in_word": 10
+  },
+  {
+   "i": 7029,
+   "rune": "ᛏ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1582,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 7033,
+   "rune": "ᚢ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1584,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7075,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1596,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7096,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1599,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7111,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1603,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7161,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1618,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7210,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1631,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7212,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1631,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7235,
+   "rune": "ᛄ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1635,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7239,
+   "rune": "ᛚ",
+   "class": "paired-d4",
+   "section": 6,
+   "word": 1636,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7250,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1640,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7255,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1641,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 7265,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1645,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7306,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1653,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 7316,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1656,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 7329,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1659,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7348,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1663,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7376,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1669,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7391,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1673,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7492,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1698,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 7516,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1703,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7531,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1706,
+   "within_word": false,
+   "pos_in_word": 8
+  },
+  {
+   "i": 7553,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1711,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7601,
+   "rune": "ᛉ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1722,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 7602,
+   "rune": "ᚳ",
+   "class": "paired-d1",
+   "section": 6,
+   "word": 1722,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 7612,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1724,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 7614,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1725,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7632,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1729,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 7699,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1747,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7725,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1752,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 7785,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1768,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 7913,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1791,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 7946,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1798,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8014,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 6,
+   "word": 1813,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8053,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1824,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8140,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1844,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8142,
+   "rune": "ᛞ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 1844,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8143,
+   "rune": "ᛋ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 1845,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8157,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1849,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8192,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1860,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8236,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1868,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8249,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1872,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8292,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1883,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8325,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1889,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8437,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1915,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8454,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1918,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8515,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1931,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8535,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1935,
+   "within_word": true,
+   "pos_in_word": 5
+  },
+  {
+   "i": 8554,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1939,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8591,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1948,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8644,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1960,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8650,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1962,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8682,
+   "rune": "ᛚ",
+   "class": "paired-d4",
+   "section": 7,
+   "word": 1969,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8686,
+   "rune": "ᚢ",
+   "class": "paired-d4",
+   "section": 7,
+   "word": 1969,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 8729,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1983,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8735,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1984,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8747,
+   "rune": "ᛈ",
+   "class": "paired-d4",
+   "section": 7,
+   "word": 1987,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8750,
+   "rune": "ᚪ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 1987,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8751,
+   "rune": "ᛝ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 1987,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8816,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 7,
+   "word": 1998,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8826,
+   "rune": "ᛏ",
+   "class": "paired-d4",
+   "section": 7,
+   "word": 2000,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 8828,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2001,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8830,
+   "rune": "ᛟ",
+   "class": "paired-d4",
+   "section": 7,
+   "word": 2002,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8878,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2012,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 8887,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2014,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8919,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2020,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8937,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2024,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 8940,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2025,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8953,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2028,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 8962,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2030,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 8988,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2033,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 9000,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2037,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9021,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2043,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9061,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2052,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 9076,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2059,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9098,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2064,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9146,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2072,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 9165,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2077,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9171,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2078,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 9186,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2082,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9214,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2087,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9294,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2105,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9313,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2108,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 9318,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2109,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 9392,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2124,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9412,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2130,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9481,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2143,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9494,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2146,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9506,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2149,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9546,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 7,
+   "word": 2158,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9587,
+   "rune": "ᛈ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 2168,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9588,
+   "rune": "ᛋ",
+   "class": "paired-d1",
+   "section": 7,
+   "word": 2168,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9647,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2182,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9654,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2184,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9657,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2185,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9727,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2200,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9734,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2201,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 9771,
+   "rune": "ᛚ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2211,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9775,
+   "rune": "ᛉ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2211,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9794,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2215,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 9845,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2229,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9853,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2231,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9874,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2237,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9926,
+   "rune": "ᚠ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2250,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 9930,
+   "rune": "ᚪ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2251,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 9959,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2256,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 10217,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2313,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 10225,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2314,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 10230,
+   "rune": "ᚱ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2315,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10231,
+   "rune": "ᛇ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2316,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10248,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2319,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 10266,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2322,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 10283,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2327,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10333,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2336,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 10349,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2340,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10351,
+   "rune": "ᚠ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2341,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 10352,
+   "rune": "ᛉ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2341,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10380,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2347,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10404,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2354,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10414,
+   "rune": "ᛖ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2355,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 10418,
+   "rune": "ᛁ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2357,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10477,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2367,
+   "within_word": true,
+   "pos_in_word": 4
+  },
+  {
+   "i": 10486,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2368,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 10503,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2373,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10512,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2374,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 10526,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2377,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10553,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2380,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 10568,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2384,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10585,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2388,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10595,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2392,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10632,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2400,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 10648,
+   "rune": "ᚳ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2404,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10649,
+   "rune": "ᚢ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2404,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 10668,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2410,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10708,
+   "rune": "ᛡ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2418,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 10712,
+   "rune": "ᛚ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2418,
+   "within_word": false,
+   "pos_in_word": 10
+  },
+  {
+   "i": 10718,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2421,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10736,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2424,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 10741,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2425,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10781,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2432,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10878,
+   "rune": "ᛄ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2455,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10904,
+   "rune": "ᛄ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2461,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 10908,
+   "rune": "ᛏ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2461,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 10915,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2462,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 10925,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2464,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10955,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2470,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 10975,
+   "rune": "ᚦ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2477,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 11036,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2489,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11085,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2500,
+   "within_word": false,
+   "pos_in_word": 9
+  },
+  {
+   "i": 11119,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2511,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11202,
+   "rune": "ᚪ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2527,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 11249,
+   "rune": "ᛗ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2539,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11253,
+   "rune": "ᛞ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2540,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11270,
+   "rune": "ᛉ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2545,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11319,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2558,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 11343,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2561,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 11363,
+   "rune": "ᛠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2564,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11416,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2577,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 11423,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2578,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11439,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2583,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11517,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2599,
+   "within_word": true,
+   "pos_in_word": 3
+  },
+  {
+   "i": 11532,
+   "rune": "ᚱ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2602,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 11540,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2603,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 11550,
+   "rune": "ᛖ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2606,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 11553,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2607,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11601,
+   "rune": "ᛁ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2617,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11612,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2620,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 11654,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2630,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 11686,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2638,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11756,
+   "rune": "ᛇ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2652,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 11757,
+   "rune": "ᛁ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2652,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11875,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2682,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11926,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2692,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 11928,
+   "rune": "ᛚ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2693,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 11946,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2699,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 12005,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2713,
+   "within_word": false,
+   "pos_in_word": 7
+  },
+  {
+   "i": 12008,
+   "rune": "ᚠ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2714,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12017,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2716,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12031,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2719,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12058,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2727,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12070,
+   "rune": "ᛏ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2730,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12110,
+   "rune": "ᚹ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2740,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12130,
+   "rune": "ᚫ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2744,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12157,
+   "rune": "ᛋ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2751,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12158,
+   "rune": "ᛞ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2751,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12159,
+   "rune": "ᛝ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2751,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12163,
+   "rune": "ᛞ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2751,
+   "within_word": false,
+   "pos_in_word": 6
+  },
+  {
+   "i": 12165,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2752,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12167,
+   "rune": "ᛄ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2753,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12221,
+   "rune": "ᛟ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2764,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 12225,
+   "rune": "ᚱ",
+   "class": "paired-d4",
+   "section": 8,
+   "word": 2765,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12268,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2778,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12286,
+   "rune": "ᛇ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2782,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12328,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2789,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12398,
+   "rune": "ᚾ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2805,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12405,
+   "rune": "ᛋ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2808,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12474,
+   "rune": "ᚢ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2822,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12485,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2824,
+   "within_word": false,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12514,
+   "rune": "ᚢ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2830,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12515,
+   "rune": "ᛄ",
+   "class": "paired-d1",
+   "section": 8,
+   "word": 2830,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 12544,
+   "rune": "ᛝ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2838,
+   "within_word": true,
+   "pos_in_word": 1
+  },
+  {
+   "i": 12579,
+   "rune": "ᛞ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2843,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 12638,
+   "rune": "ᚳ",
+   "class": "isolated",
+   "section": 8,
+   "word": 2857,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 12652,
+   "rune": "ᛡ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2862,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 12680,
+   "rune": "ᚩ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2867,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 12736,
+   "rune": "ᛈ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2879,
+   "within_word": true,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12748,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2881,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12756,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2883,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 12767,
+   "rune": "ᚣ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2886,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12803,
+   "rune": "ᚷ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2895,
+   "within_word": false,
+   "pos_in_word": 4
+  },
+  {
+   "i": 12817,
+   "rune": "ᛟ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2898,
+   "within_word": false,
+   "pos_in_word": 2
+  },
+  {
+   "i": 12853,
+   "rune": "ᚻ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2906,
+   "within_word": false,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12863,
+   "rune": "ᛗ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2908,
+   "within_word": false,
+   "pos_in_word": 5
+  },
+  {
+   "i": 12898,
+   "rune": "ᛒ",
+   "class": "isolated",
+   "section": 9,
+   "word": 2916,
+   "within_word": false,
+   "pos_in_word": 3
+  },
+  {
+   "i": 12935,
+   "rune": "ᛖ",
+   "class": "paired-d1",
+   "section": 9,
+   "word": 2923,
+   "within_word": true,
+   "pos_in_word": 0
+  },
+  {
+   "i": 12936,
+   "rune": "ᛋ",
+   "class": "paired-d1",
+   "section": 9,
+   "word": 2923,
+   "within_word": true,
+   "pos_in_word": 1
+  }
+ ]
+}

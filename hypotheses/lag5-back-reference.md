@@ -125,6 +125,39 @@ copy semantics blind to words is now excluded.
   independent support is the rate feasibility, the information-theoretic
   necessity of its shape, and the full-fingerprint fit.
 
+## Word-scoped simulation and copy budget (July 2026)
+
+`experiments/word_scoped_copy_simulator.py` layers literal copies on the
+established base process (doublet-suppressed uniform stream cut into the
+REAL word-length sequence): single / digraph / frame copies with separate
+word-internal and boundary-crossing rates. Five rates are calibrated by
+moment matching (d1, d4, paired-within, isolated-within, mono total);
+twelve further statistics are emergent, and all agree with the LP within
+Monte Carlo noise (|z| <= 1.8 across the full table, including the
+paired/isolated x within/across decomposition, separations 2-8, the
+off-zero delta histogram, doublets and triplets). The calibrated copy
+budget is small and specific:
+
+    ~8  in-word digraph copies   (the XY···XY words)
+    ~4  cross-word digraph copies
+    ~12 frame copies             (the d4 events; span 10, mostly cross-word)
+    ~15 in-word single copies
+    ==> ~39 events, ~66 copied glyphs in 12,956 runes (~0.5%)
+
+Two honest residuals: the LP's isolated-across count is mildly below the
+model (z = -1.4, noise-compatible), and the model does not produce the
+within-word d=6 deficit hint (LP 31 vs model 42.9 ± 6.6; see
+`within-word-d5-coincidence.md`) — if that deficit is real it is beyond
+copy semantics. Degrees-of-freedom caveat: five calibrated rates is five;
+the test content lives in the twelve emergent statistics.
+
+The complete event coordinates (479 matches classified paired/isolated x
+within/across, the 29 d1 and 28 d4 events, the 86 doublets) are frozen in
+`hypotheses/lag5-event-catalog.json`
+(`experiments/lag5_event_catalog.py`) for direct consumption by key
+searches: under branch (c) each event supplies P[i] = P[i-5]; under
+branch (a) the copied glyph is skipped and consumes no key symbol.
+
 ## Predictions
 
 - **114 free cribs**: at each verified event, the plaintext satisfies

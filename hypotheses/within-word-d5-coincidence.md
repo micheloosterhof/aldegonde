@@ -70,7 +70,21 @@ offset) gives the same answer (p = 0.0015).
 
 Only d=5 fires (Bonferroni over the 7 scanned distances: ~0.006). d=3 and
 d=4 lean mildly high, d=6 mildly **low** — possibly noise, possibly a
-shoulder structure worth watching. The d=1 row doubles as a sanity check:
+shoulder structure worth watching.
+
+**d=6 deficit follow-up (July 2026,
+`experiments/within_word_d6_deficit.py`):** the deficit reproduces (31 vs
+44.5 ± 6.2, P(<=) = 0.013), is direction-consistent in both corpus halves
+(z = -1.9 / -1.2), is spread over sections (8 of 10 at or below null),
+and is present in both d5-hit words (0.031) and other words (0.023). On
+its own, after look-elsewhere over the 7 scanned distances, it is only
+p ~ 0.09 — a watched hint, not a claim. Two mechanical notes: (i) copy
+events suppress a few d=6 pairs via the doublet rule (a digraph copy
+makes C[k+6] = C[k+1], so a d=6 match would need the doublet C[k]=C[k+1])
+but the effect is ~1 match, 10x too small; (ii) the calibrated
+word-scoped copy model does NOT produce the deficit (model 42.9 ± 6.6 vs
+observed 31, z = -1.8, `experiments/word_scoped_copy_simulator.py`) — if
+the deficit is real, it is structure beyond the copy model. The d=1 row doubles as a sanity check:
 the permutation null already carries the doublet suppression, and the
 within-word share of doublets is proportional — consistent with the known
 result that doublet suppression ignores word boundaries.
