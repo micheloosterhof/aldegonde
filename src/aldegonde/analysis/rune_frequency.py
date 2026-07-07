@@ -30,15 +30,8 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, TypeVar
 
 from aldegonde.exceptions import InvalidInputError
-from aldegonde.stats.ngrams import ngram_distribution
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-T = TypeVar("T")
 
 
 @dataclass
@@ -59,9 +52,9 @@ class FrequencyProfile:
     mapping: dict[int, int]
     total_states: int
     alphabet_size: int
-    expected_frequencies: dict[int, float] = field(default_factory=dict)
-    chi_square: float = 0.0
-    entropy: float = 0.0
+    expected_frequencies: dict[int, float] = field(init=False)
+    chi_square: float = field(init=False)
+    entropy: float = field(init=False)
 
     def __post_init__(self) -> None:
         """Compute derived statistics."""
@@ -107,6 +100,39 @@ def _validate_symbol_range(symbol: int, alphabet_size: int) -> None:
     if symbol < 0 or symbol >= alphabet_size:
         msg = f"suppressed_symbol {symbol} out of range [0, {alphabet_size})"
         raise InvalidInputError(msg)
+
+
+def _forced_mapping(
+    total_states: int,
+    alphabet_size: int,
+    suppressed_symbol: int,
+    suppressed_count: int,
+) -> FrequencyProfile:
+    """Assign suppressed_count pre-images to one symbol, spread the rest evenly."""
+    if suppressed_count < 0 or suppressed_count > total_states:
+        msg = f"suppressed_count {suppressed_count} out of range"
+        raise InvalidInputError(msg)
+
+    remaining = total_states - suppressed_count
+    other_count = alphabet_size - 1
+    other_base = remaining // other_count
+    other_remainder = remaining % other_count
+
+    mapping: dict[int, int] = {}
+    idx = 0
+    for symbol in range(alphabet_size):
+        if symbol == suppressed_symbol:
+            mapping[symbol] = suppressed_count
+        else:
+            extra = 1 if idx < other_remainder else 0
+            mapping[symbol] = other_base + extra
+            idx += 1
+
+    return FrequencyProfile(
+        mapping=mapping,
+        total_states=total_states,
+        alphabet_size=alphabet_size,
+    )
 
 
 def natural_mapping(
@@ -184,31 +210,7 @@ def matrix_mapping(
     if suppressed_count is None:
         return natural_mapping(total, alphabet_size)
 
-    if suppressed_count < 0 or suppressed_count > total:
-        msg = f"suppressed_count {suppressed_count} out of range"
-        raise InvalidInputError(msg)
-
-    # Distribute remaining states among non-suppressed symbols
-    remaining = total - suppressed_count
-    other_count = alphabet_size - 1
-    other_base = remaining // other_count
-    other_remainder = remaining % other_count
-
-    mapping: dict[int, int] = {}
-    idx = 0
-    for symbol in range(alphabet_size):
-        if symbol == suppressed_symbol:
-            mapping[symbol] = suppressed_count
-        else:
-            extra = 1 if idx < other_remainder else 0
-            mapping[symbol] = other_base + extra
-            idx += 1
-
-    return FrequencyProfile(
-        mapping=mapping,
-        total_states=total,
-        alphabet_size=alphabet_size,
-    )
+    return _forced_mapping(total, alphabet_size, suppressed_symbol, suppressed_count)
 
 
 def truncated_byte_mapping(
@@ -255,47 +257,7 @@ def truncated_byte_mapping(
             alphabet_size=alphabet_size,
         )
 
-    # Non-uniform: use all states, control one symbol
-    remaining = byte_size - suppressed_count
-    other_count = alphabet_size - 1
-    other_base = remaining // other_count
-    other_remainder = remaining % other_count
-
-    mapping: dict[int, int] = {}
-    idx = 0
-    for symbol in range(alphabet_size):
-        if symbol == suppressed_symbol:
-            mapping[symbol] = suppressed_count
-        else:
-            extra = 1 if idx < other_remainder else 0
-            mapping[symbol] = other_base + extra
-            idx += 1
-
-    return FrequencyProfile(
-        mapping=mapping,
-        total_states=byte_size,
-        alphabet_size=alphabet_size,
-    )
-
-
-def observed_delta_frequencies(
-    runes: Sequence[object],
-    alphabet_size: int = 29,
-) -> dict[int, float]:
-    """Compute observed frequency distribution of a delta stream.
-
-    Args:
-        runes: Sequence of delta values (as strings or objects).
-        alphabet_size: Size of the alphabet.
-
-    Returns:
-        Dict mapping symbol index to observed frequency (proportion).
-    """
-    dist = ngram_distribution(runes, length=1, cut=0)
-    total = sum(dist.values())
-    if total == 0:
-        return {}
-    return {i: dist.get(str(i), 0) / total for i in range(alphabet_size)}
+    return _forced_mapping(byte_size, alphabet_size, suppressed_symbol, suppressed_count)
 
 
 def find_best_suppression(
@@ -319,16 +281,15 @@ def find_best_suppression(
         Tuple of (best_count, best_profile).
     """
     total = matrix_size * matrix_size
-    best_count = 0
-    best_error = float("inf")
-    best_profile = matrix_mapping(matrix_size, alphabet_size, suppressed_symbol, 1)
-
     target = observed_freq.get(suppressed_symbol, 0.0)
 
-    for count in range(total):
+    best_count = 0
+    best_profile = matrix_mapping(matrix_size, alphabet_size, suppressed_symbol, 0)
+    best_error = abs(best_profile.expected_frequencies[suppressed_symbol] - target)
+
+    for count in range(1, total):
         profile = matrix_mapping(matrix_size, alphabet_size, suppressed_symbol, count)
-        predicted = profile.expected_frequencies[suppressed_symbol]
-        error = abs(predicted - target)
+        error = abs(profile.expected_frequencies[suppressed_symbol] - target)
         if error < best_error:
             best_error = error
             best_count = count
@@ -395,79 +356,3 @@ def print_frequency_profile(profile: FrequencyProfile, label: str = "") -> None:
         print(
             f"{symbol:>6} {states:>6} {freq:>8.4f} {uniform:>8.4f} {ratio:>8.3f}{marker}"
         )
-
-
-def analyze_matrix_sizes(
-    alphabet_size: int = 29,
-    target_symbol: int = 0,
-    max_matrix: int = 20,
-) -> None:
-    """Print analysis of square matrix sizes and natural suppression.
-
-    For each matrix size N, shows whether symbol 0 is naturally suppressed
-    by the N^2 mod 29 remainder structure.
-
-    Args:
-        alphabet_size: Output alphabet size (default 29).
-        target_symbol: Symbol to track (default 0).
-        max_matrix: Maximum matrix side length to test.
-    """
-    print(f"\nMatrix size analysis (alphabet={alphabet_size}, "
-          f"tracking symbol {target_symbol})")
-    print(f"{'N':>3} {'N^2':>5} {'Base':>5} {'Rem':>4} "
-          f"{'Sym0 freq':>10} {'Uniform':>8} {'Ratio':>7} {'Suppressed?':>12}")
-    print("-" * 62)
-
-    for n in range(2, max_matrix + 1):
-        total = n * n
-        profile = natural_mapping(total, alphabet_size)
-        freq = profile.expected_frequencies[target_symbol]
-        ratio = profile.suppression_ratio[target_symbol]
-        remainder = total % alphabet_size
-        suppressed = target_symbol in profile.suppressed_symbols
-        marker = "YES" if suppressed else ""
-        print(f"{n:>3} {total:>5} {total // alphabet_size:>5} {remainder:>4} "
-              f"{freq:>10.5f} {profile.expected_frequencies[0]:>8.5f} "
-              f"{ratio:>7.4f} {marker:>12}")
-
-
-def analyze_byte_mappings(
-    alphabet_size: int = 29,
-    target_symbol: int = 0,
-) -> None:
-    """Print analysis of byte-to-rune mapping options.
-
-    Shows the natural mapping (no rejection) and how different byte sizes
-    affect suppression of symbol 0.
-
-    Args:
-        alphabet_size: Output alphabet size (default 29).
-        target_symbol: Symbol to track (default 0).
-    """
-    print(f"\n=== Byte mapping analysis (N -> {alphabet_size}) ===")
-    print(f"Tracking symbol: {target_symbol}")
-
-    for byte_size in [128, 256, 512, 1024]:
-        profile = natural_mapping(byte_size, alphabet_size)
-        remainder = byte_size % alphabet_size
-        freq0 = profile.expected_frequencies[target_symbol]
-        ratio = profile.suppression_ratio[target_symbol]
-        suppressed = target_symbol in profile.suppressed_symbols
-
-        print(f"\n  {byte_size} states: "
-              f"{byte_size}={byte_size // alphabet_size}*{alphabet_size}+{remainder}")
-        print(f"    Symbol {target_symbol} freq: {freq0:.5f}  ratio: {ratio:.4f}  "
-              f"suppressed: {suppressed}")
-        print(f"    Suppressed symbols ({len(profile.suppressed_symbols)}): "
-              f"{profile.suppressed_symbols}")
-
-    # Detailed view for 256
-    print("\n  --- 256-state detail ---")
-    profile = natural_mapping(256, alphabet_size)
-    print(f"  {'Symbol':>6} {'States':>6} {'Freq':>8} {'Ratio':>7}")
-    for s in range(alphabet_size):
-        states = profile.mapping[s]
-        freq = profile.expected_frequencies[s]
-        ratio = profile.suppression_ratio[s]
-        marker = " <<" if s in profile.suppressed_symbols else ""
-        print(f"  {s:>6} {states:>6} {freq:>8.5f} {ratio:>7.4f}{marker}")

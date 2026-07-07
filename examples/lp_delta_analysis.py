@@ -7,12 +7,11 @@ suppression of symbol 0.
 """
 
 import os
+from collections import Counter
 
 from aldegonde import c3301
 from aldegonde.analysis import friedman
 from aldegonde.analysis.rune_frequency import (
-    analyze_byte_mappings,
-    analyze_matrix_sizes,
     find_best_suppression,
     natural_mapping,
     print_frequency_profile,
@@ -24,6 +23,39 @@ from aldegonde.stats.entropy import shannon_entropy
 from aldegonde.stats.ioc import print_ioc_statistics
 from aldegonde.stats.kappa import print_kappa
 from aldegonde.stats.repeats import print_repeat_statistics
+
+
+def print_matrix_size_analysis(alphabet_size: int = 29, max_matrix: int = 20) -> None:
+    """Print, for each matrix side N, whether symbol 0 is naturally suppressed."""
+    print(f"\nMatrix size analysis (alphabet={alphabet_size}, tracking symbol 0)")
+    print(f"{'N':>3} {'N^2':>5} {'Base':>5} {'Rem':>4} "
+          f"{'Sym0 freq':>10} {'Ratio':>7} {'Suppressed?':>12}")
+    print("-" * 52)
+    for n in range(2, max_matrix + 1):
+        total = n * n
+        profile = natural_mapping(total, alphabet_size)
+        freq = profile.expected_frequencies[0]
+        ratio = profile.suppression_ratio[0]
+        marker = "YES" if 0 in profile.suppressed_symbols else ""
+        print(f"{n:>3} {total:>5} {total // alphabet_size:>5} "
+              f"{total % alphabet_size:>4} {freq:>10.5f} {ratio:>7.4f} {marker:>12}")
+
+
+def print_byte_mapping_analysis(alphabet_size: int = 29) -> None:
+    """Print natural-mapping suppression of symbol 0 for byte-like state counts."""
+    print(f"\n=== Byte mapping analysis (N -> {alphabet_size}) ===")
+    for byte_size in [128, 256, 512, 1024]:
+        profile = natural_mapping(byte_size, alphabet_size)
+        remainder = byte_size % alphabet_size
+        print(f"\n  {byte_size} states: "
+              f"{byte_size}={byte_size // alphabet_size}*{alphabet_size}+{remainder}")
+        print(f"    Symbol 0 freq: {profile.expected_frequencies[0]:.5f}  "
+              f"ratio: {profile.suppression_ratio[0]:.4f}  "
+              f"suppressed: {0 in profile.suppressed_symbols}")
+        print(f"    Suppressed symbols ({len(profile.suppressed_symbols)}): "
+              f"{profile.suppressed_symbols}")
+
+    print_frequency_profile(natural_mapping(256, alphabet_size), "256-state detail")
 
 
 def deltastream(runes: list[int], skip: int = 1) -> list[int]:
@@ -136,7 +168,6 @@ def main() -> None:
         # Model: 13x13 matrix
         print("\n--- 13x13 Matrix Model ---")
         observed_dict = {}
-        from collections import Counter
         counts = Counter(all_indices)
         for idx in range(29):
             observed_dict[idx] = counts.get(idx, 0) / len(all_indices)
@@ -155,8 +186,8 @@ def main() -> None:
             print(f"  {n} states: suppressed={suppressed[:5]}{'...' if len(suppressed) > 5 else ''}, "
                   f"sym0 ratio={profile.suppression_ratio[0]:.4f}")
 
-        analyze_matrix_sizes()
-        analyze_byte_mappings()
+        print_matrix_size_analysis()
+        print_byte_mapping_analysis()
 
 
 if __name__ == "__main__":

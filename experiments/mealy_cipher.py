@@ -298,14 +298,16 @@ class LatinSquareCipher:
     digit determines the next state (row). Since each row of a Latin
     square is a permutation, the cipher is bijective per-digit.
 
-    The no-self-loop property arises naturally if the Latin square has
-    no fixed points (a derangement Latin square), meaning the state
-    always changes.
+    Note: a Latin square with NO fixed points cannot exist (value i must
+    appear in row i exactly once, and that cell is a fixed point), so the
+    state cannot be forced to always change. The "derangement" option
+    only concentrates the fixed points into a single column, i.e. one
+    self-loop opportunity per row - the minimum possible.
 
     Args:
         seed: Random seed for Latin square generation.
         initial_state: Starting row (0-12).
-        derangement: If True, uses a derangement Latin square.
+        derangement: If True, uses the minimal-fixed-point construction.
     """
 
     def __init__(
@@ -328,14 +330,15 @@ class LatinSquareCipher:
         size: int,
         seed: int,
     ) -> list[list[int]]:
-        """Latin square where no cell contains its row index (no fixed points).
+        """Latin square with fixed points confined to a single column.
 
-        Constructed by starting with a shifted Latin square where
-        row i, col j = (i + j + 1) % size, ensuring cell (i, j) != i
-        for all j. Then columns and values are shuffled while preserving
-        the derangement and Latin properties.
+        Uses the shifted square row i, col j = (i + j + 1) % size, which
+        has cell (i, j) == i only at j = size-1 (a fully fixed-point-free
+        Latin square is impossible: value i appears in row i exactly
+        once). Columns are then shuffled, which moves but cannot remove
+        those fixed points.
         """
-        # (i + j + 1) % size guarantees no fixed points
+        # (i + j + 1) % size: fixed points only in the last column
         square = [[(i + j + 1) % size for j in range(size)] for i in range(size)]
         # Shuffle columns (preserves Latin + derangement properties
         # only if we also remap values consistently)
@@ -553,3 +556,7 @@ def print_simulation_results() -> None:
               f"{result['expected_uniform_base13']:.4f}")
         print(f"  Suppression ratio: "
               f"{result['suppression_ratio_base13']:.4f}")
+
+
+if __name__ == "__main__":
+    print_simulation_results()
