@@ -217,6 +217,36 @@ p >= 0.11). There is no digraph-pair encryption grid and no positional
 frame — complementing the earlier fractionation/Playfair exclusions at
 the event level.
 
+**Running-text availability (July 2026,
+`experiments/running_text_control.py`):** the lexicon control has no
+word order, so the cross-word shapes were re-measured on running
+runeglish (Cicada's six decoded solved sections, 2,058 runes; and a
+600k-rune bag-of-words sample at correct English word frequencies).
+Findings:
+
+1. **The distance 5 does NOT trace to English.** Per-site availability
+   of every shape is flat across lags 3-12 (digram ~5.3-5.6 per 1000
+   sites, frame ~3.3-4.6, mono ~60 = the IoC at every lag). English
+   offers copy opportunities equally at every short distance; the "5"
+   is pure design, matching the 1/5 doublet acceptance aesthetically
+   but not linguistically.
+2. **The cross-word digram opportunities are repeated function
+   words**: in the bag-of-words sample the whole-word cases behind
+   cross-word lag-5 digram repeats are THE (102), TO (25), OF (21),
+   IN (9), IS (5) — "THE xxx THE" with a 3-rune word between. Under
+   branch (c), the LP's ~18 cross-word d1 events are then mostly
+   repeated-THE marks, which would make the plaintext at those events
+   probabilistically TH,E — the first plaintext VALUE information (not
+   just relations) the statistics have produced. Unverifiable without
+   the key, but a concrete prior for any future key-hypothesis test.
+3. **Usage profile against running-text availability** (excess over
+   chance / plaintext opportunities): in-word digrams ~1.1 (marked
+   essentially always), frames ~0.29, cross-word digrams ~0.10,
+   in-word singles ~0.25, cross singles ~0. The marking is word-aware
+   and shape-aware — not one constant. The strong in-word preference
+   with weak cross-word usage is the same word-scoping seen in every
+   other cut of the data.
+
 ## Reference encoder (July 2026): the complete candidate algorithm
 
 Why "autokey that looks 5 back in the ciphertext" cannot be literal: any
