@@ -158,6 +158,54 @@ within/across, the 29 d1 and 28 d4 events, the 86 doublets) are frozen in
 searches: under branch (c) each event supplies P[i] = P[i-5]; under
 branch (a) the copied glyph is skipped and consumes no key symbol.
 
+## Shape census: what is marked, what plaintext offers, and what is absent
+## (July 2026)
+
+`experiments/copy_shape_census.py` measures every composite lag-5 match
+shape in the LP against (i) chance and (ii) its plaintext availability
+(frequency-weighted runeglish lexicon, per within-word window):
+
+| shape | LP in-word | chance | plaintext offers | reading |
+|---|---|---|---|---|
+| digram `XY···XY` (sep 1) | 9 | 1.5 | 6.9 | marked at ~100% of opportunities (excess 7.5 vs available 5.4; Poisson-compatible) |
+| gapped `X·Y··X·Y` (sep 2) | 2 | 0.9 | 3.0 | UNMARKED (stream level 15 vs chance 15.4) |
+| gapped `X··Y·X··Y` (sep 3) | 1 | 0.4 | 1.8 | UNMARKED (stream level 14 vs 15.4) |
+| frame `X···Y X···Y` (sep 4) | 1 | 0.2 | 0.6 | marked, but lives cross-word (28 events; span 10 rarely fits a word) |
+| trigram `XYZ··XYZ` | 1 | 0.03 | 0.7 | exactly the ~1.3 predicted by digram usage x availability (the page-50 SDNG event) |
+| tetragram / double-digram `XY·AB XY·AB` | 0 | ~0 | ~0.000 | absent exactly where English offers nothing |
+
+Three structural conclusions:
+
+1. **The copy unit is a contiguous chunk.** Plaintext offers gapped
+   repeats at rates comparable to contiguous ones, but only contiguous
+   digrams (and singles) are marked. Per-position repeat marking
+   (mark every i with P[i] = P[i-5] independently) is excluded — it
+   would light up separations 2 and 3 pro-rata. This answers "why
+   separations {1,4} and not {2,3}".
+2. **Pairs-not-triplets is pure availability.** English offers trigram
+   repeats at 0.18x the digram rate; the LP ratio is 1:9 = 0.11, and the
+   single observed trigram matches the 1.3 predicted. Nothing is missing.
+3. **The frame is a true bracket.** The three interior positions of the
+   28 d4 events match at exactly chance (3 vs 2.9): the frame marks the
+   5-window's edges only — either a second escape code ("this 5-frame
+   repeats") or brackets around a unit; it is NOT a fully copied 5-gram.
+   5 of 28 d4 events share a match with a d1 event (the page-50 cluster
+   family).
+
+Usage fractions under branch (c): in-word digrams ~100% (every in-word
+plaintext digram repeat got marked), in-word singles ~55%, frames ~30%.
+The digram overshoot (9 observed vs 6.9 available, i.e. nominal usage
+1.4) is within Poisson noise of 100% but is the one number that would,
+with more data, discriminate stutters/nulls (no opportunity ceiling)
+from plaintext-repeat marking (hard ceiling at availability).
+
+**Parity/phase (same script):** d1 events, d4 events, and all 479
+matches are flat mod 2 AND mod 5 measured from all four origins (text,
+section, page, word start) against the opportunity distribution (all
+p >= 0.11). There is no digraph-pair encryption grid and no positional
+frame — complementing the earlier fractionation/Playfair exclusions at
+the event level.
+
 ## The nulls-branch key search (battery 19, negative)
 
 If branch (a) is true AND the underlying keystream is simple, all earlier
