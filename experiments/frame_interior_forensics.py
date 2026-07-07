@@ -134,6 +134,26 @@ def main() -> None:
           f"(chance {k_ev / MOD:.1f}); (Y-X) mod 29 spread over "
           f"{len(dxy)} values, max multiplicity {max(dxy.values())}")
 
+    # ---------------- marginal value distributions of the edges
+    # Under copies-over-an-OTP the X/Y values MUST be uniform (a copied
+    # glyph is an OTP output; marks cannot leak the marked plaintext).
+    # Bias here would instead indicate value-triggered marking.
+    from scipy.stats import chi2 as chi2_dist
+    d1 = cat["d1_events"]
+    for label, vals in (
+        ("frame X", [int(c[i]) for i in d4]),
+        ("frame Y", [int(c[i + 4]) for i in d4]),
+        ("digram X", [int(c[i]) for i in d1]),
+        ("digram Y", [int(c[i + 1]) for i in d1]),
+    ):
+        cnt = Counter(vals)
+        exp = len(vals) / MOD
+        chi = sum((cnt.get(r, 0) - exp) ** 2 / exp for r in range(MOD))
+        p = 1 - chi2_dist.cdf(chi, MOD - 1)
+        print(f"{label} value distribution: chi2 = {chi:.1f} "
+              f"(df 28, p = {p:.2f}), {len(cnt)} distinct, "
+              f"max multiplicity {max(cnt.values())}")
+
     # ---------------- doublets inside the spans
     dbl_in = sum(1 for i in d4 for t in range(i, i + 9)
                  if c[t] == c[t + 1])
