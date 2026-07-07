@@ -15,6 +15,14 @@ from aldegonde.analysis.kasiski import (
     print_kasiski_statistics,
     repeat_distances,
 )
+from aldegonde.analysis.rune_frequency import (
+    FrequencyProfile,
+    find_best_suppression,
+    matrix_mapping,
+    natural_mapping,
+    scan_state_spaces,
+    truncated_byte_mapping,
+)
 from aldegonde.analysis.split import (
     split_by_character,
     split_by_doublet,
@@ -47,6 +55,13 @@ __all__ = [
     "kasiski_examination",
     "print_kasiski_statistics",
     "repeat_distances",
+    # rune_frequency
+    "FrequencyProfile",
+    "find_best_suppression",
+    "matrix_mapping",
+    "natural_mapping",
+    "scan_state_spaces",
+    "truncated_byte_mapping",
     # split
     "split_by_character",
     "split_by_doublet",
