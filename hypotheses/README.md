@@ -56,7 +56,7 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Doublet rate | 0.66% | 3.45% (1/29) | Fits (1/5)x(1/29) with no free parameters (z=-0.36): acceptance probability exactly 1/5, realized memorylessly (no positional mod-5 frame) |
 | Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
-| Digraphic kappa skip=5 | 29 | 15.4 | Part of a confirmed paired-match structure: lag-5 matches pair up at separations 1 and 4 (joint z=+4.1, global p~=0.01, split-half stable). See `lag5-digraph-structure.md` |
+| Digraphic kappa skip=5 | 29 | 15.4 | Part of a confirmed paired-match structure: lag-5 matches pair up at separations 1 and 4 (joint z=+4.1, global p~=0.01, split-half stable) and the matches are word-boundary-aware (9 of 29 d1 events are in-word `XY···XY` repeats). See `lag5-digraph-structure.md` |
 | Bigram IOC | 1.0256 (normalized) | 1.0251 (doublet-suppressed null) | The +8 sigma elevation vs plain uniform is fully explained by doublet suppression |
 | N-gram repeat counts | Match doublet-suppressed null | — | Apparent trigram-repeat deficit vs uniform null is an artifact |
 | Page-aligned kappa | ratio 1.002 (z=+0.2) | 1.0 | No shared keystream resetting at page/section boundaries |
@@ -70,7 +70,7 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Word-length-context keystream | At chance (1/29) | — | Key is not a function of word-length metadata; see `word-length-keystream-and-boundaries.md` |
 | Word-length sequence autocorrelation | ~0 (flat, high power) | English: ±0.06-0.09 (register-dependent) | Flatter than solved pages (~2σ) — possible synthetic boundaries, unresolved |
 | Sentence-final word lengths | = random words (z=-1.2) | English: strongly elevated (solved: z=+7.1) | **'.' marks do not mark English sentence ends** (contrast z=+5.9); see `word-length-keystream-and-boundaries.md` |
-| Within-word d=5 coincidences | 4.92% (102/2073); 9 `XY···XY` repeats | 3.45%; 1.5 repeats | Permutation-verified p~0.001; cross-word d=5 random; see `within-word-d5-coincidence.md` (tension with the boundary-blindness finding in `lag5-digraph-structure.md` — unreconciled) |
+| Within-word d=5 coincidences | 4.92% (102/2073); 9 `XY···XY` repeats | 3.45%; 1.5 repeats | Permutation-verified p~0.001; cross-word d=5 count at chance; reconciled with the lag-5 pairing: paired AND isolated matches are both word-boundary-aware (p=0.014 / 0.018), one word-aware phenomenon; see `within-word-d5-coincidence.md`, `experiments/lag5_word_boundary.py` |
 | Pairwise dependence C[i] vs C[i+d] | None for d=2..100 (full 29x29 contingency) | — | Only d=1 (doublets) is anomalous |
 | DFT spectrum (all multipliers, all real frequencies) | White noise | — | No periodic additive keystream of any period |
 | Line-initial runes | Non-uniform (chi-sq p~1e-7) | Uniform | Layout artifact: solved pages show the same bias (p=0.009, r=0.41 correlation); line-final runes uniform — consistent with glyph-width-driven line wrap, not cipher structure |
@@ -125,7 +125,12 @@ Two consequences of the table that prune whole mechanism families
    author-side composition artifacts. None of these is currently
    distinguishable from the others by ciphertext statistics — see the
    degrees-of-freedom audit in `lag5-back-reference.md` before treating
-   any simulation "match" as confirmation.
+   any simulation "match" as confirmation. Additional constraint (July
+   2026): the lag-5 matches are word-boundary-aware — both the paired and
+   the isolated matches sit inside words above the boundary-permutation
+   null (`experiments/lag5_word_boundary.py`) — so the mechanism sees the
+   word structure, favoring word-scoped state over purely positional
+   copy semantics.
 
 ## Status values
 

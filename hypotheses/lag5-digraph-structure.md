@@ -91,8 +91,42 @@ not transcription noise.
   (gaps 1..38, no contiguous runs), with several gaps of exactly 29 noted
   but not significant.
 - No mod-5 phase preference anywhere: the pattern is translation invariant.
-- Events freely cross word boundaries. All 29 d=1 digraph values are
+- ~~Events freely cross word boundaries~~ — **corrected, see the
+  word-boundary reconciliation below**. All 29 d=1 digraph values are
   distinct; no repeated rune values drive the effect.
+
+## Word-boundary reconciliation (July 2026)
+
+An independent analysis (`within-word-d5-coincidence.md`) found the same
++32 lag-5 match excess concentrated **within words**, contradicting the
+boundary-blindness claimed above. The joint test neither analysis had run
+(`experiments/lag5_word_boundary.py`) classifies all 479 matches by
+(paired at separation 1 or 4 vs isolated) x (within-word vs across-word),
+with a per-section word-length permutation null (10,000 shuffles of the
+word-length sequence over the byte-identical rune stream):
+
+| matches | within | across | total | within under null | p |
+|---------|--------|--------|-------|-------------------|-----|
+| paired (in a {1,4} event) | 27 | 79 | 106 | 16.9 ± 4.1 | 0.014 |
+| isolated | 75 | 298 | 373 | 59.5 ± 6.8 | 0.018 |
+| total | 102 | 377 | 479 | 76.5 ± 7.8 | 0.001 |
+
+Both components are word-boundary-aware; "events freely cross word
+boundaries" is **falsified**. Per pair event: 9 of the 29 d1 events are
+entire in-word digraph repeats — exactly the nine `XY···XY` words listed
+in `within-word-d5-coincidence.md` — vs 2 one-side and 18 outside. For d4
+events the both-within cell is structurally near-empty (an event spans 10
+positions, longer than almost every word): 1 both-within, 9 one-side, 18
+outside. That geometry is why the d4 face genuinely reaches across
+boundaries and made the original boundary-blind reading look plausible.
+
+Resolution: the pairing structure and the within-word excess are two faces
+of ONE word-aware phenomenon, overlapping in the nine in-word digraph
+repeats, not two separate anomalies and not a contradiction. Count-wise
+the excess lives inside words (across-word match count is exactly at
+chance); placement-wise the {1,4} pairing extends across boundaries.
+Mechanism constraint update: whatever produces the lag-5 structure sees
+the word boundaries.
 
 ## Mechanisms ruled out by the chase
 
@@ -154,9 +188,16 @@ Still open:
 - `experiments/lag5_digraph_chase.py` — full reproduction of every number
   in this file.
 - `experiments/aligned_kappa_nulls.py` — the original detection.
+- `experiments/lag5_word_boundary.py` — the word-boundary reconciliation
+  (joint paired/isolated x within/across decomposition and permutation
+  nulls); core statistics live in `aldegonde.analysis.coincidence`
+  (`boundary_coincidence`, `boundary_permutation_test`), unit-tested in
+  `tests/aldegonde/analysis/test_coincidence.py`.
 
 ## Related
 
+- `within-word-d5-coincidence.md` — the word-boundary face of this same
+  phenomenon; reconciled above.
 - `ciphertext-autokey.md` — depth-L split evidence extended here.
 - `bifid-fractionation.md` — the leading untested mechanism family for this
   signature.

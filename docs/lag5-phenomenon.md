@@ -70,10 +70,15 @@ Key decomposition facts:
 - Spatially: corpus-wide with a concentration in transcription section 4
   (8 d1-events vs 2.2 expected, z = +3.8 alone); excluding section 4
   entirely the joint statistic still stands at z = +3.7.
-- Events freely cross word boundaries, sentence boundaries (one verified
-  event straddles a `:` sentence mark), and page boundaries. They show no
-  correlation with word lengths, word positions, line structure, or the
-  positions of the 86 doublets (see §6).
+- Events CAN cross word boundaries, sentence boundaries (one verified
+  event straddles a `:` sentence mark), and page boundaries — but they are
+  not boundary-blind: the joint decomposition
+  (`experiments/lag5_word_boundary.py`) shows paired matches sit inside
+  single words significantly more often than shuffled boundaries allow
+  (27 vs 16.9 ± 4.1, p = 0.014); 9 of the 29 d1 events are entire in-word
+  digraph repeats. This corrects an earlier claim of no word-structure
+  correlation (see §6). Events remain uncorrelated with the positions of
+  the 86 doublets.
 
 ## 3. Verified examples (in Cicada's ink)
 
@@ -185,15 +190,24 @@ write-ups in `hypotheses/`.
 - **Lag-5-tapped LFSR/lagged-Fibonacci keystreams**: no pair structure
   (key reuse alone produces no ciphertext coincidences without plaintext
   coincidences — an information-theoretic point, see §7).
-- **Word/line/sentence/page structure**: no correlation; no per-word or
-  per-line key reset; events ignore all layout. *Caveat — unreconciled*: an
-  independent decomposition of the same +32 lag-5 excess found it
-  concentrated **within words** (4.92% within-word vs cross-word exactly at
-  chance, boundary-permutation p = 0.0014; see
-  `hypotheses/within-word-d5-coincidence.md`). That test post-dates this
-  document and directly contradicts the boundary-blindness claim above;
-  neither analysis saw the other's instrument. Reconciling the two is the
-  top open item before treating either framing as settled.
+- **Line/sentence/page structure**: no correlation; no per-line key reset.
+  **Word structure is the exception — resolved July 2026.** An independent
+  decomposition of the same +32 lag-5 excess found it concentrated within
+  words (4.92% within-word vs cross-word exactly at chance,
+  boundary-permutation p = 0.0014; `within-word-d5-coincidence.md`), which
+  contradicted this document's original boundary-blindness claim. The joint
+  test both analyses had skipped (`experiments/lag5_word_boundary.py`;
+  classify all 479 matches by paired/isolated x within/across, word-length
+  permutation null per cell) settles it: **paired matches are
+  word-boundary-aware** (27 within vs null 16.9 ± 4.1, p = 0.014) and so
+  are isolated matches (75 vs 59.5 ± 6.8, p = 0.018). Boundary-blindness is
+  falsified; the pairing and the within-word excess are two faces of one
+  word-aware phenomenon. The overlap is concrete: the 9 in-word digraph
+  repeats (`XY···XY` words) are simultaneously 9 of the 29 d1 pair events
+  and the core of the within-word signal. Geometry note: a d4 event spans
+  10 positions, so it can almost never sit inside one word (1 of 28 does);
+  the d4 face necessarily reaches across boundaries, which is what made the
+  original "events freely cross boundaries" reading look plausible.
 - **Shared grid with the doublets**: under "doublets mark group
   boundaries", close doublet-event distances should be {5,6}-expressible;
   observed consistency 4/22 = 18% vs 47% chance — *rejected* (the two

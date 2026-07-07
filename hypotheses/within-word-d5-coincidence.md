@@ -148,6 +148,10 @@ row — vanishingly rare under any position-independent stream model.
   word list).
 - `experiments/lp_cryptodiagnostics.py` section D8 — the (length x
   distance) heatmap that first surfaced the anomaly.
+- `experiments/lag5_word_boundary.py` — the reconciliation with
+  `lag5-digraph-structure.md`: joint paired/isolated x within/across
+  decomposition, built on the unit-tested
+  `aldegonde.analysis.coincidence` boundary functions.
 
 ## Related
 
@@ -159,10 +163,18 @@ row — vanishingly rare under any position-independent stream model.
 - `doublet-spacing-poisson.md` — the other confirmed anomaly.
 - `lag5-digraph-structure.md`, `docs/lag5-phenomenon.md` — an independent
   characterization of the same +32 lag-5 excess as paired events at
-  separations {1,4}. **Unreconciled tension**: that analysis reports the
-  events as word-boundary-blind, while the permutation test here says the
-  excess lives inside words. The two decompositions of the same raw signal
-  cannot both be right as stated; neither analysis ran the other's test.
+  separations {1,4}. **Reconciled (July 2026)** by the joint test
+  (`experiments/lag5_word_boundary.py`): the two are faces of ONE
+  word-aware phenomenon. Paired matches sit within words above the
+  boundary-permutation null (27 vs 16.9 ± 4.1, p = 0.014) — the other
+  analysis's boundary-blindness claim is falsified — and 9 of its 29 d1
+  pair events are exactly the nine `XY···XY` words listed above. Isolated
+  matches are boundary-aware too (75 vs 59.5 ± 6.8, p = 0.018). One
+  refinement in the other direction: "the effect exists only inside
+  words" is true for match COUNTS (across-word count is at chance) but
+  the {1,4} pairing structure itself extends across boundaries (18 of 29
+  d1 and 18 of 28 d4 events have neither match within a word; a d4 event
+  spans 10 positions and cannot usually fit inside a word).
 
 ## Verdict
 

@@ -1,9 +1,15 @@
 """Cryptanalysis algorithms."""
 
 from aldegonde.analysis.coincidence import (
+    BoundaryCoincidence,
+    BoundaryPermutation,
     JointCount,
+    boundary_coincidence,
+    boundary_permutation_test,
     joint_coincidence,
     match_indicator,
+    recut_words,
+    word_index_map,
 )
 from aldegonde.analysis.delta import DeltaOp, delta, delta2
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
@@ -35,9 +41,15 @@ from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrup
 
 __all__ = [
     # coincidence
+    "BoundaryCoincidence",
+    "BoundaryPermutation",
     "JointCount",
+    "boundary_coincidence",
+    "boundary_permutation_test",
     "joint_coincidence",
     "match_indicator",
+    "recut_words",
+    "word_index_map",
     # delta
     "DeltaOp",
     "delta",
