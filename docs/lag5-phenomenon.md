@@ -291,6 +291,39 @@ scores must be compared against a **doublet-preserving** null. Scoring
 candidate plaintexts against shuffled-page nulls that ignore the doublet
 suppression produces fake positives up to z ≈ +13.
 
+## 9b. July 2026 update: the anomaly is value-literal and word-scoped copying
+
+Three follow-up results (scripts in `experiments/`, registered in
+`hypotheses/within-word-key-sharing.md` and the updated finding files):
+
+1. **Value-literality.** Generalizing matches to repeated lag-5 deltas
+   (delta5[i] = C[i+5]−C[i] mod 29): repeated *nonzero* deltas at
+   separations 1 and 4 are exactly at chance (z = +0.21 / −0.14, 4,000
+   doublet-suppressed surrogates); only the zero value pairs up
+   (z = +3.3 / +3.1). Any keystream locally 5-periodic up to drift would
+   elevate all values equally — the additive/drift reading is dead.
+2. **No plaintext-difference leak.** Real runeglish matches itself at
+   distance 5 within words at ~6.1% (measured two independent ways:
+   Cicada's own solved sections, 6.36%; a frequency-weighted
+   transliterated lexicon, 6.11%). If the within-word match excess
+   (4.92% vs 3.45%) were key sharing, the mixture fraction pinned by the
+   zero bin (f ≈ 0.55) must also imprint the plaintext difference
+   distribution on the nonzero bins. It does not: the histogram is flat
+   off zero, pinned key-sharing is rejected at z = +3.6, and a
+   one-parameter copy model (e ≈ 1.5% of pairs are literal copies) wins
+   by 6.4 nats.
+3. **Word-scoped rule.** Plaintext lag-5 repeats occur at ~6.1% across
+   word boundaries too (the rate is just the runeglish IoC), yet
+   cross-word ciphertext pairs match at exactly 1/29. The copy mechanism
+   sees word boundaries. Anatomy: no word-edge anchoring, no spatial
+   clustering of hit words, d=10 tail at 2/88 — memoryless, literal,
+   word-internal copies.
+
+Net effect on §7: branch (2) (key+plaintext coincidence) is now excluded
+alongside every additive mechanism; the surviving trichotomy is nulls /
+back-references / composition stutters, all with literal word-scoped copy
+semantics.
+
 ## 10. How to strengthen or kill this
 
 - **Independent transcription**: re-transcribe pages 15–16, 21–22, 50 from

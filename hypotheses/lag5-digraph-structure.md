@@ -95,6 +95,28 @@ not transcription noise.
   word-boundary reconciliation below**. All 29 d=1 digraph values are
   distinct; no repeated rune values drive the effect.
 
+## Value-literality (July 2026)
+
+The pairing is about literal glyph equality, not about any additive
+relation. Define delta5[i] = (C[i+5] - C[i]) mod 29 (a lag-5 match is
+delta5 = 0) and count *repeated deltas* delta5[i] == delta5[i+d]
+(`experiments/delta5_generalization.py`, 4,000 doublet-suppressed
+surrogates):
+
+| separation | zero-value pairs (obs/null, z) | nonzero-value pairs (obs/null, z) |
+|---|---|---|
+| 1 | 29 / 15.7, **z = +3.31** | 446 / 441.6, z = +0.21 |
+| 4 | 28 / 15.3, **z = +3.13** | 428 / 430.9, z = -0.14 |
+| 2,3,5..8 | all at chance | all at chance |
+
+A keystream that is locally 5-periodic up to an additive drift
+(K[i+5] = K[i] + t) would make delta5 locally constant at *whatever* value
+t takes, elevating nonzero repeated deltas identically. They are exactly
+at chance: **only literal equality is special**. This kills the entire
+additive/drift reading of the pairing in the stream domain, matching the
+within-word delta-histogram result (`within-word-key-sharing.md`,
+disproved) in the word domain.
+
 ## Word-boundary reconciliation (July 2026)
 
 An independent analysis (`within-word-d5-coincidence.md`) found the same

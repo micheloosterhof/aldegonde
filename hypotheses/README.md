@@ -71,6 +71,8 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Word-length sequence autocorrelation | ~0 (flat, high power) | English: ±0.06-0.09 (register-dependent) | Flatter than solved pages (~2σ) — possible synthetic boundaries, unresolved |
 | Sentence-final word lengths | = random words (z=-1.2) | English: strongly elevated (solved: z=+7.1) | **'.' marks do not mark English sentence ends** (contrast z=+5.9); see `word-length-keystream-and-boundaries.md` |
 | Within-word d=5 coincidences | 4.92% (102/2073); 9 `XY···XY` repeats | 3.45%; 1.5 repeats | Permutation-verified p~0.001; cross-word d=5 count at chance; reconciled with the lag-5 pairing: paired AND isolated matches are both word-boundary-aware (p=0.014 / 0.018), one word-aware phenomenon; see `within-word-d5-coincidence.md`, `experiments/lag5_word_boundary.py` |
+| Within-word d=5 delta histogram | Flat off zero (nonzero bins 0.62-1.18x) | Key-sharing: plaintext Q leaks at f~0.55 | Kills within-word key sharing at z=+3.6 (copy model wins by 6.4 nats); real runeglish matches at ~6.1% within words (both controls); see `within-word-key-sharing.md` (disproved) |
+| Repeated nonzero lag-5 deltas at seps 1/4 | At chance (z=+0.2/-0.1) | Additive drift: elevated like the zero bin | The lag-5 pairing is value-literal — only exact glyph equality pairs up (zero bin z=+3.3/+3.1); see `experiments/delta5_generalization.py` |
 | Pairwise dependence C[i] vs C[i+d] | None for d=2..100 (full 29x29 contingency) | — | Only d=1 (doublets) is anomalous |
 | DFT spectrum (all multipliers, all real frequencies) | White noise | — | No periodic additive keystream of any period |
 | Line-initial runes | Non-uniform (chi-sq p~1e-7) | Uniform | Layout artifact: solved pages show the same bias (p=0.009, r=0.41 correlation); line-final runes uniform — consistent with glyph-width-driven line wrap, not cipher structure |
@@ -116,21 +118,27 @@ Two consequences of the table that prune whole mechanism families
    0.66%. The encryptor must see the previous ciphertext rune (or
    equivalently select keys plaintext-aware) and avoid doublets ~80% of the
    time.
-2. **The lag-5 paired-match structure remains unexplained by any tested
-   per-rune mechanism** (autokey families, running keys, bifid p5/p7/p10,
-   lag-5-tapped lagged-Fibonacci keystreams, output-avoidance streams,
-   Hill variants, group-edge carryover). Information theory narrows the
-   options for the deterministic copies to: inserted nulls, key+plaintext
-   coincidence (rate-disfavored), plaintext-repeat back-references, or
-   author-side composition artifacts. None of these is currently
+2. **The lag-5 structure is literal, word-scoped copying — every additive
+   reading is dead.** The paired-match structure is unexplained by any
+   tested per-rune mechanism (autokey families, running keys, bifid
+   p5/p7/p10, lag-5-tapped lagged-Fibonacci keystreams, output-avoidance
+   streams, Hill variants, group-edge carryover), and as of July 2026 the
+   additive interpretations of the anomaly itself are disproved: repeated
+   nonzero lag-5 deltas are at chance (no local key drift,
+   `experiments/delta5_generalization.py`) and the within-word delta
+   histogram is flat off zero (no within-word key sharing at the f pinned
+   by the match excess, rejected z=+3.6, `within-word-key-sharing.md`).
+   Information theory narrows the surviving options for the deterministic
+   copies to: inserted nulls, plaintext-repeat back-references, or
+   author-side composition artifacts (key+plaintext coincidence is now
+   excluded by the same delta tests). None of these three is currently
    distinguishable from the others by ciphertext statistics — see the
-   degrees-of-freedom audit in `lag5-back-reference.md` before treating
-   any simulation "match" as confirmation. Additional constraint (July
-   2026): the lag-5 matches are word-boundary-aware — both the paired and
-   the isolated matches sit inside words above the boundary-permutation
-   null (`experiments/lag5_word_boundary.py`) — so the mechanism sees the
-   word structure, favoring word-scoped state over purely positional
-   copy semantics.
+   degrees-of-freedom audit in `lag5-back-reference.md`. Constraints: the
+   matches are word-boundary-aware (`experiments/lag5_word_boundary.py`),
+   and the copy rule itself is word-scoped — plaintext offers lag-5
+   repeats at ~6.1% across word boundaries too (the runeglish IoC rate,
+   measured on two plaintext controls), yet cross-word ciphertext pairs
+   match at exactly 1/29.
 
 ## Status values
 

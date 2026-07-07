@@ -382,6 +382,34 @@ cannot distinguish them there: a 3σ lag-2 verdict would need ~465,000 runes
 indistinguishable. The LP behaves exactly like the no-repeat walk and
 nothing in it behaves like plain i.i.d. runes.
 
+## 13. The lag-5 phenomenon is literal word-scoped copying (July 2026)
+
+The remaining structured anomaly (the paired lag-5 coincidences,
+`docs/lag5-phenomenon.md`) was pushed through three discriminating tests:
+
+- **Repeated nonzero lag-5 deltas at separations 1/4 are at chance**
+  (z = +0.21 / −0.14) while zero-value pairs are the anomaly
+  (z = +3.3 / +3.1): the pairing is value-literal, killing any locally
+  5-periodic-up-to-drift keystream (`experiments/delta5_generalization.py`).
+- **The within-word d=5 delta histogram is flat off zero.** Two plaintext
+  controls (Cicada's six constant-transform-solvable sections, 2,058
+  runes; a frequency-weighted runeglish lexicon) put genuine plaintext
+  matching at ~6.1% with strong nonzero-bin structure. Key-sharing pinned
+  by the observed 4.92% match rate (f = 0.554) over-predicts the
+  projection statistic at z = +3.6 and loses 6.4 nats to a one-parameter
+  copy model (e = 1.5% of within-word pairs are literal copies).
+  Within-word key sharing is disproved
+  (`hypotheses/within-word-key-sharing.md`).
+- **The copy rule is word-scoped**: plaintext repeats at distance 5 occur
+  at the IoC rate (~6.1%) across word boundaries too, but cross-word
+  ciphertext pairs match at exactly 1/29.
+
+Everything additive about the lag-5 structure is now excluded; what
+remains is the copy-semantics family (nulls / plaintext-repeat
+back-references / composition stutters, `hypotheses/lag5-back-reference.md`,
+upgraded to plausible), whose branches remain indistinguishable from
+ciphertext statistics alone.
+
 ## Reproduction
 
 The analysis was originally run as 18 numbered battery scripts. The

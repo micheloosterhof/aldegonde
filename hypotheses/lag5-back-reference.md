@@ -11,8 +11,11 @@ positions back instead of encrypting normally.
 
 ## Status
 
-**Status**: unresolved (unfalsifiable from ciphertext statistics alone —
-see the degrees-of-freedom audit below)
+**Status**: plausible (upgraded July 2026: two out-of-construction
+ciphertext predictions of copy semantics held while the additive
+alternatives failed the same tests — see below; the internal split
+nulls / back-references / stutters remains untestable from ciphertext
+statistics alone, see the degrees-of-freedom audit)
 
 ## Mechanism
 
@@ -57,6 +60,32 @@ rate check; (ii) IF assumed, it supplies conditional constraints
 (P[i] = P[i-5] at events) usable to prune key searches — conclusions from
 such searches are conditional on this unverified assumption.
 
+## Out-of-construction predictions that held (July 2026)
+
+Two ciphertext-observable consequences of copy semantics — neither used
+when the model was built — were tested and held, while the additive
+alternatives failed the same tests:
+
+1. **Value-literality**: copies predict that only exact glyph equality is
+   special. Repeated *nonzero* lag-5 deltas at separations 1/4 are at
+   chance (z = +0.21 / -0.14) while zero-value pairs stand at
+   z = +3.3 / +3.1 (`experiments/delta5_generalization.py`). Any additive
+   drift mechanism would elevate all delta values equally.
+2. **No plaintext-difference leak**: copies predict the within-word d=5
+   delta histogram is flat off zero; key sharing predicts the plaintext
+   difference distribution leaks at f ~= 0.55. The histogram is flat off
+   zero; pinned key-sharing is rejected at z = +3.6 and the one-parameter
+   copy model wins by 6.4 nats (`within-word-key-sharing.md`, disproved).
+
+New constraint the model must absorb: **the copy rule is word-scoped.**
+Plaintext lag-5 repeats occur at ~6.1% both within and across words (the
+rate is just the runeglish IoC — measured on Cicada's own solved sections
+and a frequency-weighted lexicon), yet cross-word ciphertext pairs match
+at exactly 1/29. Under branch (c) the encoder only marks repeats whose
+endpoints share a word (natural for a human working word-by-word); under
+branch (a) the null-insertion rule respects word units. Purely positional
+copy semantics blind to words is now excluded.
+
 ## Evidence for
 
 - **Feasible rates**: Markov runeglish has ~78 d1 opportunities and ~46 d4
@@ -83,9 +112,11 @@ such searches are conditional on this unverified assumption.
 ## Evidence against
 
 - Model (b) — pure coincidence via key reuse — needs ~18% key-pair reuse,
-  predicting mono kappa-5 ~ 1.14 vs observed 1.073 (~2 sigma strain);
-  disfavored but the (a)-nulls variant is statistically indistinguishable
-  from (c) and remains open.
+  predicting mono kappa-5 ~ 1.14 vs observed 1.073 (~2 sigma strain); as
+  of July 2026 it is additionally excluded by the delta-histogram test
+  (key reuse leaks the plaintext difference distribution; rejected at
+  z = +3.6, see `within-word-key-sharing.md`). The (a)-nulls variant
+  remains statistically indistinguishable from (c).
 - The motive for marking is unclear: key economy saves only ~114 key runes
   (~1%); alternatives are a designed breadcrumb or an LZ-flavored encoding
   aesthetic. The constant 5 is a designer choice here, separate from the
@@ -118,15 +149,16 @@ such searches are conditional on this unverified assumption.
 
 ## Verdict
 
-Unresolved, and honestly: a consistent re-description rather than a tested
-mechanism. Its simulation "match" spends three fitted parameters on the
-three independent fingerprint numbers (see the audit above), and its
-distinguishing claims are unobservable without a decryption. What survives
-scrutiny: the information-theoretic trichotomy for deterministic copies is
-sound, the coincidence branch is rate-disfavored, and the opportunity-rate
-feasibility check passed (it could have failed: had runeglish offered
-fewer than 29 digraph-repeat opportunities, the model would be dead). The
-model earns no status beyond that until it makes a ciphertext-observable
-prediction that was not used in its construction — or until a key search
-conditioned on its P[i] = P[i-5] constraints produces readable text, which
-would be the only real confirmation.
+Plausible — upgraded from unresolved. The original audit demanded "a
+ciphertext-observable prediction that was not used in its construction";
+July 2026 delivered two (value-literality of the pairing; a flat-off-zero
+within-word delta histogram), both held, while the additive readings of
+the same data (local key drift, within-word key sharing, coincidence via
+key reuse) were rejected at 3.1-3.6 sigma by the identical tests. The
+copy-semantics *family* is now the only surviving explanation of the
+lag-5 phenomenon, with one new constraint: the rule is word-scoped
+(cross-word plaintext repeats are never marked). What has NOT advanced:
+the internal trichotomy — nulls (a) vs plaintext-repeat back-references
+(c) vs author-side stutters — is still indistinguishable from ciphertext
+statistics, and confirmation still requires a key search conditioned on
+the P[i] = P[i-5] constraints producing readable text.

@@ -106,6 +106,38 @@ the repeat closes the word (`XY????XY`-like). In ciphertext this shape
 requires the keystream relation at those two positions to cancel twice in a
 row — vanishingly rare under any position-independent stream model.
 
+## Mechanism discrimination (July 2026): copies, not key sharing
+
+The two live readings of the excess made opposite predictions about the
+**full 29-bin histogram of (C[k+5] - C[k]) mod 29 over within-word pairs**:
+
+- key sharing (K[k+5] = K[k] inside words) leaks the plaintext lag-5
+  difference distribution Q at the mixture fraction f pinned by the 0 bin
+  (f ~= 0.55 given Q(0) ~= 1.8x uniform, measured on two independent
+  plaintext controls: Cicada's own solved sections 6.36%, a
+  frequency-weighted runeglish lexicon 6.11%);
+- literal copies inflate only the 0 bin and leave the other 28 flat.
+
+Result (`experiments/within_word_delta_mixture.py`): the histogram is
+**flat off zero** (nonzero bins 0.62-1.18x uniform). A one-parameter copy
+model (e = 1.52% of pairs are copies) beats the pinned key-sharing mixture
+by 6.4 nats; the optimal projection test rejects pinned key-sharing at
+z = +3.6 (observed T = +0.32 vs predicted +1.52 ± 0.33) with ~100% power
+at that f. The stream-level generalization agrees: repeated *nonzero*
+lag-5 deltas at separations 1/4 are at chance while the zero value is
+elevated (`experiments/delta5_generalization.py`). Anatomy
+(`experiments/within_word_match_anatomy.py`): matches have no word-edge
+anchoring (start z = -0.97, end z = -0.76), the 91 hit words do not
+cluster spatially (z = -0.99), and the d=10 tail is 2/88 (key 5-cycle
+would predict ~6%). Full write-up: `within-word-key-sharing.md`
+(status: disproved).
+
+One sharpening of the word-boundary result falls out of the controls:
+plaintext offers lag-5 repeats at ~6.1% *both* within and across words
+(the rate is just the runeglish IoC), yet the LP's cross-word pairs match
+at exactly 1/29. So the mechanism is not merely passively exposing
+plaintext structure — **the copy rule itself is word-scoped**.
+
 ## Interpretations to test
 
 - **Per-word key of length 5** (or a 5-cycle in per-word key state): would
@@ -178,12 +210,13 @@ row — vanishingly rare under any position-independent stream model.
 
 ## Verdict
 
-Verified anomaly. The unsolved Liber Primus ciphertext is not
-boundary-blind: distance-5 coincidences — and specifically repeated
-bigrams/trigrams at distance 5 — cluster inside words at p ~ 1e-3 under a
-null that preserves the entire rune stream. Together with the word-aligned
-repeated phrase, this is direct statistical evidence that the cipher carries
-**word-scoped key state with a distance-5 (or 5-periodic) regularity**. The
-next steps are out-of-sample checks (independent transcription, the d=10
-tail) and deriving which word-keyed mechanisms quantitatively reproduce
-both the 4.92% rate and the doublet suppression.
+Verified anomaly, mechanism now narrowed. The unsolved Liber Primus
+ciphertext is not boundary-blind: distance-5 coincidences — and
+specifically repeated bigrams/trigrams at distance 5 — cluster inside
+words at p ~ 1e-3 under a null that preserves the entire rune stream.
+The July 2026 delta-histogram discrimination (see above) rules out the
+key-sharing reading: the excess is **literal, word-scoped glyph copying**
+(~1.5% of within-word distance-5 pairs; no additive relation, no
+positional anchor, no memory), consistent with the nulls / back-reference
+/ stutter family of `lag5-back-reference.md` and inconsistent with any
+per-word 5-periodic key (`within-word-key-sharing.md`, disproved).
