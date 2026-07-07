@@ -1,0 +1,170 @@
+# Finding: Lag-5 Paired-Match Structure
+
+## Claim
+
+The unsolved ciphertext contains a genuine, globally significant excess of
+*paired* lag-5 coincidences: positions i with C[i] = C[i+5] occur in pairs
+separated by exactly 1 or exactly 4, far more often than chance. Equivalently,
+consecutive non-overlapping 5-grams agree in their (1st, 2nd) positions or in
+their (1st, 5th) positions more often than they should.
+
+## Status
+
+**Status**: confirmed (characterization)
+
+This is a statistical property of the ciphertext, not a cipher hypothesis.
+Any valid cipher hypothesis must now explain it (alongside the constraints in
+`README.md`).
+
+## The numbers
+
+Let M[i] = [C[i] == C[i+5]] over the 12,956-rune unsolved corpus.
+
+| Statistic | Observed | Expected | Significance |
+|-----------|----------|----------|--------------|
+| Sum of M (mono lag-5 matches) | 479 | 446.6 | +1.5 sigma |
+| Mono matches outside paired events | 422 | 444.6 | -1.1 sigma |
+| Match pairs at separation d=1 | 29 | 17.7 | +2.7 sigma |
+| Match pairs at separation d=4 | 28 | 17.7 | +2.4 sigma |
+| Match pairs at d=2,3,5..25 | flat | — | all within noise |
+| Joint T(5) = d1 + d4 pairs | 57 | 30.7 +/- 6.5 | local z = +4.1 |
+| T(5) split-half | 28 + 29 | — | stable |
+| Global Monte Carlo, max T(L) over L=2..50 | — | median 45 | **p ~= 0.01** |
+
+The monographic lag-5 excess (+1.5 sigma) is entirely accounted for by the
+paired events: outside them, mono matches are at chance. The phenomenon is
+purely about pairs.
+
+Plain digraphic kappa (the d=1 component alone, 29 vs 15.4, +3.5 sigma) is
+NOT globally significant by itself — a max over lags 2..150 in null text
+reaches +3.47 about 38% of the time, and lag 129 scores +3.78 in the real
+text. The significance comes from the joint d=1 + d=4 statistic, which
+survives max-over-lags correction at p ~= 0.01 and replicates in both halves.
+Caveat: the pattern family (separations {1, L-1}) was chosen after seeing the
+data; the d=4 margin was measured after d=1 flagged, but it is an orthogonal
+component and landed exactly on the complementary separation 5-1=4.
+
+## Re-assessment (fresh look, family-blind)
+
+A re-examination without the hand-picked pattern family
+(`/tmp` analysis re-run; key numbers below):
+
+- **Family-blind 2D scan**: over ALL 174 cells (lag L = 2..30, separation
+  d = 1..6), the top two cells of the entire grid are (5,1) = 29 and
+  (5,4) = 28 — both at lag 5. Monte Carlo asking only "does any lag have
+  two cells jointly >= (29,28)" gives p ~= 0.033. This is the fairest
+  global significance: roughly 1-in-30 of being noise, weaker than the
+  earlier family-chosen p ~= 0.01.
+- **Cluster decomposition**: maximal clusters of lag-5 matches (gaps <= 4):
+  observed sizes {2: 59, 3: 8, 6: 1} vs null {2: 50, 3: 7, 4: 1}.
+  Three-clusters are AT CHANCE — earlier remarks about '(1,4) chains' carry
+  no significance. The excess is ~20 extra isolated two-match objects at
+  separations exactly 1 or 4, plus one extraordinary size-6 cluster (the
+  image-verified page-50 SDNG repeat; p ~= 4% alone). Removing that cluster
+  leaves d1 = 27, d4 = 26 — the signal is not one passage.
+- **Locality**: corpus-wide, not a section-4 artifact: T5 z = +3.67 with
+  section 4 excluded, +2.28 with sections 4 and 8 both excluded.
+- **Delta-histogram caveat**: at lag 5 the full delta distribution is
+  uniform (chi2 24.2, df 28) and delta = 0 (479) TIES with delta = 23 (479)
+  with delta = 22 just behind (477). The monographic excess is not even the
+  top bin of its own histogram. The anomaly is exclusively the PAIRING of
+  matches at separations 1 and 4; every monographic statistic is ordinary.
+
+Bottom line after the fresh look: a modest, corpus-wide, image-verified
+pairing anomaly with fair-test significance ~ 1-in-30. Strong enough to
+keep on the books, not strong enough to build castles on.
+
+**Image-verified**: the highest-value events (the chained page-50 cluster
+and the densest pocket-1 events on page 16) were checked glyph-by-glyph
+against the source page scans (rtkd/iddqd) and all match the transcription
+— see `transcription-verification.md`. The structure is in Cicada's ink,
+not transcription noise.
+
+## Spatial distribution
+
+- Per-section lag-5 digraph kappa: section 4 (positions 3612..5506, LP pages
+  ~15-22) carries z = +3.84 on its own (8 hits vs 2.2); section 8 is +1.82;
+  all others are within noise. Within sections 4+8, lag 5 tops the whole lag
+  spectrum (+3.81).
+- Two loose pockets inside section 4: positions ~3715-3975 and ~5324-5495
+  (sliding-window z up to +4.0). Matches inside pockets are scattered
+  (gaps 1..38, no contiguous runs), with several gaps of exactly 29 noted
+  but not significant.
+- No mod-5 phase preference anywhere: the pattern is translation invariant.
+- Events freely cross word boundaries. All 29 d=1 digraph values are
+  distinct; no repeated rune values drive the effect.
+
+## Mechanisms ruled out by the chase
+
+- **Period-5 polyalphabetic (any 5 alphabets)**: would put the mono lag-5
+  kappa at plaintext IoC (~1.7 normalized, tens of sigma). Observed 1.073.
+- **Plaintext autokey with 5-symbol feedback**: C[i]=P[i]+P[i-5] makes mono
+  lag-5 matches equal plaintext lag-10 coincidences (~6%). Observed 3.7%.
+- **Ciphertext autokey with depth-L feedback, any tabula recta, L=1..8**:
+  splitting C[i] by C[i-L] must yield permuted-plaintext groups with IoC
+  ~1.7. Measured mean group nIoC: L1=1.026 (doublet artifact), L2..L8 all
+  0.99-1.01, flat. Extends the depth-1/2 disproof in
+  `ciphertext-autokey.md` to depth 8.
+- **Fixed-grid seriation / columnar structure of width 5**: would impose a
+  mod-5 phase on events. None observed.
+- **Locally period-5 keystream patches** (key stuck repeating for a
+  stretch): would make pocket matches contiguous runs at ~6% density.
+  Pocket matches are scattered singletons and pairs.
+
+## What could explain it (open)
+
+The constraint for future hypotheses: a mechanism must generate consecutive
+5-grams agreeing in (1st,2nd) or (1st,5th) positions ~85% above chance,
+concentrated in (but not exclusive to) section 4, while leaving every other
+statistic in `README.md` flat — including doublet suppression and zero
+triplets. Tested since via `experiments/mechanism_fingerprint.py`, all
+negative:
+
+- Bifid fractionation periods 5/7/10: period 5 couples lag-5 strongly but
+  with the wrong shape (all separations d=1..4 elevated, mono kappa 1.45 vs
+  observed 1.07) and fails doublets/IoC. See `bifid-fractionation.md`.
+- Word-structure correlation: events ignore 5-letter words, word starts,
+  and word positions entirely (nulls matched on all four measures).
+- Lag-5-tapped lagged-Fibonacci keystreams (taps {1,5}, {4,5}, {2,5}), with
+  and without output doublet-avoidance: no d=1/d=4 excess.
+- Output-avoidance OTP (the only mechanism matching the base fingerprint):
+  no d=1/d=4 excess.
+- Reversed text (`experiments/unit5_telex_tests.py`): the d1..d4 counts are
+  identical, but this is mathematically forced — equality matches are
+  reflection-symmetric and pair separations are preserved — so direction
+  tests carry no information about this structure.
+- 5-bit telex framing: lag-5 pairs show no Hamming-distance structure under
+  the canonical index encoding (all |z| <= 1.5), and the doublet-avoidance
+  redraws are Hamming-uniform. No evidence of bitwise mechanics, with the
+  caveat that the rune-to-code assignment is unknown.
+
+Note the constant 5 now appears twice independently in the corpus
+fingerprint: this lag-5 window coupling, and the doublet acceptance
+probability of exactly 1/5 (see `stream-cipher-no-repeat.md`). A mechanism
+explaining both with one "5" would be strongly preferred.
+
+Still open:
+
+- Per-word or per-line cipher state where 5-rune-distant positions share key
+  material as a side effect of typical word lengths (avg word ~3.9 runes).
+- Section 4 having a different (or buggier) cipher than other sections.
+
+## Scripts
+
+- `experiments/lag5_digraph_chase.py` — full reproduction of every number
+  in this file.
+- `experiments/aligned_kappa_nulls.py` — the original detection.
+
+## Related
+
+- `ciphertext-autokey.md` — depth-L split evidence extended here.
+- `bifid-fractionation.md` — the leading untested mechanism family for this
+  signature.
+- `doublet-spacing-poisson.md` — the other confirmed characterization.
+
+## Verdict
+
+Real structure at global p ~= 0.01, the first statistically significant
+deviation from randomness in the unsolved corpus beyond doublet suppression.
+The cipher is NOT a clean stream cipher: something in its mechanics couples
+positions 5 apart, in pairs bracketing 5-gram windows.

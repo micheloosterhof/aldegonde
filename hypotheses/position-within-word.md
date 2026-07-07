@@ -8,7 +8,7 @@ second, third, etc.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -49,5 +49,10 @@ statistics of runes at different word positions.
 
 ## Verdict
 
-Unresolved. A natural extension of word-aware ciphers. Testable by grouping
-runes by their position within the word.
+Disproved. Simulation (`experiments/mechanism_fingerprint.py`) of
+C = P + S[position-in-word] on Markov runeglish with the real LP word-length
+sequence gives nIoC 1.12-1.14 (only ~12 effective alphabets; observed corpus
+nIoC is exactly 1.000, many sigma apart at 13k runes) and doublet rate
+3.3-3.7% vs the observed 0.66%. The same doublet argument as in
+`word-level-autokey.md` applies: any key determined by word structure alone
+is fixed before emission and cannot suppress ciphertext doublets.

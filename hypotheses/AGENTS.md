@@ -10,7 +10,10 @@ statistical properties table and status definitions.
 ## Key context
 
 - The unsolved ciphertext is in `data/page0-58.txt` (13,136 runes, 3,367
-  words). All file paths are relative to the repository root.
+  words). All file paths are relative to the repository root. The final two
+  `%`-pages of this file are solved (the "AN END" page and the plaintext
+  parable page, ~180 runes) — exclude them from statistics of the unsolved
+  cipher.
 - The full transcription (solved + unsolved) is in
   `data/liber-primus__transcription--master.txt`. Do NOT analyze the solved
   early pages as if they were unsolved ciphertext.
@@ -55,6 +58,18 @@ explain ALL of these (see `README.md` for exact numbers):
   ```
 
 ## Common pitfalls
+
+- The last 95 runes of `data/page0-58.txt` are the solved plaintext Parable
+  page. Exclude them: the cipher stream is 13,041 runes with 88 doublets.
+- `aldegonde.stats.isomorph` compares against *uniform random* text. The
+  doublet suppression alone collapses pattern diversity, which makes the
+  cipher look 6-11 sigma anomalous on isomorphs. Under a doublet-corrected
+  Markov null the anomaly vanishes entirely
+  (`experiments/isomorph_corrected.py`). Always use a doublet-corrected
+  null for pattern-class statistics.
+- Line-initial rune frequencies are strongly non-uniform. This is a
+  typesetting artifact (present in solved pages too), not cipher structure.
+
 
 - The rune numbering question is unresolved. The cipher could use 0-based
   indices, GP prime values, or some other mapping. Do not assume any scheme.
