@@ -4,9 +4,11 @@ import pytest
 
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
+    DeltaRepeat,
     JointCount,
     boundary_coincidence,
     boundary_permutation_test,
+    delta_repeat_counts,
     joint_coincidence,
     match_indicator,
     recut_words,
@@ -71,6 +73,75 @@ def test_joint_invalid_separation_raises() -> None:
     """A non-positive separation is rejected."""
     with pytest.raises(InvalidInputError):
         joint_coincidence("AAAA", 1, [0])
+
+
+def test_delta_repeat_constant_stream_is_all_zero() -> None:
+    """A constant stream has an all-zero delta stream.
+
+    For "AAAA" at lag 1 the deltas are [0, 0, 0]; at separation 1 both
+    available pairs are zero-valued repeats, and with a zero rate of 1 the
+    expectation equals the pair count.
+    """
+    assert delta_repeat_counts("AAAA", "AB", lag=1, separation=1) == DeltaRepeat(
+        zero_observed=2,
+        zero_expected=2.0,
+        nonzero_observed=0,
+        nonzero_expected=0.0,
+    )
+
+
+def test_delta_repeat_shifted_repeat_is_nonzero() -> None:
+    """A cyclically shifted repeat repeats a NONZERO delta, not the zero one.
+
+    "ABCABC" over "ABC" at lag 1 has the constant delta value 1 (length 5):
+    every pair is a nonzero repeat. This is the additive-drift signature the
+    zero split separates from literal copies.
+    """
+    result = delta_repeat_counts("ABCABC", "ABC", lag=1, separation=1)
+    assert result.zero_observed == 0
+    assert result.nonzero_observed == 4
+    assert result.nonzero_expected == pytest.approx(4.0)
+
+
+def test_delta_repeat_literal_copy_is_zero_valued() -> None:
+    """A literal lag-2 copy shows up as paired ZERO deltas at lag 2.
+
+    In "ABABCA" the prefix ABAB repeats verbatim at distance 2: the lag-2
+    deltas are [0, 0, 2, 3], so separation 1 pairs one zero repeat and no
+    nonzero repeats.
+    """
+    result = delta_repeat_counts("ABABCA", "ABCD", lag=2, separation=1)
+    assert result.zero_observed == 1
+    assert result.nonzero_observed == 0
+
+
+def test_delta_repeat_observed_split_sums_to_total_repeats() -> None:
+    """The zero/nonzero split partitions all repeated-delta pairs."""
+    text = "ABCACBABCABCA"
+    alphabet = "ABC"
+    lag, separation = 3, 2
+    index = {s: i for i, s in enumerate(alphabet)}
+    deltas = [
+        (index[text[i + lag]] - index[text[i]]) % len(alphabet)
+        for i in range(len(text) - lag)
+    ]
+    total = sum(
+        1
+        for i in range(len(deltas) - separation)
+        if deltas[i] == deltas[i + separation]
+    )
+    result = delta_repeat_counts(text, alphabet, lag=lag, separation=separation)
+    assert result.zero_observed + result.nonzero_observed == total
+
+
+def test_delta_repeat_invalid_arguments_raise() -> None:
+    """Non-positive lag or separation and too-short text are rejected."""
+    with pytest.raises(InvalidInputError):
+        delta_repeat_counts("AAAA", "AB", lag=0, separation=1)
+    with pytest.raises(InvalidInputError):
+        delta_repeat_counts("AAAA", "AB", lag=1, separation=0)
+    with pytest.raises(InsufficientDataError):
+        delta_repeat_counts("A", "AB", lag=1, separation=1)
 
 
 def test_word_index_map() -> None:

@@ -3,9 +3,11 @@
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
     BoundaryPermutation,
+    DeltaRepeat,
     JointCount,
     boundary_coincidence,
     boundary_permutation_test,
+    delta_repeat_counts,
     joint_coincidence,
     match_indicator,
     recut_words,
@@ -43,9 +45,11 @@ __all__ = [
     # coincidence
     "BoundaryCoincidence",
     "BoundaryPermutation",
+    "DeltaRepeat",
     "JointCount",
     "boundary_coincidence",
     "boundary_permutation_test",
+    "delta_repeat_counts",
     "joint_coincidence",
     "match_indicator",
     "recut_words",

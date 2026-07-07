@@ -106,6 +106,86 @@ def joint_coincidence(
     return counts
 
 
+class DeltaRepeat(NamedTuple):
+    """Repeated lag-L delta counts split by the zero value, against chance.
+
+    Attributes:
+        zero_observed: Pairs of equal deltas whose common value is zero,
+            i.e. paired literal matches
+        zero_expected: Chance expectation of that count under an
+            independent delta stream with the observed marginal
+        nonzero_observed: Pairs of equal deltas with a nonzero common value
+        nonzero_expected: Chance expectation of that count
+    """
+
+    zero_observed: int
+    zero_expected: float
+    nonzero_observed: int
+    nonzero_expected: float
+
+
+def delta_repeat_counts(
+    text: Sequence[T],
+    alphabet: Sequence[T],
+    lag: int,
+    separation: int,
+) -> DeltaRepeat:
+    """Count repeated lag-L deltas at a separation, split by the zero value.
+
+    The lag-L delta stream is d[i] = (text[i + lag] - text[i]) mod len(alphabet),
+    taking each symbol's index in the alphabet. A pair is two positions i and
+    i + separation with d[i] == d[i + separation]. The zero split is the
+    discriminator between two mechanism families: a keystream that is locally
+    L-periodic up to an additive drift makes the delta locally constant at
+    an arbitrary value, elevating pairs of every value equally, whereas
+    literal copy semantics (a glyph repeated verbatim from L back) elevates
+    only the zero value. Expectations assume the deltas fall independently
+    at their observed marginal frequencies.
+
+    Args:
+        text: Sequence to analyze
+        alphabet: Alphabet of the sequence; also fixes the modulus
+        lag: Lag of the delta stream
+        separation: Distance between the compared deltas
+
+    Returns:
+        Observed and expected pair counts for the zero and nonzero values
+
+    Raises:
+        InvalidInputError: If lag or separation is not a positive integer
+        InsufficientDataError: If text is no longer than lag
+    """
+    validate_positive_integer(lag, "lag")
+    validate_positive_integer(separation, "separation")
+    validate_text_sequence(text, min_length=lag + 1)
+    index = {symbol: i for i, symbol in enumerate(alphabet)}
+    modulus = len(alphabet)
+    deltas = [
+        (index[text[i + lag]] - index[text[i]]) % modulus
+        for i in range(len(text) - lag)
+    ]
+    zero_observed = nonzero_observed = 0
+    for i in range(len(deltas) - separation):
+        if deltas[i] == deltas[i + separation]:
+            if deltas[i] == 0:
+                zero_observed += 1
+            else:
+                nonzero_observed += 1
+    counts = [0] * modulus
+    for value in deltas:
+        counts[value] += 1
+    total = len(deltas)
+    pairs = max(0, total - separation)
+    zero_rate = counts[0] / total
+    nonzero_rate = sum((c / total) ** 2 for c in counts[1:])
+    return DeltaRepeat(
+        zero_observed=zero_observed,
+        zero_expected=pairs * zero_rate * zero_rate,
+        nonzero_observed=nonzero_observed,
+        nonzero_expected=pairs * nonzero_rate,
+    )
+
+
 class BoundaryCoincidence(NamedTuple):
     """Lag-L coincidence counts split by word membership.
 
