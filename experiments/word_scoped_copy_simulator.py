@@ -65,7 +65,6 @@ def parse_clean_sections() -> list[list[list[int]]]:
 # --------------------------------------------------------------- statistics
 def fingerprint(c: np.ndarray, widx: np.ndarray) -> dict:
     """All fingerprint statistics for one stream + word structure."""
-    len(c)
     m = c[:-D] == c[D:]                          # lag-5 match indicator
     mlen = len(m)
     within = widx[:-D] == widx[D:]               # pair inside one word

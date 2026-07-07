@@ -410,6 +410,20 @@ back-references / composition stutters, `hypotheses/lag5-back-reference.md`,
 upgraded to plausible), whose branches remain indistinguishable from
 ciphertext statistics alone.
 
+Supporting results from the same campaign: a word-scoped copy simulator
+with five moment-matched rates reproduces the entire fingerprint (twelve
+emergent statistics within noise; copy budget ~39 events / ~66 glyphs,
+~0.5% of the corpus); seven symbol-class projections (index/gematria
+mod 5 and friends) are flat, so the recurring "5" is not an alphabet
+partition; all event coordinates are frozen in
+`hypotheses/lag5-event-catalog.json`; and **battery 19** closes the
+nulls-branch loophole — keystream sweeps with catalog-driven null
+deletion (key advances only on real glyphs), including a 33M-trial
+per-page offset brute force, find nothing (`experiments/lp_battery19.py`).
+One watched hint remains: within-word distance-6 matches are LOW (31 vs
+44.5 ± 6.2, ~p = 0.09 after look-elsewhere), replicated in both corpus
+halves and not produced by the copy model.
+
 ## Reproduction
 
 The analysis was originally run as 18 numbered battery scripts. The
