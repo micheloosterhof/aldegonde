@@ -206,6 +206,53 @@ p >= 0.11). There is no digraph-pair encryption grid and no positional
 frame — complementing the earlier fractionation/Playfair exclusions at
 the event level.
 
+## Reference encoder (July 2026): the complete candidate algorithm
+
+Why "autokey that looks 5 back in the ciphertext" cannot be literal: any
+deterministic rule C[i] = f(P[i], C[i-1], C[i-5]) is excluded by the
+depth-1..8 split tests (grouping by history value would expose plaintext
+IoC; measured flat). What survives is **conditional key reuse**: the base
+is an OTP-grade stream, and exactly where the plaintext repeats its own
+glyph/chunk from five back, the key from five back is reused --
+
+    P[i] = P[i-5]  and rule fires  =>  K[i] := K[i-5]
+                                   =>  C[i] = P[i] + K[i-5]
+                                            = P[i-5] + K[i-5] = C[i-5]
+
+a literal ciphertext copy exactly at plaintext repeats, with zero leakage
+anywhere else (fresh independent key at all other positions). This is
+observationally identical to an LZ-style back-reference with window 5,
+and it is the only autokey-flavored mechanism compatible with
+value-literality, the flat off-zero delta histogram, and the
+availability-tracking shape census. The doublet rule is the same
+machine's short-range face: redraw the key when the output would equal
+C[i-1], complied with ~81% of the time.
+
+`experiments/lp_encoder_model.py` implements the full algorithm and
+drives it with REAL English plaintext (frequency-weighted lexicon words
+transliterated to runeglish, sampled into the LP's exact word-length
+sequence), so shape selectivity, word scoping, and the pairs:triplets
+ratio must emerge from morphology rather than tuned rates. Five
+behavioral compliance parameters:
+
+    doublet redraw 0.81, digram copy 0.85 in-word / 0.08 cross-word,
+    single copy 0.20 in-word, frame copy 0.22
+
+Result (300 simulations): all eighteen fingerprint statistics match the
+LP within noise — mono 503±23 (LP 479), d1 28.7±5.6 (29), d4 27.3±5.4
+(28), paired-within 27.4±6.8 (27), isolated-within 78.8±9.0 (75),
+doublets 86.9±9.9 (86), triplets 0.6 (0), trigram runs 1.5±1.3 (1),
+off-zero chi2 26.6 (25.8), separations 2..8 all compatible. The two
+mild residuals are the same model-independent watched items as before:
+isolated-across (z = -1.4) and the within-word d=6 deficit (z = -1.8).
+
+Decryption story: with the pad in hand the receiver decrypts normally
+and, on recognizing an echo (the paired lag-5 repeat), reuses the
+previous key chunk / emits the repeated plaintext; accidental echoes
+(~15 per corpus length) cost ~0.5% corruption or are suppressed by the
+encoder. Without the pad, the marks are the only structure — which is
+exactly what every direct attack has found.
+
 ## The nulls-branch key search (battery 19, negative)
 
 If branch (a) is true AND the underlying keystream is simple, all earlier
