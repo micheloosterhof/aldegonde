@@ -165,10 +165,13 @@ keystream sweeps missed it, because a null consumes no key symbol and the
 sweeps assumed one-key-per-rune alignment. `experiments/lp_battery19.py`
 closes this: decryption with catalog-driven deletion (skip the copy
 targets of the 29 d1 + 28 d4 events, or of all 479 matches; key advances
-only on real glyphs), 9 streams x both signs, corpus-wide and per-page,
-plus the full battery-14-style per-page offset brute force (offsets
-0..24999, 33M trials) in both deletion modes. Result: nothing — per-page
-restart max z = +3.26 (threshold ~4.5); offset-search max in deletion
+only on real glyphs), 13 streams (primes, totient, index, triangular,
+Fibonacci, Lucas, pi, e, 2^i, squares, cubes, prime gaps, cycled
+gematria values) x both signs, corpus-wide, per-page restart and
+per-$-section restart, plus the full battery-14-style per-page offset
+brute force (offsets 0..24999, 33M trials) in both deletion modes.
+Result: nothing — per-page restart max z = +3.98 (threshold ~4.5),
+per-section max +2.88 (threshold ~4.2); offset-search max in deletion
 modes +4.53 (noise ceiling ~5.5 for the family; the global max +5.53 is
 the known page-42 battery-14 noise hit, reproduced in the no-deletion
 mode, which cross-validates the reimplementation). So EITHER the copies

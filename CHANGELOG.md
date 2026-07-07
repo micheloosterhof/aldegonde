@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `delta_repeat_counts` / `DeltaRepeat` in `aldegonde.analysis.coincidence`:
+  repeated lag-L delta pairs split by the zero value, the discriminator
+  between additive-drift keystreams and literal copy semantics
 - Comprehensive error handling hierarchy with structured exception classes
   - `AldegondeError` as base exception class for all library errors
   - `CipherError` for cipher-specific operations with cipher type context

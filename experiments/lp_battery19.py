@@ -118,6 +118,24 @@ def null_sets(n_total: int) -> dict[str, set[int]]:
     return {"none": set(), "paired": paired, "matches": all_targets}
 
 
+def load_sections() -> list[list[int]]:
+    """The 10 clean $-sections (an alternative key-restart unit)."""
+    with open(DATA) as f:
+        raw = f.read()
+    secs = [[R2I[ch] for ch in s if ch in R2I] for s in raw.split("$")]
+    return [s for s in secs if s][:10]
+
+
+def extra_streams(mx: int) -> dict[str, np.ndarray]:
+    pr = sieve(400000)[:mx + 1]
+    return {
+        "squares": np.array([i * i for i in range(mx)]) % N,
+        "cubes": np.array([i * i * i for i in range(mx)]) % N,
+        "primegap": np.array([pr[i + 1] - pr[i] for i in range(mx)]) % N,
+        "gematria": np.array([pr[i % N] for i in range(mx)]) % N,
+    }
+
+
 def main() -> None:
     pages = load_pages()
     lens = [len(p) for p in pages]
@@ -128,6 +146,7 @@ def main() -> None:
     ll = load_ll()
     mu, sd = float(ll.mean()), float(ll.std())
     streams = build_streams(n + 600)
+    streams.update(extra_streams(n + 600))
     modes = null_sets(n)
 
     # page start offsets in corpus coordinates
@@ -171,6 +190,33 @@ def main() -> None:
     print(f"  ({n_tests} page-tests; multiple-test threshold ~4.5)")
     for zz, mode, name, sign, top in results[:10]:
         print(f"  max page z={zz:+5.2f} mode={mode:8s} {name} "
+              f"{'-' if sign < 0 else '+'} "
+              f"top {[(round(a, 2), b) for a, b in top]}")
+
+    # ------------------- per-SECTION restarts (the other natural key unit)
+    sections = load_sections()
+    sec_lens = [len(s) for s in sections]
+    assert sum(sec_lens) == n  # same stream, different restart unit
+    sec_starts = np.cumsum([0] + sec_lens[:-1])
+    print("\n=== per-section (key restarts each $-section) ===")
+    sres = []
+    for mode, nulls in modes.items():
+        for name, k in streams.items():
+            for sign in (-1, 1):
+                zs = []
+                for sj, (st, ln) in enumerate(zip(sec_starts, sec_lens)):
+                    idx = [st + t for t in range(ln)
+                           if st + t not in nulls]
+                    cs = corpus[idx]
+                    dec = (cs + sign * k[: len(cs)]) % N
+                    zs.append((score(dec), sj))
+                zs.sort(reverse=True)
+                sres.append((zs[0][0], mode, name, sign, zs[:2]))
+    sres.sort(reverse=True)
+    n_tests = len(modes) * len(streams) * 2 * len(sections)
+    print(f"  ({n_tests} section-tests; threshold ~4.2)")
+    for zz, mode, name, sign, top in sres[:6]:
+        print(f"  max section z={zz:+5.2f} mode={mode:8s} {name} "
               f"{'-' if sign < 0 else '+'} "
               f"top {[(round(a, 2), b) for a, b in top]}")
 
