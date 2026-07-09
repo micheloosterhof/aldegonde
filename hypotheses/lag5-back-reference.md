@@ -121,6 +121,28 @@ copy semantics blind to words is now excluded.
   (~1%); alternatives are a designed breadcrumb or an LZ-flavored encoding
   aesthetic. The constant 5 is a designer choice here, separate from the
   doublet machinery's 5 (see `cotiling_test.py`).
+  **Design-rationale update (July 2026)** — the "why would a cryptographer
+  add leaky rules to a perfect stream" objection has three answers, each
+  fitting the measurements: (i) *proof of content*: without the anomalies
+  the unsolved pages are statistically indistinguishable from random
+  filler forever; the doublet deficit is a zero-plaintext-cost beacon
+  that a process with memory produced the text; (ii) *solution
+  commitment*: the ~57 events give any candidate plaintext a checksum —
+  a false solution satisfies all P[i]=P[i-5] constraints with
+  probability ~0.06^57 ~ 1e-69, while leaking only a few hundred bits
+  (~0.8% of content entropy, mostly function-word repeats). For a
+  verification-obsessed designer (everything PGP-signed, a hash-named
+  page) this is the classic puzzle-maker's trade, security-negative but
+  authentication-positive; (iii) *runic orthography*: historical rune
+  carving customarily wrote geminates as a single rune, even across word
+  boundaries — applying that convention to the ciphertext reproduces the
+  LP's boundary-transparent, rune-uniform, ~80%-consistent suppression
+  as scribal habit rather than cryptographic rule. The scribal eye-skip
+  (saut du meme au meme) reading of the copies explains their
+  plaintext-triggering, word-awareness, and sub-100% rates, but fails
+  the distance quantization (real eye-skips spread over distances; the
+  corpus is distance-5 only to lag 80) — the lapses may be human, the
+  window is designed.
 - Post-hoc: the model was constructed to explain the anomaly. Its
   independent support is the rate feasibility, the information-theoretic
   necessity of its shape, and the full-fingerprint fit.
