@@ -68,6 +68,33 @@ def doublets(
     return (positions, num_comparisons)
 
 
+def doublet_count(text: Sequence[object], skip: int = 1, length: int = 1) -> int:
+    """Count repeated n-grams at a skip distance, without recording positions.
+
+    The count-only twin of `doublets`, for the Monte Carlo path where only the
+    number of doublets per surrogate is needed. Length 1 compares symbols
+    directly, avoiding the per-comparison slicing that dominates a resampling
+    run.
+
+    Args:
+        text: Sequence to analyze
+        skip: Distance between compared n-grams
+        length: Size of n-gram (1=monographic, 2=digraphic, etc.)
+
+    Returns:
+        The number of positions where the n-gram recurs at position + skip
+    """
+    num_comparisons = len(text) - skip - length + 1
+    if num_comparisons <= 0:
+        return 0
+    if length == 1:
+        return sum(text[i] == text[i + skip] for i in range(num_comparisons))
+    return sum(
+        text[i : i + length] == text[i + skip : i + skip + length]
+        for i in range(num_comparisons)
+    )
+
+
 def kappa(
     text: Sequence[object],
     skip: int = 1,
@@ -233,7 +260,7 @@ def print_kappa(
 
     def statistic(sample: Sequence[object]) -> dict[int, float]:
         return {
-            skip: float(len(doublets(sample, skip=skip, length=length)[0]))
+            skip: float(doublet_count(sample, skip=skip, length=length))
             for skip in skips
         }
 
