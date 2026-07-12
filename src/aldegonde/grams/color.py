@@ -2,6 +2,11 @@
 
 reset = "\033[0m"
 
+
+def bg256(code: int) -> str:
+    """Background color from the 256-color palette (code 0-255)."""
+    return f"\033[48;5;{code}m"
+
 # Black
 fgBlack = "\033[30m"
 fgBrightBlack = "\033[30;1m"
