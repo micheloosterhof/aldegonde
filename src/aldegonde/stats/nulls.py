@@ -118,36 +118,44 @@ def _doublet_fill(data: Sequence[T], rng: random.Random, factor: float) -> list[
         msg = "no doublet-free arrangement exists: a symbol exceeds ceil(n/2)"
         raise InvalidInputError(msg)
 
+    symbols = list(counts)
     remaining = dict(counts)
+    draw = rng.random
     out: list[T] = []
     previous: T | None = None
     for slots in range(n, 0, -1):
-        forced = [s for s, count in remaining.items() if count > slots // 2]
-        if forced:
-            chosen = forced[0]
+        half = slots // 2
+        # One pass over the alphabet: total candidate weight, and the at-most-one
+        # symbol whose remaining count forces it to be placed now
+        total = 0.0
+        forced: T | None = None
+        for symbol in symbols:
+            count = remaining[symbol]
+            if count > half:
+                forced = symbol
+                break
+            if count:
+                total += count * (factor if symbol == previous else 1.0)
+        if forced is not None:
+            chosen: T = forced
         else:
-            candidates: list[T] = []
-            weights: list[float] = []
-            for symbol, count in remaining.items():
-                if count == 0:
+            # Weighted pick proportional to remaining count, down-weighting the
+            # previous symbol by factor; equivalent to a cumulative-weight scan
+            target = draw() * total
+            cumulative = 0.0
+            chosen = symbols[-1]
+            for symbol in symbols:
+                count = remaining[symbol]
+                if not count:
                     continue
                 weight = count * (factor if symbol == previous else 1.0)
-                if weight > 0:
-                    candidates.append(symbol)
-                    weights.append(weight)
-            chosen = _weighted_choice(candidates, weights, rng)
+                if weight <= 0:
+                    continue
+                chosen = symbol
+                cumulative += weight
+                if target < cumulative:
+                    break
         out.append(chosen)
         remaining[chosen] -= 1
         previous = chosen
     return out
-
-
-def _weighted_choice(items: list[T], weights: Sequence[float], rng: random.Random) -> T:
-    """Pick an item with probability proportional to its weight."""
-    target = rng.random() * sum(weights)
-    cumulative = 0.0
-    for item, weight in zip(items, weights):
-        cumulative += weight
-        if target < cumulative:
-            return item
-    return items[-1]
