@@ -4,32 +4,58 @@
 
 The unsolved Liber Primus is a per-word polyalphabetic cipher of **5 mixed
 alphabets applied by position-in-word mod 5**, in which the 5 alphabets are
-**related by a single fixed step permutation `g`**:
+**related by a single fixed step permutation `g` of order 5**, and `base_word`
+is advanced word-to-word by a **phase-absorbing free-group walk**:
 
-    A_phi = base_word o g^phi        (phi = position_in_word mod 5)
+    c[i]       = base_w( g^(j mod 5)( p[i] ) )              j = position in word
+    base_{w+1} = base_w o g^((len_w - 1) mod 5) o sigma_k   (walk step)
 
-`base_word` is re-keyed per word. This one structure reproduces the **entire**
-statistical fingerprint of the corpus at once — flat unigrams, flat columns, the
-lag-5 echo, the empty d2/d3/d4, and the doublet suppression — with the doublet
-rate **inherent to the alphabet relation**, not a bolted-on rule, and with no
-ciphertext feedback (so the echo survives).
+This one structure reproduces the **entire** statistical fingerprint at once —
+flat unigrams, flat columns, the lag-5 echo, the empty d2/d3/d4, and the doublet
+suppression (within-word *and* across word seams) — with the doublet rates
+**inherent to the alphabet relations** (`g`'s diagonal within words, `sigma`'s
+diagonal at seams), no bolted-on rule, and no ciphertext feedback (so the echo
+survives). See `experiments/phase_absorbing_walk.py`.
 
 ## Status
 
-**Status**: plausible (candidate mechanism; reproduces the full fingerprint in
-simulation, not yet inverted on real ciphertext)
+**Status**: plausible (candidate mechanism; reproduces every *hard* statistical
+observable in simulation, not yet inverted on real ciphertext)
 
-First model in the investigation to jointly reproduce all five observables from
-one self-consistent structure with nothing contradictory and nothing appended.
-It fits the statistics; it has not decrypted anything.
+First model in the investigation to jointly reproduce all hard observables —
+including the two that killed earlier versions: **cross-word (seam) doublet
+suppression** and **cross-word d5 at chance** — from one self-consistent
+structure. It fits the statistics; it has not decrypted anything.
+
+Soft observables are deliberately *not* fitted and are flagged as watch-items,
+not constraints: the doublet dead-time (min gap 6; p ~ 0.06 vs memoryless), the
+d1-delta residual (chi2 41.4, df27, p ~ 0.04), and the lag-1 marking hint
+(LR ~ 4). Each is single-digit-sigma in a session that scanned dozens of
+statistics; none is load-bearing.
 
 ## Mechanism
 
-Each word is enciphered independently. Within a word, the alphabet at position
-`j` is `A_{j mod 5} = base_word o g^{j mod 5}`, applied to the plaintext rune:
-`c[j] = base_word(g^{j mod 5}(p[j]))`. `base_word` is a fresh mixed permutation
-per word (the per-word key); `g` is a single global mixed permutation (the
-cipher's fixed structural parameter).
+Within a word, the alphabet at position `j` is `A_{j mod 5} = base_w o g^{j mod
+5}`, applied to `p[i]`. Between words, `base` is advanced by
+`g^((len_w-1) mod 5) o sigma_k`: the `g`-power **absorbs the outgoing phase** so
+that at *every* word boundary the temporally-adjacent alphabets are related by
+the *same* fixed diagonal `sigma_k`, exactly as they are related by `g` inside a
+word. `g` is order 5 (its 5-cycle closes safely, giving flat doublets by phase
+and the sharp d5 echo, `g^5 = id`); `sigma_k` are free mixed permutations (an
+unconstrained walk over the symmetric group). The walk step is a function of the
+previous word's length, so decryption is progressive.
+
+### Why the walk must be free, and phase-absorbing
+
+Two structured walks were tried and both leak (`experiments/stay_slot_cipher.py`
+and follow-ups): **powers of a single permutation** cap at <= 69 states on 29
+symbols (ord | 1449 dead-end) and leave a period-5 Friedman spike (periodic IoC
+1.22); the **centralizer of `g`** (steps commuting with `g`) preserves `g`'s
+cycle structure and leaves periodic IoC 1.52 and a delta chi2 of 218. Any walk
+that respects `g`'s structure leaks. The resolution is to make the *seam
+relation* constant (via the phase-absorbing `g^a` factor) while the walk
+generators `sigma_k` themselves are unstructured — that is the piece that makes
+"boundary-blind doublets" and "flat/aperiodic" compatible.
 
 ## Why it fits each observable
 
@@ -47,11 +73,16 @@ cipher's fixed structural parameter).
   alphabets, scrambling those coincidences to chance. This only comes out empty
   because the alphabets are *mixed*; a shift (Vigenere) would leave the
   plaintext-difference structure and the d5 delta would not be flat.
-- **Doublet suppression, INHERENT** — a doublet is
-  `c[i]=c[i-1] <=> base(g^phi(p[i])) = base(g^{phi-1}(p[i-1])) <=> p[i-1]=g(p[i])`.
-  Choosing `g` so that consecutive outputs land on **rare English bigrams**
-  makes doublets inherently rare. It is not a separate rule; it is a property of
-  how the alphabets relate.
+- **Doublet suppression, INHERENT and boundary-blind** — a within-word doublet
+  is `c[i]=c[i-1] <=> p[i-1]=g(p[i])`, a **seam** doublet (last rune of a word,
+  first of the next) is `p_prev = sigma_k(p)` after the phase-absorbing step, so
+  BOTH are rare bigram-class events, not a rule. `g`'s diagonal is set to the
+  observed within rate (0.0063), `sigma`'s to the observed seam rate (0.0079);
+  the seam runs slightly hotter because one `sigma` must satisfy the diagonal at
+  every phase at once. This is the piece the earlier per-word-independent version
+  got wrong: with independent `base_word` the seam would sit at chance (~0.034),
+  contradicting the observed 0.0079 -- the *chained* walk is what makes seams
+  suppressed.
 - **Suppression is one-hop (only between adjacent alphabets).** The coincidence
   condition at distance `d` is `p[i-d] = g^d(p[i])`, so each distance uses a
   different power of `g`. `g` is tuned to the peaked distance-1 bigrams, but
@@ -171,8 +202,13 @@ cipher's `g`; the real `g` is a mixed order-5 permutation.
 
 ## Scripts
 
-- `experiments/related_alphabet_cipher.py` — the full model reproduction plus
-  the affine-vs-mixed doublet-floor computation.
+- `experiments/phase_absorbing_walk.py` — the **final model**: order-5 `g` +
+  phase-absorbing free-group walk; reproduces every hard observable including
+  seam doublets and cross-word d5.
+- `experiments/stay_slot_cipher.py` — head-to-head battery harness; documents the
+  failed structured walks (powers-of-h, centralizer) that forced the free walk.
+- `experiments/related_alphabet_cipher.py` — the within-word core plus the
+  affine-vs-mixed doublet-floor computation.
 - `experiments/period5_quagmire_sim.py` — the per-word-reset building block:
   shows global 5-alphabet keying fails (columns 1.8, first letters spike) and
   per-word keying is required (columns 1.0).
