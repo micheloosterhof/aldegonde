@@ -155,6 +155,9 @@ row — vanishingly rare under any position-independent stream model.
 
 ## Related
 
+- `rune-s-lag5-echo.md` — the d=5 excess is not rune-agnostic: the rune S
+  carries ~22% of it (11 vs 1.75, p=2.4e-6, Bonferroni-clean,
+  distance-5-specific, within-word only).
 - `cryptodiagnostics-page0-58.md` — the full battery this emerged from;
   also documents the word-aligned repeated phrase ᛞᛄᚢ-ᛒᛖᛁ (the other
   word-state lead).
