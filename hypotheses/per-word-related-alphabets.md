@@ -92,21 +92,27 @@ onto near-zero bigrams. So the *optimal* `g` looks like nothing designed; a real
 cipher `g` (producing 0.66%, not the 0.13% floor) would be a less-aggressive
 permutation trading dodging for regularity.
 
-Two ways the 5-cycle can close, which differ observably:
+The 5-cycle must **close**, and how it closes is settled by the data. Adjacent
+positions always land on adjacent phases, so the five touching pairs form a
+cycle 0-1-2-3-4-0; the wrap pair (phase 4->0) is a touching pair too. Two
+possibilities:
 
-- **Phase counter (modelled here).** The alphabet index is
-  `position_in_word mod 5`, so only `g^0..g^4` are ever applied and the exponent
-  resets at position 5. `g` may be *any* permutation; **`g^5 != identity`** (the
-  optimal `g` has order 170). This gives the lower doublet floor.
-- **Self-cycling.** If the alphabet instead advances `A_j = A_{j-1} o g`, closing
-  the period needs **`g^5 = identity`**, i.e. `g` of order 5. On 29 runes that
-  forces >= 4 fixed points (29 not divisible by 5) -- four forced plaintext-doublet
-  bigrams -- and GF(29)* has order 28 with `5 nmid 28`, so no *multiplicative*
-  order-5 `g` exists. A clean self-cycling `g` is therefore strongly constrained
-  and cannot be affine/multiplicative.
+- **Phase counter, `g^5 != identity`.** Only `g^0..g^4` applied, exponent resets
+  at position 5. Then the wrap transition uses `g^{-4} != g`, so it is *not*
+  doublet-suppressed -- it sits at chance, predicting a doublet spike at
+  position-in-word `= 0 (mod 5)` and an overall rate `~ (1/5)(1/29)`.
+- **Self-cycling, `g^5 = identity`.** The alphabet advances `A_j = A_{j-1} o g`
+  and the cycle closes, so `g^{-4} = g` and *every* touching pair (including the
+  wrap) suppresses via the same `g` -> uniform doublets across all phases.
 
-Which of the two the cipher uses is a genuine fork with distinct fixed-point /
-doublet-bigram signatures, and is open.
+**The data selects `g^5 = identity`.** Within-word doublets are flat across
+position-in-word mod 5 (wrap bin: 6 observed vs ~30 if it were at chance;
+Poisson p ~ 1e-8 against the counter version). So the cipher is the self-cycling
+model. Consequences: **`g` has order exactly 5** (five 5-cycles + >= 4 forced
+fixed points, since 29 is not divisible by 5, each fixed point a plaintext-doublet
+bigram), and it has **no multiplicative/affine form** (GF(29)* has order 28,
+`5 nmid 28`). The doublet-minimising order-170 `g` above is therefore *not* the
+cipher's `g`; the real `g` is a mixed order-5 permutation.
 
 ## Evidence for
 
