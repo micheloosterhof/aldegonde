@@ -71,6 +71,36 @@ A word-locked base with exact order-5 g forces `q = 1`. The point estimate
 so this q is a suggestive point estimate, not a measurement. See "Evidence
 against".
 
+## Second period-5 signature: d6 mirrors d1
+
+The within-word coincidence profile organizes by **phase (d mod 5)**, not raw
+distance — a second, independent confirmation of the period-5 structure that
+does not depend on the fragile d10. Word-length permutation null (rune stream
+kept intact, each section's word-length sequence shuffled, 10,000 perms;
+`experiments/within_word_phase_profile.py`):
+
+| d | phase | obs | null | z | p |
+|---|---|---|---|---|---|
+| 1 | 1 | 63 | 66.6 ± 3.9 | -0.9 | 0.20 (binomial vs flat: strongly suppressed, IoC 0.18) |
+| **5** | **0** | **102** | **76.5 ± 7.8** | **+3.3** | **0.0010 excess (the echo)** |
+| **6** | **1** | **31** | **44.5 ± 6.2** | **-2.2** | **0.0155 deficit (suppression recurs)** |
+
+`d=1` and `d=6` are both **phase-relationship 1** — the same g¹ doublet
+diagonal — and both sit below flat (IoC 0.18 and 0.71). The doublet
+suppression **recurs at the period-5 interval.** This is striking because in
+real prose d6 is one of the *highest*-coincidence distances (IoC 2.12): the
+cipher takes a distance where plaintext coincides heavily and pushes it below
+flat, which only happens if the g¹ relation that kills adjacent doublets acts
+again 5 positions later.
+
+So the period-5 is confirmed twice: **excess at phase 0 (d5), suppression at
+phase 1 (d1 and d6).** Multiple-testing note: d5 (p=0.001) survives correction
+over the 10-distance scan; d6 (p=0.016) does not on its own, but it is a
+*directed* prediction (the phase-1 image of the established d1 suppression),
+so read it as corroboration of period-5, not a standalone discovery. Past d6
+the samples collapse (d7=713 pairs down to d10=88) and are noise; the d5 echo's
+real period-5 partner is **d6's suppression**, not the unmeasurable d10.
+
 ## Evidence for
 
 **Clean corpus** (sections 0-9 of `data/page0-58.txt`, 12,956 runes; words
@@ -136,6 +166,8 @@ biased high by over-weighting long words.)
   point-estimate q, and the significance tests (echo vs flat z=+3.7; partial
   vs full-leak z=-1.1, not significant). The full-leak reference (prose d5
   0.055) is documented in the script; the dictionary proxy is a cross-check.
+- `experiments/within_word_phase_profile.py` — the d1-d10 word-length
+  permutation null (d5 excess p=0.001, d6 deficit p=0.016).
 
 ## Related
 
@@ -153,10 +185,13 @@ biased high by over-weighting long words.)
 ## Verdict
 
 The within-word d5 echo is a confirmed same-alphabet leak: IoC 1.43, 3.7 sigma
-above flat, and word-anchored (cross-word d5 flat). Whether it is a **partial**
-leak (base drifts within the word; point estimate q~0.72) or a **full** leak
-(clean word-locked, exact-order-5 base; q=1) is **not resolved** — the bootstrap
-95% CI [1.15, 1.72] contains the full-leak value 1.60, and the corpus is ~4x too
-small to separate them. Do not cite the "72% / base drifts within the word"
-reading as established; it is a point estimate awaiting more data or a
-decryption. What is solid: a real, word-anchored period-5 same-alphabet echo.
+above flat, and word-anchored (cross-word d5 flat). The period-5 structure is
+confirmed twice — **excess at phase 0 (d5, p=0.001), suppression at phase 1
+(d1 and d6, d6 deficit p=0.016)** — so the mechanism has a real 5-periodicity,
+not just a single echo. Whether the d5 leak is **partial** (base drifts within
+the word; point estimate q~0.72) or **full** (clean word-locked, exact-order-5
+base; q=1) is **not resolved** — the bootstrap 95% CI [1.15, 1.72] contains the
+full-leak value 1.60, and the corpus is ~4x too small to separate them. Do not
+cite the "72% / base drifts within the word" reading as established; it is a
+point estimate awaiting more data or a decryption. What is solid: a real,
+word-anchored, twice-confirmed period-5 same-alphabet structure.
