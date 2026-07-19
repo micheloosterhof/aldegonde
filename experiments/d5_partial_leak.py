@@ -118,22 +118,25 @@ def plaintext_reference(rng: random.Random) -> tuple[float, float]:
     return within_m / within_e, cross_m / cross_e
 
 
+# Full-leak reference for a same-alphabet 5-gap. Real English prose (Project
+# Gutenberg #1342, 128k words) converted to runeglish gives within-word d5 =
+# 0.0550 (IoC 1.60). A random dictionary word list gives ~0.0599 (IoC 1.74),
+# biased high by over-weighting long words. Either leaves 1.43 clearly partial.
+PROSE_D5 = 0.0550
+
+
 def main() -> None:
     stream, wid = load_lp()
     print(f"LP clean corpus: {len(stream)} runes\n")
     print(f"flat baseline 1/29 = {FLAT:.4f} (IoC 1.00)")
-
-    plain = None
+    print(f"full-leak reference (real prose): d5 {PROSE_D5:.4f} (IoC "
+          f"{PROSE_D5 * M:.2f})")
     if os.path.exists(DICT):
         wi, cr = plaintext_reference(random.Random(7))
-        plain = wi
-        print(f"plaintext runeglish (dict proxy): within d5 {wi:.4f} (IoC "
-              f"{wi * M:.2f}), cross d5 {cr:.4f} (IoC {cr * M:.2f})")
-    else:
-        plain = 0.0599
-        print(f"plaintext runeglish reference (no {DICT}); using 0.0599 "
-              f"(IoC {plain * M:.2f})")
+        print(f"  cross-check, dictionary proxy: d5 {wi:.4f} (IoC "
+              f"{wi * M:.2f})  [biased high]")
 
+    plain = PROSE_D5
     print("\nLP within-word coincidence profile:")
     print("  d    rate     IoC    same-alphabet frac")
     for d in (1, 2, 3, 4, 5, 10):
@@ -146,8 +149,8 @@ def main() -> None:
     r5, _, _ = coincidence(stream, wid, 5, same=True)
     q = (r5 - FLAT) / (plain - FLAT)
     print(f"\n  same-alphabet fraction at within-word d5: q = {q:.2f}")
-    print("  (q = 1.0 would be a word-locked base; q < 1 -> base drifts "
-          "within words)")
+    print("  (q = 1.0 would be a clean word-locked order-5 base; q < 1 -> the "
+          "base drifts within words, or g is not exactly order 5)")
 
 
 if __name__ == "__main__":
