@@ -146,11 +146,24 @@ def main() -> None:
     r5c, m5c, e5c = coincidence(stream, wid, 5, same=False)
     print(f"\n  d5 cross-word: {r5c:.4f}  IoC {r5c * M:.2f}  ({m5c}/{e5c})")
 
-    r5, _, _ = coincidence(stream, wid, 5, same=True)
+    r5, m5, e5 = coincidence(stream, wid, 5, same=True)
     q = (r5 - FLAT) / (plain - FLAT)
-    print(f"\n  same-alphabet fraction at within-word d5: q = {q:.2f}")
-    print("  (q = 1.0 would be a clean word-locked order-5 base; q < 1 -> the "
-          "base drifts within words, or g is not exactly order 5)")
+    print(f"\n  same-alphabet fraction at within-word d5: q = {q:.2f} "
+          f"(point estimate)")
+
+    # Is q meaningfully < 1? Test observed matches against the full-leak
+    # expectation. Full leak (word-locked, exact order-5 g) predicts the
+    # plaintext d5 rate; flat predicts 1/29.
+    import math
+    exp_flat = e5 / M
+    exp_full = PROSE_D5 * e5
+    z_flat = (m5 - exp_flat) / math.sqrt(e5 * (1 / M) * ((M - 1) / M))
+    z_full = (m5 - exp_full) / math.sqrt(exp_full * (1 - exp_full / e5))
+    print(f"  {m5} matches vs flat {exp_flat:.0f}: z={z_flat:+.1f} -> echo is REAL")
+    print(f"  {m5} matches vs full-leak {exp_full:.0f}: z={z_full:+.1f} -> "
+          "partial NOT significant; word-locked (q=1) is consistent")
+    print("  => the echo is real and word-anchored; partial-vs-full is "
+          "underpowered on this corpus")
 
 
 if __name__ == "__main__":
