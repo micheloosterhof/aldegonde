@@ -43,6 +43,10 @@ refuted"):
   (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) is held to 0.0063. `g⁵=id` makes positions
   5 apart share the alphabet → the d5 echo. Non-arithmetic: GF(29)* has order
   28 and 5∤28, so no shift/multiply/affine map has order 5.
+  **The tuned diagonal can be removed** — reformulate as advance-4/hold-1
+  (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, so the doublet
+  rate = plaintext-doublet/5 is *inherent*, and the whole d1-d5 profile falls
+  out of one minimized advance. See `stay-slot-hold.md`.
 - **`σ` — the space step.** A second mixed permutation **outside ⟨g⟩** (not a
   power of `g`), tuned rare-diagonal so the seam doublet is suppressed to
   0.0079. Being outside ⟨g⟩ is what breaks the walk out of the 5-alphabet
