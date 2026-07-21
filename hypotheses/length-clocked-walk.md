@@ -78,6 +78,15 @@ newlines are line wraps (words flow across them).
 - **No periodicity.** No Kasiski, no periodic-IoC (periods ≤600), no period in
   absolute rune position (k≤40) or word index (k≤49, incl divisors of 1449).
   Consistent: the walk is clocked by aperiodic word lengths.
+- **Not a rotor machine.** A physical wheel stepping 1/letter reuses its
+  alphabet at the wheel period, but absolute-position coincidence at d=29 is
+  flat (IoC 1.01) and d=20–45 averages 1.00 — no wheel-period echo. And period-5
+  is impossible for a 29-symbol wheel (period is 29 for any step, 29 prime), so
+  the d5 echo needs a *designed* order-5 permutation, not a rotation. Plus the
+  phase resets at word boundaries, which continuous machine stepping cannot do.
+  Enigma/Hebern out; Hagelin/Lorenz are additive (killed by the algebra battery).
+  The model is rotor-*structured* (order-5 letter rotor + per-space rotor) but
+  not a historical machine — a pencil-and-paper progressive substitution.
 - **No algebraic structure anywhere.** Delta, sum, ratio, product, and all 28
   affine multipliers — within-word AND across the seam — are null beyond the
   coincidence. So `g` and `σ` are general mixed permutations, not
