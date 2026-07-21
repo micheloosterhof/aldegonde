@@ -78,6 +78,24 @@ adjacent step controlled.
 - **Bonus.** The stay-slot reproduces the d1-delta residual (χ²=39.3 vs LP 41.4)
   that the order-5-g model did not naturally hit.
 
+## Doublet placement: no fixed hold, hold must be keyed
+
+If the hold sat at a fixed word position, within-word doublets (which can only
+appear on a hold step) would pile up at that word-phase. They don't:
+`experiments/doublet_placement.py` finds the doublet RATE flat on every periodic
+axis — position-in-word mod 5 (p=0.63), distance-from-word-end mod 5 (p=0.98),
+absolute position mod 5 (p=0.42), word index mod 5 (p=0.27) — and flat by word
+length. Doublet gap-mod-5 is flat too, and the min-gap-6 (no two doublets within
+5) is **not** significant: random placement on the eligible positions gives 0
+close gaps 22% of the time (word structure + 63 events), so it is not a repulsion
+mechanism.
+
+Consequences: a **fixed hold slot is refuted**; if the model is stay-slot the
+hold is **keyed** (moves per word by a keystream), which is exactly what
+reversibility requires. But placement does **not** discriminate g4-hold from
+order-5-g: a keyed hold and a position-independent g-diagonal both give
+featureless placement, and 63 doublets carry no handle. Placement is exhausted.
+
 ## Evidence against / open
 
 - **Magnitudes run slightly high in simulation.** Sim d1w ~0.008 vs LP 0.0063;
