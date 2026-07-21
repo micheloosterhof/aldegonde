@@ -8,10 +8,10 @@ The order-5 letter step `g` (see `length-clocked-walk.md`) is built by arranging
 permutation on 29 symbols. This is the natural, **non-arithmetic** way to
 construct an order-5 permutation on 29 runes (decimation/multiplication cannot:
 GF(29)* has order 28 and 5∤28, so multiply-by-k has order in {1,2,4,7,14,28},
-never 5). Crucially, if the grid is filled from a **keyword or the gematria
-order**, then `g`'s key collapses from an arbitrary order-5 permutation
-(~10^20 of them) to a **grid arrangement (keyword-sized)** — the search-space
-reduction that could make enumeration feasible.
+never 5). A grid layout could shrink `g`'s key from an arbitrary order-5
+permutation toward a keyword-sized space — BUT only if the layout is *also*
+low-diagonal (see "layout constraint"): a plain keyword fill gives chance
+doublets, so the reduction is weaker than it first appears.
 
 ## Status
 
@@ -29,10 +29,33 @@ unknown and unverified)
   alphabets; a rune only ever maps to the other four runes **in its own
   column-group**.
 
-## Group composition (candidate default)
+## The layout constraint (naive order is REFUTED)
 
-Filling the grid in **Gematria Primus order, row-major**, with the last 4 runes
-fixed (this is the *default guess*, not established — see "open"):
+A doublet needs `p[i-1] = g(p[i]) = below(p[i])`, so the plaintext bigram is
+**(below(x), x)**: the doublet rate is the sum of the bigram probabilities of
+every **vertically-adjacent column pair**. Low doublets therefore demand that
+**column-neighbors be rare bigrams** — common runeglish pairs must not sit
+above/below each other.
+
+The **naive Gematria-order grid FAILS this**: measured on real runeglish
+bigrams it gives a doublet rate of **0.0319 ≈ chance (0.0345)**, not the
+observed 0.0063 (random grids: mean 0.034; an *arranged* grid can reach 0.000).
+So the layout is neither the natural order nor arbitrary — it is a **deliberate
+low-diagonal arrangement**, and a *plain* keyword fill would also fail (it would
+be ~chance too). The keyword-search must therefore keep only low-diagonal fills;
+the low-doublet constraint alone does not uniquely pin the grid (many
+low-diagonal arrangements exist).
+
+In the stay-slot reading the grid *advance* is driven to ~0 and the observed
+0.0063 comes from the hold (`plaintext-doublet/5 ≈ 0.0069`); in the order-5-g
+reading the grid is tuned to 0.0063 directly. Either way the columns avoid
+common bigrams.
+
+## Group composition (illustrative only — this grid gives CHANCE doublets)
+
+The Gematria Primus order, row-major, last 4 fixed — shown only to make the
+construction concrete. **It is refuted as the actual grid** (doublet rate 0.032,
+see above); the real grid is a low-diagonal arrangement, unknown.
 
 ```
 grid (row-major):
@@ -100,8 +123,10 @@ the five 5-cycles (columns):
 
 A concrete, non-arithmetic, Cicada-idiomatic construction for the order-5 step:
 25 runes in a 5×5 grid, columns rotated into five 5-cycles, 4 leftover fixed.
-It matches every structural constraint (order-5 richness, 29=25+4, no
-decimation) and — most importantly — makes `g`'s key **keyword-sized**, turning
-the hopeless 29!-permutation search into a plausibly-enumerable one. The
-construction family is well-motivated; the specific arrangement is unknown and
-is exactly what a crack would recover.
+It matches the structural constraints (order-5 richness, 29=25+4, no
+decimation). The hoped-for payoff — a keyword-sized key — is **weaker than
+first stated**: the low-doublet requirement forces a *deliberate low-diagonal*
+layout (the naive Gematria grid gives chance doublets, measured 0.032), so a
+plain keyword fill won't do, and the low-doublet constraint alone doesn't
+uniquely pin the grid. The construction family is well-motivated; the specific
+low-diagonal arrangement is unknown and is what a crack would recover.
