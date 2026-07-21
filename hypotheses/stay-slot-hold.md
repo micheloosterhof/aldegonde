@@ -52,9 +52,20 @@ adjacent step controlled.
 
 ## Evidence for
 
-- **The number matches, parameter-free.** Real runeglish plaintext (128k words,
-  prose) has within-word doublet rate 0.0346, so `(1/5)·0.0346 = 0.0069` — LP
-  observed 0.0063 (within ~10%), with no tuned diagonal.
+- **The number matches, parameter-free.** The real runeglish bigram corpus
+  (mortlach, 6.7e9 bigrams) has a plaintext doublet rate of **0.0323** (its
+  diagonal / total), so `(1/5)·0.0323 = 0.0065` — LP observed **0.0063**,
+  within 3%, with no tuned diagonal. (An earlier prose proxy gave 0.0346 →
+  0.0069; the corpus figure is tighter.) `experiments/advance_doublet_floor.py`.
+- **A doublet-free advance provably exists — so the doublets can't come from it.**
+  Minimizing the advance diagonal (an assignment problem over permutations) hits
+  **0.0013** unconstrained, and **~0.0023** even when constrained to the
+  model's cycle types (five 5-cycles for order-5, seven 4-cycles for order-4).
+  All far below observed 0.0063, so the advance can carry ~zero doublets and the
+  hold is left as the source. Two constructions give the doublet-free advance:
+  routing the diagonal through rare bigrams (floors at 0.0013 because this
+  corpus has no truly-forbidden bigrams), or a size-mismatched disk (in/out
+  rings that can't collide) for a *structural* exact zero.
 - **Boundary-blindness is derived, not tuned.** Plaintext doublet rate is nearly
   the same within words (0.0346) and across word boundaries (0.0327) — both
   ~chance — so `plaintext/5` is nearly equal at both, giving within ≈ seam for
@@ -69,12 +80,14 @@ adjacent step controlled.
 
 ## Evidence against / open
 
-- **Magnitudes run slightly high.** Sim d1w ~0.008 vs LP 0.0063; sim seam
-  ~0.013 vs LP 0.0079. The pure-hold floor is `(1/5)·0.0346 = 0.0069`, and LP
-  within (0.0063) is marginally *below* it — since the advance can only add,
-  matching 0.0063 needs the real LP plaintext doublet rate a touch below chance
-  (real English doublets are ~2-3%, below chance; the proxy came out at chance,
-  possibly a digraph-merge artifact) or the hold slightly off a clean 1/5.
+- **Magnitudes run slightly high in simulation.** Sim d1w ~0.008 vs LP 0.0063;
+  sim seam ~0.013 vs LP 0.0079. The pure-hold floor from the real bigram corpus
+  is `(1/5)·0.0323 = 0.0065`, and LP within (0.0063) sits just *below* it —
+  a near-exact match (the earlier 0.0346 proxy overstated the gap). Since the
+  advance can only add on top of the hold, hitting 0.0063 needs the LP
+  plaintext's own doublet rate at/just-below 0.0323 (plausible) or the hold a
+  hair off a clean 1/5. The simulation's overshoot is from a non-minimized
+  advance in that run, not the floor.
 - **The seam is only partly inherent here.** The within-word profile is
   cleanly hold-driven, but in the simulated walk the *seam* still passes through
   the per-word base step. LP seam (0.0079) is close to `(1/5)·plaintext-seam
@@ -82,9 +95,15 @@ adjacent step controlled.
   with a small extra contribution — not fully pinned.
 - **d2/d3/d4 exact values depend on the arbitrary powers** `g4²`,`g4³` of the
   specific advance; they land near chance but vary run to run.
-- **Not distinguished from order-5-g by the ciphertext.** "advance-4-hold-1
-  (g4⁴=id)" and "advance-5 (g⁵=id)" both give the d5 echo and pass the battery;
-  the hold version is *preferred* only because it makes the doublet inherent.
+- **Not distinguished from order-5-g by the doublet rate.** "advance-4-hold-1
+  (g4⁴=id)" and "advance-5 (g⁵=id)" both give the d5 echo and pass the battery.
+  A tested-and-**retracted** discriminator: the order-5 grid diagonal at first
+  appeared floored at ~0.02 (would have refuted the pure grid, since its diagonal
+  IS the whole doublet rate with no hold), but that was a pure-descent local
+  minimum — proper annealing drives the five-5-cycle diagonal to **0.0023**, so
+  the grid can hit 0.0063 too. The hold version is *preferred* only on parsimony:
+  it predicts 0.0063 for free (= plaintext-doublet/5), whereas the pure grid must
+  *select* a diagonal at 0.0063 out of its achievable [0.0023, 0.15] range.
 
 ## Predictions
 
@@ -97,6 +116,9 @@ adjacent step controlled.
 
 - `experiments/stay_slot_cipher.py` — V2 STAY-SLOT (order-4 advance minimized,
   1-in-5 hold) with the full battery; V1 is the order-5-g counterpart.
+- `experiments/advance_doublet_floor.py` — the assignment-problem floor for the
+  advance diagonal (0.0013 unconstrained, ~0.0023 by cycle type) and the
+  parameter-free hold prediction 0.0323/5 = 0.0065 vs LP 0.0063.
 
 ## Related
 
