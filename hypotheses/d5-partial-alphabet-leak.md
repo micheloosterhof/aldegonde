@@ -124,6 +124,36 @@ created by the cipher's period-5 phase, and the "full leak" reference for a
 same-alphabet 5-gap is ~1.60. (A random dictionary word list gives ~1.74,
 biased high by over-weighting long words.)
 
+## Position decomposition: drift disfavored, phase insufficient
+
+Decomposing every within-word pair by absolute start position and word length
+(`experiments/within_word_position_decomposition.py`, clean corpus) tests
+whether phase (d mod 5) captures all the structure:
+
+- **No within-word drift.** The d5 echo is **flat across absolute start
+  position** (i=0..i≥3: 0.043/0.049/0.053/0.059, homogeneity p=0.70) — if
+  anything rising, not decaying. Base drift would make the echo *decay* as a
+  pair starts later in the word (more accumulated drift). It doesn't. So the
+  base is **word-locked**, and the partial leak is **not** intra-word drift.
+- **No word-initial anomaly.** d1 doublet suppression is uniform across
+  position including i=0 (the pair right after the σ step), p=0.12. σ does not
+  make the first letter special.
+- **Phase is not sufficient (the load-bearing new result).** d1 and d6 are both
+  phase-1 but differ **4×**: d1 = 0.0064, d6 = 0.0245, disjoint Wilson CIs,
+  robust when restricted to the same word-length population (L≥7: d1 0.0064 vs
+  d6 0.0245) and d1 is itself flat across word length. **Pure order-5-g
+  (`g⁶=g¹`) forces d1 = d6 — contradicted.** Independently, the d2→d3→d4
+  shoulder rises monotonically (0.0347/0.0370/0.0410) toward d5, a smooth
+  *distance* gradient rather than the flat-per-phase pure period-5 predicts.
+
+Reading: period-5 sets the **envelope** (suppress at phase-1, echo at phase-0)
+but the **magnitudes follow a distance gradient** = the plaintext's own
+within-word coincidence profile leaking through partially. Since the partiality
+is neither drift (flat over position) nor a length effect (checked), it is
+**uniform** — consistent with the per-word σ step reducing the leak by a roughly
+constant factor everywhere. This is a third layer under the two clocks, and it
+disfavors the clean advance-every-letter order-5-g reading.
+
 ## Evidence against
 
 - **Partial-vs-full is underpowered — this is the load-bearing caveat.** The
@@ -168,6 +198,10 @@ biased high by over-weighting long words.)
   0.055) is documented in the script; the dictionary proxy is a cross-check.
 - `experiments/within_word_phase_profile.py` — the d1-d10 word-length
   permutation null (d5 excess p=0.001, d6 deficit p=0.016).
+- `experiments/within_word_position_decomposition.py` — coincidence by absolute
+  position and word length: d5 echo flat over position (no drift, p=0.70), d1
+  suppression uniform (p=0.12), and the d1≠d6 phase-insufficiency (0.0064 vs
+  0.0245, disjoint CIs) that contradicts pure order-5-g.
 
 ## Related
 

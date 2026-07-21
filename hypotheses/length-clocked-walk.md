@@ -101,8 +101,18 @@ newlines are line wraps (words flow across them).
 
 - **Partial-vs-full d5 leak is underpowered.** IoC 1.43 vs full-leak ~1.60;
   point estimate 72% same-alphabet, but the bootstrap CI [1.15,1.72] contains
-  full leak. So we cannot tell whether the base drifts *within* a word or `g`
-  is exactly order 5. See `d5-partial-alphabet-leak.md`.
+  full leak. Position decomposition (`within_word_position_decomposition.py`)
+  shows the echo is **flat over absolute position** (no intra-word drift), so
+  the partial leak is *not* drift — the base is word-locked and the partiality
+  is uniform (σ knocking the leak down by a constant factor). See
+  `d5-partial-alphabet-leak.md`.
+- **Phase (d mod 5) is not fully sufficient — disfavors advance-every-letter.**
+  d1 and d6 are both phase-1 but differ 4× (0.0064 vs 0.0245, disjoint CIs,
+  robust to word length). Pure order-5-g forces `g⁶=g¹` ⟹ d1=d6, so the clean
+  advance-every-letter reading is contradicted; the data want either the
+  variable-hold stay-slot form or a graded partial plaintext leak under the
+  period-5 envelope. Period-5 sets the sign (suppress/echo), a distance gradient
+  sets the magnitude.
 - **Continuous-vs-per-section walk: weak.** Page-seam doublets 0/47 favour
   "continuous" ~3.4:1; DJU-BEI's differing section-offsets argue against
   per-section reset. But only 9 section boundaries — not provable.
