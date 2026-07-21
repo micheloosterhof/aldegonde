@@ -92,6 +92,12 @@ newlines are line wraps (words flow across them).
   coincidence. So `g` and `σ` are general mixed permutations, not
   affine/multiplicative/Beaufort. (Two scan "hits", d6-m27 and d5-per-word,
   survived permutation nulls but failed split-half → overfit, not signal.)
+- **Not ciphertext-autokey.** Grouping each rune by its previous ciphertext rune
+  (lag 1, 2, 5) gives within-group IoC 1.02/1.00/1.00 — flat, not the ~1.8 that a
+  ciphertext-driven alphabet would leak (`autokey_test.py`). So the alphabet is
+  not selected by the public ciphertext; the keystream is not public. (A
+  plaintext-autokey with a hidden keystream is not excluded but gives no
+  shortcut, and a plaintext-driven hold would be a small rule, not a keystream.)
 - **No number-sequence running key.** 16 number-theoretic sequences (prime,
   totient, totient-summatory, Fibonacci, Lucas, tribonacci, triangular, square,
   cube, Möbius, divisor-sum, prime-gap, prime-count, index) × whole-text /
