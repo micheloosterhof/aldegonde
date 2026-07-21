@@ -92,6 +92,14 @@ newlines are line wraps (words flow across them).
   coincidence. So `g` and `σ` are general mixed permutations, not
   affine/multiplicative/Beaufort. (Two scan "hits", d6-m27 and d5-per-word,
   survived permutation nulls but failed split-half → overfit, not signal.)
+- **No number-sequence running key.** 16 number-theoretic sequences (prime,
+  totient, totient-summatory, Fibonacci, Lucas, tribonacci, triangular, square,
+  cube, Möbius, divisor-sum, prime-gap, prime-count, index) × whole-text /
+  per-word / per-section framings × Vigenère/Beaufort/add leave IoC flat to
+  0.001 (`number_sequence_keys.py`). A pure-shift number key is excluded; this
+  only tests *pure* shifts, so number theory can still live inside the mixed
+  `g`/`σ` construction (e.g. a prime/totient-ordered grid) or the per-word step
+  schedule — blind to ciphertext-only tests, a seed for the attack not a datum.
 - **Single permutation refuted.** Doublet suppression needs a *rich* order-5
   `g` (~25 runes moving); flatness needs a *large-order* generator; one
   permutation on 29 runes can't be both. Forces two independent generators.
