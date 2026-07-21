@@ -138,21 +138,28 @@ whether phase (d mod 5) captures all the structure:
 - **No word-initial anomaly.** d1 doublet suppression is uniform across
   position including i=0 (the pair right after the σ step), p=0.12. σ does not
   make the first letter special.
-- **Phase is not sufficient (the load-bearing new result).** d1 and d6 are both
-  phase-1 but differ **4×**: d1 = 0.0064, d6 = 0.0245, disjoint Wilson CIs,
-  robust when restricted to the same word-length population (L≥7: d1 0.0064 vs
-  d6 0.0245) and d1 is itself flat across word length. **Pure order-5-g
-  (`g⁶=g¹`) forces d1 = d6 — contradicted.** Independently, the d2→d3→d4
-  shoulder rises monotonically (0.0347/0.0370/0.0410) toward d5, a smooth
-  *distance* gradient rather than the flat-per-phase pure period-5 predicts.
-
-Reading: period-5 sets the **envelope** (suppress at phase-1, echo at phase-0)
-but the **magnitudes follow a distance gradient** = the plaintext's own
-within-word coincidence profile leaking through partially. Since the partiality
-is neither drift (flat over position) nor a length effect (checked), it is
-**uniform** — consistent with the per-word σ step reducing the leak by a roughly
-constant factor everywhere. This is a third layer under the two clocks, and it
-disfavors the clean advance-every-letter order-5-g reading.
+- **d1 ≠ d6 is real but does NOT discriminate the mechanisms.** d1 = 0.0064 and
+  d6 = 0.0245 (disjoint Wilson CIs, robust at L≥7). An earlier draft here claimed
+  this "contradicts pure order-5-g (g⁶=g¹)" — that was **wrong**. The coincidence
+  rate is `P(p[i]=g(p[i+d]))`, the g-diagonal evaluated on *distance-d skip-grams*;
+  the same g¹ relation acts on adjacent bigrams at d1 (plaintext 0.0320) but on
+  6-apart skip-grams at d6 (plaintext 0.0552), so d1 ≠ d6 is *expected*. Direct
+  simulation (`mechanism_discriminator.py`, real runeglish words) confirms **both**
+  advance-every-letter order-5-g and the stay-slot order-4+hold produce d1 ≠ d6.
+- **The damped rising shoulder is the defensible "more than period-5".** LP's
+  d2→d5 (0.0347/0.0370/0.0410/0.0492) tracks a roughly half-damped copy of the
+  plaintext's own rising within-word profile (0.0466/0.0488/0.0534/0.0565), with
+  *extra* suppression at the phase-1 distances d1 and d6. So period-5 sets the
+  **envelope** (suppress at phase-1) and a **partial plaintext leak** sets the
+  rising magnitude underneath. The partiality is neither drift (flat over
+  position) nor a length effect (checked) — it is **uniform**, consistent with
+  the per-word σ step damping the leak by a constant factor everywhere.
+- **Order-5-g vs stay-slot: not separated by the ciphertext.** In simulation the
+  d1..d6 SSE winner flips with the random g-tuning seed. Stable sub-facts only:
+  stay-slot gives d1 = plaintext-doublet/5 = 0.0064 parameter-free (v1 must
+  de-tune g's diagonal to match), while v1 brackets d6 (0.020–0.035) where v2
+  over-predicts (0.031–0.039). A parsimony lean to stay-slot on d1, a lean back
+  to order-5-g on d6 — no decision. See `mechanism_discriminator.py`.
 
 ## Evidence against
 
@@ -200,8 +207,11 @@ disfavors the clean advance-every-letter order-5-g reading.
   permutation null (d5 excess p=0.001, d6 deficit p=0.016).
 - `experiments/within_word_position_decomposition.py` — coincidence by absolute
   position and word length: d5 echo flat over position (no drift, p=0.70), d1
-  suppression uniform (p=0.12), and the d1≠d6 phase-insufficiency (0.0064 vs
-  0.0245, disjoint CIs) that contradicts pure order-5-g.
+  suppression uniform (p=0.12), and the d1≠d6 gap (0.0064 vs 0.0245).
+- `experiments/mechanism_discriminator.py` — enciphers real runeglish words with
+  order-5-g and stay-slot; shows both reproduce d1≠d6 and the d5 echo, the d1..d6
+  SSE winner is seed-unstable, and LP tracks a damped copy of the plaintext
+  shoulder. The two mechanisms are not separated by the within-word profile.
 
 ## Related
 

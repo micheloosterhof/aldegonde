@@ -106,13 +106,17 @@ newlines are line wraps (words flow across them).
   the partial leak is *not* drift — the base is word-locked and the partiality
   is uniform (σ knocking the leak down by a constant factor). See
   `d5-partial-alphabet-leak.md`.
-- **Phase (d mod 5) is not fully sufficient — disfavors advance-every-letter.**
-  d1 and d6 are both phase-1 but differ 4× (0.0064 vs 0.0245, disjoint CIs,
-  robust to word length). Pure order-5-g forces `g⁶=g¹` ⟹ d1=d6, so the clean
-  advance-every-letter reading is contradicted; the data want either the
-  variable-hold stay-slot form or a graded partial plaintext leak under the
-  period-5 envelope. Period-5 sets the sign (suppress/echo), a distance gradient
-  sets the magnitude.
+- **Order-5-g vs stay-slot: not separable by the ciphertext.** Direct simulation
+  on real runeglish words (`mechanism_discriminator.py`) shows *both* reproduce
+  the d5 echo and d1≠d6, and the d1..d6 fit winner flips with the g-tuning seed.
+  (d1≠d6 does NOT favour stay-slot — an earlier note claimed pure order-5-g
+  forces d1=d6; wrong, since the g-diagonal acts on distance-6 skip-grams at d6,
+  not adjacent bigrams.) Stable leans only: stay-slot gives d1=plaintext-doublet/5
+  parameter-free; order-5-g brackets d6 better. What's real beyond period-5 is the
+  **damped rising shoulder** — LP's d2→d5 tracks a half-damped copy of the
+  plaintext's own within-word profile with extra phase-1 suppression, i.e. a
+  partial plaintext leak under the period-5 envelope. See
+  `d5-partial-alphabet-leak.md`.
 - **Continuous-vs-per-section walk: weak.** Page-seam doublets 0/47 favour
   "continuous" ~3.4:1; DJU-BEI's differing section-offsets argue against
   per-section reset. But only 9 section boundaries — not provable.
