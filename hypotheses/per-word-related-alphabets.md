@@ -19,8 +19,11 @@ survives). See `experiments/phase_absorbing_walk.py`.
 
 ## Status
 
-**Status**: plausible (candidate mechanism; reproduces every *hard* statistical
-observable in simulation, not yet inverted on real ciphertext)
+**Status**: plausible — superseded by `length-clocked-walk.md`, which
+replaces this file's free per-word base with a deterministic length-clocked
+walk and is the current statement of the model; read that file first.
+(Candidate mechanism; reproduces every *hard* statistical observable in
+simulation, not yet inverted on real ciphertext.)
 
 First model in the investigation to jointly reproduce all hard observables —
 including the two that killed earlier versions: **cross-word (seam) doublet
@@ -226,13 +229,16 @@ cipher's `g`; the real `g` is a mixed order-5 permutation.
   mechanism; this recasts the trigger as a feedback-free bigram-class relation.
 - `autokey-plus-substitution.md`, `affine-autokey.md`, the quagmire notes —
   neighbouring polyalphabetic families.
-- `rune-s-lag5-echo.md` — the S-at-d5 finding, now judged an n=11 artifact rather
-  than a mechanism feature (the echo value is `base_word`-dependent, so no rune
-  should dominate structurally).
+- `rune-s-lag5-echo.md` — the S-at-d5 finding (11 vs 1.75, Bonferroni-clean,
+  p=2.4e-6) is UNEXPLAINED by this model: the echo value is
+  `base_word`-dependent, so no rune should dominate structurally. Either the
+  S-dominance is an n=11 fluke or it is evidence against a value-randomizing
+  per-word base. Unresolved — see that file; do not treat it as retired.
 
 ## Verdict
 
-Strongest candidate mechanism to date. A per-word cipher of 5 mixed alphabets
+Predecessor of the current candidate model (`length-clocked-walk.md`
+supersedes this file). A per-word cipher of 5 mixed alphabets
 related by a fixed bigram-dodging step permutation reproduces the complete
 observed fingerprint — flat unigrams and columns, the lag-5 echo, the empty
 d2-4, and an inherent, boundary-blind doublet suppression — from one structure,

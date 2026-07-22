@@ -8,7 +8,8 @@ second, third, etc.
 
 ## Status
 
-**Status**: disproved
+**Status**: disproved (additive variants; the mixed-alphabet member of
+this family is the live `length-clocked-walk.md` model)
 
 ## Mechanism
 
@@ -54,5 +55,10 @@ C = P + S[position-in-word] on Markov runeglish with the real LP word-length
 sequence gives nIoC 1.12-1.14 (only ~12 effective alphabets; observed corpus
 nIoC is exactly 1.000, many sigma apart at 13k runes) and doublet rate
 3.3-3.7% vs the observed 0.66%. The same doublet argument as in
-`word-level-autokey.md` applies: any key determined by word structure alone
-is fixed before emission and cannot suppress ciphertext doublets.
+`word-level-autokey.md` applies to ADDITIVE keys: a shift determined by
+word structure alone is fixed before emission and cannot suppress
+ciphertext doublets. General mixed alphabets indexed by position-in-word
+evade both the nIoC and the doublet argument when the adjacent-alphabet
+relation is tuned to rare plaintext bigrams — that surviving member of
+this family is developed as `length-clocked-walk.md` /
+`per-word-related-alphabets.md` and is tracked there, not here.

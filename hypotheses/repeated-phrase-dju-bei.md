@@ -7,7 +7,12 @@ The unsolved ciphertext contains a repeated 7-rune sequence **ᛞᛄᚢᛒᛖᛁ
 (distance 6395), with **identical word boundaries** in both occurrences
 (ᛞᛄᚢ-ᛒᛖᛁ-ᚫ…, word-initial both times). Under a doublet-corrected random
 model this has p < 0.001. A second, weaker boundary-consistent repeat
-**ᛁ-ᛗᛝᚣᚪ** occurs at offsets 10671/12764 (distance 2093).
+**ᛁ-ᛗᛝᚣᚪ** occurs at offsets 10671/12764 (distance 2093). The second
+repeat is NOT individually significant: the corpus has 5 repeated
+length-5 classes vs ~4.1 expected by chance
+(`collision-hunt-single-constraint.md`), so only its boundary-consistent
+configuration is suggestive (count-level P = 0.075); treat it as a
+candidate, not an established second state-return.
 
 This proves the cipher's **key state recurs exactly**, and that the
 recurrence is **word-aligned**. The encryption is a deterministic function
@@ -154,8 +159,9 @@ constraint set further (`experiments/deep_scan.py`,
 
 ## Verdict
 
-Confirmed characterization. The ciphertext contains one (probably two)
-word-aligned exact repeats that random chance cannot reasonably explain.
+Confirmed characterization. The ciphertext contains one word-aligned exact
+repeat that random chance cannot reasonably explain (plus a second,
+boundary-consistent candidate that does not clear chance on its own).
 The cipher's key state recurs, recurrences are word-aligned, and the depth
 dies within one rune of the phrase end. Hypotheses that make identical
 ciphertext for identical plaintext impossible (position-unique running

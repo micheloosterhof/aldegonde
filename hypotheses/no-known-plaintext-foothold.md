@@ -1,5 +1,11 @@
 # No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section
 
+## Status
+
+**Status**: confirmed (characterization) for the no-known-plaintext claim
+itself. The "Consequences for the attack" section is conditional on the
+length-clocked-walk model, which is plausible, not confirmed.
+
 ## Claim
 
 The attack on sections 0-9 must be **blind (ciphertext-only)**. There is no
@@ -33,6 +39,7 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
 
 ## Related
 
-- `length-clocked-walk.md` — the model and its key.
+- `length-clocked-walk.md` — the candidate model and its key (plausible,
+  not confirmed).
 - `repeated-phrase-dju-bei.md` — the one known state-return constraint.
 - `experiments/length_clocked_cipher.py` — encrypt/decrypt + round-trip.

@@ -22,15 +22,18 @@ A generator produces key material in rounds of five. Two consequences:
    occasionally carried over or reused between consecutive rounds, lag-5
    ciphertext matches cluster at unit edges. Match pairs then occur as
    either both edges of one unit — text separation 4 — or the two positions
-   flanking a boundary — text separation 1. This reproduces the observed
-   selective d=1/d=4 structure (`lag5-digraph-structure.md`) with roughly
-   equal counts (observed 29 vs 28), and predicts occasional (1,4)/(4,1)
-   gap chains, which are present (3+ observed vs <1 expected).
+   flanking a boundary — text separation 1. This was hypothesized to
+   reproduce the observed selective d=1/d=4 structure
+   (`lag5-digraph-structure.md`), but the simulator grid FAILED to
+   reproduce the selectivity (see Simulator results below), and the
+   "(1,4)/(4,1) gap chains" once cited as support are at chance under the
+   cluster decomposition in `lag5-digraph-structure.md`.
 
-This is the only mechanism shape found so far that produces all three
+This was the only mechanism shape found that would have produced all three
 appearances of the constant 5 — doublet acceptance 1/5, lag-5 edge
 coupling, and the 5-position dead time after doublets — from a single
-design element.
+design element; the co-tiling test killed that unified version (see
+Verdict).
 
 ## Evidence for
 
@@ -43,7 +46,10 @@ design element.
   excess, matching the two edge-pair geometries.
 - Cooldown likelihood fit: doublet gaps prefer "5-position dead time +
   memoryless" over pure memoryless by a likelihood ratio of ~18 (and the
-  minimum observed gap is 6).
+  minimum observed gap is 6). Read this as weak: the later placement
+  analysis (`stay-slot-hold.md`, `experiments/doublet_placement.py`) finds
+  the min-gap-6 itself not significant — random placement on the eligible
+  positions gives zero close gaps 22% of the time.
 - Gap-5 deficit: strictly periodic boundaries predict ~3.1 doublet pairs at
   gap exactly 5 (consecutive boundaries both colliding); observed 0
   (p ~= 0.045) — consistent with a boundary interaction (e.g. a round

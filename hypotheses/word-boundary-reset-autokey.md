@@ -17,9 +17,14 @@ the previous word's last ciphertext rune, or determined by some other rule).
 
 ## Evidence for
 
-- Cross-boundary doublets are extra-suppressed: 27 observed vs ~116 expected
-  if doublets were uniformly distributed. This could indicate different autokey
-  behavior at word boundaries.
+- ~~Cross-boundary doublets are extra-suppressed~~ — corrected: the old
+  "27 vs ~116 expected" compared against the 3.45% chance rate, which just
+  restates the GLOBAL suppression at boundary positions. Cross-word
+  doublets (23 of the clean corpus's 86) are proportional to opportunity,
+  and the seam rate (0.0079) is if anything slightly above the within-word
+  rate (0.0063, z=+0.87). The suppression is boundary-blind; there is no
+  special word-boundary behavior. See `doublet-marker-rune-ea.md` and
+  `length-clocked-walk.md`.
 - Word boundaries are clearly preserved, so the cipher is word-aware
 
 ## Evidence against

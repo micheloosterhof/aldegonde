@@ -134,6 +134,11 @@ it is disproportionately "S repeats at 5, inside a word."
 
 - `within-word-d5-coincidence.md` — the excess this refines; the excess is
   S-dominated, not rune-agnostic.
+- `per-word-related-alphabets.md` / `length-clocked-walk.md` — under those
+  models the echo value is base-dependent, so no rune should dominate;
+  this finding is therefore either an n=11 fluke or evidence against a
+  value-randomizing per-word base. The tension is open in both directions
+  and neither file resolves it.
 - `lag5-digraph-structure.md`, `lag5-back-reference.md`,
   `docs/lag5-phenomenon.md` — the lag-5 structure and the copy-event reading;
   the S-dominance is a new constraint on any proposed copy mechanism.

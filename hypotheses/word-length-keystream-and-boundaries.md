@@ -24,10 +24,14 @@ from 1/29 toward the plaintext IoC (~0.06+).
 | (pos, wlen, prev, next) | 0.03473 | +0.31 |
 | (pos, wlen, prev, prev2) | 0.03408 | -0.52 |
 
-**Status: disproved.** Every bucketing stays exactly at 1/29. The keystream
-is not any function of the word-length lattice. (Consistent with the
-word-transform census and the J battery: the key varies at rune
-granularity and ignores word metadata.)
+**Status: disproved (for LOCAL length-context keys).** Every bucketing
+stays exactly at 1/29: the keystream is not a function of the local
+word-length context (own length, position-in-word, neighbour lengths).
+A schedule driven by the FULL length prefix — e.g. the running product of
+`length-clocked-walk.md`, where the base depends on every preceding word
+length — changes key at every word and is invisible to this bucketing, so
+it is NOT excluded here. (Consistent with the word-transform census and
+the J battery: the key varies at rune granularity.)
 
 ## B. Boundary authenticity — unresolved (a real but inconclusive tension)
 

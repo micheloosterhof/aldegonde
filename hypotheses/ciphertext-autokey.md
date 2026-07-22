@@ -77,8 +77,10 @@ It does not.
 - `beaufort-autokey-ea.md` — Specific variant with 1-based indexing. Also
   disproved by the same evidence.
 - `plaintext-autokey.md` — Plaintext feedback variant, separately disproved.
-- `multi-layer-autokey.md` — Multiple autokey passes, needs re-evaluation.
-- `autokey-with-keyword.md` — Autokey + keyword, needs re-evaluation.
+- `multi-layer-autokey.md` — Multiple autokey passes; disproved
+  (peel-and-split test plus doublet-rate arithmetic).
+- `autokey-with-keyword.md` — Autokey + keyword; disproved by the
+  (C[i-1], i mod L) split for all L up to 29.
 
 ## Verdict
 

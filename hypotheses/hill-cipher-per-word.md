@@ -8,7 +8,8 @@ produce the ciphertext runes.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved (fixed matrices; per-word varying matrices are
+outside this claim)
 
 ## Mechanism
 
@@ -51,9 +52,19 @@ plaintext.
 
 None yet.
 
+## Related
+
+- `word-transform-census.md` — the identity-class census that excludes
+  fixed per-word transforms, including fixed Hill matrices.
+
 ## Verdict
 
-Unresolved. The uniform distribution of single-rune words is a significant
-concern — it suggests the cipher at the single-rune level is not a fixed
-monoalphabetic map. The Hill cipher hypothesis may need modification
-(e.g., word-position-dependent matrices).
+Disproved for the stated claim (fixed matrices, one per word length): a
+fixed M_k maps repeated plaintext words of the same length to identical
+ciphertext words, so the plaintext's ~8,000 repeated word pairs would
+surface as identical cipher-word pairs. The identity class sits at the
+random baseline and there are zero repeated cipher words of length >= 4
+(`word-transform-census.md`, `cryptodiagnostics-page0-58.md`). The
+uniformly distributed single-rune words (M_1 is monoalphabetic) and the
+missing doublet-suppression mechanism fail independently. Per-word VARYING
+matrices are a different hypothesis, not covered by the census.

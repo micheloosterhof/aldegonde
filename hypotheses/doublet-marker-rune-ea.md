@@ -108,8 +108,8 @@ argues against word-boundary-reset autokey (see `word-boundary-reset-autokey.md`
 - `beaufort-autokey-ea.md` — EA identity under ciphertext autokey (disproved as
   a full mechanism; this note salvages the mechanism-independent EA constraint).
 - `ciphertext-autokey.md` — general ciphertext autokey, same disproof.
-- `autokey-plus-inner-layer.md` / `autokey-plus-substitution.md` — live
-  mechanisms that could carry the EA marker.
+- `autokey-plus-substitution.md` — a live mechanism that could carry the
+  EA marker.
 - `position-within-word.md`, `word-boundary-reset-autokey.md` — word-structure
   hypotheses tested here.
 

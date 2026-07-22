@@ -17,8 +17,10 @@ word-boundary-aware.
 
 The observation itself is verified at p ≈ 0.001 under a permutation null
 (≈ 0.006 after correcting for the distance scan that found it). It is an
-anomaly characterization, not a cipher mechanism; no proposed mechanism yet
-explains it together with the doublet suppression.
+anomaly characterization, not a cipher mechanism. The length-clocked-walk
+family (`length-clocked-walk.md`, `d5-partial-alphabet-leak.md`) now
+reproduces it together with the doublet suppression as a period-5
+same-alphabet leak — plausible, not confirmed by decryption.
 
 ## What was measured
 

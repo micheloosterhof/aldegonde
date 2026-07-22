@@ -98,7 +98,10 @@ single-bit-flip nudge.
 
 The original keystream-constraint formulation is disproved by direct
 calculation and simulation. The corrected formulation — additive stream with
-probabilistic ciphertext-doublet avoidance — is the only mechanism family
-tested so far that matches the base fingerprint (flatness, doublet rate,
-triplets), but it does not yet explain the lag-5 paired-match structure and
-offers no specific keystream construction to attack.
+probabilistic ciphertext-doublet avoidance — was the first mechanism family
+tested that matches the base fingerprint (flatness, doublet rate,
+triplets); the five-block machinery, the back-reference model, and the
+length-clocked-walk family have since matched it too (see
+`five-block-boundary.md`, `lag5-back-reference.md`,
+`length-clocked-walk.md`). It does not explain the lag-5 paired-match
+structure and offers no specific keystream construction to attack.

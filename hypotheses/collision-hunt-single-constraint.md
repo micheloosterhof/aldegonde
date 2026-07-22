@@ -1,5 +1,11 @@
 # The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved
 
+## Status
+
+**Status**: confirmed (characterization) for the repeat census itself. The
+`(g, σ)` framing and the attack consequences are conditional on the
+length-clocked-walk model, which is plausible, not confirmed.
+
 ## Claim
 
 A systematic hunt for repeated ciphertext structures in sections 0-9 finds
@@ -16,7 +22,10 @@ cipher destroyed cross-word alphabet correlations almost completely.
   1477 phase 0 and word 2926 phase 0, both word-initial. Chance expectation at
   length 6 is 0.14, so it is genuine. It gives `base_1477 = base_2926`:
   σ-count 1449, Σ(L−1) mod 5 = 1 over the interval (product of steps = identity).
-- Length-5 repeats: 5 classes, versus ~4.1 expected by chance — noise.
+- Length-5 repeats: 5 classes, versus ~4.1 expected by chance — noise as a
+  count. One of the five (ᛁ-ᛗᛝᚣᚪ) is boundary-consistent and word-aligned
+  (`repeated-phrase-dju-bei.md`, count-level P = 0.075) — suggestive, but
+  not significant enough to admit as a second wiring constraint.
 - Identical ciphertext words (len ≥ 3) recurring: 15, versus ~11 expected among
   726 three-rune words — noise, and 3 runes is too short to tell genuine from
   chance or to yield a usable constraint.
@@ -50,4 +59,5 @@ to recover them and 0-9 is unbreakable by these methods.
 
 - `repeated-phrase-dju-bei.md` — the one constraint, in detail.
 - `no-known-plaintext-foothold.md` — no KP shortcut either.
-- `length-clocked-walk.md` — the model and key `(base_0, g, σ)`.
+- `length-clocked-walk.md` — the candidate model and key `(base_0, g, σ)`
+  (plausible, not confirmed).
