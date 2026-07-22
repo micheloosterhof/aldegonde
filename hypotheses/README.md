@@ -30,11 +30,16 @@ the *first* 2,797 runes; `page0-58.txt` is the remainder (rune offset 2,797
 onward). See `cryptodiagnostics-page0-58.md`.
 
 In the transcription files, delimiters are: `-` = word boundary, `.` = sentence
-boundary, `%` = line break within a page, `&` = page break, `$` = section
+boundary, `%` = page break, `&` = chapter/segment break, `$` = section
 break (red rune divider). `/` and newlines are line wraps, **not** word
 boundaries — words span them (verified in the readable sections:
-`ᛋᚪᚳ/ᚱᛖᛞ` = SAC/RED). Tokenizing correctly gives 2,973 words, mean length
-4.42; the previously documented 3,367 counted line-wrap fragments.
+`ᛋᚪᚳ/ᚱᛖᛞ` = SAC/RED). Tokenizing correctly gives 2,973 words in the full
+file (2,928 in the clean sections 0-9), mean length 4.42; the previously
+documented 3,367 counted line-wrap fragments. (Note that words also span
+`%` page breaks — 46 of the 57 are mid-word — so the standard `- . % & $`
+tokenization slightly over-splits; see the convention check in
+`word-length-keystream-and-boundaries.md`. The difference is ~50 words and
+does not move any reported statistic materially.)
 
 The early pages of the master transcription are already solved. You can
 recognize them because they decode to readable runeglish (e.g.
@@ -56,18 +61,18 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Doublet rate | 0.66% | 3.45% (1/29) | Fits (1/5)x(1/29) with no free parameters (z=-0.36): acceptance probability exactly 1/5, realized memorylessly (no positional mod-5 frame) |
 | Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |
 | Kappa skip >= 2 | Normal | Normal | Only skip=1 is anomalous |
-| Digraphic kappa skip=5 | 29 | 15.4 | Part of a confirmed paired-match structure: lag-5 matches pair up at separations 1 and 4 (joint z=+4.1, global p~=0.01, split-half stable) and the matches are word-boundary-aware (9 of 29 d1 events are in-word `XY···XY` repeats). See `lag5-digraph-structure.md` |
+| Digraphic kappa skip=5 | 29 | 15.4 | Part of a confirmed paired-match structure: lag-5 matches pair up at separations 1 and 4 (joint z=+4.1, split-half stable; global p~=0.01 with the hand-picked pattern family, p~=0.033 under the family-blind re-assessment) and the matches are word-boundary-aware (9 of 29 d1 events are in-word `XY···XY` repeats). See `lag5-digraph-structure.md` |
 | Bigram IOC | 1.0256 (normalized) | 1.0251 (doublet-suppressed null) | The +8 sigma elevation vs plain uniform is fully explained by doublet suppression |
 | N-gram repeat counts | Match doublet-suppressed null | — | Apparent trigram-repeat deficit vs uniform null is an artifact |
 | Page-aligned kappa | ratio 1.002 (z=+0.2) | 1.0 | No shared keystream resetting at page/section boundaries |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
-| Word boundaries | Preserved | — | Convention: a line break is NOT a word break (words wrap across lines); merged, the cipher has 2,953 words, mean 4.42 runes, English-like shape (solved pages: 4.01, Parable: 4.75 — within the author's stylistic range). Sentences run much longer than solved pages (17.3 vs 8.0 words, p=7e-6) |
+| Word boundaries | Preserved | — | Convention: a line break is NOT a word break (words wrap across lines); merged, the clean corpus has 2,928 words (2,953 with the solved AN END page included), mean 4.42 runes, English-like shape (solved pages: 4.01, Parable: 4.75 — within the author's stylistic range). Sentences run much longer than solved pages (17.3 vs 8.0 words, p=7e-6) |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 | Repeated 7-gram ᛞᛄᚢᛒᛖᛁᚫ | 1 (word-aligned) | 0.005 | 6,395 runes apart (= 5 x 1279, both prime); key-state recurrence; see `repeated-phrase-dju-bei.md` |
 | Word transform pairs (shift/beaufort/affine/reversal/rotation/anagram) | At chance | — | Excludes ALL per-word constant-transform ciphers; see `word-transform-census.md` |
 | Running-key depth (difference-IOC, all lags) | None (= doublet-suppressed surrogate) | spike to nIoC~1.05 at key period | Excludes all repeating/self-referential keys; see `running-key-text.md` |
-| Word-length-context keystream | At chance (1/29) | — | Key is not a function of word-length metadata; see `word-length-keystream-and-boundaries.md` |
+| Word-length-context keystream | At chance (1/29) | — | Key is not a function of LOCAL word-length context (own length, position, neighbour lengths). Whole-prefix schedules clocked by the length sequence (e.g. `length-clocked-walk.md`) are invisible to this bucketing test and are NOT excluded; see `word-length-keystream-and-boundaries.md` |
 | Word-length sequence autocorrelation | ~0 (flat, high power) | English: ±0.06-0.09 (register-dependent) | Flatter than solved pages (~2σ) — possible synthetic boundaries, unresolved |
 | Sentence-final word lengths | = random words (z=-1.2) | English: strongly elevated (solved: z=+7.1) | **'.' marks do not mark English sentence ends** (contrast z=+5.9); see `word-length-keystream-and-boundaries.md` |
 | Within-word d=5 coincidences | 4.92% (102/2073); 9 `XY···XY` repeats | 3.45%; 1.5 repeats | Permutation-verified p~0.001; cross-word d=5 count at chance; reconciled with the lag-5 pairing: paired AND isolated matches are both word-boundary-aware (p=0.014 / 0.018), one word-aware phenomenon; see `within-word-d5-coincidence.md`, `experiments/lag5_word_boundary.py` |
@@ -101,37 +106,57 @@ loophole; marker-reset keying flat; numeric autocorrelation flat (lag-1
 r = -0.0297 is quantitatively the doublet artifact); DFT spectrum has no
 lines; per-rune positions uniform; sliding-window nIoC homogeneous
 (retiring KRAKUP's nonhomogeneity hint); cross-section distributions
-identical. The corpus has exactly two statistical departures from
-randomness: doublet suppression and the lag-5 pairing.
+identical. At the rune-stream level the corpus has exactly two broad
+statistical departures from randomness: doublet suppression and the lag-5
+structure — plus one isolated event, the DJU-BEI state return
+(`repeated-phrase-dju-bei.md`). Metadata-level anomalies are separate: the
+`.` marks do not carry English sentence semantics (z=+5.9 contrast) and
+the word-length autocorrelation is suspiciously flat (~2 sigma), see
+`word-length-keystream-and-boundaries.md`.
 
 ## Structural constraints
 
 Two consequences of the table that prune whole mechanism families
 (derivations and simulations in `experiments/mechanism_fingerprint.py`):
 
-1. **Doublet suppression requires output feedback.** A ciphertext doublet
-   needs dP = -dK; constraining only the keystream (e.g. K[i] != K[i+1])
-   leaves the rate at ~3.46%. Any key schedule fixed before a rune is
-   emitted — running keys, math sequences, word-level keys,
+1. **Doublet suppression requires output feedback OR a bigram-tuned
+   alphabet relation.** For ADDITIVE ciphers a ciphertext doublet needs
+   dP = -dK; constraining only the keystream (e.g. K[i] != K[i+1]) leaves
+   the rate at ~3.46%, so any additive key schedule fixed before a rune is
+   emitted — running keys, math sequences, additive word-level or
    position-within-word keys, fractionation — cannot produce the observed
-   0.66%. The encryptor must see the previous ciphertext rune (or
-   equivalently select keys plaintext-aware) and avoid doublets ~80% of the
-   time.
-2. **The lag-5 paired-match structure remains unexplained by any tested
-   per-rune mechanism** (autokey families, running keys, bifid p5/p7/p10,
+   0.66%. Under that cipher class the encryptor must see the previous
+   ciphertext rune and avoid doublets ~80% of the time. There is exactly
+   one known feedback-free escape: general MIXED substitution alphabets
+   whose adjacent-alphabet relation is tuned to rare plaintext bigrams
+   (`c[i]=c[i-1] <=> p[i-1]=g(p[i])`, achievable range 0.13%-15%), or
+   equivalently a period-5 hold exposing 1/5 of plaintext doublets — the
+   mechanism of `length-clocked-walk.md` / `stay-slot-hold.md` /
+   `per-word-related-alphabets.md`. Affine relations cannot get below
+   1.25%, so the escape requires non-arithmetic mixed permutations.
+2. **The lag-5 structure has two faces with two rival readings, neither
+   confirmed.** The WITHIN-WORD d5 coincidence excess (the echo) is
+   reproduced by the period-5 same-alphabet leak of the length-clocked
+   walk family (`length-clocked-walk.md`, `d5-partial-alphabet-leak.md`):
+   positions 5 apart in a word share an alphabet and plaintext
+   coincidences show through. The PAIRED {1,4} match events
+   (`lag5-digraph-structure.md`) remain unexplained by any tested
+   per-rune mechanism (autokey families, running keys, bifid p5/p7/p10,
    lag-5-tapped lagged-Fibonacci keystreams, output-avoidance streams,
-   Hill variants, group-edge carryover). Information theory narrows the
-   options for the deterministic copies to: inserted nulls, key+plaintext
+   Hill variants, group-edge carryover); information theory narrows the
+   options for deterministic copies to: inserted nulls, key+plaintext
    coincidence (rate-disfavored), plaintext-repeat back-references, or
    author-side composition artifacts. None of these is currently
    distinguishable from the others by ciphertext statistics — see the
    degrees-of-freedom audit in `lag5-back-reference.md` before treating
-   any simulation "match" as confirmation. Additional constraint (July
-   2026): the lag-5 matches are word-boundary-aware — both the paired and
-   the isolated matches sit inside words above the boundary-permutation
-   null (`experiments/lag5_word_boundary.py`) — so the mechanism sees the
-   word structure, favoring word-scoped state over purely positional
-   copy semantics.
+   any simulation "match" as confirmation. The two faces overlap in the
+   nine in-word `XY···XY` repeats and are reconciled as ONE word-aware
+   phenomenon in `within-word-d5-coincidence.md`. Additional constraint
+   (July 2026): the lag-5 matches are word-boundary-aware — both the
+   paired and the isolated matches sit inside words above the
+   boundary-permutation null (`experiments/lag5_word_boundary.py`) — so
+   the mechanism sees the word structure, favoring word-scoped state over
+   purely positional copy semantics.
 
 ## Status values
 
@@ -140,7 +165,7 @@ Two consequences of the table that prune whole mechanism families
 | `disproved` | Contradicted by the observed statistical properties. Cannot be the cipher. |
 | `unresolved` | Not yet contradicted, but no strong positive evidence either. Needs testing. |
 | `plausible` | Consistent with the statistics, with some positive evidence. Not yet confirmed. |
-| `confirmed` | Proven correct (none so far). |
+| `confirmed` | Proven correct. No CIPHER hypothesis is confirmed; characterization files (measured statistical properties, not cipher proposals) use `confirmed (characterization)`. |
 
 ## Directory structure
 
