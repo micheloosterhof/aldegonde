@@ -18,7 +18,9 @@ out the math-series-positional class outright.
 ## What was measured
 
 Doublet = position i where C[i] == C[i+1]. 89 doublets in 13,136 runes,
-rate 0.00678, mean spacing 147.6.
+rate 0.00678, mean spacing 147.6. (Measured pre-decontamination: 3 of the
+89 come from the solved/plaintext sections; the clean corpus has 86 in
+12,956 runes. The three extra points do not move any conclusion below.)
 
 **Gap distribution** (88 gaps): min 6, max 712, mean 147.1, median 109,
 std 141.5.

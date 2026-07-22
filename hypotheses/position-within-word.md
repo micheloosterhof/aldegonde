@@ -28,7 +28,7 @@ test.
 - Defeats the split test (the effective key varies by position within word)
 - Word boundaries are preserved
 - Could explain why the within-word split test shows random IOC
-- Average word length is 3.9 runes, so position-in-word has small range
+- Average word length is 4.42 runes, so position-in-word has small range
 
 ## Evidence against
 

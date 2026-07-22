@@ -34,7 +34,7 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
 ```
 
 - Both occurrences of ᛞᛄᚢ and ᛒᛖᛁ are full words (3+3 runes), word-initial
-  in both places (word indices 1477/2926 of 2953).
+  in both places (word indices 1477/2926 of the 2,928 clean-corpus words).
 - The second occurrence is the **final two words of its section**, ending
   with a sentence stop. The 7th matching rune ᚫ is then the *first rune of
   the next section* — if sections are independent units this last rune is a
@@ -74,7 +74,9 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
 
 ## Negative results that bound the mechanism
 
-All measured on the 13,041-rune cipher stream (parable excluded):
+All measured on the 13,041-rune cipher stream (parable excluded; this
+stream still includes the solved 85-rune AN END section — the clean
+corpus is 12,956 runes):
 
 | probe | result |
 |-------|--------|

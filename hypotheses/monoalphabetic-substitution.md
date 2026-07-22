@@ -28,7 +28,8 @@ alphabet.
   frequencies. English (even in runeglish encoding) has non-uniform letter
   frequencies, but the ciphertext is perfectly uniform. A monoalphabetic cipher
   cannot flatten the distribution.
-- **Single-letter words**: There are 324 single-letter words distributed nearly
+- **Single-letter words**: There are ~100 single-rune words (99 in the clean
+  corpus under the corrected tokenization) distributed nearly
   uniformly across all 29 runes. In English, single-letter words are almost
   exclusively "a" and "I". A monoalphabetic cipher would map these to at most 2
   rune values, not 29.

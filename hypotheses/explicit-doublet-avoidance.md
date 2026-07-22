@@ -29,7 +29,8 @@ underlying cipher.
   would produce a different spacing distribution: the minimum spacing would be
   anomalous (no closely-spaced doublets), and the distribution would deviate
   from geometric.
-- **Doublets are natural**: The 89 observed doublets behave as if they arise
+- **Doublets are natural**: The observed doublets (86 in the clean corpus)
+  behave as if they arise
   naturally from the cipher mechanism, not as residual errors that slipped
   through a filter.
 

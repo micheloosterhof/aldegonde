@@ -32,7 +32,7 @@ Since 29 is prime, GF(29) is a field and matrix arithmetic works cleanly.
 
 - **Many key matrices needed**: Words range from 1 to 14 runes. Each length
   needs its own matrix. A 14×14 matrix has 196 entries — too many to search.
-- **Single-rune words**: 324 single-rune words are encrypted as C = M_1 * P
+- **Single-rune words**: ~100 single-rune words are encrypted as C = M_1 * P
   mod 29, which is just a monoalphabetic substitution. Single-rune words
   should concentrate on 2-3 rune values (for "a", "I"). They don't — they're
   uniformly distributed. This is problematic unless M_1 varies.

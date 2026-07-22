@@ -180,7 +180,7 @@ explaining both with one "5" would be strongly preferred.
 Still open:
 
 - Per-word or per-line cipher state where 5-rune-distant positions share key
-  material as a side effect of typical word lengths (avg word ~3.9 runes).
+  material as a side effect of typical word lengths (avg word ~4.4 runes).
 - Section 4 having a different (or buggier) cipher than other sections.
 
 ## Scripts

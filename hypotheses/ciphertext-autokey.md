@@ -23,7 +23,7 @@ rune at position i+1 is the identity element of the TR.
 
 ## Evidence for
 
-- **Doublet-identity property**: Under ciphertext autokey, all 89 doublets
+- **Doublet-identity property**: Under ciphertext autokey, all 86 doublets
   decrypt to the identity element. This is a mathematical certainty.
 - **Flat distribution**: Autokey feedback naturally produces near-uniform output
   distributions from structured input.

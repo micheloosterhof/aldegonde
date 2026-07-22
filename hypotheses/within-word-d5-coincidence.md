@@ -23,7 +23,7 @@ explains it together with the doublet suppression.
 ## What was measured
 
 All numbers are on the **clean corpus** (sections 0-9 of `data/page0-58.txt`,
-12,956 runes, 2,973 words — sections 10/11 are solved/plaintext, see
+12,956 runes, 2,928 words — sections 10/11 are solved/plaintext, see
 `cryptodiagnostics-page0-58.md`). Words tokenized with `- . & %` as
 boundaries; `/` and newlines are line wraps.
 

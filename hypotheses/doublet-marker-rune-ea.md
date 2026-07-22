@@ -32,7 +32,8 @@ granted.
 
 ## Consistency checks (conditional on the premise)
 
-**Frequency filter.** The doublet rate is 0.678% (89 / 13,136). If each doublet
+**Frequency filter.** The doublet rate is 0.664% (86 / 12,956 clean; the
+pre-decontamination figures below used 89 / 13,136 = 0.678%). If each doublet
 marks one fixed plaintext rune, that rune's runeglish frequency must match.
 From `src/aldegonde/data/ngrams/runeglish/unigrams.txt`, only three runes fall
 in the 0.4-1.0% band:
@@ -88,7 +89,7 @@ argues against word-boundary-reset autokey (see `word-boundary-reset-autokey.md`
 
 ## Predictions
 
-- Whatever the mechanism, decrypting it should place **EA** at all 89 doublet
+- Whatever the mechanism, decrypting it should place **EA** at all 86 doublet
   positions (1st or 2nd rune, per direction), including 24/12 word-initial EAs —
   i.e. words beginning "ea..." (each, ear, earth, east).
 - 1st-vs-2nd (keystream direction) is still open. To decide it, obtain EA's

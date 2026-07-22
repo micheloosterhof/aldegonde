@@ -36,7 +36,8 @@ concentrated in length-10 words.
    word boundary. It is not: in the readable master-transcription section,
    words demonstrably span `/` ("ᛋᚪᚳ/ᚱᛖᛞ" = SAC/RED, "ᛖᚾᚳᚱᚣ/ᛈᛏᛖᛞ" =
    ENCRY/PTED). The correct tokenization (boundaries `- . % & $`, continuation
-   `/` and newline) gives **2,973 words, mean length 4.42** (length
+   `/` and newline) gives **2,973 words in the full file (2,928 in the
+   clean sections 0-9), mean length 4.42** (length
    distribution 1:100, 2:478, 3:734, 4:524, 5:321, 6:256, 7:218, 8:160, 9:77,
    10:51, 11:28, 12:18, 13:4, 14:4).
 3. The unsolved corpus begins at rune offset 2,797 of the master
@@ -132,7 +133,9 @@ both copies:
 
 ### Lead 2: within-word distance-5 coincidence excess
 
-Coincidence rate at distance d between runes **of the same word**:
+Coincidence rate at distance d between runes **of the same word**
+(pre-decontamination counts; the clean-corpus figures are 102/2073, see
+the update at the end of this section):
 
 | d | hits/trials | z |
 |---|-------------|---|
