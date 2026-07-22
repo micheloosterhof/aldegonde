@@ -7,7 +7,7 @@ ciphertext runes, not just the immediately preceding rune.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved
 
 ## Mechanism
 
@@ -45,11 +45,29 @@ S is fully determined from the ciphertext and the primer S[0].
 Decryption is deterministic given the primer S[0] (29 values to try).
 If correct, one of the 29 primers should produce English-like IOC.
 
+## Test result (July 2026)
+
+`experiments/accumulator_autokey_test.py` decrypts every clean section
+(0-9) with all 29 primers in both the Beaufort form (P = S - C) and the
+Vigenere form (P = C - S). The primer only shifts the recovered plaintext
+by a constant, so IOC is primer-invariant; the two forms are negations of
+each other and give identical IOC. Max per-section normalized IOC: 1.032
+(random ~1.0, English runeglish ~1.6-1.8). No primer produces anything
+but random text.
+
+Independently, the mechanism cannot produce the doublet suppression:
+C[i] = C[i-1] iff P[i] - P[i-1] = C[i-1] mod 29, which for near-uniform
+ciphertext holds with probability ~1/29 regardless of the plaintext — a
+~3.45% doublet rate, not the observed 0.66%. The running sum is output
+feedback, but without an avoidance rule feedback alone does not suppress
+doublets.
+
 ## Scripts
 
-Should be trivial to test — 29 primers, cumulative sum, compute IOC.
+- `experiments/accumulator_autokey_test.py` — exhaustive primer test.
 
 ## Verdict
 
-Unresolved. This is a simple model that survives the split test because
-the running sum introduces position-dependent state. Needs testing.
+Disproved. Exhaustive decryption over all 29 primers yields random IOC in
+every section, and the mechanism has no way to produce the observed
+doublet suppression.
