@@ -120,8 +120,13 @@ it is disproportionately "S repeats at 5, inside a word."
   explain why S rather than a random rune.
 - If S has a structural (marker) role, it should show other positional
   regularities (word position, spacing) beyond the d=5 pairing.
-- The S-at-d5 excess should reproduce in an independent transcription and in
-  any newly transcribed clean text (out-of-sample check).
+- No out-of-sample check exists: the transcription is crowdsource-verified
+  many times over (and machine-verified, `transcription-verification.md`),
+  so the excess is in Cicada's ink and the corpus is fixed. The finding can
+  only be resolved by explanation or decryption. Usable as a key-search
+  filter: a candidate key implies the plaintext at each of the 11 S-pair
+  sites, and a correct key should make those 11 implied runes cohere (a
+  recurring rune or morpheme); a wrong key gives unrelated values.
 
 ## Scripts
 
