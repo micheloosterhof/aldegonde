@@ -9,11 +9,13 @@ statistical properties table and status definitions.
 
 ## Key context
 
-- The unsolved ciphertext is in `data/page0-58.txt` (13,136 runes, 3,367
-  words). All file paths are relative to the repository root. The final two
-  `%`-pages of this file are solved (the "AN END" page and the plaintext
-  parable page, ~180 runes) — exclude them from statistics of the unsolved
-  cipher.
+- The unsolved ciphertext is in `data/page0-58.txt` (13,136 runes; 2,973
+  words under the correct tokenization — line wraps `/` are NOT word
+  boundaries). All file paths are relative to the repository root. The final
+  two `$`-sections of this file are solved (section 10 is the "AN END" page,
+  section 11 the plaintext Parable, 85 + 95 runes) — exclude them: the clean
+  unsolved corpus is sections 0-9, **12,956 runes, 2,928 words, 86
+  doublets**. See the contamination note in `README.md`.
 - The full transcription (solved + unsolved) is in
   `data/liber-primus__transcription--master.txt`. Do NOT analyze the solved
   early pages as if they were unsolved ciphertext.
@@ -34,7 +36,7 @@ The unsolved text has a very specific statistical profile. Any hypothesis must
 explain ALL of these (see `README.md` for exact numbers):
 
 1. **Flat distribution**: All 29 runes near-equally frequent
-2. **Doublet suppression**: 5.09x below random expectation (0.68% vs 3.45%)
+2. **Doublet suppression**: 5.19x below random expectation (0.66% vs 3.45%)
 3. **No triplets**: Zero occurrences
 4. **No Friedman period**: No detectable periodic key length
 5. **Normal kappa at skip >= 2**: Only adjacent pairs are anomalous
@@ -59,8 +61,11 @@ explain ALL of these (see `README.md` for exact numbers):
 
 ## Common pitfalls
 
-- The last 95 runes of `data/page0-58.txt` are the solved plaintext Parable
-  page. Exclude them: the cipher stream is 13,041 runes with 88 doublets.
+- `data/page0-58.txt` is contaminated with solved material: section 10 (the
+  AN END page, 85 runes) and section 11 (the plaintext Parable, 95 runes).
+  Exclude both: the clean cipher stream is sections 0-9, 12,956 runes with
+  86 doublets. (Older analyses citing 13,041 runes / 88 doublets excluded
+  only the Parable and still include the solved AN END page.)
 - `aldegonde.stats.isomorph` compares against *uniform random* text. The
   doublet suppression alone collapses pattern diversity, which makes the
   cipher look 6-11 sigma anomalous on isomorphs. Under a doublet-corrected
