@@ -169,7 +169,7 @@ bounded-context test. What survives:
    K effectively uniform-iid (true pad or strong PRNG), plus the doublet
    rule marking a rare plaintext event. This fits every observed statistic;
    under it the DJU-BEI depth is a ~0.5% coincidence and the only
-   recoverable plaintext information is the 89 marked positions and the
+   recoverable plaintext information is the 86 marked positions and the
    word lengths.
 2. **A designed, balanced inner table — or a generic one with >= 6 runes
    of context** (6 runes itself mildly disfavored at ~2 sigma) — enough to
