@@ -110,6 +110,25 @@ B, this is not register-fragile: avoiding 1-2 letter sentence-final words
 is near-universal in English, and the same author's solved register shows
 the effect at z=+7.
 
+**Direction-independent (July 2026).** If the text read right-to-left, the
+word AFTER each mark in file order would be the reading-order
+sentence-final word and should carry the signature instead. It does not
+(`experiments/mark_direction_test.py`, harness validated by reproducing
+the solved-pages finals exactly, 5.56 / z=+7.0):
+
+| | before-mark | after-mark |
+|---|---|---|
+| unsolved (168 marks) | 4.23, z=-1.15 | 4.38, z=-0.24 |
+| solved (86 marks) | 5.56, z=+7.03 | 3.93, z=-0.34 (short 37.2% vs 27.9% baseline — the English sentence-INITIAL lean) |
+
+Both sides of the unsolved marks look like random words, so the
+no-English-semantics conclusion holds in both reading directions, closing
+the "text reads backwards" loophole for this channel. (The other
+statistical anomalies — doublets, lag-5, length histogram,
+autocorrelation — are reflection-symmetric and carry no direction
+information; reversed autokey and reversed running keys are separately
+excluded.)
+
 This materially weakens the foundational reading of the metadata channel:
 of the three visible plaintext-metadata structures (word boundaries, word
 lengths, sentence marks), the sentence marks now demonstrably do NOT carry
