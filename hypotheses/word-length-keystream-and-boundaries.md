@@ -99,8 +99,12 @@ the unsolved section are statistically indistinguishable from words at
 random positions — consistent across every section with >= 8 marks
 (per-section final means 3.91-4.91, none elevated). Supporting facts:
 "sentences" average 19.7 words (median 14, max 182) vs 8.9 in the solved
-pages, '.'-density varies four-fold across sections, and two sections
-have no marks at all.
+pages. (An earlier claim here — "'.'-density varies four-fold across
+sections and two sections have no marks" — does not hold at the
+`$`-section level: all ten clean sections have marks at rates consistent
+with one homogeneous Poisson process, chi2 ~ 6 on 8 df; see
+`thirty-symbol-disk.md`. The variation was an artifact of smaller
+counting units.)
 
 **Conclusion: the '.' marks in the unsolved section do not mark English
 sentence ends.** Either the marks are synthetic/decorative, they denote a
