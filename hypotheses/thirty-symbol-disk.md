@@ -68,15 +68,53 @@ Measured on the clean corpus (`experiments/mark_thirty_symbol.py`):
   typesetting breaks lines at mark glyphs in the solved pages too (26.7%),
   whatever the glyph means.
 
+## 30-symbol battery result (July 2026) — neutral, and structurally so
+
+`experiments/thirty_symbol_battery.py` reran the distance statistics on
+the 30-symbol stream (13,124 symbols, `.` occupying positions) against
+the stripped stream:
+
+| statistic | 29-symbol | 30-symbol |
+|---|---|---|
+| doublets | 86 (z=-17.4) | 85 (z=-17.3; the one X.X event separates) |
+| kappa lag 5 | 479, z=+1.52 | 466, z=+1.07 |
+| lag-5 pair separations d1/d4 (consecutive-match gaps) | 29 / 25 | 28 / 23 |
+| kappa lag 6 | z=+0.36 | z=+0.15 |
+| kappa lag 11 | z=-2.95 | z=-3.13 |
+
+The lag-5 complex weakens mildly under mark-inclusive accounting — but
+the test turns out to have little power either way: the real lag-5 signal
+lives WITHIN words, marks sit only at word boundaries, so no within-word
+pair ever straddles a mark. Mark accounting only relocates cross-word
+matches, whose count is at chance; the mild degradation is consistent
+with pure noise reshuffling. The battery neither supports nor
+meaningfully damages the hypothesis. (Pair separations here count
+consecutive-match gaps, reproducing the published d1=29; the published
+d4=28 uses the chase script's event definition — the A/B comparison
+applies one definition to both sides.)
+
+Two additional measurements:
+
+- **No doublet-style dead zone in the mark gaps**: min gap 4, gaps <= 12
+  number 18 vs ~24 exponential expectation — a mildly thin tail, no more.
+  This weakens the zero-`..` consistency point (it is the tail of a
+  slightly under-dispersed process, not an avoidance law like the
+  doublets' min-gap-6).
+- **Marks do not split words**: mean word length before marks (4.23) plus
+  after (4.38) is ~two full words, not the halves of one. Any
+  cipher-symbol reading must be boundary-synchronized — the mark is
+  emitted AT a word boundary (e.g. as a state-dependent variant of the
+  `-` separator: 168 of 2,928 boundaries = 5.7%), never mid-word.
+- **DJU-BEI arithmetic**: stripped distance 6395 = 5 x 1279; mark-inclusive
+  distance 6480 = 2^4 x 3^4 x 5 (= 30 x 216). Both factorizations are
+  numerology-grade; recorded without weight.
+
 ## Predictions
 
-- The full statistical battery has never been run on the **30-symbol
-  stream** (runes + `.` occupying positions). If marks are real symbols:
-  doublet count becomes 85 (the one X.X event straddling a mark is
-  distance 2, not a doublet), and every distance statistic shifts by one
-  across each mark. Small corrections (168 marks), but the lag-5 and
-  kappa scans should be repeated on the 30-symbol stream; any improvement
-  in the anomalies' sharpness favors this reading.
+- Discriminating this hypothesis needs key-conditional tests, not stream
+  accounting: under any candidate key, mark positions must decrypt to a
+  consistent 30th-cell event (a specific plaintext symbol, or gap
+  alignments of the disk schedule).
 - Under the gap-event reading, marks either consume a keystream step or
   not (the AN-END interrupt question); trial decryptions must test both
   alignments.
@@ -89,6 +127,8 @@ Measured on the clean corpus (`experiments/mark_thirty_symbol.py`):
   count, rune contexts.
 - `experiments/mark_direction_test.py` — the both-directions
   non-linguistic result.
+- `experiments/thirty_symbol_battery.py` — the 30-symbol vs 29-symbol
+  distance-statistics comparison, mark-gap tail, DJU-BEI arithmetic.
 
 ## Related
 
@@ -102,9 +142,14 @@ Measured on the clean corpus (`experiments/mark_thirty_symbol.py`):
 ## Verdict
 
 Unresolved and live. The hypothesis explains the marks' non-linguistic
-behavior for free, and the newly measured facts (per-section homogeneity,
-zero `..`, uniform contexts) all lean its way. Its quantitative obstacles
-are the 1/77 rate (vs 1/30 naive) and the excluded constant stepping —
-both survivable if the extra cell is avoidance-suppressed and the disk is
-word-clocked, which converges suggestively with the length-clocked walk.
-Next step: rerun the distance-statistics battery on the 30-symbol stream.
+behavior for free, and the mark process looks like machinery (per-section
+homogeneity, uniform contexts, exponential-ish gaps). The 30-symbol
+battery came back neutral — structurally low-power, because the lag-5
+signal is within-word and marks sit only at boundaries — so the stream
+accounting does not decide it. What must be honored by any concrete
+version: the 1/77 rate (vs 1/30 naive), boundary synchronization (marks
+never split words), no constant stepping (period 870 excluded by kappa),
+and no dead-zone law in the mark gaps (min gap 4). The most promising
+concrete form is boundary-synchronized: the mark as a state-dependent
+variant of the word separator (5.7% of boundaries), clocked like the
+length-clocked walk. Resolution requires key-conditional tests.
