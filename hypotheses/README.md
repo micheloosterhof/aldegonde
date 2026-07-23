@@ -146,7 +146,7 @@ Two consequences of the table that prune whole mechanism families
    walk family (`length-clocked-walk.md`, `d5-partial-alphabet-leak.md`):
    positions 5 apart in a word share an alphabet and plaintext
    coincidences show through. The PAIRED {1,4} match events
-   (`lag5-digraph-structure.md`) remain unexplained by any tested
+   (`lag5-digraph-structure.md`) are not produced by any single tested
    per-rune mechanism (autokey families, running keys, bifid p5/p7/p10,
    lag-5-tapped lagged-Fibonacci keystreams, output-avoidance streams,
    Hill variants, group-edge carryover); information theory narrows the
@@ -155,7 +155,14 @@ Two consequences of the table that prune whole mechanism families
    author-side composition artifacts. None of these is currently
    distinguishable from the others by ciphertext statistics — see the
    degrees-of-freedom audit in `lag5-back-reference.md` before treating
-   any simulation "match" as confirmation. The two faces overlap in the
+   any simulation "match" as confirmation. **Update (July 2026):** a
+   COMPOSITE model — the length-clocked walk (echo) plus a sparse
+   back-reference copy overlay ({1,4} pairing) — produces both faces at
+   once while leaving the base fingerprint (doublets, triplets, nIoC)
+   intact (`experiments/lag5_two_faces.py`), removing the "no mechanism
+   does both" obstruction. It is a composite of two mechanisms that both
+   use the constant 5, not a single primitive, and inherits the walk's
+   echo-magnitude overshoot; it explains coexistence, not why 5. The two faces overlap in the
    nine in-word `XY···XY` repeats and are reconciled as ONE word-aware
    phenomenon in `within-word-d5-coincidence.md`. Additional constraint
    (July 2026): the lag-5 matches are word-boundary-aware — both the

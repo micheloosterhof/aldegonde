@@ -145,6 +145,41 @@ the word boundaries.
   stretch): would make pocket matches contiguous runs at ~6% density.
   Pocket matches are scattered singletons and pairs.
 
+## Composite model: walk echo + copy overlay produces both faces (July 2026)
+
+The standing puzzle was that the within-word d5 ECHO
+(`within-word-d5-coincidence.md`) and the paired {1,4} EVENTS (this file)
+are one reconciled phenomenon, yet no single mechanism produced both: the
+length-clocked walk gives the echo but not the pairing, the
+back-reference model gives the pairing but not the base fingerprint.
+
+`experiments/lag5_two_faces.py` composes them — the walk for the echo and
+base fingerprint, plus a sparse back-reference copy OVERLAY (copy C[i-5]
+to C[i] at a low rate, with one balanced d1/d4 partner) for the pairing —
+and measures both at LP scale (13k runes):
+
+| | doublets | triplets | nIoC | d5 IoC | d1 | d4 | d2/d3/d5 |
+|---|---|---|---|---|---|---|---|
+| LP | 86 | 0 | 1.00 | 1.43 | 29 | 28 | ~14 |
+| walk alone | 82 | 0 | 1.00 | 2.04 | 23 | 29 | 23/11/17 |
+| walk + overlay (r=0.002) | 82 | 0 | 1.00 | 2.20 | 41 | 47 | 27/11/20 |
+
+Findings: (1) the copy overlay leaves the base fingerprint intact —
+doublets, triplets, nIoC unchanged at every rate — so the two mechanisms
+COMPOSE without conflict. (2) The overlay produces a balanced, selective
+{1,4} excess (d1,d4 clearly above d2,d3,d5) that the walk alone does not
+(walk-alone d1=23 ties d2=23). This is the first generative model to show
+both the echo and the selective pairing together.
+
+Two honest caveats: (a) the echo MAGNITUDE overshoots (d5 IoC ~2.0-2.2 vs
+LP 1.43) — but that is the walk's known full-vs-partial-leak issue
+(`d5-partial-alphabet-leak.md`), inherited from using an exact-order-5 g,
+NOT introduced by the overlay; a partial-leak base would bring it down.
+(b) This is a COMPOSITE of two mechanisms that both happen to use the
+constant 5, not a single primitive — so it does not explain WHY both
+involve 5. It removes the "no mechanism does both" obstruction without
+claiming to be the cipher.
+
 ## What could explain it (open)
 
 The constraint for future hypotheses: a mechanism must generate consecutive
