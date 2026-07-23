@@ -72,6 +72,26 @@ both the solved pages and generic English at every lag through 6, which
 would be expected if the boundaries were placed to match a length
 histogram without copying English word *order* — but the register-matched
 evidence is ~2 sigma and confounded by the small solved sample.
+
+**Per-section breakdown (July 2026,
+`experiments/lattice_by_section.py`)**: the lattice is ONE homogeneous
+process — every section tests as drawn from the same distribution as the
+rest (KS p = 0.48-1.00), and every section deviates from the solved
+register in the SAME directions: mean word length 4.31-4.60 (solved
+4.01), short-word (1-2 rune) fraction 18-22% (solved 28%), sentences
+14-34 words (solved 8.1), no ordering structure (per-section lag-1
+autocorrelation at noise; the sec-2 z=+2.1 is 1-of-9 and positive where
+the solved register is negative). No part of the corpus has a more
+English-like lattice than any other.
+
+**The short-word deficit, made explicit**: 19.3% of unsolved words are
+1-2 runes vs 27.9% in the solved register — z ~ 4.7, present in every
+section. Encryption cannot cause this (word lengths pass through any
+rune-substitution cipher untouched), so either the plaintext genuinely
+lacks a third of its function words relative to the same author's solved
+writing (telegraphic/fused composition), or the boundaries are not
+plaintext-faithful. This is the hardest single fact in the boundary
+question, sharper than the autocorrelation lead.
 This is the one assumption-questioning lead worth revisiting with a
 register-matched runeglish corpus (philosophical/koan prose with word
 boundaries), which the repo does not currently contain.
