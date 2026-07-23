@@ -102,6 +102,33 @@ the five 5-cycles (columns):
   (digraph-ish runes that rarely double) — consistent, but not a test.
 - **Not verified.** No decryption confirms any grid.
 
+## Enumeration result (July 2026)
+
+`experiments/enumerate_keys.py` built the grid-`g` family for 24
+Cicada-relevant keywords x {row-major, column-major} (48 order-5 grids)
+and paired each with keyword-mixed `sigma`, pushing all 1,152 pairs
+through `experiments/walk_verifier.py`. Two findings, both negative and
+both sharpening this note:
+
+1. **The doublet diagonal kills keyword fills outright.** The best
+   keyword grid-`g` has within-word diagonal **0.0229** (CIRCUMFERENCE,
+   row-major); the rest are 0.027-0.035. All are 3.6x-5.5x above the
+   required 0.0063. This confirms the "layout constraint" section
+   quantitatively: a plain keyword fill does NOT route common bigrams off
+   the column-adjacency, so it sits near chance. A correct `g` needs a
+   deliberate low-diagonal arrangement that keyword order does not supply.
+2. **No state return.** Of 480 (g, sigma) pairs passing the parity
+   necessary condition, **zero** produce a DJU-BEI full state return
+   (`M_1477 = M_2926`). Under the full-return reading, the true key is not
+   a keyword-grid `g` with a keyword `sigma` from this set.
+
+The enumeration harness is reusable: better `g` families (annealed
+low-diagonal grids, gematria/prime-ordered fills) drop straight into it.
+The bottleneck is generating low-diagonal order-5 permutations that are
+also *structured* (small key); keyword fills are structured but not
+low-diagonal, and annealed low-diagonal grids are low-diagonal but not
+obviously small-key. Closing that gap is the open problem.
+
 ## Predictions
 
 - `g` has **exactly five 5-cycles + 4 fixed** (not one 29-cycle, not fewer

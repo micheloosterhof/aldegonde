@@ -55,6 +55,21 @@ This bets everything on the true key being drawn from a small structured set. If
 `(g, σ)` are arbitrary mixed permutations, the ciphertext does not contain enough
 to recover them and 0-9 is unbreakable by these methods.
 
+## Enumeration built and run (July 2026)
+
+The verify-not-search program of this note is now implemented:
+`experiments/walk_verifier.py` (self-tested: exact round-trip decryption
+with the true key, random-key rejection) runs the cascade — DJU-BEI state
+return, g/sigma doublet diagonals, quadgram `base_0` solve —
+and `experiments/enumerate_keys.py` drives structured keyword-grid `g` x
+keyword `sigma` through it. First pass (24 keywords x 2 orientations x
+24 sigmas): **0 of 480 parity-valid pairs achieve a state return, and the
+best keyword grid-`g` diagonal is 0.023 vs the required 0.0063** — keyword
+fills are excluded on the doublet diagonal alone, before the DJU-BEI
+filter even applies. Consistent with this note's thesis: the constraint
+is real and usable, but the structured key set that satisfies it is not
+the naive keyword family. See `g-from-5x5-grid.md`.
+
 ## Related
 
 - `repeated-phrase-dju-bei.md` — the one constraint, in detail.
