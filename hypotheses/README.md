@@ -106,7 +106,13 @@ loophole; marker-reset keying flat; numeric autocorrelation flat (lag-1
 r = -0.0297 is quantitatively the doublet artifact); DFT spectrum has no
 lines; per-rune positions uniform; sliding-window nIoC homogeneous
 (retiring KRAKUP's nonhomogeneity hint); cross-section distributions
-identical. At the rune-stream level the corpus has exactly two broad
+identical. A runeglish-trigram-fitness scan (`experiments/englishness_scan.py`,
+July 2026) confirms this in the language dimension: no section or 500-rune
+window resembles English above chance (best window matched by ~30% of
+shuffled corpora; the one sectional blip, section 5 at z=+2.6, decomposes
+entirely into a chance rune-composition lean — its ORDER structure is null
+under a within-section shuffle, z=+1.2). Calibration: the same scorer
+separates the plaintext Parable at fitness -3.4 vs corpus -6.9. At the rune-stream level the corpus has exactly two broad
 statistical departures from randomness: doublet suppression and the lag-5
 structure — plus one isolated event, the DJU-BEI state return
 (`repeated-phrase-dju-bei.md`). Metadata-level anomalies are separate: the
