@@ -33,7 +33,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (40)
+### Hypotheses (41)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -69,6 +69,7 @@ proposed mechanisms scored against them.
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |
+| [sigma-power-step.md](sigma-power-step.md) | The Space Step σ is a Power of g | disproved (all powers and near-powers; census collapse + DJU-BEI arithmetic + periodicity) |
 | [stay-slot-hold.md](stay-slot-hold.md) | The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal | disproved (doublets are positionally flat, not plaintext-double-shaped; the rate match was a coincidence) |
 | [stream-cipher-no-repeat.md](stream-cipher-no-repeat.md) | Additive Stream Cipher with Ciphertext-Doublet Avoidance | unresolved (reformulated; keystream-only variant disproved) |
 | [substitution-plus-autokey.md](substitution-plus-autokey.md) | Monoalphabetic Substitution + Autokey Layering | disproved |

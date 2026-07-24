@@ -60,7 +60,13 @@ refuted"):
 - **`σ` — the space step.** A second mixed permutation **outside ⟨g⟩** (not a
   power of `g`), tuned rare-diagonal so the seam doublet is suppressed to
   0.0079. Being outside ⟨g⟩ is what breaks the walk out of the 5-alphabet
-  cyclic cage and gives flat unigrams + aperiodicity.
+  cyclic cage and gives flat unigrams + aperiodicity. This is now
+  quantitative (`sigma-power-step.md`): σ = g^k is disproved for every k
+  (identity-census collapse, ~2,500 predicted identical cipher words vs 17
+  observed; DJU-BEI arithmetic forbids k ≠ 1 and periodicity kills k = 1),
+  near-powers fail too, ⟨g,σ⟩ must reach N ≳ 600 bases, and the seam
+  algebra isolates σ exactly: a cross-word doublet ⟺ p_last = σ(p_first),
+  the `g` and length factors cancelling.
 
 The `g^((L−1) mod 5)` factor in the transition completes the period-5 cycle at
 the boundary, so the letter-clock effectively runs continuously across the
@@ -206,6 +212,8 @@ newlines are line wraps (words flow across them).
 
 - `per-word-related-alphabets.md` — the predecessor model; this note supersedes
   its "free per-word base" pessimism with the length-clocked deterministic walk.
+- `sigma-power-step.md` — σ is not a power (or near-power) of g; the
+  surviving σ constraints (seam diagonal, parity, group-size floor).
 - `d5-partial-alphabet-leak.md`, `within-word-d5-coincidence.md`,
   `rune-s-lag5-echo.md` — the d5/d6 structure.
 - `repeated-phrase-dju-bei.md`, `cryptodiagnostics-page0-58.md` — DJU-BEI and
