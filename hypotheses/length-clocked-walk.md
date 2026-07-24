@@ -29,11 +29,14 @@ in principle.
 **Status**: plausible (comprehensive statistical fit; NOT confirmed by
 decryption)
 
-The model reproduces every hard observable and survives an exhaustive battery
-of null tests (below). It has **not** been verified by producing plaintext —
-the two mixed permutations have not been recovered. Confidence is high on the
-*shape* (period-5 mixed substitution + per-word mixed step, small fixed key),
-lower on details flagged under "open".
+The model reproduces the base fingerprint (flat unigrams, doublet
+suppression, no periodicity) and the d1/d5/d6 profile, and survives the null
+battery (below). Two measured anomalies remain **unexplained by the walk**:
+the cross-word d4 frame face and the rune-S concentration of the echo (see
+"Evidence against / open"). It has **not** been verified by producing
+plaintext — the two mixed permutations have not been recovered. Confidence
+is high on the *shape* (period-5 mixed substitution + per-word mixed step,
+small fixed key), lower on details flagged under "open".
 
 ## Mechanism
 
@@ -146,6 +149,26 @@ newlines are line wraps (words flow across them).
 - **Continuous-vs-per-section walk: weak.** Page-seam doublets 0/47 favour
   "continuous" ~3.4:1; DJU-BEI's differing section-offsets argue against
   per-section reset. But only 9 section boundaries — not provable.
+- **The d4 frame face is not produced by the walk.** Of the lag-5 paired
+  matches, the d1 face (`XY···XY`) is plaintext morphology passing through
+  the `g⁵=id` echo — accounted for. The d4 face ((1st,5th)-of-5 frame,
+  largely cross-word) is BELOW chance in real runeglish plaintext, so the
+  echo cannot pass it through; it is the one lag-5 structure with no
+  mechanism in this model. See `lag5-digraph-structure.md`.
+- **The rune-S echo is unexplained.** 11 of the ~41 excess d5 pairs echo
+  the single ciphertext rune S (p=2.4e-6, Bonferroni-clean). Under a
+  value-randomizing base the echoed rune should be uniform, so this argues
+  against — or constrains — the base family. Inherited flag from
+  `per-word-related-alphabets.md`; do not treat it as retired. See
+  `rune-s-lag5-echo.md`.
+- **Keyword-grid keys are excluded.** `experiments/enumerate_keys.py` drove
+  keyword-grid `g` × keyword `σ` through the DJU-BEI/diagonal cascade
+  (`experiments/walk_verifier.py`): 0/480 parity-valid pairs give a state
+  return, and the best keyword-grid `g` diagonal is 0.023 vs the required
+  0.0063 — excluded on the diagonal alone. Open problem: constructions that
+  are BOTH low-diagonal and small-key (keyword fills are structured but not
+  low-diagonal; annealed permutations are low-diagonal but not small-key).
+  See `g-from-5x5-grid.md`.
 - **`σ`: one or a small keyed set?** Seam suppression proves the space step is
   a rare-diagonal permutation (not a random re-key) but does not prove there is
   only *one* `σ`. A small keyed family fits equally; the fully-deterministic
@@ -191,7 +214,10 @@ base = the running product clocked by the public word lengths. Both steps are
 non-arithmetic mixed permutations, which would be a first for Cicada and
 explains why value-based attacks fail. The key is **small and fixed**, so the
 cipher is breakable in principle — but the barrier is recovering two mixed
-29-permutations, against which every statistical and algebraic shortcut is
-null. The realistic paths to plaintext are a length-clocked hillclimb on
-`(base_0, g, σ)` or a contiguous crib; a short guessed phrase alone cannot
-verify. Everything here is statistical shape, not a confirmed decryption.
+29-permutations, against which every statistical and algebraic shortcut
+tried so far is null. The model does not account for the d4 frame face or
+the rune-S echo; either could falsify or refine it. The realistic paths to
+plaintext are a length-clocked hillclimb on `(base_0, g, σ)` or a
+contiguous crib — noting keyword-grid key fills are already excluded — and
+a short guessed phrase alone cannot verify. Everything here is statistical
+shape, not a confirmed decryption.
