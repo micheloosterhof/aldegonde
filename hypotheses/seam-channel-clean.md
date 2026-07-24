@@ -49,6 +49,24 @@ trigram repeats, and isomorphs — see README): any density statistic on
 this corpus must use a suppression-aware null. No group approaches the
 ~1.7 a keyed or leaking seam would show.
 
+**Reach into the next word** (last rune of word w vs rune r of word
+w+1). Walk prediction: a match at reach r requires
+p_last = σ(g^(r−1)(p_r)) — a fixed permutation diagonal per reach, with
+σ tuned rare only at r = 1 — so reaches 2-6 should sit at chance with no
+conditional structure. Measured (word-permutation null):
+
+| r | pairs | matches | rate | z | conditional split z |
+|---|---|---|---|---|---|
+| 1 | 2927 | 23 | 0.0079 | **−8.1** | (+1.9, the cell-packing artifact) |
+| 2 | 2828 | 90 | 0.0318 | −0.7 | +0.4 |
+| 3 | 2363 | 72 | 0.0305 | −1.0 | +0.4 |
+| 4 | 1637 | 59 | 0.0360 | +0.4 | +0.3 |
+| 5 | 1123 | 35 | 0.0312 | −0.6 | −0.5 |
+| 6 | 805 | 26 | 0.0323 | −0.3 | −0.5 |
+
+Chance at every reach past the seam, exactly as the cancellation
+predicts; the suppression is confined to r = 1.
+
 **Length-class independence of the diagonal** (the walk's prediction):
 under the walk the boundary factors cancel, so a seam doublet occurs iff
 p_last = σ(p_first) — no dependence on the previous word's length. Rates

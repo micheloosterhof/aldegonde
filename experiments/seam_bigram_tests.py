@@ -196,6 +196,37 @@ def main() -> None:
               f"null {arr.mean():.4f} ± {arr.std():.4f}  "
               f"z {(obs - arr.mean()) / arr.std():+.2f}")
 
+    # H. reach r: last rune of word w vs rune r of word w+1, r = 1..6.
+    # Walk prediction: match iff p_last = sigma(g^(r-1)(p_r)) — a fixed
+    # permutation diagonal per reach; sigma is tuned rare only at r=1, so
+    # r>=2 should sit at chance with no conditional structure.
+    def reach_stats(ws: list[list[int]], r: int) -> tuple[int, int, float]:
+        pairs = [(ws[i][-1], ws[i + 1][r - 1])
+                 for i in range(len(ws) - 1) if len(ws[i + 1]) >= r]
+        hits = sum(1 for a, b in pairs if a == b)
+        return hits, len(pairs), cond_split(pairs)
+
+    print("\nH. reach into the next word (last rune vs rune r), "
+          "walk: chance for r >= 2:")
+    print(f"{'r':>3} {'pairs':>6} {'match':>6} {'rate':>7} "
+          f"{'null rate':>16} {'z':>6} | {'split nIoC':>10} "
+          f"{'null':>14} {'z':>6}")
+    for r in range(1, 7):
+        hits, n_r, split_obs = reach_stats(words, r)
+        nh, ns = [], []
+        for _ in range(300):
+            rng.shuffle(perm)
+            h_, n__, s_ = reach_stats(perm, r)
+            nh.append(h_ / n__)
+            ns.append(s_)
+        ah, as_ = np.array(nh), np.array(ns)
+        rate = hits / n_r
+        print(f"{r:>3} {n_r:>6} {hits:>6} {rate:>7.4f} "
+              f"{ah.mean():>8.4f} ± {ah.std():.4f} "
+              f"{(rate - ah.mean()) / ah.std():>+6.2f} | "
+              f"{split_obs:>10.4f} {as_.mean():>7.4f} ± {as_.std():.4f} "
+              f"{(split_obs - as_.mean()) / as_.std():>+6.2f}")
+
 
 if __name__ == "__main__":
     main()
