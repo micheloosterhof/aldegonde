@@ -106,16 +106,25 @@ with a local artifact and with a real effect that only some sections encode.
 
 ## Interpretations to test
 
-- **Word-length periodicity (leading candidate).** If sections 1/8 carry a
-  repeating word-length rhythm, cross-word pairs at exactly d=11 could
-  systematically connect the same word-position (e.g. word-initial to
-  word-initial). If consecutive words rarely open with the same rune, that
-  alone yields a cross-word coincidence deficit at one lag class. Test:
-  tabulate the word-positions the 385 cross-word d=11 pairs connect, and check
-  sections 1/8 for a word-length period. This is the unbuilt "test F".
-- **Pure multiple-testing noise.** The default null: Šidák p ≈ 0.26 and the
-  extreme-count budget are both consistent with it. The mod-5 clustering is
-  the only evidence against, and it is circular until reproduced out-of-sample.
+- **Word-length periodicity — REFUTED (test F, July 2026).** The former
+  leading candidate. `experiments/lag11_testf.py` runs all three prongs:
+  (a) stratifying the 12,910 cross-word d=11 pairs by position-in-word
+  alignment shows NO carrying stratum — the deepest of 15 cells
+  (mid→first, z = −2.65) is unremarkable for a 15-cell scan, the predicted
+  first→first and same-position classes sit at −1.13 and −1.84, and the
+  deficit is spread across all strata; (b) a per-section word-length
+  permutation null (2,000 shuffles, rune stream fixed) leaves the
+  cross-word match count exactly unchanged (obs 385 vs 384.9 ± 1.0,
+  z = +0.05) — the deficit is a property of the rune stream and is
+  indifferent to where the word boundaries sit, so boundary structure
+  cannot be the cause (99.7% of all d=11 pairs are cross-word simply
+  because words are short); (c) no section's word-length sequence shows
+  any periodicity — sections 1 and 8 are below the shuffle null's 95th
+  percentile on both max-FFT-power and max-autocorrelation.
+- **Pure multiple-testing noise (the default, now unopposed).** Šidák
+  p ≈ 0.26 and the extreme-count budget are both consistent with it. The
+  mod-5 clustering is the only remaining thread, and it is circular until
+  reproduced out-of-sample.
 - **Not a period-5 harmonic.** The 2·5+1 framing is excluded as stated:
   multiples of 5 are flat, and lag 10 (the first harmonic) is at chance.
 
@@ -131,6 +140,9 @@ with a local artifact and with a real effect that only some sections encode.
 
 ## Scripts
 
+- `experiments/lag11_testf.py` — test F: alignment strata, the
+  boundary-permutation null, and the per-section word-length periodicity
+  scan.
 - `experiments/lag11_depletion.py` — reproduces every number above: the
   lag-1..80 scan with multiplicity budget, the mod-5 decomposition, per-section
   and leave-one-out stability, the Monte-Carlo + Šidák significance, and the
@@ -151,10 +163,14 @@ with a local artifact and with a real effect that only some sections encode.
 
 ## Verdict
 
-Not a finding. A real 61-match deficit at d=11 exists but does not survive a
-lag-scan correction, and its most-cited framing (a 2·5+1 harmonic of the lag-5
-excess) is falsified — the effect is cross-word and the multiples of 5 are
-flat. The only reason to keep watching is the depleted 5k+1 residue class,
-which is presently confounded by the circularity of having been found through
-lag 11 itself. The decisive next step is the word-length-periodicity test on
-sections 1 and 8; absent that, treat the trough as scan noise.
+Not a finding, and after test F effectively retired. A real 61-match
+deficit at d=11 exists but does not survive a lag-scan correction; its
+most-cited framing (a 2·5+1 harmonic of the lag-5 excess) is falsified;
+and the word-length-periodicity explanation — the decisive next step named
+in earlier versions of this file — is now refuted on all three prongs
+(July 2026): no alignment stratum carries the deficit, the boundary
+permutation leaves it untouched, and sections 1/8 have no word-length
+rhythm. With the only mechanical candidate excluded, the default reading
+stands: scan noise. The single remaining thread is the depleted 5k+1
+residue class, circular until it reproduces out-of-sample (the unscanned
+tail beyond lag 80, excluding lags 11 and 76).
