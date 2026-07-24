@@ -142,9 +142,13 @@ row — vanishingly rare under any position-independent stream model.
 - Any candidate decryption should place matching plaintext runes (or a
   shared key relation) at the 102 (k, k+5) pairs, and especially should
   explain the eight `XY···XY` words as repeated plaintext fragments.
-- If the mechanism is per-word-key periodicity, words sharing a key state
+- ~~If the mechanism is per-word-key periodicity, words sharing a key state
   should show pairwise correlations beyond d=5 — testable by clustering the
-  91 hit-words by section/page position.
+  91 hit-words by section/page position.~~ **Tested negative (July 2026,
+  `experiments/followup_checks.py`)**: hit-word pairs within 5/10/25-word
+  windows sit exactly on the length-matched permutation null
+  (z = −0.19 / +0.62 / +0.04). Hit words do not cluster; no evidence of
+  shared key state between nearby words.
 - An independent transcription of the same pages should reproduce the
   same 102 pairs (transcription-error check).
 

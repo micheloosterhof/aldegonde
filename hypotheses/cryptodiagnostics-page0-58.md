@@ -75,8 +75,10 @@ the profile is a pointer table — see the linked file for the current value:
 The doublet suppression is the **only** detectable deviation from uniform
 randomness at the rune level (plus the higher-order lag-5 structure, see
 `lag5-digraph-structure.md`). The delta-1 stream restricted to nonzero values
-is marginally non-flat (chi-sq p = 0.026, df 27) — weak, worth one re-check on
-new data, not load-bearing.
+is marginally non-flat (chi-sq p = 0.026, df 27) — weak, not load-bearing.
+Rechecked on the clean corpus (July 2026, `experiments/followup_checks.py`):
+p = 0.038, unchanged in character — one mild uncorrected blip in a battery of
+dozens, treated as noise.
 
 ## New negative results (rule-outs)
 

@@ -122,9 +122,14 @@ fingerprint:
 
 - Doublet gaps of exactly 5 should remain absent as more text is analyzed
   (strict periodic version) or appear at a suppressed rate.
-- If unit phase is locally stable over short ranges, nearby lag-5 event
+- ~~If unit phase is locally stable over short ranges, nearby lag-5 event
   pairs should show consistent relative phase; measuring phase coherence
-  length could localize the reset trigger (word? line? doublet emission?).
+  length could localize the reset trigger.~~ Mooted (July 2026): the
+  premise tied the lag-5 events to the block units, and that link is
+  retracted — the d1 face is plaintext morphology through the walk echo
+  and only the d4 face remains, which does not align with the doublet
+  grid (co-tiling test). With no live block-phase reading of the lag-5
+  events, the phase-coherence measurement has no target.
 - Any refinement must generate the d4 frame events — the residual face
   after the July 2026 split — while leaving d2, d3, and d5 exactly at
   baseline. Deterministic copy events are off the table (information-

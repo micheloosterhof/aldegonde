@@ -67,7 +67,12 @@ keystreams are all now ruled out for mathematical series.
 Zero gaps below 6 (no two doublets within 5 runes); ~2.9 expected under a pure
 exponential. A ~1.5σ avoidance of close doublets — the only deviation from pure
 randomness. Consistent with a trigger that rarely occurs twice in quick
-succession (a single rare rune, or a pattern that avoids near-repeats). Weak;
+succession (a single rare rune, or a pattern that avoids near-repeats). The
+hold model makes this quantitative (July 2026,
+`experiments/followup_checks.py`): close plaintext doublet pairs are
+themselves rare in the author's register (6 per 2,797 runes), and 1-in-5
+independent exposure predicts only ~1.1 close ciphertext pairs — observing
+zero has Poisson probability 0.33. No tension with the walk/hold family. Weak;
 worth keeping in mind, not strong enough to build on.
 
 ## Implications
