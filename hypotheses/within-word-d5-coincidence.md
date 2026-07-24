@@ -158,8 +158,22 @@ row — vanishingly rare under any position-independent stream model.
   decomposition, built on the unit-tested
   `aldegonde.analysis.coincidence` boundary functions.
 
+## Scope note
+
+This file covers the two distance-5 shapes that fit inside a word — the
+single-rune echo (`x····x`) and the adjacent-bigram repeat (`xy···xy`, the
+nine `XY···XY` words). Both are now understood as real runeglish morphology
+passing through the walk's `g^5=id` echo (plaintext ~1.60 IoC / 3.7x baseline
+matching the ciphertext) — see the plaintext test and the consolidated
+three-pattern table in `lag5-digraph-structure.md`. The THIRD shape, the frame
+`x···yx···y` (d4), spans 10 positions and is mostly cross-word, is absent from
+plaintext, and remains the lone lag-5 residual — it is documented there, not
+here.
+
 ## Related
 
+- `lag5-digraph-structure.md` — the consolidated three-pattern table
+  (`x····x` / `xy···xy` / `x···yx···y`) and the d4 residual.
 - `rune-s-lag5-echo.md` — the d=5 excess is not rune-agnostic: the rune S
   carries ~22% of it (11 vs 1.75, p=2.4e-6, Bonferroni-clean,
   distance-5-specific, within-word only).

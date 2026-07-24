@@ -159,7 +159,25 @@ information-preserving version is a copy that fires exactly where
 walk's `g^5=id`, positions 5 apart in a word already share the alphabet, so
 `P[i]=P[i-5]` gives `C[i]=C[i-5]` automatically. The "copy" IS the echo.
 
-The MONOGRAPHIC half of this is already established: the within-word
+### The three distance-5 patterns (consolidated)
+
+There are three lag-5 repeat shapes, and each has a different status:
+
+| shape | pattern | scope | ciphertext | plaintext | status |
+|-------|---------|-------|-----------|-----------|--------|
+| single | `x····x` | within-word | IoC 1.43 | IoC ~1.60 | **match — echo** |
+| adjacent bigram | `xy···xy` (d1) | within-word | 29 pairs | 3.7x baseline | **match — morphology** |
+| frame | `x···yx···y` (d4) | mostly cross-word | 28 pairs | below chance | **residual — unexplained** |
+
+The single and adjacent-bigram shapes fit inside a word and are the *same*
+phenomenon: real runeglish repeats single runes and bigrams at distance 5
+(morphemes, affixes), and the walk's `g^5=id` echo passes them through. The
+frame shape spans 10 positions — longer than almost every word — so it is
+inherently cross-word (its both-within cell is structurally near-empty, see the
+word-boundary reconciliation above), and it is NOT present in plaintext, so the
+echo cannot produce it. Details below.
+
+The MONOGRAPHIC half is already established: the within-word
 `P[i]=P[i+5]` coincidence in real runeglish (IoC ~1.60 on Gutenberg prose;
 6.0% on solved LP plaintext) matches the LP ciphertext echo (IoC 1.43, CI
 [1.15,1.72], contains 1.60) — see `d5-partial-alphabet-leak.md` and
