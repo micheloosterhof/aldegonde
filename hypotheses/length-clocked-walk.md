@@ -134,6 +134,17 @@ newlines are line wraps (words flow across them).
 - **Base re-key is thorough.** No cross-word d5 echo at any (first-word-length,
   distance) cell; first letters of adjacent words are independent; the word
   boundary is a hard cut of the alphabet.
+- **Long words add nothing but the echo** (`long-word-structure.md`). The
+  1,124 words of length ≥ 5 are the only ones exercising `g³`, `g⁴` and
+  the `g⁵ = id` return internally, so a length-dependent or
+  state-accumulating mechanism would show there first. Measured against
+  doublet-aware surrogates: doublet suppression is flat across length
+  classes (0.0066 / 0.0055 / 0.0069), cross-word collisions among long
+  words sit at chance through 4-rune prefixes and 4-rune substrings,
+  positional rune distributions are uniform, and the in-word repeated-
+  bigram excess decomposes ENTIRELY into separation 5 (z = +6.8 there,
+  z = +0.6 excluding it). Nothing accumulates inside a word beyond the
+  period-5 relation.
 - **The first-order channel batteries verify the model's structural
   predictions at full power (July 2026).** The model makes three sharp
   claims about pairwise structure, and all three are confirmed:
