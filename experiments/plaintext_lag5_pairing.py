@@ -5,10 +5,14 @@ destroys P[i]'s information, so the only coherent lag-5 ciphertext match is
 where P[i]=P[i-5] AND the alphabet repeats (g^5=id). Then the {1,4} PAIRING in
 ciphertext equals the {1,4} pairing of the PLAINTEXT's own lag-5 self-matches.
 
-So the whole question reduces to plaintext: do real runeglish lag-5 within-word
-self-matches cluster at separations 1 and 4 more than 2,3,5? If yes, the walk
-alone produces both faces and no copy overlay is needed. If no, the
-plaintext-through-echo story fails and something else is required.
+The MONOGRAPHIC echo is already known to match: real runeglish within-word
+P[i]=P[i+5] is IoC ~1.60 (Gutenberg prose) / 6.0% (solved LP plaintext) vs LP
+ciphertext 1.43 / 4.9% -- see d5-partial-alphabet-leak.md and
+per-word-related-alphabets.md. This test adds the PAIRING layer: do real
+runeglish lag-5 within-word self-matches cluster at separations 1 and 4 more
+than 2,3,5? If d1/d4 are both present, the walk echo produces the whole {1,4}
+structure with no copy overlay; if only some separations are, that isolates
+which part of the pairing the plaintext leak explains.
 
 Pairing definitions (matching lag5-digraph-structure.md): with M[i] =
 [x[i]==x[i+5]], a pair at separation d is M[i] and M[i+d] both set. d=1 is a

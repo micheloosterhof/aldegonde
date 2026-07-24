@@ -156,10 +156,16 @@ information-preserving version is a copy that fires exactly where
 walk's `g^5=id`, positions 5 apart in a word already share the alphabet, so
 `P[i]=P[i-5]` gives `C[i]=C[i-5]` automatically. The "copy" IS the echo.
 
-That collapses the pairing question to a plaintext question: are the {1,4}
-pairs present in the runeglish PLAINTEXT's own lag-5 self-matches? Measured
-on 55k real runeglish words (`experiments/plaintext_lag5_pairing.py`,
-within-word, morphology-shuffle null):
+The MONOGRAPHIC half of this is already established: the within-word
+`P[i]=P[i+5]` coincidence in real runeglish (IoC ~1.60 on Gutenberg prose;
+6.0% on solved LP plaintext) matches the LP ciphertext echo (IoC 1.43, CI
+[1.15,1.72], contains 1.60) — see `d5-partial-alphabet-leak.md` and
+`per-word-related-alphabets.md`. So single-rune lag-5 repeats are known to
+be plaintext passing through the walk echo. The open question this test
+adds is the PAIRING layer: are the {1,4} pairs present in the runeglish
+plaintext's own lag-5 self-matches? Measured on 55k real runeglish words
+(`experiments/plaintext_lag5_pairing.py`, within-word, morphology-shuffle
+null):
 
 | separation | real plaintext | shuffled null | verdict |
 |---|---|---|---|
