@@ -223,6 +223,35 @@ meet in the middle, and only the d1 half has a mechanism. The
 cross-word component of the test uses concatenated dictionary words (random
 adjacency), so only the within-word rows are load-bearing.
 
+## The d4 anatomy: no wiring equations (July 2026)
+
+The hope that the d4 events could become cross-word key equations under
+the walk is closed (`experiments/d4_frame_anatomy.py`). Reading a lag-5
+match as an ALPHABET coincidence forces Π(g^(a_v)σ) = g^m across its b
+crossed boundaries; per leg:
+
+- b=1 is **impossible** (σ ∉ ⟨g⟩, `sigma-power-step.md`) — and 29 of the
+  56 legs (21 of 28 events) cross exactly one boundary, so most of the d4
+  face cannot be alphabet-coincidence structure at all.
+- b=2 legs carry no free information: geometry forces the relation
+  σ g^a σ = g^(a+2) identically (distance 5 makes t = a+2 a tautology —
+  do NOT re-derive "σ² = g²" from the event list; only the middle-word
+  length class a is data).
+- The direct per-cell test — mono lag-5 match rate by (b, middle-class)
+  geometry, far more powerful than the 28 events — shows NO active
+  relation: every b=2 cell sits at 1/29 (z = +0.5..+0.8, no
+  concentration; the a=0 cell where σ²=g² would predict rate 0.058 is at
+  0.0415, z = +0.63), b=1 is at chance as required, and only b=0 shows
+  the known echo (+3.7).
+- Event geometry matches the random-position null in every dimension
+  (b-distribution 11/29/16 vs 8.9/31.7/14.6; both-legs-explainable
+  events 7/28 vs 5.4 expected).
+
+Net: the d4 excess has no geometric, mechanical, or key-equation handle.
+Given it is also below chance in plaintext and family-blind p ≈ 0.033,
+the parsimonious reading is a count excess compatible with scan noise;
+it stays on the books as unexplained but is no longer an attack surface.
+
 ## What could explain it (open)
 
 The constraint for future hypotheses: a mechanism must generate consecutive
@@ -266,6 +295,8 @@ Still open:
 - `experiments/lag5_digraph_chase.py` — full reproduction of every number
   in this file.
 - `experiments/aligned_kappa_nulls.py` — the original detection.
+- `experiments/d4_frame_anatomy.py` — the d4 boundary-geometry anatomy and
+  the per-cell σ-relation test (all negative).
 - `experiments/lag5_word_boundary.py` — the word-boundary reconciliation
   (joint paired/isolated x within/across decomposition and permutation
   nulls); core statistics live in `aldegonde.analysis.coincidence`
@@ -289,5 +320,7 @@ word-boundary-aware, in Cicada's ink. After the July 2026 split, the two
 faces have different standing: the d1 face (and the single-rune echo) is
 accounted for as plaintext morphology passing through a period-5
 same-alphabet echo; the d4 frame face is absent from plaintext and remains
-the lone unexplained lag-5 structure. Whatever produces it sees word
-boundaries and couples positions 5 apart across them.
+the lone unexplained lag-5 count excess — but the July 2026 anatomy shows
+it carries no geometric or key-equation structure (most of its legs cannot
+be walk alphabet-coincidences, and no σ-relation cell is enriched), so it
+is kept as a watch-item compatible with scan noise, not an attack surface.

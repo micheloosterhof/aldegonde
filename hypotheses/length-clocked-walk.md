@@ -164,8 +164,12 @@ newlines are line wraps (words flow across them).
   matches, the d1 face (`XY···XY`) is plaintext morphology passing through
   the `g⁵=id` echo — accounted for. The d4 face ((1st,5th)-of-5 frame,
   largely cross-word) is BELOW chance in real runeglish plaintext, so the
-  echo cannot pass it through; it is the one lag-5 structure with no
-  mechanism in this model. See `lag5-digraph-structure.md`.
+  echo cannot pass it through. The July 2026 anatomy
+  (`experiments/d4_frame_anatomy.py`) found no walk-compatible structure
+  in it either (most legs cross one boundary, where alphabet coincidence
+  is impossible given σ ∉ ⟨g⟩; no σ-relation geometry cell enriched), so
+  it stands as a count excess compatible with scan noise rather than
+  as evidence against the model. See `lag5-digraph-structure.md`.
 - **The rune-S echo is unexplained.** 11 of the ~41 excess d5 pairs echo
   the single ciphertext rune S (p=2.4e-6, Bonferroni-clean). Under a
   value-randomizing base the echoed rune should be uniform, so this argues
