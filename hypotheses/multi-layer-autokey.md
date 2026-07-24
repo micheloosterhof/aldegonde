@@ -22,16 +22,17 @@ Beaufort). Decryption requires reversing both passes in the correct order.
 ## Evidence for
 
 - Explains why simple autokey decryption does not produce readable text
-- Doublet suppression compounds across layers: each pass independently
-  suppresses doublets
 - Both passes preserve the statistical signature (flat distribution, no
   Friedman period)
 
 ## Evidence against
 
-- **Doublet rate arithmetic**: Double autokey would square the doublet
-  suppression, pushing the rate from ~3.45% to ~0.12%. The observed 0.66% is
-  much higher.
+- **Doublet rate arithmetic**: Autokey feedback alone does not suppress
+  doublets (see `accumulator-autokey.md`): under a ciphertext-autokey outer
+  pass, C[i] = C[i-1] exactly when the intermediate stream hits one specific
+  value, and the intermediate stream is near-uniform — predicting ~3.45%.
+  The observed 0.66% is 5x lower; no stack of standard autokey passes
+  produces suppression.
 - **Peel-and-split disproof**: After peeling the outer layer (trying both
   Beaufort and Vigenere), the intermediate text M was split by M[i-1]. If the
   inner layer were standard autokey, each group's IOC should be English-like
@@ -52,5 +53,8 @@ None yet. The peel-and-split test was run inline.
 
 Disproved. Peeling the outer autokey layer and applying the split test to the
 intermediate text shows random IOC, ruling out standard autokey as the inner
-layer. Combined with the doublet rate mismatch (0.66% vs predicted 0.12%),
-double standard autokey is eliminated.
+layer. Combined with the doublet rate mismatch (0.66% observed vs ~3.45%
+predicted, since autokey passes do not suppress doublets), double standard
+autokey is eliminated. The peel covers Beaufort/Vigenere outer layers;
+custom-TR outer layers are closed instead by the depth-L split tests in
+`ciphertext-autokey.md`, which are TR-agnostic.

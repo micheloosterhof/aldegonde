@@ -80,19 +80,24 @@ variants above, any constants, any operations — extending the earlier
 single-tap depth-1..8 split tests.
 
 **The general obstruction** (from `README.md` structural constraint 1
-and the reference-encoder note): deterministic emission cannot produce
-the doublet suppression at all — for any fixed history exactly one
-plaintext value creates a doublet, so the rate stays ~3.4%. The 0.66%
-requires non-deterministic rejection (output-watching redraw). No
-algebra escapes this.
+and the reference-encoder note): for any fixed history exactly one
+plaintext value creates a doublet, so an UNTUNED deterministic emission
+stays at ~3.4% — the doublet-forcing value lands on plaintext at the
+average rate. No arithmetic form escapes: affine relations cannot get
+below 1.25%. The known deterministic escape is a general mixed
+permutation whose adjacent-alphabet relation is tuned to rare plaintext
+bigrams (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) — the length-clocked walk
+family — which is not a two-tap value form and is untouched by this
+file (see the header note). Within the algebraic class tested here, the
+obstruction holds.
 
 ## What survives
 
-The observed structure needs exactly what the algebra cannot supply:
-non-determinism (an OTP-grade key with a rejection rule) plus a
-word-aware, shape-aware, sub-availability marking of plaintext repeats
-— the conditional key-reuse / back-reference encoder of
-`lag5-back-reference.md`.
+The observed structure needs what two-tap value algebra cannot supply:
+either non-determinism (an OTP-grade key with a rejection rule,
+`stream-cipher-no-repeat.md` / `lag5-back-reference.md`) or a
+state-clocked mixed-permutation substitution with a bigram-tuned
+alphabet relation (`length-clocked-walk.md`, the current lead model).
 
 ## Scripts
 
@@ -110,8 +115,8 @@ word-aware, shape-aware, sub-availability marking of plaintext repeats
 ## Verdict
 
 Disproved on four independent grounds: the algebra yields
-proportionality rather than equality (28x too weak), deterministic
-emission cannot suppress doublets, the simulated fingerprints miss on
+proportionality rather than equality (28x too weak), untuned
+deterministic emission cannot suppress doublets, the simulated fingerprints miss on
 every diagnostic (doublets, triplets, unigrams, usage word-awareness),
 and the joint two-tap split test on the real corpus (mean group nIoC
 1.028 vs the forced ~1.7) excludes the entire deterministic

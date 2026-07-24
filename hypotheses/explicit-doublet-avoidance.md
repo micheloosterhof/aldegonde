@@ -10,7 +10,9 @@ replaces or shifts doublets to suppress them.
 
 ## Status
 
-**Status**: disproved
+**Status**: disproved (deterministic local fixes; a stochastic partial
+re-draw is observationally equivalent to emission-time avoidance, tracked
+in `stream-cipher-no-repeat.md`)
 
 ## Mechanism
 
@@ -26,12 +28,17 @@ underlying cipher.
 
 ## Evidence against
 
-- **Geometric doublet spacing**: The spacings between doublets follow a
-  geometric distribution, which is the signature of independent random events
-  with probability p ~= 0.0068. A post-processing rule that "fixes" doublets
-  would produce a different spacing distribution: the minimum spacing would be
-  anomalous (no closely-spaced doublets), and the distribution would deviate
-  from geometric.
+- **Deterministic fixes leave fingerprints that are absent**: an
+  increment/swap rule applied to every doublet would drive the rate to ~0
+  (observed 0.66%) and inflate specific repair bigrams such as (c, c+1) —
+  but the off-diagonal bigram matrix is uniform (`bigram-ioc.md`, chi-sq
+  p=0.23) and the doublet spacing stays geometric.
+- **A stochastic partial fix is not excluded — it is a reformulation**: a
+  post-processor that re-draws ~80% of doublets is a memoryless thinning of
+  doublet events, observationally near-identical to avoiding them at
+  emission time. The spacing and bigram statistics cannot distinguish the
+  two. That mechanism is not disproved here; it is the open
+  `stream-cipher-no-repeat.md`.
 - **Doublets are natural**: The observed doublets (86 in the clean corpus)
   behave as if they arise
   naturally from the cipher mechanism, not as residual errors that slipped
@@ -43,5 +50,8 @@ underlying cipher.
 
 ## Verdict
 
-Disproved. The geometric spacing distribution of doublets indicates they are
-natural products of the cipher mechanism, not artifacts of post-processing.
+Disproved for deterministic repair rules (increment/swap/local transform):
+they predict either a ~0% doublet rate or repair-bigram structure, and
+neither is observed. The stochastic partial-re-draw variant is
+observationally equivalent to emission-time doublet avoidance and is
+tracked as `stream-cipher-no-repeat.md`, not disproved by this file.

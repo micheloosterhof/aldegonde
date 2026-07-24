@@ -10,7 +10,9 @@ operating on fixed-size blocks of runes.
 
 ## Status
 
-**Status**: disproved
+**Status**: disproved (boundary-blind fixed-block ciphers, assuming
+authentic word boundaries; the five-block edge-effect variant is tracked
+separately in `five-block-boundary.md`)
 
 ## Mechanism
 
@@ -28,15 +30,23 @@ structure).
 - **Word boundaries preserved**: Block ciphers operate on fixed-size blocks and
   would not respect word boundaries. The ciphertext has word boundaries that
   match English word-length distributions, with words of varying length. This is
-  incompatible with fixed-block processing.
-- **No block structure**: There is no evidence of block-aligned patterns in the
-  ciphertext at any block size.
+  incompatible with fixed-block processing. (This argument assumes the word
+  boundaries are authentic; `word-length-keystream-and-boundaries.md` carries
+  "possibly synthetic boundaries" as unresolved, so the disproof is
+  conditional on that.)
+- **No fixed-phase block lattice**: doublet positions and gaps are flat mod 5
+  and pairwise dependence is null at every distance 2-100
+  (`five-block-boundary.md`, `pairwise-dependence.md`) — no positional block
+  alignment shows at any tested size.
 
 ## Scripts
 
-None needed.
+None here; the lattice evidence lives with `five-block-boundary.md` and
+`pairwise-dependence.md`.
 
 ## Verdict
 
-Disproved by the preservation of word boundaries with variable-length words.
-Block ciphers cannot produce this structure.
+Disproved for boundary-blind fixed-block ciphers, conditional on authentic
+word boundaries. This does not cover block-structured mechanisms with edge
+effects and drifting phase — that variant is `five-block-boundary.md` and
+remains unresolved.

@@ -43,11 +43,11 @@ proposed mechanisms scored against them.
 | [autokey-with-keyword.md](autokey-with-keyword.md) | Autokey with Keyword Interleaving | disproved |
 | [beaufort-autokey-ea.md](beaufort-autokey-ea.md) | Beaufort Ciphertext Autokey with 1-Based Indexing (EA Identity) | disproved |
 | [bifid-fractionation.md](bifid-fractionation.md) | Bifid or Trifid Fractionation Cipher | disproved |
-| [block-cipher.md](block-cipher.md) | Block Cipher / Substitution-Permutation Network | disproved |
+| [block-cipher.md](block-cipher.md) | Block Cipher / Substitution-Permutation Network | disproved (boundary-blind fixed blocks; five-block edge variant tracked separately) |
 | [ciphertext-autokey.md](ciphertext-autokey.md) | Ciphertext Autokey Cipher | disproved |
 | [doublet-marker-rune-ea.md](doublet-marker-rune-ea.md) | The Doublet Marker Rune is EA | unresolved |
 | [encoding-only.md](encoding-only.md) | Runeglish Encoding Alone Explains the Statistics | disproved |
-| [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved |
+| [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved (deterministic fixes; stochastic re-draw = `stream-cipher-no-repeat.md`) |
 | [first-difference.md](first-difference.md) | First-Difference Cipher | disproved |
 | [five-block-boundary.md](five-block-boundary.md) | Five-Block Cipher with Edge Effects | unresolved |
 | [g-from-5x5-grid.md](g-from-5x5-grid.md) | Constructing the Order-5 Step `g` from a 5×5 Grid | unresolved (construction proposal; arrangement unknown and unverified) |
