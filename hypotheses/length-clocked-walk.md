@@ -128,6 +128,23 @@ newlines are line wraps (words flow across them).
 - **Base re-key is thorough.** No cross-word d5 echo at any (first-word-length,
   distance) cell; first letters of adjacent words are independent; the word
   boundary is a hard cut of the alphabet.
+- **The first-order channel batteries verify the model's structural
+  predictions at full power (July 2026).** The model makes three sharp
+  claims about pairwise structure, and all three are confirmed:
+  (a) WITHIN WORDS only distance matters — c[j] = base_w(g^(j mod 5)(p[j]))
+  forces every position-pair relation to depend on k−j alone, and the
+  full (j,k) grid is translation-invariant at every distance with no
+  conditional structure (`word-position-pairs.md`); (b) at the SEAM the
+  boundary factors cancel, so the previous word's last rune constrains
+  the next word only through the σ-diagonal at reach 1 — measured: the
+  suppression is confined to reach 1, reaches 2-6 are at chance, the
+  diagonal rate is independent of word length, and the conditional
+  channel is empty at depth 1 and 2 (`seam-channel-clean.md`); (c) the
+  full ADJACENCY matrix is flat in every decomposition — off-diagonal,
+  direction, within-vs-cross-word (identical distributions), and
+  within-word phase (`bigram-ioc.md`, full battery). Every first-order
+  channel of the corpus is closed, and each closure is a prediction of
+  this model rather than a retrofit.
 - **DJU-BEI (`ᛞᛄᚢ·ᛒᛖᛁ`).** A 6-rune, two-word (3+3) refrain that *closes*
   section 9 and recurs mid-section-6. Same ciphertext ⟹ `base_1477 =
   base_2926` — a state return of the deterministic walk. Both words length 3,
