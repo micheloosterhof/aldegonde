@@ -126,7 +126,10 @@ the unsolved section are statistically indistinguishable from words at
 random positions — consistent across every section with >= 8 marks
 (per-section final means 3.91-4.91, none elevated). Supporting facts:
 "sentences" average 19.7 words (median 14, max 182) vs 8.9 in the solved
-pages. (An earlier claim here — "'.'-density varies four-fold across
+pages. (Denominator convention: the corpus has 168 '.' marks but only 149
+carry a qualifying sentence-final word; 19.7 is words per qualifying
+sentence, while README's 17.3-vs-8.0 figures are words per mark — same
+signal, different denominator.) (An earlier claim here — "'.'-density varies four-fold across
 sections and two sections have no marks" — does not hold at the
 `$`-section level: all ten clean sections have marks at rates consistent
 with one homogeneous Poisson process, chi2 ~ 6 on 8 df; see

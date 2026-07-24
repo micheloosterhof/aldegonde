@@ -79,7 +79,7 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 | Page-aligned kappa | ratio 1.002 (z=+0.2) | 1.0 | No shared keystream resetting at page/section boundaries |
 | Triplets | 0 | ~15 | Complete absence |
 | Friedman test | No period | — | No polyalphabetic key length signal |
-| Word boundaries | Preserved | — | Convention: a line break is NOT a word break (words wrap across lines); merged, the clean corpus has 2,928 words (2,953 with the solved AN END page included), mean 4.42 runes, English-like shape (solved pages: 4.01, Parable: 4.75 — within the author's stylistic range). Sentences run much longer than solved pages (17.3 vs 8.0 words, p=7e-6) |
+| Word boundaries | Preserved | — | Convention: a line break is NOT a word break (words wrap across lines); merged, the clean corpus has 2,928 words (2,953 with the solved AN END page included), mean 4.42 runes, English-like shape (solved pages: 4.01, Parable: 4.75 — within the author's stylistic range). Sentences run much longer than solved pages (17.3 vs 8.0 words per '.' mark, p=7e-6; per *qualifying* sentence the same signal reads 19.7 vs 8.9 — see `word-length-keystream-and-boundaries.md`) |
 | Off-diagonal bigrams | Uniform (chi-sq p=0.23) | — | No structure beyond doublet suppression |
 | Repeated 7-gram ᛞᛄᚢᛒᛖᛁᚫ | 1 (word-aligned) | 0.005 | 6,395 runes apart (= 5 x 1279, both prime); key-state recurrence; see `repeated-phrase-dju-bei.md` |
 | Word transform pairs (shift/beaufort/affine/reversal/rotation/anagram) | At chance | — | Excludes ALL per-word constant-transform ciphers; see `word-transform-census.md` |
