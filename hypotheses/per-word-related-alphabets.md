@@ -232,11 +232,11 @@ cipher's `g`; the real `g` is a mixed order-5 permutation.
   mechanism; this recasts the trigger as a feedback-free bigram-class relation.
 - `autokey-plus-substitution.md`, `affine-autokey.md`, the quagmire notes —
   neighbouring polyalphabetic families.
-- `rune-s-lag5-echo.md` — the S-at-d5 finding (11 vs 1.75, Bonferroni-clean,
-  p=2.4e-6) is UNEXPLAINED by this model: the echo value is
-  `base_word`-dependent, so no rune should dominate structurally. Either the
-  S-dominance is an n=11 fluke or it is evidence against a value-randomizing
-  per-word base. Unresolved — see that file; do not treat it as retired.
+- `rune-s-lag5-echo.md` — the S-at-d5 finding (11 vs 1.75 under the
+  frequency-weighted null). RESOLVED July 2026: under base-scrambling
+  models the echoed identities are near-uniform and word-clustered, and
+  simulation puts the 11-max at P ≈ 0.08-0.15 — expected-level, not
+  evidence against a value-randomizing per-word base. See that file.
 
 ## Verdict
 

@@ -177,10 +177,9 @@ There are three lag-5 repeat shapes, and each has a different status:
 The single and adjacent-bigram shapes fit inside a word and are the *same*
 phenomenon: real runeglish repeats single runes and bigrams at distance 5
 (morphemes, affixes), and the walk's `g^5=id` echo passes them through.
-(One standing caveat on the echo rows: the echoed runes are S-dominated —
-`rune-s-lag5-echo.md`, p=2.4e-6 — which a value-randomizing base would not
-produce; "match" here means the rates match, not that the rune-identity
-question is closed.) The
+(The rune-identity question on the echo rows is resolved: the S-dominance
+is expected-level under base-scrambling models, P ≈ 0.08-0.15 — see
+`rune-s-lag5-echo.md`.) The
 frame shape spans 10 positions — longer than almost every word — so it is
 inherently cross-word (its both-within cell is structurally near-empty, see the
 word-boundary reconciliation above), and it is NOT present in plaintext, so the

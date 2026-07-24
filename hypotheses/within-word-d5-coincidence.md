@@ -171,11 +171,11 @@ single-rune echo (`x····x`) and the adjacent-bigram repeat (`xy···xy`, th
 eight `XY···XY` words / nine d1 events). Both are consistent with real
 runeglish morphology passing through the walk's `g^5=id` echo (plaintext
 ~1.60 IoC / 3.7x baseline matching the ciphertext) — see the plaintext test
-and the consolidated three-pattern table in `lag5-digraph-structure.md` —
-with one standing caveat: the echoed runes are S-dominated
-(`rune-s-lag5-echo.md`, p=2.4e-6), which a value-randomizing base would not
-produce, so "morphology through the echo" is the best current account, not
-a closed question. The THIRD shape, the frame
+and the consolidated three-pattern table in `lag5-digraph-structure.md`.
+(An earlier caveat here — the S-dominance of the echoed runes as possible
+evidence against a value-randomizing base — is resolved: under
+base-scrambling the concentration is expected-level, P ≈ 0.08-0.15; see
+`rune-s-lag5-echo.md`.) The THIRD shape, the frame
 `x···yx···y` (d4), spans 10 positions and is mostly cross-word, is absent from
 plaintext, and remains the lone lag-5 residual — it is documented there, not
 here.

@@ -16,13 +16,32 @@ twice the next rune's contribution.
 
 ## Status
 
-**Status**: plausible (verified anomaly; mechanism unknown)
+**Status**: confirmed (characterization) — significance is null-dependent:
+p = 2.4e-6 against identity-preserving nulls, but P ≈ 0.08-0.15 under
+base-scrambling models like the walk (July 2026, see below)
 
 Found by inspection of the matched runes, then confirmed against a
 distance-specific, position-controlled null. Robust: Bonferroni-clean, spread
 over 11 distinct words in 7 of 10 sections, and confined to exactly d=5. The
 lens (within-word, distance 5, echoed-rune identity) was chosen after seeing
 the lag-5 excess, so read the significance as strong-but-directed.
+
+**The walk-null resolution (July 2026,
+`experiments/rune_s_walk_test.py`).** The 2.4e-6 figure holds S to its own
+frequency- and position-weighted expectation (1.75 pairs) — the right null
+for any mechanism where the echoed ciphertext rune tracks a fixed identity.
+Under the length-clocked walk the echoed rune is base_w(g^j(p)), scrambled
+per word, so echo identities are near-uniform and CLUSTER within words
+(one base per word). Simulating the walk on register plaintext with the LP
+word-length structure (400 runs, random tuned g/σ/base₀): mean max-rune
+count 9.2, **P(max ≥ 11) = 0.15** (0.08 conditioned on LP-like totals). An
+11-of-102 concentration is a ~1-in-12 event under the walk — no tension.
+The fixed-channel escape (a rune fixed by g and σ giving a constant image)
+is separately excluded by arithmetic: carrying 11 echoes needs a ~5.8%
+plaintext channel, while S's flat unigram count (434 vs 446.8) allows
+≤ 0.43% — a ~176x deficit in pairs. Net: the S concentration is REAL, it
+still refutes identity-preserving mechanisms at 2.4e-6, and it is
+unremarkable under base-scrambling models.
 
 ## What was measured
 
@@ -143,10 +162,10 @@ it is disproportionately "S repeats at 5, inside a word."
 - `within-word-d5-coincidence.md` — the excess this refines; the excess is
   S-dominated, not rune-agnostic.
 - `per-word-related-alphabets.md` / `length-clocked-walk.md` — under those
-  models the echo value is base-dependent, so no rune should dominate;
-  this finding is therefore either an n=11 fluke or evidence against a
-  value-randomizing per-word base. The tension is open in both directions
-  and neither file resolves it.
+  models the echo value is base-dependent. The July 2026 simulation
+  (Status section) shows base-scrambling makes an 11-max a ~1-in-12
+  event, resolving the tension in the walk's favor: the S-dominance is
+  not evidence against a value-randomizing per-word base.
 - `lag5-digraph-structure.md`, `lag5-back-reference.md`,
   `docs/lag5-phenomenon.md` — the lag-5 structure and the copy-event reading;
   the S-dominance is a new constraint on any proposed copy mechanism.
@@ -155,11 +174,15 @@ it is disproportionately "S repeats at 5, inside a word."
 
 ## Verdict
 
-Verified anomaly, mechanism unknown. The within-word lag-5 coincidence is
-disproportionately carried by the rune S (11 vs 1.75, p = 2.4e-6,
+Verified concentration whose meaning depends on the mechanism class. The
+within-word lag-5 coincidence is disproportionately carried by the rune S
+(11 vs 1.75 under the frequency-weighted null, p = 2.4e-6,
 Bonferroni-clean), specific to distance 5 and to within-word pairs, spread
-across 11 words and 7 sections. This is the first rune-level structure found
-in the echo, and it argues that the lag-5 mechanism is not a value-randomizing
-per-word key. The open question is why S: a non-randomizing cipher component,
-a structural role for Sigel, or a specific plaintext morpheme that survives
-encryption.
+across 11 words and 7 sections. Against identity-preserving mechanisms
+(fixed substitutions, transcription-level or plaintext-level readings of
+the echo) that is a hard refutation. Under base-scrambling models — the
+surviving walk family — simulation puts the same observation at
+P ≈ 0.08-0.15: expected-level clustering, no tension, and the earlier
+inference "argues against a value-randomizing per-word key" is retracted.
+The S-site coherence idea survives only as a generic key-consistency
+check, not as an S-specific filter.

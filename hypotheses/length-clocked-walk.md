@@ -170,12 +170,15 @@ newlines are line wraps (words flow across them).
   is impossible given σ ∉ ⟨g⟩; no σ-relation geometry cell enriched), so
   it stands as a count excess compatible with scan noise rather than
   as evidence against the model. See `lag5-digraph-structure.md`.
-- **The rune-S echo is unexplained.** 11 of the ~41 excess d5 pairs echo
-  the single ciphertext rune S (p=2.4e-6, Bonferroni-clean). Under a
-  value-randomizing base the echoed rune should be uniform, so this argues
-  against — or constrains — the base family. Inherited flag from
-  `per-word-related-alphabets.md`; do not treat it as retired. See
-  `rune-s-lag5-echo.md`.
+- **The rune-S echo — resolved, no tension (July 2026).** 11 of the 102
+  within-word d5 pairs echo the single rune S (p=2.4e-6 against a
+  frequency-weighted null). That null is wrong for this model: under the
+  walk the echoed rune is base-scrambled per word, identities are
+  near-uniform and cluster by word, and simulation gives
+  P(max ≥ 11) = 0.08-0.15 (`experiments/rune_s_walk_test.py`) — a
+  1-in-12 event, not a strike. The concentration still refutes
+  identity-preserving mechanisms; the fixed-channel variant is excluded
+  by unigram arithmetic. See `rune-s-lag5-echo.md`.
 - **Keyword-grid keys are excluded.** `experiments/enumerate_keys.py` drove
   keyword-grid `g` × keyword `σ` through the DJU-BEI/diagonal cascade
   (`experiments/walk_verifier.py`): 0/480 parity-valid pairs give a state

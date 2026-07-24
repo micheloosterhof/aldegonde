@@ -26,7 +26,7 @@ proposed mechanisms scored against them.
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
 | [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization) |
 | [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) |
-| [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | plausible (verified anomaly; mechanism unknown) |
+| [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |
 | [within-word-d5-coincidence.md](within-word-d5-coincidence.md) | Within-Word Distance-5 Coincidence Excess | plausible (verified anomaly; mechanism unknown) |
 | [word-length-keystream-and-boundaries.md](word-length-keystream-and-boundaries.md) | Word-Length Keystream & Boundary Authenticity | confirmed (characterization) |
