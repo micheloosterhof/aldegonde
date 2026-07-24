@@ -5,17 +5,22 @@ type: observation
 
 ## Claim
 
-The unsolved ciphertext contains a repeated 7-rune sequence **ᛞᛄᚢᛒᛖᛁᚫ**
-("DJU BEI AE") at rune offsets **6555 and 12950** of `data/page0-58.txt`
-(distance 6395), with **identical word boundaries** in both occurrences
-(ᛞᛄᚢ-ᛒᛖᛁ-ᚫ…, word-initial both times). Under a doublet-corrected random
-model this has p < 0.001. A second, weaker boundary-consistent repeat
+The unsolved ciphertext contains a repeated 6-rune, two-word sequence
+**ᛞᛄᚢ-ᛒᛖᛁ** ("DJU BEI") at rune offsets **6555 and 12950** of
+`data/page0-58.txt` (distance 6395), with **identical word boundaries** in
+both occurrences (word-initial 3+3 both times). (An earlier 7-gram framing
+**ᛞᛄᚢᛒᛖᛁᚫ** is retracted as contamination: the second occurrence is the
+last six runes of section 9, and its "7th rune" ᚫ is the FIRST rune of the
+solved AN END page — a differently-enciphered system that cannot share key
+state with the unsolved stream. The trailing-ᚫ agreement is a 1/29
+cross-boundary coincidence; only the 6-gram is a cipher-stream repeat.
+Found in the July 2026 clean-corpus re-run of `anchored_repeats.py`.) A second, weaker boundary-consistent repeat
 **ᛁ-ᛗᛝᚣᚪ** occurs at offsets 10671/12764 (distance 2093). The second
 repeat is NOT individually significant: the corpus has 5 repeated
 length-5 classes vs ~4.1 expected by chance
 (`collision-hunt-single-constraint.md`), so only its boundary-consistent
-configuration is suggestive (count-level P = 0.075); treat it as a
-candidate, not an established second state-return.
+configuration is suggestive (count-level P = 0.058, clean re-run); treat it
+as a candidate, not an established second state-return.
 
 This proves the cipher's **key state recurs exactly**, and that the
 recurrence is **word-aligned**. The encryption is a deterministic function
@@ -66,19 +71,19 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
 
 ## Significance
 
-- Expected repeated 7-grams in 12,956 random runes: 0.005. Expected
-  repeated 6-grams: 0.14 (observed: only this one, plus its sub-grams).
+- Expected repeated 6-grams in 12,956 random runes: 0.14 (observed: only
+  this one, plus its sub-grams). The earlier 7-gram expectation (0.005) is
+  retired with the 7-gram framing — see the Claim.
 - Monte Carlo with the real word-length structure and the doublet-corrected
-  Markov null (`experiments/anchored_repeats.py`, 1000 samples): a
-  word-anchored, boundary-consistent repeated run of length >= 7 appeared in
-  **0 of 1000** samples (length >= 6: 1.0%). Counting both observed runs,
-  P(count >= 2 of length >= 5) = 0.075; the joint configuration (one len-7 +
-  one len-5) is < 1e-3.
-- A trigraphic-kappa scan over all 6,517 shifts flags shift 6395 as the
-  strongest outlier (5 hits vs 0.33 expected); all 5 hits are the
-  consecutive trigrams of this single 7-gram, so the kappa scan is only the
+  Markov null (`experiments/anchored_repeats.py`, clean corpus): a
+  word-anchored, boundary-consistent repeated run of length >= 6 appears in
+  ~1.0% of samples. Counting both observed runs,
+  P(count >= 2 of length >= 5) = 0.058.
+- A trigraphic-kappa scan over all shifts flags shift 6395 as the
+  strongest outlier (4 hits vs 0.3 expected, z = +7.2); all 4 hits are the
+  consecutive trigrams of this single 6-gram, so the kappa scan is only the
   detector — the significance figures above come from the maximal-repeat
-  framing, which correctly treats the 7-gram as one event.
+  framing, which correctly treats the 6-gram as one event.
 
 ## Negative results that bound the mechanism
 

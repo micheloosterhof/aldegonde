@@ -83,7 +83,7 @@ single-bit-flip nudge.
 - If the PRNG is identified, subtracting trial keystreams must account for
   re-key events, so naive positional subtraction will fail even with the
   right generator (same loophole as the AN END interrupts).
-- The word-aligned repeated 7-gram (`repeated-phrase-dju-bei.md`) is hard to
+- The word-aligned repeated 6-gram (`repeated-phrase-dju-bei.md`) is hard to
   reconcile with a position-driven keystream: if the keystream states at the
   two locations were equal they would stay synchronized past the 7 runes
   (LFSR-style states evolve deterministically), but the match dies

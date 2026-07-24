@@ -27,7 +27,7 @@ Possible forms:
 - Word boundaries are preserved — the cipher is clearly word-aware
 - Defeats the rune-level split test because the key changes per word, not
   per rune
-- The 7-gram repeat spans aligned word boundaries, suggesting word-level
+- The 6-gram repeat spans aligned word boundaries, suggesting word-level
   structure (now fully characterized in `repeated-phrase-dju-bei.md`:
   p < 0.001, word-initial both times, plus a second aligned repeat
   candidate ᛁ-ᛗᛝᚣᚪ that does not clear chance on its own. The words *preceding* the two occurrences are ᛒᚠ and

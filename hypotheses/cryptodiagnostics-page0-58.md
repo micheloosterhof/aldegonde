@@ -126,23 +126,27 @@ dozens, treated as noise.
 
 ### Lead 1: the word-aligned repeated phrase ᛞᛄᚢ-ᛒᛖᛁ
 
-The corpus's single longest repeat is a **7-gram** that is exactly **two
-complete words plus the first rune of the next word**, identically aligned in
-both copies:
+The corpus's single longest repeat is a **6-gram** that is exactly **two
+complete words**, identically aligned in both copies (an earlier 7-gram
+reading counted the next rune too — retracted, see below):
 
 ```
 ... ᛒᚠ      | ᛞᛄᚢ ᛒᛖᛁ | ᚫᚠ ...      position 6555, section 6, words 1477-78
 ... ᚳᛠᛁᛗᚳᛉ | ᛞᛄᚢ ᛒᛖᛁ | ᚫᛄ ...      position 12950, section 9, words 2926-27
 ```
 
-- Both copies are word-initial, with the same 3+3 word-length split, and the
-  following word starts with the same rune (ᚫ) both times.
+- Both copies are word-initial, with the same 3+3 word-length split.
 - Distance: 6,395 runes = 5 × 1279 (1279 prime); 1,449 words apart.
 - The second copy is the **last two words of section 9**, immediately before
-  the section break that precedes the solved AN END page.
-- Chance expectation for any repeated 6-gram in 13k runes is ~0.1 pairs
-  (observed repeated 6/7-grams are all inside this one phrase); the word
-  alignment makes it rarer still. This is a p ≈ 0.005-level event.
+  the section break that precedes the solved AN END page. The "following
+  word starts with ᚫ both times" observation is why this was once read as a
+  7-gram — but the second ᚫ is the FIRST rune of AN END, a differently
+  enciphered solved page, so that agreement is a 1/29 cross-boundary
+  coincidence carrying no key-state information. Only the 6-gram is a
+  cipher-stream repeat.
+- Chance expectation for any repeated 6-gram in 13k runes is ~0.14 pairs
+  (observed repeated 6-grams are all inside this one phrase); the word
+  alignment makes it rarer still (~1% in the anchored Monte Carlo).
 - Under any continuous stream/running-key model this requires the keystream
   to repeat exactly when the plaintext repeats — i.e. it favors mechanisms
   with **word-level state that can coincide** (the same two plaintext words
