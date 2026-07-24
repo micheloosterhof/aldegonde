@@ -39,7 +39,11 @@ paired events: outside them, mono matches are at chance. The phenomenon is
 purely about pairs.
 
 Plain digraphic kappa (the d=1 component alone, 29 vs 15.4, +3.5 sigma) is
-NOT globally significant by itself — a max over lags 2..150 in null text
+NOT globally significant by itself. (The two expectations for the same
+observed 29 are two nulls: 15.4 is the unconditional uniform digraph rate,
+12,950/29² — the figure in `README.md` — while the table's 17.7 conditions
+on the observed 479 mono matches, 479·478/12,950; both are correct for
+their question.) It is also not globally significant — a max over lags 2..150 in null text
 reaches +3.47 about 38% of the time, and lag 129 scores +3.78 in the real
 text. The significance comes from the joint d=1 + d=4 statistic, which
 survives max-over-lags correction at p ~= 0.01 and replicates in both halves.
@@ -50,7 +54,7 @@ component and landed exactly on the complementary separation 5-1=4.
 ## Re-assessment (fresh look, family-blind)
 
 A re-examination without the hand-picked pattern family
-(`/tmp` analysis re-run; key numbers below):
+(`experiments/lag5_freshlook.py`; key numbers below):
 
 - **Family-blind 2D scan**: over ALL 174 cells (lag L = 2..30, separation
   d = 1..6), the top two cells of the entire grid are (5,1) = 29 and
@@ -116,8 +120,9 @@ word-length sequence over the byte-identical rune stream):
 
 Both components are word-boundary-aware; "events freely cross word
 boundaries" is **falsified**. Per pair event: 9 of the 29 d1 events are
-entire in-word digraph repeats — exactly the nine `XY···XY` words listed
-in `within-word-d5-coincidence.md` — vs 2 one-side and 18 outside. For d4
+entire in-word digraph repeats — sitting in the eight `XY···XY` words
+listed in `within-word-d5-coincidence.md` (the SDNG trigram word carries
+two overlapping events) — vs 2 one-side and 18 outside. For d4
 events the both-within cell is structurally near-empty (an event spans 10
 positions, longer than almost every word): 1 both-within, 9 one-side, 18
 outside. That geometry is why the d4 face genuinely reaches across
@@ -171,7 +176,11 @@ There are three lag-5 repeat shapes, and each has a different status:
 
 The single and adjacent-bigram shapes fit inside a word and are the *same*
 phenomenon: real runeglish repeats single runes and bigrams at distance 5
-(morphemes, affixes), and the walk's `g^5=id` echo passes them through. The
+(morphemes, affixes), and the walk's `g^5=id` echo passes them through.
+(One standing caveat on the echo rows: the echoed runes are S-dominated —
+`rune-s-lag5-echo.md`, p=2.4e-6 — which a value-randomizing base would not
+produce; "match" here means the rates match, not that the rune-identity
+question is closed.) The
 frame shape spans 10 positions — longer than almost every word — so it is
 inherently cross-word (its both-within cell is structurally near-empty, see the
 word-boundary reconciliation above), and it is NOT present in plaintext, so the
@@ -199,7 +208,8 @@ So:
   distance 5 (morpheme and affix repetition); the walk's echo passes those
   through as `XY···XY` ciphertext with no extra mechanism and no lost
   information. This is the coherent, overlay-free account, and it predicts
-  the nine in-word `XY···XY` words of `within-word-d5-coincidence.md`.
+  the nine in-word d1 events (eight `XY···XY` words) of
+  `within-word-d5-coincidence.md`.
 - **The d4 face is NOT a plaintext feature** — real runeglish has d4 *below*
   chance — so the walk echo cannot produce it. The (1st,5th)-of-5 frame
   pairing remains genuinely unexplained.
@@ -273,7 +283,11 @@ Still open:
 
 ## Verdict
 
-Real structure at global p ~= 0.01, the first statistically significant
-deviation from randomness in the unsolved corpus beyond doublet suppression.
-The cipher is NOT a clean stream cipher: something in its mechanics couples
-positions 5 apart, in pairs bracketing 5-gram windows.
+Real pairing structure: family-blind global significance p ~= 0.033 (the
+earlier p ~= 0.01 used the hand-picked {1, L-1} family), split-half stable,
+word-boundary-aware, in Cicada's ink. After the July 2026 split, the two
+faces have different standing: the d1 face (and the single-rune echo) is
+accounted for as plaintext morphology passing through a period-5
+same-alphabet echo; the d4 frame face is absent from plaintext and remains
+the lone unexplained lag-5 structure. Whatever produces it sees word
+boundaries and couples positions 5 apart across them.

@@ -89,9 +89,11 @@ result that doublet suppression ignores word boundaries.
 
 ## The repeated-n-gram sub-pattern
 
-Nine words contain a repeated bigram (one a repeated **trigram**) at
-distance exactly 5 — uniform-random expectation 1.5, permutation null
-2.8 ± 1.6:
+Eight words contain a repeated bigram (one a repeated **trigram**) at
+distance exactly 5, for nine adjacent-match events in total — the SDNG
+trigram word carries two overlapping bigram repeats. (Uniform-random
+expectation 1.5 events, permutation null 2.8 ± 1.6.) A ninth word,
+listed last, has two isolated matches and no bigram repeat:
 
 ```
 ᛋᛞᛝᚷᛚᛋᛞᛝ      S·D·NG·G·L·S·D·NG     trigram SDNG ··· SDNG
@@ -139,7 +141,7 @@ row — vanishingly rare under any position-independent stream model.
 
 - Any candidate decryption should place matching plaintext runes (or a
   shared key relation) at the 102 (k, k+5) pairs, and especially should
-  explain the nine `XY···XY` words as repeated plaintext fragments.
+  explain the eight `XY···XY` words as repeated plaintext fragments.
 - If the mechanism is per-word-key periodicity, words sharing a key state
   should show pairwise correlations beyond d=5 — testable by clustering the
   91 hit-words by section/page position.
@@ -162,10 +164,14 @@ row — vanishingly rare under any position-independent stream model.
 
 This file covers the two distance-5 shapes that fit inside a word — the
 single-rune echo (`x····x`) and the adjacent-bigram repeat (`xy···xy`, the
-nine `XY···XY` words). Both are now understood as real runeglish morphology
-passing through the walk's `g^5=id` echo (plaintext ~1.60 IoC / 3.7x baseline
-matching the ciphertext) — see the plaintext test and the consolidated
-three-pattern table in `lag5-digraph-structure.md`. The THIRD shape, the frame
+eight `XY···XY` words / nine d1 events). Both are consistent with real
+runeglish morphology passing through the walk's `g^5=id` echo (plaintext
+~1.60 IoC / 3.7x baseline matching the ciphertext) — see the plaintext test
+and the consolidated three-pattern table in `lag5-digraph-structure.md` —
+with one standing caveat: the echoed runes are S-dominated
+(`rune-s-lag5-echo.md`, p=2.4e-6), which a value-randomizing base would not
+produce, so "morphology through the echo" is the best current account, not
+a closed question. The THIRD shape, the frame
 `x···yx···y` (d4), spans 10 positions and is mostly cross-word, is absent from
 plaintext, and remains the lone lag-5 residual — it is documented there, not
 here.
