@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (25)
+### Observations (26)
 
 | File | Feature | Status |
 |---|---|---|
@@ -31,6 +31,7 @@ proposed mechanisms scored against them.
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |
 | [within-word-d5-coincidence.md](within-word-d5-coincidence.md) | Within-Word Distance-5 Coincidence Excess | plausible (verified anomaly; mechanism unknown) |
 | [word-length-keystream-and-boundaries.md](word-length-keystream-and-boundaries.md) | Word-Length Keystream & Boundary Authenticity | confirmed (characterization) |
+| [word-position-pairs.md](word-position-pairs.md) | Within-Word Position Pairs Carry Distance-Only Structure | confirmed (characterization) |
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
