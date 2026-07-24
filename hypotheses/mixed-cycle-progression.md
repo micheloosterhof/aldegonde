@@ -60,6 +60,40 @@ hard monotonicity: φ of any multiple ≥ φ of its divisors, and φ_d ≥ 0.
 - d8 leans the same way: 4-cycles would return there (best-census sim
   0.0407) and the LP is low (0.0268, weakly significant on its own).
 
+## The prime-loop subfamily (tested July 2026)
+
+Cicada-flavored variant: all loop lengths prime. Scored over the full
+d2-d8 ladder, prime censuses are the BEST of the returned-fraction
+family — the winner is **5+5+5+7+7** (chi2 11.4 vs 17-22 for composite
+censuses and naive order-5), because heavy 5-loops give the partial echo
+(15/29 = 52%) and, uniquely, 7-loops predict the weak d7 elevation
+(φ7 obs 0.32 ± 0.29). Two cells still kill it: **d4** — no prime divides
+4 except 2, so φ4 is forced to φ2 ≈ 0 against the observed 0.30 ± 0.14
+(−2.1σ; the shoulder needs a 4-loop, and 4 is not prime) — and **d6**,
+where a loop census can at best reach background while the LP dips below
+it (+2.0σ even crediting the partial g⁶ = g inheritance on the 5-loop
+letters, which the naive scorer omits).
+
+The numerologically prettiest member — **2+3+5+7+11 + 1 fixed**, the
+first five primes plus a still point — fits d3 and d7 almost exactly
+(pulls −0.0 and −0.2) but scores chi2 19.4: its single 5-loop makes the
+d5 echo four times too weak (φ5 = 0.21 vs 0.59 ± 0.18), its 2- and
+3-loops return at d6 where the corpus dips (+3.4σ), and it has no
+4-loop for the shoulder. Its order (lcm = 2310) would also void the
+DJU-BEI abelianization arithmetic that the order-5 walk satisfies.
+
+## The d4/d6 asymmetry (new open tension, surfaced by this analysis)
+
+The inheritance algebra cuts against pure order-5 too: under g⁵ = id,
+g⁴ = g⁻¹ and g⁶ = g, and the leading-order diagonal rates are the SAME
+sum both ways (Σ q(x)q(g(x))). Pure order-5 therefore predicts
+**d4 ≈ d6**. Observed: d4 = 0.0410 (elevated), d6 = 0.0245 (suppressed)
+— a ~2.7σ split in opposite directions (φ4 = +0.30, φ6 = −0.30,
+mirror-symmetric). Something lifts d4 by about as much as something
+suppresses d6, and the walk's algebra moves those cells together. This
+sits beside the partial-echo tension (`d5-partial-alphabet-leak.md`) as
+the second open internal number of the order-5 formulation.
+
 ## What survives the disproof
 
 - The φ ladder itself is a useful measurement. For order-5, φ5 should be

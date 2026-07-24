@@ -168,6 +168,15 @@ newlines are line wraps (words flow across them).
   the partial leak is *not* drift — the base is word-locked and the partiality
   is uniform (σ knocking the leak down by a constant factor). See
   `d5-partial-alphabet-leak.md`.
+- **The d4/d6 asymmetry (open, July 2026).** Under g⁵ = id, g⁴ = g⁻¹ and
+  g⁶ = g, and their diagonal rates share the same leading-order frequency
+  sum — so this model predicts d4 ≈ d6. Observed: d4 = 0.0410 elevated,
+  d6 = 0.0245 suppressed, a ~2.7σ split in opposite directions. Together
+  with the partial echo (φ5 ≈ 0.59 vs the predicted 1.0), these are the
+  model's two open internal numbers: the within-word d2-d5 rise is
+  somewhat MORE than pure order-5 delivers, and the returned-fraction
+  explanations for the surplus (mixed or prime cycle types) are disproved
+  by the d6 cell itself. See `mixed-cycle-progression.md`.
 - **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
   on real runeglish words (`mechanism_discriminator.py`) could not separate
   them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner
