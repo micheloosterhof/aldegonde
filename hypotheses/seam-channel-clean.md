@@ -34,10 +34,19 @@ marginals, breaks only the seam pairing (`experiments/seam_bigram_tests.py`).
 | max conditional-group nIoC (either direction) | 1.21-1.23 | 1.18 ± 0.06 | flat; an English-like leak would show ~1.7 |
 | last-rune / first-rune marginals | chi2 31.5 / 23.8 (28 df) | — | uniform |
 
-Note on the three ~2σ rows: they are one signal, not three — the pair
-IoC and the two conditional-split means all measure the same slight
-clumpiness of the seam matrix, and at p ≈ 0.02-0.03 inside an
-eight-statistic battery it is noise-compatible. No group approaches the
+**The three ~2σ rows are an artifact, not a lean** (review
+decomposition, section F/G of the script): the word-order permutation
+null does not preserve the seam doublet suppression, so the observed
+matrix packs the same 2,927 seams into effectively 812 cells instead of
+841 — a mechanical +3.6% ceiling on any density statistic (observed
++2.8%), and each conditional group avoids one value (29/28 ≈ 1.036).
+Isolating the components confirms it: off-diagonal-only pair IoC is at
+its own baseline (obs 1.042 vs null 1.036 ± 0.014, z = +0.43), and the
+deeper cross-seam conditionals are flat (first-rune given
+second-to-last: z = +0.12; second rune given last: z = +0.30). This is
+the FOURTH instance of the doublet-suppression trap (after bigram IoC,
+trigram repeats, and isomorphs — see README): any density statistic on
+this corpus must use a suppression-aware null. No group approaches the
 ~1.7 a keyed or leaking seam would show.
 
 **Length-class independence of the diagonal** (the walk's prediction):
@@ -75,6 +84,9 @@ by (L−1) mod 5: 0.0079 / 0.0100 / 0.0056 / 0.0051 / 0.0136, all within
 ## Verdict
 
 Confirmed characterization. The seam channel contains the suppressed
-diagonal and nothing else; the suppression is length-class-independent
-exactly as the walk's seam algebra requires. Negative for new attack
-surface, positive as a model check.
+diagonal and nothing else — the apparent ~2σ density lean decomposes
+entirely into the diagonal-deficit cell-packing artifact, and the
+conditional structure is flat at depth 1 and depth 2 in both directions.
+The suppression is length-class-independent exactly as the walk's seam
+algebra requires. Negative for new attack surface, positive as a model
+check.

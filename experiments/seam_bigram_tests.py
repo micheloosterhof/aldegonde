@@ -147,6 +147,55 @@ def main() -> None:
         chi2 = sum((c[r] - e) ** 2 / e for r in range(M))
         print(f"  {name}: chi2 {chi2:.1f} (28 df, ~28 expected under uniform)")
 
+    # F. review decomposition: what drives the pair-IoC lean — diagonal
+    # deficit, marginal non-uniformity, or genuine off-diagonal clumping?
+    def offdiag_pioc(ws: list[list[int]]) -> float:
+        seams = [(ws[i][-1], ws[i + 1][0]) for i in range(len(ws) - 1)
+                 if ws[i][-1] != ws[i + 1][0]]
+        return pair_ioc(seams)
+
+    obs_off = offdiag_pioc(words)
+    null_off = []
+    for _ in range(500):
+        rng.shuffle(perm)
+        null_off.append(offdiag_pioc(perm))
+    arr = np.array(null_off)
+    print("\nF. off-diagonal-only pair IoC (isolates clumping from the "
+          "diagonal deficit):")
+    print(f"  obs {obs_off:.4f}  null {arr.mean():.4f} ± {arr.std():.4f}  "
+          f"z {(obs_off - arr.mean()) / arr.std():+.2f}")
+
+    # G. deeper conditionals across the seam (d=2 reach in both directions)
+    def cond_split(pairs: list[tuple[int, int]]) -> float:
+        groups: dict[int, list[int]] = {}
+        for a, b in pairs:
+            groups.setdefault(a, []).append(b)
+        vals = [nioc(v) for v in groups.values() if len(v) >= 20]
+        return float(np.mean(vals))
+
+    def deep_pairs(ws: list[list[int]]):
+        p2f, l2s = [], []
+        for i in range(len(ws) - 1):
+            if len(ws[i]) >= 2:
+                p2f.append((ws[i][-2], ws[i + 1][0]))
+            if len(ws[i + 1]) >= 2:
+                l2s.append((ws[i][-1], ws[i + 1][1]))
+        return cond_split(p2f), cond_split(l2s)
+
+    obs_p2f, obs_l2s = deep_pairs(words)
+    n_p2f, n_l2s = [], []
+    for _ in range(500):
+        rng.shuffle(perm)
+        a, b = deep_pairs(perm)
+        n_p2f.append(a)
+        n_l2s.append(b)
+    for name, obs, arr in (("first | second-to-last", obs_p2f,
+                            np.array(n_p2f)),
+                           ("second | last", obs_l2s, np.array(n_l2s))):
+        print(f"G. mean nIoC {name:<24} obs {obs:.4f}  "
+              f"null {arr.mean():.4f} ± {arr.std():.4f}  "
+              f"z {(obs - arr.mean()) / arr.std():+.2f}")
+
 
 if __name__ == "__main__":
     main()
