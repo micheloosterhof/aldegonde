@@ -66,7 +66,7 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
 
 ## Significance
 
-- Expected repeated 7-grams in 13,041 random runes: 0.005. Expected
+- Expected repeated 7-grams in 12,956 random runes: 0.005. Expected
   repeated 6-grams: 0.14 (observed: only this one, plus its sub-grams).
 - Monte Carlo with the real word-length structure and the doublet-corrected
   Markov null (`experiments/anchored_repeats.py`, 1000 samples): a
@@ -82,9 +82,11 @@ offset 12950:  ...ᚦᛟ-ᚳᛠᛁᛗ|ᚳᛉ-ᛞᛄᚢ-ᛒᛖᛁ. $ ᚫᛄ-ᛟ�
 
 ## Negative results that bound the mechanism
 
-All measured on the 13,041-rune cipher stream (parable excluded; this
-stream still includes the solved 85-rune AN END section — the clean
-corpus is 12,956 runes):
+The event-local probes below were measured on the 13,041-rune stream
+(parable excluded, solved AN END page still included); the 85 extra runes
+sit far from both occurrences and cannot affect them. The corpus-wide
+batteries under "Additional negative space" were re-run on the clean
+12,956-rune stream (July 2026) with unchanged conclusions:
 
 | probe | result |
 |-------|--------|
@@ -127,12 +129,12 @@ constraint set further (`experiments/deep_scan.py`,
   shuffled-null expectation. The plaintext repeats no passage of >= 8
   words; the DJU-BEI repeat is a short phrase, not part of a repeated
   paragraph.
-- **Doublet covert channel**: the 88 doubled runes are uniform
-  (nIoC 0.992), their gaps mod 29 uniform, and no shift/flip maps their
-  frequencies onto runeglish (P=0.25 vs uniform-random baseline). The
+- **Doublet covert channel**: the 86 doubled runes are uniform
+  (nIoC 0.976), their gaps mod 29 uniform, and no shift/flip maps their
+  frequencies onto runeglish (P=0.30 vs uniform-random baseline). The
   doublets do not carry a direct hidden message.
 - No cross-correlation with the solved pages' rune stream at any of
-  15,439 alignments (no pad/keystream sharing with solved sections).
+  15,354 alignments (no pad/keystream sharing with solved sections).
 - No affine-class key reuse (length >= 8), no Beaufort-style reuse
   (delta vs negated/reversed delta), no bigram antisymmetry, no
   word-counter periodicity of word-initial/final runes (k <= 60), no

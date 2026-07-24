@@ -13,13 +13,13 @@ how the per-word key is scheduled:
 
 | per-word cipher | repeated plaintext words become | observed excess | expected if true |
 |-----------------|----------------------------------|------------------|------------------|
-| monoalphabetic / codebook (any fixed map) | identical cipher words | +6 ± 3.6 | ~8,000 |
-| constant additive shift per word (Vigenere-like, any key schedule) | shift pairs (w2 = w1 + c) | +11 ± 19 | ~8,000 |
-| constant Beaufort per word (w -> c - w) | beaufort pairs | -33 ± 16 | ~8,000 |
-| affine per word (w -> m*w + c) | affine-class pairs | +87 ± 124 | ~8,000 |
-| reversal (+shift) per word | reversal pairs | +45 ± 17 | ~thousands |
-| rotation per word | rotation pairs | +4 ± 5 | ~thousands |
-| transposition per word | anagram pairs | -7 ± 8 | ~thousands |
+| monoalphabetic / codebook (any fixed map) | identical cipher words | +6 ± 3.3 | ~8,000 |
+| constant additive shift per word (Vigenere-like, any key schedule) | shift pairs (w2 = w1 + c) | +14 ± 18 | ~8,000 |
+| constant Beaufort per word (w -> c - w) | beaufort pairs | -37 ± 18 | ~8,000 |
+| affine per word (w -> m*w + c) | affine-class pairs | +80 ± 104 | ~8,000 |
+| reversal (+shift) per word | reversal pairs | +43 ± 20 | ~thousands |
+| rotation per word | rotation pairs | +5 ± 5 | ~thousands |
+| transposition per word | anagram pairs | -8 ± 8 | ~thousands |
 
 The only per-word scheme the pairwise census cannot see is a **general
 substitution per word** (29! possibilities) — but that survivor is excluded
@@ -27,12 +27,13 @@ separately by pattern preservation: any per-word substitution preserves the
 plaintext's within-word adjacent letter repeats. The solved pages (the LP
 author's own plaintext, mostly monoalphabetic so repeats are preserved)
 double letters within words at **2.43%** (51/2,099 adjacencies), which
-predicts ~245 within-word doublets in the cipher; observed: **64** — an
+predicts ~244 within-word doublets in the cipher (10,028 within-word
+adjacencies in the clean corpus); observed: **63** — an
 11.6 sigma deficit. Robustness: the runeglish corpus bigram table gives a
-3.23% doubling rate (predicting ~326, a 14.5 sigma deficit), and every
+3.23% doubling rate (predicting ~324, a 14.5 sigma deficit), and every
 individual solved section lies between 1.67% and 3.34% — even the most
 conservative section-level baseline (1.67%, possibly Vigenere-diluted)
-predicts ~168 vs 64 observed, an 8 sigma deficit. The cipher's ABA rate
+predicts ~167 vs 63 observed, an 8 sigma deficit. The cipher's ABA rate
 (3.46%) also matches random (3.33%), not the plaintext (3.92%).
 
 **Net result: no cipher that applies one fixed transformation per word —
@@ -45,8 +46,9 @@ survives. The cipher state varies within words, at rune granularity.**
 
 ## Method
 
-All 2,953 cipher words (merged line-wrap convention, parable excluded),
-grouped by length (3-10). For each length, count word pairs related by each
+All 2,928 clean-corpus cipher words (merged line-wrap convention; the
+solved AN END page and the Parable both excluded), grouped by length
+(3-10). For each length, count word pairs related by each
 transform via canonical signatures:
 
 - shift class: equal first-difference sequences
@@ -70,7 +72,7 @@ identical word pairs of length >= 3 among only 698 words** (random
 expectation: 0.6). The top word repeats 13 times. Scaled to the cipher's
 corpus size (x17.9), LP-style plaintext implies roughly **8,000 repeated
 word pairs**. Any of the per-word ciphers above would transport essentially
-all of them into its class. Every class sits within ~2.6 sigma of the null.
+all of them into its class. Every class sits within ~2.2 sigma of the null.
 The kill margin is two to three orders of magnitude.
 
 ## Caveats

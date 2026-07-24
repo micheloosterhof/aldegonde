@@ -57,6 +57,10 @@ carries.
 Three distinct signatures. Generic prose is positive at every lag (topic
 clustering). The solved LP register shows a short-range -/+ ALTERNATION at
 lags 1-2 only (function/content word alternation, no long-range drift).
+(The "unsolved" column's n=2953 includes the solved AN END page's ~25
+words; the clean corpus has 2,928 — a difference far too small to move
+these z-scores.)
+
 The unsolved cipher is flat at all six lags. With 2953 words, the solved
 pages' lag-1 autocorrelation would surface at ~4.7 sigma if shared; it
 does not. Register-matched joint test on the two informative lags (solved

@@ -55,7 +55,9 @@ def bucket_kappa(runes_with_keys):
 
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
-    nplain = len(sections[-1])
+    # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
+    # AN END page and Parable are the trailing 180 runes of page0-58.txt
+    nplain = len(stream) - 12956
     n = len(stream) - nplain
     total = 0
     cw = []

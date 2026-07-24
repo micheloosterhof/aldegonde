@@ -31,7 +31,9 @@ RUNESET = set("".join(c3301.CICADA_ALPHABET))
 
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
-    nplain = len(sections[-1])
+    # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
+    # AN END page and Parable are the trailing 180 runes of page0-58.txt
+    nplain = len(stream) - 12956
     C = np.array(stream[:-nplain], dtype=np.int64)
     n = len(C)
     total = 0
