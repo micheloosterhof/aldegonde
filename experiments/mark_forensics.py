@@ -46,7 +46,8 @@ def main() -> None:
     n = len(C)
 
     u = open("data/page0-58.txt").read()
-    u_cipher = u[: u.rfind("$")]
+    # drop the last two $-sections (solved AN END page + plaintext Parable)
+    u_cipher = "$".join(u.split("$")[:-2])
 
     print("=== 1. LAYOUT COUPLING ===")
     # rate of '.' immediately before a line break vs '-' baseline

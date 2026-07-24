@@ -124,7 +124,8 @@ def main() -> None:
     # convention. merge_lines=True joins line-wrapped words ('/' ignored);
     # False treats '/' as a word boundary.
     u_raw = open("data/page0-58.txt").read()
-    u_cipher = u_raw[: u_raw.rfind("$")]  # drop the plaintext parable
+    # drop the last two $-sections (solved AN END page + plaintext Parable)
+    u_cipher = "$".join(u_raw.split("$")[:-2])
 
     def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
         seps_ = "-.%&$" + ("" if merge_lines else "/")

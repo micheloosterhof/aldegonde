@@ -159,10 +159,11 @@ as a marker does.
 
 Discriminator: an INSERTION inflates its host word by one rune; a marker
 (an event occupying a plaintext position) does not. Observed mean length
-of the 63 within-word doublet-containing words: **5.97 +- 0.31**.
+of the 62 words containing the 63 within-word doublets: **5.97 +- 0.32**
+(clean corpus).
 
-- occupying-event (marker-class) prediction: 5.62 -> z = +1.1, p = 0.27
-- insertion prediction: 6.62 -> z = -2.1, **p = 0.042**
+- occupying-event (marker-class) prediction: 5.63 -> z = +1.1, p = 0.29
+- insertion prediction: 6.63 -> z = -2.1, **p = 0.037**
 
 The insertion/chaff model is disfavored at ~2 sigma; the doublets behave
 like events that occupy plaintext positions
