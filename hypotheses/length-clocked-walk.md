@@ -168,15 +168,19 @@ newlines are line wraps (words flow across them).
   the partial leak is *not* drift — the base is word-locked and the partiality
   is uniform (σ knocking the leak down by a constant factor). See
   `d5-partial-alphabet-leak.md`.
-- **The d4/d6 asymmetry (open, July 2026).** Under g⁵ = id, g⁴ = g⁻¹ and
-  g⁶ = g, and their diagonal rates share the same leading-order frequency
-  sum — so this model predicts d4 ≈ d6. Observed: d4 = 0.0410 elevated,
-  d6 = 0.0245 suppressed, a ~2.7σ split in opposite directions. Together
-  with the partial echo (φ5 ≈ 0.59 vs the predicted 1.0), these are the
-  model's two open internal numbers: the within-word d2-d5 rise is
-  somewhat MORE than pure order-5 delivers, and the returned-fraction
-  explanations for the surplus (mixed or prime cycle types) are disproved
-  by the d6 cell itself. See `mixed-cycle-progression.md`.
+- **The d4/d6 asymmetry and the partial echo (July 2026).** Under g⁵ = id,
+  g⁴ = g⁻¹ and g⁶ = g share the same leading-order diagonal algebra — so
+  this model predicts d4 ≈ d6; observed is a ~2.7σ split in opposite
+  directions (d4 = 0.0410 up, d6 = 0.0245 down). A language-orientation
+  rescue tested negative. The live resolution candidate changes g's
+  CYCLE TYPE, not the architecture: the order-20 census 4×5 + 2×4 + 1
+  (`mixed-cycle-progression.md`) predicts the partial echo exactly
+  (d5 = 0.0488 vs 0.0492 — at distance 5 the 4-loop letters experience
+  g⁵ = g, the tuned diagonal, so 20 letters echo and 8 anti-echo) and
+  sources the d4 lift from the 4-loop returns. Residual: d4 still
+  +2.8σ. If it survives simulation, "order-5 g" in this file becomes
+  "order-20 g whose 5-loops dominate", and the mod-5 phase arguments and
+  DJU-BEI arithmetic need redoing mod 20.
 - **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
   on real runeglish words (`mechanism_discriminator.py`) could not separate
   them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner

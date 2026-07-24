@@ -103,6 +103,40 @@ suppresses d6, and the walk's algebra moves those cells together. This
 sits beside the partial-echo tension (`d5-partial-alphabet-leak.md`) as
 the second open internal number of the order-5 formulation.
 
+## The order-20 revival: 4×5 + 2×4 + 1 (live, July 2026)
+
+The naive returned-fraction family is dead, but combining loop returns
+WITH tuned-diagonal inheritance revives one specific census: **four
+5-loops + two 4-loops + one fixed rune** (20 + 8 + 1 = 29, g of order
+20). Naively it is already the best census tested (chi2 10.9): φ4 = 9/29
+= 0.310 vs the measured 0.30 (exact) and φ5 = 21/29 = 0.724 vs the
+original 72% partial-leak point estimate (exact). The refined ledger
+(inherited suppression s fitted on d6, tuning attributed to the 5-loop
+diagonal) is stronger still:
+
+- **d5 = 0.0488 predicted vs 0.0492 observed** — the partial echo solved
+  with a mechanism: at distance 5 the 4-loop letters experience g⁵ = g,
+  the TUNED diagonal, so 20 letters echo while 8 anti-echo and 1 leaks.
+  The walk's longest-standing unexplained number closes.
+- The d4/d6 asymmetry gets a structural source: 4-loops return at d4
+  (never at 6), lifting d4 while the 5-loops' inherited suppression digs
+  the d6 dip. (A language-side rescue was tested and failed: annealed
+  rare-diagonal g's show NO orientation asymmetry on prose — mirror d4
+  0.0297 ± 0.0038 vs same-orientation d6 0.0314 ± 0.0045, both mildly
+  below background.)
+- Residuals: d2 ✓, d3 +0.9, d5 +0.1, d6 fit, d7 +0.9, d8 −1.6, and
+  **d4 still +2.8σ** — the 4-loop leak covers ~40% of the d4 surplus.
+  One open cell, down from two open numbers.
+
+Costs and open work: g's order becomes 20 (the DJU-BEI abelianization
+and every mod-5 phase argument need redoing mod 20); the ledger is
+closed-form arithmetic and needs verification by simulating a genuinely
+TUNED order-20 permutation through the full battery; and the d1 doublet
+channel must re-derive (the fixed rune leaks plaintext doublets:
+(1/29)·K1 ≈ 0.0012 of the 0.0063, the rest from the tuned diagonal —
+consistent). This subfamily is LIVE and is the current best candidate
+refinement of `length-clocked-walk.md`.
+
 ## What survives the disproof
 
 - The φ ladder itself is a useful measurement. For order-5, φ5 should be

@@ -58,7 +58,7 @@ proposed mechanisms scored against them.
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
 | [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
 | [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
-| [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | disproved (d6 is sub-background; return ladders are non-negative — the deficit is the order-5 tuned-diagonal signature) |
+| [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | disproved as a pure return ladder; the order-20 subfamily 4×5+2×4+1 with tuned-diagonal inheritance is LIVE (fits the partial echo exactly; d4 residual +2.8σ) |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
 | [multi-layer-autokey.md](multi-layer-autokey.md) | Multi-Layer Autokey | disproved |
 | [page-reset-keystream.md](page-reset-keystream.md) | Shared Positional Keystream Resetting at Page/Section Boundaries | disproved |
