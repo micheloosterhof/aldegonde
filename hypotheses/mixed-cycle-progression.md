@@ -67,20 +67,29 @@ d2-d8 ladder, prime censuses are the BEST of the returned-fraction
 family — the winner is **5+5+5+7+7** (chi2 11.4 vs 17-22 for composite
 censuses and naive order-5), because heavy 5-loops give the partial echo
 (15/29 = 52%) and, uniquely, 7-loops predict the weak d7 elevation
-(φ7 obs 0.32 ± 0.29). Two cells still kill it: **d4** — no prime divides
-4 except 2, so φ4 is forced to φ2 ≈ 0 against the observed 0.30 ± 0.14
-(−2.1σ; the shoulder needs a 4-loop, and 4 is not prime) — and **d6**,
-where a loop census can at best reach background while the LP dips below
-it (+2.0σ even crediting the partial g⁶ = g inheritance on the 5-loop
-letters, which the naive scorer omits).
+(φ7 obs 0.32 ± 0.29). Two cells still kill it. **d4**: the only prime route to a distance-4
+return is 2-loops (2×2) — and because the d2 cell is low-power (plaintext
+barely repeats at distance 2, K2 ≈ background), 2-loops big enough to
+build the observed shoulder (≈9 letters) would indeed hide at d2. But 2
+divides 6 too: that same mass returns at d6 at full strength (φ6 ≈ 0.31
+vs the observed −0.30 ± 0.15, a ~4σ collision). The d6 veto catches every
+route into it — 2-loops, 3-loops, 6-loops — leaving the 4-loop (returns
+at 4 and 8, never 6) as the only shoulder-builder, and 4 is composite.
+**d6** itself: a loop census can at best reach background while the LP
+dips below it (+2.0σ for the no-short-loop censuses, even crediting the
+partial g⁶ = g inheritance on their 5-loop letters, which the naive
+scorer omits).
 
-The numerologically prettiest member — **2+3+5+7+11 + 1 fixed**, the
-first five primes plus a still point — fits d3 and d7 almost exactly
-(pulls −0.0 and −0.2) but scores chi2 19.4: its single 5-loop makes the
-d5 echo four times too weak (φ5 = 0.21 vs 0.59 ± 0.18), its 2- and
-3-loops return at d6 where the corpus dips (+3.4σ), and it has no
-4-loop for the shoulder. Its order (lcm = 2310) would also void the
-DJU-BEI abelianization arithmetic that the order-5 walk satisfies.
+The numerologically perfect member — loops **1+2+3+5+7+11 = 29**, one
+fixed rune plus the first five primes, landing exactly on the alphabet
+size — fits d3 and d7 almost exactly (pulls −0.0 and −0.2, the 3-loop
+and 7-loop doing precisely their jobs) but scores chi2 19.4: its single
+5-loop makes the d5 echo four times too weak (φ5 = 0.21 vs 0.59 ± 0.18,
+and the echo is the corpus's loudest fact), and its 2- and 3-loops
+return at d6 where the corpus dips (+3.4σ). Its order (lcm = 2310)
+would also void the DJU-BEI abelianization arithmetic that the order-5
+walk satisfies. The corpus wants most of the alphabet on 5-loops and
+nothing at all returning at 6.
 
 ## The d4/d6 asymmetry (new open tension, surfaced by this analysis)
 
