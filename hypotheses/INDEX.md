@@ -33,7 +33,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (38)
+### Hypotheses (40)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -65,6 +65,7 @@ proposed mechanisms scored against them.
 | [playfair-variant.md](playfair-variant.md) | Playfair / Seriated Playfair Variant | disproved |
 | [position-within-word.md](position-within-word.md) | Position-Within-Word Dependent Cipher | disproved (additive variants; the mixed-alphabet member of |
 | [prime-value-autokey.md](prime-value-autokey.md) | Prime-Value Tabula Recta Autokey | disproved |
+| [product-form-autokey.md](product-form-autokey.md) | Product-Form / Interpolation Autokey over GF(29) | disproved |
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |
@@ -73,5 +74,6 @@ proposed mechanisms scored against them.
 | [substitution-plus-autokey.md](substitution-plus-autokey.md) | Monoalphabetic Substitution + Autokey Layering | disproved |
 | [thirty-symbol-disk.md](thirty-symbol-disk.md) | The '.' Mark is the 30th Character of a 30/29 Cipher Disk | unresolved |
 | [transposition.md](transposition.md) | Transposition Cipher | disproved |
+| [within-word-key-sharing.md](within-word-key-sharing.md) | Within-Word Distance-5 Key Sharing (Per-Word 5-Periodic Key) | disproved |
 | [word-boundary-reset-autokey.md](word-boundary-reset-autokey.md) | Word-Boundary-Reset Autokey | disproved |
 | [word-level-autokey.md](word-level-autokey.md) | Word-Level Autokey | disproved |

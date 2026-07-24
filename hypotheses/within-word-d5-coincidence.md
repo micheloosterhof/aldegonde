@@ -174,6 +174,9 @@ here.
 
 - `lag5-digraph-structure.md` — the consolidated three-pattern table
   (`x····x` / `xy···xy` / `x···yx···y`) and the d4 residual.
+- `within-word-key-sharing.md` — disproves ADDITIVE key-sharing for this
+  excess (delta histogram flat off zero, 3.63σ): the excess is equality-only,
+  consistent with the walk's mixed-alphabet echo, not an additive per-word key.
 - `rune-s-lag5-echo.md` — the d=5 excess is not rune-agnostic: the rune S
   carries ~22% of it (11 vs 1.75, p=2.4e-6, Bonferroni-clean,
   distance-5-specific, within-word only).
