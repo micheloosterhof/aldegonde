@@ -24,7 +24,10 @@ was never run through the 0-9 cipher, so it yields no plaintext↔ciphertext pai
 - Its IoC is **1.82** (rough, plaintext-like) versus ~1.0 for the encrypted
   sections 0-10 (sec 0 0.99, sec 8 1.00, sec 9 0.98, sec 10 0.94). So section 11
   is the *only* plaintext section; everything else is flat/enciphered.
-- The Parable text does not recur (enciphered) inside 0-9, so it is not a crib.
+- The Parable text yields no locatable crib inside 0-9: no test run
+  (running-key slides, kappa scans) finds it, and an enciphered copy under
+  the unknown cipher would be undetectable by those tests anyway — so it
+  provides no foothold, which is weaker than proving it absent.
 
 Useful by-product: section 11 confirms real LP plaintext IoC ≈ 1.8, matching the
 runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.

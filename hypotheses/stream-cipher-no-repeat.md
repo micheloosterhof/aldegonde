@@ -62,6 +62,12 @@ single-bit-flip nudge.
   (`lag5-digraph-structure.md`): simulated avoidance streams show no d=1/d=4
   excess. Lag-5-tapped lagged-Fibonacci keystreams (taps {1,5}, {4,5}, with
   and without avoidance) also fail to produce it.
+- The lag-5 matches are word-boundary-aware — both the paired and the
+  isolated matches sit inside words above the boundary-permutation null
+  (`experiments/lag5_word_boundary.py`, p = 0.014 / 0.018). A purely
+  positional stream has no access to word structure, so whatever produces
+  the lag-5 behavior sees the boundaries; this favors word-scoped state
+  (the length-clocked walk family) over position-driven keystreams.
 - A truly random keystream would make the cipher unsolvable, which
   contradicts Cicada's stated intent that the Liber Primus can be read;
   the keystream must be a derivable PRNG, and no candidate construction has
@@ -107,4 +113,6 @@ triplets); the five-block machinery, the back-reference model, and the
 length-clocked-walk family have since matched it too (see
 `five-block-boundary.md`, `lag5-back-reference.md`,
 `length-clocked-walk.md`). It does not explain the lag-5 paired-match
-structure and offers no specific keystream construction to attack.
+structure, is disfavored by that structure's word-boundary-awareness
+(a positional stream cannot see word boundaries), and offers no specific
+keystream construction to attack.

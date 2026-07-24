@@ -69,8 +69,10 @@ adjacent step controlled.
   routing the diagonal through rare bigrams (floors at 0.0013 because this
   corpus has no truly-forbidden bigrams), or a size-mismatched disk (in/out
   rings that can't collide) for a *structural* exact zero.
-- **Boundary-blindness is derived, not tuned.** Plaintext doublet rate is nearly
-  the same within words (0.0346) and across word boundaries (0.0327) — both
+- **Boundary-blindness is derived, not tuned.** On the prose proxy (the only
+  baseline here with a word-boundary split; the tighter mortlach figure above
+  has no seam decomposition), the plaintext doublet rate is nearly the same
+  within words (0.0346) and across word boundaries (0.0327) — both
   ~chance — so `plaintext/5` is nearly equal at both, giving within ≈ seam for
   free. The "tuned coincidence" flagged in the model audit dissolves.
 - **The g4 powers behave as required.** g4¹ minimized (IoC 0.04); g4²/g4³
