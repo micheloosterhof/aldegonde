@@ -47,7 +47,13 @@ Simple additive or subtractive combination.
   unsolved corpus at every alignment, both Vigenere (C-K) and Beaufort (C+K).
   Max |z| 6.2, but shuffled-key null scans reach 5.2-8.4 — noise, and the
   best-hit decrypt is gibberish. Keystream reuse *within* the corpus is also
-  ruled out at every lag (diff/sum IOC scan). See
+  ruled out at every lag (diff/sum IOC scan).
+- **Solved-section PLAINTEXTS tested negative (July 2026)**: the decrypted
+  plaintext of all 13 solved early segments (2,797 runes — recovered with
+  their known systems and fitness-verified,
+  `experiments/solved_plaintext_running_key.py`) slid the same way:
+  max |z| 5.0 forward, 4.7 reversed, inside the shuffled-key null (5.0-5.5).
+  The book does not key its unsolved sections with its own solved text. See
   `cryptodiagnostics-page0-58.md`.
 - The word-aligned repeated phrase ᛞᛄᚢ-ᛒᛖᛁ (`repeated-phrase-dju-bei.md`)
   would be pure chance (p < 1e-3) under a non-repeating running key
@@ -76,8 +82,10 @@ there is none.
 
 - `experiments/mechanism_fingerprint.py` — simulated fingerprint comparison.
 - `experiments/lp_cryptodiagnostics.py` (section H3) — Parable and master
-  transcription as keys at all alignments. Still untested: decrypted
-  plaintexts of the keyword-solved sections, Cicada's other published texts.
+  transcription as keys at all alignments.
+- `experiments/solved_plaintext_running_key.py` — decrypted plaintexts of
+  the solved sections as keys at all alignments (negative). Still
+  untested: Cicada's other published texts.
 - `experiments/depth_search.py` — difference-stream IOC at every lag, with
   the runeglish-difference calibration and doublet-suppressed surrogate
   null. Conclusive negative for key depth / repeating or self-referential
