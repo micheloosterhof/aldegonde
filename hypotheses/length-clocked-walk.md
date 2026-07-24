@@ -49,10 +49,14 @@ refuted"):
   (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) is held to 0.0063. `g⁵=id` makes positions
   5 apart share the alphabet → the d5 echo. Non-arithmetic: GF(29)* has order
   28 and 5∤28, so no shift/multiply/affine map has order 5.
-  **The tuned diagonal can be removed** — reformulate as advance-4/hold-1
-  (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, so the doublet
-  rate = plaintext-doublet/5 is *inherent*, and the whole d1-d5 profile falls
-  out of one minimized advance. See `stay-slot-hold.md`.
+  **A tuned-diagonal-free reformulation is refuted** — advance-4/hold-1
+  (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, predicted
+  the doublet rate parameter-free but is DISPROVED by the doublet
+  position-profile test (July 2026): the doublets are positionally flat,
+  not plaintext-double-shaped. The diagonal is genuinely tuned, and the
+  profile adds a key constraint: the diagonal bigram class {(g(y), y)}
+  must itself be positionally near-baseline in plaintext. See
+  `stay-slot-hold.md`, `experiments/doublet_position_profile.py`.
 - **`σ` — the space step.** A second mixed permutation **outside ⟨g⟩** (not a
   power of `g`), tuned rare-diagonal so the seam doublet is suppressed to
   0.0079. Being outside ⟨g⟩ is what breaks the walk out of the 5-alphabet
@@ -135,13 +139,14 @@ newlines are line wraps (words flow across them).
   the partial leak is *not* drift — the base is word-locked and the partiality
   is uniform (σ knocking the leak down by a constant factor). See
   `d5-partial-alphabet-leak.md`.
-- **Order-5-g vs stay-slot: not separable by the ciphertext.** Direct simulation
-  on real runeglish words (`mechanism_discriminator.py`) shows *both* reproduce
-  the d5 echo and d1≠d6, and the d1..d6 fit winner flips with the g-tuning seed.
-  (d1≠d6 does NOT favour stay-slot — an earlier note claimed pure order-5-g
-  forces d1=d6; wrong, since the g-diagonal acts on distance-6 skip-grams at d6,
-  not adjacent bigrams.) Stable leans only: stay-slot gives d1=plaintext-doublet/5
-  parameter-free; order-5-g brackets d6 better. What's real beyond period-5 is the
+- **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
+  on real runeglish words (`mechanism_discriminator.py`) could not separate
+  them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner
+  flips with the g-tuning seed. The doublet position-profile test now
+  does: stay-slot forces the doublets to be plaintext double letters
+  (start-forbidden, end-heavy), and the observed doublets are positionally
+  flat — stay-slot disproved, tuned order-5-g survives with the new
+  diagonal-class constraint above. What's real beyond period-5 is the
   **damped rising shoulder** — LP's d2→d5 tracks a half-damped copy of the
   plaintext's own within-word profile with extra phase-1 suppression, i.e. a
   partial plaintext leak under the period-5 envelope. See

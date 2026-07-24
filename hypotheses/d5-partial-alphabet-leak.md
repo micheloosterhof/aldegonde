@@ -157,12 +157,16 @@ whether phase (d mod 5) captures all the structure:
   rising magnitude underneath. The partiality is neither drift (flat over
   position) nor a length effect (checked) — it is **uniform**, consistent with
   the per-word σ step damping the leak by a constant factor everywhere.
-- **Order-5-g vs stay-slot: not separated by the ciphertext.** In simulation the
-  d1..d6 SSE winner flips with the random g-tuning seed. Stable sub-facts only:
-  stay-slot gives d1 = plaintext-doublet/5 = 0.0064 parameter-free (v1 must
-  de-tune g's diagonal to match), while v1 brackets d6 (0.020–0.035) where v2
-  over-predicts (0.031–0.039). A parsimony lean to stay-slot on d1, a lean back
-  to order-5-g on d6 — no decision. See `mechanism_discriminator.py`.
+- **Order-5-g vs stay-slot: SEPARATED (July 2026) — stay-slot disproved.**
+  In d1..d6 simulation the SSE winner flips with the random g-tuning seed
+  (`mechanism_discriminator.py`), and stay-slot's d1 = plaintext-doublet/5
+  = 0.0064 was parameter-free — but the doublet position-profile test
+  (`experiments/doublet_position_profile.py`) settles it: stay-slot's
+  doublets are plaintext double letters (start-forbidden, end-heavy in
+  every register) and the observed doublets are positionally flat.
+  Stay-slot is disproved (`stay-slot-hold.md`); the tuned order-5-g
+  formulation stands, with the constraint that its diagonal bigram class
+  be positionally near-baseline.
 
 ## Evidence against
 

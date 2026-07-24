@@ -30,8 +30,8 @@ for the seam) that the order-5-g model needed. See `length-clocked-walk.md`.
 
 ## Status
 
-**Status**: plausible (strengthens the model by removing fitted parameters;
-reproduces the profile shape without tuning; exact magnitudes approximate)
+**Status**: disproved (doublet position-profile test, July 2026 — the
+doublets are not plaintext double letters; see Evidence against)
 
 ## Mechanism
 
@@ -103,6 +103,21 @@ featureless placement, and 63 doublets carry no handle. Placement is exhausted.
 
 ## Evidence against / open
 
+- **THE KILL — the doublet position profile (July 2026,
+  `experiments/doublet_position_profile.py`).** On the hold step a
+  ciphertext doublet occurs exactly when the plaintext doubles, so the
+  within-word doublets must inherit the plaintext double-letter
+  position-in-word profile — and that profile is extreme: double letters
+  almost never open a word (prose runeglish: start share 0.3%, rate 0.04%;
+  the author's own solved register: 0 of 503 start adjacencies). A keyed
+  hold does not rescue this — uniform thinning preserves the profile. The
+  LP doublets instead sit flat on the adjacency baseline: start 11 /
+  middle 33 / end 18 / whole-word 1, G = 3.6 (p = 0.30) against flat,
+  G = 83 (p < 1e-17) against the prose double profile, G = inf against
+  the solved register (11 events in its zero-probability start cell). The
+  hold cannot be the doublet source. Note the irony: the parameter-free
+  rate match (0.0323/5 = 0.0065 vs 0.0063) was this file's headline — the
+  rate matches but the events are the wrong ones.
 - **Magnitudes run slightly high in simulation.** Sim d1w ~0.008 vs LP 0.0063;
   sim seam ~0.013 vs LP 0.0079. The pure-hold floor from the real bigram corpus
   is `(1/5)·0.0323 = 0.0065`, and LP within (0.0063) sits just *below* it —
@@ -154,13 +169,17 @@ featureless placement, and 63 doublets carry no handle. Placement is exhausted.
 
 ## Verdict
 
-The doublet suppression and the whole within-word d1-d5 profile are inherent:
-they come from one minimized advance permutation `g4` + the period-5 hold + the
-plaintext's own coincidence structure, not from tuned diagonals. This unifies
-the doublet suppression with the d5 echo (both are the hold) and derives the
-boundary-blindness from the language, directly fixing the "tuned diagonal" weak
-point of the model. The mechanism is right; the exact magnitudes are
-approximate and want a real-LP-plaintext doublet rate we do not have, and the
-seam is only partly pinned. The hold and order-5-g formulations are not
-distinguished by the ciphertext — the hold is preferred for having zero fitted
-rates.
+Disproved. The hold formulation's defining consequence — within-word
+doublets ARE plaintext double letters — fails the position-profile test:
+plaintext doubles are start-forbidden and end-heavy in every measured
+register, while the LP doublets are positionally flat (11 word-initial
+events where the register predicts ~0). The parameter-free rate match
+(plaintext/5 ≈ 0.0065 vs 0.0063) was a genuine coincidence of magnitudes,
+not of mechanisms. What survives in the walk family is the formulation
+this file tried to replace: a TUNED rare-diagonal order-5 `g`
+(`length-clocked-walk.md`), whose exposed bigram class {(g(y), y)} is not
+doubles and must now satisfy a new constraint — its positional profile in
+plaintext must be approximately baseline-flat, since that is what the
+doublets show. The profile test thereby also becomes a key-space filter
+on candidate `g` diagonals. (Output-avoidance / key-event readings of the
+doublets predict the flat profile natively.)

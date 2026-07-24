@@ -49,10 +49,11 @@ be ~chance too). The keyword-search must therefore keep only low-diagonal fills;
 the low-doublet constraint alone does not uniquely pin the grid (many
 low-diagonal arrangements exist).
 
-In the stay-slot reading the grid *advance* is driven to ~0 and the observed
-0.0063 comes from the hold (`plaintext-doublet/5 ≈ 0.0069`); in the order-5-g
-reading the grid is tuned to 0.0063 directly. Either way the columns avoid
-common bigrams.
+The stay-slot reading (grid advance driven to ~0, doublets from the hold)
+is disproved by the doublet position-profile test — see `stay-slot-hold.md`.
+The live reading is order-5-g: the grid is tuned to 0.0063 directly, its
+columns avoid common bigrams, and (new constraint) the diagonal bigram
+class must be positionally near-baseline in plaintext.
 
 ## Group composition (illustrative only — this grid gives CHANCE doublets)
 
@@ -139,15 +140,17 @@ obviously small-key. Closing that gap is the open problem.
 - The 4 fixed runes are the doublet-leakers; the within-word doublet rate
   carries a component = (plaintext doublet rate of those 4 runes).
 - If the grid is keyword-derived, enumerating candidate keywords + verifying
-  with the doublet-consistency check (`stay-slot-hold.md`) + quadgrams is a
-  feasible attack — unlike blind permutation search.
+  with the doublet-diagonal check (now including the positional-baseline
+  constraint from `experiments/doublet_position_profile.py`) + quadgrams is
+  a feasible attack — unlike blind permutation search.
 
 ## Related
 
 - `length-clocked-walk.md` — the model; this proposes a construction for its
   `g`. The same grid/keyword idea could apply to `σ` (the space step).
-- `stay-slot-hold.md` — the doublet mechanism; the fixed-point leakage above
-  is the same "plaintext doublets show through" effect.
+- `stay-slot-hold.md` — the disproved hold reading of the doublets; the
+  fixed-point leakage above was the same "plaintext doublets show through"
+  effect, now excluded by the position profile.
 
 ## Verdict
 

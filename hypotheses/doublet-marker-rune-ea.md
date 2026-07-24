@@ -209,7 +209,11 @@ What survives is the interpretation the flat split actually predicts:
 (b) a rare KEY event (e.g. the keystream step hitting a forbidden value
 ~0.7% of the time), or a rare plaintext-BIGRAM class only if its mixture
 happens to be positionally baseline — a much narrower remnant than
-before. The earlier narrowing stands: deliberate chaff/dittograph
+before. The companion doublet-pair profile test
+(`experiments/doublet_position_profile.py`) closes one more cell of the
+same grid: plaintext DOUBLE LETTERS specifically are excluded (they are
+start-forbidden and end-heavy; the doublets are flat), which also
+disproves the stay-slot hold reading (`stay-slot-hold.md`). The earlier narrowing stands: deliberate chaff/dittograph
 insertion is disfavored at ~2 sigma (June 2026 insertion test), and no
 small ciphertext-visible condition exists. Doublet spacing is
 content-driven Poisson (`doublet-spacing-poisson.md`), consistent with a

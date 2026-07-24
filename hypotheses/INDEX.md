@@ -69,7 +69,7 @@ proposed mechanisms scored against them.
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |
-| [stay-slot-hold.md](stay-slot-hold.md) | The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal | plausible (removes fitted parameters; reproduces profile shape without tuning) |
+| [stay-slot-hold.md](stay-slot-hold.md) | The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal | disproved (doublets are positionally flat, not plaintext-double-shaped; the rate match was a coincidence) |
 | [stream-cipher-no-repeat.md](stream-cipher-no-repeat.md) | Additive Stream Cipher with Ciphertext-Doublet Avoidance | unresolved (reformulated; keystream-only variant disproved) |
 | [substitution-plus-autokey.md](substitution-plus-autokey.md) | Monoalphabetic Substitution + Autokey Layering | disproved |
 | [thirty-symbol-disk.md](thirty-symbol-disk.md) | The '.' Mark is the 30th Character of a 30/29 Cipher Disk | unresolved |

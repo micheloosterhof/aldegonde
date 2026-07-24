@@ -147,11 +147,16 @@ Two consequences of the table that prune whole mechanism families
    ciphertext rune and avoid doublets ~80% of the time. There is exactly
    one known feedback-free escape: general MIXED substitution alphabets
    whose adjacent-alphabet relation is tuned to rare plaintext bigrams
-   (`c[i]=c[i-1] <=> p[i-1]=g(p[i])`, achievable range 0.13%-15%), or
-   equivalently a period-5 hold exposing 1/5 of plaintext doublets — the
-   mechanism of `length-clocked-walk.md` / `stay-slot-hold.md` /
-   `per-word-related-alphabets.md`. Affine relations cannot get below
-   1.25%, so the escape requires non-arithmetic mixed permutations.
+   (`c[i]=c[i-1] <=> p[i-1]=g(p[i])`, achievable range 0.13%-15%) — the
+   mechanism of `length-clocked-walk.md` / `per-word-related-alphabets.md`.
+   Affine relations cannot get below 1.25%, so the escape requires
+   non-arithmetic mixed permutations. (The once-equivalent hold variant —
+   a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
+   — is disproved by the doublet position-profile test: exposed plaintext
+   doubles would be start-forbidden and end-heavy, and the observed
+   doublets are positionally flat. The same test constrains the surviving
+   tuned diagonal: its bigram class must be positionally near-baseline.
+   See `experiments/doublet_position_profile.py`.)
 2. **The lag-5 structure has two faces with two rival readings, neither
    confirmed.** The WITHIN-WORD d5 coincidence excess (the echo) is
    reproduced by the period-5 same-alphabet leak of the length-clocked
