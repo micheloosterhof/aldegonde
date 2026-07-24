@@ -168,15 +168,21 @@ constraint set further (`experiments/deep_scan.py`,
 - **The ᛞᛄ prefix cluster — catalogued, and it is chance.** Four further
   3-rune words begin with the same digraph (ᛞᛄᚩ, ᛞᛄᚳ, ᛞᛄᚷ, ᛞᛄᛝ), so six
   of the 726 three-rune words share that prefix where 0.86 is expected.
-  The full catalog (script section D) shows the prefix distribution is
-  textbook Poisson: **485 distinct prefixes used against 486 expected**,
-  sizes 1-4 all within noise (314/123/33/10 vs 306/132/38/8), and the
-  prefix-sharing pair count 342 vs 313 expected (z = +1.6). Only the
-  extreme tail leans — five cells hold ≥ 5 words against 1.7 expected
-  (nominal p ≈ 0.03) — and ᛞᛄ is not even alone at the top: ᚾᚷ also has
-  six. The restriction to 3-rune words was chosen *because* DJU is 3
-  runes; over all lengths ᛞᛄ's count (9) is unremarkable against a
-  maximum of 10. Under the walk a shared 2-rune prefix needs only two
+  The full catalog (script section D) scores the prefix distribution
+  against **doublet-aware surrogates** — necessarily, since a prefix is
+  an adjacent within-word pair, so the 29 diagonal cells are suppressed
+  (the corpus has 3 doublet-prefixes where a uniform 841-cell null
+  expects 25, pushing ~22 words onto the other 812 cells; a uniform null
+  here is the fifth instance of the doublet-suppression trap). Against
+  2,000 surrogates with the real word structure: distinct prefixes 485
+  vs 482.6 ± 8.7 (z = +0.3), prefix-sharing pairs 342 vs 320 ± 18
+  (z = +1.2), **max cell 6 vs 5.1 ± 0.7 (z = +1.3, p = 0.22)** — a
+  six-word prefix is entirely ordinary — and doublet-prefixes 3 vs
+  5.0 ± 2.2. Only the tail count leans: five cells hold ≥ 5 words
+  against 1.8 ± 1.3 (p = 0.033), post-hoc. ᛞᛄ is not alone at the top
+  either: ᚾᚷ also has six. The restriction to 3-rune words was chosen
+  *because* DJU is 3 runes; over all lengths ᛞᛄ's count (9) is
+  unremarkable against a maximum of 10. Under the walk a shared 2-rune prefix needs only two
   base values to agree, so these are cheap coincidences, not partial
   state returns — confirmed by the third runes inside each group, which
   collide at chance (the one exception being the corpus's only

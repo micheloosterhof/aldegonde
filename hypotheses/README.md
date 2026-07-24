@@ -111,10 +111,14 @@ off-diagonal (the ONLY pairwise structure at any distance is the lag-1
 doublet diagonal); isomorph duplicates are flat against a
 doublet-suppressed null (the library's uniform baseline shows a FAKE +6
 sigma — third artifact of the doublet-suppression trap, after bigram IoC
-and trigram repeats, and a fourth appeared in the seam-bigram census
+and trigram repeats; a fourth appeared in the seam-bigram census
 (`seam-channel-clean.md`: a fake ~2σ pair-IoC lean from the diagonal
-deficit packing the seams into 812 effective cells): any null for this
-corpus must include the doublet rate); delete-marker periodicity scans (29 interrupter candidates x
+deficit packing the seams into 812 effective cells) and a fifth in the
+word-prefix catalog (`repeated-phrase-dju-bei.md`: word-initial digraphs
+are adjacent pairs, so 29 of the 841 cells are suppressed and a uniform
+null overstates every density statistic): ANY null for this corpus must
+include the doublet rate — the trap recurs wherever adjacent runes are
+counted, which is nearly everywhere); delete-marker periodicity scans (29 interrupter candidates x
 periods 2-30) close the "periodic key hidden by AN-END-style interrupts"
 loophole; marker-reset keying flat; numeric autocorrelation flat (lag-1
 r = -0.0297 is quantitatively the doublet artifact); DFT spectrum has no
