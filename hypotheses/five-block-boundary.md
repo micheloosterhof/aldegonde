@@ -109,9 +109,14 @@ fingerprint:
   (~6% visibility per carried slot), and chained carryovers leak into d5,
   which the data forbids. The LP excess is concentrated in atomic PAIRS at
   separations exactly 1 and 4 with no singles and no longer-range
-  correlation — as if discrete events copy either an adjacent output
-  digraph or a (first,last)-of-5 frame from five positions back, with
-  certainty rather than through a plaintext coincidence.
+  correlation. (An earlier reading of this — discrete events copying a
+  digraph or frame from five positions back "with certainty" — is
+  retracted: a deterministic `C[i]=C[i-5]` copy destroys `P[i]`'s
+  information, so it cannot be part of a decryptable cipher. The July 2026
+  split in `lag5-digraph-structure.md` accounts for the d1 face as
+  plaintext morphology passing through a period-5 same-alphabet echo; only
+  the d4 frame face remains unexplained, and it is below chance in real
+  plaintext, so no plaintext-coincidence gate produces it either.)
 
 ## Predictions
 
@@ -120,9 +125,12 @@ fingerprint:
 - If unit phase is locally stable over short ranges, nearby lag-5 event
   pairs should show consistent relative phase; measuring phase coherence
   length could localize the reset trigger (word? line? doublet emission?).
-- Any refinement must generate d1/d4 events as atomic deterministic copy
-  events (not plaintext-coincidence-gated), at a rate of ~1 per 600 runes,
-  while leaving d2, d3, and d5 exactly at baseline.
+- Any refinement must generate the d4 frame events — the residual face
+  after the July 2026 split — while leaving d2, d3, and d5 exactly at
+  baseline. Deterministic copy events are off the table (information-
+  theoretically incoherent, see above), and the d4 frame is below chance
+  in real plaintext, so the mechanism must create the frame relation in
+  the key schedule, not pass it through from the plaintext.
 
 ## Scripts
 
@@ -159,9 +167,11 @@ suppression AND the lag-5 echoes — is disproved by the co-tiling test.
 The components survive separately: (a) the doublet machinery
 (consecutive-distinct within ~5-unit spans, or equivalently memoryless 1/5
 acceptance with positional dead time) reproduces the entire base
-fingerprint in simulation and remains the best generative model of the
-doublet behavior; (b) the lag-5 copy events are a DISTINCT mechanism —
-atomic two-symbol echoes (an output digraph, or a first+last-of-5 frame,
-repeated five positions later with certainty) that do not align with the
-doublet grid. Why both mechanisms involve the constant 5 — shared design
-aesthetic or deeper connection — is the open question.
+fingerprint in simulation and remains a viable generative model of the
+doublet behavior; (b) the lag-5 structure does not align with the doublet
+grid, and after the July 2026 split (`lag5-digraph-structure.md`) only its
+d4 frame face still needs a mechanism — the d1 face is plaintext
+morphology through a period-5 echo, and "atomic copy with certainty"
+readings are information-theoretically incoherent. Why the doublet
+machinery and the lag-5 structure both involve the constant 5 — shared
+design aesthetic or deeper connection — is the open question.

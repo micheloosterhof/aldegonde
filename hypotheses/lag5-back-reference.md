@@ -65,6 +65,11 @@ such searches are conditional on this unverified assumption.
 - **Feasible rates**: Markov runeglish has ~78 d1 opportunities and ~46 d4
   opportunities per corpus length; observed events are 29 and 28 — usage
   fractions 0.18-0.37 and 0.28-0.62 depending on accidental accounting.
+  (July 2026 caveat: measured REAL runeglish
+  (`experiments/plaintext_lag5_pairing.py`) is asymmetric — d1 repeats run
+  3.7x the Markov baseline, but the d4 frame is BELOW chance. The d4
+  opportunity estimate above is therefore optimistic, and the d4 usage
+  fraction correspondingly higher than quoted.)
 - **Full-fingerprint simulation match** (`experiments/backref_model.py`) —
   the FIRST mechanism in the program to fit everything simultaneously:
   doublets 0.666+/-0.046% (LP 0.664), triplets ~0 (LP 0), nIoC 1.000
@@ -93,6 +98,13 @@ such searches are conditional on this unverified assumption.
   (~1%); alternatives are a designed breadcrumb or an LZ-flavored encoding
   aesthetic. The constant 5 is a designer choice here, separate from the
   doublet machinery's 5 (see `cotiling_test.py`).
+- **The July 2026 split removes the model's d1 workload and strains its
+  d4 branch.** Under the length-clocked walk, d1 events are plaintext
+  morphology passing through the `g⁵=id` echo — no back-reference needed.
+  What is left for this model is exactly the d4 frame face, where real
+  plaintext offers below-chance repetition to mark: the "two escape codes"
+  symmetry of the Claim no longer matches the measurements. See
+  `lag5-digraph-structure.md`.
 - Post-hoc: the model was constructed to explain the anomaly. Its
   independent support is the rate feasibility, the information-theoretic
   necessity of its shape, and the full-fingerprint fit.
