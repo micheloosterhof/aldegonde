@@ -182,7 +182,12 @@ Two consequences of the table that prune whole mechanism families
    (3.7x baseline) that the walk echo passes through with no overlay; the
    **d4** face ((1st,5th)-of-5 frame) is BELOW chance in plaintext and so
    is NOT explained by the echo. Net: d1 is accounted for by the walk
-   alone; d4 is the genuine residual anomaly. (This retracts an earlier
+   alone; d4 is the residual count excess — and the July 2026 anatomy
+   (`experiments/d4_frame_anatomy.py`) found no geometric or key-equation
+   structure in it (most legs cross one boundary, where walk
+   alphabet-coincidence is impossible; no σ-relation cell enriched), so it
+   is a watch-item compatible with scan noise, not an attack surface.
+   (This retracts an earlier
    "walk + copy overlay does both" claim — the overlay was
    information-theoretically incoherent.) The two faces overlap in the
    nine in-word `XY···XY` repeats and are reconciled as ONE word-aware
