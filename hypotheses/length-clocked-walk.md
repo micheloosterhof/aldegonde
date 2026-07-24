@@ -173,14 +173,19 @@ newlines are line wraps (words flow across them).
   this model predicts d4 ≈ d6; observed is a ~2.7σ split in opposite
   directions (d4 = 0.0410 up, d6 = 0.0245 down). A language-orientation
   rescue tested negative. The live resolution candidate changes g's
-  CYCLE TYPE, not the architecture: the order-20 census 4×5 + 2×4 + 1
-  (`mixed-cycle-progression.md`) predicts the partial echo exactly
-  (d5 = 0.0488 vs 0.0492 — at distance 5 the 4-loop letters experience
-  g⁵ = g, the tuned diagonal, so 20 letters echo and 8 anti-echo) and
-  sources the d4 lift from the 4-loop returns. Residual: d4 still
-  +2.8σ. If it survives simulation, "order-5 g" in this file becomes
-  "order-20 g whose 5-loops dominate", and the mod-5 phase arguments and
-  DJU-BEI arithmetic need redoing mod 20.
+  CYCLE TYPE, not the architecture: after exhaustive census scanning and
+  full-battery simulation (`mixed-cycle-progression.md`), the winner is
+  **g with three 5-loops and two 7-loops** (all prime, order 35, the
+  unique 5/7-partition of 29). It uniquely reproduces the d6 dip exactly
+  (6 ≡ 1 mod 5 AND 6 ≡ −1 mod 7: every letter sits on the tuned diagonal
+  at distance 6), gives the partial echo (15/29 five-loop letters, sim
+  d5 = 0.0483 vs 0.0492), and explains the d7 elevation and the d8/d9
+  dips. Residuals: d4 (sim 0.0304 vs LP 0.0410) is the one cell no cycle
+  type explains, and the simulation surfaced a new key constraint — the
+  g²-diagonal must also sit near background. If the 5+5+5+7+7 census
+  holds, "order-5 g" here becomes "order-35 g whose g⁵ fixes only the
+  5-loops", the phase arguments generalize mod 35, and the DJU-BEI
+  arithmetic needs redoing (the σ-even parity condition survives).
 - **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
   on real runeglish words (`mechanism_discriminator.py`) could not separate
   them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner
