@@ -158,6 +158,19 @@ newlines are line wraps (words flow across them).
   which a random per-word key could not produce. Yields a key constraint:
   `Σ(L−1)=4946 ≡ 1 (mod 5)` over the interval, so `[g] = −1449·[σ]` in the
   abelianization of ⟨g,σ⟩.
+  **What this constraint does and does not pin.** The two "5"s in this
+  model are independent, and only one of them is at work here. The
+  within-word phase `j mod 5` never reaches 5 in a short word — DJU and
+  BEI are 3 runes each, so their ciphertext exercises only `g⁰, g¹, g²`
+  and says nothing directly about `g³` or `g⁴`. The mod-5 arithmetic in
+  the constraint comes instead from `g⁵ = id` making exponents matter
+  only mod 5, applied to the exponent the BASE schedule accumulates
+  across 1,449 word boundaries. So DJU-BEI constrains the base schedule
+  (and hence a relation between g and σ), not g's internal structure.
+  Identifiability gradient generally: `g¹` is exercised by 96.6% of
+  words, `g²` by 80.7%, `g³` by 55.9%, `g⁴` by 38.4%, and the `g⁵ = id`
+  echo only by the 27.5% of words with length ≥ 6 (806 words, 2,073
+  pairs) — the higher powers rest on progressively less data.
 
 ## Evidence against / open
 

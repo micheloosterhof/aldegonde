@@ -147,6 +147,46 @@ constraint set further (`experiments/deep_scan.py`,
   no embedded all-29 key table window, sentence-initial/final runes
   uniform, word-length sequence spectrum white.
 
+## Is there another DJU? (uniqueness census, July 2026)
+
+`experiments/dju_uniqueness.py`:
+
+- **ᛞᛄᚢ occurs exactly twice in the clean corpus, and is followed by
+  ᛒᛖᛁ both times**; ᛒᛖᛁ likewise occurs exactly twice, always after
+  ᛞᛄᚢ. Neither word appears anywhere else.
+- **No graded family of near-collisions.** Comparing all 16,653 pairs of
+  adjacent 3+3 word blocks by positional agreement gives
+  {0: 13516, 1: 2845, 2: 274, 3: 17, 4: 0, 5: 0, 6: 1} against chance
+  expectations {3: 12.3, 4: 0.33, 5: 0.005, 6: 3e-5}. Everything below
+  4 sits at chance and there is nothing at 4 or 5: the state return is
+  an isolated all-or-nothing event, not the tip of a family of
+  near-returns. (This also re-derives the event's rarity — ~1 in 35,000
+  — from a fresh, 3+3-restricted angle.)
+- **Word repetition generally is at chance**: 15 repeated words of
+  length ≥ 3 (one of them thrice, ᛠᚱᛇ), against ~11-12 expected pairs.
+  Consistent with `word-transform-census.md`.
+- **Curiosity, not a finding**: four further 3-rune words begin with the
+  same digraph ᛞᛄ (ᛞᛄᚩ, ᛞᛄᚳ, ᛞᛄᚷ, ᛞᛄᛝ), so six of the 726 three-rune
+  words share that prefix where 0.86 is expected. But the prefix
+  distribution as a whole is normal — two cells reach 6 (ᚾᚷ as well)
+  against 0.23 expected, nominal p ≈ 0.02 for the max-statistic, and the
+  restriction to 3-rune words was chosen *because* DJU is 3 runes. Over
+  all word lengths the ᛞᛄ prefix count (9) is unremarkable against a
+  maximum of 10. Under the walk a shared 2-rune prefix needs only two
+  base values to agree, so these are cheap coincidences, not partial
+  state returns.
+
+## What the constraint pins (and what it does not)
+
+Both words are 3 runes, so the within-word phase reaches only `g⁰, g¹,
+g²`: the six agreeing runes say nothing directly about `g³` or `g⁴`. The
+mod-5 arithmetic in the abelianization constraint comes from `g⁵ = id`
+(exponents matter only mod 5) applied to the exponent accumulated by the
+BASE schedule over the 1,449 intervening word boundaries — not from any
+word reaching length 5. The constraint therefore binds the base schedule
+and the g/σ relation, not g's internal structure. See
+`length-clocked-walk.md`.
+
 ## Scripts
 
 - `experiments/anchored_repeats.py` — boundary-consistent anchored repeat
