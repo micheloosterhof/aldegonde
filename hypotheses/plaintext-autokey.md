@@ -30,14 +30,16 @@ The feedback comes from the plaintext side, not the ciphertext side.
 
 ## Evidence against
 
-- **Repeated plaintext fragments propagate**: In plaintext autokey, if the same
-  plaintext sequence appears at two different positions, it produces the same
-  ciphertext sequence (because the feedback depends on plaintext, which is
-  identical in both cases). This creates repeated ciphertext fragments at a rate
-  that reflects the natural repetition rate of the plaintext language. The
-  unsolved sections show very few repeated fragments, consistent with ciphertext
-  autokey (where feedback depends on position-dependent ciphertext) but not with
-  plaintext autokey on English text.
+- **Repeated plaintext fragments propagate — quantified (July 2026)**: under
+  ANY plaintext autokey C[i] = TR[P[i-1]][P[i]] (any tabula recta), a repeated
+  plaintext (n+1)-gram forces a repeated ciphertext n-gram, position-free.
+  Measured on the recovered solved-section plaintext (2,797 runes, the same
+  author's register) and scaled to corpus size
+  (`experiments/plaintext_autokey_closure.py`): predicted repeated 4-gram
+  pairs >= ~27,500, 5-grams >= ~19,700, 6-grams >= ~14,300. Observed in the
+  clean corpus: 129 / 6 / 1 — all at the doublet-corrected chance level
+  (124 ± 10 / 4 ± 2). A kill margin of more than two orders of magnitude,
+  independent of the tabula recta.
 - **Less diffusion**: Plaintext autokey propagates errors in one direction
   during decryption (a wrong guess affects only one subsequent rune). This makes
   it more vulnerable to known-plaintext attacks, which is uncharacteristic of
@@ -48,13 +50,14 @@ The feedback comes from the plaintext side, not the ciphertext side.
 
 ## Scripts
 
-- Compare the rate of repeated n-grams (n >= 4) in the ciphertext against what
-  plaintext autokey would produce from English-like input. Ciphertext autokey
-  produces fewer repeats because the feedback is position-dependent.
+- `experiments/plaintext_autokey_closure.py` — the quantified repeat-rate
+  comparison (predicted vs observed repeated n-grams, TR-independent).
 
 ## Verdict
 
-Disproved. Plaintext autokey produces more repeated ciphertext fragments than
-observed, because identical plaintext sequences encrypt identically regardless
-of position. The low repeat rate in the unsolved sections is consistent with
-ciphertext autokey but not plaintext autokey.
+Disproved, quantitatively and for every tabula recta at depth 1. Plaintext
+autokey transports the plaintext's repeated (n+1)-grams into repeated
+ciphertext n-grams; the author's own register predicts tens of thousands of
+repeated 4-grams and the corpus has 129 — exactly chance. The style
+arguments (diffusion, Cicada precedent) are secondary; the repeat census
+alone closes the class.

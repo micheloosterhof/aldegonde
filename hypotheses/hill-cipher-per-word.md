@@ -11,8 +11,8 @@ produce the ciphertext runes.
 
 ## Status
 
-**Status**: disproved (fixed matrices; per-word varying matrices are
-outside this claim)
+**Status**: disproved (fixed matrices by the census; per-word varying
+matrices by the doublet hyperplane argument — see Verdict)
 
 ## Mechanism
 
@@ -69,5 +69,16 @@ surface as identical cipher-word pairs. The identity class sits at the
 random baseline and there are zero repeated cipher words of length >= 4
 (`word-transform-census.md`, `cryptodiagnostics-page0-58.md`). The
 uniformly distributed single-rune words (M_1 is monoalphabetic) and the
-missing doublet-suppression mechanism fail independently. Per-word VARYING
-matrices are a different hypothesis, not covered by the census.
+missing doublet-suppression mechanism fail independently.
+
+Per-word VARYING matrices — the remainder the census cannot see — are
+closed by the doublet argument (July 2026): a within-word doublet under
+C_w = M_w·P_w is the hyperplane condition (row_i − row_{i+1})·P_w = 0,
+hit at ~1/29 per adjacency for any matrix chosen independently of the
+plaintext, no matter how M_w varies per word. Simulation with random
+invertible matrices on the author's register gives a 3.3% within-word
+doublet rate vs the observed 0.63% (`experiments/varying_hill_closure.py`).
+Escaping requires matrices tuned to the plaintext bigram distribution,
+which collapses the family into the known escape of README structural
+constraint 1 (bigram-tuned alphabet relations — the walk family), not a
+Hill cipher in any meaningful sense.

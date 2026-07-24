@@ -72,4 +72,9 @@ Disproved. Whatever the cipher is, pages do not share a positional keystream
 that resets at page or section boundaries. Remaining keystream-style options
 require either a different keystream per page (e.g. keyed by page number or
 content) or feedback from the text itself (autokey-like state), which aligned
-kappa cannot cancel.
+kappa cannot cancel. The per-page-keyed variant is not tracked as a separate
+file: with a different pad per page it is observationally an OTP with no
+handle, i.e. the standing `stream-cipher-no-repeat.md` problem (and the
+page-spanning doublet-suppression continuity plus the mid-word page breaks
+argue against any per-page state reset at all — see `five-block-boundary.md`
+co-tiling notes and `aligned-kappa-no-reset.md`).
