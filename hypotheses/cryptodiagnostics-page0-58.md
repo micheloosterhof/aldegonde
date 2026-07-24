@@ -14,6 +14,12 @@ word-keyed determinism), and surfaced two **positive leads**: a word-aligned
 repeated two-word phrase, and a within-word distance-5 coincidence excess
 concentrated in length-10 words.
 
+**Role of this file now**: it is the *discovery record* — the contamination
+correction, the rule-outs, and the two leads below are unique to it. The basic
+fingerprint it first measured has since been split into atomic observation
+files (`flat-ioc.md`, `doublet-suppression.md`, ...); the "Verified profile"
+section below points to them rather than duplicating their numbers.
+
 ## Status
 
 **Status**: confirmed (characterization)
@@ -48,20 +54,27 @@ concentrated in length-10 words.
 
 ## Verified profile (clean corpus)
 
-| Property | Value |
-|----------|-------|
-| Unigram flatness | chi-sq p = 0.55, min/max count 400/493 |
-| Entropy | H1 = 4.8565 of 4.8580 bits; H(X2\|X1) = 4.786 |
-| IOC mono/di/tri | 0.03448 / 0.00122 / 0.0000427 — all at random |
-| Doublets | 86 (x5.19 suppressed); 0 triplets |
-| Kappa skips 2-60 | all normal (skip 11 z = -2.8, isolated, noise-level) |
-| Bigram asymmetry count(a,b) vs count(b,a) | chi-sq p = 0.21 |
-| Compression (zlib/bz2/lzma) vs shuffled | z = +0.2 / -0.1 / -0.6 — zero redundancy |
-| Mutual information at lags 1-58 | only lag 1 elevated (the doublet deficit) |
-| Sliding-window IOC / doublet rate | homogeneous across all sections 0-9 |
+Each basic-fingerprint property is now a standalone observation with its own
+self-contained significance script (`experiments/obs_*.py`); this battery
+originally established them together. To avoid two copies of the same number,
+the profile is a pointer table — see the linked file for the current value:
+
+| Property | Observation file |
+|----------|------------------|
+| Unigram flatness (chi-sq p=0.553, IoC 0.9999) | `flat-ioc.md` |
+| Doublet suppression (86, x5.19, boundary-blind) | `doublet-suppression.md` |
+| Zero triplets | `zero-triplets.md` |
+| Off-diagonal bigram uniformity (p=0.22) | `bigram-ioc.md` |
+| Kappa spectrum (only skip 1) | `kappa-spectrum.md` |
+| Entropy / incompressibility (H1 99.97%, z~0) | `entropy-incompressible.md` |
+| No fixed period | `no-periodicity.md` |
+| Pairwise dependence only at lag 1 | `pairwise-dependence.md` |
+| No page/section keystream reset | `aligned-kappa-no-reset.md` |
+| No running-key depth | `no-running-key-depth.md` |
 
 The doublet suppression is the **only** detectable deviation from uniform
-randomness at the rune level. The delta-1 stream restricted to nonzero values
+randomness at the rune level (plus the higher-order lag-5 structure, see
+`lag5-digraph-structure.md`). The delta-1 stream restricted to nonzero values
 is marginally non-flat (chi-sq p = 0.026, df 27) — weak, worth one re-check on
 new data, not load-bearing.
 
