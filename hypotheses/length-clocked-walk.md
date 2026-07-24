@@ -89,7 +89,13 @@ newlines are line wraps (words flow across them).
 - **Period-5 confirmed twice.** d5 echo (elevated coincidence, IoC 1.43,
   +3.7σ above flat) AND d6 suppression (the phase-1 image of d1: `g⁶ = g¹`
   under period 5; permutation null p=0.016). d6 pins the period at exactly 5,
-  independent of the fragile d10 (2/88 pairs).
+  independent of the fragile d10 (2/88 pairs). The d6 deficit is moreover
+  a STRUCTURAL discriminator (July 2026, `mixed-cycle-progression.md`):
+  no "returned-fraction" mechanism — mixed cycle lengths in g, the one
+  classical construction whose correlation rises with distance — can push
+  a cell BELOW background; only an inherited tuned relation (g⁶ = g)
+  does. The sub-background d6 is positive evidence for order-5 with a
+  tuned diagonal, not merely a consistency check.
 - **Empty d2/d3/d4 (~chance).** `g²/g³/g⁴` diagonals sit at chance.
 - **No periodicity.** No Kasiski, no periodic-IoC (periods ≤600), no period in
   absolute rune position (k≤40) or word index (k≤49, incl divisors of 1449).

@@ -168,6 +168,16 @@ whether phase (d mod 5) captures all the structure:
   formulation stands, with the constraint that its diagonal bigram class
   be positionally near-baseline.
 
+**φ-ladder restatement (July 2026)**: inverting the full within-word
+staircase through r_d = φ_d·K_d + (1−φ_d)·(1−K_d)/28 with K_d from
+register prose in the LP length mix (`experiments/mixed_cycle_g.py`)
+gives φ5 = 0.59 ± 0.18 — the partial-vs-full tension at ~2.3σ from full
+leak (order-5 predicts φ5 = 1), slightly sharper than the bootstrap CI
+here but subject to the same register-calibration caveat. The
+mixed-cycle explanation of the partiality is disproved by the d6 cell
+(`mixed-cycle-progression.md`); the partial echo remains the open
+tension of the order-5 formulation.
+
 ## Evidence against
 
 - **Partial-vs-full is underpowered — this is the load-bearing caveat.** The
