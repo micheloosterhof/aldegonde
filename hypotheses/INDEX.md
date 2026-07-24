@@ -45,7 +45,7 @@ proposed mechanisms scored against them.
 | [bifid-fractionation.md](bifid-fractionation.md) | Bifid or Trifid Fractionation Cipher | disproved |
 | [block-cipher.md](block-cipher.md) | Block Cipher / Substitution-Permutation Network | disproved (boundary-blind fixed blocks; five-block edge variant tracked separately) |
 | [ciphertext-autokey.md](ciphertext-autokey.md) | Ciphertext Autokey Cipher | disproved |
-| [doublet-marker-rune-ea.md](doublet-marker-rune-ea.md) | The Doublet Marker Rune is EA | unresolved |
+| [doublet-marker-rune-ea.md](doublet-marker-rune-ea.md) | The Doublet Marker Rune is EA | disproved (positional-profile test kills the whole fixed-rune marker band; flat split favors a key event) |
 | [encoding-only.md](encoding-only.md) | Runeglish Encoding Alone Explains the Statistics | disproved |
 | [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved (deterministic fixes; stochastic re-draw = `stream-cipher-no-repeat.md`) |
 | [first-difference.md](first-difference.md) | First-Difference Cipher | disproved |

@@ -104,6 +104,9 @@ def pair_category(p: int, length: int) -> str:
 def main() -> None:
     with open(DATA, encoding="utf-8") as f:
         text = f.read()
+    # clean corpus = the first 10 rune-bearing $-sections (0-9); the solved
+    # AN END page and Parable are the trailing two sections of page0-58.txt
+    text = "$".join([s for s in text.split("$") if RUNES & set(s)][:10])
     words = parse_words(text)
     stream, word_id, pos1, wlen = build_stream(words)
 

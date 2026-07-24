@@ -11,14 +11,21 @@ candidate, with F, NG, and IO excluded. The premise itself is unproven.
 
 ## Status
 
-**Status**: unresolved
+**Status**: disproved (positional-profile test, July 2026 — even granting
+the marker premise, EA and every frequency-band candidate fail; see below)
 
 The load-bearing premise — that doublets mark a single fixed plaintext rune at
-all — is **not established**, and is undercut: the mechanism that would naturally
+all — was never established, and is undercut: the mechanism that would naturally
 imply it (ciphertext autokey) is disproved (see Evidence against). EA was the
-project's starting assumption, not a finding. The "filters" below are
-consistency checks (EA is not *refuted*) conditioned on the premise; analysis
-that assumes EA cannot establish EA. Treat this whole note as conditional.
+project's starting assumption, not a finding. The July 2026 direction test
+(`experiments/ea_direction_test.py`) settles the conditional claim negatively:
+in word-bounded runeglish prose EA is 90% medial / 8% initial / 2% final, while
+BOTH doublet runes sit on the all-rune positional baseline (p = 0.16 / 0.54
+vs baseline; chi2 = 225-275, p < 1e-48 vs the EA profile). NG (74% final)
+and IO (100% medial) fail the same way. No rune in the 0.4-1.0% frequency
+band has a baseline-flat profile, so the single-fixed-rune marker class is
+refuted on position alone — and the observed flatness is exactly what a
+content-uncorrelated KEY event predicts.
 
 ## Mechanism
 
@@ -51,8 +58,9 @@ F (ᚠ) = 2.566% predicts a 2.57% doublet rate — **refuted** (3.8x too many). 
 kills the naive 0-indexed identity (F=0) and every common rune.
 
 **Word-initial filter.** The marker rune demonstrably appears at the start of a
-word: 24 times as the 2nd rune of a doublet (the cross-word doublets), 12 times
-as the 1st rune. Either count is fatal to candidates that cannot begin a word:
+word: 23 times as the 2nd rune of a doublet (the cross-word doublets), 12 times
+as the 1st rune (clean corpus). Either count is fatal to candidates that cannot
+begin a word:
 
 - **NG** never starts an English/runeglish word. Predicts ~0 word-initial.
   Refuted.
@@ -67,15 +75,19 @@ and the frequency match is loose (15% off, against a generic corpus). NG is fine
 on frequency alone and is excluded only by the premise-dependent word-initial
 argument.
 
-**Positional neutrality is consistent.** The 2nd rune's word-position
-distribution (start 24 / middle 46 / end 19) is statistically indistinguishable
-from the all-rune baseline (21.9 / 55.5 / 21.9%): chi-square 1.98, 3 df,
-p approx 0.58. A positionally-flexible digraph like EA fits; a strongly
-positional rune would not.
+**Positional neutrality — first read as consistent, later fatal.** The 2nd
+rune's word-position distribution (start 23 / middle 44 / end 19, clean
+corpus) is statistically indistinguishable from the all-rune baseline
+(21.8 / 55.6 / 21.8%): chi-square 1.25, p ≈ 0.54. This was originally read
+as "a positionally-flexible digraph like EA fits" — but flexible is not the
+same as baseline-flat: measured on word-bounded prose, EA's actual profile
+is 90% medial, and the July 2026 profile test below turns this observation
+into the refutation.
 
-**Suppression is uniform across word boundaries.** 65 within-word doublets, 24
-cross-word (23 across `-`, 1 across `.`, none across segment/page/number-page
-gaps). Cross-word count 24 vs 20.1 expected from opportunity — not suppressed.
+**Suppression is uniform across word boundaries.** 63 within-word doublets, 23
+cross-word (22 across `-`, 1 across `.`, none across segment/page/number-page
+gaps; clean corpus). Cross-word count 23 vs 19.4 expected from opportunity —
+not suppressed.
 This points to a continuous running mechanism that ignores word spacing, and
 argues against word-boundary-reset autokey (see `word-boundary-reset-autokey.md`).
 
@@ -90,21 +102,41 @@ argues against word-boundary-reset autokey (see `word-boundary-reset-autokey.md`
   constraint must be carried by a different mechanism (e.g. autokey plus an
   inner layer), not plain autokey.
 
-## Predictions
+## The positional-profile test (July 2026) — the conditional claim fails
 
-- Whatever the mechanism, decrypting it should place **EA** at all 86 doublet
-  positions (1st or 2nd rune, per direction), including 24/12 word-initial EAs —
-  i.e. words beginning "ea..." (each, ear, earth, east).
-- 1st-vs-2nd (keystream direction) is still open. To decide it, obtain EA's
-  initial/medial/final fractions from a runeglish corpus *with* word boundaries
-  and test against the 2nd-rune split (24/46/19) vs the 1st-rune split
-  (12/53/24); whichever matches EA's profile wins. The ngram files carry no word
-  boundaries, so this needs a runeglish-encoded English corpus.
+The direction test proposed under Predictions was run once the
+word-bounded runeglish prose corpus existed
+(`experiments/ea_direction_test.py`, Gutenberg #1342, 127k word tokens,
+537k runes, token-weighted, same digraph rules as the d5 full-leak
+reference; EA frequency there 0.611%, confirming the band):
+
+| | start | middle | end |
+|---|---|---|---|
+| EA profile (prose) | 7.9% | 90.0% | 2.0% |
+| NG profile (prose) | 0.0% | 26.2% | 73.8% |
+| IO profile (prose) | 0.0% | 100.0% | 0.0% |
+| LP 1st rune of doublet (86) | 12 | 51 | 23 |
+| LP 2nd rune of doublet (86) | 23 | 44 | 19 |
+| all-rune baseline | 21.8% | 55.6% | 21.8% |
+
+Both doublet-rune splits match the all-rune baseline (chi2 = 3.6 / 1.25,
+p = 0.16 / 0.54) and reject the EA profile at chi2 = 275 / 225
+(p < 1e-48). Under the marker premise, the marked rune's word positions
+ARE the plaintext rune's word positions — so a 90%-medial rune cannot
+produce a baseline-flat split with 19-23 word-final doublets where EA
+predicts ~2. NG and IO fail identically in other directions. No rune in
+the frequency band is baseline-flat, so this refutes the entire
+single-fixed-rune marker class, not merely EA, and it decides the
+original question by dissolving it: neither direction matches because no
+rune matches. What the flat split DOES fit is a trigger uncorrelated
+with plaintext content — a rare key event.
 
 ## Scripts
 
 - `experiments/doublet_word_position.py` — word-position analysis plus the
   frequency and word-initial filters. Reproduces every number above.
+- `experiments/ea_direction_test.py` — the positional-profile test
+  (prose EA/NG/IO profiles vs the doublet-rune splits).
 
 ## Related
 
@@ -164,21 +196,20 @@ From the ciphertext alone these remain indistinguishable.
 
 ## Verdict
 
-Unresolved, and weaker than it first looks. EA is the least-refuted candidate
-*conditional on* an unproven premise (that doublets mark one fixed plaintext
-rune). That premise has no positive support and is undercut by the autokey
-disproof. The frequency match is loose and the word-initial argument is itself
-premise-dependent, so the filters establish only that EA is *not refuted* — not
-that it is correct. Doublet spacing is content-driven Poisson
-(`doublet-spacing-poisson.md`), consistent with a single-rune trigger but
-equally with a fixed n-gram trigger.
+Disproved. The July 2026 positional-profile test refutes the conditional
+claim on its own terms: granting the marker premise, the marked rune's
+word-position split must follow that rune's plaintext profile, and both
+doublet-rune splits instead follow the all-rune baseline — incompatible
+with EA (90% medial, p < 1e-48) and with every other rune in the
+0.4-1.0% frequency band (NG 74% final, IO 100% medial). The frequency
+filter's survivors all die on position.
 
-The June 2026 insertion test narrows the field by one: deliberate
-chaff/dittograph insertion is disfavored at ~2 sigma. The viable
-interpretation class is now: (a) a rare PLAINTEXT event (a rune in the
-EA/NG/IO frequency band, or a rare bigram class), or (b) a rare KEY event
-(the keystream step hitting the forbidden zero value ~0.7% of the time) —
-the two are indistinguishable by every position/identity/context test run
-so far, because both occupy a stream position and both are
-content-uncorrelated to the observables. EA-as-marker specifically
-remains an open starting hypothesis, not a result.
+What survives is the interpretation the flat split actually predicts:
+(b) a rare KEY event (e.g. the keystream step hitting a forbidden value
+~0.7% of the time), or a rare plaintext-BIGRAM class only if its mixture
+happens to be positionally baseline — a much narrower remnant than
+before. The earlier narrowing stands: deliberate chaff/dittograph
+insertion is disfavored at ~2 sigma (June 2026 insertion test), and no
+small ciphertext-visible condition exists. Doublet spacing is
+content-driven Poisson (`doublet-spacing-poisson.md`), consistent with a
+key-event trigger.
