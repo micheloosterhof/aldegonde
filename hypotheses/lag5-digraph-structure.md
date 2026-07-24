@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Finding: Lag-5 Paired-Match Structure
 
 ## Claim

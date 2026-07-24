@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Shared Positional Keystream Resetting at Page/Section Boundaries
 
 ## Claim

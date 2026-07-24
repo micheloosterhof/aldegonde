@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Word-Length Keystream & Boundary Authenticity
 
 Two probes of the one confirmed open channel — the word lattice (boundaries

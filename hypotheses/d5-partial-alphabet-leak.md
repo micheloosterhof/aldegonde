@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: The d5 Echo is a Same-Alphabet Leak (partial-vs-full is underpowered)
 
 ## Claim

@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved
 
 ## Status

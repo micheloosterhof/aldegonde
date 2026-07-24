@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: Doublet Spacing is Poisson, Not Mathematical
 
 ## Claim

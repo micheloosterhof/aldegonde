@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Beaufort Ciphertext Autokey with 1-Based Indexing (EA Identity)
 
 ## Claim

@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Explicit Doublet Avoidance (Post-Processing)
 
 ## Claim

@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: The Doublet Marker Rune is EA
 
 ## Claim

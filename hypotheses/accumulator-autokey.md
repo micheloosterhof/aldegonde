@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Accumulator Autokey (Running Ciphertext Sum)
 
 ## Claim

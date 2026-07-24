@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Transcription verification worksheet
 
 Each event below drives the lag-5 statistical anomaly. For each, the

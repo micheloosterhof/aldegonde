@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Word-Level Autokey
 
 ## Claim

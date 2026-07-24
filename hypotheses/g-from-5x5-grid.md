@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Constructing the Order-5 Step `g` from a 5×5 Grid
 
 ## Claim

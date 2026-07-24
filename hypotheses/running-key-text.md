@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Running Key from Another Text
 
 ## Claim

@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Additive Stream Cipher with Ciphertext-Doublet Avoidance
 
 ## Claim

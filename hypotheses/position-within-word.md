@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Position-Within-Word Dependent Cipher
 
 ## Claim

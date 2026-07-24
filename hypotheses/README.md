@@ -5,7 +5,19 @@ Primus. Liber Primus is a book of rune-encoded text published by Cicada 3301 in
 2014. The community solved several early sections using shift ciphers, Vigenere,
 and Beaufort autokey, but the majority of the text remains uncracked.
 
-Each hypothesis gets its own Markdown file and optional supporting scripts.
+Files come in two kinds, tagged `type:` in their frontmatter:
+
+- **observations** — a measured statistical feature of the corpus, with a
+  self-contained significance script (`experiments/obs_*.py` for the basic
+  fingerprint) and a reproduction of its numbers. These are facts any cipher
+  must explain.
+- **hypotheses** — a proposed cipher mechanism, scored against the
+  observations.
+
+See **[INDEX.md](INDEX.md)** for the split list of both. The atomic
+fingerprint observations (flat IoC, doublet suppression, zero triplets,
+bigram IoC, kappa spectrum) each have an `obs_*.py` script that reproduces
+one number; `experiments/lp_corpus.py` is the shared clean-corpus loader.
 
 ## Data
 

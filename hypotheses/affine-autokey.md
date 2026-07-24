@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Affine Autokey
 
 ## Claim

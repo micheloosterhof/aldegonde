@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Multi-Layer Autokey
 
 ## Claim

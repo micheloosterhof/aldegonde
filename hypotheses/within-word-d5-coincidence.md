@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: Within-Word Distance-5 Coincidence Excess
 
 ## Claim

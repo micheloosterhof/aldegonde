@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Five-Block Cipher with Edge Effects
 
 ## Claim

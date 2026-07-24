@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section
 
 ## Status

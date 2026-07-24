@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Periodic Polyalphabetic Cipher (Vigenere with Fixed Key)
 
 ## Claim

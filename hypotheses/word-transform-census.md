@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: Word-Level Transform Census (Per-Word Keyed Ciphers Excluded)
 
 ## Claim

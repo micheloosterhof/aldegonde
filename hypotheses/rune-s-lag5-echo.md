@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: The Lag-5 Echo is Carried by the Rune S
 
 ## Claim

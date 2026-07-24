@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Autokey Outer Layer + Unknown Inner Layer
 
 ## Claim

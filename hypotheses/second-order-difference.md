@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Second-Order Difference Cipher
 
 ## Claim

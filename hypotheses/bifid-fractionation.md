@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Bifid or Trifid Fractionation Cipher
 
 ## Claim

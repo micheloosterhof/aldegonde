@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Runeglish Encoding Alone Explains the Statistics
 
 ## Claim

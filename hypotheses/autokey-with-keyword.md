@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Autokey with Keyword Interleaving
 
 ## Claim

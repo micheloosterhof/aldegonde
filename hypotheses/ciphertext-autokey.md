@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Ciphertext Autokey Cipher
 
 ## Claim

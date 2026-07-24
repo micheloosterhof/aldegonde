@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Lag-5 Events are Opportunistic Plaintext Back-References
 
 ## Claim

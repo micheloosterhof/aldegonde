@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: First-Difference Cipher
 
 ## Claim

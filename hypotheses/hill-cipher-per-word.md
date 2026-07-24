@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Hill Cipher per Word
 
 ## Claim

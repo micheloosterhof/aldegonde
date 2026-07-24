@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Prime-Value Tabula Recta Autokey
 
 ## Claim

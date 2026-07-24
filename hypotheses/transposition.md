@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Transposition Cipher
 
 ## Claim

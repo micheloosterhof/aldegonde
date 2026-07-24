@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: The '.' Mark is the 30th Character of a 30/29 Cipher Disk
 
 ## Claim

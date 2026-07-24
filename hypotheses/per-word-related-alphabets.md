@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Per-Word Related-Alphabet Cipher (5 Alphabets, Bigram-Dodging Step)
 
 ## Claim

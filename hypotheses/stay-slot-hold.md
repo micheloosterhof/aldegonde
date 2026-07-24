@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal
 
 ## Claim

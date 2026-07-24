@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Block Cipher / Substitution-Permutation Network
 
 ## Claim

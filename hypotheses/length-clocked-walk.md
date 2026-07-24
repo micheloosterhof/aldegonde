@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space)
 
 ## Claim

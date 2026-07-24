@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: Distance-11 Coincidence Deficit (Cross-Word, mod-5 Phase)
 
 ## Claim

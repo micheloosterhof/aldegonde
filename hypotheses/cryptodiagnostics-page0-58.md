@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: Full Cryptodiagnostic Battery on page0-58.txt (2026-06)
 
 ## Claim

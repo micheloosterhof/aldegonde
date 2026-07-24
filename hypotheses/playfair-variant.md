@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Playfair / Seriated Playfair Variant
 
 ## Claim

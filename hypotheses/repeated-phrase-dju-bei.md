@@ -1,3 +1,6 @@
+---
+type: observation
+---
 # Characterization: The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence)
 
 ## Claim

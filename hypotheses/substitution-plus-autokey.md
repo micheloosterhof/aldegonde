@@ -1,3 +1,6 @@
+---
+type: hypothesis
+---
 # Hypothesis: Monoalphabetic Substitution + Autokey Layering
 
 ## Claim
