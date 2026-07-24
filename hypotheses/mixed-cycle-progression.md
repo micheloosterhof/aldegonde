@@ -206,6 +206,49 @@ mod-5 phase arguments generalize to mod 35, and the DJU-BEI arithmetic
 must be redone in the new abelianization (the σ-even parity condition
 survives unchanged: 4946 is even).
 
+## CORRECTION (same day): the crowning was premature
+
+Review of the first pass found two calibration flaws
+(`experiments/census_corrected.py`): (1) K_d had been measured on prose
+cut into LP word lengths at RANDOM offsets — arbitrary segments whose
+statistics approach the unconditional stream coincidence, inflating
+K3-K5 by ~10-15%; (2) the diagonals were annealed to their floors
+(0.0023) where the LP implies ~0.006, and the d6 dip depth scales with
+tuning depth. Redone with real prose words sampled by length and
+target-level tuning:
+
+- **The partial-echo evidence largely evaporates**: corrected
+  φ5 = 0.85 ± 0.26, consistent with the full echo (−0.6σ). The original
+  `d5-partial-alphabet-leak.md` verdict — underpowered, likely
+  undecidable — was correct; the first-pass φ5 = 0.59 ± 0.18 was a
+  calibration artifact.
+- **The census rankings are calibration-fragile**: 5+5+5+7+7 falls to
+  rank 14, the standard 5×5+4f census recovers to rank 67, and the gap
+  between the mixed family and pure order-5 shrinks to Δchi2 ≈ 3 —
+  within the systematic uncertainty of the K reference (register,
+  long-word truncation). No census is crowned.
+- **At realistic tuning depth NO census reproduces the deep d6 dip**:
+  corrected sims give d6 = 0.033-0.040 for every census (including
+  5+5+5+7+7) vs LP 0.0245. The "exact d6 match" of the first pass was
+  the over-annealing knob. Inheritance at the LP-implied diagonal level
+  is ~2σ too shallow; the d6 deficit is either an ADDITIONAL tuning
+  constraint on the real g (its d6-form must be suppressed beyond what
+  T1-tuning alone delivers — a designed key can do this; a random member
+  of the T1 level set does not) or unexplained.
+- One positive from the corrected sims: with real-word morphology the
+  4×5+2×4+1 census reproduces d4 exactly (0.0417 vs 0.0410) via its
+  4-loop leak — but fails d6, d8, and d10.
+
+**Corrected bottom line**: the within-word profile's two calibration-free
+anomalies — d4 elevated (+2σ above background) and d6 depressed (−2σ
+below background) — are both real and NEITHER is explained by any tested
+cycle census at realistic tuning. The cycle-type question is OPEN, with
+sharpened constraints: pure return ladders are still dead
+(monotonicity), pure order-5 still needs a source for d4, and any mixed
+census still needs a source for the d6 depth. Better plaintext
+references (the mortlach bigram corpus, solved-page words) are needed
+before the φ ladder can decide anything at the ±0.1 level.
+
 ## What survives the disproof
 
 - The φ ladder itself is a useful measurement. For order-5, φ5 should be

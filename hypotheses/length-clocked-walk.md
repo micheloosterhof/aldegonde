@@ -172,20 +172,19 @@ newlines are line wraps (words flow across them).
   g⁴ = g⁻¹ and g⁶ = g share the same leading-order diagonal algebra — so
   this model predicts d4 ≈ d6; observed is a ~2.7σ split in opposite
   directions (d4 = 0.0410 up, d6 = 0.0245 down). A language-orientation
-  rescue tested negative. The live resolution candidate changes g's
-  CYCLE TYPE, not the architecture: after exhaustive census scanning and
-  full-battery simulation (`mixed-cycle-progression.md`), the winner is
-  **g with three 5-loops and two 7-loops** (all prime, order 35, the
-  unique 5/7-partition of 29). It uniquely reproduces the d6 dip exactly
-  (6 ≡ 1 mod 5 AND 6 ≡ −1 mod 7: every letter sits on the tuned diagonal
-  at distance 6), gives the partial echo (15/29 five-loop letters, sim
-  d5 = 0.0483 vs 0.0492), and explains the d7 elevation and the d8/d9
-  dips. Residuals: d4 (sim 0.0304 vs LP 0.0410) is the one cell no cycle
-  type explains, and the simulation surfaced a new key constraint — the
-  g²-diagonal must also sit near background. If the 5+5+5+7+7 census
-  holds, "order-5 g" here becomes "order-35 g whose g⁵ fixes only the
-  5-loops", the phase arguments generalize mod 35, and the DJU-BEI
-  arithmetic needs redoing (the σ-even parity condition survives).
+  rescue tested negative. A cycle-census resolution was explored
+  exhaustively (`mixed-cycle-progression.md`: scan of all 4,565
+  partitions + full-battery simulation) and, after correcting two
+  calibration flaws in the first pass, DID NOT resolve it: census
+  rankings are calibration-fragile, the partial-echo evidence reverts to
+  undecidable (corrected φ5 = 0.85 ± 0.26), and at realistic tuning
+  depth no census — mixed or pure — reproduces the full d6 depth.
+  Standing, calibration-free: **d4 is ~2σ ABOVE background and d6 ~2σ
+  BELOW background**, and neither has a mechanism. If the real g's
+  d6-form is deliberately suppressed beyond what adjacent-diagonal
+  tuning delivers, that is one more designed constraint on the key
+  (alongside the g²-diagonal-near-background requirement the
+  simulations surfaced); otherwise these are the model's open cells.
 - **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
   on real runeglish words (`mechanism_discriminator.py`) could not separate
   them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner
