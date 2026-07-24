@@ -65,19 +65,6 @@ def make_g(census, rng):
     return g
 
 
-def conj_swap(g, a, b):
-    """Conjugate g by the transposition (a b) in place: preserves census."""
-    ga, gb = g[a], g[b]
-    g[a], g[b] = gb, ga
-    for x in range(M):
-        if g[x] == a:
-            g[x] = b
-        elif g[x] == b:
-            g[x] = a
-    # the two writes above may have been clobbered; recompute cleanly
-    return g
-
-
 def conjugate(g, a, b):
     t = list(range(M))
     t[a], t[b] = b, a

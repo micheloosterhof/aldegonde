@@ -179,8 +179,10 @@ newlines are line wraps (words flow across them).
   rankings are calibration-fragile, the partial-echo evidence reverts to
   undecidable (corrected φ5 = 0.85 ± 0.26), and at realistic tuning
   depth no census — mixed or pure — reproduces the full d6 depth.
-  Standing, calibration-free: **d4 is ~2σ ABOVE background and d6 ~2σ
-  BELOW background**, and neither has a mechanism. If the real g's
+  Standing, calibration-free: **d6 is suppressed (−2.3σ,
+  permutation-verified p = 0.016) and d4 leans high (+1.85σ,
+  uncorrected), a d4−d6 split of ~2.7σ where this model predicts
+  equality** — and neither cell has a mechanism. If the real g's
   d6-form is deliberately suppressed beyond what adjacent-diagonal
   tuning delivers, that is one more designed constraint on the key
   (alongside the g²-diagonal-near-background requirement the
