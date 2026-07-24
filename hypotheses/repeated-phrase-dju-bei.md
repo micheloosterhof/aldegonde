@@ -165,16 +165,22 @@ constraint set further (`experiments/deep_scan.py`,
 - **Word repetition generally is at chance**: 15 repeated words of
   length ≥ 3 (one of them thrice, ᛠᚱᛇ), against ~11-12 expected pairs.
   Consistent with `word-transform-census.md`.
-- **Curiosity, not a finding**: four further 3-rune words begin with the
-  same digraph ᛞᛄ (ᛞᛄᚩ, ᛞᛄᚳ, ᛞᛄᚷ, ᛞᛄᛝ), so six of the 726 three-rune
-  words share that prefix where 0.86 is expected. But the prefix
-  distribution as a whole is normal — two cells reach 6 (ᚾᚷ as well)
-  against 0.23 expected, nominal p ≈ 0.02 for the max-statistic, and the
-  restriction to 3-rune words was chosen *because* DJU is 3 runes. Over
-  all word lengths the ᛞᛄ prefix count (9) is unremarkable against a
+- **The ᛞᛄ prefix cluster — catalogued, and it is chance.** Four further
+  3-rune words begin with the same digraph (ᛞᛄᚩ, ᛞᛄᚳ, ᛞᛄᚷ, ᛞᛄᛝ), so six
+  of the 726 three-rune words share that prefix where 0.86 is expected.
+  The full catalog (script section D) shows the prefix distribution is
+  textbook Poisson: **485 distinct prefixes used against 486 expected**,
+  sizes 1-4 all within noise (314/123/33/10 vs 306/132/38/8), and the
+  prefix-sharing pair count 342 vs 313 expected (z = +1.6). Only the
+  extreme tail leans — five cells hold ≥ 5 words against 1.7 expected
+  (nominal p ≈ 0.03) — and ᛞᛄ is not even alone at the top: ᚾᚷ also has
+  six. The restriction to 3-rune words was chosen *because* DJU is 3
+  runes; over all lengths ᛞᛄ's count (9) is unremarkable against a
   maximum of 10. Under the walk a shared 2-rune prefix needs only two
   base values to agree, so these are cheap coincidences, not partial
-  state returns.
+  state returns — confirmed by the third runes inside each group, which
+  collide at chance (the one exception being the corpus's only
+  thrice-repeated word, ᛠᚱᛇ, in the ᛠᚱ group).
 
 ## What the constraint pins (and what it does not)
 

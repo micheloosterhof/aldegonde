@@ -74,6 +74,32 @@ def main() -> None:
     for h in hits:
         print(f"   {h[0]}-of-6: words {h[1]} / {h[2]}  {h[3]}  {h[4]}")
 
+    print("\nD. catalog: 3-rune words grouped by their 2-rune prefix")
+    groups: dict[tuple[int, int], list[tuple[int, int]]] = {}
+    for i, x in enumerate(words):
+        if len(x) == 3:
+            groups.setdefault(x[:2], []).append((i, x[2]))
+    n3 = sum(len(v) for v in groups.values())
+    e3 = n3 / 841
+    mult = Counter(len(v) for v in groups.values())
+    print(f"   {n3} words in {len(groups)} distinct prefixes "
+          f"(chance: {841 * (1 - math.exp(-e3)):.0f})")
+    print(f"   {'size':>4} {'prefixes':>9} {'chance':>8}")
+    for k in sorted(mult):
+        print(f"   {k:>4} {mult[k]:>9} "
+              f"{841 * math.exp(-e3) * e3 ** k / math.factorial(k):>8.1f}")
+    colliding = sum(v * (v - 1) // 2 for v in mult.elements()) if False else \
+        sum(len(v) * (len(v) - 1) // 2 for v in groups.values())
+    exp_pairs = n3 * (n3 - 1) / 2 / 841
+    print(f"   prefix-sharing pairs: {colliding} vs {exp_pairs:.0f} expected "
+          f"(z = {(colliding - exp_pairs) / math.sqrt(exp_pairs):+.2f})")
+    print("   groups of 3 or more (third runes with word index):")
+    for p, v in sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0])):
+        if len(v) < 3:
+            continue
+        thirds = " ".join(f"{ALPHABET[t]}({i})" for i, t in sorted(v))
+        print(f"     {txt(p)} x{len(v)}: {thirds}")
+
     print("\nC. word-initial digraph distribution")
     DJ = DJU[:2]
     for label, pool in (("3-rune words", [x for x in words if len(x) == 3]),
