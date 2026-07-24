@@ -1,0 +1,122 @@
+======================================================================
+QUAGMIRE III REPEAT-BASED ATTACK
+======================================================================
+
+LP length:          12956 runes
+Test length:        12956 runes
+
+Finding repeats...
+Total repeated sequences: 134
+Repeats with constraint potential: 127
+
+======================================================================
+REPEAT ANALYSIS
+======================================================================
+
+Found 127 significant repeats with constraint potential
+
+Longest repeats with different preceding chars:
+
+  'ᛞᛄᚢᛒᛖᛁ' (6 runes)
+  Positions: [6555, 12950]
+  Preceding: ['ᚠ', 'ᛉ']
+  Constraints: 1 pairs
+
+  'ᛒᛗᚱᚾᛗ' (5 runes)
+  Positions: [5448, 12001]
+  Preceding: ['ᚹ', 'ᛄ']
+  Constraints: 1 pairs
+
+  'ᛞᛄᚢᛒᛖ' (5 runes)
+  Positions: [6555, 12950]
+  Preceding: ['ᚠ', 'ᛉ']
+  Constraints: 1 pairs
+
+  'ᚩᚢᚾᚹᛗ' (5 runes)
+  Positions: [6985, 8016]
+  Preceding: ['ᛟ', 'ᛏ']
+  Constraints: 1 pairs
+
+  'ᚩᚠᛚᛟᛝ' (5 runes)
+  Positions: [7393, 12385]
+  Preceding: ['ᛏ', 'ᛗ']
+  Constraints: 1 pairs
+
+  'ᛁᛗᛝᚣᚪ' (5 runes)
+  Positions: [10671, 12764]
+  Preceding: ['ᛞ', 'ᛝ']
+  Constraints: 1 pairs
+
+  'ᚫᚠᛄᛟ' (4 runes)
+  Positions: [16, 11137]
+  Preceding: ['ᚷ', 'ᚾ']
+  Constraints: 1 pairs
+
+  'ᚹᛒᚪᛋ' (4 runes)
+  Positions: [25, 8303]
+  Preceding: ['ᛖ', 'ᛉ']
+  Constraints: 1 pairs
+
+  'ᚪᛋᛟᛇ' (4 runes)
+  Positions: [27, 10925]
+  Preceding: ['ᛒ', 'ᛖ']
+  Constraints: 1 pairs
+
+  'ᚾᛖᛠᛄ' (4 runes)
+  Positions: [143, 9307]
+  Preceding: ['ᛏ', 'ᛁ']
+  Constraints: 1 pairs
+
+
+Total unique constraint pairs: 106
+
+======================================================================
+HILL CLIMBING WITH REPEAT CONSTRAINTS
+======================================================================
+Modes:              beaufort, vigenere, variant
+Primers:            29 (all)
+Max iterations:     100000
+Restart threshold:  2000
+Workers:            10
+Repeat penalty:     enabled
+======================================================================
+
+Running 87 jobs across 10 workers...
+All jobs complete.
+
+Best results by mode:
+
+  beaufort: primer=OE score=-113337.0 IoC=1.028 repeats=127/127
+            OAEYMMSTHOPXPDWATHBEORFNAEWNGFEYBEORIASTMUAETIANOSOEHCPAHIEOYA...
+
+  vigenere: primer=J  score=-113326.3 IoC=1.028 repeats=127/127
+            AIAUTXOHEAWEMNYAFGFRTHOEHEXIAAAATRBFIAUBXLTHWOMEOFFMPFSYTHP...
+
+  variant : primer=R  score=-116736.1 IoC=1.003 repeats=127/127
+            ATHOCIBNGTHOYNGWETSODHNGNTGGNWHOEXFUEANTHOEODJUCNGCLAENGEATHTEA...
+
+======================================================================
+BEST OVERALL RESULT
+======================================================================
+Mode:             vigenere
+Primer:           11 (J)
+Score:            -113326.3
+IoC:              1.028 (normalized)
+Consistent reps:  127/127
+
+Alphabet (runes):   ᛄᚣᚪᛝᚳᛟᚦᛞᛁᛡᛏᚱᚫᛋᛠᚾᛗᛖᚷᚹᛉᛒᚻᚠᚢᛈᛚᚩᛇ
+Alphabet (english): JYANGCOETHDIIATRAESEANMEGWXBHFUPLOEO
+
+Plaintext preview (runes):
+  ᚪᛡᚢᛏᛉᚩᚻᛠᚹᛖᛗᚾᚣᚪᚠᚷᚠᚱᚦᛟᚻᛖᛉᛡᚪᚪᚪᛏᚱᛒᚠᛡᚢᛒᛉᛚᚦᚹᚩᛗᛇᚠᚠᛗᛈᚠᛋᚣᚦᛈ
+  ᚣᚩᚹᚣᚾᚷᛒᛒᛠᛚᚩᛟᚹᚫᛠᛋᚪᛇᛁᚩᚪᛖᚷᛒᛒᛇᛝᚠᛡᚩᛞᛡᚠᚪᚳᛏᚩᚾᚹᚻᚫᚻᛡᚣᛈᚦᛈᛠᛒᚢ
+  ᛟᚣᛒᛒᚦᚱᚫᚹᛚᚱᛏᛗᛞᛁᚣᚹᛒᛋᛞᚠᛁᚩᛄᚹᛟᚪᚱᛗᛠᚪᛋᚦᛋᚫᛗᚪᚫᛗᛗᛠᚪᚻᚠᛟᚪᛚᚾᚾᚱᛒ
+  ᛝᛇᚩᛖᚢᛞᛇᚢᚣᚾᚩᛋᚱᛗᛇᚪᚪᛡᚾᚫᚩᚣᚻᛟᛖᚳᛖᛡᛚᛒᛋᚻᚪᛝᛝᚻᛡᚱᚪᚱᚢᛚᚣᚫᚩᚷᛖᛋᛞᛖ
+
+Plaintext preview (english):
+  AIAUTXOHEAWEMNYAFGFRTHOEHEXIAAAATRBFIAUBXLTHWOMEOF
+  FMPFSYTHPYOWYNGBBEALOOEWAEEASAEOIOAEGBBEONGFIAODIA
+  FACTONWHAEHIAYPTHPEABUOEYBBTHRAEWLRTMDIYWBSDFIOJWO
+  EARMEAASTHSAEMAAEMMEAAHFOEALNNRBNGEOOEUDEOUYNOSRME
+
+Results saved to: experiments/repeat_attack_results_20251229_021220.txt

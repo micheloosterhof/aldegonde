@@ -54,6 +54,10 @@ aligned coincidence ratio would approach the plaintext IOC. None do.
 
 - `experiments/aligned_kappa_nulls.py`
 
+The measured negative (aligned kappa flat at page and section boundaries)
+is recorded as a standalone observation in `aligned-kappa-no-reset.md`;
+this file is the hypothesis it disproves.
+
 ## Related
 
 - `running-key-math-sequence.md` — disproved the specific sequences with

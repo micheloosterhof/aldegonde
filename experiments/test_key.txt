@@ -1,0 +1,6 @@
+mode=beaufort
+autokey=ciphertext
+primer_char=Q
+primer_idx=0
+mixed_alphabet=QMJZTGFKPWLSBOXNCRYEVHIADU
+plaintext_length=2409

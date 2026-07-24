@@ -83,6 +83,10 @@ there is none.
   null. Conclusive negative for key depth / repeating or self-referential
   keys.
 
+The measured negative (no difference-IoC depth at any lag) is recorded as
+a standalone observation in `no-running-key-depth.md`; this file is one of
+the hypotheses it disproves.
+
 ## Verdict
 
 Disproved for any language-text key (runeglish/English statistics): the
