@@ -30,7 +30,7 @@ Beaufort). Decryption requires reversing both passes in the correct order.
 ## Evidence against
 
 - **Doublet rate arithmetic**: Double autokey would square the doublet
-  suppression, pushing the rate from ~3.45% to ~0.12%. The observed 0.68% is
+  suppression, pushing the rate from ~3.45% to ~0.12%. The observed 0.66% is
   much higher.
 - **Peel-and-split disproof**: After peeling the outer layer (trying both
   Beaufort and Vigenere), the intermediate text M was split by M[i-1]. If the
@@ -52,5 +52,5 @@ None yet. The peel-and-split test was run inline.
 
 Disproved. Peeling the outer autokey layer and applying the split test to the
 intermediate text shows random IOC, ruling out standard autokey as the inner
-layer. Combined with the doublet rate mismatch (0.68% vs predicted 0.12%),
+layer. Combined with the doublet rate mismatch (0.66% vs predicted 0.12%),
 double standard autokey is eliminated.

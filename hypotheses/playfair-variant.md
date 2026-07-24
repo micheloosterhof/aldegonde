@@ -19,7 +19,7 @@ need a non-square grid (e.g. 5x6 with one unused cell, or some other
 arrangement).
 
 Cross-bigram doublets (where one bigram ends and the next begins with the same
-rune) would be reduced but not zero, potentially matching the ~0.68% rate.
+rune) would be reduced but not zero, potentially matching the ~0.66% rate.
 
 ## Evidence for
 

@@ -36,7 +36,7 @@ boundaries; `/` and newlines are line wraps.
 4.92%** vs 1/29 = 3.45%. Exact binomial P = 3.1e-4.
 
 **Control**: pairs (k, k+5) straddling a word boundary: 377/10,878 = 3.466%
-— exactly random (P = 0.47). Global kappa at skip 5 is normal (z = +1.6).
+— exactly random (P = 0.47). Global kappa at skip 5 is normal (z = +1.52).
 The effect exists *only* inside words.
 
 ## The permutation test (the load-bearing evidence)

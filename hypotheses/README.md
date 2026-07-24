@@ -68,7 +68,7 @@ Numbers below are for the clean corpus (sections 0-9, 12,956 runes).
 |----------|----------|--------------------|-------|
 | Alphabet | 29 runes, all used | — | Elder Futhark |
 | Distribution | Uniform (chi-sq p=0.55) | 1/29 per rune | |
-| Shannon entropy | 4.857 bits | 4.858 (max) | 99.98% of maximum |
+| Shannon entropy | 4.8565 bits | 4.8580 (max) | 99.97% of maximum |
 | IOC | 0.0345 | 1/29 = 0.0345 | Indistinguishable from random |
 | Doublet rate | 0.66% | 3.45% (1/29) | Fits (1/5)x(1/29) with no free parameters (z=-0.36): acceptance probability exactly 1/5, realized memorylessly (no positional mod-5 frame) |
 | Doublet kappa skip=1 | 86 | 447 | 17 sigma below random |

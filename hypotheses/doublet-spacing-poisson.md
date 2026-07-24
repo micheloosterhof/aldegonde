@@ -5,7 +5,8 @@ type: observation
 
 ## Claim
 
-The 89 ciphertext doublets are positioned as a **homogeneous Poisson process** —
+The ciphertext doublets (89 pre-decontamination; 86 clean, see below) are
+positioned as a **homogeneous Poisson process** —
 random, memoryless, content-driven. Their positions and gaps have **no link to
 any mathematical series** (primes, totient, Fibonacci, lattice). This disproves
 the class of mechanisms that would place doublets at computable positions.

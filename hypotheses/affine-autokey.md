@@ -29,7 +29,7 @@ would then reflect the natural English/runeglish plaintext doublet rate.
 - The multiplicative component makes cryptanalysis harder while preserving
   the autokey structure
 - 29 being prime ensures clean field arithmetic
-- Plaintext doublet rate in runeglish might plausibly be around 0.68%
+- Plaintext doublet rate in runeglish might plausibly be around 0.66%
 
 ## Evidence against
 

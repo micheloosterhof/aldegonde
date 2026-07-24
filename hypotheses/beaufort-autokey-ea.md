@@ -28,8 +28,8 @@ C[i] = C[i+1] implies P[i+1] = EA.
 
 - **All 86 doublets map to EA**: Under this model, every doublet in the
   ciphertext corresponds to EA in the plaintext. Algebraically certain.
-- **EA frequency is plausible at 0.68%**: EA appears in runeglish words like
-  "each", "ear", "eat". A frequency of 0.68% is plausible for this rare
+- **EA frequency is plausible at 0.66%**: EA appears in runeglish words like
+  "each", "ear", "eat". A frequency of 0.66% is plausible for this rare
   digraph-rune.
 - **Historical precedent**: Cicada used Beaufort autokey in solved LP sections.
 - **Self-reference**: Key = 28 = EA's index. Cicada favors self-referential

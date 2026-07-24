@@ -95,7 +95,7 @@ and triplets simultaneously, the directly testable candidate key texts
 (Parable, master transcription, the corpus against itself at every lag) are
 ruled out, and the depth search excludes ANY repeating or self-referential
 key. What survives is only a NON-repeating, non-language key from an
-external source at least as long as the text (13,041 runes) and
+external source at least as long as the text (12,956 runes) and
 statistically indistinguishable from uniform random — i.e. effectively a
 one-time pad. That is not covered by this hypothesis — it is a generic
 stream cipher, see `stream-cipher-no-repeat.md` (where the doublet

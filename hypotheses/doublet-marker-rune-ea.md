@@ -149,7 +149,8 @@ rune (`experiments/doublet_context_test.py`)?
   excluded by the uniform doubled-rune identities (chi2 p=0.50, spread
   over 28 of 29 values).
 - **Trigger conditioned on nearby ciphertext runes**: identity
-  distributions of C[i-2], C[i-1], C[i+2], C[i+3] at the 88 doublets are
+  distributions of C[i-2], C[i-1], C[i+2], C[i+3] at the 88 doublets
+  (measured pre-decontamination; the clean corpus has 86) are
   all uniform (p = 0.40-0.64; detects condition sets up to ~15 runes).
 - **Trigger = small set of ciphertext pairs**: pair-collision counts
   among the doublet contexts at all tested offset combinations are at

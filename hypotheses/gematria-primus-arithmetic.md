@@ -41,7 +41,7 @@ the two are mathematically related).
 
 - `hypotheses/disprove_autokey_split.py` — Definitive disproof of all
   single-layer ciphertext autokey variants.
-- See also `src/aldegonde/pasc.py` for `valueTR()` implementation.
+- See also `src/aldegonde/c3301.py` for `valueTR()` implementation.
 
 ## Related
 
