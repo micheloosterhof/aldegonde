@@ -12,7 +12,7 @@ proposed mechanisms scored against them.
 | [bigram-ioc.md](bigram-ioc.md) | Off-Diagonal Bigrams are Uniform | confirmed (characterization) |
 | [collision-hunt-single-constraint.md](collision-hunt-single-constraint.md) | The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved | confirmed (characterization) for the repeat census itself |
 | [cryptodiagnostics-page0-58.md](cryptodiagnostics-page0-58.md) | Full Cryptodiagnostic Battery on page0-58.txt (2026-06) | confirmed (characterization) |
-| [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (partial-vs-full is underpowered) | partial (echo real and word-anchored; partial-vs-full leak |
+| [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (partial-vs-full is underpowered) | partial (echo real and word-anchored; partial-vs-full leak underpowered, likely undecidable) |
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
 | [doublet-suppression.md](doublet-suppression.md) | Doublet Suppression (5.2x, boundary-blind) | confirmed (characterization) |
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
@@ -50,26 +50,26 @@ proposed mechanisms scored against them.
 | [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved |
 | [first-difference.md](first-difference.md) | First-Difference Cipher | disproved |
 | [five-block-boundary.md](five-block-boundary.md) | Five-Block Cipher with Edge Effects | unresolved |
-| [g-from-5x5-grid.md](g-from-5x5-grid.md) | Constructing the Order-5 Step `g` from a 5×5 Grid | hypothesis (construction proposal; the actual arrangement is |
+| [g-from-5x5-grid.md](g-from-5x5-grid.md) | Constructing the Order-5 Step `g` from a 5×5 Grid | unresolved (construction proposal; arrangement unknown and unverified) |
 | [gematria-primus-arithmetic.md](gematria-primus-arithmetic.md) | Autokey with Gematria Primus Arithmetic | disproved |
-| [hill-cipher-per-word.md](hill-cipher-per-word.md) | Hill Cipher per Word | disproved (fixed matrices; per-word varying matrices are |
+| [hill-cipher-per-word.md](hill-cipher-per-word.md) | Hill Cipher per Word | disproved (fixed matrices; per-word varying matrices outside this claim) |
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
-| [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone — |
-| [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by |
+| [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
+| [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
 | [multi-layer-autokey.md](multi-layer-autokey.md) | Multi-Layer Autokey | disproved |
 | [page-reset-keystream.md](page-reset-keystream.md) | Shared Positional Keystream Resetting at Page/Section Boundaries | disproved |
-| [per-word-related-alphabets.md](per-word-related-alphabets.md) | Per-Word Related-Alphabet Cipher (5 Alphabets, Bigram-Dodging Step) | plausible — superseded by `length-clocked-walk |
+| [per-word-related-alphabets.md](per-word-related-alphabets.md) | Per-Word Related-Alphabet Cipher (5 Alphabets, Bigram-Dodging Step) | plausible — superseded by `length-clocked-walk.md` |
 | [periodic-polyalphabetic.md](periodic-polyalphabetic.md) | Periodic Polyalphabetic Cipher (Vigenere with Fixed Key) | disproved |
 | [plaintext-autokey.md](plaintext-autokey.md) | Plaintext Autokey Cipher | disproved |
 | [playfair-variant.md](playfair-variant.md) | Playfair / Seriated Playfair Variant | disproved |
-| [position-within-word.md](position-within-word.md) | Position-Within-Word Dependent Cipher | disproved (additive variants; the mixed-alphabet member of |
+| [position-within-word.md](position-within-word.md) | Position-Within-Word Dependent Cipher | disproved (additive variants; the mixed-alphabet member is the live walk model) |
 | [prime-value-autokey.md](prime-value-autokey.md) | Prime-Value Tabula Recta Autokey | disproved |
 | [product-form-autokey.md](product-form-autokey.md) | Product-Form / Interpolation Autokey over GF(29) | disproved |
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |
-| [stay-slot-hold.md](stay-slot-hold.md) | The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal | plausible (strengthens the model by removing fitted parameters; |
+| [stay-slot-hold.md](stay-slot-hold.md) | The Doublet Suppression is Inherent: the 1-in-5 Hold, not a Tuned Diagonal | plausible (removes fitted parameters; reproduces profile shape without tuning) |
 | [stream-cipher-no-repeat.md](stream-cipher-no-repeat.md) | Additive Stream Cipher with Ciphertext-Doublet Avoidance | unresolved (reformulated; keystream-only variant disproved) |
 | [substitution-plus-autokey.md](substitution-plus-autokey.md) | Monoalphabetic Substitution + Autokey Layering | disproved |
 | [thirty-symbol-disk.md](thirty-symbol-disk.md) | The '.' Mark is the 30th Character of a 30/29 Cipher Disk | unresolved |

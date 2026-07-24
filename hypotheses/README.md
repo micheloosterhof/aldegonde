@@ -197,6 +197,12 @@ Two consequences of the table that prune whole mechanism families
 | `plausible` | Consistent with the statistics, with some positive evidence. Not yet confirmed. |
 | `confirmed` | Proven correct. No CIPHER hypothesis is confirmed; characterization files (measured statistical properties, not cipher proposals) use `confirmed (characterization)`. |
 
+Observation files grade evidential strength with two additional values:
+`weak` (nominal signal that does not survive multiple-test correction; kept
+as a watch-item) and `partial` (one component verified, another underpowered
+or undecidable). Observations with a verified anomaly but no known mechanism
+use `plausible (verified anomaly; mechanism unknown)`.
+
 ## Directory structure
 
 ```

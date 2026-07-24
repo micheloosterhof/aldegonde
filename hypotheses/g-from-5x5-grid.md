@@ -18,7 +18,7 @@ doublets, so the reduction is weaker than it first appears.
 
 ## Status
 
-**Status**: hypothesis (construction proposal; the actual arrangement is
+**Status**: unresolved (construction proposal; the actual arrangement is
 unknown and unverified)
 
 ## Mechanism
