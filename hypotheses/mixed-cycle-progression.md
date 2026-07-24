@@ -137,6 +137,29 @@ channel must re-derive (the fixed rune leaks plaintext doublets:
 consistent). This subfamily is LIVE and is the current best candidate
 refinement of `length-clocked-walk.md`.
 
+## The exhaustive scan (July 2026)
+
+`experiments/census_scan.py` scores ALL 4,565 partitions of 29 under the
+refined model (returns leak K_d; g^±1 cells share one fitted suppression
+s; 3,310 pass the fixed-point doublet-leak filter, n_fix ≤ 5). Findings:
+
+- **Consistent fits exist**: the leader (7+5+5+5+4 + 3 fixed) scores
+  chi2 = 7.0 on ~6 df, p ≈ 0.32. The within-word profile is fully
+  explainable by cycle structure + inheritance.
+- **Robust demands shared by every good fit**: three-to-four 5-loops
+  (partial echo), exactly one 4-loop-ish part (d4), NOTHING returning at
+  2, 3, or 6 (the d6 dip), few fixed points.
+- **A 7-loop appears in all top-15** — but only because of the d7 cell,
+  which is +0.9σ; discounting it, the leader, the 4×5+2×4+1 census
+  (rank 28, chi2 10.3), and 5+5+5+7+7 (rank 35) are statistically
+  indistinguishable (Δchi2 ≈ 3 at this model fidelity).
+- **The standard five-5-loops + 4-fixed census ranks 266th**
+  (chi2 17.0, Δ ≈ 10 vs the mixed family), failing at d5 (full echo,
+  +2.3) and d6 (+2.4). Under this model the data prefer a
+  partial-echo cycle type — the constraint in `g-from-5x5-grid.md`
+  ("five 5-cycles") should be treated as provisional pending the
+  simulation test of the mixed family.
+
 ## What survives the disproof
 
 - The φ ladder itself is a useful measurement. For order-5, φ5 should be
