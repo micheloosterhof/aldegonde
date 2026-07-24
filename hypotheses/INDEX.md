@@ -58,7 +58,7 @@ proposed mechanisms scored against them.
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
 | [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
 | [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
-| [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | disproved as a pure return ladder; with tuned-diagonal inheritance the mixed family is LIVE — exhaustive scan: best fits need 3-4 five-loops + one 4-loop + nothing at 2/3/6; pure 5×5+4fix disfavored (Δchi2≈10) |
+| [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | live candidate after simulation: 5+5+5+7+7 (order 35, unique 5/7-partition of 29) uniquely reproduces the d6 dip and the partial echo; d4 remains the open cell; pure 5×5+4fix disfavored |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
 | [multi-layer-autokey.md](multi-layer-autokey.md) | Multi-Layer Autokey | disproved |
 | [page-reset-keystream.md](page-reset-keystream.md) | Shared Positional Keystream Resetting at Page/Section Boundaries | disproved |

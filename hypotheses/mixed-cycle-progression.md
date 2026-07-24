@@ -160,6 +160,52 @@ s; 3,310 pass the fixed-point doublet-leak filter, n_fix ≤ 5). Findings:
   ("five 5-cycles") should be treated as provisional pending the
   simulation test of the mixed family.
 
+## The simulation verdict: 5+5+5+7+7 (July 2026)
+
+`experiments/census_walk_sim.py` runs the promotion test: annealed
+tuned-diagonal g (conjugation moves, census-preserving), full walk on
+register plaintext in the LP word structure, complete battery. Result —
+the live candidate is **three 5-loops + two 7-loops** (all prime, order
+35, the UNIQUE partition of 29 into 5s and 7s):
+
+| | d1 | d2 | d3 | d4 | d5 | **d6** | d7 | d8 | d9 | d10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| LP | .0063 | .0347 | .0370 | .0410 | .0492 | **.0245** | .0421 | .0268 | .0260 | .0227 |
+| 5+5+5+7+7 | .0027 | .0425 | .0360 | .0304 | .0483 | **.0245** | .0494 | .0279 | .0295 | .0379 |
+| 4×5+2×4+1f | .0023 | .0442 | .0353 | .0391 | .0466 | .0343 | .0339 | .0465 | .0269 | .0720 |
+| 5×5+4f | .0024 | .0399 | .0392 | .0260 | .0602 | .0287 | .0347 | .0380 | .0312 | .0691 |
+
+Why it wins: 6 ≡ 1 (mod 5) and 6 ≡ −1 (mod 7), so at distance 6 EVERY
+letter sits on the tuned diagonal — the only census that produces the
+full d6 dip (exactly), while its 15 five-loop letters give the partial
+d5 echo and its 7-loops explain the d7 elevation and the d8/d9 dips
+(g⁸ = g on 7-loops). The 4-loop census dilutes d6 (its 4-loops are
+untuned there) and leaks wrongly at d8/d10; the standard census
+overshoots d5 (full echo) and underscoops d6 (fixed-point leak).
+
+Remaining residuals and new constraints from the simulation:
+
+- **d4 is still unexplained under every census** (sim 0.0304 vs LP
+  0.0410, ~+3σ). It is now THE open cell of the within-word profile.
+- **All tuned sims overshoot d2** (+0.005-0.010): annealing the
+  g-diagonal through same-class rare bigrams makes the g²-diagonal
+  elevated at distance 2 (CVCV rhythm), which LP does not show. The real
+  key therefore needs its SQUARE's diagonal near background as well — a
+  new key-space filter (and partly an artifact of over-annealing: the
+  sims reached 0.0023-0.0026 where LP needs only ~0.005).
+- d10 predicts a partial echo return (0.038) vs LP's thin 0.0227 —
+  a weak lean against, low power.
+- Annealed diagonal floors are 0.0022-0.0026 for every census tested:
+  the tuning requirement is achievable regardless of cycle type.
+- The seam and d1 rows are not discriminators here (random σ, deliberate
+  over-annealing); doubled-rune identities stay uniform in all sims
+  (base-scrambling covers the fixed-point leak channel).
+
+If 5+5+5+7+7 holds, `length-clocked-walk.md`'s g has order 35, all
+mod-5 phase arguments generalize to mod 35, and the DJU-BEI arithmetic
+must be redone in the new abelianization (the σ-even parity condition
+survives unchanged: 4946 is even).
+
 ## What survives the disproof
 
 - The φ ladder itself is a useful measurement. For order-5, φ5 should be
