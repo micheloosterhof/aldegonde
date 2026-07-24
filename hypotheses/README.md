@@ -155,14 +155,19 @@ Two consequences of the table that prune whole mechanism families
    author-side composition artifacts. None of these is currently
    distinguishable from the others by ciphertext statistics — see the
    degrees-of-freedom audit in `lag5-back-reference.md` before treating
-   any simulation "match" as confirmation. **Update (July 2026):** a
-   COMPOSITE model — the length-clocked walk (echo) plus a sparse
-   back-reference copy overlay ({1,4} pairing) — produces both faces at
-   once while leaving the base fingerprint (doublets, triplets, nIoC)
-   intact (`experiments/lag5_two_faces.py`), removing the "no mechanism
-   does both" obstruction. It is a composite of two mechanisms that both
-   use the constant 5, not a single primitive, and inherits the walk's
-   echo-magnitude overshoot; it explains coexistence, not why 5. The two faces overlap in the
+   any simulation "match" as confirmation. **Update (July 2026):** an
+   information-theory argument splits the pairing in two. A deterministic
+   `C[i]=C[i-5]` copy destroys `P[i]`'s information, so the only coherent
+   copy fires where `P[i]=P[i-5]` — which under `g^5=id` is just the walk's
+   echo, not a separate mechanism. Measuring real runeglish plaintext
+   (`experiments/plaintext_lag5_pairing.py`): the **d1** face (repeated
+   bigram at distance 5, `XY···XY`) IS a real plaintext morphology feature
+   (3.7x baseline) that the walk echo passes through with no overlay; the
+   **d4** face ((1st,5th)-of-5 frame) is BELOW chance in plaintext and so
+   is NOT explained by the echo. Net: d1 is accounted for by the walk
+   alone; d4 is the genuine residual anomaly. (This retracts an earlier
+   "walk + copy overlay does both" claim — the overlay was
+   information-theoretically incoherent.) The two faces overlap in the
    nine in-word `XY···XY` repeats and are reconciled as ONE word-aware
    phenomenon in `within-word-d5-coincidence.md`. Additional constraint
    (July 2026): the lag-5 matches are word-boundary-aware — both the

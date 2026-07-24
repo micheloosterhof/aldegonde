@@ -145,40 +145,46 @@ the word boundaries.
   stretch): would make pocket matches contiguous runs at ~6% density.
   Pocket matches are scattered singletons and pairs.
 
-## Composite model: walk echo + copy overlay produces both faces (July 2026)
+## The two faces have DIFFERENT origins: d1 is plaintext, d4 is not (July 2026)
 
-The standing puzzle was that the within-word d5 ECHO
-(`within-word-d5-coincidence.md`) and the paired {1,4} EVENTS (this file)
-are one reconciled phenomenon, yet no single mechanism produced both: the
-length-clocked walk gives the echo but not the pairing, the
-back-reference model gives the pairing but not the base fingerprint.
+An earlier draft here proposed a "walk + copy overlay" composite. That is
+**retracted**: a deterministic copy `C[i]=C[i-5]` destroys the information
+of the current plaintext rune `P[i]` (the copied position carries zero new
+information), so it is not a cipher operation. The only
+information-preserving version is a copy that fires exactly where
+`P[i]=P[i-5]` — but then it is not a separate mechanism at all: under the
+walk's `g^5=id`, positions 5 apart in a word already share the alphabet, so
+`P[i]=P[i-5]` gives `C[i]=C[i-5]` automatically. The "copy" IS the echo.
 
-`experiments/lag5_two_faces.py` composes them — the walk for the echo and
-base fingerprint, plus a sparse back-reference copy OVERLAY (copy C[i-5]
-to C[i] at a low rate, with one balanced d1/d4 partner) for the pairing —
-and measures both at LP scale (13k runes):
+That collapses the pairing question to a plaintext question: are the {1,4}
+pairs present in the runeglish PLAINTEXT's own lag-5 self-matches? Measured
+on 55k real runeglish words (`experiments/plaintext_lag5_pairing.py`,
+within-word, morphology-shuffle null):
 
-| | doublets | triplets | nIoC | d5 IoC | d1 | d4 | d2/d3/d5 |
-|---|---|---|---|---|---|---|---|
-| LP | 86 | 0 | 1.00 | 1.43 | 29 | 28 | ~14 |
-| walk alone | 82 | 0 | 1.00 | 2.04 | 23 | 29 | 23/11/17 |
-| walk + overlay (r=0.002) | 82 | 0 | 1.00 | 2.20 | 41 | 47 | 27/11/20 |
+| separation | real plaintext | shuffled null | verdict |
+|---|---|---|---|
+| d1 (repeated bigram at 5, `XY···XY`) | 1232 (3.7x baseline) | 493 (1.9x) | REAL morphology |
+| d4 ((1st,5th)-of-5 frame) | 238 (0.7x baseline) | 187 | ABSENT (below chance) |
+| d2/d3/d5 baseline | ~336 | ~262 | — |
 
-Findings: (1) the copy overlay leaves the base fingerprint intact —
-doublets, triplets, nIoC unchanged at every rate — so the two mechanisms
-COMPOSE without conflict. (2) The overlay produces a balanced, selective
-{1,4} excess (d1,d4 clearly above d2,d3,d5) that the walk alone does not
-(walk-alone d1=23 ties d2=23). This is the first generative model to show
-both the echo and the selective pairing together.
+So:
+- **The d1 face is explained.** Real English/runeglish repeats bigrams at
+  distance 5 (morpheme and affix repetition); the walk's echo passes those
+  through as `XY···XY` ciphertext with no extra mechanism and no lost
+  information. This is the coherent, overlay-free account, and it predicts
+  the nine in-word `XY···XY` words of `within-word-d5-coincidence.md`.
+- **The d4 face is NOT a plaintext feature** — real runeglish has d4 *below*
+  chance — so the walk echo cannot produce it. The (1st,5th)-of-5 frame
+  pairing remains genuinely unexplained.
 
-Two honest caveats: (a) the echo MAGNITUDE overshoots (d5 IoC ~2.0-2.2 vs
-LP 1.43) — but that is the walk's known full-vs-partial-leak issue
-(`d5-partial-alphabet-leak.md`), inherited from using an exact-order-5 g,
-NOT introduced by the overlay; a partial-leak base would bring it down.
-(b) This is a COMPOSITE of two mechanisms that both happen to use the
-constant 5, not a single primitive — so it does not explain WHY both
-involve 5. It removes the "no mechanism does both" obstruction without
-claiming to be the cipher.
+This is sharper than the retracted composite: it localizes the real
+residual anomaly to d4 specifically, and shows d1 needs nothing beyond the
+walk. Open caveats: LP's ciphertext has d1 ~= d4 (29 vs 28) whereas
+plaintext has d1 >> d4, so the partial leak (`d5-partial-alphabet-leak.md`)
+must damp d1 toward d4 while SOMETHING lifts d4 from nothing — the two must
+meet in the middle, and only the d1 half has a mechanism. The
+cross-word component of the test uses concatenated dictionary words (random
+adjacency), so only the within-word rows are load-bearing.
 
 ## What could explain it (open)
 

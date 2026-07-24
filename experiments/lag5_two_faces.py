@@ -1,13 +1,15 @@
-# ABOUTME: Tests whether one mechanism (length-clocked walk + copy overlay)
-# ABOUTME: produces BOTH the within-word d5 echo and the paired {1,4} lag-5 events.
-"""The open lag-5 problem: the walk reproduces the within-word d5 ECHO but not
-the paired {1,4} events; the back-reference model reproduces the {1,4} PAIRING
-but is otherwise a re-parameterization. Neither does both. This asks whether a
-walk cipher with a back-reference copy OVERLAY produces both at once while
-keeping the base fingerprint (doublets ~0.66%, ~0 triplets, nIoC 1.00).
+# ABOUTME: RETRACTED demo of a walk + copy overlay. The overlay is
+# ABOUTME: information-theoretically incoherent; see plaintext_lag5_pairing.py.
+"""RETRACTED. This composed the length-clocked walk with a back-reference copy
+overlay (overwrite C[i] with C[i-5]) and appeared to produce both lag-5 faces.
+The overlay is NOT a valid cipher: overwriting C[i] destroys the information of
+the current plaintext rune P[i]. The only coherent copy fires where P[i]=P[i-5],
+which under g^5=id is already the walk's echo -- not a separate mechanism.
 
-LP targets (clean corpus): within-word d5 IoC ~1.43; lag-5 match-pair counts
-d1 ~29, d4 ~28; doublets 86; triplets 0; nIoC 1.00.
+The correct analysis is in experiments/plaintext_lag5_pairing.py: the d1 face is
+real plaintext morphology passed through the echo (no overlay), and the d4 face
+is absent from plaintext and remains unexplained. This script is kept only to
+document the retracted approach; do not build on it.
 """
 
 from __future__ import annotations
