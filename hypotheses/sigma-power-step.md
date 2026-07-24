@@ -76,7 +76,10 @@ polyalphabetic.
   seam doublet rate (0.0079) is therefore σ's diagonal measured against
   the CROSS-word bigram distribution (last-letters × first-letters) — σ
   is rare-diagonal tuned on a different table than g, and the 23 observed
-  seam doublets are 23 pure σ-diagonal events.
+  seam doublets are 23 pure σ-diagonal events. The predicted
+  length-independence is verified: the diagonal rate is flat across
+  (L−1) mod 5 classes, and the full seam channel carries no other
+  structure (`seam-channel-clean.md`).
 - **Group-size floor.** The census bounds the number of visited bases:
   excess identity pairs ≲ 13 (2σ) against ~8,000 register-implied
   repeated pairs gives **N ≳ 600** distinct bases, so |⟨g, σ⟩| is at
