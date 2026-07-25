@@ -63,7 +63,15 @@ refuted"):
   doublets by exploiting a rare plaintext delta and English has none
   rare enough; a mixed permutation dodges per-rune, routing each image
   to its own rare partner, which is exactly why the cipher needs mixed
-  alphabets rather than a keyword.
+  alphabets rather than a keyword. **A MIXED-alphabet (Quagmire)
+  Vigenere is a different matter and is NOT excluded**: conjugated
+  shifts `K∘(add δ)∘K⁻¹` put the doublet condition on deltas of the
+  transformed plaintext `K⁻¹(p)`, which a free `K` reshapes — jointly
+  optimising `K` and five offsets reaches 0.0017 against the observed
+  0.0063. That is a live rival to a general mixed `g`, with a
+  keyword-sized (hence enumerable) key and a clean discriminator: it
+  forbids the d2/d3/d4 fixed-point leak. See
+  `mixed-alphabet-vigenere.md`.
   **A tuned-diagonal-free reformulation is refuted** — advance-4/hold-1
   (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, predicted
   the doublet rate parameter-free but is DISPROVED by the doublet
