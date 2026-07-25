@@ -9,8 +9,13 @@ base_{w1} = base_{w2}, i.e. the product of walk steps over [w1, w2) is identity:
 
 These cross-word equations are the only constraints on the (g, sigma) WIRING
 (within-word coincidence fixes only ord(g)=5). We list repeats length>=5, tag
-each with word/phase alignment, flag chance vs genuine, and emit the interval +
-abelianization constraint (sum(L-1) mod 5, sigma-count = #words in interval).
+each with word/phase alignment, flag chance vs genuine, and emit the interval
+arithmetic (sum(L-1) mod 5, sigma-count = #words in interval).
+
+That arithmetic gives a free-group relation, NOT a filter on concrete
+permutations: the real <g,sigma> has abelianization of order 1 or 2, so the
+relation collapses into parity (see abelianization_check.py). The testable
+content of a genuine repeat is the state return base_i == base_j itself.
 """
 
 from __future__ import annotations

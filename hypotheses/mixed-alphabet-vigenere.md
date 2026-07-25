@@ -109,12 +109,73 @@ strain (34.5 expected, z = −1.96).
 
 **So keyword σ is NOT excluded.** Roughly 130 keyword-disk candidates sit
 comfortably inside the observed seam behaviour — `monazite`,
-`decentralism`, `endocarditis`, `Reubenites` and so on. Combined with the
-12,064 keyword `g` candidates, the joint space is ~10⁶ pairs before any
-of the cheap filters (parity, σ ∉ ⟨g⟩, base count, the DJU-BEI
-abelianization) are applied. **The enumerable-key hypothesis is alive on
+`decentralism`, `endocarditis`, `Reubenites` and so on; at the upper 95%
+CI the list is 404. Combined with the 12,064 keyword `g` candidates, the
+joint space is ~4.8×10⁶ pairs. **The enumerable-key hypothesis is alive on
 both halves**, and the "bottleneck is σ" conclusion is withdrawn — it was
 an artifact of treating a 23-event measurement as a hard threshold.
+
+## Three of the four "cheap filters" are vacuous (July 2026)
+
+Earlier text here and in `length-clocked-walk.md` described the joint
+space as ~10⁶ pairs "before the cheap filters (parity, σ ∉ ⟨g⟩, base
+count, the DJU-BEI abelianization) are applied", implying the stack would
+cut it substantially. Measured, it does not:
+
+| filter | effect on the Quagmire candidate space |
+|---|---|
+| joint doublet count | **vacuous** — 4,825,600 of 4,825,600 pairs pass |
+| parity (σ even) | **vacuous** — 0 of 56,000 conjugated shifts rejected |
+| DJU-BEI abelianization | **vacuous** — no content beyond parity |
+| σ ∉ ⟨g⟩, base count ≥ ~600 | still bite |
+
+- **Joint doublet count.** `r_g` is an alphabet's *floor* — the cheapest
+  non-identity turn — and a real schedule picks five offsets summing to
+  0 (mod 29), so it can only cost MORE. The constraint is therefore
+  one-sided: reject only when the cheapest possible joint total already
+  overshoots. The largest floor total in the candidate set is ~98,
+  against a ceiling of 105, so nothing is excluded. An earlier two-sided
+  window reported a 96% pass rate; that test was mis-shaped and was
+  discarding the *best* candidates (`impletive`, floor 0.0010, gives a
+  floor total near 39 and was being rejected for being too low).
+- **Parity.** Every non-identity conjugated shift on 29 points is a
+  single 29-cycle, i.e. 28 transpositions, i.e. even. The parity
+  condition is automatically satisfied by every Quagmire σ and can never
+  reject one. It retains force only for a general (non-Quagmire) σ.
+- **DJU-BEI abelianization.** See below.
+
+## The abelianization relation is not an independent constraint
+
+`[g] = −1449·[σ]` is a relation in the abelianization of the *free* group
+on two generators. It constrains the concrete permutations only if
+⟨g, σ⟩ actually has a matching abelian quotient. Computing |G/G′|
+directly for order-5 `g` (k = 1…5 five-cycles) against both a random σ
+and a 29-cycle disk σ:
+
+| σ type | |G/G′| observed |
+|---|---|
+| random permutation | 1, 1, 1, 2, 2 |
+| 29-cycle disk (Quagmire) | 1, 1, 1, 1, 1 |
+
+Never larger than Z₂. These groups are A₂₉/S₂₉ or their point
+stabilizers — g's fixed points give σ a good chance of sharing one — and
+all have abelianization at most Z₂. So the relation collapses to the
+parity condition, which for a Quagmire σ is itself vacuous. It is not a
+fourth filter alongside parity; where it is not parity, it is nothing.
+
+Scope: ten sampled (g, σ) draws, not a proof. A specially-constructed
+pair generating a small solvable group could have a larger abelian
+quotient — but such a pair is already excluded by the base-count
+requirement, which demands a large orbit of distinct bases.
+
+**The one place the relation IS valid** is `sigma-power-step.md`, where
+it is applied under the assumption σ = g^k. That makes the group ⟨g⟩ ≅
+Z₅, genuinely abelian, so the mod-5 arithmetic giving k = 1 is sound.
+That use stands; the general-filter uses do not.
+
+Net: the only surviving cheap filters are σ ∉ ⟨g⟩ and the base count.
+Everything else in the stack was doing no work, and the real gate is the
+expensive 1,449-step state return.
 
 **Why the two nonetheless behave differently under sampling.** Both steps
 need the same kind of low diagonal, and it is worth resisting the story
@@ -209,6 +270,12 @@ and the keyword families remain untested at scale.
   full-battery run.
 - `experiments/sigma_algebraic_floor.py` — the plain-Vigenere and
   arithmetic-family floors this was meant to escape.
+- `experiments/keyword_exhaustion.py` — the full-dictionary family test
+  producing the 12,064 `g` and 404 σ candidates.
+- `experiments/joint_keyword_search.py` — the joint space and the
+  one-sided doublet filter.
+- `experiments/abelianization_check.py` — |G/G′| and the parity check
+  behind the vacuity table (needs `sympy`).
 
 ## Related
 
@@ -226,10 +293,17 @@ and the keyword families remain untested at scale.
 Unresolved and live on both halves. The full-dictionary exhaustion gives
 **12,064 keyword `g` candidates** clearing the within-word diagonal and
 **~130 keyword σ candidates** consistent with the 23 observed seam
-doublets — a joint space around 10⁶ pairs before any cheap filter
-(parity, σ ∉ ⟨g⟩, base count, DJU-BEI abelianization) is applied. That
-is enumerable, and it is the only formulation of the walk for which
+doublets (404 at the upper 95% CI) — a joint space of ~4.8×10⁶ pairs.
+That is enumerable, and it is the only formulation of the walk for which
 that is true.
+
+The pair count is not the cost driver, though, and the cheap filters do
+not reduce it: the joint doublet count, parity and the DJU-BEI
+abelianization are all vacuous on this space (see above), leaving only
+σ ∉ ⟨g⟩ and the base count. The real expense is that each pair still
+needs a *schedule* — five offsets summing to 0 (mod 29), ~29⁴ ≈ 7×10⁵
+per alphabet — before the state return can be evaluated. That product,
+not the 4.8×10⁶, is what has to be attacked.
 
 An earlier verdict here called σ the bottleneck. That rested on
 comparing candidates against 0.0079 as an exact threshold when it is a

@@ -247,9 +247,18 @@ newlines are line wraps (words flow across them).
   section 9 and recurs mid-section-6. Same ciphertext ⟹ `base_1477 =
   base_2926` — a state return of the deterministic walk. Both words length 3,
   so the step (`g²σ`) matched and the bases stayed synced across both words —
-  which a random per-word key could not produce. Yields a key constraint:
-  `Σ(L−1)=4946 ≡ 1 (mod 5)` over the interval, so `[g] = −1449·[σ]` in the
-  abelianization of ⟨g,σ⟩.
+  which a random per-word key could not produce. Formally
+  `Σ(L−1)=4946 ≡ 1 (mod 5)` over the interval gives `[g] = −1449·[σ]` in the
+  abelianization of ⟨g,σ⟩ — **but this is not a usable filter on concrete
+  permutations.** It is a relation in the abelianization of the *free* group;
+  the real ⟨g,σ⟩ is A₂₉/S₂₉ or a point stabilizer thereof, with |G/G′|
+  measured at 1 or 2 across sampled order-5 `g` and both random and 29-cycle
+  σ. It therefore collapses into the parity condition, and for a Quagmire σ
+  (a 29-cycle, hence even) even that is automatic. See
+  `mixed-alphabet-vigenere.md`. The relation retains force only where the
+  group really is abelian — i.e. under the σ = g^k assumption of
+  `sigma-power-step.md`, where it correctly forces k = 1. The testable
+  content of DJU-BEI for a general key is the state return itself.
   **What this constraint does and does not pin.** The two "5"s in this
   model are independent, and only one of them is at work here. The
   within-word phase `j mod 5` never reaches 5 in a short word — DJU and
@@ -384,7 +393,9 @@ newlines are line wraps (words flow across them).
   function of it and the observable word lengths. A **contiguous crib** of a
   few words would pin `g` and `σ` and then propagate to the whole corpus —
   unlike a free-base model, where a crib dies at its own word.
-- Any candidate key must satisfy the DJU-BEI abelianization constraint above.
+- Any candidate key must satisfy the DJU-BEI **state return** `base_1477 =
+  base_2926`. This is the full 1,449-step composition and is expensive; the
+  abelianization relation below is NOT a cheap stand-in for it.
 - A single guessed word (e.g. DJU-BEI = a [3,3] phrase such as "OUR OWN") is
   **not** verifiable — 6 runes under two unknown bases + g is underdetermined.
 - **The 2-rune words are the sharpest available key discriminator

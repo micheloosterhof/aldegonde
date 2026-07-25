@@ -199,6 +199,19 @@ word reaching length 5. The constraint therefore binds the base schedule
 and the g/σ relation, not g's internal structure. See
 `length-clocked-walk.md`.
 
+**And it binds far less than that phrasing suggests.** `[g] = −1449·[σ]`
+holds in the abelianization of the *free* group on two generators. For
+concrete permutations it says something only if ⟨g,σ⟩ has a matching
+abelian quotient, and it does not: |G/G′| measures 1 or 2 across sampled
+order-5 `g` with random and 29-cycle σ, because these groups are A₂₉/S₂₉
+or point stabilizers thereof. The relation collapses to the parity
+condition, and for a 29-cycle (Quagmire) σ parity is automatic. It is a
+valid constraint only where the group is genuinely abelian — under the
+σ = g^k assumption of `sigma-power-step.md`. For a general key the only
+testable content of this repeat is the **state return** `base_1477 =
+base_2926`, which requires the full 1,449-step composition. See
+`mixed-alphabet-vigenere.md` for the measurements.
+
 ## Scripts
 
 - `experiments/anchored_repeats.py` — boundary-consistent anchored repeat
