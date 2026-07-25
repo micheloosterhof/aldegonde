@@ -114,6 +114,21 @@ newlines are line wraps (words flow across them).
   coincidence. So `g` and `σ` are general mixed permutations, not
   affine/multiplicative/Beaufort. (Two scan "hits", d6-m27 and d5-per-word,
   survived permutation nulls but failed split-half → overfit, not signal.)
+  **Confirmed constructively by diagonal floors** (July 2026,
+  `experiments/sigma_algebraic_floor.py`): the observed doublet rates ARE
+  the two diagonals, so each arithmetic family can be excluded by
+  computing its minimum achievable diagonal on the relevant plaintext
+  table. For `σ` on the cross-word (final × initial) table every family
+  floors above the observed 0.0079 — additive 0.0207, Beaufort 0.0211,
+  multiplicative and affine 0.0122, inverse `a/x+b` 0.0162 — against an
+  unconstrained-permutation floor of 0.0048. For `g` on the within-word
+  table the same holds (affine floor 0.0101 vs observed 0.0063), which
+  is an independent second reason beyond the order argument. One family
+  needed the order argument after all: the inverse maps DO reach the
+  diagonal (best 0.0038) but the family contains **no element of order
+  5** (orders present: 2, 6, 12, 20, 27, 28, 29, 30, 42, 90, 182, 210),
+  so it cannot supply `g`. Both steps are also only *mildly* rare —
+  0.0063 and 0.0079 sit above their achievable floors, not at them.
 - **Not ciphertext-autokey.** Grouping each rune by its previous ciphertext rune
   (lag 1, 2, 5) gives within-group IoC 1.02/1.00/1.00 — flat, not the ~1.8 that a
   ciphertext-driven alphabet would leak (`autokey_test.py`). So the alphabet is

@@ -80,6 +80,29 @@ polyalphabetic.
   length-independence is verified: the diagonal rate is flat across
   (L−1) mod 5 classes, and the full seam channel carries no other
   structure (`seam-channel-clean.md`).
+- **σ cannot be an arithmetic map (July 2026,
+  `experiments/sigma_algebraic_floor.py`).** The seam relation makes the
+  observed cross-word doublet rate 0.0079 *literally* σ's diagonal on the
+  word-final × word-initial plaintext table — a different table from g's
+  adjacent bigrams, so g's affine exclusion does not carry over and had
+  to be computed separately. Minimum achievable diagonal by family
+  (register prose, LP length mix):
+
+  | family | min diagonal | vs observed 0.0079 |
+  |---|---|---|
+  | additive `x+b` | 0.0207 | 2.6x too high |
+  | Beaufort `b−x` | 0.0211 | 2.7x too high |
+  | multiplicative `a·x` | 0.0122 | 1.5x too high |
+  | affine `a·x+b` | 0.0122 | 1.5x too high |
+  | inverse `a/x+b` | 0.0162 | 2.1x too high |
+  | unconstrained permutation | 0.0048 | reachable |
+  | random permutation | 0.0343 (mean) | — |
+
+  Every arithmetic family floors out above the observation while a
+  general mixed permutation clears it comfortably. The margins
+  (1.5-2.7x) are far beyond plausible register variation. σ is a
+  non-arithmetic mixed permutation, and — like g — a *mildly* rare one:
+  0.0079 sits 1.6x above the 0.0048 assignment-problem floor, not at it.
 - **Group-size floor.** The census bounds the number of visited bases:
   excess identity pairs ≲ 13 (2σ) against ~8,000 register-implied
   repeated pairs gives **N ≳ 600** distinct bases, so |⟨g, σ⟩| is at
