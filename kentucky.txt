@@ -1,0 +1,35 @@
+plaintext:
+
+It is all but impossible to draw a distinction between Bletchley Park’s
+work on wartime Germany and its growing work on the Soviet Union in the
+nineteen forties. Knowledge of wartime Germany required the tracking
+of events on the eastern front and involved learning as much as
+possible about the Soviet effort. British intelligence began to value
+the Germans for their knowledge of the Soviet Union as soon as Ultra
+came onstream. German messages used to send their own Sigint summaries
+about the Soviet Union back to Berlin were, in turn, intercepted by the
+British. This “second-hand” Signit proved to be London’s best source
+on the performance of Soviet forces. As early as nineteen forty-three
+the Joint Intelligence Committee – Britains’ highest intelligence
+authority – was able to produce detailed and accurate reports on the
+capabilities of the Soviet Air Force, based upon Luftwaffe Sigint
+material.
+
+
+After encrypting it with a Vigenère cipher using the keyphrase Northern
+Kentucky Univeristy, the ciphertext message is:
+
+
+vhzlh pcoex vfjqc qcotz xfvzt unrzl amepd mbgvg duyrv wpvlk ajrmg tyojj
+yvxhh ykpnv uzkvj utllo ewpxj tbsjb higml xwixy wahtv sknum fasrg aypsl
+ygmzr wgzmg rgbgv acrnk rhzyk pnvuz kvjut llfvj bmirn xuxnt kaevv bswwd
+xlggf galvr kwgxl pppia bvrua vomyj vwsir exmaz uuwsw uintf kabzy sruvy
+kgrif hpkor ysnjv ktzbr vgybu xvyvm txheo zytii xfnie srhyx niizk rfyit
+dfyvz frfot xbtsf yalvf yzvxn wxgia inwfg vtqhz kkhgr zosal ntoyg tmmqr
+fuxqf oxxzy jrnxb lypnr brqms nfabe vbklb qdnbm rludy sngpz wfnqx rhbzh
+ufrpu xbuyt vghjm mizfb npawe mlvtr zxrwv adfyo zdxzk pmfvg jxjse qreaw
+mkqlc gxmsm wlmmo schuh facfr lnuys lpmjr kzmic etfkt eepos slixs cnswm
+gvkil cnfcr hwevx igxyp pmlgg oliwm mfrxf buxza diyec iolwr kjqda bmcrp
+ibaez aclvz bgcrc abzpc aoxlp srnal fesxl puukz frbjt iglna rrvmh mcrne
+awuem slnbz vvhwk rfcem oitnz eobfk dgyfw axywa htvsk tpvwb bgruu uoboc
+wiplx bpyst vlpkz adqnm ytsyf 
