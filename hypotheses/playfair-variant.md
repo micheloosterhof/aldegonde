@@ -40,14 +40,34 @@ rune) would be reduced but not zero, potentially matching the ~0.66% rate.
 
 None needed. The bigram uniformity test is sufficient.
 
-## Scope caveat (July 2026)
+## Mechanism-specific tests (July 2026) — both variants closed
 
-The bigram-uniformity argument pools ALL adjacencies. Playfair encrypts
-non-overlapping pairs, so its signature lives in within-pair (even-offset)
-bigrams and is diluted roughly 2x by pooling with cross-pair bigrams; the
-parity classes have never been separated. The seriated variant named in
-the title is not addressed at all — seriation changes the pairing
-structure entirely. The doublet argument is unaffected.
+The original bigram-uniformity argument pooled ALL adjacencies, which
+dilutes a within-pair signature ~2x, and never addressed the seriated
+variant in the title. Both are now tested directly, using the sharpest
+Playfair property: **a Playfair pair can never emit a doublet** (all
+three rules — same row, same column, rectangle — force the two output
+letters apart unless the plaintext pair is itself a doublet, which
+Playfair forbids by insertion). So every observed doublet must sit
+ACROSS a pair boundary.
+
+**Standard Playfair (adjacent pairing) — excluded.** Classifying the 86
+doublets by the parity of their first position: **44 even / 42 odd**.
+Whichever alignment the pairs use, roughly half the doublets fall
+within a pair, where Playfair permits none. The split holds in every
+section separately (2/2, 3/3, 3/6, 5/5, 5/6, 7/6, 9/3, 9/9, 1/2), so
+per-section realignment does not rescue it either.
+
+**Seriated Playfair (vertical pairing) — excluded.** Under seriation
+with period P the plaintext is written in rows of length P and pairs are
+formed vertically, so ciphertext positions i and i+P are a pair whenever
+(i mod 2P) < P and can never be equal, while the other half of
+distance-P pairs is unconstrained. Measured for P = 2..12, the
+constrained class sits at the chance rate throughout (rates 0.029-0.038,
+z from −2.5 to +1.3 against 1/29) where it must be ~0. No period works.
+
+Together these close the family on its own defining property rather than
+on a pooled statistic that could not have detected it.
 
 ## Verdict
 

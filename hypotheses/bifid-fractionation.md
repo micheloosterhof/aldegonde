@@ -70,7 +70,22 @@ rate 3.6-4.3% (observed: 0.66%), and 20+ triplets (observed: 0). Notably,
 period-5 bifid DOES couple lag-5 positions strongly (T5 z ~ +7), but with
 the wrong shape: it elevates all separations d=1..4 and the monographic
 lag-5 kappa (1.45 vs observed 1.07), unlike the selective d=1/d=4 pattern in
-`lag5-digraph-structure.md`. The IoC and triplet failures are structural for
+`lag5-digraph-structure.md`. **Tuned grids tested (July 2026)** — the original simulations used
+`random.shuffle` grids, i.e. exactly the condition under which any
+relation sits at chance, so they could not speak to a grid deliberately
+routed against the digraph table. Annealing a 5x6 grid to minimise the
+output doublet rate on register plaintext: the floor is **0.0239 (P=5),
+0.0246 (P=7), 0.0237 (P=10)** against the observed 0.0063 — tuning helps
+(random grids give 0.042-0.059) but falls ~3.8x short, and the annealed
+grids still carry nIoC 1.087-1.118 (LP 1.000) and 5-9 triplets (LP 0).
+There is a structural reason: an output doublet requires the
+contributing plaintext letters to share BOTH a row and a column, each
+marginal is minimised by a balanced grid at 1/5 and 1/6, so the product
+floors near 1/(5x6) = 0.033 — chance. Grid tuning redistributes the
+collision mass; it cannot beat the balance bound. The exclusion is
+therefore genuine and not an artifact of untuned grids.
+
+The IoC and triplet failures are structural for
 fractionation (it has no mechanism to avoid output doublets and preserves
 coordinate-level language statistics), so other periods and per-word
 variants are very unlikely to survive, though not individually simulated.
