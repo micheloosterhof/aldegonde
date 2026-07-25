@@ -208,7 +208,15 @@ and rotations rather than leaving them free.
 ## Related
 
 - `length-clocked-walk.md` — the model; this proposes a construction for its
-  `g`. The same grid/keyword idea could apply to `σ` (the space step).
+  `g`. ~~The same grid/keyword idea could apply to `σ` (the space step).~~
+  **Excluded (July 2026)**: σ built from the same grid collapses the base
+  sequence — row rotation gives 25 distinct bases over the corpus,
+  column reversal 10, row rotation plus a spare-rune 4-cycle 100, and
+  even the grid transpose only 50, against the ~600 the identity census
+  requires (a random mixed σ gives 2,928). Row rotations commute with a
+  column-rotation `g`, reflections conjugate it to `g⁻¹`, and the
+  transpose fails on order instead. Whatever builds `g`, σ must come
+  from elsewhere and must have large order — see `sigma-power-step.md`.
 - `stay-slot-hold.md` — the disproved hold reading of the doublets; the
   fixed-point leakage above was the same "plaintext doublets show through"
   effect, now excluded by the position profile.

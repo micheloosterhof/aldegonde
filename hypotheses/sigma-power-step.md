@@ -136,6 +136,31 @@ polyalphabetic.
   be summarised by a small state, and why a one-transposition error in σ
   propagates catastrophically down the chain
   (`no-known-plaintext-foothold.md`, constraint 3 in `README.md`).
+
+- **σ cannot be built from g's own grid.** As a search filter the
+  non-normalising requirement is negligible (the normalizer is ~3.6×10⁷
+  of 29! ≈ 8.8×10³⁰), but it kills the design-natural companion
+  constructions, which is where it matters. Counting distinct bases over
+  the real 2,928-word length sequence with `g` = column rotation of a
+  5×5 grid:
+
+  | σ | normalises g? | ord σ | distinct bases |
+  |---|---|---|---|
+  | row rotation, same grid | yes (g→g) | 5 | **25** |
+  | column reversal | yes (g→g⁴) | 2 | **10** |
+  | row rotation + 4-cycle on the spare runes | yes (g→g) | 20 | **100** |
+  | grid transpose | no | 2 | **50** |
+  | random mixed permutation | no | 60 | **2,928** |
+
+  Every grid-derived σ collapses the walk: the row rotation commutes
+  with a column rotation outright, reflections conjugate `g` to `g⁻¹`,
+  and even the transpose — which does *not* normalise — fails anyway
+  because its order is 2. All land at 10-100 bases against the ~600
+  required, while an unrelated mixed σ gives a distinct base for
+  essentially every word. This retires the "the same grid/keyword idea
+  could apply to σ" suggestion in `g-from-5x5-grid.md`: whatever
+  produces `g`, σ must come from somewhere else and must have large
+  order. (All at the census bound's ~2σ strength.)
 - **Abelianization link** (conditional, as above): [g] = −1449·[σ], with
   the parity necessary-condition σ even (`walk_verifier.py`).
 - **Not excluded**: σ of order 5, σ a conjugate h∘g∘h⁻¹, larger
