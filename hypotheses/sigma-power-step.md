@@ -106,8 +106,36 @@ polyalphabetic.
 - **Group-size floor.** The census bounds the number of visited bases:
   excess identity pairs ≲ 13 (2σ) against ~8,000 register-implied
   repeated pairs gives **N ≳ 600** distinct bases, so |⟨g, σ⟩| is at
-  least in the hundreds. Commuting σ is NOT excluded by this (the
-  centralizer of a five-5-cycle g has order ~9×10⁶).
+  least in the hundreds.
+- **σ does NOT normalise ⟨g⟩ — so the walk has no closed form**
+  (July 2026). This is the question "what does the base look like four
+  words in?". In general it is the raw alternating word
+  `base_0 g^{a₀} σ g^{a₁} σ g^{a₂} σ g^{a₃} σ` with no simplification.
+  It *would* telescope if σ normalised ⟨g⟩ (σgσ⁻¹ = g^r), because every
+  σ could then be pushed past the g's, giving the clean closed form
+
+      base_w = base_0 ∘ g^(Σᵢ aᵢ rⁱ mod 5) ∘ σ^w
+
+  — a polynomial in `r` evaluated on the public word-length sequence,
+  times a power of σ. But that form caps the state at the pair
+  (exponent mod 5, w mod ord σ), i.e. at most **5·ord(σ)** distinct
+  bases, and the maximum order of a normalising σ on 29 points is
+  **100** (the commuting case: a 5-cycle of g's blocks with nonzero
+  shift-sum gives order 25 on the 25 moved runes, times a 4-cycle on the
+  4 fixed runes, lcm = 100; the genuinely twisted cases r = 2,3,4 cap at
+  60). That allows at most 500 bases against the ~600 the census
+  requires — so normalising σ, including the commuting case, is
+  excluded. (At the census bound's own ~2σ strength, and inheriting its
+  register assumption.) This supersedes the earlier note here that
+  commuting σ was unconstrained: the centralizer is indeed large
+  (~9×10⁶ elements) but its *element orders* are not, and that is what
+  the base count depends on.
+
+  Consequence: the base sequence is a genuine non-abelian alternating
+  product with no algebraic shortcut — which is precisely why it cannot
+  be summarised by a small state, and why a one-transposition error in σ
+  propagates catastrophically down the chain
+  (`no-known-plaintext-foothold.md`, constraint 3 in `README.md`).
 - **Abelianization link** (conditional, as above): [g] = −1449·[σ], with
   the parity necessary-condition σ even (`walk_verifier.py`).
 - **Not excluded**: σ of order 5, σ a conjugate h∘g∘h⁻¹, larger
