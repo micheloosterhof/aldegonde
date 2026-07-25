@@ -66,7 +66,31 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
   base chain once per word, so a one-swap error is applied ~2,900 times
   and every base past the first is destroyed. The landscape over
   `(g, σ)` is a delta function — flat everywhere, spiked only at the
-  exact key. **Consequence for the attack architecture**: no
+  exact key.
+- **The prefix escape was tested and does not rescue it.** Errors
+  saturate with distance along the chain, so a *short prefix* should
+  retain signal the full corpus destroys — and it does, measurably: with
+  `base_0` and `g` known, trigram fitness on the first 160 words puts a
+  one-transposition-wrong `σ` several sd above random, where the
+  full-corpus objective puts it at 0.8 sd. But the basin is **one point
+  wide**. Measuring the drop as a function of distance from the true
+  `σ` on that prefix (true −3.625, random −6.843 ± 0.138):
+
+  | transpositions from true | score | share of the drop to random |
+  |---|---|---|
+  | 0 | −3.625 | 0% |
+  | 1 | −6.432 | **87%** |
+  | 2 | −6.509 | 90% |
+  | 3, 5, 8, 12 | −6.44 to −6.64 | 86-94% |
+  | random | −6.84 | 100% |
+
+  A single swap already forfeits 87% of the signal and everything beyond
+  is indistinguishable from noise. Hill-climbing `σ` on the prefix from
+  random starts, with `base_0` and `g` handed over for free, converges
+  to 1-2/29 correct on every restart — it never leaves the flat. So the
+  1-swap neighbourhood is *statistically* detectable but not climbable:
+  you would have to already be one transposition from the answer, and
+  even then all 406 candidate swaps look alike from outside. **Consequence for the attack architecture**: no
   hill-climb, annealing or evolutionary search over `(g, σ)` can work,
   with this or any comparable objective. `base_0` is effectively free
   (a 29!-fold reduction, solved by the objective in seconds), so the
@@ -74,6 +98,23 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
   **enumeration over structurally constrained candidates** — making the
   filter stack (`sigma-power-step.md`, `g-from-5x5-grid.md`) and the
   small-key construction problem the whole game.
+
+**The search space, and the one route left.** With `base_0` free, the
+space is `(g, σ)`: order-5 permutations number 9.84e23, of which ~0.1%
+carry a diagonal in the required band → ~1e21 candidate `g`; `σ` ranges
+over 29! = 8.8e30, of which ~1.6e-4 sit in the cross-word diagonal band
+→ ~1.4e27. The joint space is **~1e48**, so enumeration is as hopeless
+as local search. That leaves one route, and it follows from constraint 1
+instead of fighting it: both wheels must be *wired against the digraph
+table* (four independent demonstrations — plain Vigenere, arithmetic σ,
+keyword Quagmire, keyword disks). A designer wiring a permutation
+against digraph statistics uses a **procedure**: process the runes in
+some canonical order assigning each its rarest available partner, take
+the assignment-problem optimum on a published bigram table, route grid
+columns through rare digraphs, and so on. The permutations number ~1e48;
+the plausible *procedures* number in the dozens. The enumerable object
+is the construction rule, not the key — the one search the evidence has
+actually made smaller, and where the next attack should go.
 - The deterministic-walk structure is the exploitable weakness instead: DJU-BEI
   gave one state-return constraint (`base_1477 = base_2926`, `[g] = −1449[σ]`);
   a systematic hunt for repeated ciphertext structures could add more equations
