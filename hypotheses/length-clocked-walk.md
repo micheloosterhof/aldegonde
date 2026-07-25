@@ -67,11 +67,14 @@ refuted"):
   Vigenere is a different matter and is NOT excluded**: conjugated
   shifts `K∘(add δ)∘K⁻¹` put the doublet condition on deltas of the
   transformed plaintext `K⁻¹(p)`, which a free `K` reshapes — jointly
-  optimising `K` and five offsets reaches 0.0017 against the observed
-  0.0063. That is a live rival to a general mixed `g`, with a
-  keyword-sized (hence enumerable) key and a clean discriminator: it
-  forbids the d2/d3/d4 fixed-point leak. See
-  `mixed-alphabet-vigenere.md`.
+  optimising `K` and five offsets reaches 0.0017. But that escape needs
+  a *freely designed* `K`: simulation shows every KEYWORD-derived `K`
+  floors at 0.0101-0.0197 against the observed 0.0063 (1.6x-3.1x too
+  high), so the enumerable-key version is dead and the surviving version
+  is just another arbitrary 29-permutation. See
+  `mixed-alphabet-vigenere.md`. Third confirmation of the same rule:
+  **no merely-"mixed" key produces this suppression** — the designer
+  routed the permutation against the digraph table deliberately.
   **A tuned-diagonal-free reformulation is refuted** — advance-4/hold-1
   (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, predicted
   the doublet rate parameter-free but is DISPROVED by the doublet

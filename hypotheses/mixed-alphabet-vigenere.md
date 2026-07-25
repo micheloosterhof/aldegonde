@@ -15,9 +15,11 @@ walk with a plausibly *enumerable* key.
 
 ## Status
 
-**Status**: unresolved (not excluded — reaches the doublet rate, the d5
-echo and the d6 dip; the discriminating prediction is zero coincidence
-leak at d2/d3/d4, where the data are currently ambiguous)
+**Status**: disproved as proposed (a KEYWORD-derived `K` cannot reach
+the doublet rate — floors at 0.0101-0.0197 against the observed 0.0063).
+A freely-designed `K` clears the rate but forfeits the small,
+enumerable key that was the hypothesis's entire advantage, and is
+disfavoured by the d4 leak.
 
 ## Mechanism
 
@@ -61,6 +63,41 @@ where `s_j` is the running sum of offsets, periodic mod 5. Consequences:
   (`g-from-5x5-grid.md`). Given the (g, σ) landscape has no gradient
   (`no-known-plaintext-foothold.md`), enumerability is the property that
   matters most.
+
+## The kill: keyword alphabets are not mixed enough (July 2026)
+
+Full-battery simulation (`experiments/quagmire_walk_sim.py`) with `K`
+keyword-derived, offsets chosen to land on the observed rate rather than
+at the floor:
+
+| keyword | cheapest offset cost | vs observed 0.0063 |
+|---|---|---|
+| INSTAR | 0.0101 | 1.6x |
+| PARABLE | 0.0102 | 1.6x |
+| LIBERPRIMUS | 0.0110 | 1.8x |
+| CIRCUMFERENCE | 0.0123 | 1.9x |
+| MOBIUS, AETHEREAL, PRIMES, TOTIENT | 0.0123-0.0127 | 2.0x |
+| DIUINITY | 0.0148 | 2.4x |
+| WISDOM | 0.0164 | 2.6x |
+| CICADA, SHADOW | 0.0194-0.0197 | 3.1x |
+| **freely annealed K (not a keyword)** | **0.00010** | 0.02x |
+
+A schedule's doublet rate is a weighted average of its offsets' costs,
+so it can never beat the cheapest offset — the column above is a hard
+floor per keyword. Every keyword tested floors 1.6x-3.1x above the
+observation. The end-to-end run confirms it: the best case (INSTAR)
+simulates d1 = 0.0215 against LP's 0.0063, with d6 = 0.0395 (no dip)
+and 3.3 triplets (LP has 0), while an order-5 `g` tuned the same way
+sits at d1 = 0.0065, d6 = 0.0310, 0.5 triplets.
+
+This is the same failure as the plain Vigenere (`length-clocked-walk.md`,
+floor 0.0119) and for the same reason: a keyword permutation is not
+*designed against the bigram table*, so its conjugated shifts land near
+the language's own delta statistics. The earlier 0.0017 figure came from
+annealing `K` freely over all 29! alphabets — that `K` is not a keyword,
+carries a full permutation's worth of key, and therefore gives no
+enumeration advantage over a general mixed `g`, which was the whole
+point of the hypothesis.
 
 ## Evidence against / the discriminator
 
@@ -111,12 +148,23 @@ where `s_j` is the running sum of offsets, periodic mod 5. Consequences:
 
 ## Verdict
 
-Unresolved and worth pursuing. A mixed-alphabet Vigenere step clears the
-doublet floor that kills the plain one (0.0017 achievable against 0.0063
-observed), reproduces the d5 echo and the d6 dip by the same algebra as
-`g⁵ = id`, and — decisively for the attack — has a key a designer would
-actually use and a searcher could actually enumerate. It differs from
-the order-5 `g` model in one measurable place: it forbids the
-fixed-point leak at d2/d3/d4 that the `g` model requires. The data lean
-weakly the other way (φ4 = 2σ from zero), which is the same unresolved
-cell that troubles every model, so the question is open.
+Disproved in the form that made it attractive. The appeal was a
+keyword-sized, enumerable key: `K` from a word, five offsets, done. But
+a keyword-derived `K` floors at 0.0101-0.0197 on the doublet rate
+against the observed 0.0063 — 1.6x to 3.1x too high across every
+keyword tried, including Cicada's own vocabulary — and the end-to-end
+simulation confirms the failure (d1 = 0.0215, no d6 dip, triplets
+present). The escape is a freely-designed `K`, which does clear the rate
+(0.0001 achievable) but is a full 29-permutation: no keyword, no small
+key, no enumeration advantage over the general mixed `g` it was meant to
+replace, and it still carries the unfavourable no-leak prediction at
+d2/d3/d4.
+
+The general lesson is the durable part, and it now has three
+independent confirmations (plain Vigenere, arithmetic σ, keyword
+Quagmire): **the LP's doublet suppression cannot be produced by any key
+that is merely "mixed"** — a keyword, a shift, an affine map, or a
+keyword-conjugated shift all sit near the language's own bigram
+statistics. The suppression requires a permutation deliberately routed
+against the bigram table. Whatever the cipher is, its designer had the
+digraph frequencies in front of them.
