@@ -72,25 +72,33 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
   retain signal the full corpus destroys — and it does, measurably: with
   `base_0` and `g` known, trigram fitness on the first 160 words puts a
   one-transposition-wrong `σ` several sd above random, where the
-  full-corpus objective puts it at 0.8 sd. But the basin is **one point
-  wide**. Measuring the drop as a function of distance from the true
-  `σ` on that prefix (true −3.625, random −6.843 ± 0.138):
+  full-corpus objective puts it at 0.8 sd. **The basin width depends on
+  the prefix length, and that is exactly what kills the idea** — basin
+  and statistical power move in opposite directions with K, and they
+  never overlap. With `base_0` and `g` handed over for free:
 
-  | transpositions from true | score | share of the drop to random |
-  |---|---|---|
-  | 0 | −3.625 | 0% |
-  | 1 | −6.432 | **87%** |
-  | 2 | −6.509 | 90% |
-  | 3, 5, 8, 12 | −6.44 to −6.64 | 86-94% |
-  | random | −6.84 | 100% |
+  | K words | runes | signal a 1-swap σ retains | hill-climb from random |
+  |---|---|---|---|
+  | 5 | 23 | 100% | — |
+  | 10 | 49 | 94% | score −3.86 vs true −3.38, **1/29 correct** |
+  | 15 | 75 | 84% | — |
+  | 20 | 95 | 58% | −4.76 vs −3.77, **1/29** |
+  | 40 | 177 | 42% | −5.67 vs −3.62, **0/29** |
+  | 160 | 729 | 14% | 1/29 |
 
-  A single swap already forfeits 87% of the signal and everything beyond
-  is indistinguishable from noise. Hill-climbing `σ` on the prefix from
-  random starts, with `base_0` and `g` handed over for free, converges
-  to 1-2/29 correct on every restart — it never leaves the flat. So the
-  1-swap neighbourhood is *statistically* detectable but not climbable:
-  you would have to already be one transposition from the answer, and
-  even then all 406 candidate swaps look alike from outside. **Consequence for the attack architecture**: no
+  At short prefixes the basin is genuinely wide, but the objective is
+  **degenerate**: 49 runes cannot pin a 29-permutation, so the climb
+  finds a σ that renders plausible runeglish and is nowhere near the
+  key. At long prefixes the objective discriminates but the basin has
+  collapsed and the climb never leaves the flat. Nothing in between
+  works either — at K = 20 the basin is already halved and the climb
+  still returns 1/29.
+
+  **Practical warning**: the short-prefix failures score *close to the
+  true key* (−3.86 against −3.38 at K = 10) while being essentially
+  100% wrong. A prefix-based attack will manufacture convincing false
+  positives, and anyone running one should verify on the full corpus,
+  where those candidates collapse to −6.83 against the true −3.56. **Consequence for the attack architecture**: no
   hill-climb, annealing or evolutionary search over `(g, σ)` can work,
   with this or any comparable objective. `base_0` is effectively free
   (a 29!-fold reduction, solved by the objective in seconds), so the
