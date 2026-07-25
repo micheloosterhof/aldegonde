@@ -188,13 +188,16 @@ polyalphabetic.
   plus a turn count, rather than an arbitrary 29-permutation. But the
   disk's alphabet cannot be keyword-derived — across 12 keywords the
   achievable cross-word diagonal floors at 0.0139-0.0237 against the
-  observed 0.0079, so 0 of 12 reach it. **But that is a statement about
-  the sample size, not about keywords**: twelve RANDOM alphabets also
-  fail (median best-of-12 0.0160; 0 of 400 such samples reach 0.0079),
-  and the keywords actually sit at the 12th percentile of that
-  distribution — better than typical. The honest claim is that twelve
-  draws of any kind do not reach the target; whether a large keyword
-  list contains an in-band disk is untested.
+  observed 0.0079. **Now settled by exhaustion** (July 2026,
+  `experiments/keyword_exhaustion.py`): across the full dictionary —
+  196,898 words under four construction rules, 787,592 candidate
+  alphabets — **zero** reach 0.0079, minimum 0.0092; and 40,000 random
+  alphabets likewise reach zero, minimum 0.0099. So the exclusion is
+  not about keywords at all: NO sampled alphabet supplies σ as a
+  rotating disk. Only a designed permutation does (assignment floor
+  0.0048). The cross-word table is more concentrated than the
+  within-word one, which is why its diagonals resist sampling — and
+  why σ, not g, is the bottleneck for any enumerable-key attack.
 
 ## Predictions
 

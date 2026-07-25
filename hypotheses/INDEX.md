@@ -59,7 +59,7 @@ proposed mechanisms scored against them.
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
 | [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
 | [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
-| [mixed-alphabet-vigenere.md](mixed-alphabet-vigenere.md) | The Period-5 Step is a Mixed-Alphabet (Quagmire) Vigenere | unresolved (the 12-keyword "kill" was a sample-size artifact — random alphabets floor the same way; the enumerable-key version is untested at scale) |
+| [mixed-alphabet-vigenere.md](mixed-alphabet-vigenere.md) | The Period-5 Step is a Mixed-Alphabet (Quagmire) Vigenere | unresolved (full-dictionary exhaustion: g CAN be keyword-derived — 12,064 in-band candidates — but σ cannot, 0 of 787,592; the bottleneck is σ) |
 | [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | unresolved (pure return ladders disproved by monotonicity; census selection below calibration resolution; open cells: d6 suppressed −2.3σ/p=0.016, d4 lean +1.85σ, split ~2.7σ) |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
 | [multi-layer-autokey.md](multi-layer-autokey.md) | Multi-Layer Autokey | disproved |

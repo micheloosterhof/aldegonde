@@ -164,14 +164,17 @@ attack on it can do (derivations and simulations in
    29 shifts (`length-clocked-walk.md`), and every arithmetic family for
    `σ` floors at 1.22%-2.11% on the cross-word table, over all family
    members (`sigma-power-step.md`) — against the observed 0.63%/0.79%.
-   Two further tests (keyword Quagmire for `g`, keyword disks for `σ`)
-   pointed the same way but are 12-draw SAMPLES, not family exhaustions:
-   twelve random alphabets floor the same way, so they bound the sample
-   size rather than keywords, and add no independent weight
-   (`mixed-alphabet-vigenere.md`). Net: arithmetic relations are
-   excluded outright; whether a keyword-derived mixed alphabet can reach
-   the observed rates is UNTESTED at scale, and is the most attackable
-   open question because such a key would be enumerable. (The once-equivalent hold variant —
+   The keyword families have now been EXHAUSTED
+   too (`experiments/keyword_exhaustion.py`: 196,898 dictionary words x 4
+   construction rules = 787,592 alphabets, with a matched random null),
+   and they split: **`g` CAN be keyword-derived** — 12,064 alphabets
+   clear its 0.0063 diagonal, an enumerable candidate list — while
+   **`σ` cannot**, with 0 of 787,592 keyword and 0 of 40,000 random
+   alphabets reaching 0.0079 (minima 0.0092 and 0.0099). So no *sampled*
+   alphabet supplies σ as a rotating disk; only a designed permutation
+   does. Net: the "no small key" conclusion holds specifically at the
+   SPACE step, and the letter step is enumerable
+   (`mixed-alphabet-vigenere.md`). (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext
    doubles would be start-forbidden and end-heavy, and the observed

@@ -35,51 +35,74 @@ where `s_j` is the running sum of offsets, periodic mod 5:
   (conjugates of a nonzero shift), which are fixed-point-free — the
   source of this model's one distinguishing prediction, below.
 
-## The keyword test, and why it does NOT settle the question
+## Superseded: the 12-keyword sample
 
-A schedule's doublet rate is a weighted average of its offsets' costs,
-so it can never beat the cheapest offset available under a given `K` —
-that cheapest offset is a hard floor per keyword. Twelve keywords were
-tested (`experiments/quagmire_walk_sim.py`, offsets targeted at the
-observed rate rather than at the floor) and all floored above the
-observation:
+An earlier pass tested twelve keywords, found all floored above the
+target, and recorded the hypothesis as disproved. That was a statement
+about the sample: twelve RANDOM alphabets floor the same way (the
+keyword best-of-12 sat at the 83rd percentile of the random best-of-12
+distribution, which reaches the target 12.8% of the time). The
+end-to-end simulation likewise used INSTAR — one draw, not the best
+available. Both are superseded by the family test below.
 
-| keyword | cheapest offset cost | vs observed 0.0063 |
+## The family test (July 2026) — the bottleneck is σ, not g
+
+`experiments/keyword_exhaustion.py` runs the exhaustion the 12-keyword
+sample was mistaken for: the full `/usr/share/dict/web2` (196,898 words
+of length 4-12) under FOUR keyword→alphabet rules — remainder in
+gematria order, remainder reversed, remainder continuing cyclically
+after the last keyword rune, and keyword into a 5×6 grid read by
+columns — giving 787,592 candidate alphabets, with a matched random
+null at the same sample size.
+
+| step | target | keyword candidates reaching it | random, same count |
+|---|---|---|---|
+| `g` (within-word) | 0.0063 | **12,064 of 787,592 (1.53%)** | 1.31% |
+| `σ` (cross-word) | 0.0079 | **0 of 787,592** | 0.000% |
+
+**The letter step is enumerable.** 12,064 keyword alphabets clear the
+diagonal — best `impletive` at 0.0010, `irritability` 0.0011,
+`Gilbertese` 0.0012. Keywords are not special (44th percentile of
+random; the family works because it is large, exactly as for the grids),
+but 12,064 candidates is a list one can push through the full battery
+and the 2-rune verifier in hours. This is a genuine enumerable set — the
+first in the investigation.
+
+**The space step is not.** Zero keyword alphabets reach 0.0079, and zero
+random ones either: the minimum over all 787,592 keyword candidates is
+0.0092 and over 40,000 random draws 0.0099, both above the target. So
+this is not a fact about keywords — **no sampled alphabet, of any
+origin, supplies σ as a rotating disk**. A designed permutation does
+(the assignment floor is 0.0048, and TSP-annealed 29-cycles reach far
+below), but sampling never finds it. The cross-word table is simply more
+concentrated than the within-word one — English word-final letters pile
+on E/S/T/D/N and initials on T/A/S/W/H — so its diagonals resist being
+pushed low.
+
+Net: the enumerable-key hypothesis fails on **σ**, not on `g`, which is a
+far sharper localisation than "no small key exists".
+
+## Keyword clumping is a real structural filter
+
+A keyword alphabet leaves the unused runes in canonical order after the
+keyword, so it carries long ascending runs — and on those runs the
+conjugated shift acts like a plain shift, which floors at 0.0119 and
+cannot suppress doublets. The data show exactly that pressure:
+
+| longest ascending run | candidates | hit rate |
 |---|---|---|
-| INSTAR | 0.0101 | 1.6x |
-| PARABLE | 0.0102 | 1.6x |
-| LIBERPRIMUS | 0.0110 | 1.8x |
-| CIRCUMFERENCE | 0.0123 | 1.9x |
-| MOBIUS, AETHEREAL, PRIMES, TOTIENT | 0.0123-0.0127 | 2.0x |
-| DIUINITY | 0.0148 | 2.4x |
-| WISDOM | 0.0164 | 2.6x |
-| CICADA, SHADOW | 0.0194-0.0197 | 3.1x |
-| **freely designed K (not a keyword)** | **0.00010** | 0.02x |
+| ≥ 10 | 128,745 | 1.66% |
+| ≥ 15 | 16,930 | 1.05% |
+| ≥ 20 | 2,208 | 0.27% |
+| ≥ 24 | 314 | **0.00%** |
 
-**But twelve draws is not a family test.** Scoring 400 trials of
-*twelve random alphabets* on the same table: the best-of-12 has median
-floor **0.0084**, 5th percentile 0.0054, and **12.8% of such samples
-contain an alphabet reaching 0.0063**. The keyword best-of-12 (0.0101)
-sits at the **83rd percentile** of that distribution — slightly
-unlucky, comfortably inside noise. Keyword alphabets are therefore
-statistically indistinguishable from random draws on this measure, and
-the honest reading of the table above is "twelve draws is too few", not
-"keywords are not mixed enough". A larger keyword list would be
-expected to contain in-band members. This is the same
-sample-size-as-property error that the grid-diagonal retraction in
-`g-from-5x5-grid.md` corrected, in a new costume.
-
-The end-to-end run does not carry the exclusion either: it used INSTAR
-— a single draw, and not the best available — giving d1 = 0.0215
-against LP's 0.0063, no d6 dip, and 3.3 triplets, where an order-5 `g`
-tuned identically gives 0.0065 / 0.0310 / 0.5. That shows *that* K
-fails, not that keyword K's fail.
-
-What remains true: a `K` reaching the observed rate exists (freely
-designed, 0.0001 achievable), and the open question is whether the
-in-band members of the keyword family also satisfy everything else —
-the d6 dip, the triplet count, the seam, and the no-leak prediction
-below. That test has not been run.
+and the hit rate rises monotonically with how much of the alphabet the
+keyword disturbs — 0.68% for keywords contributing 3 distinct runes,
+1.53% at 7, 2.46% at 11. A viable keyword must break up the canonical
+order substantially; heavily clumped alphabets are excluded outright.
+This both narrows the candidate list and blunts the hypothesis's appeal,
+since the surviving keywords are long and specific rather than short and
+memorable.
 
 ## The distinguishing prediction (unfavourable)
 
@@ -131,18 +154,21 @@ and the keyword families remain untested at scale.
 
 ## Verdict
 
-Unresolved, and the most attackable live proposal on the books. Twelve
-keyword alphabets all floored above the required doublet rate, but
-twelve *random* alphabets do the same 87% of the time, so that test
-excludes nothing — it measures the sample size. The mechanism itself
-remains consistent: it reproduces the d5 echo and the d6 dip by the
-same algebra as `g⁵ = id`, a `K` reaching the observed rate certainly
-exists, and if an in-band keyword K also passes the rest of the battery
-the key would be word-sized and enumerable, which no other formulation
-offers. Against it stands one clean prediction — conjugated shifts are
-fixed-point-free, so d2/d3/d4 must sit exactly at background, and the
-measured φ3 = 0.17 ± 0.14 and φ4 = 0.38 ± 0.19 lean the other way.
+Unresolved, and now precisely localised. The full-dictionary exhaustion
+settles the two halves differently: **`g` can be keyword-derived** —
+12,064 alphabets clear its diagonal, an enumerable candidate list and
+the first the investigation has produced — while **`σ` cannot**, with
+zero of 787,592 keyword alphabets and zero of 40,000 random ones
+reaching the cross-word target. Since no sampled alphabet supplies σ as
+a rotating disk, a Quagmire-shaped cipher would still need a designed
+permutation for its space step, and the enumerable-key appeal collapses
+there rather than at the letter step.
 
-Next test: enumerate a real keyword list (10³-10⁴ words), keep the
-in-band members, and run those through the full battery — the
-experiment the 12-keyword sample was mistaken for.
+Two further constraints on any surviving keyword: it must disrupt the
+canonical alphabet order substantially (heavily clumped alphabets score
+zero hits), and the model still forbids the d2/d3/d4 fixed-point leak
+that φ3 and φ4 weakly favour.
+
+Next test, if pursued: run the 12,064 in-band `g` candidates through the
+full battery, which would confirm or kill the letter-step half on its
+own. The σ half needs a different idea entirely.
