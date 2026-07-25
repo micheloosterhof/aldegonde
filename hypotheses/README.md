@@ -167,13 +167,14 @@ attack on it can do (derivations and simulations in
    The keyword families have now been EXHAUSTED
    too (`experiments/keyword_exhaustion.py`: 196,898 dictionary words x 4
    construction rules = 787,592 alphabets, with a matched random null),
-   and they split: **`g` CAN be keyword-derived** — 12,064 alphabets
-   clear its 0.0063 diagonal, an enumerable candidate list — while
-   **`σ` cannot**, with 0 of 787,592 keyword and 0 of 40,000 random
-   alphabets reaching 0.0079 (minima 0.0092 and 0.0099). So no *sampled*
-   alphabet supplies σ as a rotating disk; only a designed permutation
-   does. Net: the "no small key" conclusion holds specifically at the
-   SPACE step, and the letter step is enumerable
+   giving **12,064 keyword `g` candidates** clearing the
+   within-word diagonal and, once the seam target's uncertainty is
+   respected (23 events, 95% CI [0.0050, 0.0118]), **~130 keyword σ
+   candidates**. The two observed rates are not significantly different
+   (0.0063 vs 0.0079, z = 0.87; pooled 0.0066), so this is one
+   requirement measured on two tables. Net: a keyword-derived key is NOT
+   excluded — the joint candidate space is ~10⁶ pairs before cheap
+   filtering, the only enumerable formulation the investigation has
    (`mixed-alphabet-vigenere.md`). (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext

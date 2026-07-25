@@ -68,15 +68,55 @@ but 12,064 candidates is a list one can push through the full battery
 and the 2-rune verifier in hours. This is a genuine enumerable set — the
 first in the investigation.
 
-**The space step is not.** Zero keyword alphabets reach 0.0079, and zero
-random ones either: the minimum over all 787,592 keyword candidates is
-0.0092 and over 40,000 random draws 0.0099, both above the target. So
-this is not a fact about keywords — **no sampled alphabet, of any
-origin, supplies σ as a rotating disk**. A designed permutation does
-(the assignment floor is 0.0048, and TSP-annealed 29-cycles reach far
-below), but sampling never finds it.
+**The space step: zero at the point target, but see the section below.**
+Zero keyword alphabets reach 0.0079 exactly, and zero random ones
+either (minima 0.0092 and 0.0099). Read as an exclusion this is WRONG —
+0.0079 is a 23-event measurement with a 95% CI of [0.0050, 0.0118], and
+~130 keyword candidates sit comfortably inside it. The correct reading
+of these numbers is that sampled alphabets cluster just above the point
+estimate, not that they are excluded.
 
-**Why the two differ — quantitatively, not qualitatively.** Both steps
+## The two targets are the SAME rate (July 2026) — and this voids the σ exclusion
+
+The g and σ targets were treated as two distinct numbers, 0.0063 and
+0.0079. They are not significantly different:
+
+| | doublets / opportunities | rate | 95% CI |
+|---|---|---|---|
+| within-word (g) | 63 / 10,028 | 0.0063 | [0.0048, 0.0080] |
+| seam (σ) | 23 / 2,927 | 0.0079 | **[0.0050, 0.0118]** |
+| difference | | +0.0016 | z = +0.87, **p = 0.38** |
+| pooled | 86 / 12,955 | 0.0066 | [0.0053, 0.0082] |
+
+This is the boundary-blindness of the doublet suppression, restated: one
+rate, measured twice. And the seam figure rests on **23 events**, so its
+interval is wide — which matters, because the σ exclusion above compared
+candidates against 0.0079 as though it were exact. It is not, and the
+comparison is void:
+
+| threshold | keyword σ candidates at or below |
+|---|---|
+| 0.0079 (the point target used) | 0 |
+| 0.0092 (best candidate found) | 2 |
+| 0.0100 | 17 |
+| 0.0111 | 130 |
+| 0.0118 (upper 95% CI) | 404 |
+
+A σ with diagonal 0.0092 predicts 26.9 seam doublets against 23 observed
+(Poisson z = −0.76); at 0.0100, 29.3 predicted (z = −1.16). Both are
+entirely consistent with the data. Only past ~0.0118 does the prediction
+strain (34.5 expected, z = −1.96).
+
+**So keyword σ is NOT excluded.** Roughly 130 keyword-disk candidates sit
+comfortably inside the observed seam behaviour — `monazite`,
+`decentralism`, `endocarditis`, `Reubenites` and so on. Combined with the
+12,064 keyword `g` candidates, the joint space is ~10⁶ pairs before any
+of the cheap filters (parity, σ ∉ ⟨g⟩, base count, the DJU-BEI
+abelianization) are applied. **The enumerable-key hypothesis is alive on
+both halves**, and the "bottleneck is σ" conclusion is withdrawn — it was
+an artifact of treating a 23-event measurement as a hard threshold.
+
+**Why the two nonetheless behave differently under sampling.** Both steps
 need the same kind of low diagonal, and it is worth resisting the story
 that σ is a different sort of object:
 
@@ -106,9 +146,10 @@ rests on the more register-sensitive of the two tables. A register whose
 finals are less concentrated would lower the floor and could put 0.0079
 back inside reach of sampled alphabets.
 
-Net: the enumerable-key hypothesis currently fails on **σ** rather than
-`g` — a sharper localisation than "no small key exists", but one whose
-σ half is contingent on the cross-word table being representative.
+Net: with the target's uncertainty respected, the enumerable-key
+hypothesis survives on BOTH halves — ~12,064 `g` candidates and ~130 σ
+candidates — and the σ half is additionally contingent on the cross-word
+table being register-representative.
 
 ## Keyword clumping is a real structural filter
 
@@ -182,21 +223,26 @@ and the keyword families remain untested at scale.
 
 ## Verdict
 
-Unresolved, and now precisely localised. The full-dictionary exhaustion
-settles the two halves differently: **`g` can be keyword-derived** —
-12,064 alphabets clear its diagonal, an enumerable candidate list and
-the first the investigation has produced — while **`σ` cannot**, with
-zero of 787,592 keyword alphabets and zero of 40,000 random ones
-reaching the cross-word target. Since no sampled alphabet supplies σ as
-a rotating disk, a Quagmire-shaped cipher would still need a designed
-permutation for its space step, and the enumerable-key appeal collapses
-there rather than at the letter step.
+Unresolved and live on both halves. The full-dictionary exhaustion gives
+**12,064 keyword `g` candidates** clearing the within-word diagonal and
+**~130 keyword σ candidates** consistent with the 23 observed seam
+doublets — a joint space around 10⁶ pairs before any cheap filter
+(parity, σ ∉ ⟨g⟩, base count, DJU-BEI abelianization) is applied. That
+is enumerable, and it is the only formulation of the walk for which
+that is true.
 
-Two further constraints on any surviving keyword: it must disrupt the
-canonical alphabet order substantially (heavily clumped alphabets score
-zero hits), and the model still forbids the d2/d3/d4 fixed-point leak
-that φ3 and φ4 weakly favour.
+An earlier verdict here called σ the bottleneck. That rested on
+comparing candidates against 0.0079 as an exact threshold when it is a
+23-event measurement with a 95% CI of [0.0050, 0.0118]; it is
+withdrawn. The two doublet rates (within-word 0.0063, seam 0.0079) are
+not significantly different at all — z = 0.87, p = 0.38 — and are best
+read as one rate, 0.0066, measured on two tables.
 
-Next test, if pursued: run the 12,064 in-band `g` candidates through the
-full battery, which would confirm or kill the letter-step half on its
-own. The σ half needs a different idea entirely.
+Standing against the hypothesis: it forbids the d2/d3/d4 fixed-point
+leak that φ3 = 0.17 ± 0.14 and φ4 = 0.38 ± 0.19 weakly favour; viable
+keywords must disrupt the canonical order substantially, so they are
+long and specific rather than memorable; and the σ half rests on the
+register-sensitive cross-word table.
+
+Next test: run the joint candidate set through the cheap filters, then
+the survivors through the full battery and the 2-rune verifier.

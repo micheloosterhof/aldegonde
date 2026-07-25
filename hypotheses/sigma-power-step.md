@@ -192,12 +192,15 @@ polyalphabetic.
   `experiments/keyword_exhaustion.py`): across the full dictionary —
   196,898 words under four construction rules, 787,592 candidate
   alphabets — **zero** reach 0.0079, minimum 0.0092; and 40,000 random
-  alphabets likewise reach zero, minimum 0.0099. So the exclusion is
-  not about keywords at all: NO sampled alphabet supplies σ as a
-  rotating disk. Only a designed permutation does (assignment floor
-  0.0048). The cross-word table is more concentrated than the
-  within-word one, which is why its diagonals resist sampling — and
-  why σ, not g, is the bottleneck for any enumerable-key attack.
+  alphabets likewise reach zero, minimum 0.0099. **This is NOT an
+  exclusion** (July 2026 correction): 0.0079 is a 23-event measurement
+  with a 95% CI of [0.0050, 0.0118], and ~130 keyword candidates sit
+  comfortably inside it — a σ with diagonal 0.0092 predicts 26.9 seam
+  doublets against 23 observed, Poisson z = −0.76. Sampled alphabets
+  cluster just above the point estimate; they are not ruled out. Note
+  also that the seam rate and the within-word rate do not differ
+  significantly (z = 0.87, p = 0.38; pooled 0.0066), so there is likely
+  one rate here, not two. See `mixed-alphabet-vigenere.md`.
 
 ## Predictions
 
