@@ -135,10 +135,30 @@ obviously small-key. Closing that gap is the open problem.
 
 ## Predictions
 
-- `g` has **exactly five 5-cycles + 4 fixed** (not one 29-cycle, not fewer
-  5-cycles) — a hard structural constraint any correct `g` must satisfy.
-- The 4 fixed runes are the doublet-leakers; the within-word doublet rate
-  carries a component = (plaintext doublet rate of those 4 runes).
+- ~~`g` has **exactly five 5-cycles + 4 fixed**~~ — **fewer 5-cycles are
+  not excluded** (July 2026, `experiments/sigma_algebraic_floor.py` and
+  the fixed-point census). Order 5 forces the cycle type to be `k`
+  5-loops plus `29 − 5k` fixed runes, `k ≤ 5` — no long cycles are
+  possible at all, so "small loops" is a theorem, not a design choice.
+  Counts: k=5 gives 9.82e23 permutations (4 fixed), k=4 gives 1.62e21
+  (9 fixed), k=3 gives 1.35e17, and the whole order-5 population is
+  9.84e23 of 29! ≈ 8.8e30 — about one permutation in ten million.
+  The old argument for k=5 was that fixed runes leak plaintext doublets,
+  so few are affordable; but choosing the leakers among runes that never
+  double in English (ᛠ, ᚦ, ᚣ, ᚫ, ᚹ, ᚻ, ᛟ, ᛄ all have zero self-repetition
+  in the register table) makes up to 21 fixed points affordable on the
+  d1 channel alone. Only k=1 (24 fixed) is excluded there.
+- **The d2/d3/d4 cells are a direct measurement of `g`'s fixed-point
+  count.** Under strict `g⁵ = id`, letters on a 5-loop return only at
+  distance 5, so at d2, d3 and d4 the ONLY leak is the fixed runes:
+  the returned fraction φ_d at those distances should equal `f/29` and
+  be equal across them. Measured (`mixed-cycle-progression.md`):
+  φ3 = 0.17 ± 0.14 → f ≈ 5 ± 4, φ4 = 0.38 ± 0.19 → f ≈ 11 ± 5.5 (φ2 is
+  powerless — plaintext barely repeats at distance 2). Both are
+  consistent with k=5 (f=4) and with k=4 (f=9); the cells cannot yet
+  separate them, and their mutual disagreement (5 vs 11) is the d3/d4
+  tension in another guise. A better plaintext reference would turn this
+  into a genuine parameter estimate for `k`.
 - If the grid is keyword-derived, enumerating candidate keywords + verifying
   with the doublet-diagonal check (now including the positional-baseline
   constraint from `experiments/doublet_position_profile.py`) + quadgrams is
