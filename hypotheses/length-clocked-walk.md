@@ -49,6 +49,21 @@ refuted"):
   (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) is held to 0.0063. `g⁵=id` makes positions
   5 apart share the alphabet → the d5 echo. Non-arithmetic: GF(29)* has order
   28 and 5∤28, so no shift/multiply/affine map has order 5.
+  **Nor can the period-5 step be a 5-letter VIGENERE** — the obvious
+  simplest reading, and it fails on the doublet rate rather than on
+  order (July 2026, `experiments/sigma_algebraic_floor.py`). Under a
+  shift schedule the alphabet at position j is `base_w ∘ (add s_j)` with
+  s periodic mod 5, so a ciphertext doublet occurs exactly when the
+  plaintext adjacent delta equals one phase-specific value. The rarest
+  adjacent delta in runeglish is **0.0119** (delta = 18), the best
+  5-shift schedule closing to identity (Σs ≡ 0 mod 29, phase-weighted by
+  the real adjacency counts) gives **0.0135**, and even granting all
+  five phases the single rarest delta the floor is 0.0119 — against an
+  observed 0.0063, i.e. **1.9-2.2x too high**. A shift can only dodge
+  doublets by exploiting a rare plaintext delta and English has none
+  rare enough; a mixed permutation dodges per-rune, routing each image
+  to its own rare partner, which is exactly why the cipher needs mixed
+  alphabets rather than a keyword.
   **A tuned-diagonal-free reformulation is refuted** — advance-4/hold-1
   (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, predicted
   the doublet rate parameter-free but is DISPROVED by the doublet

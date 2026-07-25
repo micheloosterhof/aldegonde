@@ -26,6 +26,7 @@ documented affine floor as a cross-check.
 
 from __future__ import annotations
 
+import itertools
 import random
 import sys
 import urllib.request
@@ -157,6 +158,38 @@ def main() -> None:
     report("SIGMA on the cross-word table", cross,
            seam_d / (len(words) - 1))
     report("G on the within-word table", within, within_d / within_n)
+
+    # Could the period-5 step be a 5-letter VIGENERE (shift schedule)
+    # rather than a mixed permutation? Then a ciphertext doublet occurs
+    # exactly when the plaintext adjacent delta equals one phase-specific
+    # value, so the doublet rate is bounded below by the rarest delta.
+    print("\n5-LETTER VIGENERE step (shift schedule) on the within-word table:")
+    delta = np.zeros(M)
+    for a in range(M):
+        for b in range(M):
+            delta[(b - a) % M] += within[a][b]
+    ph: Counter = Counter()
+    for x in words:
+        for j in range(1, len(x)):
+            ph[j % 5] += 1
+    tot = sum(ph.values())
+    wgt = [ph[p] / tot for p in range(5)]
+    rarest = float(delta.min())
+    best = (9.0, None)
+    for combo in itertools.product(range(M), repeat=4):
+        ds = combo + ((-sum(combo)) % M,)
+        rate = sum(wgt[p] * delta[(-ds[p]) % M] for p in range(5))
+        if rate < best[0]:
+            best = (rate, ds)
+    obs = within_d / within_n
+    print(f"  rarest plaintext adjacent delta:      {rarest:.4f}")
+    print(f"  best 5-shift schedule (sum=0 mod 29): {best[0]:.4f} "
+          f"shifts {best[1]}")
+    print(f"  observed within-word doublet rate:    {obs:.4f}")
+    print(f"  => shift schedules are {best[0] / obs:.1f}x too high; even "
+          f"ignoring the\n     period-5 closure the floor is "
+          f"{rarest:.4f} ({rarest / obs:.1f}x). A Vigenere step cannot\n"
+          f"     supply the suppression — English has no delta rare enough.")
 
 
 if __name__ == "__main__":
