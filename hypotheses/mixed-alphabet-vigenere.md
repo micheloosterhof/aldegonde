@@ -74,13 +74,41 @@ random ones either: the minimum over all 787,592 keyword candidates is
 this is not a fact about keywords — **no sampled alphabet, of any
 origin, supplies σ as a rotating disk**. A designed permutation does
 (the assignment floor is 0.0048, and TSP-annealed 29-cycles reach far
-below), but sampling never finds it. The cross-word table is simply more
-concentrated than the within-word one — English word-final letters pile
-on E/S/T/D/N and initials on T/A/S/W/H — so its diagonals resist being
-pushed low.
+below), but sampling never finds it.
 
-Net: the enumerable-key hypothesis fails on **σ**, not on `g`, which is a
-far sharper localisation than "no small key exists".
+**Why the two differ — quantitatively, not qualitatively.** Both steps
+need the same kind of low diagonal, and it is worth resisting the story
+that σ is a different sort of object:
+
+| | within-word (g) | cross-word (σ) |
+|---|---|---|
+| observed target | 0.0063 | 0.0079 |
+| assignment floor | ~0.0000 | 0.0048 |
+| target as % of the floor→random span | 18.2% | 10.3% |
+| target, sd below the random mean | 2.3 | 3.6 |
+
+σ's constraint is tighter by less than a factor of two in headroom —
+enough to turn 1.5% of sampled alphabets into 0%, because that is a
+Gaussian tail, but not a difference in kind. The cause is *not* that the
+cross-word table is more concentrated overall (it is less: cell
+concentration 5.620 vs 7.695). It is that the word-FINAL marginal is
+concentrated (IoC 2.675, against 1.763 for initials and 1.770 for
+within-word rows): the common finals E/S/T/D/N must each be paired with
+something, so the assignment cannot route everything into near-empty
+cells and the floor lifts from ~0 to 0.0048.
+
+**Register caveat, and it bites here harder than anywhere else.**
+Within-word bigrams are mostly morphology and travel between registers;
+word-final and word-initial distributions are driven by function words
+and sentence shape, and the LP's register is aphoristic and liturgical,
+unlike the prose the table is built from. The σ exclusion therefore
+rests on the more register-sensitive of the two tables. A register whose
+finals are less concentrated would lower the floor and could put 0.0079
+back inside reach of sampled alphabets.
+
+Net: the enumerable-key hypothesis currently fails on **σ** rather than
+`g` — a sharper localisation than "no small key exists", but one whose
+σ half is contingent on the cross-word table being representative.
 
 ## Keyword clumping is a real structural filter
 
