@@ -253,6 +253,30 @@ newlines are line wraps (words flow across them).
   are BOTH low-diagonal and small-key (keyword fills are structured but not
   low-diagonal; annealed permutations are low-diagonal but not small-key).
   See `g-from-5x5-grid.md`.
+- **Is `g` provably FIXED? No — but the alternatives cost key material
+  without buying anything (July 2026).** What the ciphertext actually
+  requires is local: the composition of the five steps spanning positions
+  j and j+5 *inside one word* must be the identity, and the step relation
+  must be rare-diagonal. Nothing tests whether the same `g` is in force
+  from word to word — the echo is within-word, the seam algebra cancels
+  `g` entirely (a seam doublet is `p_last = σ(p_first)`, no `g` in it),
+  and the base schedule is unobservable. A per-word family `g_w` would
+  be invisible to every battery run here, PROVIDED each `g_w` has order 5
+  and a rare diagonal. What excludes it is design economy rather than
+  statistics: selecting from that family per word is a schedule, i.e. key
+  material growing with the text, which slides the cipher toward an OTP
+  and destroys the small-fixed-key property that makes it readable at all.
+  The natural middle case — a CYCLIC SCHEDULE of five distinct steps
+  `a₁…a₅` with `a₁a₂a₃a₄a₅ = id`, applied in rotation (fixed `g` is the
+  special case `a_i = g`) — preserves the echo exactly at every phase
+  (cyclic rotations of an identity product are conjugates of the
+  identity), but simulation shows it neither helps nor is free: the d1-d8
+  profile matches the fixed-`g` model (d4 0.034 vs LP 0.041, d6 0.031 vs
+  LP 0.025 — the same two failures), and the product constraint leaves
+  only FOUR steps free, forcing the fifth as the inverse of the others'
+  product with an untuned diagonal (~0.013 in the run) that drags the
+  doublet rate up. Fixed `g` tunes one diagonal once and uses it five
+  times. So `g` is fixed by parsimony and tuning economy, not by proof.
 - **`σ`: one or a small keyed set?** Seam suppression proves the space step is
   a rare-diagonal permutation (not a random re-key) but does not prove there is
   only *one* `σ`. A small keyed family fits equally; the fully-deterministic
