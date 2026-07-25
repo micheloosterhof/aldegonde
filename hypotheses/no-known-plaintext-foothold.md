@@ -47,6 +47,33 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
   statistical crib rather than a known-plaintext foothold — it assumes
   only that the plaintext is ordinary English, not that any particular
   word sits at any particular place.
+- **Tested on planted keys — the objective is a superb VERIFIER and a
+  useless SEARCH GRADIENT** (July 2026,
+  `experiments/two_rune_gradient.py`; simulated walk ciphertext over
+  real English words in the LP length structure, known key):
+  - Given `g` and `σ`, plain transposition hill-climbing recovers
+    `base_0` **exactly, on the first restart** — the true key scores
+    −1319 against −5366 for a random base (a gap of 4,047 nats, 8.7 per
+    word), and all 79 planted THEs decrypt.
+  - Searching `base_0` and `g` jointly **fails completely** (best −4901,
+    `base_0` 0/29 correct), and all three jointly likewise.
+  - The reason is measured directly: define score\*(g, σ) as the score
+    after optimally fitting `base_0`. Then score\*(true) = −1296, while
+    **σ off by a single transposition gives −4968 and a random key gives
+    −4994** — one swap is already indistinguishable from noise. Same for
+    a single conjugation of `g` (−4967).
+  This quantifies the diffusion barrier exactly: `σ` and `g` enter the
+  base chain once per word, so a one-swap error is applied ~2,900 times
+  and every base past the first is destroyed. The landscape over
+  `(g, σ)` is a delta function — flat everywhere, spiked only at the
+  exact key. **Consequence for the attack architecture**: no
+  hill-climb, annealing or evolutionary search over `(g, σ)` can work,
+  with this or any comparable objective. `base_0` is effectively free
+  (a 29!-fold reduction, solved by the objective in seconds), so the
+  entire difficulty is concentrated in `(g, σ)`, which must come from
+  **enumeration over structurally constrained candidates** — making the
+  filter stack (`sigma-power-step.md`, `g-from-5x5-grid.md`) and the
+  small-key construction problem the whole game.
 - The deterministic-walk structure is the exploitable weakness instead: DJU-BEI
   gave one state-return constraint (`base_1477 = base_2926`, `[g] = −1449[σ]`);
   a systematic hunt for repeated ciphertext structures could add more equations

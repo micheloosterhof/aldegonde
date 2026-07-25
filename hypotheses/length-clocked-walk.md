@@ -329,6 +329,12 @@ newlines are line wraps (words flow across them).
   (`word-length-keystream-and-boundaries.md`) — so either the plaintext
   register is unusually short-word-poor, or the boundary question bears
   on it; the expected-hit range above already spans that uncertainty.
+  **Validated on planted keys** (`experiments/two_rune_gradient.py`):
+  the objective recovers `base_0` exactly and instantly once `g` and `σ`
+  are known, but the landscape over `(g, σ)` is a delta function — one
+  transposition in `σ` scores like a random key. So this is a verifier,
+  not a search gradient, and `base_0` should be treated as free rather
+  than as part of the key search. See `no-known-plaintext-foothold.md`.
 
 ## Scripts
 
