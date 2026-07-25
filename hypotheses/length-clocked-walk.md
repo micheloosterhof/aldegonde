@@ -94,13 +94,16 @@ refuted"):
   algebra isolates σ exactly: a cross-word doublet ⟺ p_last = σ(p_first),
   the `g` and length factors cancelling.
 
-**No closed form for the base.** Four words in, the base is the raw
-alternating word `base_0 g^{a₀} σ g^{a₁} σ g^{a₂} σ g^{a₃} σ`, and it
-does not simplify. It would if σ normalised ⟨g⟩ (σgσ⁻¹ = g^r), giving
-`base_w = base_0 ∘ g^(Σ aᵢ rⁱ mod 5) ∘ σ^w` — but that caps the state at
-5·ord(σ) ≤ 500 bases, below the ~600 the identity census requires, so
-normalising (and a fortiori commuting) σ is excluded. The walk is a
-genuine non-abelian product; see `sigma-power-step.md`.
+**No closed form for the base (probably).** Four words in, the base is
+the raw alternating word `base_0 g^{a₀} σ g^{a₁} σ g^{a₂} σ g^{a₃} σ`,
+which does not simplify. It would if σ normalised ⟨g⟩ (σgσ⁻¹ = g^r),
+giving `base_w = base_0 ∘ g^(Σ aᵢ rⁱ mod 5) ∘ σ^w` — but that caps the
+state at 5·ord(σ), and exhaustive enumeration of the normalizer bounds
+that at 300 bases for a twisted σ (comfortably under the ~600 the
+identity census wants) and 500 for a commuting one (marginal: the
+census figure is itself a 2σ bound, and at 3σ it falls to ~490). So the
+twisted cases are excluded and the commuting case is disfavoured rather
+than dead. See `sigma-power-step.md`.
 
 The `g^((L−1) mod 5)` factor in the transition completes the period-5 cycle at
 the boundary, so the letter-clock effectively runs continuously across the

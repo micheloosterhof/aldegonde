@@ -117,25 +117,37 @@ polyalphabetic.
       base_w = base_0 ∘ g^(Σᵢ aᵢ rⁱ mod 5) ∘ σ^w
 
   — a polynomial in `r` evaluated on the public word-length sequence,
-  times a power of σ. But that form caps the state at the pair
+  times a power of σ. That form caps the state at the pair
   (exponent mod 5, w mod ord σ), i.e. at most **5·ord(σ)** distinct
-  bases, and the maximum order of a normalising σ on 29 points is
-  **100** (the commuting case: a 5-cycle of g's blocks with nonzero
-  shift-sum gives order 25 on the 25 moved runes, times a 4-cycle on the
-  4 fixed runes, lcm = 100; the genuinely twisted cases r = 2,3,4 cap at
-  60). That allows at most 500 bases against the ~600 the census
-  requires — so normalising σ, including the commuting case, is
-  excluded. (At the census bound's own ~2σ strength, and inheriting its
-  register assumption.) This supersedes the earlier note here that
-  commuting σ was unconstrained: the centralizer is indeed large
-  (~9×10⁶ elements) but its *element orders* are not, and that is what
-  the base count depends on.
+  bases. Exhaustive enumeration of the normalizer (all r, all block
+  permutations, all offsets, all τ on the 4 fixed runes) gives the
+  achievable orders:
 
-  Consequence: the base sequence is a genuine non-abelian alternating
-  product with no algebraic shortcut — which is precisely why it cannot
-  be summarised by a small state, and why a one-transposition error in σ
-  propagates catastrophically down the chain
-  (`no-known-plaintext-foothold.md`, constraint 3 in `README.md`).
+  | twist | max order | max bases |
+  |---|---|---|
+  | r = 2, 3, 4 (genuinely twisted) | 60 | 300 |
+  | r = 1 (commuting) | 100 | 500 |
+
+  So the twisted cases are comfortably excluded against the ~600 the
+  census wants, while **the commuting case is marginal, not excluded**:
+  500 against a requirement whose own derivation is a 2σ bound (excess
+  identity pairs 6.3 ± 3.3 against ~8,000 register-implied repeated
+  pairs). Read at 3σ the requirement falls to ~490, and commuting σ
+  survives. State it as *disfavoured* — the honest reading is that
+  normalising σ needs the base count to sit near the bottom of its
+  plausible range.
+
+  This still supersedes the earlier note here that commuting σ was
+  unconstrained: the centralizer is large (~9×10⁶ elements) but its
+  *element orders* are not, and the base count depends on the order.
+
+  Consequence, if the base count really is ~600: the base sequence is a
+  genuine non-abelian alternating product with no algebraic shortcut —
+  which would explain why it cannot be summarised by a small state, and
+  why a one-transposition error in σ propagates catastrophically down
+  the chain (`no-known-plaintext-foothold.md`, constraint 3 in
+  `README.md`). Note the gradient result does not depend on this: it was
+  measured directly on planted keys with a random mixed σ.
 
 - **σ cannot be built from g's own grid.** As a search filter the
   non-normalising requirement is negligible (the normalizer is ~3.6×10⁷
