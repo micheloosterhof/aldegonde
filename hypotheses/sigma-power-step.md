@@ -178,6 +178,19 @@ polyalphabetic.
 - **Not excluded**: σ of order 5, σ a conjugate h∘g∘h⁻¹, larger
   compositions g^k∘τ with τ moving enough points to break the small
   orbit.
+- **σ can be a physical rotating disk** (July 2026). A mixed-alphabet
+  29-position disk turned a fixed amount per word — i.e. σ as a
+  conjugated shift `K_σ ∘ (add δ) ∘ K_σ⁻¹` — satisfies every constraint
+  in this file: order 29, even parity (a 29-cycle is even), does not
+  normalise ⟨g⟩, and simulated over the real length sequence it yields
+  **2,928 distinct bases**, full diversity against the ~600 required.
+  That is a real simplification of σ's description: a mixed alphabet
+  plus a turn count, rather than an arbitrary 29-permutation. But the
+  disk's alphabet cannot be keyword-derived — across 12 keywords the
+  achievable cross-word diagonal floors at 0.0139-0.0237 against the
+  observed 0.0079, so **0 of 12 can reach it** (the analogue of the
+  keyword-grid failure for `g`). The disk must be wired against the
+  cross-word digraph table.
 
 ## Predictions
 

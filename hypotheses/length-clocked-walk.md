@@ -146,6 +146,27 @@ newlines are line wraps (words flow across them).
   Enigma/Hebern out; Hagelin/Lorenz are additive (killed by the algebra battery).
   The model is rotor-*structured* (order-5 letter rotor + per-space rotor) but
   not a historical machine — a pencil-and-paper progressive substitution.
+  **Refinement (July 2026) — a TWO-WHEEL device does work, provided the
+  letter wheel has 5 positions, not 29.** The obstruction above is
+  specific: anything built from rotations of 29-position wheels has
+  period dividing 29 (prime), hence never 5. But nothing forbids a
+  5-state letter wheel — five pre-wired alphabets `base ∘ g⁰…g⁴`
+  selected in rotation, mechanically "a wheel with five turns". And the
+  space step CAN be an ordinary rotating 29-position mixed disk:
+  simulated with the real length sequence, a mixed-alphabet disk turned
+  a fixed amount per word gives **2,928 distinct bases** (full
+  diversity, far above the ~600 the census wants), has order 29, is
+  even-parity as the DJU-BEI condition requires, and does not normalise
+  ⟨g⟩. So the architecture is buildable as *5-position letter selector +
+  29-position space disk*, which is a considerably more concrete device
+  than "two arbitrary mixed permutations".
+  **What the wheels cannot be is keyword-set.** Keyword grids for `g`
+  floor at 0.0101-0.0197 against the required 0.0063
+  (`mixed-alphabet-vigenere.md`), and keyword disks for `σ` floor at
+  0.0139-0.0237 against the required 0.0079 — 0 of 12 keywords tried,
+  including CICADA and LIBERPRIMUS, can reach it. Both wheels must be
+  wired against the digraph table. This is the fourth independent
+  instance of that rule (see README constraint 1).
 - **No algebraic structure anywhere.** Delta, sum, ratio, product, and all 28
   affine multipliers — within-word AND across the seam — are null beyond the
   coincidence. So `g` and `σ` are general mixed permutations, not
