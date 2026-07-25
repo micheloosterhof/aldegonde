@@ -70,8 +70,14 @@ The solved pages (first 2,797 runes of the master transcription, mostly
 monoalphabetic, which preserves word repetition) contain **445 repeated
 identical word pairs of length >= 3 among only 698 words** (random
 expectation: 0.6). The top word repeats 13 times. Scaled to the cipher's
-corpus size (x17.9), LP-style plaintext implies roughly **8,000 repeated
-word pairs**. Any of the per-word ciphers above would transport essentially
+corpus size (x17.9, quadratic in word count), LP-style plaintext implies
+roughly **8,000 repeated word pairs**. **Caveat, load-bearing
+elsewhere**: that 698-word sample is short and header-heavy ("SOME
+WISDOM" x2, "AN INSTRUCTIAN" x3), repeats grow sub-quadratically in real
+text, and no uncertainty is attached — treat 8,000 as an
+order-of-magnitude figure. It is the numerator of the >=600-distinct-bases
+bound in `sigma-power-step.md`, so error there propagates to the
+normalising-sigma and grid-companion exclusions. Any of the per-word ciphers above would transport essentially
 all of them into its class. Every class sits within ~2.2 sigma of the null.
 The kill margin is two to three orders of magnitude.
 

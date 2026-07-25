@@ -25,7 +25,8 @@ A period-p key would spike the p-column nIoC toward the plaintext value
 
 Rules out every fixed-period polyalphabetic cipher (Vigenere/Beaufort with a
 repeating key) regardless of key length up to 40, and combined with the flat
-kappa spectrum (`kappa-spectrum.md`), up to thousands. The key, if any, is
+kappa spectrum (`kappa-spectrum.md`, skips 2-60) up to 60 — and, via the
+lag-1..11,956 scan in `cryptodiagnostics-page0-58.md`, to the corpus length. The key, if any, is
 aperiodic.
 
 ## Consequences

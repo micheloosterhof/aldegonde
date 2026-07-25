@@ -188,9 +188,13 @@ polyalphabetic.
   plus a turn count, rather than an arbitrary 29-permutation. But the
   disk's alphabet cannot be keyword-derived — across 12 keywords the
   achievable cross-word diagonal floors at 0.0139-0.0237 against the
-  observed 0.0079, so **0 of 12 can reach it** (the analogue of the
-  keyword-grid failure for `g`). The disk must be wired against the
-  cross-word digraph table.
+  observed 0.0079, so 0 of 12 reach it. **But that is a statement about
+  the sample size, not about keywords**: twelve RANDOM alphabets also
+  fail (median best-of-12 0.0160; 0 of 400 such samples reach 0.0079),
+  and the keywords actually sit at the 12th percentile of that
+  distribution — better than typical. The honest claim is that twelve
+  draws of any kind do not reach the target; whether a large keyword
+  list contains an in-band disk is untested.
 
 ## Predictions
 

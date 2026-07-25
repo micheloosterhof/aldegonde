@@ -167,7 +167,8 @@ one fill already yield ~2 x 10⁵ in-band `g` candidates; across ~10⁴
 plausible keywords and three fills that is ~10⁹-10¹⁰ for `g` alone,
 before `σ` — which has no construction proposal at all and cannot be
 hill-climbed (`no-known-plaintext-foothold.md`: the (g, σ) landscape is
-a delta function). The diagonal band is simply too weak a filter. What
+prefix-dependent and unclimbable from either end). The diagonal band is
+simply too weak a filter. What
 the attack needs is either much stronger *joint* constraints on (g, σ)
 — the g²-near-background condition, the positional-profile condition,
 the σ cross-word diagonal, parity, and the DJU-BEI relation applied

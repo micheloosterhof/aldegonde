@@ -162,4 +162,6 @@ structure by 3.6 sigma and loses 6.4 nats to a one-parameter copy model.
 Together with the stream-level value-literality of the {1,4} pairing,
 every additive reading of the lag-5 phenomenon is now dead; what remains
 is literal, word-scoped copying (nulls, back-references, or composition
-stutters).
+stutters) — OR, equally live and not excluded here, the walk's
+mixed-alphabet period-5 echo; see the reconciliation note at the head of
+this file.

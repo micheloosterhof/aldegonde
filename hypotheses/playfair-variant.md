@@ -40,6 +40,15 @@ rune) would be reduced but not zero, potentially matching the ~0.66% rate.
 
 None needed. The bigram uniformity test is sufficient.
 
+## Scope caveat (July 2026)
+
+The bigram-uniformity argument pools ALL adjacencies. Playfair encrypts
+non-overlapping pairs, so its signature lives in within-pair (even-offset)
+bigrams and is diluted roughly 2x by pooling with cross-pair bigrams; the
+parity classes have never been separated. The seriated variant named in
+the title is not addressed at all — seriation changes the pairing
+structure entirely. The doublet argument is unaffected.
+
 ## Verdict
 
 Disproved. The perfectly uniform off-diagonal bigram distribution is

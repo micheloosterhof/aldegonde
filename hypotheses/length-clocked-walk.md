@@ -131,9 +131,14 @@ newlines are line wraps (words flow across them).
   no "returned-fraction" mechanism — mixed cycle lengths in g, the one
   classical construction whose correlation rises with distance — can push
   a cell BELOW background; only an inherited tuned relation (g⁶ = g)
-  does. The sub-background d6 is positive evidence for order-5 with a
-  tuned diagonal, not merely a consistency check.
-- **Empty d2/d3/d4 (~chance).** `g²/g³/g⁴` diagonals sit at chance.
+  does. So d6 is a real structural exclusion of the entire
+  returned-fraction family — but NOT a confirmation of this one: at the
+  LP-implied tuning depth no model reproduces its *depth*, pure order-5
+  included (simulated d6 = 0.0397 vs LP 0.0245, `census_corrected.py`).
+  It discriminates against a family without selecting a member.
+- **d2/d3 at chance; d4 is NOT.** `g²/g³` diagonals sit at chance. d4
+  was originally binned with them but is +1.85σ high and is one of the
+  model's two open cells (see Evidence against).
 - **No periodicity.** No Kasiski, no periodic-IoC (periods ≤600), no period in
   absolute rune position (k≤40) or word index (k≤49, incl divisors of 1449).
   Consistent: the walk is clocked by aperiodic word lengths.
@@ -163,10 +168,13 @@ newlines are line wraps (words flow across them).
   **What the wheels cannot be is keyword-set.** Keyword grids for `g`
   floor at 0.0101-0.0197 against the required 0.0063
   (`mixed-alphabet-vigenere.md`), and keyword disks for `σ` floor at
-  0.0139-0.0237 against the required 0.0079 — 0 of 12 keywords tried,
-  including CICADA and LIBERPRIMUS, can reach it. Both wheels must be
-  wired against the digraph table. This is the fourth independent
-  instance of that rule (see README constraint 1).
+  0.0139-0.0237 against the required 0.0079 across the 12 keywords
+  tried. **Scope caveat**: twelve draws is a sample, not a family test —
+  twelve RANDOM alphabets floor the same way (median best-of-12 0.0160
+  on the cross-word table, 0.0084 on the within-word table, where 12.8%
+  of samples reach the g target). So these tests bound what 12 draws
+  achieve, not what keywords achieve; the keyword families remain
+  untested at scale. See `mixed-alphabet-vigenere.md`.
 - **No algebraic structure anywhere.** Delta, sum, ratio, product, and all 28
   affine multipliers — within-word AND across the seam — are null beyond the
   coincidence. So `g` and `σ` are general mixed permutations, not
@@ -403,8 +411,9 @@ newlines are line wraps (words flow across them).
   on it; the expected-hit range above already spans that uncertainty.
   **Validated on planted keys** (`experiments/two_rune_gradient.py`):
   the objective recovers `base_0` exactly and instantly once `g` and `σ`
-  are known, but the landscape over `(g, σ)` is a delta function — one
-  transposition in `σ` scores like a random key. So this is a verifier,
+  are known, but the landscape over `(g, σ)` fails from both ends —
+  short prefixes keep a wide basin but cannot pin a 29-permutation,
+  long ones discriminate but the basin collapses. So this is a verifier,
   not a search gradient, and `base_0` should be treated as free rather
   than as part of the key search. See `no-known-plaintext-foothold.md`.
 
@@ -443,6 +452,7 @@ cipher is breakable in principle — but the barrier is recovering two mixed
 tried so far is null. The model does not account for the d4 frame face or
 the rune-S echo; either could falsify or refine it. The realistic paths to
 plaintext are a length-clocked hillclimb on `(base_0, g, σ)` or a
-contiguous crib — noting keyword-grid key fills are already excluded — and
+contiguous crib — noting the keyword-grid exclusion was retracted, see
+above — and
 a short guessed phrase alone cannot verify. Everything here is statistical
 shape, not a confirmed decryption.

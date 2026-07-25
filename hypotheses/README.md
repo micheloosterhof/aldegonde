@@ -158,20 +158,20 @@ attack on it can do (derivations and simulations in
    (`c[i]=c[i-1] <=> p[i-1]=g(p[i])`, achievable range 0.13%-15%) — the
    mechanism of `length-clocked-walk.md` / `per-word-related-alphabets.md`.
    Affine relations cannot get below 1.25%, so the escape requires
-   non-arithmetic mixed permutations. **Sharpened (July 2026): the
-   relation must be DESIGNED against the digraph table, not merely
-   mixed.** Three independent floor computations agree — a plain
-   5-letter Vigenere step floors at 1.19% (`length-clocked-walk.md`),
-   every arithmetic family for `σ` floors at 1.22%-2.11% on the
-   cross-word table (`sigma-power-step.md`), and a keyword-derived
-   Quagmire (conjugated-shift) step floors at 1.01%-1.97% across every
-   keyword tried (`mixed-alphabet-vigenere.md`) — all against the
-   observed 0.63%/0.79%. Keywords, shifts, affine maps and
-   keyword-conjugated shifts all leave the relation near the language's
-   own bigram statistics. Only a permutation routed rune-by-rune against
-   rare digraphs reaches the observed rates, which means there is no
-   small human-memorable key here and the designer worked from digraph
-   frequencies. (The once-equivalent hold variant —
+   non-arithmetic mixed permutations. **Sharpened (July 2026), with a scope caveat.**
+   Two EXHAUSTIVE floor computations show the relation cannot be
+   arithmetic: a plain 5-letter Vigenere step floors at 1.19% over all
+   29 shifts (`length-clocked-walk.md`), and every arithmetic family for
+   `σ` floors at 1.22%-2.11% on the cross-word table, over all family
+   members (`sigma-power-step.md`) — against the observed 0.63%/0.79%.
+   Two further tests (keyword Quagmire for `g`, keyword disks for `σ`)
+   pointed the same way but are 12-draw SAMPLES, not family exhaustions:
+   twelve random alphabets floor the same way, so they bound the sample
+   size rather than keywords, and add no independent weight
+   (`mixed-alphabet-vigenere.md`). Net: arithmetic relations are
+   excluded outright; whether a keyword-derived mixed alphabet can reach
+   the observed rates is UNTESTED at scale, and is the most attackable
+   open question because such a key would be enumerable. (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext
    doubles would be start-forbidden and end-heavy, and the observed

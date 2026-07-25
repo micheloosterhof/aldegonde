@@ -70,7 +70,7 @@ rate 3.6-4.3% (observed: 0.66%), and 20+ triplets (observed: 0). Notably,
 period-5 bifid DOES couple lag-5 positions strongly (T5 z ~ +7), but with
 the wrong shape: it elevates all separations d=1..4 and the monographic
 lag-5 kappa (1.45 vs observed 1.07), unlike the selective d=1/d=4 pattern in
-`lag5-digraph-structure.md`. The doublet and IoC failures are structural for
+`lag5-digraph-structure.md`. The IoC and triplet failures are structural for
 fractionation (it has no mechanism to avoid output doublets and preserves
 coordinate-level language statistics), so other periods and per-word
 variants are very unlikely to survive, though not individually simulated.

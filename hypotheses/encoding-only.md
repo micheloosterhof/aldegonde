@@ -30,7 +30,11 @@ certain letter pairs become single runes.
 
 - **Insufficient doublet suppression**: Even accounting for all digraph
   compression (TH to thorn, NG to ing-rune, etc.), the natural English doublet
-  rate in runeglish is reduced by at most ~2x. The observed suppression is
+  rate in runeglish is reduced by at most ~2x (asserted, not measured; the
+measured runeglish within-word plaintext doublet rate is 0.0357 on prose
+and 0.0323 on the mortlach corpus, so the true gap to the observed 0.0066
+is ~5x and this argument is stronger than stated). The observed
+suppression is
   5.19x (clean corpus, 86/12,956). Encoding alone cannot bridge this gap.
 - **Near-perfect uniformity**: Runeglish encoding of English text does not
   produce a uniform distribution. Some runes (corresponding to common letters)

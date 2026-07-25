@@ -36,6 +36,12 @@ test.
 
 ## Evidence against
 
+- **Simulated and measured** (`experiments/mechanism_fingerprint.py`):
+  `C = P + S[position-in-word]`, one additive shift per position, gives
+  nIoC 1.12-1.14 (LP 1.000) and doublets 3.3-3.7% (LP 0.66%). This is the
+  actual disproof and it covers the ADDITIVE family only.
+- The stated discriminating test (IOC per position-within-word group) has
+  still never been run
 - No specific statistical evidence points to this mechanism
 - Adds complexity without clear motivation from the ciphertext properties
 

@@ -8,8 +8,8 @@ type: observation
 The within-word distance-5 coincidence excess
 (`within-word-d5-coincidence.md`) is **not rune-agnostic**. One rune, **S**
 (ᛋ, Sigel), echoes at distance 5 inside words far more than any other: 11
-observed against a null of 1.75 (Poisson p = 2.4e-6, Bonferroni-clean across
-all 29 runes). The effect is **specific to distance 5** (d = 1..4, 6 are
+observed against a null of 1.75 (Poisson p = 2.4e-6; clears Bonferroni over
+the full search, ~29 runes x >=7 distances = 203 cells, not merely 29). The effect is **specific to distance 5** (d = 1..4, 6 are
 normal or suppressed) and **within-word only** (cross-word S at d=5 is at
 chance). S alone accounts for ~22% of the entire within-word d=5 excess, about
 twice the next rune's contribution.

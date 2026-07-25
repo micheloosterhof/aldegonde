@@ -51,8 +51,9 @@ surrogates, real word structure overlaid). Every statistic is flat:
 
 Notes: the antisymmetry row reads p = 0.23 under the analytic chi-square
 (≈406 df, `deep_scan.py`); the +1.7 against surrogates reflects a slight
-symmetrizing bias in the `doublet_shuffle` placement algorithm, not the
-data. The null's own successor-split mean (1.023, not 1.000) is the
+symmetrizing bias in the `doublet_shuffle` placement algorithm rather than
+the data — asserted, not tested; the analytic chi-square is a different
+test and does not discriminate the two. The null's own successor-split mean (1.023, not 1.000) is the
 doublet artifact baseline — the observed 1.026 depth-1 split sits on it,
 confirming the documented reading. The top cell (ᚷᛚ = 30 vs 15.4
 expected, z = +3.5) is exactly the extreme 812 cells produce by chance

@@ -67,11 +67,13 @@ return, g/sigma doublet diagonals, quadgram `base_0` solve —
 and `experiments/enumerate_keys.py` drives structured keyword-grid `g` x
 keyword `sigma` through it. First pass (24 keywords x 2 orientations x
 24 sigmas): **0 of 480 parity-valid pairs achieve a state return, and the
-best keyword grid-`g` diagonal is 0.023 vs the required 0.0063** — keyword
-fills are excluded on the doublet diagonal alone, before the DJU-BEI
-filter even applies. Consistent with this note's thesis: the constraint
-is real and usable, but the structured key set that satisfies it is not
-the naive keyword family. See `g-from-5x5-grid.md`.
+best keyword grid-`g` diagonal in that scan was 0.023 vs the required
+0.0063**. **The diagonal half is RETRACTED** (July 2026): that scan held
+the four fixed runes at the keyword order's last four and rotated every
+column by one; freeing those two free parameters lets every ordering
+reach the band. The 0/480 state-return result inherits the same defect —
+it covered the defaults-only slice, a vanishing fraction of the family —
+and must be re-run before it means anything. See `g-from-5x5-grid.md`.
 
 ## Related
 

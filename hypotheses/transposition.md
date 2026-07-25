@@ -44,5 +44,5 @@ None needed. The statistical properties rule this out directly.
 ## Verdict
 
 Disproved. The combination of preserved word boundaries, flat distribution, and
-the adjacency-only kappa anomaly eliminates all transposition-based
+the adjacency-only kappa anomaly eliminates pure transposition-based
 explanations.

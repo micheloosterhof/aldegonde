@@ -15,10 +15,8 @@ enumerate.
 
 ## Status
 
-**Status**: disproved as proposed — a keyword-derived `K` floors at
-0.0101-0.0197 on the doublet rate against the observed 0.0063. A freely
-designed `K` clears the rate but is a full 29-permutation, forfeiting
-the small enumerable key that was the point.
+**Status**: unresolved. An earlier "disproved" verdict here rested on a
+12-keyword sample and does not survive its own null — see below.
 
 ## Mechanism
 
@@ -37,14 +35,14 @@ where `s_j` is the running sum of offsets, periodic mod 5:
   (conjugates of a nonzero shift), which are fixed-point-free — the
   source of this model's one distinguishing prediction, below.
 
-## Why it fails
+## The keyword test, and why it does NOT settle the question
 
 A schedule's doublet rate is a weighted average of its offsets' costs,
-so it can never beat the cheapest offset available under a given `K`.
-That cheapest offset is therefore a hard floor per keyword, and every
-keyword tested floors above the observation
-(`experiments/quagmire_walk_sim.py`, offsets targeted at the observed
-rate rather than at the floor):
+so it can never beat the cheapest offset available under a given `K` —
+that cheapest offset is a hard floor per keyword. Twelve keywords were
+tested (`experiments/quagmire_walk_sim.py`, offsets targeted at the
+observed rate rather than at the floor) and all floored above the
+observation:
 
 | keyword | cheapest offset cost | vs observed 0.0063 |
 |---|---|---|
@@ -58,17 +56,30 @@ rate rather than at the floor):
 | CICADA, SHADOW | 0.0194-0.0197 | 3.1x |
 | **freely designed K (not a keyword)** | **0.00010** | 0.02x |
 
-End to end the best case (INSTAR) simulates d1 = 0.0215 against LP's
-0.0063, with d6 = 0.0395 (no dip) and 3.3 triplets (LP has 0); an
-order-5 `g` tuned identically on the same harness gives d1 = 0.0065,
-d6 = 0.0310, 0.5 triplets — so the failure is the model's, not the
-simulation's.
+**But twelve draws is not a family test.** Scoring 400 trials of
+*twelve random alphabets* on the same table: the best-of-12 has median
+floor **0.0084**, 5th percentile 0.0054, and **12.8% of such samples
+contain an alphabet reaching 0.0063**. The keyword best-of-12 (0.0101)
+sits at the **83rd percentile** of that distribution — slightly
+unlucky, comfortably inside noise. Keyword alphabets are therefore
+statistically indistinguishable from random draws on this measure, and
+the honest reading of the table above is "twelve draws is too few", not
+"keywords are not mixed enough". A larger keyword list would be
+expected to contain in-band members. This is the same
+sample-size-as-property error that the grid-diagonal retraction in
+`g-from-5x5-grid.md` corrected, in a new costume.
 
-The escape — designing `K` freely against the bigram table — does reach
-0.0001, but such a `K` is an arbitrary 29-permutation: no keyword, no
-small key, and no enumeration advantage over the general mixed `g` it
-was meant to replace. Nothing then distinguishes it favourably, and it
-still carries the unfavourable prediction below.
+The end-to-end run does not carry the exclusion either: it used INSTAR
+— a single draw, and not the best available — giving d1 = 0.0215
+against LP's 0.0063, no d6 dip, and 3.3 triplets, where an order-5 `g`
+tuned identically gives 0.0065 / 0.0310 / 0.5. That shows *that* K
+fails, not that keyword K's fail.
+
+What remains true: a `K` reaching the observed rate exists (freely
+designed, 0.0001 achievable), and the open question is whether the
+in-band members of the keyword family also satisfy everything else —
+the d6 dip, the triplet count, the seam, and the no-leak prediction
+below. That test has not been run.
 
 ## The distinguishing prediction (unfavourable)
 
@@ -84,17 +95,21 @@ though φ4 is the corpus's standing anomalous cell
 
 ## What this establishes
 
-The negative result generalises, and is the durable part. Together with
-the plain Vigenere floor (0.0119) and the arithmetic-σ floors
-(0.0122-0.0211, `sigma-power-step.md`), this is the third independent
-demonstration that **no key that is merely "mixed" can produce the
-observed doublet suppression**. Keywords, shifts, affine maps and
-keyword-conjugated shifts all leave the relation near the language's own
-bigram statistics. Reaching 0.0063 requires a permutation deliberately
-routed against the digraph table, rune by rune — which says something
-about the author: whoever built this had runeglish digraph frequencies
-in front of them, and it explains why no small, human-memorable key has
-ever fit.
+Less than first claimed. The two solid demonstrations that a merely
+"mixed" key cannot supply the suppression are **exhaustive over their
+families**: the plain Vigenere shift floor (0.0119, all 29 shifts) and
+the arithmetic-σ floors (0.0122-0.0211, all members of each family) —
+see `sigma-power-step.md`. The keyword tests here and for the σ-disk
+are 12-draw samples, not family exhaustions, and add no independent
+weight: on the within-word table keywords sit at the 83rd percentile of
+random best-of-12, and on the cross-word table at the 12th. Where a
+12-draw sample fails to reach a target, that is a statement about the
+sample size.
+
+The underlying rule may well hold — a freely designed `K` *is* needed
+to reach 0.0001, and nothing keyword-shaped has yet been shown to work
+— but it currently rests on two exhaustive demonstrations, not four,
+and the keyword families remain untested at scale.
 
 ## Scripts
 
@@ -116,10 +131,18 @@ ever fit.
 
 ## Verdict
 
-Disproved in the form that mattered. The appeal was a keyword-sized,
-enumerable key; keyword alphabets are not mixed enough to suppress
-doublets, failing by 1.6x-3.1x across every keyword tried including
-Cicada's own vocabulary. The version that clears the rate needs a
-designed 29-permutation and so inherits every difficulty of the model it
-was meant to simplify, while additionally forbidding the d2/d3/d4 leak
-that the data weakly favour.
+Unresolved, and the most attackable live proposal on the books. Twelve
+keyword alphabets all floored above the required doublet rate, but
+twelve *random* alphabets do the same 87% of the time, so that test
+excludes nothing — it measures the sample size. The mechanism itself
+remains consistent: it reproduces the d5 echo and the d6 dip by the
+same algebra as `g⁵ = id`, a `K` reaching the observed rate certainly
+exists, and if an in-band keyword K also passes the rest of the battery
+the key would be word-sized and enumerable, which no other formulation
+offers. Against it stands one clean prediction — conjugated shifts are
+fixed-point-free, so d2/d3/d4 must sit exactly at background, and the
+measured φ3 = 0.17 ± 0.14 and φ4 = 0.38 ± 0.19 lean the other way.
+
+Next test: enumerate a real keyword list (10³-10⁴ words), keep the
+in-band members, and run those through the full battery — the
+experiment the 12-keyword sample was mistaken for.

@@ -33,6 +33,10 @@ never been run per length class:
 | 5-7 | 21 / 3816 | 0.0055 ± 0.0012 |
 | 8+ | 19 / 2753 | 0.0069 ± 0.0016 |
 
+Tested rather than eyeballed: chi-square homogeneity across the three
+classes gives chi2 = 0.61 on 2 df, p = 0.74 — consistent with a single
+rate.
+
 **Distance profile (long words only)** reproduces the corpus profile with
 no new features: d5 z = +3.7, d4 z = +2.0, d6 z = −1.9, and d1, d2, d3,
 d7, d8, d9, d10 all within |z| ≤ 1.2.

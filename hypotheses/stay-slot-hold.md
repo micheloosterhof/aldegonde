@@ -111,6 +111,11 @@ featureless placement, and 63 doublets carry no handle. Placement is exhausted.
   almost never open a word (prose runeglish: start share 0.3%, rate 0.04%;
   the author's own solved register: 0 of 503 start adjacencies). A keyed
   hold does not rescue this — uniform thinning preserves the profile. The
+  (This tests the PURE-hold reading, in which essentially all doublets
+  are hold-derived — which is what the parameter-free rate match
+  requires. A hold-plus-tuned-advance hybrid would predict an
+  intermediate profile and is not excluded here, but it forfeits that
+  rate match, the hypothesis's whole motivation.)
   LP doublets instead sit flat on the adjacency baseline: start 11 /
   middle 33 / end 18 / whole-word 1, G = 3.6 (p = 0.30) against flat,
   G = 83 (p < 1e-17) against the prose double profile, G = inf against

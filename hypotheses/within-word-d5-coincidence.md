@@ -33,7 +33,10 @@ All numbers are on the **clean corpus** (sections 0-9 of `data/page0-58.txt`,
 boundaries; `/` and newlines are line wraps.
 
 **Headline**: pairs (k, k+5) within a word: **102 matches / 2,073 pairs =
-4.92%** vs 1/29 = 3.45%. Exact binomial P = 3.1e-4.
+4.92%** vs 1/29 = 3.45%. Exact binomial P = 3.1e-4 — but that uniform
+baseline is looser than it looks: it ignores the corpus's +1.5 sigma
+global lag-5 kappa. The permutation null absorbs it and sits at
+76.5 +/- 7.9 (3.69%), so quote 102 vs 76.5, p = 0.0014, as the headline.
 
 **Control**: pairs (k, k+5) straddling a word boundary: 377/10,878 = 3.466%
 — exactly random (P = 0.47). Global kappa at skip 5 is normal (z = +1.52).
