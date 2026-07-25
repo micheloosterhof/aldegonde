@@ -270,7 +270,11 @@ newlines are line wraps (words flow across them).
   one; freeing those two parameters lets every ordering and fill tested
   reach the required band (~2x10⁵ in-band candidates from a single
   keyword), so the state-return result must be re-run over the corrected
-  family. **Open problem, now inverted**: the structured family is not
+  family. The retraction is of the letter, not the spirit: a grid-derived
+  `g` has the diagonal distribution of a random order-5 permutation
+  (mean 0.0345 vs 0.0346; 0.17% vs 0.07% at or below 0.0063), so the
+  construction supplies no low diagonal — the family merely contains
+  in-band members at a ~1-in-600 rate because it is large. **Open problem, now inverted**: the structured family is not
   too poor to supply `g`, it is too RICH to enumerate — ~10⁹-10¹⁰ in-band
   `g` candidates across plausible keywords and fills, before `σ`, which
   has no construction proposal and cannot be hill-climbed. The diagonal

@@ -130,8 +130,22 @@ both sharpening this note:
    give DIUINITY 0.0469 / CIRCUMFERENCE 0.0418 / PRIMES 0.0218 /
    WISDOM 0.0274, but one keyword with free fixed-runes and rotations
    yields **~2 x 10⁵ candidates inside the 0.004-0.009 band**. Keyword
-   grid fills are therefore NOT excluded, and the "keyword order cannot
-   supply a low diagonal" reading was an artifact of the defaults.
+   grid fills are therefore not excluded as a *family*.
+
+   **But the structure supplies nothing** (same script, distribution
+   check — the minimisation above searches ~24M variants per
+   ordering/fill, and the minimum of any large permutation family is
+   near zero, so reaching the band is not by itself evidence that the
+   construction helps). Comparing 6,000 random members of the DIUINITY
+   grid family against 6,000 random order-5 permutations: mean diagonal
+   **0.0345 vs 0.0346**, sd 0.0149 vs 0.0121, fraction at or below
+   0.0063 **0.17% vs 0.07%** (KS D = 0.077, p < 0.001 — marginally
+   heavier tails, identical centre). A grid-derived `g` is
+   statistically an ordinary order-5 permutation. So the ORIGINAL
+   claim's spirit stands — keyword order does not *supply* a low
+   diagonal — while its letter (that the family cannot reach the band)
+   was an artifact of the defaults. Reaching the band inside the family
+   costs a ~1-in-600 search, which is a search, not a construction.
 2. **No state return.** Of 480 (g, sigma) pairs passing the parity
    necessary condition, **zero** produce a DJU-BEI full state return
    (`M_1477 = M_2926`). Under the full-return reading, the true key is not
@@ -141,10 +155,14 @@ The enumeration harness is reusable: better `g` families (annealed
 low-diagonal grids, gematria/prime-ordered fills) drop straight into it.
 
 **The open problem, restated after the retraction.** It is not "can a
-structured construction be low-diagonal" — it can, easily, and the
-DJU-BEI state-return result above must be re-run over the corrected
-(much larger) family before it means anything. The problem is the
-opposite one: the family is now too RICH to enumerate. One keyword and
+structured construction be low-diagonal" — the family contains such
+members (about 1 in 600 of them), and the DJU-BEI state-return result
+above must be re-run over the corrected family before it means
+anything. But the family reaches the band by size, not by design: its
+diagonal distribution is that of random order-5 permutations, so the
+grid parameterisation offers no search advantage over annealing. The
+problem is the opposite of the one recorded: the family is too RICH to
+enumerate. One keyword and
 one fill already yield ~2 x 10⁵ in-band `g` candidates; across ~10⁴
 plausible keywords and three fills that is ~10⁹-10¹⁰ for `g` alone,
 before `σ` — which has no construction proposal at all and cannot be
