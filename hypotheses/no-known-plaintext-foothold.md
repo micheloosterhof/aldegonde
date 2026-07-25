@@ -37,6 +37,16 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
 - **No algebraic known-plaintext recovery** of `(base_0, g, σ)`. The blind
   hillclimb is the only direct path, and it fights the diffusion barrier (three
   globally-coupled permutations, no fitness gradient until nearly solved).
+  **The gradient problem has a partial answer**: score candidate keys on
+  the 465 two-rune words instead of on n-gram fitness. In runeglish THE
+  is exactly `ᚦᛖ`, and the 2-rune word class is dominated by eight
+  function words (69% of tokens), so a correct key yields ~75-108 `ᚦᛖ`
+  decryptions where chance gives 0.6, and the register log-likelihood
+  over the whole class supplies the partial credit a pure count cannot.
+  See the Predictions section of `length-clocked-walk.md`. This is a
+  statistical crib rather than a known-plaintext foothold — it assumes
+  only that the plaintext is ordinary English, not that any particular
+  word sits at any particular place.
 - The deterministic-walk structure is the exploitable weakness instead: DJU-BEI
   gave one state-return constraint (`base_1477 = base_2926`, `[g] = −1449[σ]`);
   a systematic hunt for repeated ciphertext structures could add more equations

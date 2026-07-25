@@ -307,6 +307,28 @@ newlines are line wraps (words flow across them).
 - Any candidate key must satisfy the DJU-BEI abelianization constraint above.
 - A single guessed word (e.g. DJU-BEI = a [3,3] phrase such as "OUR OWN") is
   **not** verifiable — 6 runes under two unknown bases + g is underdetermined.
+- **The 2-rune words are the sharpest available key discriminator
+  (July 2026).** In runeglish `THE` is exactly two runes (`ᚦᛖ`), and
+  2-rune words are a dense, highly concentrated class: in the register
+  corpus they are 22.8% of all tokens and their content is dominated by
+  a handful of function words — THE 16%, TO 15%, OF 13%, IN 7%, IT 5%,
+  HE 5%, BE 4%, AS 4% (top eight = 69%). The LP has **465** 2-rune
+  words, so an English-like plaintext puts roughly **75-108 instances of
+  THE** among them (75 if the 2-rune class has register composition, 108
+  if THE keeps its 3.7% token rate). A 2-rune word needs only `base_w`
+  and `g` to decrypt (`p₀ = base_w⁻¹(c₀)`, `p₁ = g⁻¹(base_w⁻¹(c₁))`), so
+  every candidate key can be scored by decrypting all 465 and counting
+  `ᚦᛖ`: **~75-108 hits for a correct key against 465/812 ≈ 0.6 by
+  chance** — a discriminator of order 100x, far sharper than quadgram
+  fitness. For hill-climbing, the count alone is too peaked to give a
+  gradient; the usable objective is the log-likelihood of the decrypted
+  2-rune words against the whole register distribution above, which
+  awards partial credit for TO, OF, IN … while the key is still wrong.
+  Caveat and cross-check: the LP's 2-rune share is 15.9%, well below the
+  register's 22.8% — the documented short-word deficit
+  (`word-length-keystream-and-boundaries.md`) — so either the plaintext
+  register is unusually short-word-poor, or the boundary question bears
+  on it; the expected-hit range above already spans that uncertainty.
 
 ## Scripts
 
