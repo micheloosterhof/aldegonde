@@ -263,11 +263,21 @@ newlines are line wraps (words flow across them).
 - **Keyword-grid keys are excluded.** `experiments/enumerate_keys.py` drove
   keyword-grid `g` × keyword `σ` through the DJU-BEI/diagonal cascade
   (`experiments/walk_verifier.py`): 0/480 parity-valid pairs give a state
-  return, and the best keyword-grid `g` diagonal is 0.023 vs the required
-  0.0063 — excluded on the diagonal alone. Open problem: constructions that
-  are BOTH low-diagonal and small-key (keyword fills are structured but not
-  low-diagonal; annealed permutations are low-diagonal but not small-key).
-  See `g-from-5x5-grid.md`.
+  return, and the best keyword-grid `g` diagonal in that scan was 0.023 vs
+  the required 0.0063 — **the diagonal exclusion is RETRACTED** (July 2026,
+  `experiments/g_construction_survey.py`): the scan fixed the four fixed
+  runes as the last four of the keyword order and rotated every column by
+  one; freeing those two parameters lets every ordering and fill tested
+  reach the required band (~2x10⁵ in-band candidates from a single
+  keyword), so the state-return result must be re-run over the corrected
+  family. **Open problem, now inverted**: the structured family is not
+  too poor to supply `g`, it is too RICH to enumerate — ~10⁹-10¹⁰ in-band
+  `g` candidates across plausible keywords and fills, before `σ`, which
+  has no construction proposal and cannot be hill-climbed. The diagonal
+  band is too weak a filter on its own; progress needs the constraints
+  applied JOINTLY (g² near background, positional profile, σ's
+  cross-word diagonal, parity, DJU-BEI) or a principle that pins the
+  fixed-rune choice and the column rotations. See `g-from-5x5-grid.md`.
 - **Is `g` provably FIXED? No — but the alternatives cost key material
   without buying anything (July 2026).** What the ciphertext actually
   requires is local: the composition of the five steps spanning positions

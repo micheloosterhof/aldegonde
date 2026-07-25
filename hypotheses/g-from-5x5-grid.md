@@ -114,13 +114,24 @@ and paired each with keyword-mixed `sigma`, pushing all 1,152 pairs
 through `experiments/walk_verifier.py`. Two findings, both negative and
 both sharpening this note:
 
-1. **The doublet diagonal kills keyword fills outright.** The best
-   keyword grid-`g` has within-word diagonal **0.0229** (CIRCUMFERENCE,
-   row-major); the rest are 0.027-0.035. All are 3.6x-5.5x above the
-   required 0.0063. This confirms the "layout constraint" section
-   quantitatively: a plain keyword fill does NOT route common bigrams off
-   the column-adjacency, so it sits near chance. A correct `g` needs a
-   deliberate low-diagonal arrangement that keyword order does not supply.
+1. ~~**The doublet diagonal kills keyword fills outright.**~~ The best
+   keyword grid-`g` in that scan had within-word diagonal **0.0229**
+   (CIRCUMFERENCE, row-major) with the rest 0.027-0.035, 3.6x-5.5x above
+   the required 0.0063. **RETRACTED (July 2026,
+   `experiments/g_construction_survey.py`)**: that scan held two free
+   parameters of the construction at their defaults — the four fixed
+   runes were taken as the *last four* of the keyword order, and every
+   column was rotated by *one*. Freeing them (any 4 of 29 fixed, any
+   rotation 1-4 per column, which the diagonal decomposes over
+   independently) spans the whole range: the same DIUINITY row-major
+   family reaches 0.0003, CIRCUMFERENCE 0.0019, and EVERY ordering and
+   fill tested — gematria, prime-value, reversed, English-alphabetical,
+   and ten keywords — clears the required band. Concretely, the defaults
+   give DIUINITY 0.0469 / CIRCUMFERENCE 0.0418 / PRIMES 0.0218 /
+   WISDOM 0.0274, but one keyword with free fixed-runes and rotations
+   yields **~2 x 10⁵ candidates inside the 0.004-0.009 band**. Keyword
+   grid fills are therefore NOT excluded, and the "keyword order cannot
+   supply a low diagonal" reading was an artifact of the defaults.
 2. **No state return.** Of 480 (g, sigma) pairs passing the parity
    necessary condition, **zero** produce a DJU-BEI full state return
    (`M_1477 = M_2926`). Under the full-return reading, the true key is not
@@ -128,10 +139,22 @@ both sharpening this note:
 
 The enumeration harness is reusable: better `g` families (annealed
 low-diagonal grids, gematria/prime-ordered fills) drop straight into it.
-The bottleneck is generating low-diagonal order-5 permutations that are
-also *structured* (small key); keyword fills are structured but not
-low-diagonal, and annealed low-diagonal grids are low-diagonal but not
-obviously small-key. Closing that gap is the open problem.
+
+**The open problem, restated after the retraction.** It is not "can a
+structured construction be low-diagonal" — it can, easily, and the
+DJU-BEI state-return result above must be re-run over the corrected
+(much larger) family before it means anything. The problem is the
+opposite one: the family is now too RICH to enumerate. One keyword and
+one fill already yield ~2 x 10⁵ in-band `g` candidates; across ~10⁴
+plausible keywords and three fills that is ~10⁹-10¹⁰ for `g` alone,
+before `σ` — which has no construction proposal at all and cannot be
+hill-climbed (`no-known-plaintext-foothold.md`: the (g, σ) landscape is
+a delta function). The diagonal band is simply too weak a filter. What
+the attack needs is either much stronger *joint* constraints on (g, σ)
+— the g²-near-background condition, the positional-profile condition,
+the σ cross-word diagonal, parity, and the DJU-BEI relation applied
+together — or a construction principle that pins the fixed-rune choice
+and rotations rather than leaving them free.
 
 ## Predictions
 
