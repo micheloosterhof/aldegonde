@@ -140,8 +140,10 @@ the word-length autocorrelation is suspiciously flat (~2 sigma), see
 
 ## Structural constraints
 
-Two consequences of the table that prune whole mechanism families
-(derivations and simulations in `experiments/mechanism_fingerprint.py`):
+Three consequences of the table that prune whole mechanism families —
+the first two about what the cipher can be, the third about what any
+attack on it can do (derivations and simulations in
+`experiments/mechanism_fingerprint.py` and the scripts cited inline):
 
 1. **Doublet suppression requires output feedback OR a bigram-tuned
    alphabet relation.** For ADDITIVE ciphers a ciphertext doublet needs
@@ -156,7 +158,20 @@ Two consequences of the table that prune whole mechanism families
    (`c[i]=c[i-1] <=> p[i-1]=g(p[i])`, achievable range 0.13%-15%) — the
    mechanism of `length-clocked-walk.md` / `per-word-related-alphabets.md`.
    Affine relations cannot get below 1.25%, so the escape requires
-   non-arithmetic mixed permutations. (The once-equivalent hold variant —
+   non-arithmetic mixed permutations. **Sharpened (July 2026): the
+   relation must be DESIGNED against the digraph table, not merely
+   mixed.** Three independent floor computations agree — a plain
+   5-letter Vigenere step floors at 1.19% (`length-clocked-walk.md`),
+   every arithmetic family for `σ` floors at 1.22%-2.11% on the
+   cross-word table (`sigma-power-step.md`), and a keyword-derived
+   Quagmire (conjugated-shift) step floors at 1.01%-1.97% across every
+   keyword tried (`mixed-alphabet-vigenere.md`) — all against the
+   observed 0.63%/0.79%. Keywords, shifts, affine maps and
+   keyword-conjugated shifts all leave the relation near the language's
+   own bigram statistics. Only a permutation routed rune-by-rune against
+   rare digraphs reaches the observed rates, which means there is no
+   small human-memorable key here and the designer worked from digraph
+   frequencies. (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext
    doubles would be start-forbidden and end-heavy, and the observed
@@ -203,6 +218,25 @@ Two consequences of the table that prune whole mechanism families
    boundary-permutation null (`experiments/lag5_word_boundary.py`) — so
    the mechanism sees the word structure, favoring word-scoped state over
    purely positional copy semantics.
+
+3. **The key search has no gradient, so the attack must be enumerative**
+   (July 2026, `experiments/two_rune_gradient.py`; validated on planted
+   keys in simulated walk ciphertext). Scoring candidate keys on the 465
+   two-rune words — `THE` is exactly `ᚦᛖ` in runeglish and the class is
+   dominated by eight function words (69% of register tokens) —
+   recovers `base_0` **exactly on the first restart** once `g` and `σ`
+   are known (true key −1319 vs −5366 for a random base, 4,047 nats).
+   So `base_0` is effectively free: a 29!-fold reduction of the key
+   space. But score\*(g, σ), the score after optimally fitting `base_0`,
+   is a **delta function**: −1296 at the true key, −4968 with `σ` off by
+   a single transposition, −4994 at random. `g` and `σ` enter the base
+   chain once per word, so a one-swap error is applied ~2,900 times and
+   every base past the first is destroyed. No hill-climb, annealing or
+   evolutionary search over `(g, σ)` can work, with this or any
+   comparable objective. The whole difficulty is concentrated in
+   `(g, σ)`, which must come from enumeration over structurally
+   constrained candidates — and constraint 1 says those candidates
+   cannot be keyword-sized. See `no-known-plaintext-foothold.md`.
 
 ## Status values
 

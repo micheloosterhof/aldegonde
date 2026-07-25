@@ -39,7 +39,19 @@ constructions. All share the property of a fixed repeating key period.
 - `src/aldegonde/analysis/friedman.py` — Friedman test implementation. Run on
   `data/page0-58.txt` to confirm no period is detected.
 
+## Related
+
+- `length-clocked-walk.md`, `mixed-alphabet-vigenere.md` — periodic
+  polyalphabetic components *inside* a per-word re-keyed walk are a
+  different matter: the per-word base destroys the global period, so
+  Friedman cannot see them. Both are excluded instead by the doublet
+  floor (a plain 5-letter Vigenere step floors at 0.0119, a
+  keyword-Quagmire step at 0.0101-0.0197, against 0.0063 observed).
+
 ## Verdict
 
 Disproved by the Friedman test. The absence of any periodic IOC signal rules
-out all fixed-period polyalphabetic ciphers regardless of key length.
+out all fixed-period polyalphabetic ciphers regardless of key length —
+as *global* structure. Period-5 components hidden under a per-word
+re-key are invisible to Friedman and are excluded separately, on the
+doublet rate; see Related.
