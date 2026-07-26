@@ -39,7 +39,7 @@ def main() -> None:
             print(f"  {d:3d} : {chi2:7.1f}                {z:+.2f}{tag}")
     print(f"lags 11..100: printed only if |z| > 2.5; worst d>=2 is "
           f"lag {worst[1]} at z = {worst[0]:+.2f} "
-          f"(100-lag scan, Bonferroni bar ~3.3)")
+          f"(99 lags, two-sided Bonferroni bar ~3.5)")
     print("VERDICT: only lag 1 (doublets) shows dependence; lags 2..100 at chance")
 
 

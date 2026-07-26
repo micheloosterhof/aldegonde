@@ -17,6 +17,10 @@ n-gram, position-free and for ANY tabula recta whose rows are
 permutations. At L = 1 this is the (n+1)-gram bound of the depth-1
 script (n consecutive A symbols cover n+1 consecutive P symbols).
 
+Scope: the stream-running form (the tap crosses word boundaries and
+never resets). Word-boundary-reset variants are a different mechanism,
+closed in `word-boundary-reset-autokey.md`.
+
 The bound is validated by direct simulation: encrypting the register
 plaintext with a random-permutation TR must produce at least the forced
 count (plus chance collisions on top).
@@ -73,7 +77,8 @@ def main() -> None:
     scale = (len(clean) / len(pt)) ** 2
     print(f"plaintext register: {len(pt)} runes; clean corpus "
           f"{len(clean)} runes; pair-count scale x{scale:.1f}")
-    validate(pt, 5, 4)
+    for L in range(1, 11):
+        validate(pt, L, 4)
 
     obs = {n: repeated_pairs(clean, n) for n in (4, 5, 6)}
     print(f"\nobserved clean-corpus repeated n-grams: "

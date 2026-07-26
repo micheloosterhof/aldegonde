@@ -50,7 +50,9 @@ The feedback comes from the plaintext side, not the ciphertext side.
   (L=1) to 4,785 (L=10) against 129 observed — margins 214x down to
   37x. The lag-5 tap, the variant the lag-5 anomaly most suggests,
   predicts 8,475 (66x). Split tests cannot see plaintext-side feedback
-  at any depth; this closure does, and closes depths 1-10.
+  at any depth; this closure does, and closes the stream-running form
+  at depths 1-10 (word-boundary-reset variants are a different
+  mechanism, closed in `word-boundary-reset-autokey.md`).
 - **Less diffusion**: Plaintext autokey propagates errors in one direction
   during decryption (a wrong guess affects only one subsequent rune). This makes
   it more vulnerable to known-plaintext attacks, which is uncharacteristic of
@@ -68,8 +70,10 @@ The feedback comes from the plaintext side, not the ciphertext side.
 
 ## Verdict
 
-Disproved, quantitatively, for every tabula recta and every tap depth
-1-10 (including the lag-5 tap the d5 anomaly might have suggested).
+Disproved, quantitatively, for every tabula recta and every
+stream-running tap depth 1-10 (including the lag-5 tap the d5 anomaly
+might have suggested; reset variants are closed separately in
+`word-boundary-reset-autokey.md`).
 Plaintext autokey transports the plaintext's repeated joint windows into
 repeated ciphertext n-grams; the author's own register predicts thousands
 to tens of thousands of repeated 4-grams at every depth and the corpus
