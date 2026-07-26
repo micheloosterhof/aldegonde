@@ -27,7 +27,8 @@ cipher destroyed cross-word alphabet correlations almost completely.
   σ-count 1449, Σ(L−1) mod 5 = 1 over the interval (product of steps = identity).
 - Length-5 repeats: 5 classes, versus ~4.1 expected by chance — noise as a
   count. One of the five (ᛁ-ᛗᛝᚣᚪ) is boundary-consistent and word-aligned
-  (`repeated-phrase-dju-bei.md`, count-level P = 0.075) — suggestive, but
+  (`repeated-phrase-dju-bei.md`, count-level P = 0.058 on the clean
+  corpus) — suggestive, but
   not significant enough to admit as a second wiring constraint.
 - Identical ciphertext words (len ≥ 3) recurring: 15, versus ~11 expected among
   726 three-rune words — noise, and 3 runes is too short to tell genuine from
@@ -40,8 +41,9 @@ Both candidate attacks depend on cross-word signal and are starved by this:
 - **Collision/constraint attack:** one equation cannot pin two permutations.
 - **IoC-scored `(g, σ)` hillclimb:** the *within-word* coincidence (the d5 echo)
   is invariant to g's wiring — it only fixes ord(g)=5 — so it gives no gradient
-  on the wiring. The wiring information is entirely cross-word, i.e. DJU-BEI
-  alone. No gradient exists to climb.
+  on the wiring. (The within-word doublet diagonal does constrain the
+  wiring, but as a band filter, not a gradient.) The cross-word
+  EQUATION content is DJU-BEI alone. No gradient exists to climb.
 
 ## Consequence: enumeration, not search
 
@@ -66,14 +68,21 @@ with the true key, random-key rejection) runs the cascade — DJU-BEI state
 return, g/sigma doublet diagonals, quadgram `base_0` solve —
 and `experiments/enumerate_keys.py` drives structured keyword-grid `g` x
 keyword `sigma` through it. First pass (24 keywords x 2 orientations x
-24 sigmas): **0 of 480 parity-valid pairs achieve a state return, and the
+24 sigmas): **0 of 480 pairs achieve a state return, and the
 best keyword grid-`g` diagonal in that scan was 0.023 vs the required
-0.0063**. **The diagonal half is RETRACTED** (July 2026): that scan held
+band (pooled 0.0066)**. (The scan's parity precondition is vacuous —
+every relevant σ passes it, `mixed-alphabet-vigenere.md` — so
+"parity-valid" was no qualification.) **The diagonal half is
+RETRACTED** (July 2026): that scan held
 the four fixed runes at the keyword order's last four and rotated every
 column by one; freeing those two free parameters lets every ordering
 reach the band. The 0/480 state-return result inherits the same defect —
 it covered the defaults-only slice, a vanishing fraction of the family —
 and must be re-run before it means anything. See `g-from-5x5-grid.md`.
+The corrected candidate sets now exist: the full-dictionary exhaustion
+gives 12,064 keyword `g` and ~130 keyword σ candidates
+(`mixed-alphabet-vigenere.md`); the state-return re-run over that
+family is the standing next step.
 
 ## Related
 

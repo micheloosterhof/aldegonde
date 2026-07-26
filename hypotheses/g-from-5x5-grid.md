@@ -171,8 +171,10 @@ prefix-dependent and unclimbable from either end). The diagonal band is
 simply too weak a filter. What
 the attack needs is either much stronger *joint* constraints on (g, σ)
 — the g²-near-background condition, the positional-profile condition,
-the σ cross-word diagonal, parity, and the DJU-BEI relation applied
-together — or a construction principle that pins the fixed-rune choice
+the σ cross-word diagonal, and the DJU-BEI state return applied
+together (the parity and abelianization shortcuts are vacuous,
+`mixed-alphabet-vigenere.md`) — or a construction principle that pins
+the fixed-rune choice
 and rotations rather than leaving them free.
 
 ## Predictions

@@ -173,8 +173,11 @@ polyalphabetic.
   could apply to σ" suggestion in `g-from-5x5-grid.md`: whatever
   produces `g`, σ must come from somewhere else and must have large
   order. (All at the census bound's ~2σ strength.)
-- **Abelianization link** (conditional, as above): [g] = −1449·[σ], with
-  the parity necessary-condition σ even (`walk_verifier.py`).
+- **Abelianization link — vacuous as a filter.** [g] = −1449·[σ]
+  collapses to the parity condition for real ⟨g,σ⟩ (|G/G′| ≤ 2), and
+  parity is automatic for a 29-cycle σ. It retains force only under the
+  abelian σ = g^k assumption used in the kill above, where it correctly
+  forces k = 1. See `mixed-alphabet-vigenere.md`.
 - **Not excluded**: σ of order 5, σ a conjugate h∘g∘h⁻¹, larger
   compositions g^k∘τ with τ moving enough points to break the small
   orbit.
@@ -204,10 +207,11 @@ polyalphabetic.
 
 ## Predictions
 
-- Any candidate key pair (g, σ) must show a σ-diagonal rate ≈ 0.0079 on
-  the cross-word bigram table and satisfy the abelianization parity —
-  both are cheap pre-filters for key enumeration
-  (`experiments/enumerate_keys.py`).
+- Any candidate key pair (g, σ) must show a σ-diagonal rate consistent
+  with the observed seam rate on the cross-word bigram table (0.0079,
+  95% CI [0.0050, 0.0118]) — the one cheap pre-filter that survives;
+  the abelianization/parity condition is vacuous as a filter
+  (`mixed-alphabet-vigenere.md`).
 - If a decryption is ever obtained, the 23 seam doublets directly read
   out 23 values of σ (p_last = σ(p_first) at each).
 
@@ -222,8 +226,8 @@ polyalphabetic.
 - `word-transform-census.md` — the identity-pair census the kill rests on.
 - `repeated-phrase-dju-bei.md` — the state return behind the
   abelianization constraint.
-- `g-from-5x5-grid.md` — construction proposals for g; the same grid idea
-  could apply to σ, now knowing σ ∉ ⟨g⟩.
+- `g-from-5x5-grid.md` — construction proposals for g; grid-derived σ
+  is excluded above (every grid companion collapses the base count).
 
 ## Verdict
 
@@ -232,6 +236,6 @@ five-alphabet collapse predicts thousands of identical cipher words and
 non-flat unigrams, the LP shows neither, and the DJU-BEI arithmetic
 independently forbids k ≠ 1 while periodicity kills k = 1. σ is a second,
 genuinely independent mixed permutation — but not a free one: it carries
-its own tuned rare diagonal on the cross-word bigram table, a parity
-condition, the abelianization link to g, and a floor of hundreds on the
-group the pair generates.
+its own rare diagonal on the cross-word bigram table and a floor of
+hundreds on the group the pair generates (the parity and abelianization
+conditions are vacuous as filters).

@@ -111,20 +111,27 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
 space is `(g, σ)`: order-5 permutations number 9.84e23, of which ~0.1%
 carry a diagonal in the required band → ~1e21 candidate `g`; `σ` ranges
 over 29! = 8.8e30, of which ~1.6e-4 sit in the cross-word diagonal band
-→ ~1.4e27. The joint space is **~1e48**, so enumeration is as hopeless
-as local search. That leaves one route, and it follows from constraint 1
-instead of fighting it: both wheels must be *wired against the digraph
-table* (four independent demonstrations — plain Vigenere, arithmetic σ,
-keyword Quagmire, keyword disks). A designer wiring a permutation
-against digraph statistics uses a **procedure**: process the runes in
-some canonical order assigning each its rarest available partner, take
-the assignment-problem optimum on a published bigram table, route grid
-columns through rare digraphs, and so on. The permutations number ~1e48;
-the plausible *procedures* number in the dozens. The enumerable object
-is the construction rule, not the key — the one search the evidence has
-actually made smaller, and where the next attack should go.
+→ ~1.4e27. The joint space is **~1e48**, so blind enumeration is as
+hopeless as local search. That leaves one route, and it follows from
+constraint 1 instead of fighting it: both wheels need diagonals the
+arithmetic families cannot reach (two exhaustive demonstrations —
+plain Vigenere shifts and the arithmetic σ families; the keyword
+families are NOT excluded, and in fact supply the one enumerable
+candidate set, `mixed-alphabet-vigenere.md`). A designer wiring a
+permutation against digraph statistics uses a **procedure**: process
+the runes in some canonical order assigning each its rarest available
+partner, take the assignment-problem optimum on a published bigram
+table, route grid columns through rare digraphs, and so on. The
+permutations number ~1e48; the plausible *procedures* number in the
+dozens — and one procedure family is already enumerated, the keyword
+Quagmire pairs (~10⁶ alphabet pairs before schedules). The enumerable
+object is the construction rule, not the key — the one search the
+evidence has actually made smaller, and where the next attack should
+go.
 - The deterministic-walk structure is the exploitable weakness instead: DJU-BEI
-  gave one state-return constraint (`base_1477 = base_2926`, `[g] = −1449[σ]`);
+  gave one state-return constraint (`base_1477 = base_2926`; the
+  once-quoted abelianization corollary `[g] = −1449[σ]` is vacuous for
+  real ⟨g,σ⟩ — `repeated-phrase-dju-bei.md`);
   a systematic hunt for repeated ciphertext structures could add more equations
   on `(g, σ)` — a collision/constraint attack that uses the determinism the
   hillclimb ignores.
