@@ -42,8 +42,9 @@ k depends on the block size), not on adjacent ciphertext runes.
   fractionation operates within each word independently.
 - **29 is prime**: No clean grid factorization. Would need an awkward grid
   layout (e.g. 6x5-1 or radix-based decomposition).
-- Playfair (a digraphic fractionation) was ruled out by uniform bigrams.
-  Other fractionation schemes may share this problem.
+- Playfair (a digraphic fractionation) was ruled out by mechanism-specific
+  tests (doublet first-position parity and seriation-class rates). Other
+  fractionation schemes may share this problem.
 
 ## Predictions
 
@@ -58,8 +59,8 @@ interleaving patterns.
 
 ## Related
 
-- `playfair-variant.md` — A specific digraphic cipher, disproved by uniform
-  bigrams.
+- `playfair-variant.md` — A specific digraphic cipher, disproved by
+  mechanism-specific parity and seriation tests.
 
 ## Verdict
 

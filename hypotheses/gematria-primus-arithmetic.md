@@ -33,9 +33,17 @@ the two are mathematically related).
 ## Evidence against
 
 - **Preceding-rune split disproof**: This is a ciphertext autokey with a
-  specific fixed TR (defined by prime arithmetic). Splitting the ciphertext by
-  C[i-1] should give 29 streams with English-like IOC. Measured: mean IOC
-  0.0354, indistinguishable from random. See `disprove_autokey_split.py`.
+  specific fixed TR (defined by prime arithmetic). The prime values mod 29
+  are NON-injective (F, I and D all collide at residue 2; see
+  `running-key-math-sequence.md`), so the TR rows are not permutations —
+  but merging symbols can only RAISE a group's IOC, so splitting the
+  ciphertext by C[i-1] should still give 29 streams with English-like IOC
+  or higher. Measured: mean IOC 0.0354, indistinguishable from random. See
+  `disprove_autokey_split.py`.
+- **Non-invertibility**: because the rows are non-injective, runes sharing
+  a prime residue (e.g. F, I, D) encrypt identically under the same key
+  rune and cannot be distinguished on decryption. The mechanism is not a
+  workable cipher at all, independent of any statistic.
 
 ## Scripts
 
@@ -50,4 +58,5 @@ the two are mathematically related).
 ## Verdict
 
 Disproved. This is a specific case of ciphertext autokey with a fixed TR,
-ruled out by the preceding-rune split test.
+ruled out by the preceding-rune split test — and independently unworkable:
+the non-injective prime-value rows make decryption impossible.

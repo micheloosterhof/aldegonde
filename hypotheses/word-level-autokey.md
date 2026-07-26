@@ -37,8 +37,9 @@ Possible forms:
   predict)
 - ~~Cross-word doublets are more suppressed than within-word doublets~~ —
   corrected: measured properly, the within/cross-word doublet split is
-  proportional to opportunity and the seam rate (0.0079) is slightly ABOVE
-  the within-word rate (0.0063). The suppression is boundary-blind (see
+  proportional to opportunity — the within-word rate (0.0063) and the seam
+  rate (0.0079) are statistically one rate (z=0.87, p=0.38; pooled 0.0066).
+  The suppression is boundary-blind (see
   `cryptodiagnostics-page0-58.md`, `length-clocked-walk.md`)
 
 ## Evidence against
@@ -48,16 +49,17 @@ Possible forms:
   reversal, rotation, or transposition per word would turn the plaintext's
   ~8,000 repeated word pairs into pairs of its transform class; every class
   sits at the doublet-corrected random baseline. Whatever the key schedule,
-  the per-word transform cannot be a constant additive/affine map. Only a
-  general substitution alphabet per word (or position-varying keys within
-  words) survives.
-- If the per-word key is derived from the previous word's ciphertext, the
-  within-word cipher would still be f(word_key, P[i]) for each rune, and
-  the word_key is derivable from the ciphertext. So within each word, the
-  cipher is a fixed transformation — and the within-word split test should
-  show English-like IOC. It doesn't (IOC 0.0353, random).
-- Unless the within-word cipher also has position-dependent behavior (e.g.,
-  position within the word matters)
+  the per-word transform cannot be a constant additive/affine map.
+- **The general-substitution-per-word survivor is also disproved** by the
+  pattern-preservation test in `word-transform-census.md`: any fixed
+  per-word substitution, however the key is derived, preserves the
+  plaintext's within-word adjacent letter repeats — predicting ~244
+  within-word doublets vs 63 observed, an 11.6 sigma deficit. Only
+  position-varying keys WITHIN words survive, which is no longer a
+  word-level scheme. (The rune-level split test is uninformative here: it
+  groups runes by C[i-1], which does not fix a key that varies per word,
+  so its random IOC is expected under this variant and disconfirms
+  nothing.)
 - **Doublet fingerprint** (`experiments/mechanism_fingerprint.py`):
   letterwise variants (previous plaintext word or previous ciphertext word
   cycled as running key) simulated on Markov runeglish with the real LP
@@ -74,8 +76,12 @@ Possible forms:
 
 ## Predictions
 
-If word-level autokey with position-within-word dependence: group runes by
-(word_key, position_in_word) and check IOC.
+~~If word-level autokey with position-within-word dependence: group runes by
+(word_key, position_in_word) and check IOC.~~ Mooted: the
+pattern-preservation census excludes every fixed per-word substitution
+regardless of key derivation, and the additive position-dependent form
+fails the doublet constraint, so no variant survives for this grouping to
+test.
 
 ## Scripts
 
@@ -83,8 +89,10 @@ None yet.
 
 ## Verdict
 
-Disproved. Fixed-transform-per-word variants fail the within-word split
-test; letterwise running-key variants fail the doublet fingerprint by 5x;
+Disproved. Additive/affine per-word variants fail the word transform
+census, and the general-substitution-per-word survivor fails its
+pattern-preservation test (11.6 sigma);
+letterwise running-key variants fail the doublet fingerprint by 5x;
 and the doublet argument holds for any ADDITIVE word-level key schedule:
 the key for a word is fixed before its runes are emitted, so it cannot
 avoid ciphertext doublets without per-rune output feedback. (Mixed-alphabet

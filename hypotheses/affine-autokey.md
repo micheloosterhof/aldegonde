@@ -19,17 +19,19 @@ plaintext contribution and the feedback are scaled by constants a and b. Since
 29 is prime, all non-zero values of a and b have multiplicative inverses, so
 the cipher is invertible.
 
-Under this model, C[i] = C[i+1] requires a*(P[i+1] - P[i+2]) = 0 mod 29.
-Since 29 is prime and a != 0, this means P[i+1] = P[i+2]: doublets in the
-ciphertext correspond to doublets in the plaintext. The doublet suppression
-would then reflect the natural English/runeglish plaintext doublet rate.
+Under this model, C[i+1] = C[i] requires a*P[i+1] + b*C[i] = C[i], i.e.
+P[i+1] = a^-1 * (1 - b) * C[i] mod 29: a ciphertext doublet forces ONE
+specific plaintext value determined by the history, with no correspondence
+to plaintext doublets. (P[i+1] = P[i+2] is only forced conditional on a
+preceding doublet — it characterizes triplets, not doublets.) For any
+fixed (a, b) the forced value is hit at roughly the average letter
+frequency, ~1/29 = 3.45%.
 
 ## Evidence for
 
 - The multiplicative component makes cryptanalysis harder while preserving
   the autokey structure
 - 29 being prime ensures clean field arithmetic
-- Plaintext doublet rate in runeglish might plausibly be around 0.66%
 
 ## Evidence against
 
@@ -38,6 +40,10 @@ would then reflect the natural English/runeglish plaintext doublet rate.
   permutations and preserve IOC. So each group's IOC should match English IOC.
   Measured: mean IOC 0.0354, indistinguishable from random. See
   `disprove_autokey_split.py`.
+- **Doublet rate disproof**: a doublet requires P[i+1] to hit the single
+  forced value a^-1 * (1 - b) * C[i], predicting a doublet rate of
+  ~1/29 = 3.45% for an untuned key. Observed: 0.66% — a ~5x deficit,
+  independent of the split test.
 
 ## Scripts
 
@@ -51,4 +57,5 @@ would then reflect the natural English/runeglish plaintext doublet rate.
 
 Disproved. Affine autokey is a single-layer ciphertext autokey with a fixed
 relationship between C[i-1], P[i], and C[i]. The preceding-rune split test
-rules it out.
+rules it out, and the doublet rate rules it out independently (predicted
+~3.45%, observed 0.66%).

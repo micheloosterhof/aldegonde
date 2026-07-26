@@ -71,5 +71,11 @@ on a pooled statistic that could not have detected it.
 
 ## Verdict
 
-Disproved. The perfectly uniform off-diagonal bigram distribution is
-incompatible with Playfair's characteristic grid-based bigram patterns.
+Disproved by the mechanism-specific tests: a Playfair pair can never emit
+a doublet, yet the 86 doublets split 44 even / 42 odd by first-position
+parity (so no pairing alignment works, per section or overall), and the
+seriated variant's constrained distance-P class sits at the chance rate
+for every P = 2..12 where it must be ~0. These close the family on its
+own defining property. The uniform off-diagonal bigram distribution is
+secondary corroboration only — as a pooled statistic it could not have
+detected the within-pair signature by itself.

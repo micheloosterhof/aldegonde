@@ -88,8 +88,9 @@ The kill margin is two to three orders of magnitude.
   distribution being English-like supports both.
 - A fixed Hill matrix applied per word is also excluded (it preserves word
   identity for repeated plaintext words -> identity class). A per-word
-  VARYING matrix is not covered (general linear relations are a larger
-  family than the scalar affine class tested).
+  VARYING matrix is outside the scalar affine class tested here, but is
+  closed separately in `hill-cipher-per-word.md`
+  (`experiments/varying_hill_closure.py`).
 - A general (non-additive) substitution alphabet per word is excluded by
   the doublet-preservation argument above, not by the pairwise census
   itself.
@@ -106,8 +107,9 @@ The kill margin is two to three orders of magnitude.
   DOES recur; under this census's result, that recurrence cannot come from
   a per-word additive scheme hiding word repeats (those would recur ~8,000
   times); it must be a rare state collision.
-- `word-level-autokey.md` — additive per-word variants are now disproved;
-  only general-substitution-per-word variants survive.
+- `word-level-autokey.md` — additive per-word variants are disproved by the
+  census; the general-substitution-per-word survivor is excluded by the
+  pattern-preservation argument above.
 - `monoalphabetic-substitution.md`, `hill-cipher-per-word.md`.
 
 ## Verdict
