@@ -47,9 +47,16 @@ The feedback comes from the plaintext side, not the ciphertext side.
   exactly generalized. Measured on the same register and scaled
   (`experiments/plaintext_autokey_depth_closure.py`, validated against
   direct simulation): predicted repeated 4-grams range from 27,550
-  (L=1) to 4,785 (L=10) against 129 observed — margins 214x down to
-  37x. The lag-5 tap, the variant the lag-5 anomaly most suggests,
-  predicts 8,475 (66x). Split tests cannot see plaintext-side feedback
+  (L=1) to 4,785 (L=10). The binding comparison is against the allowed
+  EXCESS over chance — the observed 129 sits at the doublet-corrected
+  null (124 ± 10), so forced repeats, which add on top of chance, are
+  bounded by ~35 pairs (3σ): margins ~790x (L=1) down to ~140x (L=10).
+  This framing also disarms the register-repetitiveness objection (the
+  solved pages repeat headers like ANINSTRUCTIAN): the register would
+  have to overpredict prose repetition by two orders of magnitude to
+  rescue any depth. The lag-5 tap, the variant the lag-5 anomaly most
+  suggests, predicts 8,475 (~240x the allowed excess). Split tests
+  cannot see plaintext-side feedback
   at any depth; this closure does, and closes the stream-running form
   at depths 1-10 (word-boundary-reset variants are a different
   mechanism, closed in `word-boundary-reset-autokey.md`).

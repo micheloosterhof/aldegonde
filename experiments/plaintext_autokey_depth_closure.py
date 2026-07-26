@@ -84,13 +84,17 @@ def main() -> None:
     print(f"\nobserved clean-corpus repeated n-grams: "
           f"4: {obs[4]}, 5: {obs[5]}, 6: {obs[6]} "
           f"(doublet-corrected chance: 124 +- 10 / 4 +- 2 / ~0)")
+    # forced repeats add ON TOP of chance, so the binding comparison is
+    # against the allowed excess over the null, not the raw observed count
+    excess_bar = obs[4] - 124 + 3 * 10
+    print(f"allowed forced excess over chance (3 sigma): ~{excess_bar}")
     print(f"\n{'L':>3} {'forced 4-gram pairs':>20} {'predicted (scaled)':>19} "
-          f"{'vs observed 129':>16}")
+          f"{'vs excess bar':>14}")
     for L in range(1, 11):
         f4 = forced_pairs(pt, L, 4)
         pred = f4 * scale
-        margin = pred / obs[4]
-        print(f"{L:>3} {f4:>20} {pred:>19.0f} {margin:>15.0f}x")
+        margin = pred / excess_bar
+        print(f"{L:>3} {f4:>20} {pred:>19.0f} {margin:>13.0f}x")
 
 
 if __name__ == "__main__":
