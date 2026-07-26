@@ -173,9 +173,10 @@ attack on it can do (derivations and simulations in
    candidates**. The two observed rates are not significantly different
    (0.0063 vs 0.0079, z = 0.87; pooled 0.0066), so this is one
    requirement measured on two tables. Net: a keyword-derived key is NOT
-   excluded — the joint candidate space is ~10⁶ pairs before cheap
-   filtering, the only enumerable formulation the investigation has
-   (`mixed-alphabet-vigenere.md`). (The once-equivalent hold variant —
+   excluded — the schedule census prices the full joint space at
+   ~2.2×10⁸ complete keys (562k g alphabet-schedules × 400 σ
+   disk-turns, d6-filtered), the only enumerable formulation the
+   investigation has (`mixed-alphabet-vigenere.md`). (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext
    doubles would be start-forbidden and end-heavy, and the observed
@@ -251,8 +252,9 @@ attack on it can do (derivations and simulations in
    permutations, neither search nor blind enumeration works — the
    reducible object is the designer's construction PROCEDURE, not the
    key; the keyword Quagmire family of constraint 1 is the one
-   procedure currently enumerable (~10⁶ alphabet pairs, times the
-   offset schedules). See `no-known-plaintext-foothold.md`.
+   procedure currently enumerable (the schedule census prices it at
+   ~2.2×10⁸ full keys — `mixed-alphabet-vigenere.md`). See
+   `no-known-plaintext-foothold.md`.
 
 ## Status values
 

@@ -117,6 +117,58 @@ joint space is ~4.8×10⁶ pairs. **The enumerable-key hypothesis is alive on
 both halves**, and the "bottleneck is σ" conclusion is withdrawn — it was
 an artifact of treating a 23-event measurement as a hard threshold.
 
+## The schedule census (July 2026) — the enumeration is ~10⁸ full keys
+
+`experiments/quagmire_schedule_census.py` counts what actually has to
+be enumerated: (alphabet, schedule) pairs, not alphabets. Per alphabet
+the five offsets (Σδ ≡ 0 mod 29) give ~29⁴ schedules, but the
+within-word doublet band plus one corpus-mandated exclusion prune them
+to ~8 on average:
+
+- **The floor-based candidate list was the wrong lens.** Selecting
+  alphabets by their cheapest single turn (the 12,064) misses alphabets
+  whose five phases *combine* into the band: the phase-decomposed
+  criterion passes 341,317 of 787,592, and 97,098 of those have at
+  least one admissible schedule.
+- **Zero offsets are excluded by observation, not choice.** A zero
+  offset is an identity letter step: its doublets are plaintext doubles
+  concentrated at one phase — a mod-5 comb and a plaintext-double
+  position profile, both measured absent (doublet positions uniform
+  mod 5; profile flat, `stay-slot-hold.md`). This rejects 2,277,398
+  otherwise-in-band schedules, ~74% of the raw band.
+- d1 band [0.0049, 0.0080] (Wilson CI of 63/10,028), no zero offset:
+  **784,931 (alphabet, schedule) pairs** across 97,098 alphabets.
+
+**The d6 prediction is a free second filter, and the family passes
+it.** Under a period-5 schedule the relation at distance 6 collapses to
+a single offset (six consecutive offsets sum to the next one over), so
+predicted d6 is exactly computable per candidate — as are d4 (the
+negated missing offset) and d1, all validated against direct simulation
+in the script. Two results: the family spans the observed d6 depth
+easily — minimum predicted d6 is **0.0076**, well below the observed
+0.0245, so scheduled conjugated shifts CAN produce the d6 dip that no
+cycle-type census could (`mixed-cycle-progression.md`) — and requiring
+predicted d6 inside the observed CI [0.0173, 0.0345] keeps **562,165
+pairs** (72%). d4 is a score, not a filter (its CI includes
+background): 27.7% of survivors predict d4 above background, the
+direction the corpus leans.
+
+With the σ side at **400 (disk, turn) pairs** in the seam CI (matching
+the exhaustion's 404-at-CI count), the joint space is
+
+    562,165 × 400 ≈ 2.2 × 10⁸ full keys
+
+— every key fully specified (K_g, five offsets, K_σ, turn), with base₀
+free (`no-known-plaintext-foothold.md`). At a millisecond per key for
+the DJU-BEI base-agreement walk and the 2-rune verifier, that is
+CPU-days, not CPU-centuries: the first fully concrete, fully costed
+enumeration the investigation has had.
+
+Not yet folded in: the d2/d3 predictions (pair/triple offset sums,
+generically at background but cheap to verify per candidate), the
+positional-profile constraint on the diagonal class, and the
+requirement that the same schedule leave the seam channel clean.
+
 ## Three of the four "cheap filters" are vacuous (July 2026)
 
 Earlier text here and in `length-clocked-walk.md` described the joint
@@ -303,13 +355,14 @@ doublets (404 at the upper 95% CI) — a joint space of ~4.8×10⁶ pairs.
 That is enumerable, and it is the only formulation of the walk for which
 that is true.
 
-The pair count is not the cost driver, though, and the cheap filters do
-not reduce it: the joint doublet count, parity and the DJU-BEI
-abelianization are all vacuous on this space (see above), leaving only
-σ ∉ ⟨g⟩ and the base count. The real expense is that each pair still
-needs a *schedule* — five offsets summing to 0 (mod 29), ~29⁴ ≈ 7×10⁵
-per alphabet — before the state return can be evaluated. That product,
-not the 4.8×10⁶, is what has to be attacked.
+The cheap pair-level filters do not reduce the space — the joint
+doublet count, parity and the DJU-BEI abelianization are all vacuous on
+it (see above) — but the schedule census does: the ~29⁴ offset
+schedules per alphabet collapse to ~8 under the doublet band and the
+no-zero-offset exclusion, and the exactly-computable d6 prediction
+keeps 72% of those. The full joint space is **~2.2 × 10⁸ complete
+keys** (562,165 g alphabet-schedules × 400 σ disk-turns), each directly
+verifiable with base₀ free.
 
 An earlier verdict here called σ the bottleneck. That rested on
 comparing candidates against 0.0079 as an exact threshold when it is a
@@ -324,7 +377,7 @@ keywords must disrupt the canonical order substantially, so they are
 long and specific rather than memorable; and the σ half rests on the
 register-sensitive cross-word table.
 
-Next test: enumerate the offset schedules per candidate alphabet — the
-within-word doublet window prunes the ~29⁴ schedule space — then push
-surviving full keys through the exactly-computable d6/d4 predictions,
-the DJU-BEI state return, and the 2-rune verifier.
+Next test: the enumeration itself — run the ~2.2 × 10⁸ full keys from
+the schedule census through the DJU-BEI base-agreement walk and the
+2-rune verifier (`experiments/quagmire_schedule_census.py` produces the
+candidate stream; `two_rune_gradient.py` validated the verifier).
