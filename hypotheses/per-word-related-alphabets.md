@@ -84,8 +84,9 @@ generators `sigma_k` themselves are unstructured — that is the piece that make
   first of the next) is `p_prev = sigma_k(p)` after the phase-absorbing step, so
   BOTH are rare bigram-class events, not a rule. `g`'s diagonal is set to the
   observed within rate (0.0063), `sigma`'s to the observed seam rate (0.0079);
-  the seam runs slightly hotter because one `sigma` must satisfy the diagonal at
-  every phase at once. This is the piece the earlier per-word-independent version
+  the two rates are statistically ONE rate (z=0.87, p=0.38, pooled 0.0066),
+  so the two diagonals need not differ and no seam-specific mechanism is
+  implied. This is the piece the earlier per-word-independent version
   got wrong: with independent `base_word` the seam would sit at chance (~0.034),
   contradicting the observed 0.0079 -- the *chained* walk is what makes seams
   suppressed.
@@ -186,7 +187,9 @@ cipher's `g`; the real `g` is a mixed order-5 permutation.
   apart (= 3^2 x 7 x 23, *not* a multiple of 5). So the recurrence is
   **rune-counted, not word-counted** — a `word_index mod 5` term is excluded
   (1449 mod 5 = 4 would misalign it), while a rune-level period of 5.1279 is
-  consistent. This is a *different* 5 from the within-word phase-5. The
+  consistent. (Superseded on this point: `length-clocked-walk.md` reads the
+  recurrence as a word-counted state return, base_1477 = base_2926 over
+  1,449 word boundaries.) This is a *different* 5 from the within-word phase-5. The
   recurrence is momentary, though: word-aligned cross-coincidence around the
   phrase is ~0.042 (chance 0.034), not the ~0.06 of a sustained depth, so it
   gives a period clue rather than a depth crib.

@@ -141,10 +141,11 @@ with plaintext content — a rare key event.
 ## Related
 
 - `beaufort-autokey-ea.md` — EA identity under ciphertext autokey (disproved as
-  a full mechanism; this note salvages the mechanism-independent EA constraint).
+  a full mechanism; the mechanism-independent EA constraint falls too — the
+  positional-profile test here refutes the whole marker class).
 - `ciphertext-autokey.md` — general ciphertext autokey, same disproof.
-- `autokey-plus-substitution.md` — a live mechanism that could carry the
-  EA marker.
+- `autokey-plus-substitution.md` — a mechanism that could have carried the
+  EA marker; the marker class it would carry is refuted here.
 - `position-within-word.md`, `word-boundary-reset-autokey.md` — word-structure
   hypotheses tested here.
 

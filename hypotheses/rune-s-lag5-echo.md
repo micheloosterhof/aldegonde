@@ -116,32 +116,32 @@ S).
 
 ## Interpretation
 
-This cuts against the clean "plaintext morphology leaking through a random
-per-word key" reading of the lag-5 echo. A random per-word key randomizes the
-ciphertext value of each echoed position, so the echoed *rune* should be
-uniform. It is not — one specific rune dominates. Candidate explanations, none
-yet tested:
+The concentration discriminates by mechanism class, not by S itself.
+Against any identity-preserving mechanism — fixed substitutions, or
+transcription- or plaintext-level readings of the echo where the echoed
+ciphertext rune tracks a fixed identity — 11 vs 1.75 is a hard refutation
+(p = 2.4e-6). Under base-scrambling models like the length-clocked walk,
+echo identities are near-uniform but CLUSTER within words (one base per
+word), and simulation puts an 11-max at P ≈ 0.08-0.15 — expected-level
+clustering, no tension. Which rune tops the table is then noise: S needs
+no structural role, no non-randomizing component, and no S-specific
+morpheme.
 
-- **A non-randomizing component at these positions** — the cipher does not
-  fully scramble the value where the d=5 echo occurs, so a specific plaintext
-  or key rune survives as S.
-- **S as a ciphertext-structural rune** — a marker or separator role (compare
-  the EA-marker line in `doublet-marker-rune-ea.md`), here appearing as a
-  distance-5 pair.
-- **A specific plaintext morpheme** repeating at distance 5 whose enciphered
-  value is consistently S — again requiring the cipher to be locally
-  value-preserving.
-
-Whatever the cause, the lag-5 echo is more specific than "runes repeat at 5":
-it is disproportionately "S repeats at 5, inside a word."
+In this corpus the lag-5 echo is thus disproportionately "S repeats at 5,
+inside a word" — a concentration that refutes identity-preserving
+mechanisms and is typical-case behavior for the surviving base-scrambling
+family.
 
 ## Predictions
 
-- Any correct decryption should place, at the 11 S-pair sites, either a shared
-  plaintext rune or a shared key relation that resolves to S — and should
-  explain why S rather than a random rune.
-- If S has a structural (marker) role, it should show other positional
-  regularities (word position, spacing) beyond the d=5 pairing.
+- Any correct decryption should place, at the 11 S-pair sites, plaintext
+  and key state that resolve to S — a generic key-consistency check, not
+  an S-specific filter (under the walk resolution no explanation of "why
+  S" is required).
+- ~~If S has a structural (marker) role, it should show other positional
+  regularities (word position, spacing) beyond the d=5 pairing.~~ Moot:
+  under the walk resolution the concentration is expected-level
+  clustering, so no structural role for S is on the table.
 - No out-of-sample check exists: the transcription is crowdsource-verified
   many times over (and machine-verified, `transcription-verification.md`),
   so the excess is in Cicada's ink and the corpus is fixed. The finding can
@@ -169,8 +169,6 @@ it is disproportionately "S repeats at 5, inside a word."
 - `lag5-digraph-structure.md`, `lag5-back-reference.md`,
   `docs/lag5-phenomenon.md` — the lag-5 structure and the copy-event reading;
   the S-dominance is a new constraint on any proposed copy mechanism.
-- `doublet-marker-rune-ea.md` — the precedent for a single rune carrying a
-  structural role.
 
 ## Verdict
 

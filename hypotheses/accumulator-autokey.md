@@ -33,8 +33,8 @@ S is fully determined from the ciphertext and the primer S[0].
 
 - We tested `beaufort_mult_running_ct` in the model tester (with the running
   sum as a multiplicative factor) and got random IOC. But that used the sum
-  as a MULTIPLIER, not as the key itself. The pure additive version needs
-  testing.
+  as a MULTIPLIER, not as the key itself; the pure additive version is
+  settled by the exhaustive primer test below (July 2026).
 - **Wait**: S[i] = (S[i-1] + C[i-1]) mod 29, so S[i] = (S[0] + sum(C[0..i-1])) mod 29.
   P[i] = (S[i] - C[i]) mod 29 = (S[0] + sum(C[0..i-1]) - C[i]) mod 29.
   For fixed S[0], this is a deterministic function of the ciphertext. Grouping

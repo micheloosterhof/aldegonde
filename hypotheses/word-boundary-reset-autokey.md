@@ -24,8 +24,9 @@ the previous word's last ciphertext rune, or determined by some other rule).
   "27 vs ~116 expected" compared against the 3.45% chance rate, which just
   restates the GLOBAL suppression at boundary positions. Cross-word
   doublets (23 of the clean corpus's 86) are proportional to opportunity,
-  and the seam rate (0.0079) is if anything slightly above the within-word
-  rate (0.0063, z=+0.87). The suppression is boundary-blind; there is no
+  and the seam (0.0079) and within-word (0.0063) figures are statistically
+  one rate measured on two tables (z=0.87, p=0.38, pooled 0.0066). The
+  suppression is boundary-blind; there is no
   special word-boundary behavior. See `doublet-marker-rune-ea.md` and
   `length-clocked-walk.md`.
 - Word boundaries are clearly preserved, so the cipher is word-aware

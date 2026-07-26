@@ -31,7 +31,10 @@ plaintext alphabet size.
   Elder Futhark alphabet), and the plaintext runeglish alphabet is also 29
   symbols. There is no room for homophones when input and output alphabets are
   the same size. Each plaintext rune can map to at most one ciphertext rune,
-  reducing this to monoalphabetic substitution.
+  reducing this to monoalphabetic substitution. (`thirty-symbol-disk.md`,
+  unresolved, posits the '.' mark as a 30th ciphertext symbol — but at its
+  ~1.3% rate one extra symbol cannot flatten 29 rune frequencies, so the
+  disproof stands either way.)
 
 ## Scripts
 

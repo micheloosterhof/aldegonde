@@ -134,8 +134,9 @@ featureless placement, and 63 doublets carry no handle. Placement is exhausted.
 - **The seam is only partly inherent here.** The within-word profile is
   cleanly hold-driven, but in the simulated walk the *seam* still passes through
   the per-word base step. LP seam (0.0079) is close to `(1/5)·plaintext-seam
-  (0.0065)` but a little higher, suggesting the seam is *mostly* a hold-exposure
-  with a small extra contribution — not fully pinned.
+  (0.0065)` but a little higher — though the within/seam split is
+  statistically one rate (z=0.87, p=0.38, pooled 0.0066), so the excess is
+  noise, not a separate seam contribution to explain.
 - **d2/d3/d4 exact values depend on the arbitrary powers** `g4²`,`g4³` of the
   specific advance; they land near chance but vary run to run.
 - **Not distinguished from order-5-g by the doublet rate.** "advance-4-hold-1

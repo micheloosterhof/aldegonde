@@ -9,7 +9,9 @@ Runes **five positions apart inside the same word** match each other
 significantly more often than chance (4.92% vs 3.45%), while runes five
 positions apart **across word boundaries** match at exactly the random rate.
 The excess includes a striking sub-pattern: repeated bigrams/trigrams at
-distance exactly 5 within a word (shape `XY···XY`), at ~6x the expected rate.
+distance exactly 5 within a word (shape `XY···XY`), at ~3.2x the
+load-bearing permutation null (9 vs 2.8 ± 1.6; ~6x against the looser
+uniform baseline of 1.5).
 This is the second confirmed deviation from randomness in the unsolved
 corpus, after the doublet suppression — and like the doublet anomaly it is
 word-boundary-aware.
@@ -152,8 +154,10 @@ row — vanishingly rare under any position-independent stream model.
   windows sit exactly on the length-matched permutation null
   (z = −0.19 / +0.62 / +0.04). Hit words do not cluster; no evidence of
   shared key state between nearby words.
-- An independent transcription of the same pages should reproduce the
-  same 102 pairs (transcription-error check).
+- ~~An independent transcription of the same pages should reproduce the
+  same 102 pairs (transcription-error check).~~ Settled: the transcription
+  is verified ground truth (`transcription-verification.md`); the excess
+  is in Cicada's ink.
 
 ## Scripts
 
@@ -196,8 +200,10 @@ here.
 - `cryptodiagnostics-page0-58.md` — the full battery this emerged from;
   also documents the word-aligned repeated phrase ᛞᛄᚢ-ᛒᛖᛁ (the other
   word-state lead).
-- `position-within-word.md`, `word-level-autokey.md` — the open word-aware
-  mechanism families this constrains.
+- `position-within-word.md`, `word-level-autokey.md` — word-aware
+  mechanism families this excess helped constrain; both are disproved,
+  and the surviving word-aware family is the walk
+  (`length-clocked-walk.md`).
 - `doublet-spacing-poisson.md` — the other confirmed anomaly.
 - `lag5-digraph-structure.md`, `docs/lag5-phenomenon.md` — an independent
   characterization of the same +32 lag-5 excess as paired events at
@@ -222,6 +228,8 @@ bigrams/trigrams at distance 5 — cluster inside words at p ~ 1e-3 under a
 null that preserves the entire rune stream. Together with the word-aligned
 repeated phrase, this is direct statistical evidence that the cipher carries
 **word-scoped key state with a distance-5 (or 5-periodic) regularity**. The
-next steps are out-of-sample checks (independent transcription, the d=10
-tail) and deriving which word-keyed mechanisms quantitatively reproduce
-both the 4.92% rate and the doublet suppression.
+next steps are the d6 suppression (the echo's period-5 partner, see
+`d5-partial-alphabet-leak.md`) and deriving which walk-family mechanisms
+quantitatively reproduce both the 4.92% rate and the doublet suppression.
+(The transcription is settled ground truth, and the d=10 tail is
+unmeasurable at ~88-92 eligible pairs, so neither is an available check.)

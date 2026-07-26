@@ -22,7 +22,10 @@ diffusion beyond first-order differencing.
 ## Evidence for
 
 - Second-order differencing would flatten distributions effectively
-- Could potentially explain the doublet suppression
+- ~~Could potentially explain the doublet suppression~~ — it cannot: a
+  ciphertext doublet under this mechanism needs a repeated value in the
+  (second-)difference stream, and language deltas collide at or above the
+  1/29 chance rate, so the mechanism predicts no suppression
 
 ## Evidence against
 

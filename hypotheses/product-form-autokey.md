@@ -85,9 +85,11 @@ plaintext value creates a doublet, so an UNTUNED deterministic emission
 stays at ~3.4% — the doublet-forcing value lands on plaintext at the
 average rate. No arithmetic form escapes: affine relations cannot get
 below 1.25%. The known deterministic escape is a general mixed
-permutation whose adjacent-alphabet relation is tuned to rare plaintext
-bigrams (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) — the length-clocked walk
-family — which is not a two-tap value form and is untouched by this
+permutation whose adjacent-alphabet relation has a rare diagonal against
+plaintext bigrams (`c[i]=c[i-1] ⟺ p[i-1]=g(p[i])`) — deliberate bigram
+tuning is one way to get one, but not necessary: ~1.3-1.5% of random
+mixed alphabets clear the diagonal target. That is the length-clocked
+walk family, which is not a two-tap value form and is untouched by this
 file (see the header note). Within the algebraic class tested here, the
 obstruction holds.
 
@@ -96,8 +98,9 @@ obstruction holds.
 The observed structure needs what two-tap value algebra cannot supply:
 either non-determinism (an OTP-grade key with a rejection rule,
 `stream-cipher-no-repeat.md` / `lag5-back-reference.md`) or a
-state-clocked mixed-permutation substitution with a bigram-tuned
-alphabet relation (`length-clocked-walk.md`, the current lead model).
+state-clocked mixed-permutation substitution with a low-diagonal
+alphabet relation — bigram tuning sufficient but not necessary
+(`length-clocked-walk.md`, the current lead model).
 
 ## Scripts
 

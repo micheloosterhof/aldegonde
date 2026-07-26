@@ -48,7 +48,9 @@ Measured on the clean corpus (`experiments/mark_thirty_symbol.py`):
   better than authorial punctuation habits.
 - **Zero `..` adjacencies** vs ~1.9 expected for independent placement
   (p ~ 0.15): consistent with the corpus's doublet suppression extending
-  to the 30th symbol.
+  to the 30th symbol. Weak: the mark-gap analysis in the battery section
+  below reads this as the tail of a slightly under-dispersed process, not
+  an avoidance law like the doublets' min-gap-6.
 - **Uniform rune context**: the runes immediately before marks (chi2 25.0,
   df 28) and after marks (chi2 35.5) are uniform; mark gaps are
   near-exponential (cv 0.91). A mixing cipher state, no structure.

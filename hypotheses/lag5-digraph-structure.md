@@ -253,12 +253,16 @@ it stays on the books as unexplained but is no longer an attack surface.
 
 ## What could explain it (open)
 
-The constraint for future hypotheses: a mechanism must generate consecutive
-5-grams agreeing in (1st,2nd) or (1st,5th) positions ~85% above chance,
-concentrated in (but not exclusive to) section 4, while leaving every other
-statistic in `README.md` flat — including doublet suppression and zero
-triplets. Tested since via `experiments/mechanism_fingerprint.py`, all
-negative:
+The remaining constraint is narrower than the original two-face demand:
+the d1 face (and the single-rune echo) is accounted for by plaintext
+morphology passing through the walk's `g^5=id` echo, and the d4 frame
+face is retired to a scan-noise-compatible watch-item with no geometric
+or key-equation handle (see the anatomy above). Only a mechanism claiming
+the d4 count excess — consecutive 5-grams agreeing in (1st,5th) positions
+above chance, concentrated in (but not exclusive to) section 4, while
+leaving every other statistic in `README.md` flat, including doublet
+suppression and zero triplets — would still engage this section. Tested
+since via `experiments/mechanism_fingerprint.py`, all negative:
 
 - Bifid fractionation periods 5/7/10: period 5 couples lag-5 strongly but
   with the wrong shape (all separations d=1..4 elevated, mono kappa 1.45 vs
@@ -307,8 +311,8 @@ Still open:
 - `within-word-d5-coincidence.md` — the word-boundary face of this same
   phenomenon; reconciled above.
 - `ciphertext-autokey.md` — depth-L split evidence extended here.
-- `bifid-fractionation.md` — the leading untested mechanism family for this
-  signature.
+- `bifid-fractionation.md` — tested against this signature and disproved
+  (couples lag-5 with the wrong shape and fails the base fingerprint).
 - `doublet-spacing-poisson.md` — the other confirmed characterization.
 
 ## Verdict

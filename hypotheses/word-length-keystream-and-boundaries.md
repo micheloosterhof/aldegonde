@@ -3,9 +3,11 @@ type: observation
 ---
 # Word-Length Keystream & Boundary Authenticity
 
-Two probes of the one confirmed open channel — the word lattice (boundaries
-+ lengths), which is transmitted as readable plaintext metadata.
-(`experiments/word_lattice.py`, June 2026.)
+Probes of the visible metadata channel — word boundaries, word lengths,
+and sentence marks. The channel is not established as readable plaintext
+metadata: the '.' marks demonstrably do not carry English sentence
+semantics (C), and the boundaries' sequential structure is independently
+suspicious (B). (`experiments/word_lattice.py`, June 2026.)
 
 ## A. Keystream from word-length context — disproved
 

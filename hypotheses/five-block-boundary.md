@@ -46,7 +46,11 @@ Verdict).
   "all five outputs distinct per round" variant (which would suppress
   skip-2..4 coincidences by 60%) but exactly matches consecutive-distinct.
 - Lag-5 match-pair structure at separations 1 and 4 only, with ~equal
-  excess, matching the two edge-pair geometries.
+  excess, matching the two edge-pair geometries. No longer evidence for:
+  the simulator grid failed to reproduce the d1/d4 selectivity (see
+  Simulator results), and the d1 face is accounted for as plaintext
+  morphology passing through the walk's g⁵=id echo
+  (`lag5-digraph-structure.md`).
 - Cooldown likelihood fit: doublet gaps prefer "5-position dead time +
   memoryless" over pure memoryless by a likelihood ratio of ~18 (and the
   minimum observed gap is 6). Read this as weak: the later placement

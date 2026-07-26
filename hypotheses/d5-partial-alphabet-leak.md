@@ -94,7 +94,10 @@ suppression **recurs at the period-5 interval.** This is striking because in
 real prose d6 is one of the *highest*-coincidence distances (IoC 2.12): the
 cipher takes a distance where plaintext coincides heavily and pushes it below
 flat, which only happens if the g¹ relation that kills adjacent doublets acts
-again 5 positions later.
+again 5 positions later. Quantitative caveat (`mixed-cycle-progression.md`):
+at the LP-implied tuning depth no simulated mechanism reproduces the d6
+DEPTH — simulated 0.033-0.040 vs observed 0.0245 — so the g¹ recurrence
+accounts for the direction of the dip, not its magnitude.
 
 So the period-5 is confirmed twice: **excess at phase 0 (d5), suppression at
 phase 1 (d1 and d6).** Multiple-testing note: d5 (p=0.001) survives correction
@@ -169,14 +172,14 @@ whether phase (d mod 5) captures all the structure:
   be positionally near-baseline.
 
 **φ-ladder restatement (July 2026)**: inverting the full within-word
-staircase through r_d = φ_d·K_d + (1−φ_d)·(1−K_d)/28 with K_d from
-register prose in the LP length mix (`experiments/mixed_cycle_g.py`)
-gives φ5 = 0.59 ± 0.18 — the partial-vs-full tension at ~2.3σ from full
-leak (order-5 predicts φ5 = 1), slightly sharper than the bootstrap CI
-here but subject to the same register-calibration caveat. The
-mixed-cycle explanation of the partiality is disproved by the d6 cell
-(`mixed-cycle-progression.md`); the partial echo remains the open
-tension of the order-5 formulation.
+staircase through r_d = φ_d·K_d + (1−φ_d)·(1−K_d)/28 with K_d measured
+on real words of register prose in the LP length mix
+(`experiments/mixed_cycle_g.py`) gives φ5 = 0.85 ± 0.26 — consistent
+with full leak (order-5 predicts φ5 = 1) and with partial leak alike,
+matching the bootstrap verdict here: partial-vs-full is undecidable on
+this corpus. (Measuring K_d on random stream segments instead of real
+words biases φ5 low.) The mixed-cycle explanation of the partiality is
+disproved by the d6 cell (`mixed-cycle-progression.md`).
 
 ## Evidence against
 

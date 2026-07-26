@@ -16,12 +16,15 @@ does **not** hold; a weaker mod-5 phase effect might.
 
 ## Status
 
-**Status**: weak (nominal trough; does not survive multiple-test correction)
+**Status**: retired (scan noise; does not survive multiple-test correction,
+and the word-length-periodicity mechanism is refuted by test F)
 
 The count is a hard fact, but on its own the lag does not clear a lag-scan
-correction (Šidák over 79 lags → p ≈ 0.26). The one thread keeping it above
-noise is the mod-5 phase clustering, and that thread is partly circular. Kept
-as a watch-item, not a finding.
+correction (Šidák over 79 lags → p ≈ 0.26). With test F refuting the only
+mechanical candidate, the deficit is read as scan noise. The sole remaining
+(optional) thread is the mod-5 phase clustering, which is partly circular
+and counts for nothing until the out-of-sample 5k+1 tail scan reproduces
+it.
 
 ## What was measured
 
@@ -130,11 +133,12 @@ with a local artifact and with a real effect that only some sections encode.
 
 ## Predictions
 
-- If word-length periodicity is the cause, the deficit should track
-  word-position alignment and vanish when pairs are stratified by word-position.
-- If the mod-5 phase effect is real, the 5k+1 depletion should reproduce in an
-  independent transcription and in the not-yet-scanned tail beyond lag 80,
-  *excluding* lags 11 and 76.
+- ~~If word-length periodicity is the cause, the deficit should track
+  word-position alignment and vanish when pairs are stratified by
+  word-position.~~ Refuted by test F: no alignment stratum carries the
+  deficit and the boundary-permutation null leaves it exactly unchanged.
+- If the mod-5 phase effect is real, the 5k+1 depletion should reproduce in
+  the not-yet-scanned tail beyond lag 80, *excluding* lags 11 and 76.
 - Any candidate decryption need not explain this until it survives correction;
   it is currently below the bar the lag-5 anomaly cleared.
 
@@ -159,7 +163,9 @@ with a local artifact and with a real effect that only some sections encode.
   nothing survives multiple-test correction" line this deficit is consistent
   with.
 - `position-within-word.md`, `word-length-keystream-and-boundaries.md` — the
-  word-structure mechanisms the word-length-periodicity test would engage.
+  word-structure mechanisms the word-length-periodicity test (test F) was
+  built to engage; it ran all-negative, so this deficit places no
+  constraint on them.
 
 ## Verdict
 

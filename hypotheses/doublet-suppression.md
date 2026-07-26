@@ -49,4 +49,5 @@ adjacent runes regardless of whether a space intervenes. Zero triplets
 
 - `doublet-spacing-poisson.md` — the spacing of the 86 doublets.
 - `zero-triplets.md` — no run of three.
-- `doublet-marker-rune-ea.md` — what the doublets might mark (unresolved).
+- `doublet-marker-rune-ea.md` — what the doublets might mark (the
+  single-fixed-rune marker class is disproved; a key event survives).
