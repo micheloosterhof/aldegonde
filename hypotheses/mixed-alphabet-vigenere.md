@@ -169,6 +169,54 @@ generically at background but cheap to verify per candidate), the
 positional-profile constraint on the diagonal class, and the
 requirement that the same schedule leave the seam channel clean.
 
+### The census in plain terms
+
+For any candidate (alphabet + five turns), three statistics of the
+ciphertext it would produce are predictable exactly, with no
+simulation: the double-letter rate and the repeat rates at distances 4
+and 6. The corpus fixes what those must be, so every key that could
+not have produced the corpus's statistics is discarded before any
+decryption is attempted. Three prunings do the work: of the ~700,000
+turn-combinations per alphabet, only ~8 give the right double-letter
+rate; three quarters of those use a null turn (one step leaves the
+alphabet in place), which would bunch the doublets at every 5th
+position and shape them like natural double letters — fingerprints the
+corpus demonstrably lacks; and the distance-6 repeat rate cuts another
+quarter, with the bonus that this family is the first mechanism found
+that can reach LP's unusually deep distance-6 dip at all. What
+survives is ~560,000 letter-wheel keys × 400 space-wheel keys ≈ 220
+million complete keys — days of compute to try exhaustively, not
+centuries. Caveats: all of this lives inside the keyword assumption
+(keywords are not statistically special, merely listable), and the
+prediction tables come from a stand-in register (runeglish prose in
+the LP length mix).
+
+## Testing a candidate key (the success metric)
+
+Neither quadgram fitness nor IoC is the primary test — quadgrams have
+no gradient here (`no-known-plaintext-foothold.md`) and unigram IoC is
+blind to the wiring. The validated protocol is layered, cheapest
+first:
+
+1. **DJU-BEI agreement, base-free.** Given a full key, every per-word
+   base is `base₀ ∘ M_w` with `M_w` a KNOWN permutation product, so the
+   state-return condition `base_1477 = base_2926` reduces to
+   `M_1477 = M_2926` — checkable with zero unknowns, one 2,928-step
+   walk per key. (The unconditional 6-point weakening — enough fixed
+   points in `M_1477 ∘ M_2926⁻¹` — passes a wrong key at ~1e-3.)
+2. **The 2-rune likelihood, fitting base₀.** For survivors, hill-climb
+   `base₀` on the log-likelihood of the 465 decrypted 2-rune words
+   against the register function-word distribution
+   (`two_rune_gradient.py`, validated on planted keys: exact recovery
+   on the first restart, a 4,047-nat gap between true and random —
+   there is no wrong-key basin to worry about because `base₀` is the
+   only thing being fitted and the rest of the key is frozen).
+3. **Full-decryption confirmation.** Only for keys that light up
+   step 2: decrypt everything; a correct key must show plaintext-like
+   IoC (~1.8, calibrated on the Parable) and readable runeglish under
+   quadgram scoring. At this stage both work fine — they fail only as
+   search gradients, not as verifiers of a fully-specified decryption.
+
 ## Three of the four "cheap filters" are vacuous (July 2026)
 
 Earlier text here and in `length-clocked-walk.md` described the joint
