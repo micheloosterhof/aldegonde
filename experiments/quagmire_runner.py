@@ -295,8 +295,15 @@ def main() -> None:
 
     self_test(ctx, rng)
 
+    if "--parallel" in sys.argv:
+        i = sys.argv.index("--parallel")
+        nproc = int(sys.argv[i + 1]) if i + 1 < len(sys.argv) else 4
+        parallel(ctx, prose_path, nproc)
+        return
+
     if "--run" not in sys.argv:
-        print("self-test only. pass --run [limit] to stream candidates.")
+        print("self-test only. pass --run [limit] to stream candidates, "
+              "or --parallel N for the full sweep.")
         return
 
     limit = None
@@ -362,24 +369,16 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
                     return
 
 
-def pilot(ctx, prose_path, rng, limit):
-    """Timed pilot: stream candidates through the base-free DJU-BEI gate."""
-    import time
-
-    from quagmire_schedule_census import (lp_words, observed_rates,
-                                          phase_tables, sample_register,
-                                          wilson)
+def build_setup(prose_path, lens):
+    """Register tables, sigma candidates, vocab — shared by pilot/workers."""
+    from quagmire_schedule_census import (observed_rates, phase_tables,
+                                          sample_register, wilson)
     from keyword_exhaustion import DICT
 
-    print(f"=== pilot run (limit {limit or 'none'}) ===")
+    from quagmire_schedule_census import lp_words
     words = lp_words()
     obs = observed_rates(words)
     lo1, hi1 = wilson(*obs[1])
-    lens = ctx["lens"]
-    # real LP 2-rune ciphertext words and their word indices
-    real_idx2 = [i for i, w in enumerate(words) if len(w) == 2]
-    real_cipher2 = [tuple(words[i]) for i in real_idx2]
-    print(f"real LP 2-rune words: {len(real_idx2)}")
     pools: dict[int, list[list[int]]] = {}
     for w in prose_words(prose_path):
         r = [IDX_ENG[t] for t in to_runeglish(w)]
@@ -389,55 +388,135 @@ def pilot(ctx, prose_path, rng, limit):
     for _ in range(30):
         reg.extend(sample_register(lens, pools))
     T1, _T4, _T6, cross = phase_tables(reg)
-
     vocab = []
     with open(DICT) as fh:
         for line in fh:
             x = line.strip()
             if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
                 vocab.append(x)
-
     sigmas = sigma_candidates(vocab, cross, 0.0050, 0.0118)
-    print(f"sigma candidates in seam CI: {len(sigmas)}")
+    return words, vocab, T1, lo1, hi1, sigmas
 
-    phases = interval_phases(lens)
-    t0 = time.time()
-    tested = strict_hits = weak_hits = 0
+
+def sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases, limit=None):
+    """Stream a vocab slice through the base-free DJU-BEI gate.
+
+    Returns (tested, strict_survivors, weak_count). Survivors are the
+    rare fp=29 keys as (K, sched, sigma_index); weak (fp>=6) is counted.
+    """
+    tested = weak = 0
     survivors = []
     for K, sched in g_candidates(vocab, T1, lo1, hi1, limit):
         g_by_phase = letter_steps(K, sched)
-        for sigma in sigmas:
+        for si, sigma in enumerate(sigmas):
             prod = interval_product(g_by_phase, sigma, phases)
             fp = fixed_points(prod)
             tested += 1
             if fp == M:
-                strict_hits += 1
-                survivors.append((K, sched, sigma, g_by_phase))
+                survivors.append((K, sched, si))
             elif fp >= 6:
-                weak_hits += 1
+                weak += 1
+    return tested, survivors, weak
+
+
+def pilot(ctx, prose_path, rng, limit):
+    """Timed pilot: stream candidates through the base-free DJU-BEI gate."""
+    import time
+
+    print(f"=== pilot run (limit {limit or 'none'}) ===")
+    lens = ctx["lens"]
+    words, vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
+    real_idx2 = [i for i, w in enumerate(words) if len(w) == 2]
+    real_cipher2 = [tuple(words[i]) for i in real_idx2]
+    print(f"real LP 2-rune words: {len(real_idx2)}")
+    print(f"sigma candidates in seam CI: {len(sigmas)}")
+
+    phases = interval_phases(lens)
+    t0 = time.time()
+    tested, survivors, weak_hits = sweep_chunk(vocab, T1, lo1, hi1, sigmas,
+                                               phases, limit)
     dt = time.time() - t0
     rate = tested / dt if dt else 0
     print(f"tested {tested:,} full keys in {dt:.1f}s ({rate:,.0f}/s)")
-    print(f"  strict DJU-BEI returns (fp=29): {strict_hits}")
+    print(f"  strict DJU-BEI returns (fp=29): {len(survivors)}")
     print(f"  weak returns (fp>=6): {weak_hits}")
     full = 562_165 * len(sigmas)
     print(f"  full space {full:.2e} keys -> ~{full/rate/3600:.1f} "
-          f"CPU-hours at this rate")
+          f"CPU-hours single-threaded")
+    report_survivors(survivors, sigmas, lens, real_cipher2, real_idx2, ctx, rng)
 
-    if survivors:
-        print(f"fitting base_0 on {min(len(survivors), 50)} survivors "
-              f"(real LP 2-rune words):")
-        scored = []
-        for K, sched, sigma, g_by_phase in survivors[:50]:
-            Mw = word_products(g_by_phase, sigma, lens)
-            s, b0 = fit_base0(real_cipher2, real_idx2, Mw, g_by_phase[1],
-                              ctx["table"], ctx["floor"], rng)
-            scored.append((s, K, sched, sigma, b0))
-        scored.sort(reverse=True)
-        for s, K, sched, sigma, b0 in scored[:10]:
-            print(f"  2-rune LL {s:.1f}  sched {sched}")
-        print("(a real key should stand well clear of the survivor pack; "
-              "confirm the top candidates on full-decrypt IoC/quadgrams)")
+
+def report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx, rng):
+    """base_0-fit the strict survivors on the real 2-rune words."""
+    if not survivors:
+        print("no strict DJU-BEI survivors in this slice "
+              "(expected unless the true key is in the family).")
+        return
+    print(f"fitting base_0 on {min(len(survivors), 50)} survivors:")
+    scored = []
+    for K, sched, si in survivors[:50]:
+        g_by_phase = letter_steps(K, sched)
+        Mw = word_products(g_by_phase, sigmas[si], lens)
+        s, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
+                          ctx["table"], ctx["floor"], rng)
+        scored.append((s, sched))
+    scored.sort(reverse=True)
+    for s, sched in scored[:10]:
+        print(f"  2-rune LL {s:.1f}  sched {sched}")
+    print("(a real key should stand well clear; confirm the top "
+          "candidates on full-decrypt IoC/quadgrams)")
+
+
+_W = {}
+
+
+def _init_worker(prose_path, lens):
+    _W["lens"] = lens
+    _W["phases"] = interval_phases(lens)
+    words, vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
+    _W.update(words=words, T1=T1, lo1=lo1, hi1=hi1, sigmas=sigmas)
+
+
+def _work(chunk):
+    return sweep_chunk(chunk, _W["T1"], _W["lo1"], _W["hi1"],
+                       _W["sigmas"], _W["phases"])
+
+
+def parallel(ctx, prose_path, nproc):
+    """Full sweep across nproc workers, chunked by dictionary slice."""
+    import time
+    from multiprocessing import Pool
+
+    from keyword_exhaustion import DICT
+    lens = ctx["lens"]
+    vocab = []
+    with open(DICT) as fh:
+        for line in fh:
+            x = line.strip()
+            if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
+                vocab.append(x)
+    nchunks = nproc * 40
+    chunks = [vocab[i::nchunks] for i in range(nchunks)]
+    print(f"=== parallel sweep: {len(vocab):,} words, {nproc} workers ===")
+    t0 = time.time()
+    tested = weak = 0
+    survivors = []
+    with Pool(nproc, initializer=_init_worker,
+              initargs=(prose_path, lens)) as pool:
+        for tc, sv, wk in pool.imap_unordered(_work, chunks):
+            tested += tc
+            weak += wk
+            survivors.extend(sv)
+            print(f"  progress: {tested:,} keys, {len(survivors)} strict, "
+                  f"{weak} weak, {time.time()-t0:.0f}s", flush=True)
+    dt = time.time() - t0
+    print(f"\nDONE: {tested:,} keys in {dt/3600:.2f}h "
+          f"({tested/dt:,.0f}/s); {len(survivors)} strict, {weak} weak")
+    words, _, _, _, _, sigmas = build_setup(prose_path, lens)
+    idx2 = [i for i, w in enumerate(words) if len(w) == 2]
+    cipher2 = [tuple(words[i]) for i in idx2]
+    report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx,
+                     random.Random(3301))
 
 
 if __name__ == "__main__":
