@@ -36,6 +36,7 @@ Pass --run to stream the real census candidates.
 
 from __future__ import annotations
 
+import json
 import math
 import random
 import sys
@@ -594,6 +595,20 @@ def pilot(ctx, prose_path, rng, limit):
     report_survivors(survivors, sigmas, lens, real_cipher2, real_idx2, ctx, rng)
 
 
+def analyze_survivor(K, sched, sigma, lens, cipher2, idx2, table, floor, rng):
+    """Degeneracy + 2-rune fit for one strict survivor.
+
+    distinct_bases separates a genuine key (visits ~2,928 bases, as the
+    census requires >~600) from the degenerate sigma-in-<g> class the
+    model excludes (small walk group -> trivial return, few bases).
+    """
+    g_by_phase = letter_steps(K, sched)
+    Mw = word_products(g_by_phase, sigma, lens)
+    distinct = len({tuple(m) for m in Mw})
+    ll, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1], table, floor, rng)
+    return distinct, ll, b0
+
+
 def report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx, rng):
     """base_0-fit the strict survivors on the real 2-rune words."""
     if not survivors:
@@ -603,16 +618,17 @@ def report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx, rng):
     print(f"fitting base_0 on {min(len(survivors), 50)} survivors:")
     scored = []
     for K, sched, si in survivors[:50]:
-        g_by_phase = letter_steps(K, sched)
-        Mw = word_products(g_by_phase, sigmas[si], lens)
-        s, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
-                          ctx["table"], ctx["floor"], rng)
-        scored.append((s, sched))
+        distinct, ll, _ = analyze_survivor(K, sched, sigmas[si], lens,
+                                           cipher2, idx2, ctx["table"],
+                                           ctx["floor"], rng)
+        scored.append((ll, distinct, sched))
     scored.sort(reverse=True)
-    for s, sched in scored[:10]:
-        print(f"  2-rune LL {s:.1f}  sched {sched}")
-    print("(a real key should stand well clear; confirm the top "
-          "candidates on full-decrypt IoC/quadgrams)")
+    for ll, distinct, sched in scored[:10]:
+        tag = "DEGENERATE" if distinct < 600 else "non-degenerate"
+        print(f"  2-rune LL {ll:.1f}  bases {distinct:>4} [{tag}]  "
+              f"sched {sched}")
+    print("(a real key: many bases AND high 2-rune LL; degenerate = the "
+          "excluded sigma-in-<g> return)")
 
 
 _W = {}
@@ -645,26 +661,42 @@ def parallel(ctx, prose_path, nproc):
                 vocab.append(x)
     nchunks = nproc * 40
     chunks = [vocab[i::nchunks] for i in range(nchunks)]
+    # setup in the parent too, for immediate per-survivor analysis
+    words, _, _, _, _, sigmas = build_setup(prose_path, lens)
+    idx2 = [i for i, w in enumerate(words) if len(w) == 2]
+    cipher2 = [tuple(words[i]) for i in idx2]
+    rng = random.Random(3301)
+    out_path = ROOT / "experiments" / "quagmire_survivors.jsonl"
+    fout = open(out_path, "w")
     print(f"=== parallel sweep: {len(vocab):,} words, {nproc} workers ===")
+    print(f"survivors -> {out_path}")
     t0 = time.time()
-    tested = weak = 0
-    survivors = []
+    tested = weak = nstrict = 0
     with Pool(nproc, initializer=_init_worker,
               initargs=(prose_path, lens)) as pool:
         for tc, sv, wk in pool.imap_unordered(_work, chunks):
             tested += tc
             weak += wk
-            survivors.extend(sv)
-            print(f"  progress: {tested:,} keys, {len(survivors)} strict, "
+            for K, sched, si in sv:
+                nstrict += 1
+                distinct, ll, b0 = analyze_survivor(
+                    K, sched, sigmas[si], lens, cipher2, idx2,
+                    ctx["table"], ctx["floor"], rng)
+                tag = "DEGENERATE" if distinct < 600 else "CANDIDATE"
+                rec = {"sched": sched, "sigma_idx": si, "bases": distinct,
+                       "two_rune_ll": round(ll, 2), "tag": tag,
+                       "K": K, "base0": b0}
+                fout.write(json.dumps(rec) + "\n")
+                fout.flush()
+                print(f"  *** STRICT SURVIVOR #{nstrict}: bases {distinct}, "
+                      f"2-rune LL {ll:.1f} [{tag}] sched {sched}", flush=True)
+            print(f"  progress: {tested:,} keys, {nstrict} strict, "
                   f"{weak} weak, {time.time()-t0:.0f}s", flush=True)
+    fout.close()
     dt = time.time() - t0
     print(f"\nDONE: {tested:,} keys in {dt/3600:.2f}h "
-          f"({tested/dt:,.0f}/s); {len(survivors)} strict, {weak} weak")
-    words, _, _, _, _, sigmas = build_setup(prose_path, lens)
-    idx2 = [i for i, w in enumerate(words) if len(w) == 2]
-    cipher2 = [tuple(words[i]) for i in idx2]
-    report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx,
-                     random.Random(3301))
+          f"({tested/dt:,.0f}/s); {nstrict} strict, {weak} weak")
+    print(f"survivors written to {out_path}")
 
 
 if __name__ == "__main__":
