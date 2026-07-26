@@ -64,8 +64,10 @@ null at the same sample size.
 diagonal — best `impletive` at 0.0010, `irritability` 0.0011,
 `Gilbertese` 0.0012. Keywords are not special (44th percentile of
 random; the family works because it is large, exactly as for the grids),
-but 12,064 candidates is a list one can push through the full battery
-and the 2-rune verifier in hours. This is a genuine enumerable set — the
+but 12,064 candidates is a list small enough to score per candidate —
+though the full battery and the 2-rune verifier need a complete key,
+so the per-candidate cost is the offset-schedule space, not one run
+(see Verdict). This is a genuine enumerable set — the
 first in the investigation.
 
 **The space step: zero at the point target, but see the section below.**
@@ -127,7 +129,7 @@ cut it substantially. Measured, it does not:
 | joint doublet count | **vacuous** — 4,825,600 of 4,825,600 pairs pass |
 | parity (σ even) | **vacuous** — 0 of 56,000 conjugated shifts rejected |
 | DJU-BEI abelianization | **vacuous** — no content beyond parity |
-| σ ∉ ⟨g⟩, base count ≥ ~600 | still bite |
+| σ ∉ ⟨g⟩, base count ≥ ~600 | unmeasured here; on this space they exclude only same-disk pairs (two conjugated shifts generate the same cyclic group only when the disks agree, and a distinct rotating disk already yields full base diversity), so likely near-vacuous too |
 
 - **Joint doublet count.** `r_g` is an alphabet's *floor* — the cheapest
   non-identity turn — and a real schedule picks five offsets summing to
@@ -252,17 +254,21 @@ Less than first claimed. The two solid demonstrations that a merely
 "mixed" key cannot supply the suppression are **exhaustive over their
 families**: the plain Vigenere shift floor (0.0119, all 29 shifts) and
 the arithmetic-σ floors (0.0122-0.0211, all members of each family) —
-see `sigma-power-step.md`. The keyword tests here and for the σ-disk
-are 12-draw samples, not family exhaustions, and add no independent
-weight: on the within-word table keywords sit at the 83rd percentile of
-random best-of-12, and on the cross-word table at the 12th. Where a
-12-draw sample fails to reach a target, that is a statement about the
-sample size.
+see `sigma-power-step.md`. The superseded 12-keyword samples here and
+for the σ-disk were 12-draw samples, not family exhaustions, and added
+no independent weight: on the within-word table keywords sit at the
+83rd percentile of random best-of-12, and on the cross-word table at
+the 12th. Where a 12-draw sample fails to reach a target, that is a
+statement about the sample size.
 
-The underlying rule may well hold — a freely designed `K` *is* needed
-to reach 0.0001, and nothing keyword-shaped has yet been shown to work
-— but it currently rests on two exhaustive demonstrations, not four,
-and the keyword families remain untested at scale.
+The underlying rule therefore survives only in a narrower form: the
+two exhaustive demonstrations establish that the relation cannot be
+ARITHMETIC. The keyword families, tested at scale by the
+full-dictionary exhaustion above, are not excluded — they contain
+in-band members at the same rate random alphabets do (~1.5%), so
+keyword structure supplies no advantage but no exclusion either.
+Whether any keyword-shaped key passes the full battery is exactly what
+the enumeration is for.
 
 ## Scripts
 
@@ -318,5 +324,7 @@ keywords must disrupt the canonical order substantially, so they are
 long and specific rather than memorable; and the σ half rests on the
 register-sensitive cross-word table.
 
-Next test: run the joint candidate set through the cheap filters, then
-the survivors through the full battery and the 2-rune verifier.
+Next test: enumerate the offset schedules per candidate alphabet — the
+within-word doublet window prunes the ~29⁴ schedule space — then push
+surviving full keys through the exactly-computable d6/d4 predictions,
+the DJU-BEI state return, and the 2-rune verifier.

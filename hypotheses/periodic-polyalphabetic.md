@@ -44,14 +44,19 @@ constructions. All share the property of a fixed repeating key period.
 - `length-clocked-walk.md`, `mixed-alphabet-vigenere.md` — periodic
   polyalphabetic components *inside* a per-word re-keyed walk are a
   different matter: the per-word base destroys the global period, so
-  Friedman cannot see them. Both are excluded instead by the doublet
-  floor (a plain 5-letter Vigenere step floors at 0.0119, a
-  keyword-Quagmire step at 0.0101-0.0197, against 0.0063 observed).
+  Friedman cannot see them. The plain-shift member is excluded by the
+  doublet floor (a 5-letter Vigenere step floors at 0.0119 against
+  0.0063 observed); the mixed-alphabet (Quagmire) member is NOT
+  excluded — the full-dictionary exhaustion leaves 12,064 keyword `g`
+  candidates and it is the live enumerable formulation
+  (`mixed-alphabet-vigenere.md`).
 
 ## Verdict
 
 Disproved by the Friedman test. The absence of any periodic IOC signal rules
 out all fixed-period polyalphabetic ciphers regardless of key length —
-as *global* structure. Period-5 components hidden under a per-word
-re-key are invisible to Friedman and are excluded separately, on the
-doublet rate; see Related.
+as *global* structure (scanned: periodic IoC to period 600, keystream
+reuse to lag 6,400; `no-periodicity.md` and the gap audit). Period-5
+components hidden under a per-word re-key are invisible to Friedman; of
+those, the plain-shift version is excluded on the doublet rate while
+the mixed-alphabet (Quagmire) version remains live — see Related.

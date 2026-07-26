@@ -67,14 +67,15 @@ refuted"):
   Vigenere is a different matter and is NOT excluded**: conjugated
   shifts `K∘(add δ)∘K⁻¹` put the doublet condition on deltas of the
   transformed plaintext `K⁻¹(p)`, which a free `K` reshapes — jointly
-  optimising `K` and five offsets reaches 0.0017. But that escape needs
-  a *freely designed* `K`: simulation shows every KEYWORD-derived `K`
-  floors at 0.0101-0.0197 against the observed 0.0063 (1.6x-3.1x too
-  high), so the enumerable-key version is dead and the surviving version
-  is just another arbitrary 29-permutation. See
-  `mixed-alphabet-vigenere.md`. Third confirmation of the same rule:
-  **no merely-"mixed" key produces this suppression** — the designer
-  routed the permutation against the digraph table deliberately.
+  optimising `K` and five offsets reaches 0.0017. The 12-keyword sample
+  that once closed the keyword version was superseded by the
+  full-dictionary exhaustion: **12,064 keyword alphabets clear the
+  within-word diagonal** (best 0.0010), so the enumerable-key version
+  is LIVE — see `mixed-alphabet-vigenere.md`. What stands of the tuning
+  rule is narrower: the two exhaustive floor computations (plain
+  shifts, the arithmetic families) show the relation cannot be
+  arithmetic; a merely-mixed alphabet is not excluded — ~1.5% of
+  random mixed alphabets clear the target — it is merely atypical.
   **A tuned-diagonal-free reformulation is refuted** — advance-4/hold-1
   (`g4⁴=id`), where the hold exposes 1/5 of plaintext doublets, predicted
   the doublet rate parameter-free but is DISPROVED by the doublet
@@ -160,21 +161,19 @@ newlines are line wraps (words flow across them).
   space step CAN be an ordinary rotating 29-position mixed disk:
   simulated with the real length sequence, a mixed-alphabet disk turned
   a fixed amount per word gives **2,928 distinct bases** (full
-  diversity, far above the ~600 the census wants), has order 29, is
-  even-parity as the DJU-BEI condition requires, and does not normalise
-  ⟨g⟩. So the architecture is buildable as *5-position letter selector +
+  diversity, far above the ~600 the census wants), has order 29, and
+  does not normalise ⟨g⟩ (even parity is automatic for a 29-cycle, so
+  the once-cited parity condition constrains nothing here). So the architecture is buildable as *5-position letter selector +
   29-position space disk*, which is a considerably more concrete device
   than "two arbitrary mixed permutations".
-  **What the wheels cannot be is keyword-set.** Keyword grids for `g`
-  floor at 0.0101-0.0197 against the required 0.0063
-  (`mixed-alphabet-vigenere.md`), and keyword disks for `σ` floor at
-  0.0139-0.0237 against the required 0.0079 across the 12 keywords
-  tried. **Scope caveat**: twelve draws is a sample, not a family test —
-  twelve RANDOM alphabets floor the same way (median best-of-12 0.0160
-  on the cross-word table, 0.0084 on the within-word table, where 12.8%
-  of samples reach the g target). So these tests bound what 12 draws
-  achieve, not what keywords achieve; the keyword families remain
-  untested at scale. See `mixed-alphabet-vigenere.md`.
+  **And the wheels CAN be keyword-set.** The full-dictionary exhaustion
+  (`mixed-alphabet-vigenere.md`) finds 12,064 keyword alphabets for the
+  letter wheel inside the required diagonal band and ~130 keyword disks
+  for the space wheel inside the seam rate's 95% CI — so the two-wheel
+  device is compatible with a keyword key, the only enumerable
+  formulation on the table. (Keywords are not special — they clear the
+  band at the same rate random alphabets do — but the family is
+  enumerable, which random permutations are not.)
 - **No algebraic structure anywhere.** Delta, sum, ratio, product, and all 28
   affine multipliers — within-word AND across the seam — are null beyond the
   coincidence. So `g` and `σ` are general mixed permutations, not
@@ -355,7 +354,9 @@ newlines are line wraps (words flow across them).
   has no construction proposal and cannot be hill-climbed. The diagonal
   band is too weak a filter on its own; progress needs the constraints
   applied JOINTLY (g² near background, positional profile, σ's
-  cross-word diagonal, parity, DJU-BEI) or a principle that pins the
+  cross-word diagonal, the DJU-BEI state return — the parity and
+  abelianization shortcuts are vacuous, `mixed-alphabet-vigenere.md`)
+  or a principle that pins the
   fixed-rune choice and the column rotations. See `g-from-5x5-grid.md`.
 - **Is `g` provably FIXED? No — but the alternatives cost key material
   without buying anything (July 2026).** What the ciphertext actually
@@ -445,7 +446,7 @@ newlines are line wraps (words flow across them).
 - `per-word-related-alphabets.md` — the predecessor model; this note supersedes
   its "free per-word base" pessimism with the length-clocked deterministic walk.
 - `sigma-power-step.md` — σ is not a power (or near-power) of g; the
-  surviving σ constraints (seam diagonal, parity, group-size floor).
+  surviving σ constraints (seam diagonal, group-size floor).
 - `d5-partial-alphabet-leak.md`, `within-word-d5-coincidence.md`,
   `rune-s-lag5-echo.md` — the d5/d6 structure.
 - `repeated-phrase-dju-bei.md`, `cryptodiagnostics-page0-58.md` — DJU-BEI and
@@ -461,9 +462,11 @@ explains why value-based attacks fail. The key is **small and fixed**, so the
 cipher is breakable in principle — but the barrier is recovering two mixed
 29-permutations, against which every statistical and algebraic shortcut
 tried so far is null. The model does not account for the d4 frame face or
-the rune-S echo; either could falsify or refine it. The realistic paths to
-plaintext are a length-clocked hillclimb on `(base_0, g, σ)` or a
-contiguous crib — noting the keyword-grid exclusion was retracted, see
-above — and
-a short guessed phrase alone cannot verify. Everything here is statistical
+the rune-S echo; either could falsify or refine it. No hillclimb over
+`(g, σ)` can work — the two-rune objective proved the landscape is a
+delta function (`no-known-plaintext-foothold.md`) — so the realistic
+paths to plaintext are enumeration of structured candidates verified
+per key (the keyword Quagmire family of `mixed-alphabet-vigenere.md`
+is the one enumerable set) or a contiguous crib; a short guessed
+phrase alone cannot verify. Everything here is statistical
 shape, not a confirmed decryption.

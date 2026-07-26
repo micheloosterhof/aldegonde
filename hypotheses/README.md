@@ -239,17 +239,20 @@ attack on it can do (derivations and simulations in
    evolutionary search over `(g, σ)` can work, with this or any
    comparable objective. The whole difficulty is concentrated in
    `(g, σ)`, which must come from enumeration over structurally
-   constrained candidates — and constraint 1 says those candidates
-   cannot be keyword-sized. The prefix escape was tested and fails from
+   constrained candidates — and constraint 1 supplies the one known
+   enumerable family, the keyword Quagmire pairs
+   (`mixed-alphabet-vigenere.md`). The prefix escape was tested and fails from
    BOTH ends: basin width and statistical power move oppositely with
    prefix length and never overlap — at K=10 words a 1-swap-wrong σ
    still retains 94% of the signal but 49 runes cannot pin a
    29-permutation (climbs reach near-true scores at 1/29 correct),
    while by K=160 the basin is down to 14% and the climb never leaves
-   the flat. With the joint space at ~1e48, neither search nor
-   enumeration works — the one reducible object is the designer's
-   construction PROCEDURE, not the key. See
-   `no-known-plaintext-foothold.md`.
+   the flat. With the joint space at ~1e48 for general mixed
+   permutations, neither search nor blind enumeration works — the
+   reducible object is the designer's construction PROCEDURE, not the
+   key; the keyword Quagmire family of constraint 1 is the one
+   procedure currently enumerable (~10⁶ alphabet pairs, times the
+   offset schedules). See `no-known-plaintext-foothold.md`.
 
 ## Status values
 
