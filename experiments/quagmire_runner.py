@@ -193,6 +193,149 @@ def check_key(K, sched, sigma, ctx, strict=True):
     return fp
 
 
+def encrypt_walk(plain, base0, g_by_phase, sigma):
+    """Schedule-model encryption (g_by_phase are the phase steps)."""
+    out, base = [], base0[:]
+    for w in plain:
+        out.append([base[g_by_phase[j % 5][p]] for j, p in enumerate(w)])
+        base = compose(base, compose(g_by_phase[(len(w) - 1) % 5], sigma))
+    return out
+
+
+def decrypt_walk(cipher, base0, g_by_phase, sigma):
+    """Inverse of encrypt_walk: recover plaintext from a full key."""
+    ginv = [inverse(g_by_phase[p]) for p in range(5)]
+    out, base = [], base0[:]
+    for w in cipher:
+        binv = inverse(base)
+        out.append([ginv[j % 5][binv[c]] for j, c in enumerate(w)])
+        base = compose(base, compose(g_by_phase[(len(w) - 1) % 5], sigma))
+    return out
+
+
+def manufactured_test(ctx, rng):
+    """End-to-end on a planted key that genuinely returns.
+
+    A random key almost never satisfies a state return, so to exercise
+    the POSITIVE path we plant sigma inside the conjugated-shift group of
+    K: every per-word step is then a conjugated shift, the walk lives in a
+    29-element cyclic group, and pigeonhole forces an exact base return
+    within ~30 words. That return is the anchor. Degenerate as a cipher
+    (this is the excluded sigma-in-<g> case), but it drives the full
+    gate -> base_0 fit -> decrypt chain on the real length sequence.
+    """
+    print("=== manufactured-sample test: a key that returns ===")
+    lens = ctx["lens"]
+    seq = [IDX_ENG[t] for t in to_runeglish("DIUINITY")]
+    seen, K = set(), []
+    for r in seq + list(range(M)):
+        if r not in seen:
+            seen.add(r)
+            K.append(r)
+    sched = [3, 7, 5, 11, (0 - 3 - 7 - 5 - 11) % M]
+    sigma = conj_shift(K, 8)          # in <conj-shifts of K> -> small walk group
+    g_by_phase = letter_steps(K, sched)
+
+    Mw = word_products(g_by_phase, sigma, lens)
+    first, anchor = {}, None
+    for w, m in enumerate(Mw):
+        t = tuple(m)
+        if t in first:
+            anchor = (first[t], w)
+            break
+        first[t] = w
+    assert anchor, "no state return found in the corpus"
+    a, b = anchor
+    print(f"  planted key returns at words {a}/{b} (interval {b - a})")
+
+    phases_ab = [(L - 1) % 5 for L in lens[a:b]]
+    fp_true = fixed_points(interval_product(g_by_phase, sigma, phases_ab))
+    assert fp_true == M, f"gate rejected a genuine return: fp={fp_true}"
+    bad = sigma[:]
+    bad[0], bad[1] = bad[1], bad[0]
+    fp_bad = fixed_points(interval_product(g_by_phase, bad, phases_ab))
+    assert fp_bad < M, f"one-swap sigma wrongly passed: fp={fp_bad}"
+    print(f"  gate: genuine key fp=29 (accept), one-swap sigma fp={fp_bad} "
+          f"(reject)")
+
+    base_true = list(range(M))
+    rng.shuffle(base_true)
+    cipher = encrypt_walk(ctx["plain"], base_true, g_by_phase, sigma)
+    idx2 = ctx["idx2"]
+    cipher2 = [tuple(cipher[i]) for i in idx2]
+
+    s_fit, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
+                          ctx["table"], ctx["floor"], rng)
+    agree = sum(1 for x in range(M) if b0[x] == base_true[x])
+    print(f"  base_0 fit: {agree}/29 runes recovered (2-rune LL {s_fit:.1f})")
+    assert agree >= 27, f"base_0 fit failed: {agree}/29"
+
+    dec = decrypt_walk(cipher, b0, g_by_phase, sigma)
+    ok = sum(1 for w in range(len(dec)) if dec[w] == ctx["plain"][w])
+    frac = ok / len(dec)
+    print(f"  full decrypt with recovered key: {ok}/{len(dec)} words "
+          f"({frac:.1%}) match the planted plaintext")
+    assert frac >= 0.99, f"decrypt round-trip only {frac:.1%}"
+
+    # Force a genuine return at the PRODUCTION anchor (1477/2926) and check
+    # the deployed check_key path accepts it. With sigma = conj_shift(K, d),
+    # every step is conj_shift(K, s_phase + d); the interval product is
+    # conj_shift(K, S + 1449 d), identity iff S + 1449 d == 0 (mod 29).
+    s_run = [0, 0, 0, 0, 0]
+    acc = 0
+    for j in range(1, 5):
+        acc = (acc + sched[j]) % M
+        s_run[j] = acc
+    S = sum(s_run[(L - 1) % 5] for L in lens[DJU_A:DJU_B]) % M
+    n_int = (DJU_B - DJU_A) % M
+    d = None
+    for cand in range(1, M):
+        if (S + n_int * cand) % M == 0:
+            d = cand
+            break
+    assert d is not None, "no nonzero sigma delta forces the return"
+    sigma2 = conj_shift(K, d)
+    fp_prod = check_key(K, sched, sigma2, ctx, strict=True)
+    assert fp_prod == M, f"production check_key rejected a forced return: {fp_prod}"
+    print(f"  production gate (check_key at {DJU_A}/{DJU_B}): forced-return "
+          f"key with sigma delta {d} accepted (fp=29)")
+    print("  manufactured-sample test PASSED "
+          "(found the key, recovered base_0, decrypted)\n")
+
+
+def verify_candidate_generation(ctx, prose_path):
+    """g_candidates over a vocab slice must match the census count."""
+    from quagmire_schedule_census import (lp_words, observed_rates, wilson,
+                                          phase_tables, sample_register)
+    from keyword_exhaustion import DICT, alphabets, kw_runes
+    print("=== candidate-generation cross-check ===")
+    lens = ctx["lens"]
+    words = lp_words()
+    obs = observed_rates(words)
+    lo1, hi1 = wilson(*obs[1])
+    pools: dict[int, list[list[int]]] = {}
+    for w in prose_words(prose_path):
+        r = [IDX_ENG[t] for t in to_runeglish(w)]
+        if r:
+            pools.setdefault(len(r), []).append(r)
+    reg = []
+    for _ in range(30):
+        reg.extend(sample_register(lens, pools))
+    T1, _t4, _t6, _cross = phase_tables(reg)
+    vocab = []
+    with open(DICT) as fh:
+        for line in fh:
+            x = line.strip()
+            if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
+                vocab.append(x)
+    slice_ = vocab[:500]
+    gen = sum(1 for _ in g_candidates(slice_, T1, lo1, hi1, None))
+    print(f"  g_candidates over first 500 words: {gen:,} (K, schedule) pairs")
+    print(f"  cross-check: `quagmire_schedule_census.py <prose> 500` reports "
+          f"the same in-band total (1,219 at the seed-3301 register draw)")
+    return gen
+
+
 def build_bases(K, sched, sigma, base0, lens):
     """The actual per-word bases under encryption (for validation)."""
     g_by_phase = letter_steps(K, sched)
@@ -294,6 +437,11 @@ def main() -> None:
            "table": table, "floor": floor}
 
     self_test(ctx, rng)
+
+    if "--verify" in sys.argv:
+        manufactured_test(ctx, rng)
+        verify_candidate_generation(ctx, prose_path)
+        return
 
     if "--parallel" in sys.argv:
         i = sys.argv.index("--parallel")
