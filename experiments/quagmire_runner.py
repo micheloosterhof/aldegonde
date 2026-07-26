@@ -547,25 +547,38 @@ def build_setup(prose_path, lens):
     return words, vocab, T1, lo1, hi1, sigmas
 
 
-def sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases, limit=None):
-    """Stream a vocab slice through the base-free DJU-BEI gate.
+def sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases, lens,
+                cipher2, idx2, table, floor, rng,
+                thresh=-4000.0, min_fp=6, limit=None):
+    """Stream a vocab slice through the CORRECT DJU-BEI test.
 
-    Returns (tested, strict_survivors, weak_count). Survivors are the
-    rare fp=29 keys as (K, sched, sigma_index); weak (fp>=6) is counted.
+    The observed DJU-BEI ciphertext repeat forces base_1477 and base_2926
+    to agree on the 6 plaintext image points, i.e. fixed_points of the
+    interval product >= 6 (base_0-independent). Full equality (fp=29) is
+    reachable only by the degenerate sigma-in-<g> class and so is NOT the
+    right condition. Every key with fp >= min_fp is 2-rune-fit; those
+    scoring above `thresh` (well over the ~-4950 random floor) are kept as
+    candidates. Returns (tested, weak_count, candidates), candidates as
+    (sched, si, fp, ll, base0).
     """
     tested = weak = 0
-    survivors = []
+    cands = []
     for K, sched in g_candidates(vocab, T1, lo1, hi1, limit):
         g_by_phase = letter_steps(K, sched)
         for si, sigma in enumerate(sigmas):
             prod = interval_product(g_by_phase, sigma, phases)
             fp = fixed_points(prod)
             tested += 1
-            if fp == M:
-                survivors.append((K, sched, si))
-            elif fp >= 6:
-                weak += 1
-    return tested, survivors, weak
+            if fp < min_fp:
+                continue
+            weak += 1
+            Mw = word_products(g_by_phase, sigma, lens)
+            ll, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
+                               table, floor, rng, restarts=2)
+            if ll > thresh:
+                distinct = len({tuple(m) for m in Mw})
+                cands.append((K, sched, si, fp, distinct, round(ll, 1), b0))
+    return tested, weak, cands
 
 
 def pilot(ctx, prose_path, rng, limit):
@@ -580,19 +593,21 @@ def pilot(ctx, prose_path, rng, limit):
     print(f"real LP 2-rune words: {len(real_idx2)}")
     print(f"sigma candidates in seam CI: {len(sigmas)}")
 
+    _, table, floor = load_register(prose_path)
     phases = interval_phases(lens)
     t0 = time.time()
-    tested, survivors, weak_hits = sweep_chunk(vocab, T1, lo1, hi1, sigmas,
-                                               phases, limit)
+    tested, weak, cands = sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases,
+                                      lens, real_cipher2, real_idx2, table,
+                                      floor, rng, limit=limit)
     dt = time.time() - t0
     rate = tested / dt if dt else 0
     print(f"tested {tested:,} full keys in {dt:.1f}s ({rate:,.0f}/s)")
-    print(f"  strict DJU-BEI returns (fp=29): {len(survivors)}")
-    print(f"  weak returns (fp>=6): {weak_hits}")
-    full = 562_165 * len(sigmas)
-    print(f"  full space {full:.2e} keys -> ~{full/rate/3600:.1f} "
-          f"CPU-hours single-threaded")
-    report_survivors(survivors, sigmas, lens, real_cipher2, real_idx2, ctx, rng)
+    print(f"  weak DJU-BEI (fp>=6): {weak}; candidates (2-rune LL>-4000): "
+          f"{len(cands)}")
+    for K, sched, si, fp, distinct, ll, b0 in sorted(
+            cands, key=lambda c: -c[5])[:10]:
+        tag = "degen" if distinct < 600 else "GENUINE"
+        print(f"    LL {ll} fp {fp} bases {distinct} [{tag}] sched {sched}")
 
 
 def analyze_survivor(K, sched, sigma, lens, cipher2, idx2, table, floor, rng):
@@ -638,12 +653,18 @@ def _init_worker(prose_path, lens):
     _W["lens"] = lens
     _W["phases"] = interval_phases(lens)
     words, vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
-    _W.update(words=words, T1=T1, lo1=lo1, hi1=hi1, sigmas=sigmas)
+    _, table, floor = load_register(prose_path)
+    idx2 = [i for i, w in enumerate(words) if len(w) == 2]
+    cipher2 = [tuple(words[i]) for i in idx2]
+    _W.update(words=words, T1=T1, lo1=lo1, hi1=hi1, sigmas=sigmas,
+              cipher2=cipher2, idx2=idx2, table=table, floor=floor,
+              rng=random.Random(3301))
 
 
 def _work(chunk):
-    return sweep_chunk(chunk, _W["T1"], _W["lo1"], _W["hi1"],
-                       _W["sigmas"], _W["phases"])
+    return sweep_chunk(chunk, _W["T1"], _W["lo1"], _W["hi1"], _W["sigmas"],
+                       _W["phases"], _W["lens"], _W["cipher2"], _W["idx2"],
+                       _W["table"], _W["floor"], _W["rng"])
 
 
 def parallel(ctx, prose_path, nproc):
@@ -661,42 +682,42 @@ def parallel(ctx, prose_path, nproc):
                 vocab.append(x)
     nchunks = nproc * 40
     chunks = [vocab[i::nchunks] for i in range(nchunks)]
-    # setup in the parent too, for immediate per-survivor analysis
-    words, _, _, _, _, sigmas = build_setup(prose_path, lens)
-    idx2 = [i for i, w in enumerate(words) if len(w) == 2]
-    cipher2 = [tuple(words[i]) for i in idx2]
-    rng = random.Random(3301)
-    out_path = ROOT / "experiments" / "quagmire_survivors.jsonl"
+    out_path = ROOT / "experiments" / "quagmire_candidates.jsonl"
     fout = open(out_path, "w")
-    print(f"=== parallel sweep: {len(vocab):,} words, {nproc} workers ===")
-    print(f"survivors -> {out_path}")
+    print(f"=== parallel sweep (weak-DJU-BEI + 2-rune fit): "
+          f"{len(vocab):,} words, {nproc} workers ===")
+    print(f"candidates (2-rune LL > -4000) -> {out_path}")
     t0 = time.time()
-    tested = weak = nstrict = 0
+    tested = weak = ncand = 0
+    best_ll = -1e18
     with Pool(nproc, initializer=_init_worker,
               initargs=(prose_path, lens)) as pool:
-        for tc, sv, wk in pool.imap_unordered(_work, chunks):
+        for tc, wk, cands in pool.imap_unordered(_work, chunks):
             tested += tc
             weak += wk
-            for K, sched, si in sv:
-                nstrict += 1
-                distinct, ll, b0 = analyze_survivor(
-                    K, sched, sigmas[si], lens, cipher2, idx2,
-                    ctx["table"], ctx["floor"], rng)
-                tag = "DEGENERATE" if distinct < 600 else "CANDIDATE"
-                rec = {"sched": sched, "sigma_idx": si, "bases": distinct,
-                       "two_rune_ll": round(ll, 2), "tag": tag,
-                       "K": K, "base0": b0}
+            for K, sched, si, fp, distinct, ll, b0 in cands:
+                ncand += 1
+                best_ll = max(best_ll, ll)
+                degen = distinct < 600
+                rec = {"sched": sched, "sigma_idx": si, "fp": fp,
+                       "bases": distinct, "two_rune_ll": ll,
+                       "degenerate": degen, "K": K, "base0": b0}
                 fout.write(json.dumps(rec) + "\n")
                 fout.flush()
-                print(f"  *** STRICT SURVIVOR #{nstrict}: bases {distinct}, "
-                      f"2-rune LL {ll:.1f} [{tag}] sched {sched}", flush=True)
-            print(f"  progress: {tested:,} keys, {nstrict} strict, "
-                  f"{weak} weak, {time.time()-t0:.0f}s", flush=True)
+                print(f"  *** CANDIDATE #{ncand}: 2-rune LL {ll} fp {fp} "
+                      f"bases {distinct} {'[degen]' if degen else '[GENUINE]'}"
+                      f" sched {sched}", flush=True)
+            print(f"  progress: {tested:,} keys, {weak} weak(fp>=6), "
+                  f"{ncand} cands, best LL {best_ll:.0f}, "
+                  f"{time.time()-t0:.0f}s", flush=True)
     fout.close()
     dt = time.time() - t0
     print(f"\nDONE: {tested:,} keys in {dt/3600:.2f}h "
-          f"({tested/dt:,.0f}/s); {nstrict} strict, {weak} weak")
-    print(f"survivors written to {out_path}")
+          f"({tested/dt:,.0f}/s); {weak} weak(fp>=6), {ncand} candidates, "
+          f"best 2-rune LL {best_ll:.0f}")
+    print(f"candidates written to {out_path}")
+    print("(a genuine keyword-Quagmire key: 2-rune LL ~-1300, non-degenerate; "
+          "if best LL stays ~-4900 the family is excluded)")
 
 
 if __name__ == "__main__":
