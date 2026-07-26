@@ -6,7 +6,7 @@ type: observation
 ## Feature
 
 The full 29x29 contingency table of (C[i], C[i+d]) is at chance for every lag
-d >= 2; only d=1 (the doublet diagonal) shows dependence.
+d = 2..100; only d=1 (the doublet diagonal) shows dependence.
 
 ## Measurement
 
@@ -18,6 +18,7 @@ d >= 2; only d=1 (the doublet diagonal) shows dependence.
 | 1 | 1115 | **+7.4** (doublet diagonal) |
 | 2 | 778 | -0.1 |
 | 3-10 | 750-843 | \|z\| < 1.5 |
+| 11-100 | — | worst \|z\| = 2.4 (lag 80), under the 100-lag Bonferroni bar ~3.3 |
 
 ## Significance
 

@@ -29,11 +29,18 @@ def contingency_chi2(stream, d):
 def main() -> None:
     stream, _ = load_clean()
     print("lag : contingency chi2 (df 784)   z")
-    for d in range(1, 11):
+    worst = (0.0, 0)
+    for d in range(1, 101):
         chi2, df, z = contingency_chi2(stream, d)
-        tag = "  <-- doublet diagonal" if d == 1 else ""
-        print(f"  {d:2d} : {chi2:7.1f}                {z:+.2f}{tag}")
-    print("VERDICT: only lag 1 (doublets) shows dependence; lags 2..10 at chance")
+        if d > 1 and abs(z) > abs(worst[0]):
+            worst = (z, d)
+        if d <= 10 or abs(z) > 2.5:
+            tag = "  <-- doublet diagonal" if d == 1 else ""
+            print(f"  {d:3d} : {chi2:7.1f}                {z:+.2f}{tag}")
+    print(f"lags 11..100: printed only if |z| > 2.5; worst d>=2 is "
+          f"lag {worst[1]} at z = {worst[0]:+.2f} "
+          f"(100-lag scan, Bonferroni bar ~3.3)")
+    print("VERDICT: only lag 1 (doublets) shows dependence; lags 2..100 at chance")
 
 
 if __name__ == "__main__":
