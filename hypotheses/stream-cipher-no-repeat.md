@@ -36,9 +36,15 @@ explanation of the corpus, not just this hypothesis.
 The avoidance parameter is now pinned (`experiments/unit5_telex_tests.py`):
 the doublet rate fits P(doublet) = (1/5) x (1/29) with NO free parameters
 (86 observed vs 89.3 predicted, z = -0.36). The acceptance probability is
-exactly 1/5 — a suspiciously clean design constant, and the second
-independent appearance of the number 5 in the fingerprint (after the lag-5
-paired-match structure). The 1/5 is realized memorylessly: doublet positions
+exactly 1/5. The numeric echo of the number 5 elsewhere in the fingerprint
+(the lag-5 paired-match structure) is coincidence, not design evidence:
+the one mechanism that would have made the two 5s a shared design
+constant — the stay-slot hold — is disproved by the doublet position
+profile (its doublets would be plaintext double letters, start-forbidden
+and end-heavy; observed doublets are positionally flat,
+`stay-slot-hold.md`). This hypothesis is instead a stochastic per-event
+acceptance at 1/5, which predicts exactly the flat profile observed.
+The 1/5 is realized memorylessly: doublet positions
 are uniform mod 5, gaps have no mod-5 lattice, and word-position rates show
 no period-5 comb — so it is a per-event probability, not a positional
 "units of 5" grid (consistent with the confirmed Poisson spacing). Soft
@@ -85,9 +91,12 @@ single-bit-flip nudge.
   right generator (same loophole as the AN END interrupts).
 - The word-aligned repeated 6-gram (`repeated-phrase-dju-bei.md`) is hard to
   reconcile with a position-driven keystream: if the keystream states at the
-  two locations were equal they would stay synchronized past the 7 runes
-  (LFSR-style states evolve deterministically), but the match dies
-  immediately. Under any keystream-only model the event is chance (p < 1e-3).
+  two locations were equal they would stay synchronized past the 6 runes
+  (LFSR-style states evolve deterministically), but the match ends at the
+  6-gram (the apparent 7th matching rune is a cross-boundary coincidence
+  with the solved AN END page). Under any keystream-only model the event is
+  chance (p ≈ 0.01, clean-corpus Monte Carlo,
+  `experiments/anchored_repeats.py`).
 
 ## Scripts
 

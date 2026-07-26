@@ -171,7 +171,9 @@ bounded-context test. What survives:
 1. **Uniform keystream + rare-rune ditto**: J[t] = img(P[t]) + K[t] with
    K effectively uniform-iid (true pad or strong PRNG), plus the doublet
    rule marking a rare plaintext event. This fits every observed statistic;
-   under it the DJU-BEI depth is a ~0.5% coincidence and the only
+   under it the DJU-BEI depth is a ~1% coincidence (clean-corpus Monte
+   Carlo, p ≈ 0.01, `experiments/anchored_repeats.py` /
+   `repeated-phrase-dju-bei.md`) and the only
    recoverable plaintext information is the 86 marked positions and the
    word lengths.
 2. **A designed, balanced inner table — or a generic one with >= 6 runes

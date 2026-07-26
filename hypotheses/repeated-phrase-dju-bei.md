@@ -95,7 +95,7 @@ batteries under "Additional negative space" were re-run on the clean
 
 | probe | result |
 |-------|--------|
-| local kappa profile at shift 6395 around the match | flat outside the 7 runes — the depth is exactly 7, keystreams do NOT stay aligned |
+| local kappa profile at shift 6395 around the match | flat outside the matched runes — the alignment dies with the 6-gram (plus the 1/29 boundary coincidence); keystreams do NOT stay aligned |
 | structural coordinates | unrelated: section 8+28 vs 14+302, page offset 28 vs 70, line offset 8 vs 2 — no restart alignment |
 | preceding words | ambiguous: the word before the second occurrence wraps across a line (ᚳᛠᛁᛗ\|ᚳᛉ). Merging the wrap, the preceding words differ (2 vs 6 runes), arguing against key = f(previous plaintext word). Treating the line break as a boundary, both preceding fragments are 2 runes (ᛒᚠ vs ᚳᛉ) — which a word-keyed model would predict |
 | shifted key reuse (repeats in the delta stream, len >= 6) | only this same phrase (shift 0) — no Vigenere-style reuse at a nonzero additive offset |
@@ -106,7 +106,9 @@ batteries under "Additional negative space" were re-run on the clean
 ## Implications
 
 1. **The keystream is not position-unique.** A true running key / OTP over
-   the whole book would make this event pure chance (p < 1e-3). Any viable
+   the whole book would leave this event a ~1% accident (the clean-corpus
+   Monte Carlo rate for a word-anchored, boundary-consistent repeat of
+   this length). Any viable
    hypothesis must let the internal state return to an earlier value.
 2. **Recurrence is word-aligned.** Both anchored repeats begin at word
    starts and their divergence points sit at plausible plaintext word
