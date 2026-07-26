@@ -146,30 +146,42 @@ def score_2rune(cipher2, idx2, base0, Mw, g_phase1, table, floor):
     turn), p1 = g_phase1^-1(base_w^-1(c1)); base_w = base0 . M_w.
     """
     g1inv = inverse(g_phase1)
+    minv2 = [inverse(Mw[i]) for i in idx2]
+    return _fast_score(cipher2, minv2, inverse(base0), g1inv, table, floor)
+
+
+def _fast_score(cipher2, minv2, b0inv, g1inv, table, floor):
+    """2-rune LL with M_w^-1 and g^-1 precomputed; p = M_w^-1(base0^-1(c))."""
     total = 0.0
-    for k, i in enumerate(idx2):
-        binv = inverse(compose(base0, Mw[i]))
+    for k in range(len(cipher2)):
         c0, c1 = cipher2[k]
-        p0 = binv[c0]
-        p1 = g1inv[binv[c1]]
+        mk = minv2[k]
+        p0 = mk[b0inv[c0]]
+        p1 = g1inv[mk[b0inv[c1]]]
         total += table.get((p0, p1), floor)
     return total
 
 
 def fit_base0(cipher2, idx2, Mw, g_phase1, table, floor, rng, restarts=6):
-    """Hill-climb base_0 on the 2-rune likelihood; return (score, base0)."""
+    """Hill-climb base_0 on the 2-rune likelihood; return (score, base0).
+
+    Precomputes M_w^-1 for the 2-rune words once per key, so each score is
+    O(words) instead of O(words x 29).
+    """
+    g1inv = inverse(g_phase1)
+    minv2 = [inverse(Mw[i]) for i in idx2]
     best_s, best_b = -1e18, None
     for _ in range(restarts):
         cur = list(range(M))
         rng.shuffle(cur)
-        cur_s = score_2rune(cipher2, idx2, cur, Mw, g_phase1, table, floor)
+        cur_s = _fast_score(cipher2, minv2, inverse(cur), g1inv, table, floor)
         improved = True
         while improved:
             improved = False
             for a in range(M):
                 for b in range(a + 1, M):
                     cur[a], cur[b] = cur[b], cur[a]
-                    s = score_2rune(cipher2, idx2, cur, Mw, g_phase1,
+                    s = _fast_score(cipher2, minv2, inverse(cur), g1inv,
                                     table, floor)
                     if s > cur_s + 1e-9:
                         cur_s = s
