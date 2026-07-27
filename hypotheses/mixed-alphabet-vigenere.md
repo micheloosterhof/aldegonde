@@ -15,8 +15,11 @@ enumerate.
 
 ## Status
 
-**Status**: unresolved. An earlier "disproved" verdict here rested on a
-12-keyword sample and does not survive its own null — see below.
+**Status**: disproved for the keyword family (enumeration run, negative
+— see "The enumeration, run"), with a register caveat. Not disproved for
+freely-designed (non-keyword) mixed alphabets. An earlier "disproved"
+verdict rested on a 12-keyword sample and was withdrawn; this one rests
+on the full ~3.1×10⁸-key enumeration.
 
 ## Mechanism
 
@@ -380,6 +383,9 @@ the enumeration is for.
   producing the 12,064 `g` and 404 σ candidates.
 - `experiments/joint_keyword_search.py` — the joint space and the
   one-sided doublet filter.
+- `experiments/quagmire_runner.py` — the full enumeration: DJU-BEI
+  6-point return filter + 2-rune base₀ fit, with a manufactured-key
+  self-test; the negative result above.
 - `experiments/abelianization_check.py` — |G/G′| and the parity check
   behind the vacuity table (needs `sympy`).
 
@@ -425,7 +431,52 @@ keywords must disrupt the canonical order substantially, so they are
 long and specific rather than memorable; and the σ half rests on the
 register-sensitive cross-word table.
 
-Next test: the enumeration itself — run the ~2.2 × 10⁸ full keys from
-the schedule census through the DJU-BEI base-agreement walk and the
-2-rune verifier (`experiments/quagmire_schedule_census.py` produces the
-candidate stream; `two_rune_gradient.py` validated the verifier).
+## The enumeration, run (July 2026) — negative for the keyword family
+
+`experiments/quagmire_runner.py` streamed the full candidate space —
+**313,972,400 complete keys** (keyword `g` alphabet-schedules × keyword
+σ disk-turns, within the register-derived diagonal/seam/d6 bands) — and
+tested each against two necessary conditions of the true key:
+
+1. **DJU-BEI partial return.** The observed ciphertext repeat forces
+   base₁₄₇₇ and base₂₉₂₆ to agree on the 6 plaintext image points, i.e.
+   ≥6 fixed points of the interval step-product (base₀-independent).
+   **Not** full base equality: that would require a 1,449-step product
+   of non-commuting permutations to be the identity (~1/29!), reachable
+   only by the degenerate σ∈⟨g⟩ class, so a full-equality filter can
+   never pass a genuine key (an early run made exactly this error and
+   found only 69 degenerate `bases=29` returns).
+2. **The 2-rune function-word likelihood.** Each of the 186,465 keys
+   passing the ≥6 filter (the chance rate, 5.9×10⁻⁴) was scored by
+   fitting base₀ to the 465 real LP 2-rune words. A wrong key floors at
+   the random level (~−4950, verified); a genuine key scores ~−1300 (a
+   planted key the pipeline recovers exactly, `manufactured_test`).
+
+**Result: zero keys scored above −4000.** Every one of the 313.97M
+floored at random. No keyword-derived Quagmire key decrypts the corpus.
+
+**Scope of the exclusion.** It covers keyword-derived alphabets
+(196,898 dictionary words × 4 construction rules, both wheels) whose
+diagonals fall inside the observed bands. It does **not** exclude:
+freely-designed (non-keyword) mixed permutations — the general
+length-clocked walk, never enumerable; a true key whose diagonals fall
+**outside** the bands because the candidate bands were computed against
+a stand-in prose register (Pride & Prejudice runeglish), not the LP's
+own aphoristic register — the standing register caveat, and the biggest
+remaining uncertainty; and the edge case where the 6 DJU-BEI agreements
+are not distinct (the filter used ≥6; an ≥5 fallback is untested).
+
+## Verdict (updated)
+
+The keyword-Quagmire formulation — the investigation's only enumerable
+key — has been enumerated in full and is **negative**: none of the
+~3.1×10⁸ keyword keys within the register-derived bands decrypts the
+corpus. The result is a genuine test, not the vacuous full-return filter
+of the first attempt: the pipeline provably recovers a planted key, and
+the 2-rune discriminator separates real (~−1300) from wrong (~−4950) on
+real LP data. What survives is not keyword-shaped: either a freely
+designed mixed alphabet (no enumeration advantage over the general
+walk), or a keyword key whose diagonals sit outside the bands under the
+LP's true register. The next reducible question is therefore the
+register — whether the candidate bands, computed on prose, are
+representative — not another pass over the same keyword family.

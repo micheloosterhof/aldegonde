@@ -172,11 +172,15 @@ attack on it can do (derivations and simulations in
    respected (23 events, 95% CI [0.0050, 0.0118]), **~130 keyword σ
    candidates**. The two observed rates are not significantly different
    (0.0063 vs 0.0079, z = 0.87; pooled 0.0066), so this is one
-   requirement measured on two tables. Net: a keyword-derived key is NOT
-   excluded — the schedule census prices the full joint space at
-   ~2.2×10⁸ complete keys (562k g alphabet-schedules × 400 σ
-   disk-turns, d6-filtered), the only enumerable formulation the
-   investigation has (`mixed-alphabet-vigenere.md`). (The once-equivalent hold variant —
+   requirement measured on two tables. That keyword family was the only
+   enumerable formulation, and it has now been ENUMERATED IN FULL and is
+   NEGATIVE: all ~3.1×10⁸ keyword keys (both wheels, within the
+   register-derived bands) were tested against the DJU-BEI 6-point
+   return and the 2-rune verifier, and none decrypts the corpus
+   (`mixed-alphabet-vigenere.md`). What survives is not keyword-shaped —
+   a freely designed mixed alphabet (no enumeration advantage), or a
+   key whose diagonals fall outside the bands under the LP's true
+   register (the candidate bands were built on stand-in prose). (The once-equivalent hold variant —
    a period-5 hold exposing 1/5 of plaintext doublets, `stay-slot-hold.md`
    — is disproved by the doublet position-profile test: exposed plaintext
    doubles would be start-forbidden and end-heavy, and the observed
