@@ -122,12 +122,22 @@ A cluster of small, constantly re-derived pieces that belong together:
 - **Kappa z-spectrum over all lags with a frequency-matched null**
   (`lag11_depletion.py:85` — uses p = Σf², strictly better than the 1/N
   null used elsewhere; also `obs_kappa_spectrum.py:12`,
-  `gap_audit.py:78`, `jstream_battery.py:49`, `gf29_battery.py:57`),
-  with the √(2 ln n) expected-max threshold (4 verbatim copies:
+  `gap_audit.py:78`, `jstream_battery.py:49`, `gf29_battery.py:57`).
+- **Multiple-testing helpers** — every scan re-derives its own
+  correction, and they belong in one small module:
+  **Bonferroni** thresholds and budgets
+  (`recurrence_scan.py:43` — `chi2.isf(alpha/ntests, df)` over the
+  coefficient×lag grid; `lp_battery14.py:72` explicit test-count budget;
+  `gf29_battery.py:94` lagged-Fibonacci scan; `jstream_battery.py:117`),
+  **Šidák** correction (`lag11_depletion.py:202`), the
+  **√(2 ln n) expected-max threshold** for z-spectra (4 verbatim copies:
   `jstream_battery.py`, `gf29_battery.py`, `pattern_census.py:81`,
-  `residual_tests.py:97`), Šidák correction (`lag11_depletion.py:202`),
-  and the "observed vs expected count of |z| ≥ t" multiplicity budget
-  (`lag11_depletion.py:119`).
+  `residual_tests.py:97`), and the
+  "observed vs expected count of |z| ≥ t" **multiplicity budget**
+  (`lag11_depletion.py:119`). These are the analytic complements to the
+  empirical family-wise `stats/resample.family_pvalue` that already
+  exists: Bonferroni/Šidák when trials are cheap and the null is known,
+  the resampled max when it is not.
 - **Wilson-Hilferty chi²→z→p helper** — 4 verbatim copies
   (`obs_flat_ioc.py:17`, `obs_bigram_ioc.py:22`, `obs_dependence.py:12`,
   `obs_line_initial.py:18`).
@@ -152,8 +162,10 @@ A cluster of small, constantly re-derived pieces that belong together:
   (`recurrence_scan.py:43`, `gf29_battery.py:94`) — the canonical
   LFSR / lagged-Fibonacci / affine-relation detector for any modulus.
 
-**Home:** a new `stats/chisq.py` plus additions to `stats/kappa.py` and a
-new `analysis/relations.py` for the functional scans.
+**Home:** a new `stats/multitest.py` (Bonferroni, Šidák, expected-max,
+multiplicity budget), a new `stats/chisq.py`, additions to
+`stats/kappa.py`, and a new `analysis/relations.py` for the functional
+scans.
 
 ### 4. Permutation algebra + doublet-rate bounds
 
