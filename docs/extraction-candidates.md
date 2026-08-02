@@ -39,7 +39,7 @@ default and the look-elsewhere correction unavoidable.
 
 ## Tier 1 — highest duplication pressure, clearly general
 
-### 1. Generative doublet-rate-matched Markov null
+### 1. Generative Markov surrogate null (constrained transitions)
 
 **Copies (~10):** `delta5_generalization.py:80` (`surrogates`, batched
 numpy), `aligned_kappa_nulls.py:90` (`gen_doublet_suppressed`),
@@ -48,16 +48,29 @@ numpy), `aligned_kappa_nulls.py:90` (`gen_doublet_suppressed`),
 (`gen_suppressed`), `phrase_repeats.py:82`, `word_transform_census.py:162`,
 `transposition_link.py:114`, `depth_search.py:91`.
 
-The single most-copied piece of code in `experiments/`. It is **not** the
-same as the existing `stats/nulls.doublet_shuffle`: that null is
-frequency-exact and shuffle-based, while every one of these files needs
-the *generative* first-order Markov form — uniform marginals with the
-diagonal transition probability pinned to an observed doublet rate — plus
-a batched `(n_surrogates, length)` vectorized variant for Monte Carlo
-loops.
+The single most-copied piece of code in `experiments/`. Every copy is the
+LP-motivated special case (pin the self-transition probability to a
+suppressed doublet rate), but the primitive to extract is the general
+surrogate-data method: **generate sequences from a first-order Markov
+model whose transition structure carries a known second-order nuisance
+property**, so that downstream statistics are not credited for structure
+the null already contains. Two constructors cover every use seen here:
 
-**Home:** `stats/nulls.py` (e.g. `doublet_markov(alphabetsize, rate)`),
-alongside a batched helper. Companion nulls worth adding at the same time:
+- `markov_null(transitions)` — surrogates from a full transition matrix,
+  typically fitted from the observed sequence (the order-1 surrogate
+  standard in time-series analysis);
+- a constrained variant that pins only the diagonal (self-transition)
+  rate and leaves the rest uniform — the doublet case, one line on top.
+
+Beyond 3301 this is the right null wherever a corpus has a known
+bigram-level anomaly: Playfair-prepared plaintext (doubles split by a
+filler), languages with different gemination rates, machine ciphers with
+anti-repetition mechanisms. It is **not** the same as the existing
+`stats/nulls.doublet_shuffle`, which is frequency-exact and
+shuffle-based; these files need the *generative* form, plus a batched
+`(n_surrogates, length)` vectorized variant for Monte Carlo loops.
+
+**Home:** `stats/nulls.py`. Companion nulls worth adding at the same time:
 the **within-segment shuffle** (`plaintext_lag5_pairing.py:93` — preserves
 word length and composition, destroys morphology) and the analytic
 pattern-class expectation under the Markov null (`pattern_census.py:62`,
@@ -156,7 +169,11 @@ substitutions for a given bigram matrix**, via Hungarian assignment
 cycle-type-constrained variant by annealing
 (`advance_doublet_floor.py:82`). This is a cipher-independent bound for
 refuting whole mechanism classes ("no monoalphabetic step can produce a
-doublet rate this low for this language"). The inverse operation — tune a
+doublet rate this low for this language"). Stated generally: given any
+pair-weight matrix, the extremal diagonal mass over all permutations —
+the same assignment bound answers "can a substitution step explain this
+self-map rate?" for any language and any adjacency statistic, not just
+LP's suppressed doublets. The inverse operation — tune a
 permutation so a diagonal rate *hits a target* — is at
 `final_orbit_walk.py:42` and `mechanism_discriminator.py:99`.
 `parity` also enables an O(1) necessary-condition pre-filter for state
