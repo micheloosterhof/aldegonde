@@ -70,7 +70,14 @@ anti-repetition mechanisms. It is **not** the same as the existing
 shuffle-based; these files need the *generative* form, plus a batched
 `(n_surrogates, length)` vectorized variant for Monte Carlo loops.
 
-**Home:** `stats/nulls.py`. Companion nulls worth adding at the same time:
+**Home:** the general infrastructure — `markov_null(transitions)` and the
+constrained-diagonal constructor — goes in `stats/nulls.py`. The
+low-doublet specialization (the null pre-tuned to LP's suppressed doublet
+rate) is 3301-specific and lives with the 3301 code
+(`c3301.py` / the `c3301*` analysis modules), built on the general
+constructor rather than beside it.
+
+Companion nulls worth adding at the same time in `stats/nulls.py`:
 the **within-segment shuffle** (`plaintext_lag5_pairing.py:93` — preserves
 word length and composition, destroys morphology) and the analytic
 pattern-class expectation under the Markov null (`pattern_census.py:62`,
