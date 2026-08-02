@@ -451,6 +451,42 @@ Each appears only once or twice but fills a structural blind spot:
   `mixedalphabet` duplicates — migrate the experiments to the library
   API instead.
 
+## Discoverability plan
+
+Extraction only pays off if the next experiment script — usually written
+by an AI agent — reaches for the library instead of re-deriving the
+primitive. The ~15 inline `ioc` copies happened *while the library
+already had it*, so this needs explicit mechanisms:
+
+1. **Directory-scoped agent guide** (done): `experiments/CLAUDE.md`
+   carries a question → API lookup table for everything the library
+   provides today, the corpus-loading conventions, and the standing
+   rules (multiple-comparison discipline, correct-null discipline,
+   self-test-your-attack). Agents working in `experiments/` load it
+   automatically. **It must be updated in the same commit as every
+   extraction slice** — a primitive that isn't in the table doesn't
+   exist, as far as agents are concerned.
+2. **Root `CLAUDE.md` pointer**: the project guide directs anyone
+   writing analysis code to the lookup table before implementing
+   helpers.
+3. **Migrate experiments as each slice lands.** Agents pattern-match
+   from neighboring files far more than from documentation; a directory
+   where `lag11_depletion.py`-style library-importing scripts are the
+   norm teaches the right habit by example. Migration doubles as the
+   regression test for the extracted API.
+4. **Question-oriented naming and docstrings.** Name functions after the
+   question they answer (`boundary_coincidence`, `family_pvalue`), and
+   put the recurring question in the first docstring line so grep and
+   semantic search both land on it.
+5. **Keep package-level exports complete.** Everything importable as
+   `from aldegonde.stats import X` with `X` in `__all__`; sub-module
+   paths (`aldegonde.stats.ioc.ioc`) are where discoverability goes to
+   die.
+6. **Optional CI tripwire**: a lint step that greps `experiments/` for
+   definitions shadowing known library primitives (`def ioc`,
+   `def nioc`, `def sieve`, `def mixedalphabet`, `def hill_climb`, …)
+   and fails with a pointer to the lookup table.
+
 ## Suggested sequencing
 
 1. **Core stats slice** (items 1–4): generative doublet-rate null,
