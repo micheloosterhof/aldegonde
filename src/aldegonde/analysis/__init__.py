@@ -6,6 +6,10 @@ from aldegonde.analysis.bounds import (
     extremal_diagonal_rate,
     pair_counts,
 )
+from aldegonde.analysis.autokey_repeat import (
+    count_violations,
+    forced_equal_positions,
+)
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
     BoundaryPermutation,
@@ -54,6 +58,9 @@ from aldegonde.analysis.split import (
 from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrupter
 
 __all__ = [
+    # autokey_repeat
+    "count_violations",
+    "forced_equal_positions",
     # bounds
     "DiagonalBound",
     "diagonal_rate",

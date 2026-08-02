@@ -19,7 +19,12 @@ n-gram boundary coincidence, `match_separations`,
 `within_delta_histogram`, and `bucket_coincidence`,
 `analysis.relations` covers the linear/positional scans,
 `analysis.bounds` the assignment doublet floor, and `aldegonde.perm`
-the permutation algebra. Experiment-file migration is still pending.
+the permutation algebra. Slice 2 (item 5) is extracted: `aldegonde.search`
+holds the generic hill climber (`hill_climb`, `multi_start`, the
+`swap`/`conjugation` neighborhoods) and the `filter_cascade` funnel, and
+`analysis.autokey_repeat` holds the key-independent ciphertext-autokey
+repeat constraint (`forced_equal_positions`, `count_violations`).
+Experiment-file migration is still pending.
 
 ## Meta-findings
 

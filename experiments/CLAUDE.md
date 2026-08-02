@@ -78,6 +78,22 @@ Bonferroni budget explicitly. Any doublet-sensitive statistic tested
 against a uniform null on doublet-suppressed text will produce artifacts
 (see `missed_tests.py`, `word_transform_census.py`).
 
+### Key-space search
+
+| Need | Use |
+|---|---|
+| Hill climb a key (injected score + neighborhood) | `search.hill_climb` |
+| Multi-start hill climb (seeded, keeps best) | `search.multi_start` |
+| Standard neighborhoods: swap two symbols; conjugate a permutation | `search.swap_neighbor`, `search.conjugation_neighbor` |
+| Cheap→expensive candidate filter with a survivor funnel | `search.filter_cascade` |
+| Ciphertext-autokey repeat constraints (key-independent) | `analysis.forced_equal_positions`, `analysis.count_violations` |
+
+Discipline: before trusting a search that finds nothing, plant a known
+key/plaintext and confirm the search recovers it (or the cascade passes
+it). A search that cannot recover a planted key proves only its own
+brokenness. `search.hill_climb`/`multi_start` take an injected
+`random.Random`, so runs are reproducible.
+
 ### Ciphers, keys, math
 
 | Need | Use |
