@@ -29,8 +29,14 @@ integer-sequence keystream catalogue, `analysis.keystream` the offset
 scan with a self-calibrating empirical null and the autokey depth-split
 detector, `analysis.fingerprint` the fingerprint battery and its
 comparison, and the new `aldegonde.sim` subpackage the Markov control-text
-generator and length-distribution word cutter. Experiment-file migration
-is still pending.
+generator and length-distribution word cutter. Slice 4 (items 9–10 and
+the small wins) is extracted: `analysis.spectral` holds the FFT
+cross-correlation alignment detector and the multiplier-DFT periodicity
+scan, `analysis.fourpoint` the four-point coincidence statistic, and
+`stats.binomial` the coincidence z, Wilson score interval, and
+two-proportion z. Experiment-file migration onto all four slices is still
+pending — the recommended next step, since each migration is both the
+regression test and the proof the API is usable.
 
 ## Meta-findings
 

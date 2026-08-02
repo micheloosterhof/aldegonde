@@ -52,6 +52,9 @@ All imports are package-level: `from aldegonde.stats import nioc`, etc.
 | Within-word delta histogram at lag d (the Q vector) | `analysis.within_delta_histogram` |
 | "Is the key a function of X?" pooled bucket coincidence | `analysis.bucket_coincidence` |
 | Second-order dependence beyond equality; beyond-doublet structure | `stats.lag_contingency` (`off_diagonal=True` masks the diagonal) |
+| Keystream/pad reuse between two streams (all shifts, O(n log n)) | `analysis.crosscorrelation_coincidence` |
+| Periodicity at non-integer periods (multiplier DFT) | `analysis.multiplier_dft` |
+| 4-point coincidence (structure pair/single tests can't see) | `analysis.fourpoint_coincidence` |
 | Affine/LFSR/drifting-key relation detection | `analysis.linear_relation_scan`, `analysis.positional_relation_scan` |
 | Min/max doublet rate any substitution can produce | `analysis.extremal_diagonal_rate` (+ `analysis.pair_counts`, `analysis.diagonal_rate`) |
 | Messages-in-depth / shared keystream detection | `analysis.alignment_coincidence` |
@@ -70,6 +73,7 @@ All imports are package-level: `from aldegonde.stats import nioc`, etc.
 | LP-tuned low-doublet nulls (3301 paths) | `c3301.low_doublet_null`, `c3301.low_doublet_markov_null` |
 | Chi-square with z and p: uniformity, weighted fit, rate-across-bins | `stats.uniformity`, `stats.goodness_of_fit`, `stats.rate_uniformity`, `stats.wilson_hilferty` |
 | Multiple-testing corrections: Bonferroni, Sidak, expected-max, budget | `stats.bonferroni`, `stats.sidak`, `stats.bonferroni_threshold`, `stats.sidak_threshold`, `stats.expected_max_z`, `stats.multiplicity_budget` |
+| Binomial coincidence z; Wilson interval; two-proportion (boundary) z | `stats.coincidence_z`, `stats.wilson_interval`, `stats.two_proportion_z` |
 | z-score | `stats.z_score` |
 
 Discipline: any statistic scanned over lags/periods/offsets needs a

@@ -1,5 +1,11 @@
 """Statistical analysis tools for cryptanalysis."""
 
+from aldegonde.stats.binomial import (
+    WilsonInterval,
+    coincidence_z,
+    two_proportion_z,
+    wilson_interval,
+)
 from aldegonde.stats.chisq import (
     ChiSquare,
     goodness_of_fit,
@@ -99,6 +105,11 @@ from aldegonde.stats.resample import (
 from aldegonde.stats.zscore import z_score
 
 __all__ = [
+    # binomial
+    "WilsonInterval",
+    "coincidence_z",
+    "two_proportion_z",
+    "wilson_interval",
     # chisq
     "ChiSquare",
     "goodness_of_fit",
