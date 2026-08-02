@@ -1,14 +1,24 @@
 """Cryptanalysis algorithms."""
 
+from aldegonde.analysis.bounds import (
+    DiagonalBound,
+    diagonal_rate,
+    extremal_diagonal_rate,
+    pair_counts,
+)
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
     BoundaryPermutation,
+    BucketCoincidence,
     JointCount,
     boundary_coincidence,
     boundary_permutation_test,
+    bucket_coincidence,
     joint_coincidence,
     match_indicator,
+    match_separations,
     recut_words,
+    within_delta_histogram,
     word_index_map,
 )
 from aldegonde.analysis.delta import DeltaOp, delta, delta2
@@ -20,6 +30,10 @@ from aldegonde.analysis.kasiski import (
     kasiski_examination,
     print_kasiski_statistics,
     repeat_distances,
+)
+from aldegonde.analysis.relations import (
+    linear_relation_scan,
+    positional_relation_scan,
 )
 from aldegonde.analysis.rune_frequency import (
     FrequencyProfile,
@@ -40,15 +54,24 @@ from aldegonde.analysis.split import (
 from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrupter
 
 __all__ = [
+    # bounds
+    "DiagonalBound",
+    "diagonal_rate",
+    "extremal_diagonal_rate",
+    "pair_counts",
     # coincidence
     "BoundaryCoincidence",
     "BoundaryPermutation",
+    "BucketCoincidence",
     "JointCount",
     "boundary_coincidence",
     "boundary_permutation_test",
+    "bucket_coincidence",
     "joint_coincidence",
     "match_indicator",
+    "match_separations",
     "recut_words",
+    "within_delta_histogram",
     "word_index_map",
     # delta
     "DeltaOp",
@@ -67,6 +90,9 @@ __all__ = [
     "kasiski_examination",
     "print_kasiski_statistics",
     "repeat_distances",
+    # relations
+    "linear_relation_scan",
+    "positional_relation_scan",
     # rune_frequency
     "FrequencyProfile",
     "find_best_suppression",

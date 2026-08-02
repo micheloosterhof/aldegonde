@@ -10,6 +10,17 @@ outside the Liber Primus context.
 
 Survey date: 2026-08-02.
 
+**Status:** slice 1 (items 1–4 below) is extracted: `stats.nulls`
+gained `markov_model`/`fitted_markov`/`doublet_markov` (with
+`c3301.low_doublet_markov_null` as the LP-tuned wrapper),
+`stats.chisq` and `stats.multitest` are new, `stats.kappa_spectrum`
+covers the frequency-matched z-spectrum, `analysis.coincidence` gained
+n-gram boundary coincidence, `match_separations`,
+`within_delta_histogram`, and `bucket_coincidence`,
+`analysis.relations` covers the linear/positional scans,
+`analysis.bounds` the assignment doublet floor, and `aldegonde.perm`
+the permutation algebra. Experiment-file migration is still pending.
+
 ## Meta-findings
 
 **Discoverability is half the problem.** `ioc`/`nioc` is re-implemented

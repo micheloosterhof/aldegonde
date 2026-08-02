@@ -5,15 +5,84 @@ which can reveal periodic patterns in ciphertext. Multigraphic kappa extends thi
 to detect repeated digraphs, trigraphs, etc.
 """
 
+from collections import Counter
 from collections.abc import Sequence
 from math import sqrt
-from typing import TypeVar
+from typing import NamedTuple, TypeVar
 
+from aldegonde.exceptions import InsufficientDataError
 from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
+
+
+class KappaZ(NamedTuple):
+    """A doublet count at one skip, standardized against the frequency null.
+
+    Attributes:
+        observed: Observed doublets at this skip
+        comparisons: Positions compared at this skip
+        expected: Count expected under the frequency-matched chance rate
+        z: Binomial standard score of the count against that expectation
+    """
+
+    observed: int
+    comparisons: int
+    expected: float
+    z: float
+
+
+def kappa_spectrum(
+    text: Sequence[object],
+    skips: Sequence[int],
+    length: int = 1,
+) -> dict[int, KappaZ]:
+    """Standardized doublet counts at every skip, against the frequency null.
+
+    The chance coincidence rate is taken from the observed symbol
+    frequencies (the sum of squared frequencies, raised to the n-gram
+    length), not from 1/alphabetsize — the correct null for a non-flat
+    alphabet, which the uniform rate systematically misjudges. Each skip's
+    count is standardized as a binomial z against that rate.
+
+    The skips form a scan: read the spectrum with `stats.multitest`
+    (expected_max_z, multiplicity_budget) or confirm a peak with
+    `stats.resample.family_pvalue` rather than trusting any single z.
+
+    Args:
+        text: Sequence to analyze
+        skips: Skip distances to evaluate
+        length: Size of compared n-grams (1 = monographic)
+
+    Returns:
+        A KappaZ per skip that admits at least one comparison
+
+    Raises:
+        InsufficientDataError: If the text is empty
+    """
+    if len(text) == 0:
+        msg = "kappa_spectrum needs a non-empty sequence"
+        raise InsufficientDataError(msg, 1, 0)
+    frequencies = Counter(text)
+    n = len(text)
+    rate = sum((count / n) ** 2 for count in frequencies.values()) ** length
+    spectrum: dict[int, KappaZ] = {}
+    for skip in skips:
+        comparisons = n - skip - length + 1
+        if comparisons < 1:
+            continue
+        count = doublet_count(text, skip=skip, length=length)
+        expected = comparisons * rate
+        sd = sqrt(comparisons * rate * (1.0 - rate))
+        spectrum[skip] = KappaZ(
+            observed=count,
+            comparisons=comparisons,
+            expected=expected,
+            z=z_score(count, expected, sd),
+        )
+    return spectrum
 
 
 def doublets(

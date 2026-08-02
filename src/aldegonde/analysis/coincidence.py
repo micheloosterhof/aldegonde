@@ -16,6 +16,7 @@ All functions work on arbitrary alphabets (runes, integers, letters).
 
 import random
 import statistics
+from collections import Counter
 from collections.abc import Sequence
 from typing import NamedTuple, TypeVar
 
@@ -186,31 +187,39 @@ def recut_words(stream: Sequence[T], lengths: Sequence[int]) -> list[list[T]]:
 def boundary_coincidence(
     words: Sequence[Sequence[T]],
     lag: int,
+    length: int = 1,
 ) -> BoundaryCoincidence:
-    """Split the lag-L coincidence count by word membership.
+    """Split the lag-L n-gram coincidence count by word membership.
 
-    Counts matches on the concatenation of the words, classifying every
-    position pair (i, i + lag) as within-word when both positions fall in
-    the same word and as across-word otherwise. A within rate above the
-    across rate means the coincidences know where the word boundaries are.
+    Counts matches on the concatenation of the words, comparing the n-gram
+    starting at i with the n-gram starting at i + lag. A pair is within-word
+    when both n-grams fall entirely inside the same single word, and
+    across-word otherwise. A within rate above the across rate means the
+    coincidences know where the word boundaries are. Length 2 counts the
+    XY..XY digraph repeats at distance lag.
 
     Args:
         words: Tokenized text, one sequence per word
-        lag: Distance between the compared symbols
+        lag: Distance between the compared n-grams
+        length: Size of the compared n-grams (1 = single symbols)
 
     Returns:
         Observed matches and available pairs for both classes
 
     Raises:
-        InvalidInputError: If lag is not a positive integer
+        InvalidInputError: If lag or length is not a positive integer
         InsufficientDataError: If the concatenation is no longer than lag
     """
+    validate_positive_integer(lag, "lag")
+    validate_positive_integer(length, "length")
     stream = [symbol for word in words for symbol in word]
+    validate_text_sequence(stream, min_length=lag + 1)
     indices = word_index_map(words)
-    indicator = match_indicator(stream, lag)
     within_observed = within_pairs = across_observed = across_pairs = 0
-    for i, matched in enumerate(indicator):
-        if indices[i] == indices[i + lag]:
+    for i in range(len(stream) - lag - length + 1):
+        matched = stream[i : i + length] == stream[i + lag : i + lag + length]
+        # indices is monotonic, so equal endpoints put both n-grams in one word
+        if indices[i] == indices[i + lag + length - 1]:
             within_pairs += 1
             within_observed += matched
         else:
@@ -294,4 +303,146 @@ def boundary_permutation_test(
         null_mean=statistics.fmean(null),
         null_sd=statistics.pstdev(null),
         p_value=(at_least + 1) / (permutations + 1),
+    )
+
+
+def match_separations(
+    text: Sequence[T],
+    lag: int,
+    max_separation: int | None = None,
+) -> dict[int, int]:
+    """Histogram the separations between consecutive lag-L matches.
+
+    Where `joint_coincidence` counts pairs of matches at chosen separations,
+    this profiles the gaps between one match and the next. Under
+    independence the gaps are geometric; an excess at particular separations
+    (or a dead zone at small ones) is the higher-order signature of a
+    periodic or self-excluding mechanism. Judge significance against a
+    resampled null; the gaps are not independent.
+
+    Args:
+        text: Sequence to analyze
+        lag: Lag of the match indicator
+        max_separation: Largest separation to include; unlimited when omitted
+
+    Returns:
+        A dictionary mapping each observed separation between consecutive
+        matches to its count
+
+    Raises:
+        InvalidInputError: If lag is not a positive integer
+        InsufficientDataError: If text is no longer than lag
+    """
+    indicator = match_indicator(text, lag)
+    separations: dict[int, int] = {}
+    previous: int | None = None
+    for i, matched in enumerate(indicator):
+        if not matched:
+            continue
+        if previous is not None:
+            gap = i - previous
+            if max_separation is None or gap <= max_separation:
+                separations[gap] = separations.get(gap, 0) + 1
+        previous = i
+    return separations
+
+
+def within_delta_histogram(
+    words: Sequence[Sequence[T]],
+    alphabet: Sequence[T],
+    lag: int,
+) -> list[int]:
+    """Histogram the modular symbol difference over within-word lag-L pairs.
+
+    For every pair of positions lag apart inside a single word, counts the
+    difference of alphabet indices modulo the alphabet size. Bin 0 holds the
+    coincidences; the shape of the nonzero bins discriminates mechanisms
+    that a bare match count cannot: a literal copy inflates only bin 0,
+    additive key drift shifts mass to specific nonzero bins, and an
+    unstructured stream leaves them flat.
+
+    Args:
+        words: Tokenized text, one sequence per word
+        alphabet: The alphabet fixing the index of every symbol
+        lag: Distance between the compared symbols
+
+    Returns:
+        A list of alphabet-size counts, entry d holding the number of pairs
+        with (index(second) - index(first)) mod alphabetsize == d
+
+    Raises:
+        InvalidInputError: If lag is not a positive integer or a symbol is
+            missing from the alphabet
+    """
+    validate_positive_integer(lag, "lag")
+    index = {symbol: i for i, symbol in enumerate(alphabet)}
+    modulus = len(alphabet)
+    histogram = [0] * modulus
+    for word in words:
+        for i in range(len(word) - lag):
+            try:
+                delta = (index[word[i + lag]] - index[word[i]]) % modulus
+            except KeyError as exc:
+                msg = f"symbol {exc.args[0]!r} not in alphabet"
+                raise InvalidInputError(msg) from exc
+            histogram[delta] += 1
+    return histogram
+
+
+class BucketCoincidence(NamedTuple):
+    """Pooled pairwise coincidence within position buckets.
+
+    Attributes:
+        observed: Equal-symbol pairs found inside buckets
+        pairs: Position pairs available inside buckets
+        rate: observed / pairs, or 0.0 with no pairs
+    """
+
+    observed: int
+    pairs: int
+    rate: float
+
+
+def bucket_coincidence(
+    stream: Sequence[T],
+    labels: Sequence[object],
+) -> BucketCoincidence:
+    """Pool the pairwise coincidence rate inside arbitrary position buckets.
+
+    Every position carries a label; all unordered position pairs sharing a
+    label are compared. A pooled rate above the chance rate means positions
+    with the same label tend to hold the same symbol — the general test for
+    "is the key a function of this observable?", with the label encoding the
+    hypothesis: position within a period, word length and phase, line
+    number, or any other public feature.
+
+    Args:
+        stream: Symbol stream to analyze
+        labels: One bucket label per position; positions with equal labels
+            are compared
+
+    Returns:
+        The pooled matched pairs, available pairs, and rate
+
+    Raises:
+        InvalidInputError: If labels and stream lengths differ
+    """
+    if len(labels) != len(stream):
+        msg = f"{len(labels)} labels for {len(stream)} positions"
+        raise InvalidInputError(msg)
+    buckets: dict[object, Counter[T]] = {}
+    sizes: Counter[object] = Counter()
+    for symbol, label in zip(stream, labels):
+        buckets.setdefault(label, Counter())[symbol] += 1
+        sizes[label] += 1
+    observed = 0
+    pairs = 0
+    for label, counts in buckets.items():
+        size = sizes[label]
+        pairs += size * (size - 1) // 2
+        observed += sum(count * (count - 1) // 2 for count in counts.values())
+    return BucketCoincidence(
+        observed=observed,
+        pairs=pairs,
+        rate=observed / pairs if pairs else 0.0,
     )

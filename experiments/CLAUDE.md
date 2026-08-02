@@ -40,13 +40,20 @@ All imports are package-level: `from aldegonde.stats import nioc`, etc.
 | Need | Use |
 |---|---|
 | Kappa test at a skip; doublet/triplet counts | `stats.kappa`, `stats.doublets`, `stats.triplets` |
+| Kappa z-spectrum over lags, frequency-matched null | `stats.kappa_spectrum` |
 | Period detection (Friedman), with interrupter variant | `analysis.friedman_test`, `analysis.friedman_test_with_interrupter` |
 | Kasiski: repeat distances, factor spectrum | `analysis.kasiski_examination`, `analysis.repeat_distances`, `analysis.distance_spectrum` |
 | Repeated n-gram positions/distribution | `stats.repeat_positions`, `stats.repeat_distribution` |
 | Periodicity in irregular/mixed material | `analysis.krakup` |
 | Lag-L match indicator; joint (4th-order) coincidence | `analysis.match_indicator`, `analysis.joint_coincidence` |
-| Within-word vs cross-word coincidence at lag d | `analysis.boundary_coincidence` |
-| Word-boundary permutation test | `analysis.boundary_permutation_test` (+ `analysis.recut_words`, `analysis.word_index_map`) |
+| Within-word vs cross-word coincidence at lag d (n-grams too: XY..XY via `length=2`) | `analysis.boundary_coincidence` |
+| Word-boundary permutation test (section-local) | `analysis.boundary_permutation_test` (+ `analysis.recut_words`, `analysis.word_index_map`) |
+| Separation histogram between consecutive lag-d matches | `analysis.match_separations` |
+| Within-word delta histogram at lag d (the Q vector) | `analysis.within_delta_histogram` |
+| "Is the key a function of X?" pooled bucket coincidence | `analysis.bucket_coincidence` |
+| Second-order dependence beyond equality; beyond-doublet structure | `stats.lag_contingency` (`off_diagonal=True` masks the diagonal) |
+| Affine/LFSR/drifting-key relation detection | `analysis.linear_relation_scan`, `analysis.positional_relation_scan` |
+| Min/max doublet rate any substitution can produce | `analysis.extremal_diagonal_rate` (+ `analysis.pair_counts`, `analysis.diagonal_rate`) |
 | Messages-in-depth / shared keystream detection | `analysis.alignment_coincidence` |
 | Delta/difference streams (any modular op, any skip) | `analysis.delta`, `analysis.delta2`, `analysis.DeltaOp` |
 | Isomorph patterns and statistics | `stats.isomorph`, `stats.isomorph_statistics`, `stats.random_isomorph_statistics` |
@@ -58,7 +65,11 @@ All imports are package-level: `from aldegonde.stats import nioc`, etc.
 |---|---|
 | Monte Carlo: observed statistic vs null model | `stats.monte_carlo` (scalar), `stats.monte_carlo_map` (per-key) |
 | Family-wise p-value for the best peak in a scan | `stats.family_pvalue` |
-| Null models: shuffle, doublet-free, doublet-rate-matched | `stats.shuffle`, `stats.no_doublet_shuffle`, `stats.doublet_shuffle` |
+| Null models (multiset-exact): shuffle, doublet-free, doublet-rate-matched | `stats.shuffle`, `stats.no_doublet_shuffle`, `stats.doublet_shuffle` |
+| Null models (generative Markov): explicit chain, fitted chain, pinned doublet rate | `stats.markov_model`, `stats.fitted_markov`, `stats.doublet_markov` |
+| LP-tuned low-doublet nulls (3301 paths) | `c3301.low_doublet_null`, `c3301.low_doublet_markov_null` |
+| Chi-square with z and p: uniformity, weighted fit, rate-across-bins | `stats.uniformity`, `stats.goodness_of_fit`, `stats.rate_uniformity`, `stats.wilson_hilferty` |
+| Multiple-testing corrections: Bonferroni, Sidak, expected-max, budget | `stats.bonferroni`, `stats.sidak`, `stats.bonferroni_threshold`, `stats.sidak_threshold`, `stats.expected_max_z`, `stats.multiplicity_budget` |
 | z-score | `stats.z_score` |
 
 Discipline: any statistic scanned over lags/periods/offsets needs a
@@ -73,6 +84,7 @@ against a uniform null on doublet-suppressed text will produce artifacts
 |---|---|
 | Monoalphabetic encrypt/decrypt; Caesar/affine/atbash/random keys | `masc.masc_encrypt`, `masc.masc_decrypt`, `masc.shiftedkey`, `masc.affinekey`, `masc.atbashkey`, `masc.randomkey` |
 | Keyword-mixed alphabet; permutation cycles | `masc.mixedalphabet`, `masc.cycles` |
+| Permutation algebra: compose, invert, power, order, parity, cycle types, conjugation | `aldegonde.perm` (`from_key`/`to_key` bridge to masc keys) |
 | Polyalphabetic (Vigenère/Beaufort/Quagmire 1–4 tabula recta) | `pasc.pasc_encrypt`, `pasc.vigenere_tr`, `pasc.beaufort_tr`, `pasc.quagmire1_tr`…`quagmire4_tr` |
 | Autokey ciphers | `auto` |
 | Transposition / columnar | `trns`, `column` |
