@@ -26,6 +26,13 @@ from aldegonde.analysis.coincidence import (
     word_index_map,
 )
 from aldegonde.analysis.delta import DeltaOp, delta, delta2
+from aldegonde.analysis.fingerprint import compare, fingerprint
+from aldegonde.analysis.keystream import (
+    AutokeySplit,
+    OffsetHit,
+    autokey_split,
+    offset_scan,
+)
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
 from aldegonde.analysis.guballa import bigram_break_pasc
 from aldegonde.analysis.indepth import AlignmentResult, alignment_coincidence
@@ -84,6 +91,14 @@ __all__ = [
     "DeltaOp",
     "delta",
     "delta2",
+    # fingerprint
+    "compare",
+    "fingerprint",
+    # keystream
+    "AutokeySplit",
+    "OffsetHit",
+    "autokey_split",
+    "offset_scan",
     # friedman
     "friedman_test",
     "friedman_test_with_interrupter",

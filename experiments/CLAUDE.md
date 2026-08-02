@@ -87,6 +87,10 @@ against a uniform null on doublet-suppressed text will produce artifacts
 | Standard neighborhoods: swap two symbols; conjugate a permutation | `search.swap_neighbor`, `search.conjugation_neighbor` |
 | Cheap→expensive candidate filter with a survivor funnel | `search.filter_cascade` |
 | Ciphertext-autokey repeat constraints (key-independent) | `analysis.forced_equal_positions`, `analysis.count_violations` |
+| Running-key offset scan with a self-calibrating empirical null | `analysis.offset_scan` |
+| Ciphertext-autokey detector (pooled IoC by lagged symbol) | `analysis.autokey_split` |
+| Statistical fingerprint of a stream; compare to a reference | `analysis.fingerprint`, `analysis.compare` |
+| Markov control text: fit + generate; cut into words by length dist | `sim.fit_markov`, `sim.generate`, `sim.cut_by_lengths` |
 
 Discipline: before trusting a search that finds nothing, plant a known
 key/plaintext and confirm the search recovers it (or the cascade passes
@@ -105,6 +109,7 @@ brokenness. `search.hill_climb`/`multi_start` take an injected
 | Autokey ciphers | `auto` |
 | Transposition / columnar | `trns`, `column` |
 | Primes (sieve/generator), factorization | `maths.primes`, `maths.gen_primes_opt`, `maths.prime_factors`, `maths.factor_pairs` |
+| Keystream sequences mod N (first-n primes/totient/fib/figurate/…); one bundle | `maths.sequences` (`fibonacci`, `lucas`, `triangular`, `polygonal`, `prime_gaps`, `linear_recurrence`, …), `maths.catalogue` |
 | Totient, gcd, coprimality, Möbius | `maths.phi_func`, `maths.gcd`, `maths.is_coprime`, `maths.moebius` |
 | Modular inverse/division | `maths.modInverse`, `maths.modDivide` |
 | Cicada alphabet, rune↔index↔value conversions | `c3301.CICADA_ALPHABET`, `c3301.r2i`, `c3301.i2r`, `c3301.r2v`, `c3301.v2r` |

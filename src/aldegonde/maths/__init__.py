@@ -4,6 +4,17 @@ from aldegonde.maths.factor import factor_pairs, prime_factors
 from aldegonde.maths.modular import div29, modDivide, modInverse
 from aldegonde.maths.moebius import isPrime, moebius
 from aldegonde.maths.primes import PrimeGenerator, gen_primes_opt, primes
+from aldegonde.maths.sequences import (
+    catalogue,
+    fibonacci,
+    linear_recurrence,
+    lucas,
+    moebius_sequence,
+    naturals,
+    polygonal,
+    prime_gaps,
+    triangular,
+)
 from aldegonde.maths.totient import gcd, is_coprime, phi_func
 
 __all__ = [
@@ -21,6 +32,16 @@ __all__ = [
     "PrimeGenerator",
     "gen_primes_opt",
     "primes",
+    # sequences
+    "catalogue",
+    "fibonacci",
+    "linear_recurrence",
+    "lucas",
+    "moebius_sequence",
+    "naturals",
+    "polygonal",
+    "prime_gaps",
+    "triangular",
     # totient
     "gcd",
     "is_coprime",

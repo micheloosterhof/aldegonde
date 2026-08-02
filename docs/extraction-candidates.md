@@ -24,7 +24,13 @@ holds the generic hill climber (`hill_climb`, `multi_start`, the
 `swap`/`conjugation` neighborhoods) and the `filter_cascade` funnel, and
 `analysis.autokey_repeat` holds the key-independent ciphertext-autokey
 repeat constraint (`forced_equal_positions`, `count_violations`).
-Experiment-file migration is still pending.
+Slice 3 (items 6–8) is extracted: `maths.sequences` holds the
+integer-sequence keystream catalogue, `analysis.keystream` the offset
+scan with a self-calibrating empirical null and the autokey depth-split
+detector, `analysis.fingerprint` the fingerprint battery and its
+comparison, and the new `aldegonde.sim` subpackage the Markov control-text
+generator and length-distribution word cutter. Experiment-file migration
+is still pending.
 
 ## Meta-findings
 
