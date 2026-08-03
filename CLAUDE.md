@@ -325,3 +325,5 @@ python examples/lp_analysis.py     # Run Liber Primus analysis
 8. **Test Coverage**: Maintain comprehensive tests. The project uses Hypothesis for property-based testing.
 
 9. **Module Imports**: Use package-level imports when possible: `from aldegonde.stats import ioc` instead of `from aldegonde.stats.ioc import ioc`.
+
+10. **Library First**: Before writing any statistical or cryptographic helper function — in an experiment script or anywhere else — check the question → API lookup table in `experiments/CLAUDE.md`. Re-implementing an existing primitive inline is a bug. If the primitive is missing, check `docs/extraction-candidates.md` for whether it is slated for extraction.

@@ -1,5 +1,19 @@
 """Statistical analysis tools for cryptanalysis."""
 
+from aldegonde.stats.binomial import (
+    WilsonInterval,
+    coincidence_z,
+    two_proportion_z,
+    wilson_interval,
+)
+from aldegonde.stats.chisq import (
+    ChiSquare,
+    goodness_of_fit,
+    lag_contingency,
+    rate_uniformity,
+    uniformity,
+    wilson_hilferty,
+)
 from aldegonde.stats.compare import (
     NgramScorer,
     bigramscore,
@@ -33,8 +47,24 @@ from aldegonde.stats.isomorph import (
     print_isomorph_statistics,
     random_isomorph_statistics,
 )
-from aldegonde.stats.kappa import doublets, kappa, print_kappa, triplets
+from aldegonde.stats.kappa import (
+    KappaZ,
+    doublets,
+    kappa,
+    kappa_spectrum,
+    print_kappa,
+    triplets,
+)
 from aldegonde.stats.mioc import MiocTuple, mioc, nmioc, print_mioc_statistics
+from aldegonde.stats.multitest import (
+    MultiplicityBudget,
+    bonferroni,
+    bonferroni_threshold,
+    expected_max_z,
+    multiplicity_budget,
+    sidak,
+    sidak_threshold,
+)
 from aldegonde.stats.ngrams import (
     bigrams,
     digraphs,
@@ -50,7 +80,10 @@ from aldegonde.stats.ngrams import (
 )
 from aldegonde.stats.nulls import (
     NullModel,
+    doublet_markov,
     doublet_shuffle,
+    fitted_markov,
+    markov_model,
     no_doublet_shuffle,
     shuffle,
 )
@@ -72,6 +105,18 @@ from aldegonde.stats.resample import (
 from aldegonde.stats.zscore import z_score
 
 __all__ = [
+    # binomial
+    "WilsonInterval",
+    "coincidence_z",
+    "two_proportion_z",
+    "wilson_interval",
+    # chisq
+    "ChiSquare",
+    "goodness_of_fit",
+    "lag_contingency",
+    "rate_uniformity",
+    "uniformity",
+    "wilson_hilferty",
     # compare
     "NgramScorer",
     "bigramscore",
@@ -107,8 +152,10 @@ __all__ = [
     "print_isomorph_statistics",
     "random_isomorph_statistics",
     # kappa
+    "KappaZ",
     "doublets",
     "kappa",
+    "kappa_spectrum",
     "print_kappa",
     "triplets",
     # mioc
@@ -116,6 +163,14 @@ __all__ = [
     "mioc",
     "nmioc",
     "print_mioc_statistics",
+    # multitest
+    "MultiplicityBudget",
+    "bonferroni",
+    "bonferroni_threshold",
+    "expected_max_z",
+    "multiplicity_budget",
+    "sidak",
+    "sidak_threshold",
     # ngrams
     "bigrams",
     "digraphs",
@@ -130,7 +185,10 @@ __all__ = [
     "trigraphs",
     # nulls
     "NullModel",
+    "doublet_markov",
     "doublet_shuffle",
+    "fitted_markov",
+    "markov_model",
     "no_doublet_shuffle",
     "shuffle",
     # position
