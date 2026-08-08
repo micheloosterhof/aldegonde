@@ -4,13 +4,14 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (28)
+### Observations (29)
 
 | File | Feature | Status |
 |---|---|---|
 | [aligned-kappa-no-reset.md](aligned-kappa-no-reset.md) | No Shared Keystream Reset at Page or Section Boundaries | confirmed (characterization) |
 | [bigram-ioc.md](bigram-ioc.md) | Off-Diagonal Bigrams are Uniform | confirmed (characterization) |
 | [collision-hunt-single-constraint.md](collision-hunt-single-constraint.md) | The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved | confirmed (characterization) for the repeat census itself |
+| [cross-product-sum-flat.md](cross-product-sum-flat.md) | Bauer's Cross-Product Sum Finds Nothing (Flat Unigrams Make It Blind) | confirmed (characterization), negative at every window 29-2000; sections homogeneous (chi2 p=0.90) |
 | [cryptodiagnostics-page0-58.md](cryptodiagnostics-page0-58.md) | Full Cryptodiagnostic Battery on page0-58.txt (2026-06) | confirmed (characterization) |
 | [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (partial-vs-full is underpowered) | partial (echo real and word-anchored; partial-vs-full leak underpowered, likely undecidable) |
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
