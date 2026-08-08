@@ -48,7 +48,7 @@ proposed mechanisms scored against them.
 | [bifid-fractionation.md](bifid-fractionation.md) | Bifid or Trifid Fractionation Cipher | disproved |
 | [block-cipher.md](block-cipher.md) | Block Cipher / Substitution-Permutation Network | disproved (boundary-blind fixed blocks; five-block edge variant tracked separately) |
 | [ciphertext-autokey.md](ciphertext-autokey.md) | Ciphertext Autokey Cipher | disproved |
-| [contraction-cribs.md](contraction-cribs.md) | The Apostrophes Mark English Contractions (Four Plaintext Cribs) | plausible (mark census measured; contraction reading rests on n=4, p=0.028) |
+| [contraction-cribs.md](contraction-cribs.md) | The Apostrophes Mark English Contractions (Four Plaintext Cribs) | plausible (punctuation is genuine: 14 quotes nest into 7 spans, p~1.2e-4 pre-registered; which contraction sits at each of the 4 sites rests on n=4, p=0.028) |
 | [doublet-marker-rune-ea.md](doublet-marker-rune-ea.md) | The Doublet Marker Rune is EA | disproved (positional-profile test kills the whole fixed-rune marker band; flat split favors a key event) |
 | [encoding-only.md](encoding-only.md) | Runeglish Encoding Alone Explains the Statistics | disproved |
 | [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved (deterministic fixes; stochastic re-draw = `stream-cipher-no-repeat.md`) |

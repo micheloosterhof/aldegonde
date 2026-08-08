@@ -19,9 +19,10 @@ constraint spread over 14 rune positions in sections 7, 10, 13 and 14.
 
 **Status**: plausible
 
-The mark census is measured and reproducible. The reading of the lone ticks as
-contraction apostrophes is well supported but rests on n = 4; the decorative
-alternative is weakened (p = 0.028), not excluded.
+The mark census is measured and reproducible, and the decorative reading is
+effectively excluded by the quote nesting (p ≈ 1.2e-4, pre-registered). The
+reading of the lone ticks as contraction apostrophes specifically still rests
+on n = 4 and p = 0.028, so which contraction sits at each site is open.
 
 ## Mechanism
 
@@ -68,11 +69,17 @@ minimum (DON, CAN, WON, ISN, AIN); these have two-rune stems. Their tail is
   Under a null placing each mark at a uniform internal slot of its host word,
   all four landing with a one-rune tail has p = 0.028 (exactly 1 in 36). A
   decorative mark has no reason to prefer that slot.
-- **The paired ticks imply direct speech.** Fourteen quotation glyphs — an even
-  count, consistent with seven quoted spans — mean the plaintext contains
-  dialogue. Dialogue is the register in which contractions occur, so the two
-  mark classes corroborate each other. The solved pages include koans with
-  reported speech.
+- **The quotation marks nest perfectly** (`experiments/locate_marks.py`). Once
+  placed to character positions, the fourteen marks alternate open, close,
+  open, close … without a single break across pages 6 to 53 — seven properly
+  paired spans. A mark is "open" when a separator precedes it and "close" when
+  one follows; under a null where each mark falls on either side of its
+  boundary independently, perfect alternation over fourteen marks has
+  p ≈ 1.2e-4. **This was recorded as prediction 4 below before the marks were
+  located, and it held.** Decoration does not nest.
+- **Direct speech.** Seven quoted spans mean the plaintext contains dialogue —
+  the register in which contractions actually occur, so the two mark classes
+  corroborate each other. The solved pages include koans with reported speech.
 - An apostrophe-plus-double-quote system is English typographic convention. The
   mark set was designed for an English plaintext.
 
@@ -88,7 +95,9 @@ minimum (DON, CAN, WON, ISN, AIN); these have two-rune stems. Their tail is
   35 towards IT'S / HE'S. But `word-length-keystream-and-boundaries.md`
   establishes that the `.` marks do **not** mark English sentence ends
   (sentence-final word lengths z = -1.21 against solved-page z = +7.06,
-  contrast z = +5.86, direction-independent). **That refinement is therefore
+  contrast z = +5.86, direction-independent), and Michel's reading is that
+  `.` is most likely just a second word separator. On that reading there is no
+  sentence position to appeal to at all. **The refinement is therefore
   withheld.** It must not be reinstated by assuming the sentence reading, and
   the contraction data must not be used to argue the `.` marks are sentence
   ends — with two mark-adjacent sites out of four (p ≈ 0.06 against
@@ -113,14 +122,22 @@ minimum (DON, CAN, WON, ISN, AIN); these have two-rune stems. Their tail is
    enciphers T, and the additive key there ends `[…, …, 1, 20]` (Beaufort
    `[…, …, 19, 23]`) — the last two positions are fixed across all five n't
    candidates because the plaintext ends N,T regardless of stem.
-4. The 14 quotation marks, once located to rune positions, should bracket
+4. ~~The 14 quotation marks, once located to rune positions, should bracket
    contiguous spans. Spans that do not nest or pair would argue the marks are
-   decorative after all.
+   decorative after all.~~ **Confirmed** (2026-08-08): all fourteen alternate
+   open/close into seven spans, p ≈ 1.2e-4. See Evidence for.
+5. The quoted spans are plaintext structure the cipher preserved, so they
+   should behave like the word boundaries: span lengths should look like
+   English quoted speech. This is untested and is the natural next probe —
+   it is a far larger sample of metadata than the four apostrophes.
 
 ## Scripts
 
 - `experiments/apostrophe_census.py` — connected-component sweep of all 58 page
   images; classifies tick / dot / rune / artwork and locates every mark.
+- `experiments/locate_marks.py` — maps each tick to a character position by
+  matching the whole image glyph sequence against the transcription line, so
+  every placement is verified rather than inferred. `--write` applies them.
 - `experiments/contraction_shape_test.py` — decoration-vs-language null test.
 - `tests/aldegonde/test_transcription.py` — guards the data files: the four
   apostrophes are present, and the rune stream, word count and doublet count are
@@ -140,12 +157,17 @@ minimum (DON, CAN, WON, ISN, AIN); these have two-rune stems. Their tail is
 ## Verdict
 
 The mark census is solid: the transcriptions were missing a whole punctuation
-class, and it is now recorded. The contraction reading is the natural one and
-carries real filtering power, but four marks is a thin base and the sharpest
-inference available — sentence position — is closed off by the `.`-mark result.
-Treat the tails as constrained to `{S, D, T}` and the two-rune-stem sites as
-non-`n't`; treat everything finer as untested.
+class, and all eighteen marks are now recorded at verified character positions.
 
-Open: locating the 14 quotation marks to rune positions. That is a larger and
-more informative structure than the apostrophes — seven bracketed spans of
-plaintext — and it is still entirely absent from the transcription.
+**That the marks are genuine punctuation is no longer really in doubt** — the
+quotes nest perfectly into seven spans at p ≈ 1.2e-4, on a prediction made
+before they were placed. What remains uncertain is narrower: whether each
+individual apostrophe is `'S`, `'D` or `'T`. Treat the tails as constrained to
+`{S, D, T}` and the two-rune-stem sites as non-`n't`; treat everything finer as
+untested. The sharpest available refinement — sentence position — stays closed
+off, and is closed off harder if `.` is simply a second word separator.
+
+Open: the seven quoted spans are a much larger sample of preserved plaintext
+metadata than the four apostrophes, and nothing has been measured on them yet.
+Span lengths, and whether span boundaries align with anything in the cipher
+stream, are the obvious next probes.
