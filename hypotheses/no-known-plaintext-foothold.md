@@ -6,7 +6,8 @@ type: observation
 ## Status
 
 **Status**: confirmed (characterization) for the no-known-plaintext claim
-itself. The "Consequences for the attack" section is conditional on the
+itself, **qualified for partial cribs** — see the note below. The
+"Consequences for the attack" section is conditional on the
 length-clocked-walk model, which is plausible, not confirmed.
 
 ## Claim
@@ -15,6 +16,17 @@ The attack on sections 0-9 must be **blind (ciphertext-only)**. There is no
 known-plaintext pair available inside `data/page0-58.txt`: the one readable
 section, **section 11 (the Parable), is stored as unencrypted plaintext** — it
 was never run through the 0-9 cipher, so it yields no plaintext↔ciphertext pair.
+
+**Qualification (partial cribs).** The claim above holds for known-plaintext
+*pairs* — no enciphered string whose plaintext is known. It is too strong as a
+statement about plaintext constraint in general. The four apostrophes recovered
+from the page scans (`contraction-cribs.md`) pin four words to small candidate
+sets: the rune after each mark is `S`, `D` or `T`, and the two sites with a
+two-rune stem cannot be `n't`. That is ≈ 28 bits of constraint at offsets 1107,
+5136, 8513 and 10086. It is weaker than a known-plaintext pair — a candidate
+set, not a known string — and `no-periodicity.md` stops the four sites from
+chaining, so the attack on the bulk of the corpus remains blind. But the
+corpus is not wholly without plaintext constraint.
 
 ## Evidence
 

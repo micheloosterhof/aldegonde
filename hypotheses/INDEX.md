@@ -36,7 +36,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (43)
+### Hypotheses (44)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -48,6 +48,7 @@ proposed mechanisms scored against them.
 | [bifid-fractionation.md](bifid-fractionation.md) | Bifid or Trifid Fractionation Cipher | disproved |
 | [block-cipher.md](block-cipher.md) | Block Cipher / Substitution-Permutation Network | disproved (boundary-blind fixed blocks; five-block edge variant tracked separately) |
 | [ciphertext-autokey.md](ciphertext-autokey.md) | Ciphertext Autokey Cipher | disproved |
+| [contraction-cribs.md](contraction-cribs.md) | The Apostrophes Mark English Contractions (Four Plaintext Cribs) | plausible (mark census measured; contraction reading rests on n=4, p=0.028) |
 | [doublet-marker-rune-ea.md](doublet-marker-rune-ea.md) | The Doublet Marker Rune is EA | disproved (positional-profile test kills the whole fixed-rune marker band; flat split favors a key event) |
 | [encoding-only.md](encoding-only.md) | Runeglish Encoding Alone Explains the Statistics | disproved |
 | [explicit-doublet-avoidance.md](explicit-doublet-avoidance.md) | Explicit Doublet Avoidance (Post-Processing) | disproved (deterministic fixes; stochastic re-draw = `stream-cipher-no-repeat.md`) |
