@@ -146,6 +146,20 @@ B, this is not register-fragile: avoiding 1-2 letter sentence-final words
 is near-universal in English, and the same author's solved register shows
 the effect at z=+7.
 
+**Narrowed (August 2026): the first branch is now much harder.** The
+quotation marks recovered from the page scans align to these same '.' marks
+— 8 of 14 quoted-span edges land on one against 0.7 expected (p = 1.5e-7,
+robust to a layout confound 6.1x stronger than any on record), and '.' is
+depleted strictly inside spans (1 versus 4.2, p = 0.071). Quoted speech
+opens on them, closes on them, and avoids crossing them, so the marks
+delimit something the plaintext respects and are not synthetic/decorative or
+semantically inert. The conclusion above is unchanged — they are still not
+English sentence ends — but of the three branches offered here, "a different
+unit (verse, breath, counting)" is now the live one. See
+`quote-span-boundaries.md`. The mixture proposal below predicts that
+quote-adjacent marks are the genuine sentence ends; their final-word means
+do not bear that out (4.14 versus 4.23), at n=7.
+
 **Direction-independent (July 2026).** If the text read right-to-left, the
 word AFTER each mark in file order would be the reading-order
 sentence-final word and should carry the signature instead. It does not

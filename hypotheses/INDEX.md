@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (27)
+### Observations (28)
 
 | File | Feature | Status |
 |---|---|---|
@@ -24,6 +24,7 @@ proposed mechanisms scored against them.
 | [long-word-structure.md](long-word-structure.md) | Long Words Carry No Structure Beyond the d5 Echo | confirmed (characterization) |
 | [no-known-plaintext-foothold.md](no-known-plaintext-foothold.md) | No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section | confirmed (characterization) for the no-known-plaintext claim |
 | [no-periodicity.md](no-periodicity.md) | No Periodic Key (Friedman flat at every period) | confirmed (characterization) |
+| [quote-span-boundaries.md](quote-span-boundaries.md) | Quoted Spans Align to the '.' Marks (the Marks Are Not Inert) | confirmed (characterization) for the alignment (p=1.5e-7, layout-robust); what the marks delimit stays open |
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
 | [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization) |
 | [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) |
