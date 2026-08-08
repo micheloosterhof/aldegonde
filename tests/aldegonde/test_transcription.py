@@ -30,6 +30,10 @@ CONTRACTIONS = {
     "41.jpg": "ᛉᛚᛄ'ᚳ",
 }
 
+# Quotation marks, recovered from the page scans alongside the apostrophes.
+# Seven spans, so fourteen marks, all on pages 6 through 53.
+QUOTE_COUNT = 14
+
 # Clean corpus = sections 0-9 of page0-58.txt, excluding the solved AN END page
 # and the plaintext Parable.
 CLEAN_RUNES = 12956
@@ -50,6 +54,31 @@ def test_no_stray_apostrophes(filename: str) -> None:
     """Only the four known contractions carry an apostrophe."""
     text = (DATA / filename).read_text()
     assert text.count("'") == len(CONTRACTIONS)
+
+
+@pytest.mark.parametrize("filename", CORPUS_FILES)
+def test_quotes_recorded(filename: str) -> None:
+    """All seven quoted spans are transcribed."""
+    text = (DATA / filename).read_text()
+    assert text.count('"') == QUOTE_COUNT
+
+
+def test_quotes_alternate() -> None:
+    """Quotes open and close in strict alternation, so the spans nest.
+
+    A mark preceded by a separator opens a span; one followed by a separator
+    closes it. Decorative marks would not alternate.
+    """
+    text = (DATA / "page0-58.txt").read_text()
+    kinds = []
+    for i, char in enumerate(text):
+        if char != '"':
+            continue
+        opening = text[i - 1] in "-.\n/"
+        closing = text[i + 1] in "-.\n/"
+        assert opening != closing, f"mark at {i} is neither an open nor a close"
+        kinds.append("open" if opening else "close")
+    assert kinds == ["open", "close"] * (QUOTE_COUNT // 2)
 
 
 def test_apostrophe_is_not_a_rune() -> None:
