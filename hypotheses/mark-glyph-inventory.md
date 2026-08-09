@@ -52,31 +52,59 @@ transcribed type is not assumed — and cross-tabulates 2,131 marks:
 So `-` is 1-dot **plus** 3-dot, and `.` is 4-dot **plus** everything larger.
 Roughly **13% of the recorded `.` marks are not the 4-dot sentence glyph.**
 
-## The large glyphs bracket lines, and line-initial ones are dropped
+## Where the large glyphs sit
 
-Manually confirmed cases (Michel, from the review sheet):
+Position of every large symbol the reader locates, relative to its line's first
+and last rune:
+
+| dots | line-initial | mid-line | line-final | verdict |
+|---|---|---|---|---|
+| 10 | 1 | 0 | 3 | mark |
+| **13** | **3** | **13** | **16** | mark |
+| 14 | 3 | 0 | 0 | **ornament** |
+| 15 | 0 | 3 | 0 | **ornament** |
+| 23, 26, 51, 76 | 2 | 1 | 1 | artwork |
+
+**The 14- and 15-dot classes are not marks.** Every instance sits on **line 4**
+of six consecutive pages, alternating 15-mid / 14-initial across pages 9 to 14.
+Punctuation does not land on the same line of six pages in a row; this is a
+page ornament the reader still admits, and it should be excluded rather than
+encoded. The same goes for the 23/26/51/76-dot singletons, which are marginal
+illustration.
+
+**The 13-dot symbol is ordinary punctuation, not a bracket.** It sits mostly at
+line ends and mid-line, and only 2 lines out of 43 carrying a large symbol have
+one at each end (pages 7 and 15). An earlier draft here called it a structural
+delimiter on the strength of exactly those two lines; that was generalising
+from the first two examples reviewed, and the census contradicts it. It behaves
+like a heavier stop than the 4-dot glyph — and both are recorded as `.`.
+
+Manually confirmed cases (Michel, from the review sheet), which is how the
+class was found:
 
 | page | line | glyph | position | transcribed as |
 |---|---|---|---|---|
-| 7 | 9 | 13-dot | **opens and closes** the line | opening dropped, closing `.` |
-| 15 | 0 | 13-dot | **opens and closes** the line | opening dropped, closing `.` |
+| 0 | 0 | 13-dot | mid-line | `.` |
+| 3 | 0 | 13-dot | mid-line | `.` |
+| 3 | 5 | 13-dot | line end | `.` |
+| 3 | 6 | 13-dot | mid-line | `.` |
+| 6 | 3 | 13-dot | line end | `.` |
+| 7 | 9 | 13-dot | both ends | opening dropped, closing `.` |
+| 15 | 0 | 13-dot | both ends | opening dropped, closing `.` |
 | 20 | 6 | 3-dot | line start | dropped |
 | 38 | 9 | 10-dot | line start | dropped |
 | 5 | 4 | 3-dot | line end | recorded as `-` |
 | 11 | 10 | 3-dot | line end | recorded as `-` |
 
-Two regularities, and they are different failures:
+Two failure modes, and they are different:
 
 - **Line-END marks are recorded but sometimes mistyped** — a 3-dot glyph comes
-  through as an ordinary word separator.
+  through as an ordinary word separator, a 13-dot as a plain `.`.
 - **Line-START marks are dropped entirely** — every confirmed line-initial
-  glyph, at three different sizes, is simply absent.
-
-That the large glyphs *open and close* a line reads as a structural delimiter —
-a block or section bracket — rather than punctuation. It also explains the
-"leading separator" cases in `boundary_verification.py`: 19 of 21 clean
-disagreements had the image carrying a mark the transcription lacked, and they
-were all at line edges. Those are not spurious after all; they are this.
+  glyph, at three different sizes, is simply absent. This also explains the
+  "leading separator" cases in `boundary_verification.py`: 19 of 21 clean
+  disagreements had the image carrying a mark the transcription lacked, all at
+  line edges. Those are not reader noise after all.
 
 The dropped line-initial marks are the same failure mode as the apostrophes and
 quotation marks (`contraction-cribs.md`): the glyph inventory was assumed rather
