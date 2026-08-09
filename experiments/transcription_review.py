@@ -288,6 +288,7 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
       padding:.6rem 2rem;display:flex;gap:1.5rem;align-items:center;font-size:14px}
  #bar button{background:#fff}
  body.only-diff section.agrees{display:none}
+ body.only-todo section.reviewed{display:none}
  #bar label{display:flex;gap:.4rem;align-items:center;cursor:pointer}
  #bar .imp{background:#fff;color:#222;padding:.3rem .7rem}
 </style>
@@ -305,7 +306,9 @@ The edit box holds real runes with circled marks; you can also type <code>(23)</
 
 FOOT = """<div id='bar'>
  <label><input type='checkbox' id='only' onchange='filter()'>
-   show only lines that disagree</label>
+   only lines that disagree</label>
+ <label><input type='checkbox' id='todo' onchange='filter()'>
+   only lines not yet reviewed</label>
  <span id='shown'></span>
  <span id='count'>0 / __TOTAL__ reviewed</span>
  <button onclick='save()'>download review.json</button>
@@ -319,6 +322,7 @@ const store=JSON.parse(localStorage.getItem(K)||'{}');
 function key(s){return s.dataset.page+':'+s.dataset.line}
 function paint(s){
   const r=store[key(s)], st=s.querySelector('.state');
+  s.classList.toggle('reviewed', !!r);
   st.textContent = r ? (r.verdict==='ok'?'\\u2713 confirmed':'\\u270e corrected') : '';
   s.style.opacity = r ? .72 : 1;
 }
@@ -332,7 +336,7 @@ function put(s,source){
           :                   s.querySelector('.val').value;
   store[key(s)]={page:+s.dataset.page,line:s.dataset.line,source:source,
     value:v, note:s.querySelector('.note').value};
-  localStorage.setItem(K,JSON.stringify(store)); paint(s); count();
+  localStorage.setItem(K,JSON.stringify(store)); paint(s); count(); filter();
 }
 document.querySelectorAll('section').forEach(s=>{
   const r=store[key(s)];
@@ -343,14 +347,18 @@ document.querySelectorAll('section').forEach(s=>{
   paint(s);
 });
 function filter(){
-  const on = document.getElementById('only').checked;
-  document.body.classList.toggle('only-diff', on);
-  localStorage.setItem(K+'-only', on ? '1' : '');
-  const n = document.querySelectorAll(
-    on ? 'section.differs' : 'section').length;
-  document.getElementById('shown').textContent = n + ' lines shown';
+  const diff = document.getElementById('only').checked;
+  const todo = document.getElementById('todo').checked;
+  document.body.classList.toggle('only-diff', diff);
+  document.body.classList.toggle('only-todo', todo);
+  localStorage.setItem(K+'-only', diff ? '1' : '');
+  localStorage.setItem(K+'-todo', todo ? '1' : '');
+  const sel = 'section' + (diff ? '.differs' : '') + (todo ? ':not(.reviewed)' : '');
+  document.getElementById('shown').textContent =
+    document.querySelectorAll(sel).length + ' lines shown';
 }
 document.getElementById('only').checked = !!localStorage.getItem(K+'-only');
+document.getElementById('todo').checked = !!localStorage.getItem(K+'-todo');
 filter();
 count();
 function wipe(){
