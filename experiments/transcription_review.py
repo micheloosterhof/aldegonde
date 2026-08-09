@@ -44,8 +44,8 @@ PAGES = range(58)
 MARGIN = 45
 
 # dot count -> character. Unlisted counts render as ⑈ (unknown) for review.
-CIRCLED = {1: "①", 2: "②", 3: "③", 4: "④", 5: "⑤", 6: "⑥", 7: "⑦", 8: "⑧",
-           9: "⑨", 10: "⑩", 11: "⑪", 12: "⑫", 13: "⑬", 14: "⑭", 15: "⑮"}
+CIRCLED = {n: chr(0x2460 + n - 1) for n in range(1, 21)}
+CIRCLED.update({n: chr(0x3251 + n - 21) for n in range(21, 36)})
 UNKNOWN = "⑈"
 CIRCLED_SET = set(CIRCLED.values()) | {UNKNOWN}
 TXT_MARK = {"-": "①", ".": "④"}      # what the transcription's two characters mean
@@ -238,7 +238,7 @@ them, so a mark it reads differently drifts every column after it. A rune shown
 in red is red on the page and a boxed one is a drop cap, neither of which the
 transcription records; <code>?</code> means the scan saw a rune the
 transcription has no character for. Cells shaded red disagree about mark type.
-The edit box holds real runes with circled marks. Marks are circled by dot count: &#9312;1 &#9314;3 &#9315;4 &#9321;10 &#9324;13,
+The edit box holds real runes with circled marks; you can also type <code>(23)</code> for a 23-dot mark and it will be converted. Marks are circled by dot count: &#9312;1 &#9314;3 &#9315;4 &#9321;10 &#9324;13,
 &#9288; unrecognised. Highlighted sections are the ones that disagree.</p>\n<p><b>Which button?</b> <code>txt row is right</code> keeps the existing\ntranscription. <code>scan row is right</code> takes the reader's version,\nwhich is what you want when the reader spotted a mark the transcription got\nwrong. <code>use my edit</code> stores whatever is in the box, pre-filled with\nthe scan reading. Whichever you press, the stored sequence is exactly what the\nline will become.</p>"""
 
 FOOT = """<div id='bar'>

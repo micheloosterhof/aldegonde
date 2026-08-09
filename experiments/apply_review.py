@@ -39,7 +39,28 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "data" / "page0-58.txt"
 TARGET = ROOT / "data" / "page0-58.marks.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-CIRCLED = set("①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑈")
+CIRCLED = {chr(0x2460 + n) for n in range(20)} | {chr(0x3251 + n) for n in range(15)}
+CIRCLED.add("\u2448")          # unrecognised dot count, flagged for review
+# Digits and Latin letters are CONTENT, not annotation: the hex block and the
+# plaintext Parable in sections 10-11 carry them, and page 10 line 7 has a
+# bare "7" inside the runic text. They pass through untouched.
+CONTENT = re.compile(r"[0-9A-Za-z]")
+CIRCLED_BY_N = {n: chr(0x2460 + n - 1) for n in range(1, 21)}
+CIRCLED_BY_N.update({n: chr(0x3251 + n - 21) for n in range(21, 36)})
+
+
+def normalise(value: str) -> str:
+    """Accept `(N)` for a dot count, so a reviewer never has to hunt for a
+    circled numeral that is awkward to type."""
+    def sub(m: re.Match[str]) -> str:
+        n = int(m.group(1))
+        return CIRCLED_BY_N.get(n, m.group(0))
+    return re.sub(r"\((\d{1,2})\)", sub, value)
+
+
+def _payload(text: str) -> list[str]:
+    """Runes and content characters, i.e. everything a mark review may not touch."""
+    return [c for c in text if RUNE.match(c) or CONTENT.match(c)]
 
 
 def rebuild(original: str, value: str) -> tuple[str, str | None]:
@@ -49,13 +70,13 @@ def rebuild(original: str, value: str) -> tuple[str, str | None]:
     match the original line's exactly, in order — a mark review may change
     marks and nothing else.
     """
-    want = [c for c in original if RUNE.match(c)]
-    got = [c for c in value if RUNE.match(c)]
+    want, got = _payload(original), _payload(value)
     if got != want:
         if len(got) != len(want):
             return original, f"rune count {len(got)} != {len(want)}"
-        return original, "rune identities changed"
-    bad = {c for c in value if not RUNE.match(c) and c not in CIRCLED}
+        return original, "rune or content identities changed"
+    bad = {c for c in value
+           if not RUNE.match(c) and c not in CIRCLED and not CONTENT.match(c)}
     if bad:
         return original, f"unrecognised characters {''.join(sorted(bad))}"
     return value + original[len(original.rstrip("/")):], None
@@ -71,6 +92,7 @@ def main() -> None:
     stats: Counter[str] = Counter()
     problems: list[str] = []
 
+    seen: set[tuple[int, int]] = set()
     for page, block in enumerate(blocks):
         lines = block.split("\n")
         idx = -1
@@ -78,11 +100,12 @@ def main() -> None:
             if not RUNE.search(line):
                 continue
             idx += 1
+            seen.add((page, idx))
             v = by_key.get((page, idx))
             if v is None:
                 stats["unreviewed"] += 1
                 continue
-            new, err = rebuild(line, v["value"])
+            new, err = rebuild(line, normalise(v["value"]))
             if err:
                 stats["refused"] += 1
             else:
@@ -102,6 +125,13 @@ def main() -> None:
     for k in ("txt kept", "scan taken", "edited", "refused",
               "lines changed", "unreviewed"):
         print(f"   {k:>15}: {stats[k]}")
+    orphan = [k for k in by_key if k not in seen]
+    if orphan:
+        print(f"\n{len(orphan)} verdicts match no transcription line "
+              f"(the reader saw a band the text has no line for):")
+        for page, line in sorted(orphan):
+            note = by_key[(page, line)].get("note", "")
+            print(f"   page {page} line {line}  {note}")
     if problems:
         print(f"\n{len(problems)} refused:")
         for p in problems[:20]:

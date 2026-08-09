@@ -14,3 +14,4 @@ htmlcov/
 
 # generated review sheets (regenerate with experiments/boundary_review_sheet.py)
 review/
+data/*.marks.txt
