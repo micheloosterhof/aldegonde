@@ -31,6 +31,7 @@ import difflib
 import html
 import json
 import re
+import sys
 from pathlib import Path
 
 from PIL import Image
@@ -193,6 +194,34 @@ def row(tokens: list[tuple[str, str]], other: list[tuple[str, str]], kind: str) 
     return f"<div class='row'><span class='lbl'>{kind}</span>{''.join(cells)}</div>"
 
 
+def check_script(page: str) -> None:
+    """Refuse to write a page whose script does not parse.
+
+    FOOT is an ordinary Python string, so a `\\n` meant for JavaScript becomes a
+    real newline and silently breaks a string literal — which disabled every
+    button on the page, not just the feature being added. A syntax error is
+    invisible until the page is opened, so it is checked here instead.
+    """
+    import shutil
+    import subprocess
+    import tempfile
+
+    node = shutil.which("node")
+    if not node:
+        print("   (node not found: script not syntax-checked)")
+        return
+    script = re.search(r"<script>(.*?)</script>", page, re.S)
+    if not script:
+        return
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as fh:
+        fh.write(script.group(1))
+        path = fh.name
+    done = subprocess.run([node, "--check", path], capture_output=True, text=True)
+    Path(path).unlink()
+    if done.returncode:
+        sys.exit(f"generated script does not parse:\n{done.stderr}")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     blocks = CORPUS.read_text().split("%")
@@ -248,7 +277,9 @@ def main() -> None:
               "<input class='note' placeholder='note'>"
               "<span class='state'></span></div></section>")
     body.append(FOOT.replace("__TOTAL__", str(len(entries))))
-    (OUT / "index.html").write_text("\n".join(body), encoding="utf-8")
+    html_text = "\n".join(body)
+    check_script(html_text)
+    (OUT / "index.html").write_text(html_text, encoding="utf-8")
 
     (OUT / "entries.json").write_text(json.dumps(entries, ensure_ascii=False, indent=1),
                                       encoding="utf-8")
@@ -323,7 +354,8 @@ function key(s){return s.dataset.page+':'+s.dataset.line}
 function paint(s){
   const r=store[key(s)], st=s.querySelector('.state');
   s.classList.toggle('reviewed', !!r);
-  st.textContent = r ? (r.verdict==='ok'?'\\u2713 confirmed':'\\u270e corrected') : '';
+  st.textContent = r ? {txt:'\\u2713 txt kept', scan:'\\u2713 scan taken',
+                        edit:'\\u270e edited'}[r.source] : '';
   s.style.opacity = r ? .72 : 1;
 }
 function count(){
@@ -362,7 +394,7 @@ document.getElementById('todo').checked = !!localStorage.getItem(K+'-todo');
 filter();
 count();
 function wipe(){
-  if(!confirm('Clear every verdict in this browser?\n\n'
+  if(!confirm('Clear every verdict in this browser?\\n\\n'
      +Object.keys(store).length+' will be lost. Download first if unsure.')) return;
   if(!confirm('Really clear? This cannot be undone from the page.')) return;
   localStorage.removeItem(K); location.reload();
@@ -389,7 +421,7 @@ function load(input){
 }
 function save(){
   // rebuild page and line from the store KEY: an early version coerced an
-  // unpaired band's slot id ("~9") with + and wrote null, losing which band a
+  // slot id of an unpaired band, e.g. ~9, with + and wrote null, losing which band a
   // verdict belonged to. The key was always right, so repair from it.
   const rows=Object.entries(store).map(([k,v])=>{
     const i=k.indexOf(':');
