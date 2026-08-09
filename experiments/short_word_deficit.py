@@ -45,7 +45,14 @@ CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 SOLVED_LINES = 187
 SHORT = 2
-CONVENTIONS = {"- . % & $ (lp_corpus)": "-.%&$", "- . (section D)": "-."}
+CONVENTIONS = {
+    "- . % & $ (lp_corpus)": "-.%&$",
+    "- . (section D)": "-.",
+    # The opposite extreme: every line break a word boundary. This OVER-splits,
+    # cutting wrapped words into fragments, so it bounds how much the merging
+    # convention can possibly be contributing.
+    "+ split at line breaks": "-.%&$/\n",
+}
 
 
 def words(text: str, boundary: str) -> list[int]:
@@ -79,7 +86,7 @@ def short_rate(lengths: list[int]) -> tuple[float, int, int]:
 def main() -> None:
     unsolved, solved, sections = corpora()
 
-    print("1. the deficit, under both segmentation conventions\n")
+    print("1. the deficit, under every segmentation convention\n")
     print(f"{'convention':>24}{'unsolved':>22}{'solved':>22}{'z':>8}")
     for name, b in CONVENTIONS.items():
         u, s = words(unsolved, b), words(solved, b)

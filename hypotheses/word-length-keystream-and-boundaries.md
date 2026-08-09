@@ -131,10 +131,38 @@ across the nine measurable sections gives chi2 = 5.91 on 8 df, **p = 0.66**.
 *It does not drift.* By quarter of the book: 19.0% / 20.2% / 19.4% / 18.4%;
 rank correlation of shortness with position tau = -0.008, p = 0.62.
 
-*The segmentation convention makes it worse, not better.* Under `- . % & $`
-it is 19.3% against 28.1%, z = +4.92; under section D's `- .` (below) it is
-18.3% against 27.7%, **z = +5.23**. Treating `%` as a boundary splits words
-into shorter fragments and so flatters the unsolved side.
+*No segmentation convention closes it, including the extreme one.* The
+transcription does merge words across line breaks — section D below establishes
+that words wrap, and `experiments/boundary_verification.py` finds at least one
+line ending with a separator dot the transcription omits. So the current
+convention over-merges, and the question is by how much. Splitting at EVERY
+line break is the opposite extreme (it cuts wrapped words into fragments, which
+is wrong in the other direction) and therefore bounds the effect:
+
+| convention | unsolved 2-rune | solved 2-rune | gap | z |
+|---|---|---|---|---|
+| merge lines (current) | 15.9% | 24.2% | +8.3% | +4.88 |
+| words end only at `- .` | 15.5% | 24.1% | +8.6% | +5.04 |
+| split at every line break | 18.7% | 25.2% | **+6.4%** | **+3.88** |
+
+Splitting adds 2.8 points to the unsolved 2-rune rate and 1.0 to the solved —
+the unsolved text does gain more, as section D's "far more mid-word page wraps"
+predicts — but it closes only about a **quarter** of the gap, and the remainder
+stands at z = +3.88. **Merging across line breaks cannot explain the deficit.**
+That extends section D's convention-independence result from means to the
+2-rune bucket specifically, which is where the whole effect lives.
+
+(The 1-rune rate is the giveaway that the split convention is manufacturing
+fragments: it triples, 3.4% to 9.6% unsolved and 3.9% to 10.1% solved, and
+stays equal between the two texts. Fragments hit both sides alike.)
+
+What remains: either the plaintext genuinely uses proportionally fewer 2-rune
+function words than the solved pages — a register claim, and the 2-rune class
+is dominated by THE — or a boundary artifact that is not line-break merging.
+Mid-line omissions are not indicated: across 604 lines the reader never found
+the transcription carrying MORE separators than the page. Note also that the
+solved side is the noisy one at 743 words (24.2% ± 1.6%), so a better register
+reference could move this materially. That is the register-corpus job.
 
 **Boundary verification against the scans is inconclusive so far**
 (`experiments/boundary_verification.py`). The merging shape makes a
