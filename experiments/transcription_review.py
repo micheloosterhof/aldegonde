@@ -330,7 +330,7 @@ function put(s,source){
   const v = source==='txt'  ? s.dataset.txt
           : source==='scan' ? s.dataset.scan
           :                   s.querySelector('.val').value;
-  store[key(s)]={page:+s.dataset.page,line:+s.dataset.line,source:source,
+  store[key(s)]={page:+s.dataset.page,line:s.dataset.line,source:source,
     value:v, note:s.querySelector('.note').value};
   localStorage.setItem(K,JSON.stringify(store)); paint(s); count();
 }
@@ -380,7 +380,14 @@ function load(input){
   r.readAsText(f);
 }
 function save(){
-  const rows=Object.values(store).sort((a,b)=>a.page-b.page||a.line-b.line);
+  // rebuild page and line from the store KEY: an early version coerced an
+  // unpaired band's slot id ("~9") with + and wrote null, losing which band a
+  // verdict belonged to. The key was always right, so repair from it.
+  const rows=Object.entries(store).map(([k,v])=>{
+    const i=k.indexOf(':');
+    return Object.assign({},v,{page:+k.slice(0,i),line:k.slice(i+1)});
+  }).sort((a,b)=>a.page-b.page||String(a.line).localeCompare(String(b.line),
+      undefined,{numeric:true}));
   const b=new Blob([JSON.stringify(rows,null,1)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(b); a.download='review.json'; a.click();

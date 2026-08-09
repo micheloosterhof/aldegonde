@@ -86,7 +86,8 @@ def main() -> None:
     if len(sys.argv) < 2:
         sys.exit(__doc__.strip().splitlines()[-1])
     verdicts = json.loads(Path(sys.argv[1]).read_text())
-    by_key = {(v["page"], v["line"]): v for v in verdicts}
+    # an unpaired band carries a slot id like "~9", not a line number
+    by_key = {(v["page"], str(v["line"])): v for v in verdicts}
 
     blocks = SOURCE.read_text().split("%")
     stats: Counter[str] = Counter()
@@ -100,8 +101,8 @@ def main() -> None:
             if not RUNE.search(line):
                 continue
             idx += 1
-            seen.add((page, idx))
-            v = by_key.get((page, idx))
+            seen.add((page, str(idx)))
+            v = by_key.get((page, str(idx)))
             if v is None:
                 stats["unreviewed"] += 1
                 continue
@@ -128,10 +129,11 @@ def main() -> None:
     orphan = [k for k in by_key if k not in seen]
     if orphan:
         print(f"\n{len(orphan)} verdicts match no transcription line "
-              f"(the reader saw a band the text has no line for):")
-        for page, line in sorted(orphan):
+              f"(the reader saw a band the text has no line for -- these are "
+              f"content the transcription omits, not corrections):")
+        for page, line in sorted(orphan, key=lambda k: (k[0], str(k[1]))):
             note = by_key[(page, line)].get("note", "")
-            print(f"   page {page} line {line}  {note}")
+            print(f"   page {page} slot {line}  {note}")
     if problems:
         print(f"\n{len(problems)} refused:")
         for p in problems[:20]:

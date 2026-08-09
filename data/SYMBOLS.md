@@ -71,6 +71,22 @@ Digits and Latin letters appear in the final sections: the hex block and the
 plaintext Parable in sections 10-11 of `page0-58.txt`. They are content, not
 annotation.
 
+## Content the transcription omits entirely
+
+Found during the August 2026 line-by-line review, as bands the reader saw for
+which the transcription has no line at all. These are not corrections — the
+transcription is not wrong about them, it simply does not carry them.
+
+| pages | content | status |
+|---|---|---|
+| 33-39 | **cuneiform**, two bands per page | unencoded |
+| 2 | a picture | unencoded |
+
+The cuneiform runs across seven consecutive pages. Nothing in the corpus files
+records it, so any statistic over "the text of pages 33-39" is over the runic
+portion only. Whether it should be transcribed, and in what alphabet, is
+undecided.
+
 ## Not in the transcription at all
 
 **Red runes.** The page uses colour on some runes; the transcription is
