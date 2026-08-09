@@ -50,12 +50,12 @@ CIRCLED_BY_N.update({n: chr(0x3251 + n - 21) for n in range(21, 36)})
 
 
 def normalise(value: str) -> str:
-    """Accept `(N)` for a dot count, so a reviewer never has to hunt for a
-    circled numeral that is awkward to type."""
+    """Accept a reviewer's shorthand: `(N)` for a dot count, and whitespace
+    anywhere for readability. Neither is meaningful in the encoding, so both
+    are normalised away rather than refused."""
     def sub(m: re.Match[str]) -> str:
-        n = int(m.group(1))
-        return CIRCLED_BY_N.get(n, m.group(0))
-    return re.sub(r"\((\d{1,2})\)", sub, value)
+        return CIRCLED_BY_N.get(int(m.group(1)), m.group(0))
+    return re.sub(r"\s+", "", re.sub(r"\((\d{1,2})\)", sub, value))
 
 
 def _payload(text: str) -> list[str]:
