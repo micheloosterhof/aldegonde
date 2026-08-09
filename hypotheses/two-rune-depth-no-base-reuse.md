@@ -77,6 +77,47 @@ the same-plaintext collision rate is below 3.4e-3 against the 0.034 a 29-shift
 schedule requires. **The base must take at least ~300 effective values.** A
 29-state shift schedule is a factor of ten short.
 
+## The same test at every short word length
+
+`experiments/word_depth_by_length.py`. The argument runs at any length: two
+words with the same plaintext agree at **every** position or none under a
+shift, and independently under a rich walk. Longer words make the
+full-agreement cell rarer by chance — (1/29)^L — but a register repeats them
+less often, and the collisions are what supply the signal. Both sides are
+measured rather than assumed: the repeat rate comes from `wordfreq`, weighted
+by frequency, over runeglish words of each rune length.
+
+| L | words | pairs | full agree | chance | repeat rate | shift predicts | log10 P |
+|---|---|---|---|---|---|---|---|
+| 2 | 465 | 107,880 | 112 | 125.4 | 0.1056 | 518 | −103 |
+| 3 | 726 | 263,175 | 17 | 10.9 | 0.0375 | 352 | −124 |
+| 4 | 514 | 131,841 | 0 | 0.2 | 0.0072 | 33 | −14 |
+| 5 | 318 | 50,403 | 0 | 0.0 | 0.0039 | 7 | −3 |
+
+`log10 P` is the Poisson tail P(observed or fewer | shift prediction); the
+shuffle-null Gaussian z is meaningless once the expected count is a handful.
+
+**Three-rune words give the strongest exclusion of any length**, at 10^-124.
+They have the most words (726), the most pairs, and a chance background of
+only 10.9 — a 29-state schedule would have to put 352 pairs in a cell holding
+17. The measured 2-rune repeat rate of 0.1056 also confirms the
+Cauchy-Schwarz bound of 0.0595 used above was conservative, as intended.
+
+The agreement histograms are flat-independent throughout:
+
+```
+L=2  0:100634  1:7134  2:112
+L=3  0:236827  1:25357  2:974  3:17
+L=4  0:114556  1:16385  2:880  3:20  4:0
+L=5  0:42335   1:7464   2:579  3:25  4:0  5:0
+```
+
+For L=3 the independence prediction is 236,900 / 25,388 / 907 / 10.8 against
+the observed 236,827 / 25,357 / 974 / 17. The top cell runs +1.85 z high —
+which is the same mild excess `collision-hunt-single-constraint.md` already
+recorded as noise ("15 versus ~11 expected among 726 three-rune words"), and
+it does not survive the scan over four lengths.
+
 ## Relation to what was already known
 
 This agrees with `mixed-alphabet-vigenere.md` (keyword-Quagmire excluded by

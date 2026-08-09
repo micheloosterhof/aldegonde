@@ -32,7 +32,7 @@ proposed mechanisms scored against them.
 | [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [seam-channel-clean.md](seam-channel-clean.md) | The Seam Channel is Clean (Suppressed Diagonal Only) | confirmed (characterization) |
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |
-| [two-rune-depth-no-base-reuse.md](two-rune-depth-no-base-reuse.md) | Two-Rune Words Show No Depth: the Base Essentially Never Repeats | confirmed (characterization); excludes any <~300-state base schedule at 22 sigma, enumeration-free and g-free |
+| [two-rune-depth-no-base-reuse.md](two-rune-depth-no-base-reuse.md) | Short Words Show No Depth: the Base Essentially Never Repeats | confirmed (characterization); a 29-state schedule excluded at 10^-124 on 3-rune words, enumeration-free and g-free |
 | [within-word-d5-coincidence.md](within-word-d5-coincidence.md) | Within-Word Distance-5 Coincidence Excess | plausible (verified anomaly; mechanism unknown) |
 | [word-length-keystream-and-boundaries.md](word-length-keystream-and-boundaries.md) | Word-Length Keystream & Boundary Authenticity | confirmed (characterization) for the keystream disproof and the '.'-semantics; the boundary-authenticity question (incl. the 4.7σ short-word deficit) is unresolved |
 | [word-position-pairs.md](word-position-pairs.md) | Within-Word Position Pairs Carry Distance-Only Structure | confirmed (characterization) |
