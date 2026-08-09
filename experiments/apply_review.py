@@ -6,8 +6,11 @@
 confirmed or corrected; the browser exports the verdicts as `review.json`. This
 consumes that and rewrites the marks.
 
-Each verdict carries a token sequence: `R` for a rune, a circled numeral for a
-dot mark. Runes are taken from the original line in order, so a correction can
+Each verdict carries an explicit source — `txt` keeps the existing
+transcription, `scan` takes the reader's version, `edit` takes what was typed —
+and the token sequence that choice resolves to: `R` for a rune, a circled
+numeral for a dot mark. The stored sequence is always exactly what the line
+becomes, so nothing has to be re-derived here. Runes are taken from the original line in order, so a correction can
 only change the MARKS — the number and identity of runes must match. A verdict
 that changes the rune count is refused and reported, because that is a
 rune-level claim about a transcription whose rune values are otherwise settled
@@ -39,20 +42,23 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 CIRCLED = set("①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑈")
 
 
-def rebuild(original: str, tokens: str) -> tuple[str, str | None]:
-    """Reapply a reviewed token sequence to a line, keeping its runes."""
-    runes = [c for c in original if RUNE.match(c)]
-    wanted = tokens.count("R")
-    if wanted != len(runes):
-        return original, f"rune count {wanted} != {len(runes)} in the line"
-    bad = [c for c in tokens if c != "R" and c not in CIRCLED]
+def rebuild(original: str, value: str) -> tuple[str, str | None]:
+    """Validate a reviewed line and return it with its trailing structure.
+
+    The value is the line itself: real runes and circled marks. Its runes must
+    match the original line's exactly, in order — a mark review may change
+    marks and nothing else.
+    """
+    want = [c for c in original if RUNE.match(c)]
+    got = [c for c in value if RUNE.match(c)]
+    if got != want:
+        if len(got) != len(want):
+            return original, f"rune count {len(got)} != {len(want)}"
+        return original, "rune identities changed"
+    bad = {c for c in value if not RUNE.match(c) and c not in CIRCLED}
     if bad:
-        return original, f"unrecognised characters {''.join(sorted(set(bad)))}"
-    out, it = [], iter(runes)
-    for c in tokens:
-        out.append(next(it) if c == "R" else c)
-    trailing = original[len(original.rstrip("/")):]
-    return "".join(out) + trailing, None
+        return original, f"unrecognised characters {''.join(sorted(bad))}"
+    return value + original[len(original.rstrip("/")):], None
 
 
 def main() -> None:
@@ -76,12 +82,12 @@ def main() -> None:
             if v is None:
                 stats["unreviewed"] += 1
                 continue
-            if v["verdict"] == "ok":
-                stats["confirmed"] += 1
-                new, err = rebuild(line, v["value"])
+            new, err = rebuild(line, v["value"])
+            if err:
+                stats["refused"] += 1
             else:
-                new, err = rebuild(line, v["value"])
-                stats["corrected" if err is None else "refused"] += 1
+                stats[{"txt": "txt kept", "scan": "scan taken",
+                       "edit": "edited"}.get(v.get("source"), "applied")] += 1
             if err:
                 problems.append(f"page {page} line {idx}: {err}")
                 continue
@@ -93,7 +99,8 @@ def main() -> None:
     TARGET.write_text("%".join(blocks), encoding="utf-8")
 
     print(f"read {len(verdicts)} verdicts")
-    for k in ("confirmed", "corrected", "refused", "lines changed", "unreviewed"):
+    for k in ("txt kept", "scan taken", "edited", "refused",
+              "lines changed", "unreviewed"):
         print(f"   {k:>15}: {stats[k]}")
     if problems:
         print(f"\n{len(problems)} refused:")

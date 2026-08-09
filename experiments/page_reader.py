@@ -34,7 +34,11 @@ from scipy import ndimage
 from experiments.locate_marks import IMAGE_DIR
 
 INK = 128
-RUNE_HEIGHT = (80, 180)
+# A body rune is ~114px tall; a drop cap runs to ~500 and must be read, while
+# the marginal crosses run past 1200 and must not. Width separates them too:
+# a drop cap is ~150 wide, the cross ~490.
+RUNE_HEIGHT = (80, 520)
+RUNE_MAX_WIDTH = 200
 TICK_HEIGHT, TICK_WIDTH = (36, 44), (8, 16)
 DOT_MAX = 16
 DOT_LINK = 45
@@ -42,6 +46,9 @@ LINE_GAP = 60
 MARGIN = 120          # how far past the end runes a mark may sit
 WIDE = 1.5            # only blobs this much wider than the median can split
 VALLEY = 0.22         # a cut needs the column ink to fall to this fraction of mean
+RED_MIN = 110         # red channel floor for a red glyph
+RED_EDGE = 55         # how far red must lead the other channels
+RED_SHARE = 0.5       # fraction of a blob's ink that must be red to call it red
 
 
 @dataclass
@@ -50,18 +57,26 @@ class Glyph:
     y: int
     x: int
     dots: int = 0
+    red: bool = False
+    tall: bool = False   # a drop cap, which spans more than one line height
 
 
-def _blobs(page: int) -> tuple[list, list]:
-    ink = np.array(Image.open(IMAGE_DIR / f"{page}.jpg").convert("L")) < INK
+def _blobs(page: int) -> tuple[list, list, np.ndarray]:
+    """Ink includes red: the opening runes of a page are often red, and pure
+    red is dark enough to survive a greyscale threshold only by luck."""
+    rgb = np.array(Image.open(IMAGE_DIR / f"{page}.jpg").convert("RGB")).astype(int)
+    r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
+    red = (r > RED_MIN) & (r - np.maximum(g, b) > RED_EDGE)
+    ink = (rgb.mean(axis=2) < INK) | red
     labels, _ = ndimage.label(ink, structure=np.ones((3, 3)))
     tall, dots = [], []
     for ys, xs in ndimage.find_objects(labels):
         h, w = ys.stop - ys.start, xs.stop - xs.start
-        if RUNE_HEIGHT[0] <= h <= RUNE_HEIGHT[1]:
-            tall.append((ys.start, xs.start, h, w))
+        if RUNE_HEIGHT[0] <= h <= RUNE_HEIGHT[1] and w <= RUNE_MAX_WIDTH:
+            is_red = red[ys, xs].sum() / max(ink[ys, xs].sum(), 1) > RED_SHARE
+            tall.append((ys.start, xs.start, h, w, is_red))
         elif TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1] and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]:
-            tall.append((ys.start, xs.start, h, w, "t"))
+            tall.append((ys.start, xs.start, h, w, False, "t"))
         elif h <= DOT_MAX and w <= DOT_MAX:
             dots.append((ys.start + h // 2, xs.start + w // 2))
     return tall, dots, ink
@@ -102,7 +117,7 @@ def read_page(page: int) -> list[list[Glyph]]:
     """Glyphs of each text line, in reading order, with artwork excluded."""
     tall, dots, ink = _blobs(page)
 
-    runes = sorted([t for t in tall if len(t) == 4])
+    runes = sorted([t for t in tall if len(t) == 5])
     bands: list[list] = []
     for r in runes:
         if bands and abs(r[0] - bands[-1][0][0]) < LINE_GAP:
@@ -130,15 +145,19 @@ def read_page(page: int) -> list[list[Glyph]]:
         groups[find(i)].append(p)
     clusters = [(min(p[0] for p in g), min(p[1] for p in g), len(g))
                 for g in groups.values()]
-    ticks = [t for t in tall if len(t) == 5]
+    ticks = [t for t in tall if len(t) == 6]
 
     out = []
     for band in bands:
-        unit = float(np.median([b[3] for b in band]))
+        # a drop cap is far wider and taller than the body hand, so it must not
+        # set the scale the splitter measures against
+        body = [b for b in band if b[2] <= 180] or band
+        unit = float(np.median([b[3] for b in body]))
         glyphs: list[Glyph] = []
         for b in band:
-            for gx in _split_wide(b, ink, unit):
-                glyphs.append(Glyph("R", b[0], gx))
+            tall_cap = b[2] > 180
+            for gx in ([b[1]] if tall_cap else _split_wide(b, ink, unit)):
+                glyphs.append(Glyph("R", b[0], gx, 0, b[4], tall_cap))
         lo_y = min(b[0] for b in band) - 30
         hi_y = max(b[0] for b in band) + 140
         lo_x = min(g.x for g in glyphs) - MARGIN
@@ -146,9 +165,9 @@ def read_page(page: int) -> list[list[Glyph]]:
         for cy, cx, n in clusters:
             if lo_y <= cy <= hi_y and lo_x <= cx <= hi_x:
                 glyphs.append(Glyph("M", cy, cx, n))
-        for ty, tx, *_ in ticks:
-            if lo_y <= ty <= hi_y and lo_x <= tx <= hi_x:
-                glyphs.append(Glyph("t", ty, tx))
+        for tk in ticks:
+            if lo_y <= tk[0] <= hi_y and lo_x <= tk[1] <= hi_x:
+                glyphs.append(Glyph("t", tk[0], tk[1]))
         out.append(sorted(glyphs, key=lambda g: g.x))
     return out
 

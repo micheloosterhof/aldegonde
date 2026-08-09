@@ -47,6 +47,7 @@ MARGIN = 45
 CIRCLED = {1: "①", 2: "②", 3: "③", 4: "④", 5: "⑤", 6: "⑥", 7: "⑦", 8: "⑧",
            9: "⑨", 10: "⑩", 11: "⑪", 12: "⑫", 13: "⑬", 14: "⑭", 15: "⑮"}
 UNKNOWN = "⑈"
+CIRCLED_SET = set(CIRCLED.values()) | {UNKNOWN}
 TXT_MARK = {"-": "①", ".": "④"}      # what the transcription's two characters mean
 
 
@@ -54,30 +55,77 @@ def circled(dots: int) -> str:
     return CIRCLED.get(dots, UNKNOWN)
 
 
-def img_tokens(line) -> list[str]:
-    return ["R" if g.kind == "R" else circled(g.dots)
-            for g in line if g.kind != "t"]
+def with_runes(scan: list[tuple[str, str]], txt: list[tuple[str, str]]) -> str:
+    """The scan's mark structure carrying the transcription's actual runes.
+
+    The scan cannot name a rune, but the transcription can, so an editable
+    value shows real runes and circled marks rather than placeholders. Where the
+    scan sees more runes than the transcription supplies, the surplus becomes
+    `?`, which `apply_review.py` refuses — so the gap surfaces instead of being
+    quietly filled.
+    """
+    supply = iter([c for c, _ in txt if c not in CIRCLED_SET])
+    return "".join(c if c in CIRCLED_SET else next(supply, "?") for c, _ in scan)
 
 
-def txt_tokens(text: str) -> list[str]:
-    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in "-."]
+def _kinds(tokens: list[tuple[str, str]]) -> list[str]:
+    """Mark glyphs compared by identity, runes only as 'a rune sits here'."""
+    return [c if c in CIRCLED_SET else "R" for c, _ in tokens]
+
+
+def img_tokens(line) -> list[tuple[str, str]]:
+    """(character, css class) per glyph. Runes cannot be identified from the
+    scan, so they show as a placeholder — but colour and drop-cap size can be,
+    and both are information the transcription does not carry."""
+    out = []
+    for g in line:
+        if g.kind == "t":
+            continue
+        if g.kind != "R":
+            out.append((circled(g.dots), "mark"))
+        elif g.tall:
+            out.append(("R", "red cap" if g.red else "cap"))
+        else:
+            out.append(("R", "red" if g.red else ""))
+    return out
+
+
+def txt_tokens(text: str) -> list[tuple[str, str]]:
+    """The transcription's own characters: real runes, marks mapped across."""
+    out = []
+    for c in text:
+        if RUNE.match(c):
+            out.append((c, "rune"))
+        elif c in TXT_MARK:
+            out.append((TXT_MARK[c], "mark"))
+    return out
 
 
 def crop(page: int, line, path: Path) -> None:
+    """Colour is kept: red runes are the point of several corrections, and a
+    drop cap is taller than the body hand so the box has to grow for it."""
     ys = [g.y for g in line]
     xs = [g.x for g in line]
+    height = 520 if any(g.kind == "R" and g.tall for g in line) else 114
     box = (max(0, min(xs) - MARGIN), max(0, min(ys) - MARGIN),
-           min(2400, max(xs) + 170), min(3600, min(ys) + 114 + MARGIN))
-    Image.open(IMAGE_DIR / f"{page}.jpg").convert("L").crop(box).save(path, optimize=True)
+           min(2400, max(xs) + 170), min(3600, min(ys) + height + MARGIN))
+    Image.open(IMAGE_DIR / f"{page}.jpg").crop(box).save(path, optimize=True)
 
 
-def row(tokens: list[str], other: list[str], kind: str) -> str:
-    """One token per fixed-width cell so the two rows line up exactly."""
+def row(tokens: list[tuple[str, str]], other: list[tuple[str, str]], kind: str) -> str:
+    """One token per fixed-width cell so the two rows line up exactly.
+
+    A cell is flagged when the two rows disagree about what KIND of thing sits
+    in that column — rune against mark, or one mark glyph against another.
+    Rune identity is not compared, since the scan cannot supply it.
+    """
     cells = []
-    for i, t in enumerate(tokens):
-        mism = i >= len(other) or other[i] != t
-        cls = "c bad" if mism else "c"
-        cells.append(f"<span class='{cls}'>{html.escape(t)}</span>")
+    for i, (ch, cls) in enumerate(tokens):
+        theirs = other[i][0] if i < len(other) else None
+        mine_mark, their_mark = ch in CIRCLED_SET, theirs in CIRCLED_SET
+        bad = theirs is None or mine_mark != their_mark or (mine_mark and ch != theirs)
+        cells.append(f"<span class='c {cls}{' bad' if bad else ''}'>"
+                     f"{html.escape(ch)}</span>")
     return f"<div class='row'><span class='lbl'>{kind}</span>{''.join(cells)}</div>"
 
 
@@ -101,30 +149,34 @@ def main() -> None:
             it = img_tokens(band) if band else []
             tt = txt_tokens(text)
             entries.append({
-                "page": page, "line": idx, "img": "".join(it), "txt": "".join(tt),
-                "runes": text.rstrip("/"), "png": name, "aligned": ok,
-                "differs": [TXT_MARK.get(c, c) for c in tt] != it,
+                "page": page, "line": idx, "png": name, "aligned": ok,
+                "img": it, "txt": tt,
+                "scan": with_runes(it, tt),
+                "text": "".join(c for c, _ in tt),
+                "runes": text.rstrip("/"),
+                "differs": _kinds(it) != _kinds(tt),
             })
 
     body = [HEAD]
     for e in entries:
-        it, tt = list(e["img"]), [TXT_MARK.get(c, c) for c in e["txt"]]
+        it, tt = e["img"], e["txt"]
         flag = "" if e["aligned"] else " <b class='warn'>page alignment uncertain</b>"
         cls = "e differs" if e["differs"] else "e"
         body.append(
             f"<section class='{cls}' id='p{e['page']}l{e['line']}' "
-            f"data-page='{e['page']}' data-line='{e['line']}'>"
+            f"data-page='{e['page']}' data-line='{e['line']}' "
+            f"data-scan='{html.escape(e['scan'])}' data-txt='{html.escape(e['text'])}'>"
             f"<h2>page {e['page']} &middot; line {e['line']}{flag}</h2>"
             + (f"<img loading='lazy' src='{e['png']}'>" if e["png"] else
                "<p class='warn'>no crop: reader found no band for this line</p>")
             + row(it, tt, "scan")
             + row(tt, it, "txt")
-            + f"<div class='runes'>{html.escape(e['runes'])}</div>"
             + "<div class='ctl'>"
-              "<button class='ok'>correct as transcribed</button>"
-              "<button class='fix'>needs change</button>"
-              f"<input class='val' placeholder='true sequence, e.g. RRR④RR①' "
-              f"value='{html.escape(e['img'])}'>"
+              "<button class='b-txt'>txt row is right</button>"
+              "<button class='b-scan'>scan row is right</button>"
+              "<button class='b-edit'>use my edit &rarr;</button>"
+              f"<input class='val' placeholder='runes and marks, e.g. ᚦᛖ①ᛗᚪᚾ④' "
+              f"value='{html.escape(e['scan'])}'>"
               "<input class='note' placeholder='note'>"
               "<span class='state'></span></div></section>")
     body.append(FOOT.replace("__TOTAL__", str(len(entries))))
@@ -152,7 +204,10 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
  .lbl{display:inline-block;width:4.5ch;color:#888;font-size:14px}
  .c{display:inline-block;width:1.35ch;text-align:center}
  .bad{background:#ffd9d9;color:#b00;font-weight:700}
- .runes{font:19px/1.4 serif;color:#333;margin:.35rem 0 .6rem;word-break:break-all}
+ .rune{color:#111}
+ .mark{color:#0057b8;font-weight:700}
+ .red{color:#c00}
+ .cap{outline:2px solid #c90;font-weight:700}
  .ctl{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
  button{font:14px system-ui;padding:.3rem .7rem;cursor:pointer}
  .val{font:16px ui-monospace,Menlo,monospace;flex:1;min-width:22rem;padding:.3rem}
@@ -164,10 +219,13 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
 </style>
 <h1>Liber Primus transcription review</h1>
 <p>Rows line up column for column. <b>scan</b> is what the reader sees,
-<b>txt</b> is the transcription mapped onto the same alphabet
-(<code>-</code>&rarr;&#9312;, <code>.</code>&rarr;&#9315;). Red cells differ.
-Marks are circled by dot count: &#9312;1 &#9314;3 &#9315;4 &#9321;10 &#9324;13,
-&#9288; unrecognised. Highlighted sections are the ones that disagree.</p>"""
+<b>txt</b> is the transcription itself &mdash; real runes, with its two mark
+characters mapped across (<code>-</code>&rarr;&#9312;, <code>.</code>&rarr;&#9315;).
+The scan cannot name a rune, so it shows <code>R</code>; red <code>R</code> is a
+red rune and a boxed one is a drop cap, neither of which the transcription
+records. Cells shaded red disagree about mark type.
+The edit box holds real runes with circled marks. Marks are circled by dot count: &#9312;1 &#9314;3 &#9315;4 &#9321;10 &#9324;13,
+&#9288; unrecognised. Highlighted sections are the ones that disagree.</p>\n<p><b>Which button?</b> <code>txt row is right</code> keeps the existing\ntranscription. <code>scan row is right</code> takes the reader's version,\nwhich is what you want when the reader spotted a mark the transcription got\nwrong. <code>use my edit</code> stores whatever is in the box, pre-filled with\nthe scan reading. Whichever you press, the stored sequence is exactly what the\nline will become.</p>"""
 
 FOOT = """<div id='bar'>
  <span id='count'>0 / __TOTAL__ reviewed</span>
@@ -187,16 +245,20 @@ function count(){
   document.getElementById('count').textContent =
     Object.keys(store).length+' / __TOTAL__ reviewed';
 }
-function put(s,verdict){
-  store[key(s)]={page:+s.dataset.page,line:+s.dataset.line,verdict:verdict,
-    value:s.querySelector('.val').value, note:s.querySelector('.note').value};
+function put(s,source){
+  const v = source==='txt'  ? s.dataset.txt
+          : source==='scan' ? s.dataset.scan
+          :                   s.querySelector('.val').value;
+  store[key(s)]={page:+s.dataset.page,line:+s.dataset.line,source:source,
+    value:v, note:s.querySelector('.note').value};
   localStorage.setItem(K,JSON.stringify(store)); paint(s); count();
 }
 document.querySelectorAll('section').forEach(s=>{
   const r=store[key(s)];
   if(r){ s.querySelector('.val').value=r.value; s.querySelector('.note').value=r.note||''; }
-  s.querySelector('.ok').onclick=()=>put(s,'ok');
-  s.querySelector('.fix').onclick=()=>put(s,'fix');
+  s.querySelector('.b-txt').onclick=()=>put(s,'txt');
+  s.querySelector('.b-scan').onclick=()=>put(s,'scan');
+  s.querySelector('.b-edit').onclick=()=>put(s,'edit');
   paint(s);
 });
 count();
