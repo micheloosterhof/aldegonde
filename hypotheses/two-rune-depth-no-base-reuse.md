@@ -89,10 +89,29 @@ by frequency, over runeglish words of each rune length.
 
 | L | words | pairs | full agree | chance | repeat rate | shift predicts | log10 P |
 |---|---|---|---|---|---|---|---|
-| 2 | 465 | 107,880 | 112 | 125.4 | 0.1056 | 518 | −103 |
-| 3 | 726 | 263,175 | 17 | 10.9 | 0.0375 | 352 | −124 |
-| 4 | 514 | 131,841 | 0 | 0.2 | 0.0072 | 33 | −14 |
-| 5 | 318 | 50,403 | 0 | 0.0 | 0.0039 | 7 | −3 |
+| 2 | 465 | 107,880 | 112 | 125.4 | 0.1056 | 518.2 | −103 |
+| 3 | 726 | 263,175 | 17 | 10.9 | 0.0375 | 351.6 | −124 |
+| 4 | 514 | 131,841 | 0 | 0.2 | 0.0072 | 32.7 | −14 |
+| 5 | 318 | 50,403 | 0 | 0.0 | 0.0039 | 6.8 | −3 |
+| 6 | 252 | 31,626 | 0 | 0.0 | 0.0018 | 2.0 | −0.9 |
+| 7 | 214 | 22,791 | 0 | 0.0 | 0.0018 | 1.4 | −0.6 |
+| 8 | 159 | 12,561 | 0 | 0.0 | 0.0017 | 0.7 | −0.3 |
+
+**The test has an upper limit and it is reached at L=4.** Two factors multiply
+and both fall: the word supply (726 at L=3 down to 159 at L=8) and the register
+repeat rate (0.0375 down to 0.0017, since long words are mostly distinct). Their
+product is what a schedule would deposit in the identical-word cell, and it
+collapses 352 → 33 → 7 → 2 → 1. Past L=5 a 29-state schedule would leave under
+two collisions, which no corpus of this size can distinguish from zero. All the
+power sits at L=2 and L=3.
+
+Longer words are not wasted, they just need a different test. Requiring two
+ciphertext words to be *identical* is the wrong ask once repeats vanish; the
+right one is whether they are related by a **constant** transform, which does
+not need the plaintexts to be equal. That census exists and is also negative:
+`word-transform-census.md` finds shift, beaufort, affine, reversal, rotation
+and anagram word pairs all at chance, excluding every per-word constant-transform
+cipher at all lengths.
 
 `log10 P` is the Poisson tail P(observed or fewer | shift prediction); the
 shuffle-null Gaussian z is meaningless once the expected count is a handful.

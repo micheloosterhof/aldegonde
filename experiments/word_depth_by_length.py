@@ -44,7 +44,7 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 BOUNDARY = "-.%&$"
 N_RUNES = 29
 SHIFTS = 29           # states of the schedule being excluded
-LENGTHS = (2, 3, 4, 5)
+LENGTHS = (2, 3, 4, 5, 6, 7, 8)
 TRIALS = 4000
 LEXICON = 60000
 SEED = 3301
@@ -140,13 +140,15 @@ def main() -> None:
                 rng.shuffle(col)
             null.append(full_agree(list(zip(*cols))))
         mu, sd = statistics.mean(null), statistics.pstdev(null)
-        z = (obs - mu) / sd if sd else float("nan")
+        # once chance collisions vanish the shuffle sd is 0 and z is undefined;
+        # the Poisson tail against the schedule prediction still carries meaning
+        zs = f"{(obs - mu) / sd:+7.2f}" if sd else f"{'--':>7}"
 
         s = rates.get(length, 0.0)
         pred = mu + pairs * s / SHIFTS
         log_p = poisson_log10_tail(obs, pred)
-        print(f"{length:>4}{n:>7}{pairs:>10}{obs:>11}{mu:>9.1f}{sd:>7.1f}{z:>+7.2f}"
-              f"{s:>13.4f}{pred:>12.0f}{log_p:>10.1f}")
+        print(f"{length:>4}{n:>7}{pairs:>10}{obs:>11}{mu:>9.1f}{sd:>7.1f}{zs}"
+              f"{s:>13.4f}{pred:>12.1f}{log_p:>10.1f}")
 
     print("\nlog10 P = Poisson tail P(observed or fewer | shift prediction).")
     print("full = pairs agreeing at EVERY position; null shuffles each position")
