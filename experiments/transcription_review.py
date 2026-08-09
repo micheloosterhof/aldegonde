@@ -55,17 +55,29 @@ def circled(dots: int) -> str:
     return CIRCLED.get(dots, UNKNOWN)
 
 
-def with_runes(scan: list[tuple[str, str]], txt: list[tuple[str, str]]) -> str:
-    """The scan's mark structure carrying the transcription's actual runes.
+def fill_runes(scan: list[tuple[str, str]],
+               txt: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """The scan's structure carrying the transcription's actual runes.
 
-    The scan cannot name a rune, but the transcription can, so an editable
-    value shows real runes and circled marks rather than placeholders. Where the
-    scan sees more runes than the transcription supplies, the surplus becomes
-    `?`, which `apply_review.py` refuses — so the gap surfaces instead of being
-    quietly filled.
+    The scan cannot name a rune, but it does know where one sits, and the
+    transcription can name it. Filling them in order makes the scan row
+    readable as a line instead of a row of placeholders, and it makes a drift
+    obvious: once the two disagree about a mark, every later column shows the
+    same rune in different places.
+
+    Where the scan sees more runes than the transcription supplies, the surplus
+    becomes `?` — flagged here and refused by `apply_review.py`, so the gap
+    surfaces rather than being quietly filled.
     """
     supply = iter([c for c, _ in txt if c not in CIRCLED_SET])
-    return "".join(c if c in CIRCLED_SET else next(supply, "?") for c, _ in scan)
+    out = []
+    for c, cls in scan:
+        if c in CIRCLED_SET:
+            out.append((c, cls))
+        else:
+            r = next(supply, "?")
+            out.append((r, f"{cls} miss".strip() if r == "?" else cls))
+    return out
 
 
 def _kinds(tokens: list[tuple[str, str]]) -> list[str]:
@@ -115,15 +127,14 @@ def crop(page: int, line, path: Path) -> None:
 def row(tokens: list[tuple[str, str]], other: list[tuple[str, str]], kind: str) -> str:
     """One token per fixed-width cell so the two rows line up exactly.
 
-    A cell is flagged when the two rows disagree about what KIND of thing sits
-    in that column — rune against mark, or one mark glyph against another.
-    Rune identity is not compared, since the scan cannot supply it.
+    A cell is flagged whenever the two rows differ in that column. Since the
+    scan row is filled with the transcription's own runes, a disagreement about
+    one mark drifts every column after it, which is exactly the thing to see.
     """
     cells = []
     for i, (ch, cls) in enumerate(tokens):
         theirs = other[i][0] if i < len(other) else None
-        mine_mark, their_mark = ch in CIRCLED_SET, theirs in CIRCLED_SET
-        bad = theirs is None or mine_mark != their_mark or (mine_mark and ch != theirs)
+        bad = theirs != ch
         cells.append(f"<span class='c {cls}{' bad' if bad else ''}'>"
                      f"{html.escape(ch)}</span>")
     return f"<div class='row'><span class='lbl'>{kind}</span>{''.join(cells)}</div>"
@@ -146,12 +157,12 @@ def main() -> None:
             if band:
                 name = f"p{page:02d}_l{idx:02d}.png"
                 crop(page, band, OUT / name)
-            it = img_tokens(band) if band else []
             tt = txt_tokens(text)
+            it = fill_runes(img_tokens(band), tt) if band else []
             entries.append({
                 "page": page, "line": idx, "png": name, "aligned": ok,
                 "img": it, "txt": tt,
-                "scan": with_runes(it, tt),
+                "scan": "".join(c for c, _ in it),
                 "text": "".join(c for c, _ in tt),
                 "runes": text.rstrip("/"),
                 "differs": _kinds(it) != _kinds(tt),
@@ -199,18 +210,19 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
  h2{font-size:19px;margin:0 0 .5rem;font-weight:600}
  .warn{color:#b00}
  img{max-width:100%;border:1px solid #ccc;display:block;margin:.4rem 0}
- .row{font:20px/1.35 ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;
+ .row{font:29px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;
       overflow-x:auto}
- .lbl{display:inline-block;width:4.5ch;color:#888;font-size:14px}
- .c{display:inline-block;width:1.35ch;text-align:center}
+ .lbl{display:inline-block;width:4.5ch;color:#888;font-size:15px}
+ .c{display:inline-block;width:1.4ch;text-align:center}
  .bad{background:#ffd9d9;color:#b00;font-weight:700}
  .rune{color:#111}
  .mark{color:#0057b8;font-weight:700}
  .red{color:#c00}
+ .miss{background:#fdd;color:#b00;font-weight:700}
  .cap{outline:2px solid #c90;font-weight:700}
  .ctl{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
  button{font:14px system-ui;padding:.3rem .7rem;cursor:pointer}
- .val{font:16px ui-monospace,Menlo,monospace;flex:1;min-width:22rem;padding:.3rem}
+ .val{font:21px ui-monospace,Menlo,monospace;flex:1;min-width:26rem;padding:.35rem}
  .note{font:14px system-ui;width:16rem;padding:.3rem}
  .state{font-size:13px;color:#080;min-width:9rem}
  #bar{position:fixed;bottom:0;left:0;right:0;background:#222;color:#fff;
@@ -221,9 +233,11 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
 <p>Rows line up column for column. <b>scan</b> is what the reader sees,
 <b>txt</b> is the transcription itself &mdash; real runes, with its two mark
 characters mapped across (<code>-</code>&rarr;&#9312;, <code>.</code>&rarr;&#9315;).
-The scan cannot name a rune, so it shows <code>R</code>; red <code>R</code> is a
-red rune and a boxed one is a drop cap, neither of which the transcription
-records. Cells shaded red disagree about mark type.
+The scan row carries the transcription's runes in the positions the scan sees
+them, so a mark it reads differently drifts every column after it. A rune shown
+in red is red on the page and a boxed one is a drop cap, neither of which the
+transcription records; <code>?</code> means the scan saw a rune the
+transcription has no character for. Cells shaded red disagree about mark type.
 The edit box holds real runes with circled marks. Marks are circled by dot count: &#9312;1 &#9314;3 &#9315;4 &#9321;10 &#9324;13,
 &#9288; unrecognised. Highlighted sections are the ones that disagree.</p>\n<p><b>Which button?</b> <code>txt row is right</code> keeps the existing\ntranscription. <code>scan row is right</code> takes the reader's version,\nwhich is what you want when the reader spotted a mark the transcription got\nwrong. <code>use my edit</code> stores whatever is in the box, pre-filled with\nthe scan reading. Whichever you press, the stored sequence is exactly what the\nline will become.</p>"""
 
