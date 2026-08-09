@@ -74,14 +74,14 @@ Possible forms:
   adjacent-alphabet relation is tuned to rare plaintext bigrams — is not a
   per-word-constant key and is tracked in `length-clocked-walk.md`.
 
-- **The seam-keyed BASE is now closed too (August 2026,
-  `experiments/seam_keyed_depth.py`).** Everything above kills schemes where
-  one substitution covers a whole word. It does not reach the variant that
-  survives inside the walk: the key still varies by position through `g^k`,
-  and only the per-word **base** is autokeyed on the previous word's last
-  rune. That variant is untouched by the transform census (the per-word
-  transform is not constant) and by the pattern-preservation test (within-word
-  repeats are broken by `g^k`, not by the base).
+- **The keyed BASE is now closed for every simple tap (August 2026,
+  `experiments/word_key_tap_battery.py`).** Everything above kills schemes
+  where one substitution covers a whole word. It does not reach the variant
+  that survives inside the walk: the key still varies by position through
+  `g^k`, and only the per-word **base** is autokeyed on some function of the
+  preceding text. That variant is untouched by the transform census (the
+  per-word transform is not constant) and by the pattern-preservation test
+  (within-word repeats are broken by `g^k`, not by the base).
 
   It has its own signature. Compare two words at the same position `k`: since
   `c_k = base_w(g^k(p_k))`, two words sharing a base agree exactly when their
@@ -89,21 +89,43 @@ Possible forms:
   runeglish plaintext coincidence rate of about 0.06. Conditioning on the seam
   rune matching therefore predicts a lift of **+0.0255**.
 
-  | tap | agree, tap matches | tap differs | lift | z |
-  |---|---|---|---|---|
-  | previous word's last rune | 0.0348 | 0.0344 | **+0.0004** | +1.43 |
-  | previous word's first rune | 0.0345 | 0.0344 | +0.0001 | +0.31 |
-  | last rune two words back | 0.0342 | 0.0344 | −0.0002 | −0.64 |
+  The tap is unconstrained, so a battery was run. Fourteen candidates, each
+  against a null that shuffles its values across words:
 
-  Against a null shuffling the taps across words (2,000 draws, sd 0.0003), the
-  predicted +0.0255 sits **93 sigma** away. Three taps were tried so a null
-  cannot be blamed on the wrong one.
+  | tap | classes | matched pairs | matches | differs | gap | z | max share |
+  |---|---|---|---|---|---|---|---|
+  | prev last rune | 29 | 450,048 | 0.0348 | 0.0344 | +0.0004 | +1.33 | 3.8% |
+  | prev first rune | 29 | 449,622 | 0.0345 | 0.0344 | +0.0001 | +0.29 | 2.5% |
+  | prev sum mod 29 | 29 | 450,127 | 0.0341 | 0.0344 | −0.0003 | −0.94 | 1.1% |
+  | prev product mod 29 | 29 | 593,497 | 0.0340 | 0.0344 | −0.0004 | −1.73 | 0.2% |
+  | prev GP sum mod 29 | 29 | 449,088 | 0.0345 | 0.0344 | +0.0001 | +0.25 | 2.5% |
+  | prev GP product mod 29 | 29 | 625,617 | 0.0348 | 0.0344 | +0.0004 | +1.70 | 3.4% |
+  | prev alternating sum | 29 | 449,290 | 0.0344 | 0.0344 | −0.0000 | −0.10 | 2.1% |
+  | prev length | 14 | 1,918,715 | 0.0345 | 0.0344 | +0.0001 | +1.01 | 1.7% |
+  | prev length mod 5 | 5 | 2,892,700 | 0.0344 | 0.0344 | +0.0000 | +0.39 | 1.1% |
+  | prev two words summed | 29 | 449,335 | 0.0346 | 0.0344 | +0.0002 | +0.80 | 3.0% |
+  | accumulated rune sum | 29 | 451,460 | 0.0344 | 0.0344 | −0.0000 | −0.03 | 2.3% |
+  | rune offset mod 29 | 29 | 448,642 | 0.0342 | 0.0344 | −0.0002 | −0.56 | 1.5% |
+  | word index mod 29 | 29 | 445,626 | 0.0343 | 0.0344 | −0.0001 | −0.43 | 1.5% |
+  | **random (control)** | 29 | 449,673 | 0.0347 | 0.0344 | +0.0003 | +1.00 | 3.2% |
 
-  The test degrades gracefully, so it also bounds partial keying: the lift is
-  at most +0.0009 at 2 sigma, so **the seam rune can determine at most 3.7% of
-  the alphabet selection**. This is a much more direct measurement than the
-  arguments above — it uses every word pair rather than repeated words only,
-  and conditioning on the seam concentrates the signal 29-fold.
+  A tap that actually keyed the alphabet would sit at **z ≈ 85**. The largest
+  |z| in the battery is 1.73, against the 2.7 needed to clear a 14-way scan.
+
+  The negative control is the calibration that matters: a **random** tap scores
+  z = +1.00 and a 3.2% share, the same range as the best real tap. The +1.33 on
+  the seam rune is the harness's noise floor, not a lean.
+
+  The test degrades gracefully, so each row also bounds *partial* keying: the
+  final column is the tap's maximum contribution to alphabet selection, from
+  the 2-sigma upper edge of its gap. **No tap can supply more than 3.8%**, and
+  that ceiling is set by the noise floor rather than by any signal.
+
+  This is a much more direct measurement than the arguments above — it uses
+  every word pair rather than repeated words only, and conditioning on the tap
+  concentrates the signal 29-fold. It does not test taps that depend on the
+  *plaintext* of the previous word, which is unobservable; those are covered
+  separately by `plaintext-autokey.md`.
 
 ## Predictions
 
@@ -116,8 +138,8 @@ test.
 
 ## Scripts
 
-- `experiments/seam_keyed_depth.py` — conditions word-pair agreement on the
-  seam rune, closing the seam-keyed base variant.
+- `experiments/word_key_tap_battery.py` — conditions word-pair agreement on
+  each candidate tap, closing the keyed-base variant for all fourteen.
 
 ## Verdict
 
