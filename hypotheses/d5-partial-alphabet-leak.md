@@ -141,6 +141,18 @@ whether phase (d mod 5) captures all the structure:
   anything rising, not decaying. Base drift would make the echo *decay* as a
   pair starts later in the word (more accumulated drift). It doesn't. So the
   base is **word-locked**, and the partial leak is **not** intra-word drift.
+
+  **Independently confirmed, August 2026** (`experiments/d5_profile_and_position.py`),
+  against a different null — the structure-free surrogate of
+  `negative-control-battery.md` rather than a within-file permutation. Per
+  start position the rates run 0.0434 / 0.0487 / 0.0529 / 0.0552 / 0.0673 with
+  homogeneity **chi2 = 4.89 on 8 df, p = 0.77**, and the fitted slope is
+  **+0.00485 per position against a surrogate +0.00024 ± 0.00294, z = +1.57**.
+  Since the surrogate preserves the word-length structure, the confound that
+  later start positions exist only inside longer words is controlled, and it
+  contributes nothing. The rise remains non-significant and was tested only
+  after being noticed, so it carries no weight — but its *sign* is the
+  load-bearing part, and it is positive. No drift.
 - **No word-initial anomaly.** d1 doublet suppression is uniform across
   position including i=0 (the pair right after the σ step), p=0.12. σ does not
   make the first letter special.

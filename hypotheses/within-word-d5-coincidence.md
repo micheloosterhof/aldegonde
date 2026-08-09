@@ -161,6 +161,8 @@ row — vanishingly rare under any position-independent stream model.
 
 ## Scripts
 
+- `experiments/d5_profile_and_position.py` — the full d1-d12 profile with
+  phases, the d10 power calculation, and the position decomposition.
 - `experiments/within_word_d5.py` — reproduces every number above
   (exact binomials, all permutation tests, per-section breakdown, the
   word list).
@@ -170,6 +172,75 @@ row — vanishingly rare under any position-independent stream model.
   `lag5-digraph-structure.md`: joint paired/isolated x within/across
   decomposition, built on the unit-tested
   `aldegonde.analysis.coincidence` boundary functions.
+
+## The full distance profile, and what d10 cannot test
+
+`experiments/d5_profile_and_position.py`, against the structure-free surrogate
+of `negative-control-battery.md` (word boundaries and marks held exactly, runes
+redrawn at the observed doublet rate, 400 draws).
+
+| d | pairs | matches | rate | surrogate | z | phase |
+|---|---|---|---|---|---|---|
+| 1 | 10028 | 63 | 0.0063 | 0.0069 | −0.68 | 1 |
+| 2 | 7199 | 250 | 0.0347 | 0.0355 | −0.33 | 2 |
+| 3 | 4835 | 179 | 0.0370 | 0.0345 | +1.03 | 3 |
+| 4 | 3197 | 131 | 0.0410 | 0.0346 | +2.12 | 4 |
+| **5** | 2073 | 102 | 0.0492 | 0.0346 | **+3.58** | **0 (echo)** |
+| 6 | 1267 | 31 | 0.0245 | 0.0340 | −1.79 | 1 |
+| 7 | 713 | 30 | 0.0421 | 0.0345 | +1.11 | 2 |
+| 8 | 373 | 10 | 0.0268 | 0.0342 | −0.76 | 3 |
+| 9 | 192 | 5 | 0.0260 | 0.0345 | −0.66 | 4 |
+| 10 | 88 | 2 | 0.0227 | 0.0332 | −0.54 | 0 (echo) |
+| 11 | 35 | 1 | 0.0286 | 0.0366 | −0.26 | 1 |
+| 12 | 10 | 0 | 0.0000 | 0.0335 | −0.60 | 2 |
+
+The period-5 phase pattern is visible where there is power: phase 0 carries the
+echo, phase 1 (d1 and d6) is suppressed, phases 2-4 sit between. **All of that
+rests on d1-d6.** From d7 the pair counts collapse — 713, 373, 192, 88, 35, 10 —
+and every cell drifts to zero z regardless of what is true.
+
+**d10 must not be cited either way.** `g^5 = id` predicts the echo recurs at
+d10, and the corpus cannot check it. There are 88 pairs and 2 matches; flat
+predicts 3.0 matches and a d5-strength echo predicts 4.3. The two hypotheses sit
+**0.76 sd apart**, so d10 separates nothing. Reaching 2 sigma would need ~615
+pairs against the 88 available — about seven times this book's supply of words
+11+ runes long. A flat d10 is not evidence against the model; it is not a
+measurement.
+
+## Where the echo sits inside the word
+
+Grouped by the pair's start position. A concentration at one offset would mean
+something other than a uniform period-5 leak.
+
+| runes | pairs | matches | rate | surrogate | z |
+|---|---|---|---|---|---|
+| 1 & 6 | 806 | 35 | 0.0434 | 0.0347 | +1.32 |
+| 2 & 7 | 554 | 27 | 0.0487 | 0.0342 | +1.93 |
+| 3 & 8 | 340 | 18 | 0.0529 | 0.0343 | +1.88 |
+| 4 & 9 | 181 | 10 | 0.0552 | 0.0345 | +1.58 |
+| 5 & 10 | 104 | 7 | 0.0673 | 0.0364 | +1.68 |
+| 6 & 11 | 53 | 2 | 0.0377 | 0.0360 | +0.07 |
+| 7 & 12 | 25 | 3 | 0.1200 | 0.0378 | +2.14 |
+
+**No preference: it is all of them, evenly.** Homogeneity across start
+positions gives chi2 = 4.89 on 8 df, **p = 0.77** — one uniform rate fits. This
+reproduces the decomposition in `d5-partial-alphabet-leak.md`
+(0.043/0.049/0.053/0.059, p = 0.70) under a different null.
+
+Two consequences worth keeping straight:
+
+- **No single position is individually significant.** The best real cells reach
+  z ≈ +1.3 to +1.9. The dramatic-looking 7&12 at 0.12 is 3 matches out of 25,
+  one of nine cells scanned. The d5 signal exists only in aggregate — which is
+  the correct way to read a uniform leak, but it means there is no hot spot to
+  attack.
+- **There is no drift.** Base drift inside a word would make the echo *decay*
+  as the pair starts later, since more drift accumulates between i and i+5. The
+  slope is if anything positive: +0.00485 per position against a surrogate
+  +0.00024 ± 0.00294, **z = +1.57** — not significant, and tested only after
+  the rise was noticed in the table, so discount it further. The surrogate
+  carries the same word-length structure, so the obvious confound (later
+  positions exist only in longer words) is controlled and contributes nothing.
 
 ## Scope note
 
