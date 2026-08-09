@@ -6,12 +6,32 @@ type: observation
 ## Claim
 
 The 2,927 word seams — the bigram (last rune of word w, first rune of
-word w+1) — carry exactly one structure: the suppressed diagonal (the 23
-cross-word doublets, z = −8.1 against random word pairing). Everything
-else is flat: the off-diagonal matrix, repeated seam bigrams, the
-conditional distributions in both directions, and the marginals. The
-diagonal suppression is **independent of the previous word's length
-class**, verifying the walk's seam-cancellation prediction.
+word w+1) — carry **no structure at all**. The off-diagonal matrix,
+repeated seam bigrams, the conditional distributions in both directions
+and the marginals are all flat.
+
+**Corrected, August 2026** (`experiments/negative_control_battery.py`).
+This file previously claimed the seam carried "exactly one structure: the
+suppressed diagonal (the 23 cross-word doublets, z = −8.1 against random
+word pairing)". That z measures the **global** doublet suppression showing
+through at the seam, not a seam property. The null used — permuting word
+order — reassembles words freely and so destroys the doublet suppression
+along with the seam pairing, sending the expectation to the unsuppressed
+100.7.
+
+Against a surrogate that **preserves** the observed doublet rate and every
+boundary, the seam diagonal is 23 observed against 19.7 ± 4.6, **z = +0.72**.
+There is nothing there.
+
+This also resolves a contradiction between two files. `word-level-autokey.md`
+already carried the correction that the suppression is boundary-blind — the
+within-word rate 0.0063 and the seam rate 0.0079 are statistically one rate
+(z = 0.87, pooled 0.0066) — while this file still headlined the seam
+diagonal as a finding. The boundary-blind reading is the right one.
+
+The diagonal suppression remains **independent of the previous word's length
+class**, which still verifies the walk's seam-cancellation prediction; that
+part is unaffected.
 
 ## Status
 
@@ -25,7 +45,8 @@ marginals, breaks only the seam pairing (`experiments/seam_bigram_tests.py`).
 
 | statistic | observed | null | verdict |
 |---|---|---|---|
-| diagonal (seam doublets) | 23 | 100.7 ± 9.6 | **z = −8.1** — the seam suppression against the honest null |
+| diagonal (seam doublets), word-order null | 23 | 100.7 ± 9.6 | ~~z = −8.1~~ — this null destroys the doublet suppression; see the correction above |
+| diagonal (seam doublets), doublet-preserving null | 23 | 19.7 ± 4.6 | **z = +0.72** — nothing; the seam is as suppressed as everywhere else, no more |
 | off-diagonal chi2 (840 df) | 828 | 810 ± 40 | flat (z = +0.5) |
 | pair-distribution IoC (×841) | 1.027 | 0.999 ± 0.014 | +2.0σ, see note |
 | max repeated seam bigram | 12 | 10.7 ± 1.0 | flat (z = +1.2) |

@@ -44,8 +44,13 @@ mixed census leans on.
 
 Raw within-word rates against the 1/29 background:
 
-- **d6 = 31/1267 = 0.0245, z = −2.3**, independently permutation-verified
-  at p = 0.016 (`within_word_phase_profile.py`). The solid anomaly.
+- **d6 = 31/1267 = 0.0245, z = −2.3**, permutation-verified at p = 0.016
+  (`within_word_phase_profile.py`), whose null shuffles word LENGTHS and keeps
+  the runes. **Null-dependent (August 2026)**: against a surrogate that
+  shuffles the RUNES and keeps the boundaries, d6 reads z = −1.83, under 2
+  sigma (`negative-control-battery.md`). The two nulls ask different questions
+  and neither is wrong, but "the solid anomaly" overstates a cell that clears
+  only one of them.
 - **d4 = 131/3197 = 0.0410, z = +1.85** — a stable but modest lean
   (uncorrected, one of ~8 scanned cells; it was on the books as part of
   the d2→d5 shoulder before this analysis).
