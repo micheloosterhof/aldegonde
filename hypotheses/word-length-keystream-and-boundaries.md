@@ -105,6 +105,49 @@ This is the one assumption-questioning lead worth revisiting with a
 register-matched runeglish corpus (philosophical/koan prose with word
 boundaries), which the repo does not currently contain.
 
+**Anatomy (August 2026, `experiments/short_word_deficit.py`).** Three facts
+narrow what kind of deficit it is.
+
+*It is almost entirely the 2-rune bucket.* Not "short words" in general:
+
+| runes | unsolved | solved | difference |
+|---|---|---|---|
+| 1 | 3.4% | 3.9% | +0.5% |
+| **2** | **15.9%** | **24.2%** | **+8.3%** |
+| 3 | 24.8% | 23.7% | -1.1% |
+| 4 | 17.6% | 17.8% | +0.2% |
+| 5 | 10.9% | 7.5% | -3.3% |
+| 7 | 7.3% | 6.3% | -1.0% |
+| 8 | 5.4% | 3.4% | -2.1% |
+
+1-rune words match. The whole gap sits at length 2, and the displaced mass
+reappears at 3, 5, 7 and 8 (means 4.42 against 4.01; KS D = 0.089,
+p = 1.7e-4). **That is the shape MERGING produces** — drop a separator between
+a 2-rune and a 3-rune word and you lose two short words and gain one of five.
+
+*It is uniform, not concentrated.* Every section shows it, and homogeneity
+across the nine measurable sections gives chi2 = 5.91 on 8 df, **p = 0.66**.
+
+*It does not drift.* By quarter of the book: 19.0% / 20.2% / 19.4% / 18.4%;
+rank correlation of shortness with position tau = -0.008, p = 0.62.
+
+*The segmentation convention makes it worse, not better.* Under `- . % & $`
+it is 19.3% against 28.1%, z = +4.92; under section D's `- .` (below) it is
+18.3% against 27.7%, **z = +5.23**. Treating `%` as a boundary splits words
+into shorter fragments and so flatters the unsolved side.
+
+**Boundary verification against the scans is inconclusive so far**
+(`experiments/boundary_verification.py`). The merging shape makes a
+transcription artifact worth testing directly, and the scans allow it: 491 of
+604 lines (81.3%) carry exactly the transcribed separators. But 92 of the 113
+mismatches are the reader merging touching runes, and of the 21 clean
+disagreements — all at line edges, 19 with the image carrying MORE separators
+and 0 the transcription — spot-checking two found one real omission and one
+piece of marginal artwork misread as a dot. The caveat above ("cannot be fully
+excluded without the page scans") is now half-answered: most lines verify, and
+settling the rest needs a tighter per-page text block and a rune segmenter that
+does not merge glyphs.
+
 **If confirmed**, it would matter a lot: it would mean the boundaries are a
 separate synthetic layer, the "English-like word lengths" are a histogram
 match rather than real word structure, and cribbing on word identity is
