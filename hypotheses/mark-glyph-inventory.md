@@ -1,0 +1,186 @@
+---
+type: observation
+---
+# The Transcription Collapses Four Mark Glyphs into Two Characters
+
+## Status
+
+**Status**: confirmed (characterization) for the inventory. The consequence for
+the '.'-mark semantics is measured but underpowered.
+
+## Claim
+
+The transcription records two marks: `-` for a word separator and `.` for a
+sentence mark. The page scans carry at least **four distinct dot-cluster
+glyphs**, and the transcription maps them onto those two characters — sometimes
+inconsistently, sometimes not at all.
+
+Found by manual review of `experiments/boundary_review_sheet.py` (Michel,
+August 2026), then measured.
+
+## The inventory
+
+`experiments/dot_cluster_census.py` finds every dot-sized blob in the text
+block of all 58 pages and groups them by proximity:
+
+| dots per cluster | clusters | reading |
+|---|---|---|
+| 1 | 2937 | word separator |
+| 3 | 24 | a distinct symbol |
+| 4 | 145 | sentence mark |
+| 5 | 9 | — |
+| 10 | 8 | a distinct symbol |
+| 13 | 31 | a distinct symbol |
+| 18, 23, 26, 51, 76, 86, 428 | 1 each | marginal artwork |
+
+Per page the transcription's `.` count matches **4-dot + 13-dot**, not the
+4-dot count alone (176 against 175 recorded).
+
+`experiments/mark_type_split.py` then aligns each page's glyph sequence to its
+transcription line — aligning on mark *positions* rather than types, so the
+transcribed type is not assumed — and cross-tabulates 2,131 marks:
+
+| dots on page | as `-` | as `.` |
+|---|---|---|
+| 1 | 2010 | 0 |
+| 3 | **2** | 0 |
+| 4 | 0 | 104 |
+| 10 | 0 | 3 |
+| 13 | 0 | **11** |
+| 23 | 0 | 1 |
+
+So `-` is 1-dot **plus** 3-dot, and `.` is 4-dot **plus** everything larger.
+Roughly **13% of the recorded `.` marks are not the 4-dot sentence glyph.**
+
+## The large glyphs bracket lines, and line-initial ones are dropped
+
+Manually confirmed cases (Michel, from the review sheet):
+
+| page | line | glyph | position | transcribed as |
+|---|---|---|---|---|
+| 7 | 9 | 13-dot | **opens and closes** the line | opening dropped, closing `.` |
+| 15 | 0 | 13-dot | **opens and closes** the line | opening dropped, closing `.` |
+| 20 | 6 | 3-dot | line start | dropped |
+| 38 | 9 | 10-dot | line start | dropped |
+| 5 | 4 | 3-dot | line end | recorded as `-` |
+| 11 | 10 | 3-dot | line end | recorded as `-` |
+
+Two regularities, and they are different failures:
+
+- **Line-END marks are recorded but sometimes mistyped** — a 3-dot glyph comes
+  through as an ordinary word separator.
+- **Line-START marks are dropped entirely** — every confirmed line-initial
+  glyph, at three different sizes, is simply absent.
+
+That the large glyphs *open and close* a line reads as a structural delimiter —
+a block or section bracket — rather than punctuation. It also explains the
+"leading separator" cases in `boundary_verification.py`: 19 of 21 clean
+disagreements had the image carrying a mark the transcription lacked, and they
+were all at line edges. Those are not spurious after all; they are this.
+
+The dropped line-initial marks are the same failure mode as the apostrophes and
+quotation marks (`contraction-cribs.md`): the glyph inventory was assumed rather
+than measured.
+
+## Consequence for the '.'-mark semantics: measured, not resolved
+
+`word-length-keystream-and-boundaries.md` records the corpus's one unexplained
+observation — the `.` marks carry no English sentence-final signature (solved
+pages z = +7.06, unsolved z = -1.21) — and proposes the marks may be a
+**mixture**. It looked for that mixture by line position. The scans say there
+is a mixture by glyph, which is a better candidate.
+
+Splitting the aligned `.` marks by glyph and measuring the word before each:
+
+| glyph | n | mean length before | 1-2 runes |
+|---|---|---|---|
+| small (< 8 dots) | 101 | 4.16 | 21.8% |
+| large (>= 8 dots) | 15 | 4.60 | 13.3% |
+| pooled | 116 | 4.22 | 20.7% |
+
+The large glyphs do lean the English way — longer words before them, fewer
+short ones — but **t = -0.77, p = 0.45**. This does not resolve the puzzle. The
+4-dot marks alone still sit at 4.16 against a 4.42 corpus baseline, i.e. still
+no signature.
+
+**It is also underpowered by construction**: n = 15 in the large class, and 173
+lines were skipped because the connected-component reader merges touching runes,
+so only about two thirds of the marks aligned. A better reader would roughly
+double the sample. The negative should be read as "not shown", not "shown
+absent".
+
+## Proposed encoding
+
+One character per glyph, so the classes stop collapsing. Unicode has exact
+names for the small counts; the large ones have no standard mark, so circled
+numerals carry the count plainly (Michel's suggestion):
+
+| dots | character | codepoint | name |
+|---|---|---|---|
+| 1 | `-` | — | word separator, unchanged |
+| 3 | `⁖` | U+2056 | THREE DOT PUNCTUATION |
+| 4 | `⁘` | U+2058 | FOUR DOT PUNCTUATION |
+| 5 | `⁙` | U+2059 | FIVE DOT PUNCTUATION |
+| 10 | `⑩` | U+2469 | CIRCLED DIGIT TEN |
+| 13 | `⑬` | U+246C | CIRCLED NUMBER THIRTEEN |
+
+This is deliberately not applied yet. The transcription is shared data and the
+reader still has gaps (below); the encoding should follow adjudication, not
+precede it.
+
+## Reader accuracy
+
+Correcting the marks needs a reader whose disagreements are the
+transcription's fault rather than its own. `experiments/page_reader.py`
+replaces the first one, fixing both known faults:
+
+- **Artwork** — glyphs were selected by y-band and a global x window, so a
+  marginal illustration at a line's height was read as a dot. Each line is now
+  bounded by its own leftmost and rightmost rune plus a margin.
+- **Merged runes** — connected components join touching runes into one blob.
+  Splitting on width alone made this *worse* (alignment fell to 22%), because
+  runes differ genuinely in width and glyphs like D and X were cut in half. A
+  cut is now made only where the column ink profile actually collapses, which
+  is what a thin join between two runes leaves and a single wide rune does not.
+
+| reader | lines aligned exactly |
+|---|---|
+| first | 429 / 604 = 71.0% |
+| current | 447 / 498 = **89.8%** |
+
+Remaining gap: 12 pages are skipped entirely because the band count does not
+match the transcription's line count, which is why the denominator falls from
+604 to 498. Those pages need per-page attention before the inventory is
+complete.
+
+## What needs correcting downstream
+
+Any statistic that counts `.` marks is measured on the wrong inventory:
+sentence lengths, mark density, the 168-mark count, the sentence-final tests,
+and the quoted-span alignment in `quote-span-boundaries.md` (which found span
+edges landing on `.` marks at p = 1.5e-7 — worth re-running split by glyph,
+since a structural bracket is exactly the kind of thing quoted speech might
+align to).
+
+## Scripts
+
+- `experiments/dot_cluster_census.py` — the glyph inventory by dot count.
+- `experiments/mark_type_split.py` — page glyph against transcribed character,
+  and the sentence-final split.
+- `experiments/boundary_review_sheet.py` — the review sheet that surfaced it.
+
+## Related
+
+- `word-length-keystream-and-boundaries.md` — the mark-semantics puzzle.
+- `quote-span-boundaries.md` — quoted spans align to `.` marks; needs re-running
+  by glyph.
+- `contraction-cribs.md` — the previous incomplete-inventory finding.
+
+## Verdict
+
+The transcription's mark alphabet is smaller than the book's. There are at
+least four dot glyphs and two characters, the 13-dot symbol looks structural
+and is sometimes dropped entirely, and 3-dot symbols are recorded as ordinary
+word separators. Splitting the `.` marks by glyph does not rescue the
+sentence-final signature at current coverage, but the test is weak and the
+inventory correction stands on its own.
