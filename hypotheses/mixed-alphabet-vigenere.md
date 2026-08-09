@@ -348,8 +348,32 @@ The order-5 `g` model predicts the opposite — `g^d` retains `g`'s fixed
 runes, leaking `f/29 ≈ 0.14` there (`g-from-5x5-grid.md`). Measured
 returned fractions: φ2 uninformative, **φ3 = 0.17 ± 0.14**,
 **φ4 = 0.38 ± 0.19**. Both lean toward a leak, i.e. against this model,
-though φ4 is the corpus's standing anomalous cell
-(`mixed-cycle-progression.md`) and cannot arbitrate on its own.
+though neither arbitrates on its own. (The caveat that φ4 sits on "the
+corpus's standing anomalous cell" no longer applies: the d4 lean and the
+d4−d6 split were retired in August 2026, `experiments/d4_d6_prediction.py`.
+φ4 is now an ordinary underpowered cell, not a suspect one.)
+
+**Superseded by a decisive test (August 2026,
+`experiments/word_depth_by_length.py`).** The fixed-point argument above has
+a far stronger consequence than the φ ladder, and it lives ACROSS words
+rather than within them. The base here is the running offset sum mod 29, so
+it takes at most 29 values, and two words with the same base and the same
+plaintext encrypt identically. About 1 in 29 same-plaintext word pairs must
+therefore collide completely.
+
+That needs no key search, no diagonal bands, and no ability to identify which
+words share a base — only a count of identical ciphertext words. Among the 726
+three-rune words, a 29-state schedule predicts **352** fully-agreeing pairs
+against **17 observed** (chance alone gives 10.9): a Poisson tail of 10⁻¹²⁴.
+For the observed count to be consistent, the register's three-rune repeat rate
+would have to fall from 0.0375 to 0.00067 — a 56-fold drop, which no English
+register delivers.
+
+**This closes the enumeration's one open scope caveat.** The 3.1×10⁸-key
+negative was bounded by diagonal bands built on Pride & Prejudice runeglish,
+whose representativeness was the standing uncertainty. The depth argument
+excludes the whole conjugated-shift family structurally, independent of those
+bands and of `g`. See `two-rune-depth-no-base-reuse.md`.
 
 ## What this establishes
 
