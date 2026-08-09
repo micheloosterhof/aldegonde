@@ -74,6 +74,37 @@ Possible forms:
   adjacent-alphabet relation is tuned to rare plaintext bigrams — is not a
   per-word-constant key and is tracked in `length-clocked-walk.md`.
 
+- **The seam-keyed BASE is now closed too (August 2026,
+  `experiments/seam_keyed_depth.py`).** Everything above kills schemes where
+  one substitution covers a whole word. It does not reach the variant that
+  survives inside the walk: the key still varies by position through `g^k`,
+  and only the per-word **base** is autokeyed on the previous word's last
+  rune. That variant is untouched by the transform census (the per-word
+  transform is not constant) and by the pattern-preservation test (within-word
+  repeats are broken by `g^k`, not by the base).
+
+  It has its own signature. Compare two words at the same position `k`: since
+  `c_k = base_w(g^k(p_k))`, two words sharing a base agree exactly when their
+  plaintext runes agree, so agreement jumps from the flat 1/29 = 0.0345 to the
+  runeglish plaintext coincidence rate of about 0.06. Conditioning on the seam
+  rune matching therefore predicts a lift of **+0.0255**.
+
+  | tap | agree, tap matches | tap differs | lift | z |
+  |---|---|---|---|---|
+  | previous word's last rune | 0.0348 | 0.0344 | **+0.0004** | +1.43 |
+  | previous word's first rune | 0.0345 | 0.0344 | +0.0001 | +0.31 |
+  | last rune two words back | 0.0342 | 0.0344 | −0.0002 | −0.64 |
+
+  Against a null shuffling the taps across words (2,000 draws, sd 0.0003), the
+  predicted +0.0255 sits **93 sigma** away. Three taps were tried so a null
+  cannot be blamed on the wrong one.
+
+  The test degrades gracefully, so it also bounds partial keying: the lift is
+  at most +0.0009 at 2 sigma, so **the seam rune can determine at most 3.7% of
+  the alphabet selection**. This is a much more direct measurement than the
+  arguments above — it uses every word pair rather than repeated words only,
+  and conditioning on the seam concentrates the signal 29-fold.
+
 ## Predictions
 
 ~~If word-level autokey with position-within-word dependence: group runes by
@@ -85,7 +116,8 @@ test.
 
 ## Scripts
 
-None yet.
+- `experiments/seam_keyed_depth.py` — conditions word-pair agreement on the
+  seam rune, closing the seam-keyed base variant.
 
 ## Verdict
 
