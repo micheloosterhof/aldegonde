@@ -175,3 +175,22 @@ def read_page(page: int) -> list[list[Glyph]]:
 def sequence(line: list[Glyph]) -> list[tuple[str, int]]:
     """Reading-order (kind, dots), ticks dropped."""
     return [(g.kind, g.dots) for g in line if g.kind != "t"]
+
+
+def with_ticks(line: list[Glyph], pair_within: int = 40) -> list[Glyph]:
+    """Ticks folded in: two close together are one double quote, one alone is
+    an apostrophe. Both are on the page and in the transcription, so a review
+    that dropped them would lose them."""
+    out, i = [], 0
+    ordered = sorted(line, key=lambda g: g.x)
+    while i < len(ordered):
+        g = ordered[i]
+        if g.kind != "t":
+            out.append(g)
+            i += 1
+            continue
+        twin = (i + 1 < len(ordered) and ordered[i + 1].kind == "t"
+                and ordered[i + 1].x - g.x <= pair_within)
+        out.append(Glyph('"' if twin else "'", g.y, g.x))
+        i += 2 if twin else 1
+    return out

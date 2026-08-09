@@ -27,6 +27,7 @@ Output: review/transcription/index.html plus one crop per line.
 
 from __future__ import annotations
 
+import difflib
 import html
 import json
 import re
@@ -35,11 +36,12 @@ from pathlib import Path
 from PIL import Image
 
 from experiments.locate_marks import CORPUS, IMAGE_DIR
-from experiments.page_reader import read_page
+from experiments.page_reader import read_page, with_ticks
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "review" / "transcription"
 RUNE = re.compile(r"[ᚠ-᛿]")
+CONTENT = re.compile(r"[0-9A-Za-z]")
 PAGES = range(58)
 MARGIN = 45
 
@@ -69,15 +71,64 @@ def fill_runes(scan: list[tuple[str, str]],
     becomes `?` — flagged here and refused by `apply_review.py`, so the gap
     surfaces rather than being quietly filled.
     """
-    supply = iter([c for c, _ in txt if c not in CIRCLED_SET])
+    supply = iter([c for c, _ in txt if c not in CIRCLED_SET and c not in "'\""])
     out = []
     for c, cls in scan:
-        if c in CIRCLED_SET:
+        if c in CIRCLED_SET or c in "'\"":
             out.append((c, cls))
         else:
             r = next(supply, "?")
             out.append((r, f"{cls} miss".strip() if r == "?" else cls))
     return out
+
+
+GAP = 0.72        # cost of leaving a band or a line unpaired
+
+
+def align(bands: list, lines: list[str]) -> list[tuple]:
+    """Pair reader bands to transcription lines by shape, allowing gaps.
+
+    Pairing by index fails the moment the reader gains or loses a band: every
+    later line is then compared against the wrong text and the rest of the page
+    becomes unreviewable, which is what made the middle of the book impossible
+    to correct. The transcription is reliable, so its line shapes are a good
+    signature to align against — a Needleman-Wunsch over the token kinds, with
+    gaps for a band the text has no line for and vice versa.
+    """
+    bs = ["".join("R" if g.kind == "R" else "M"
+                  for g in with_ticks(b) if g.kind != "t") for b in bands]
+    ls = ["".join("R" if RUNE.match(c) or CONTENT.match(c) else "M"
+                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in "-.")
+          for line in lines]
+    n, m = len(bs), len(ls)
+    inf = float("inf")
+    cost = [[inf] * (m + 1) for _ in range(n + 1)]
+    back: list[list] = [[None] * (m + 1) for _ in range(n + 1)]
+    cost[0][0] = 0.0
+    for i in range(n + 1):
+        for j in range(m + 1):
+            here = cost[i][j]
+            if here == inf:
+                continue
+            if i < n and j < m:
+                d = 1.0 - difflib.SequenceMatcher(None, bs[i], ls[j]).ratio()
+                if here + d < cost[i + 1][j + 1]:
+                    cost[i + 1][j + 1], back[i + 1][j + 1] = here + d, (i, j, "M")
+            if i < n and here + GAP < cost[i + 1][j]:
+                cost[i + 1][j], back[i + 1][j] = here + GAP, (i, j, "B")
+            if j < m and here + GAP < cost[i][j + 1]:
+                cost[i][j + 1], back[i][j + 1] = here + GAP, (i, j, "L")
+    out, i, j = [], n, m
+    while i or j:
+        pi, pj, op = back[i][j]
+        if op == "M":
+            out.append((bands[pi], lines[pj], pj))
+        elif op == "B":
+            out.append((bands[pi], None, None))
+        else:
+            out.append((None, lines[pj], pj))
+        i, j = pi, pj
+    return list(reversed(out))
 
 
 def _kinds(tokens: list[tuple[str, str]]) -> list[str]:
@@ -90,10 +141,10 @@ def img_tokens(line) -> list[tuple[str, str]]:
     scan, so they show as a placeholder — but colour and drop-cap size can be,
     and both are information the transcription does not carry."""
     out = []
-    for g in line:
-        if g.kind == "t":
-            continue
-        if g.kind != "R":
+    for g in with_ticks(line):
+        if g.kind in "'\"":
+            out.append((g.kind, "tick"))
+        elif g.kind == "M":
             out.append((circled(g.dots), "mark"))
         elif g.tall:
             out.append(("R", "red cap" if g.red else "cap"))
@@ -106,10 +157,12 @@ def txt_tokens(text: str) -> list[tuple[str, str]]:
     """The transcription's own characters: real runes, marks mapped across."""
     out = []
     for c in text:
-        if RUNE.match(c):
-            out.append((c, "rune"))
+        if RUNE.match(c) or CONTENT.match(c):
+            out.append((c, "rune" if RUNE.match(c) else "content"))
         elif c in TXT_MARK:
             out.append((TXT_MARK[c], "mark"))
+        elif c in "'\"":
+            out.append((c, "tick"))
     return out
 
 
@@ -148,14 +201,14 @@ def main() -> None:
     for page in PAGES:
         lines = [line for line in blocks[page].split("\n") if RUNE.search(line)]
         bands = read_page(page)
-        ok = len(bands) == len(lines)
-        warned += 0 if ok else 1
-        for idx in range(max(len(bands), len(lines))):
-            band = bands[idx] if idx < len(bands) else None
-            text = lines[idx] if idx < len(lines) else ""
+        warned += 0 if len(bands) == len(lines) else 1
+        for slot, (band, text, lineno) in enumerate(align(bands, lines)):
+            text = text or ""
+            idx = lineno if lineno is not None else f"~{slot}"
+            ok = lineno is not None and band is not None
             name = ""
             if band:
-                name = f"p{page:02d}_l{idx:02d}.png"
+                name = f"p{page:02d}_s{slot:02d}.png"
                 crop(page, band, OUT / name)
             tt = txt_tokens(text)
             it = fill_runes(img_tokens(band), tt) if band else []
@@ -166,13 +219,17 @@ def main() -> None:
                 "text": "".join(c for c, _ in tt),
                 "runes": text.rstrip("/"),
                 "differs": _kinds(it) != _kinds(tt),
+                "slot": slot,
             })
 
     body = [HEAD]
     for e in entries:
         it, tt = e["img"], e["txt"]
-        flag = "" if e["aligned"] else " <b class='warn'>page alignment uncertain</b>"
-        cls = "e differs" if e["differs"] else "e"
+        flag = "" if e["aligned"] else (
+            " <b class='warn'>unpaired: "
+            + ("no transcription line for this scanned line" if e["png"]
+               else "no scanned line for this transcription line") + "</b>")
+        cls = "e differs" if e["differs"] or not e["aligned"] else "e agrees"
         body.append(
             f"<section class='{cls}' id='p{e['page']}l{e['line']}' "
             f"data-page='{e['page']}' data-line='{e['line']}' "
@@ -219,6 +276,8 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
  .mark{color:#0057b8;font-weight:700}
  .red{color:#c00}
  .miss{background:#fdd;color:#b00;font-weight:700}
+ .tick{color:#7a4dbd;font-weight:700}
+ .content{color:#087}
  .cap{outline:2px solid #c90;font-weight:700}
  .ctl{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
  button{font:14px system-ui;padding:.3rem .7rem;cursor:pointer}
@@ -228,6 +287,8 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
  #bar{position:fixed;bottom:0;left:0;right:0;background:#222;color:#fff;
       padding:.6rem 2rem;display:flex;gap:1.5rem;align-items:center;font-size:14px}
  #bar button{background:#fff}
+ body.only-diff section.agrees{display:none}
+ #bar label{display:flex;gap:.4rem;align-items:center;cursor:pointer}
 </style>
 <h1>Liber Primus transcription review</h1>
 <p>Rows line up column for column. <b>scan</b> is what the reader sees,
@@ -242,6 +303,9 @@ The edit box holds real runes with circled marks; you can also type <code>(23)</
 &#9288; unrecognised. Highlighted sections are the ones that disagree.</p>\n<p><b>Which button?</b> <code>txt row is right</code> keeps the existing\ntranscription. <code>scan row is right</code> takes the reader's version,\nwhich is what you want when the reader spotted a mark the transcription got\nwrong. <code>use my edit</code> stores whatever is in the box, pre-filled with\nthe scan reading. Whichever you press, the stored sequence is exactly what the\nline will become.</p>"""
 
 FOOT = """<div id='bar'>
+ <label><input type='checkbox' id='only' onchange='filter()'>
+   show only lines that disagree</label>
+ <span id='shown'></span>
  <span id='count'>0 / __TOTAL__ reviewed</span>
  <button onclick='save()'>download review.json</button>
  <button onclick='if(confirm("clear all verdicts?")){localStorage.clear();location.reload()}'>clear</button>
@@ -275,6 +339,16 @@ document.querySelectorAll('section').forEach(s=>{
   s.querySelector('.b-edit').onclick=()=>put(s,'edit');
   paint(s);
 });
+function filter(){
+  const on = document.getElementById('only').checked;
+  document.body.classList.toggle('only-diff', on);
+  localStorage.setItem(K+'-only', on ? '1' : '');
+  const n = document.querySelectorAll(
+    on ? 'section.differs' : 'section').length;
+  document.getElementById('shown').textContent = n + ' lines shown';
+}
+document.getElementById('only').checked = !!localStorage.getItem(K+'-only');
+filter();
 count();
 function save(){
   const rows=Object.values(store).sort((a,b)=>a.page-b.page||a.line-b.line);
