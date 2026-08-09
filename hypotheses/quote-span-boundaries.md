@@ -69,6 +69,40 @@ to make up **33% of boundaries at quote-eligible positions — 6.1x the corpus
 rate** — before 8 of 14 stopped being surprising at p = 0.05. The strongest
 layout coupling anywhere on record in this corpus is 3.7x.
 
+## The spans do not look like speech in their word lengths
+
+`experiments/quote_span_word_lengths.py`. If word boundaries are
+plaintext-faithful, the one stretch known to be direct speech should carry
+*more* short function words than its surroundings — the English pattern, and
+the pattern the solved pages show at 27.9%.
+
+| | n | mean length | 1-2 runes |
+|---|---|---|---|
+| inside the spans | 88 | 4.60 | **13.6%** |
+| outside | 2840 | 4.42 | 19.4% |
+| solved register | — | — | 27.9% |
+
+Against a null drawing contiguous blocks of the same word counts from random
+positions: mean length p = 0.46, short-word share p = 0.18. **Nothing
+significant**, and at n = 88 nothing was going to be: the null sd on the short
+share is 3.8%, so only a shift beyond ~7.7% is detectable at 2 sigma, and the
+deficit in question is 8.5%. This test sits right at the edge of being able to
+see the effect it was aimed at.
+
+What it does say is that the quoted speech does **not** rescue the short-word
+rate. The shift is if anything in the wrong direction — speech has *fewer*
+short words than the surrounding text, not more. So the deficit is not
+localised to non-speech prose; it looks global. Underpowered, but it is
+evidence against the "different genre" escape rather than for it.
+
+Robust to the segmentation convention. Under `lp_corpus`'s `- . % & $` the
+figures are 13.6% inside / 19.4% outside; under section D of
+`word-length-keystream-and-boundaries.md` (`-` and `.` only, since 46 of 57
+`%` page breaks are mid-word) they are 10.5% / 18.6%. Direction and gap hold
+either way. **The two conventions disagree by 32 words and are both live in
+the repo** — worth settling, since the published 2,928-word count uses the
+first and the argued-correct segmentation is the second.
+
 ## What this does not show
 
 - It does not identify the unit. A clause, verse, breath group or utterance
