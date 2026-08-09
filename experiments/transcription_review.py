@@ -289,6 +289,7 @@ HEAD = """<meta charset='utf-8'><title>LP transcription review</title>
  #bar button{background:#fff}
  body.only-diff section.agrees{display:none}
  #bar label{display:flex;gap:.4rem;align-items:center;cursor:pointer}
+ #bar .imp{background:#fff;color:#222;padding:.3rem .7rem}
 </style>
 <h1>Liber Primus transcription review</h1>
 <p>Rows line up column for column. <b>scan</b> is what the reader sees,
@@ -308,8 +309,10 @@ FOOT = """<div id='bar'>
  <span id='shown'></span>
  <span id='count'>0 / __TOTAL__ reviewed</span>
  <button onclick='save()'>download review.json</button>
- <button onclick='if(confirm("clear all verdicts?")){localStorage.clear();location.reload()}'>clear</button>
- <span>verdicts autosave in this browser</span></div>
+ <label class='imp'>load review.json
+   <input type='file' accept='.json' onchange='load(this)' hidden></label>
+ <button onclick='wipe()'>clear</button>
+ <span id='msg'>verdicts autosave in this browser</span></div>
 <script>
 const K='lp-review';
 const store=JSON.parse(localStorage.getItem(K)||'{}');
@@ -350,6 +353,32 @@ function filter(){
 document.getElementById('only').checked = !!localStorage.getItem(K+'-only');
 filter();
 count();
+function wipe(){
+  if(!confirm('Clear every verdict in this browser?\n\n'
+     +Object.keys(store).length+' will be lost. Download first if unsure.')) return;
+  if(!confirm('Really clear? This cannot be undone from the page.')) return;
+  localStorage.removeItem(K); location.reload();
+}
+function load(input){
+  const f=input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    let rows; try{ rows=JSON.parse(r.result); }
+    catch(e){ document.getElementById('msg').textContent='not valid JSON'; return; }
+    let n=0;
+    rows.forEach(v=>{ store[v.page+':'+v.line]=v; n++; });
+    localStorage.setItem(K,JSON.stringify(store));
+    document.getElementById('msg').textContent='loaded '+n+' verdicts';
+    document.querySelectorAll('section').forEach(s=>{
+      const q=store[key(s)];
+      if(q){ s.querySelector('.val').value=q.value;
+             s.querySelector('.note').value=q.note||''; }
+      paint(s);
+    });
+    count(); filter();
+  };
+  r.readAsText(f);
+}
 function save(){
   const rows=Object.values(store).sort((a,b)=>a.page-b.page||a.line-b.line);
   const b=new Blob([JSON.stringify(rows,null,1)],{type:'application/json'});
