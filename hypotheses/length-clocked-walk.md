@@ -281,25 +281,37 @@ newlines are line wraps (words flow across them).
   the partial leak is *not* drift — the base is word-locked and the partiality
   is uniform (σ knocking the leak down by a constant factor). See
   `d5-partial-alphabet-leak.md`.
-- **The d4/d6 asymmetry and the partial echo (July 2026).** Under g⁵ = id,
-  g⁴ = g⁻¹ and g⁶ = g share the same leading-order diagonal algebra — so
-  this model predicts d4 ≈ d6; observed is a ~2.7σ split in opposite
-  directions (d4 = 0.0410 up, d6 = 0.0245 down). A language-orientation
-  rescue tested negative. A cycle-census resolution was explored
-  exhaustively (`mixed-cycle-progression.md`: scan of all 4,565
-  partitions + full-battery simulation) and, after correcting two
-  calibration flaws in the first pass, DID NOT resolve it: census
-  rankings are calibration-fragile, the partial-echo evidence reverts to
-  undecidable (corrected φ5 = 0.85 ± 0.26), and at realistic tuning
-  depth no census — mixed or pure — reproduces the full d6 depth.
-  Standing, calibration-free: **d6 is suppressed (−2.3σ,
-  permutation-verified p = 0.016) and d4 leans high (+1.85σ,
-  uncorrected), a d4−d6 split of ~2.7σ where this model predicts
-  equality** — and neither cell has a mechanism. If the real g's
-  d6-form is deliberately suppressed beyond what adjacent-diagonal
-  tuning delivers, that is one more designed constraint on the key
-  (alongside the g²-diagonal-near-background requirement the
-  simulations surfaced); otherwise these are the model's open cells.
+- **The d4/d6 asymmetry: CLOSED (August 2026), it was never an anomaly.**
+  This model does **not** predict d4 ≈ d6. The old argument — g⁴ = g⁻¹ and
+  g⁶ = g "share the same leading-order diagonal algebra" — is the
+  independence approximation (rate depends only on the unigram
+  distribution). The real rate is the g^d diagonal on the *distance-d
+  within-word pair table*, and P₄ ≠ P₆. This is the identical error already
+  retracted for d1 vs d6 in `d5-partial-alphabet-leak.md`; it survived at
+  d4 vs d6 and drove a year of census work.
+
+  Measured on real runeglish word pair-tables
+  (`experiments/d4_d6_prediction.py`), an order-5 g fitted to d1..d4
+  predicts **d4/d6 = 1.25 ± 0.18** (observed 1.67) and **d6 = 0.0333 ±
+  0.0051** (observed 0.0245). Carrying the LP's binomial error — d6 is 31
+  events — that is **z = +1.12 and +1.32**. Nothing.
+
+  Stronger: fitted jointly to d1, d2, d3, d4 **and** d6, a single order-5 g
+  reaches every cell (0.0064 / 0.0345 / 0.0369 / 0.0408 / 0.0247 against
+  0.0064 / 0.0347 / 0.0370 / 0.0410 / 0.0245), stable across seeds. **The
+  d6 depth is reachable.** The earlier "no census reproduces the d6 depth"
+  came from tuning objectives that *minimise* the d1 diagonal
+  (`mechanism_discriminator.tune_g`) rather than match the observed
+  profile, so the matching region of the g-family was never sampled.
+
+  Caveat on what this does and does not establish: a 29-permutation against
+  five scalar cells has ample freedom, so reachability is weak evidence
+  *for* the model. Its whole force is negative — d4/d6 is not evidence
+  against it, and d6 is not an unexplained cell. The g²-diagonal-near-
+  background requirement the simulations surfaced is unaffected. The
+  partial-echo question is untouched and still undecidable (corrected
+  φ5 = 0.85 ± 0.26); d5 remains predicted 0.0565 against observed 0.0492,
+  which is the register/leak question, not a d6 question.
 - **Order-5-g vs stay-slot: SEPARATED (July 2026).** Direct simulation
   on real runeglish words (`mechanism_discriminator.py`) could not separate
   them — both reproduce the d5 echo and d1≠d6, and the d1..d6 fit winner

@@ -49,11 +49,27 @@ Raw within-word rates against the 1/29 background:
 - **d4 = 131/3197 = 0.0410, z = +1.85** — a stable but modest lean
   (uncorrected, one of ~8 scanned cells; it was on the books as part of
   the d2→d5 shoulder before this analysis).
-- The **d4 − d6 split ≈ 2.7σ** — sharp because pure order-5 predicts the
-  two cells EQUAL: g⁴ = g⁻¹ and g⁶ = g share the same leading-order
-  diagonal frequency algebra (Σ q(x)q(g(x)) both ways). A
-  language-orientation escape (mirror pairs behaving differently at
-  distance 4 vs 6) was tested on prose and is negative.
+- The **d4 − d6 split ≈ 2.7σ** against the null that the two cells are
+  equal. A language-orientation escape (mirror pairs behaving differently
+  at distance 4 vs 6) was tested on prose and is negative.
+
+  **RETRACTED (August 2026): equality is not what the model predicts, so
+  that null was the wrong one** (`experiments/d4_d6_prediction.py`). The
+  claim here was that "pure order-5 predicts the two cells EQUAL: g⁴ = g⁻¹
+  and g⁶ = g share the same leading-order diagonal frequency algebra
+  (Σ q(x)q(g(x)) both ways)". That is the independence approximation, in
+  which the rate depends only on the unigram distribution q. The real rate
+  is `r_d = Σ_{a,b} P_d(a,b)·[a = g^d(b)]` — the g^d diagonal on the
+  *distance-d within-word pair table*. P₄ ≠ P₆, and g⁴ = g⁻¹ gives
+  Σ P(g(y), y) rather than Σ P(y, g(y)), equal only if P were symmetric.
+  **This is the same error `d5-partial-alphabet-leak.md` already retracted
+  for d1 vs d6** ("An earlier draft here claimed this contradicts pure
+  order-5-g (g⁶=g¹) — that was wrong"); it survived at d4 vs d6.
+
+  Computed properly on real runeglish word pair-tables, an order-5 g fitted
+  to d1..d4 predicts **d4/d6 = 1.25 ± 0.18**, not 1.00. Against that
+  prediction, carrying the LP's own binomial error (d6 is 31 events):
+  **d6 z = +1.32, ratio z = +1.12**. There is no significant split.
 
 ## What was tested and how it came out
 
@@ -85,14 +101,24 @@ Raw within-word rates against the 1/29 background:
 
 ## Surviving constraints and open cells
 
-- The d6 deficit requires a tuned relation and is DEEPER than
+- ~~The d6 deficit requires a tuned relation and is DEEPER than
   adjacent-diagonal tuning delivers at the required rate: either the
   real g's d6-form is separately suppressed (one more designed
   constraint on the key — achievable by selection within the diagonal
-  level set, which annealing samples randomly) or d6 is unexplained.
-- The d4 lean and the d4−d6 split have no mechanism in any tested
-  census; a 4-loop leak with real-word morphology can reproduce d4
-  (corrected sim: 0.0417 vs 0.0410) but then fails d6, d8, and d10.
+  level set, which annealing samples randomly) or d6 is unexplained.~~
+  **RETRACTED (August 2026, `experiments/d4_d6_prediction.py`): the d6
+  depth IS reachable.** A single order-5 g fitted jointly to d1..d4 and d6
+  hits every cell (0.0247 against the observed 0.0245), stably across
+  seeds. The earlier negative came from tuning objectives that *minimise*
+  the d1 diagonal rather than match the observed profile, so the matching
+  region of the g-family was never sampled — the annealer was asked the
+  wrong question, not given an unreachable target.
+- ~~The d4 lean and the d4−d6 split have no mechanism in any tested
+  census~~ — the split is z = +1.12 against the model's own prediction
+  once that prediction is computed on pair-tables rather than unigrams;
+  there is no split to explain. A 4-loop leak with real-word morphology
+  can also reproduce d4 (corrected sim: 0.0417 vs 0.0410) but then fails
+  d6, d8, and d10.
 - New key-space filter from the simulations: tuned g's generically
   elevate the g²-diagonal at d2 through consonant/vowel class structure;
   the LP shows no such elevation, so the real g's SQUARE must also have
