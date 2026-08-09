@@ -23,7 +23,7 @@ proposed mechanisms scored against them.
 | [lag5-digraph-structure.md](lag5-digraph-structure.md) | Lag-5 Paired-Match Structure | confirmed (characterization) |
 | [line-initial-bias.md](line-initial-bias.md) | Line-Initial Rune Bias (layout artifact) | confirmed (characterization) |
 | [long-word-structure.md](long-word-structure.md) | Long Words Carry No Structure Beyond the d5 Echo | confirmed (characterization) |
-| [negative-control-battery.md](negative-control-battery.md) | Negative-Control Battery: Which Measurements Survive a Structureless Corpus | confirmed (characterization); d5 echo and lag-5 pairing survive, seam diagonal and d6 do not |
+| [negative-control-battery.md](negative-control-battery.md) | Negative-Control Battery: Which Measurements Survive a Structureless Corpus | confirmed (characterization); family-blind, only the d5 echo survives (p=0.020); lag-5 pairing, seam diagonal and d6 do not |
 | [no-known-plaintext-foothold.md](no-known-plaintext-foothold.md) | No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section | confirmed (characterization) for the no-known-plaintext claim |
 | [no-periodicity.md](no-periodicity.md) | No Periodic Key (Friedman flat at every period) | confirmed (characterization) |
 | [quote-span-boundaries.md](quote-span-boundaries.md) | Quoted Spans Align to the '.' Marks (the Marks Are Not Inert) | confirmed (characterization) for the alignment (p=1.5e-7, layout-robust); what the marks delimit stays open |
