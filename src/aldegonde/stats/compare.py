@@ -115,7 +115,9 @@ def chisquarescipy(text: Sequence[object], length: int = 4) -> float:
     return float(chisquare(f_obs=d1, f_exp=d2).statistic)
 
 
-def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
+def NgramScorer(
+    frequency_map: dict[str, int],
+) -> Callable[[Sequence[str]], float]:
     """Compute the score of a text by using the frequencies of ngrams.
 
     Example:
@@ -136,9 +138,11 @@ def NgramScorer(frequency_map: dict[str, int]) -> Callable[[str], float]:
         frequency_to_probability(frequency_map, decorator=log10),
     )
 
-    def inner(text: str) -> float:
-        gen = [ngrams[str(ngram)] for ngram in iterngrams(text, length)]
-        return sum(gen)
+    def inner(text: Sequence[str]) -> float:
+        # join rather than str(): an ngram taken from a LIST of runes stringifies
+        # to "['A', 'B', ...]", which matches no key, so every position would
+        # silently fall to the floor and the score would be a constant.
+        return sum(ngrams["".join(ngram)] for ngram in iterngrams(text, length))
 
     return inner
 

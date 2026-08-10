@@ -1,3 +1,4 @@
+from aldegonde import c3301
 from aldegonde.stats.compare import quadgramscore
 
 am = "ABCDEFGHIJKLM"
@@ -21,3 +22,20 @@ def test_quadgramscore() -> None:
     assert quadgramscore("TEST") > -3.7
     assert quadgramscore("THISISATESTOFTHEEMERGENCYBROADCASTSYSTEM") > -153.0
     assert quadgramscore("THISISATESTOFTHEEMERGENCYBROADCASTSYSTEM") < -152.0
+
+
+def test_ngram_scorer_treats_a_rune_list_like_the_same_string() -> None:
+    """A sequence of runes must score as the text it spells.
+
+    `str(ngram)` on a list produced "['A', 'B', ...]", which matches no ngram, so
+    every position silently fell to the floor and the score became a constant.
+    """
+    runes = list("ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗ")
+    assert c3301.quadgramscore(runes) == c3301.quadgramscore("".join(runes))
+
+
+def test_ngram_scorer_is_not_constant_over_different_texts() -> None:
+    """A degenerate scorer returns the same value for everything."""
+    a = c3301.quadgramscore(list("ᚦᛖᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒ"))
+    b = c3301.quadgramscore(list("ᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾ"))
+    assert a != b
