@@ -51,7 +51,10 @@ CIRCLED = {n: chr(0x2460 + n - 1) for n in range(1, 21)}
 CIRCLED.update({n: chr(0x3251 + n - 21) for n in range(21, 36)})
 UNKNOWN = "⑈"
 CIRCLED_SET = set(CIRCLED.values()) | {UNKNOWN}
-TXT_MARK = {"-": "①", ".": "④"}      # what the transcription's two characters mean
+# The transcription now encodes each mark by its dot count. `-` and `.` are
+# the legacy pair and still appear on lines not yet migrated, so both map.
+TXT_MARK = {c: c for c in CIRCLED.values()}
+TXT_MARK.update({"-": "①", ".": "④"})
 
 
 def circled(dots: int) -> str:
@@ -99,7 +102,7 @@ def align(bands: list, lines: list[str]) -> list[tuple]:
     bs = ["".join("R" if g.kind == "R" else "M"
                   for g in with_ticks(b) if g.kind != "t") for b in bands]
     ls = ["".join("R" if RUNE.match(c) or CONTENT.match(c) else "M"
-                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in "-.")
+                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in "①-.")
           for line in lines]
     n, m = len(bs), len(ls)
     inf = float("inf")

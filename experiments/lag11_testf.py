@@ -48,7 +48,7 @@ def load_sections() -> list[list[int]]:
             if RUNE.match(ch):
                 stream.append(IDX[ch])
                 cur += 1
-            elif ch in "-.%&":
+            elif ch in "①-.%&":
                 if cur:
                     wlens.append(cur)
                     cur = 0

@@ -128,7 +128,7 @@ def main() -> None:
     u_cipher = "$".join(u_raw.split("$")[:-2])
 
     def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
-        seps_ = "-.%&$" + ("" if merge_lines else "/")
+        seps_ = "①-.%&$" + ("" if merge_lines else "/")
         out: list[int] = []
         cur = 0
         for ch in text:

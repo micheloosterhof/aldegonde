@@ -68,7 +68,7 @@ def load() -> tuple[str, list[int]]:
         for ch in parts[pi]:
             if ch in ALPHABET:
                 cur.append(ch)
-            elif ch in "-.$&" and cur:
+            elif ch in "①-.$&" and cur:
                 flush()
         if cur:
             flush()

@@ -13,6 +13,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from aldegonde import c3301
 from aldegonde.c3301 import CICADA_ALPHABET as ALPHABET
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -35,7 +36,7 @@ def load_clean() -> tuple[list[int], list[int]]:
                 stream.append(IDX[ch])
                 word_id.append(w)
                 started = True
-            elif ch in "-.%&":
+            elif ch in c3301.WORD_BOUNDARY:
                 if started:
                     w += 1
                     started = False

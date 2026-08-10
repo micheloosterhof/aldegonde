@@ -46,12 +46,12 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 SOLVED_LINES = 187
 SHORT = 2
 CONVENTIONS = {
-    "- . % & $ (lp_corpus)": "-.%&$",
-    "- . (section D)": "-.",
+    "- . % & $ (lp_corpus)": "①-.%&$",
+    "- . (section D)": "①-.",
     # The opposite extreme: every line break a word boundary. This OVER-splits,
     # cutting wrapped words into fragments, so it bounds how much the merging
     # convention can possibly be contributing.
-    "+ split at line breaks": "-.%&$/\n",
+    "+ split at line breaks": "①-.%&$/\n",
 }
 
 

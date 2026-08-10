@@ -25,7 +25,7 @@ DATA = "data/page0-58.txt"
 WORDS = "/usr/share/dict/words"
 EA = "ᛠ"
 RUNES = set(c3301.CICADA_ALPHABET)
-WORD_BOUNDARIES = set("-.&$§%")
+WORD_BOUNDARIES = set("①-.&$§%")
 
 # Greedy English -> runeglish (Gematria Primus). Digraphs win over singles.
 DIGRAPHS = {"TH": "ᚦ", "EO": "ᛇ", "NG": "ᛝ", "OE": "ᛟ", "AE": "ᚫ",

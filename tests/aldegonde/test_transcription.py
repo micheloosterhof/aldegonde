@@ -74,8 +74,8 @@ def test_quotes_alternate() -> None:
     for i, char in enumerate(text):
         if char != '"':
             continue
-        opening = text[i - 1] in "-.\n/"
-        closing = text[i + 1] in "-.\n/"
+        opening = text[i - 1] in "①-.\n/"
+        closing = text[i + 1] in "①-.\n/"
         assert opening != closing, f"mark at {i} is neither an open nor a close"
         kinds.append("open" if opening else "close")
     assert kinds == ["open", "close"] * (QUOTE_COUNT // 2)

@@ -45,7 +45,7 @@ MASTER = "data/liber-primus__transcription--master.txt"
 QUADGRAMS = "src/aldegonde/data/ngrams/runeglish/quadgrams.txt"
 OUT_JSON = "experiments/plaintext_control_stats.json"
 
-WORD_END = set("-.,;:!?&$")
+WORD_END = set("①-.,;:!?&$")
 
 
 # ----------------------------------------------------------------- scoring

@@ -45,7 +45,7 @@ from aldegonde.stats.resample import monte_carlo_map
 ALPHA = len(c3301.CICADA_ALPHABET)
 R2I = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 RUNES = set(R2I)
-WORD_BOUNDARIES = set("-.&%")
+WORD_BOUNDARIES = set("①-.&%")
 FOCUS_LAG = 11
 MAX_LAG = 80
 SEED = 3301

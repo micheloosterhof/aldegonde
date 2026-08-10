@@ -49,7 +49,7 @@ def load_sections() -> list[tuple[list[int], list[int]]]:
             sr.append(R2I[ch])
             cur += 1
             total += 1
-        elif ch in "-.&%":
+        elif ch in "①-.&%":
             if cur:
                 sl.append(cur)
                 cur = 0

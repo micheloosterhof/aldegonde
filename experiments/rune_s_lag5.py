@@ -32,7 +32,7 @@ from aldegonde import c3301
 M = 29
 R2I = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 RUNES = set(R2I)
-WORD_BOUNDARIES = set("-.&%")
+WORD_BOUNDARIES = set("①-.&%")
 EN = c3301.CICADA_ENGLISH_ALPHABET
 S = EN.index("S")
 

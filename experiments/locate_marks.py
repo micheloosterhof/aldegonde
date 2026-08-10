@@ -124,14 +124,14 @@ def tokens(line: list) -> list[str]:
 
 def text_tokens(text: str) -> list[str]:
     """Transcription line as tokens; existing tick marks are not glyphs here."""
-    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in "-."]
+    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in "①-."]
 
 
 def recorded(text: str) -> list[tuple[int, str]]:
     """Marks the transcription line already carries, as (token index, mark)."""
     out, seen = [], 0
     for char in text:
-        if RUNE.match(char) or char in "-.":
+        if RUNE.match(char) or char in "①-.":
             seen += 1
         elif char in "'\"":
             out.append((seen, char))
@@ -142,7 +142,7 @@ def insert(text: str, positions: list[tuple[int, str]]) -> str:
     """Insert marks at the given token indices, keeping marks already present."""
     out, seen, at = [], 0, dict(positions)
     for char in text:
-        if RUNE.match(char) or char in "-.":
+        if RUNE.match(char) or char in "①-.":
             if seen in at:
                 out.append(at.pop(seen))
             seen += 1

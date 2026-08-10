@@ -144,7 +144,7 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "-.%&$":
+        elif ch in "①-.%&$":
             if cur:
                 words_s.append((cur, prev_break == "s"))
                 cur = 0
@@ -160,7 +160,7 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "-.%&$":
+        elif ch in "①-.%&$":
             if cur:
                 pend = cur
                 cur = 0

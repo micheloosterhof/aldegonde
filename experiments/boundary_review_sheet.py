@@ -51,7 +51,7 @@ ORDER = {"separator": 0, "trailing": 1, "reader": 2}
 def classify(img: list[str], txt: list[str]) -> str | None:
     if img == txt:
         return None
-    if img[:len(txt)] == txt and all(t in "-." for t in img[len(txt):]):
+    if img[:len(txt)] == txt and all(t in "①-." for t in img[len(txt):]):
         return "trailing"
     return "reader" if img.count("R") != txt.count("R") else "separator"
 
@@ -77,7 +77,7 @@ def main() -> None:
         for idx, (line, text) in enumerate(zip(img_lines, lines)):
             img = [t for t in tokens(line) if t not in "'\""]
             txt = ["R" if RUNE.match(c) else c
-                   for c in text if RUNE.match(c) or c in "-."]
+                   for c in text if RUNE.match(c) or c in "①-."]
             kind = classify(img, txt)
             if kind is None:
                 continue

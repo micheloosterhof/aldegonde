@@ -27,7 +27,7 @@ DATA = "data/page0-58.txt"
 UNIGRAMS = "src/aldegonde/data/ngrams/runeglish/unigrams.txt"
 
 RUNES = set(c3301.CICADA_ALPHABET)
-WORD_BOUNDARIES = set("-.&$§%")  # delimiters that end a word
+WORD_BOUNDARIES = set("①-.&$§%")  # delimiters that end a word
 
 # Runeglish names of the runes that name a digraph, for the identity-rune filter.
 RUNE_NAME = {"ᚠ": "F", "ᛝ": "NG", "ᛡ": "IA/IO", "ᛠ": "EA"}

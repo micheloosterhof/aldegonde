@@ -67,7 +67,7 @@ def load_corpus() -> tuple[str, list[int]]:
         for ch in p:
             if ch in ALPHABET:
                 cur.append(ch)
-            elif ch in "-./" and cur:
+            elif ch in "①-./" and cur:
                 words.append("".join(cur))
                 cur = []
         if cur:

@@ -11,7 +11,7 @@ def words_and_marks(txt):
     for ch in txt + '-':
         if RUNE.match(ch):
             w.append(ch)
-        elif ch in '-.%&$':
+        elif ch in '①-.%&$':
             if w:
                 words.append(len(w)); cur += 1; w = []
             if ch == '.' and cur:

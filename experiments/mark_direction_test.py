@@ -13,7 +13,7 @@ def tokens(txt):
     for ch in txt:
         if RUNE.match(ch):
             word.append(ch)
-        elif ch in '-.%&$':
+        elif ch in '①-.%&$':
             if word:
                 out.append([''.join(word), ch == '.'])
                 word = []

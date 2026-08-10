@@ -409,7 +409,7 @@ with open("data/page0-58.txt") as f:
 # PARSE WORD STRUCTURE: preserving word boundaries
 # Separators: - (word), . (sentence), / (line), % (page), & (para), $ (section)
 # ============================================================================
-SEPARATORS = set("-./&%$\n")
+SEPARATORS = set("①-./&%$\n")
 
 def parse_words(text: str) -> list[tuple[str, int]]:
     """Parse text into (word_runes, start_position).

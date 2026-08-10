@@ -28,8 +28,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-SEPARATORS = "-."
-BOUNDARY = "-.%&$"
+SEPARATORS = "①-."
+BOUNDARY = "①-.%&$"
 
 
 def clean_text() -> str:
@@ -51,7 +51,7 @@ def scan() -> tuple[list[dict], int, int]:
         if char in BOUNDARY:
             if char == ".":
                 dots += 1
-            elif char == "-":
+            elif char in "①-":
                 dashes += 1
             if started:
                 words += 1

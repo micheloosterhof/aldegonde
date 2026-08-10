@@ -45,7 +45,7 @@ def load_words() -> list[list[int]]:
         if ch in RUNES:
             cur.append(R2I[ch])
             total += 1
-        elif ch in "-.&%$":
+        elif ch in "①-.&%$":
             if cur:
                 words.append(cur)
                 cur = []

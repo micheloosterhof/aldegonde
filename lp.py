@@ -4,6 +4,7 @@
 """
 
 import itertools
+import re
 import random
 import math
 from functools import partial
@@ -57,7 +58,7 @@ print(f"{len(segments)} segments")
 
 # Structural units for in-depth and position tests, same scope as the analysis
 source = "".join(z)
-words = [w for w in (runes_only(w) for w in source.split("-")) if w]
+words = [w for w in (runes_only(w) for w in re.split(r"[①-]", source)) if w]
 lines = [l for l in (runes_only(l) for l in source.split("/")) if l]
 sections = [s for s in (runes_only(s) for s in z) if s]
 

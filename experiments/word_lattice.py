@@ -115,7 +115,7 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "-.%&$":
+        elif ch in "①-.%&$":
             if cur:
                 sl.append(cur)
             cur = 0

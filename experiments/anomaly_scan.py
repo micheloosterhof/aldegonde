@@ -85,7 +85,7 @@ def parse(path: str = "data/page0-58.txt"):
             cur_line.append(idx)
             cur_page.append(idx)
             cur_section.append(idx)
-        elif ch == "-":
+        elif ch in "①-":
             if rank["w"] > rank[pending]:
                 pending = "w"
         elif ch == ".":

@@ -113,7 +113,7 @@ def main() -> None:
                     if fresh:
                         streams[k].append(ch)
                 flags = dict.fromkeys(streams, False)
-            elif ch == "-":
+            elif ch in "①-":
                 flags["word"] = True
             elif ch == ".":
                 flags["sentence"] = flags["word"] = True
@@ -160,7 +160,7 @@ def main() -> None:
         for ch in parts[pi]:
             if ch in ALPHABET:
                 cur.append(ch)
-            elif ch in "-./" and cur:
+            elif ch in "①-./" and cur:
                 words.append("".join(cur))
                 cur = []
         if cur:

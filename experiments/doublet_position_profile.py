@@ -84,7 +84,7 @@ def solved_plain_words() -> list[list[int]]:
             segs[-1].append(R2I[ch])
             cur += 1
             count += 1
-        elif ch in "-.%":
+        elif ch in "①-.%":
             if cur:
                 wlens[-1].append(cur)
                 cur = 0

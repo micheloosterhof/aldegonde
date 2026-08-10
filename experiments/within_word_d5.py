@@ -28,7 +28,7 @@ from aldegonde import c3301
 M = 29
 R2I = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 RUNES = set(R2I)
-WORD_BOUNDARIES = set("-.&%")  # '/' and newline are line wraps, not boundaries
+WORD_BOUNDARIES = set("①-.&%")  # '/' and newline are line wraps, not boundaries
 
 N_PERMS = 10000
 

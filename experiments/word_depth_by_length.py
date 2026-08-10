@@ -41,7 +41,7 @@ from experiments.d5_partial_leak import to_runeglish
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-BOUNDARY = "-.%&$"
+BOUNDARY = "①-.%&$"
 N_RUNES = 29
 SHIFTS = 29           # states of the schedule being excluded
 LENGTHS = (2, 3, 4, 5, 6, 7, 8)

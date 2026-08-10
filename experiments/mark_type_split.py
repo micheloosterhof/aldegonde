@@ -136,7 +136,7 @@ def main() -> None:
         for band, text in zip(bands, lines):
             img = line_tokens(band)
             txt = [("R", c) if RUNE.match(c) else ("M", c)
-                   for c in text if RUNE.match(c) or c in "-."]
+                   for c in text if RUNE.match(c) or c in "①-."]
             if [t[0] for t in img] != [t[0] for t in txt]:
                 skipped += 1
                 continue

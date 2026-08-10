@@ -120,7 +120,7 @@ def load_pages() -> list[Page]:
                 wstart.append(new_word)
                 sstart.append(new_sent)
                 new_word = new_sent = False
-            elif ch in "-.,;:!?":
+            elif ch in "①-.,;:!?":
                 new_word = True
                 if ch == ".":
                     new_sent = True

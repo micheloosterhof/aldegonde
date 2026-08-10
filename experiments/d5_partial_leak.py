@@ -46,7 +46,7 @@ def load_lp() -> tuple[list[int], list[int]]:
             stream.append(R2I[ch])
             wid.append(w)
             started = True
-        elif ch in "-.&%":  # word boundary
+        elif ch in "①-.&%":  # word boundary
             if started:
                 w += 1
                 started = False

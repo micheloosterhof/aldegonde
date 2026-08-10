@@ -73,6 +73,45 @@ CICADA_ENGLISH_ALPHABET = [
 ]
 
 
+# --- Transcription punctuation -------------------------------------------
+#
+# The page marks words and larger units with clusters of dots. The
+# transcription encodes each cluster as a circled numeral carrying its dot
+# count, so the count is the identity rather than an interpretation:
+#
+#     ①  1 dot   word separator
+#     ③  3 dots
+#     ④  4 dots  sentence mark
+#     ⑩ ⑬ ㉓     larger glyphs, see data/SYMBOLS.md
+#
+# `-` and `.` are the legacy encoding, which collapsed every cluster onto two
+# characters. They are still accepted so older files and the solved-page
+# numeric blocks keep parsing.
+
+DOT_MARKS = frozenset(
+    [chr(0x2460 + n) for n in range(20)] + [chr(0x3251 + n) for n in range(15)]
+)
+LEGACY_MARKS = frozenset("①-.")
+MARKS = DOT_MARKS | LEGACY_MARKS
+
+#: Division the project added, not glyphs on the page: page, paragraph, section.
+STRUCTURE = frozenset("%&$")
+
+#: Everything that ends a word.
+WORD_BOUNDARY = MARKS | STRUCTURE
+
+#: Line wraps. A word runs THROUGH these -- they are not word boundaries.
+LINE_WRAP = frozenset("/\n")
+
+
+def is_rune(char: str) -> bool:
+    """Is this one of the 29 runes?"""
+    return char in RUNE_SET
+
+
+RUNE_SET = frozenset(CICADA_ALPHABET)
+
+
 def r2i(rune: str) -> int:
     """Rune to index"""
     for i, e in enumerate(CICADA_ALPHABET):

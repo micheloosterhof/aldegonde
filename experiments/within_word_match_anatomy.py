@@ -35,7 +35,7 @@ RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟ�
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 DATA = "data/page0-58.txt"
-WORD_BOUNDARIES = set("-.&%")
+WORD_BOUNDARIES = set("①-.&%")
 D = 5
 
 
