@@ -5,6 +5,7 @@ from collections import defaultdict
 from collections.abc import Iterator, Sequence
 
 from aldegonde import pasc
+from aldegonde.exceptions import AldegondeKeyError
 from aldegonde.maths.primes import primes
 from aldegonde.stats import compare, nulls
 
@@ -88,11 +89,48 @@ CICADA_ENGLISH_ALPHABET = [
 # characters. They are still accepted so older files and the solved-page
 # numeric blocks keep parsing.
 
-DOT_MARKS = frozenset(
-    [chr(0x2460 + n) for n in range(20)] + [chr(0x3251 + n) for n in range(15)]
-)
-LEGACY_MARKS = frozenset("①-.")
+CIRCLED_ONE_TO_TWENTY = frozenset(chr(0x2460 + n) for n in range(20))
+CIRCLED_TWENTY_ONE_UP = frozenset(chr(0x3251 + n) for n in range(15))
+DOT_MARKS = CIRCLED_ONE_TO_TWENTY | CIRCLED_TWENTY_ONE_UP
+LEGACY_MARKS = frozenset("-.")
 MARKS = DOT_MARKS | LEGACY_MARKS
+
+def dot_count(mark: str) -> int:
+    """How many dots the mark draws on the page.
+
+    Args:
+        mark: A single mark character from `DOT_MARKS`.
+
+    Returns:
+        The number of dots, 1 to 35.
+
+    Raises:
+        AldegondeKeyError: If the mark is not a circled numeral. The legacy `-`
+            and `.` never recorded a count -- collapsing the counts is exactly
+            what they did wrong -- so no number can be returned for them.
+    """
+    if mark in CIRCLED_ONE_TO_TWENTY:
+        return ord(mark) - 0x2460 + 1
+    if mark in CIRCLED_TWENTY_ONE_UP:
+        return ord(mark) - 0x3251 + 21
+    msg = f"{mark!r} records no dot count"
+    raise AldegondeKeyError(msg)
+
+
+#: Every mark character as a string, for code that composes a boundary set by
+#: concatenation (`MARK_CHARS + "%&$"`) rather than by set union.
+MARK_CHARS = "".join(sorted(MARKS))
+
+#: Marks of four dots or more, which the transcription collapsed onto `.`.
+#: Membership is by dot count, an observed property; what the clusters MEAN is
+#: still open, so the grouping deliberately claims nothing beyond size.
+CLUSTER_MARKS = frozenset(
+    [m for m in DOT_MARKS if dot_count(m) >= 4] + ["."]
+)
+
+#: Marks of fewer than four dots, which the transcription collapsed onto `-`.
+#: `①` is the word separator; `③` is the triple-dot mark.
+WORD_MARKS = MARKS - CLUSTER_MARKS
 
 #: Division the project added, not glyphs on the page: page, paragraph, section.
 STRUCTURE = frozenset("%&$")
@@ -104,6 +142,9 @@ STRUCTURE = frozenset("%&$")
 #: text after the next numeral, which is how the clean corpus briefly read 2,927
 #: words instead of 2,928.
 NUMERALS = frozenset("0123456789")
+
+#: The numerals as a string, to compose a boundary set alongside `MARK_CHARS`.
+NUMERAL_CHARS = "".join(sorted(NUMERALS))
 
 #: Everything that ends a word.
 WORD_BOUNDARY = MARKS | STRUCTURE | NUMERALS

@@ -1,7 +1,11 @@
 import random
 from collections import Counter
+from pathlib import Path
+
+import pytest
 
 from aldegonde import c3301
+from aldegonde.exceptions import AldegondeKeyError
 
 
 def test_welcome() -> None:
@@ -67,3 +71,54 @@ def test_low_doublet_null_is_reproducible() -> None:
 
 def test_randomrunes_with_low_doublets_removed() -> None:
     assert not hasattr(c3301, "randomrunes_with_low_doublets")
+
+
+def test_dot_count_reads_the_circled_numerals() -> None:
+    assert c3301.dot_count("①") == 1
+    assert c3301.dot_count("③") == 3
+    assert c3301.dot_count("④") == 4
+    assert c3301.dot_count("⑩") == 10
+    assert c3301.dot_count("⑬") == 13
+    assert c3301.dot_count("⑳") == 20
+    assert c3301.dot_count("㉑") == 21
+    assert c3301.dot_count("㉓") == 23
+    assert c3301.dot_count("㉟") == 35
+
+
+def test_dot_count_refuses_the_legacy_marks() -> None:
+    """The legacy encoding never recorded a count, so none can be returned."""
+    for mark in "-.":
+        with pytest.raises(AldegondeKeyError):
+            c3301.dot_count(mark)
+
+
+def test_cluster_marks_are_what_the_transcription_wrote_as_a_dot() -> None:
+    """'.' collapsed every mark of four dots or more; '-' the one- and three-dot."""
+    assert frozenset("④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟.") == c3301.CLUSTER_MARKS
+    assert frozenset("①②③-") == c3301.WORD_MARKS
+    assert c3301.CLUSTER_MARKS | c3301.WORD_MARKS == c3301.MARKS
+    assert not c3301.CLUSTER_MARKS & c3301.WORD_MARKS
+
+
+def test_every_mark_in_the_corpus_is_classified() -> None:
+    text = (Path(__file__).resolve().parents[2] / "data" / "page0-58.txt").read_text()
+    for char in set(text) & c3301.MARKS:
+        assert (char in c3301.CLUSTER_MARKS) != (char in c3301.WORD_MARKS)
+
+
+def test_mark_chars_is_the_mark_set_as_a_string() -> None:
+    """Scripts compose boundary sets as strings; this keeps them one source."""
+    assert set(c3301.MARK_CHARS) == c3301.MARKS
+    assert len(c3301.MARK_CHARS) == len(c3301.MARKS)
+
+
+def test_numeral_chars_is_the_numeral_set_as_a_string() -> None:
+    assert set(c3301.NUMERAL_CHARS) == c3301.NUMERALS
+    assert c3301.NUMERAL_CHARS == "0123456789"
+
+
+def test_word_boundary_is_marks_structure_and_numerals() -> None:
+    """A script composing its own boundary set must be able to match this."""
+    assert frozenset(
+        c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
+    ) == c3301.WORD_BOUNDARY
