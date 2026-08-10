@@ -25,6 +25,9 @@ from math import sqrt
 
 from aldegonde import c3301
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 AB = c3301.CICADA_ALPHABET
 ENG = c3301.CICADA_ENGLISH_ALPHABET
 N = 29

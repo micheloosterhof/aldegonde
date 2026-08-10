@@ -34,6 +34,9 @@ from aldegonde import auto, c3301, pasc
 from aldegonde.maths.primes import gen_primes_opt
 from aldegonde.stats import ioc
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
 FRUNE = ALPHABET[0]  # ᚠ, used as keystream interrupt on the solved pages

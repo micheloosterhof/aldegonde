@@ -59,6 +59,9 @@ from scipy.stats import kstest
 
 from aldegonde import c3301
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 isomorph = importlib.import_module("aldegonde.stats.isomorph")
 
 AB = c3301.CICADA_ALPHABET

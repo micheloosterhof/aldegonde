@@ -39,6 +39,9 @@ import importlib.util
 import random
 import statistics
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 _spec = importlib.util.spec_from_file_location(
     "mf", "experiments/mechanism_fingerprint.py"
 )

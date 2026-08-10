@@ -38,6 +38,9 @@ from math import sqrt
 
 from aldegonde import c3301
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
 DATA = "data/page0-58.txt"

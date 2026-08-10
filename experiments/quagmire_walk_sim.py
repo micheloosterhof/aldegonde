@@ -40,6 +40,9 @@ from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
 from sigma_algebraic_floor import tables  # noqa: E402
 
+# Fixed so every figure this script prints can be reproduced.
+np.random.seed(3301)
+
 M = 29
 MAXD = 10
 TARGET_D1 = 0.0063

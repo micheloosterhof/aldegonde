@@ -15,6 +15,9 @@ from collections import Counter
 from collections.abc import Sequence
 from typing import TypeVar
 
+# Fixed so every figure this script prints can be reproduced.
+random.seed(3301)
+
 T = TypeVar("T")
 
 
