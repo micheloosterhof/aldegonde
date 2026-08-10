@@ -45,10 +45,30 @@ for i, e in enumerate(E):
 LETTER2IDX = {e: i for i, e in enumerate(E) if len(e) == 1}
 
 KEYWORDS = [
-    "CICADA", "LIBERPRIMUS", "PRIMES", "TOTIENT", "WISDOM", "INSTAR",
-    "PARABLE", "DIVINITY", "CIRCUMFERENCE", "MOBIUS", "EULER", "PRESERVATION",
-    "ADHERENCE", "PILGRIMAGE", "ENLIGHTENMENT", "KOAN", "SHADOW", "TUNNELING",
-    "EMERGENCE", "TRUTH", "DECEPTION", "CONSUMPTION", "WELCOME", "AUTWXKQZ",
+    "CICADA",
+    "LIBERPRIMUS",
+    "PRIMES",
+    "TOTIENT",
+    "WISDOM",
+    "INSTAR",
+    "PARABLE",
+    "DIVINITY",
+    "CIRCUMFERENCE",
+    "MOBIUS",
+    "EULER",
+    "PRESERVATION",
+    "ADHERENCE",
+    "PILGRIMAGE",
+    "ENLIGHTENMENT",
+    "KOAN",
+    "SHADOW",
+    "TUNNELING",
+    "EMERGENCE",
+    "TRUTH",
+    "DECEPTION",
+    "CONSUMPTION",
+    "WELCOME",
+    "AUTWXKQZ",
 ]
 
 
@@ -110,7 +130,9 @@ def main() -> None:
 
     n_g = len(gs)
     n_s = len(sigmas)
-    print(f"candidates: {n_g} grid-g (order 5) x {n_s} keyword-sigma = {n_g * n_s} pairs")
+    print(
+        f"candidates: {n_g} grid-g (order 5) x {n_s} keyword-sigma = {n_g * n_s} pairs"
+    )
 
     # stage funnel
     even_sigma = [(k, s) for k, s in sigmas if parity(s) == 1]
@@ -130,7 +152,9 @@ def main() -> None:
                 returns += 1
                 survivors.append((gname, sname, g, sigma))
             best_diag.append((gdiag, diagonal_rate(P, sigma), gname, sname))
-    print(f"stage parity-ok: {parity_pass} (g, sigma) pairs pass the parity necessary condition")
+    print(
+        f"stage parity-ok: {parity_pass} (g, sigma) pairs pass the parity necessary condition"
+    )
     print(f"stage state-return: {returns} pairs achieve full DJU-BEI state return")
 
     # report the most cipher-plausible g by diagonal (want ~0.006), regardless
@@ -149,12 +173,16 @@ def main() -> None:
         print(f"\n{len(survivors)} STATE-RETURN survivors -> base_0 quadgram solve:")
         for gname, sname, g, sigma in survivors[:10]:
             res = verify(g, sigma, words, P, quad, rng)
-            print(f"  g={gname} sigma={sname}: base_0 fitness {res.get('base0_fitness'):.3f} "
-                  f"(Parable ~-3.4, random ~-6.9)")
+            print(
+                f"  g={gname} sigma={sname}: base_0 fitness {res.get('base0_fitness'):.3f} "
+                f"(Parable ~-3.4, random ~-6.9)"
+            )
     else:
-        print("\nNo structured (g, sigma) in these families produces a DJU-BEI "
-              "state return. Under the full-return assumption, the true key is "
-              "not a keyword-grid g with a keyword sigma from this set.")
+        print(
+            "\nNo structured (g, sigma) in these families produces a DJU-BEI "
+            "state return. Under the full-return assumption, the true key is "
+            "not a keyword-grid g with a keyword sigma from this set."
+        )
 
 
 if __name__ == "__main__":

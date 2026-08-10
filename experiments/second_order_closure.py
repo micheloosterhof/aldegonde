@@ -39,12 +39,16 @@ def main() -> None:
     s2 = np.cumsum(s1) % M
     i = np.arange(len(clean))
     vals = sorted(nioc((s2 + a * i) % M) for a in range(M))
-    print(f"double-cumsum candidates, nIoC over 29 slopes: "
-          f"min {vals[0]:.4f}  max {vals[-1]:.4f}  (plaintext ~1.7)")
+    print(
+        f"double-cumsum candidates, nIoC over 29 slopes: "
+        f"min {vals[0]:.4f}  max {vals[-1]:.4f}  (plaintext ~1.7)"
+    )
     # first-order for reference
     v1 = sorted(nioc((s1 + a) % M) for a in range(M))
-    print(f"single-cumsum reference (first-difference):    "
-          f"min {v1[0]:.4f}  max {v1[-1]:.4f}")
+    print(
+        f"single-cumsum reference (first-difference):    "
+        f"min {v1[0]:.4f}  max {v1[-1]:.4f}"
+    )
 
 
 if __name__ == "__main__":

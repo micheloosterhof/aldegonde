@@ -34,14 +34,15 @@ def count_marks(text: str, marks: frozenset[str]) -> int:
 
 def at_line_end(text: str, marks: frozenset[str]) -> int:
     """How many of these marks sit immediately before a line break."""
-    return sum(1 for i, ch in enumerate(text)
-               if ch in marks and text[i + 1:i + 2] == "/")
+    return sum(
+        1 for i, ch in enumerate(text) if ch in marks and text[i + 1 : i + 2] == "/"
+    )
 
 
 def is_prime(x: int) -> bool:
     if x < 2:
         return False
-    return all(x % p != 0 for p in range(2, int(x ** 0.5) + 1))
+    return all(x % p != 0 for p in range(2, int(x**0.5) + 1))
 
 
 def main() -> None:
@@ -63,9 +64,11 @@ def main() -> None:
     dot_all = count_marks(u_cipher, c3301.CLUSTER_MARKS)
     dash_eol = at_line_end(u_cipher, c3301.WORD_MARKS)
     dash_all = count_marks(u_cipher, c3301.WORD_MARKS)
-    print(f"  unsolved: cluster at line end {dot_eol}/{dot_all} = "
-          f"{100*dot_eol/dot_all:.1f}%   word mark at line end {dash_eol}/{dash_all} = "
-          f"{100*dash_eol/dash_all:.1f}%")
+    print(
+        f"  unsolved: cluster at line end {dot_eol}/{dot_all} = "
+        f"{100 * dot_eol / dot_all:.1f}%   word mark at line end {dash_eol}/{dash_all} = "
+        f"{100 * dash_eol / dash_all:.1f}%"
+    )
     # binomial comparison
     p0 = dash_eol / dash_all
     z = (dot_eol - dot_all * p0) / math.sqrt(dot_all * p0 * (1 - p0))
@@ -87,9 +90,11 @@ def main() -> None:
     sh_all = count_marks(solved, c3301.WORD_MARKS)
     p0s = sh_eol / sh_all
     zs = (sd_eol - sd_all * p0s) / math.sqrt(sd_all * p0s * (1 - p0s))
-    print(f"  solved:   cluster at line end {sd_eol}/{sd_all} = "
-          f"{100*sd_eol/sd_all:.1f}%   word mark at line end {sh_eol}/{sh_all} = "
-          f"{100*sh_eol/sh_all:.1f}%  (z={zs:+.2f})")
+    print(
+        f"  solved:   cluster at line end {sd_eol}/{sd_all} = "
+        f"{100 * sd_eol / sd_all:.1f}%   word mark at line end {sh_eol}/{sh_all} = "
+        f"{100 * sh_eol / sh_all:.1f}%  (z={zs:+.2f})"
+    )
     # distance of each cluster mark from line end, in runes
     dists = []
     # walk the raw text per line
@@ -103,9 +108,11 @@ def main() -> None:
             elif ch in c3301.CLUSTER_MARKS:
                 dists.append(runes_total - seen)
     dd = np.array(dists)
-    print(f"  cluster distance from line end (runes): mean={dd.mean():.1f} "
-          f"(uniform on ~22-rune lines would be ~10.5); "
-          f"share at 0 = {100*np.mean(dd == 0):.1f}%")
+    print(
+        f"  cluster distance from line end (runes): mean={dd.mean():.1f} "
+        f"(uniform on ~22-rune lines would be ~10.5); "
+        f"share at 0 = {100 * np.mean(dd == 0):.1f}%"
+    )
     hist = Counter(int(min(x, 10)) for x in dd)
     print(f"  histogram 0..10+: {[hist.get(k, 0) for k in range(11)]}")
 
@@ -113,13 +120,17 @@ def main() -> None:
     mark_pos = [i for i in range(n - 1) if seps[i] == "s"]
     mp = np.array(mark_pos)
     gaps = np.diff(mp)
-    print(f"  {len(mp)} marks; gaps (runes): mean={gaps.mean():.1f} "
-          f"median={np.median(gaps):.0f} min={gaps.min()} max={gaps.max()} "
-          f"cv={gaps.std()/gaps.mean():.2f} (exponential -> 1.0)")
+    print(
+        f"  {len(mp)} marks; gaps (runes): mean={gaps.mean():.1f} "
+        f"median={np.median(gaps):.0f} min={gaps.min()} max={gaps.max()} "
+        f"cv={gaps.std() / gaps.mean():.2f} (exponential -> 1.0)"
+    )
     # autocorrelation of gaps
     x = gaps - gaps.mean()
     r1 = float(np.dot(x[:-1], x[1:]) / np.dot(x, x))
-    print(f"  gap autocorrelation lag1: r={r1:+.3f} (z~{r1*math.sqrt(len(gaps)):+.2f})")
+    print(
+        f"  gap autocorrelation lag1: r={r1:+.3f} (z~{r1 * math.sqrt(len(gaps)):+.2f})"
+    )
     # prime bias of gaps
     pr = sum(1 for g in gaps if is_prime(int(g)))
     # null: fraction of primes among plausible gap values, weighted by gaps
@@ -128,8 +139,10 @@ def main() -> None:
     for _ in range(400):
         sim = rng.permutation(gaps) + rng.integers(-3, 4, len(gaps))
         sims.append(sum(1 for g in sim if is_prime(int(abs(g)))))
-    print(f"  prime gaps: {pr} of {len(gaps)} (jittered null {np.mean(sims):.1f}"
-          f"±{np.std(sims):.1f}, z={(pr-np.mean(sims))/np.std(sims):+.2f})")
+    print(
+        f"  prime gaps: {pr} of {len(gaps)} (jittered null {np.mean(sims):.1f}"
+        f"±{np.std(sims):.1f}, z={(pr - np.mean(sims)) / np.std(sims):+.2f})"
+    )
     # word-count gaps
     rune_word = []
     total = 0
@@ -146,9 +159,11 @@ def main() -> None:
     for _ in range(400):
         sim = rng.permutation(wgaps) + rng.integers(-2, 3, len(wgaps))
         sims.append(sum(1 for g in sim if is_prime(int(abs(g)))))
-    print(f"  sentence lengths (words): prime count {pwr} of {len(wgaps)} "
-          f"(jittered null {np.mean(sims):.1f}±{np.std(sims):.1f}, "
-          f"z={(pwr-np.mean(sims))/np.std(sims):+.2f})")
+    print(
+        f"  sentence lengths (words): prime count {pwr} of {len(wgaps)} "
+        f"(jittered null {np.mean(sims):.1f}±{np.std(sims):.1f}, "
+        f"z={(pwr - np.mean(sims)) / np.std(sims):+.2f})"
+    )
 
     print("\n=== 3. BLOCK CHECKSUMS ===")
     blocks = []
@@ -161,8 +176,10 @@ def main() -> None:
     c = np.bincount(bsum, minlength=N)
     m = len(bsum)
     stat = ((c - m / N) ** 2 / (m / N)).sum()
-    print(f"  block rune-index sums mod 29: chi2={stat:.1f} "
-          f"p={chi2_dist.sf(stat, N-1):.3f} (n={m})")
+    print(
+        f"  block rune-index sums mod 29: chi2={stat:.1f} "
+        f"p={chi2_dist.sf(stat, N - 1):.3f} (n={m})"
+    )
     GP = np.array([c3301.r2v(c3301.CICADA_ALPHABET[i]) for i in range(N)])
     gsum = [int(GP[b].sum()) for b in blocks if len(b)]
     gpr = sum(1 for g in gsum if is_prime(g))
@@ -170,23 +187,27 @@ def main() -> None:
     for _ in range(400):
         sim = [int(GP[rng.integers(0, N, len(b))].sum()) for b in blocks if len(b)]
         sims.append(sum(1 for g in sim if is_prime(g)))
-    print(f"  block GP sums prime: {gpr} of {len(gsum)} "
-          f"(null {np.mean(sims):.1f}±{np.std(sims):.1f}, "
-          f"z={(gpr-np.mean(sims))/np.std(sims):+.2f})")
+    print(
+        f"  block GP sums prime: {gpr} of {len(gsum)} "
+        f"(null {np.mean(sims):.1f}±{np.std(sims):.1f}, "
+        f"z={(gpr - np.mean(sims)) / np.std(sims):+.2f})"
+    )
     gm = [g % N for g in gsum]
     c = np.bincount(gm, minlength=N)
     stat = ((c - len(gm) / N) ** 2 / (len(gm) / N)).sum()
-    print(f"  block GP sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.3f}")
+    print(f"  block GP sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.3f}")
 
     print("\n=== 4. MARK POSITIONS ===")
     pp = sum(1 for i in mp if is_prime(int(i)))
     pp1 = sum(1 for i in mp if is_prime(int(i) + 1))
     dens = sum(1.0 / math.log(max(int(i), 3)) for i in mp)
-    print(f"  mark rune-positions prime (0-idx): {pp}; (1-idx): {pp1}; "
-          f"expected ~{dens:.1f}")
+    print(
+        f"  mark rune-positions prime (0-idx): {pp}; (1-idx): {pp1}; "
+        f"expected ~{dens:.1f}"
+    )
     c = np.bincount(mp % N, minlength=N)
     stat = ((c - len(mp) / N) ** 2 / (len(mp) / N)).sum()
-    print(f"  positions mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.3f}")
+    print(f"  positions mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.3f}")
 
     print("\n=== 5. DOUBLETS PER BLOCK ===")
     dbl_pos = [i for i in range(n - 1) if C[i] == C[i + 1]]
@@ -197,8 +218,10 @@ def main() -> None:
     counts = [per_block.get(i, 0) for i in range(len(blocks))]
     lam = sum(counts) / len(counts)
     var = np.var(counts)
-    print(f"  doublets per block: mean={lam:.2f} var={var:.2f} "
-          f"Fano={var/lam:.2f} (Poisson->1; blocks vary in length so >1 expected)")
+    print(
+        f"  doublets per block: mean={lam:.2f} var={var:.2f} "
+        f"Fano={var / lam:.2f} (Poisson->1; blocks vary in length so >1 expected)"
+    )
 
 
 if __name__ == "__main__":

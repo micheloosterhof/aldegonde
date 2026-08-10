@@ -62,10 +62,13 @@ def main() -> None:
     print(f"\nobserved repeated adjacent word pairs: {obs_pairs}")
     for k, v in reps.items():
         from aldegonde import c3301
+
         w1 = "".join(c3301.CICADA_ALPHABET[x] for x in k[0])
         w2 = "".join(c3301.CICADA_ALPHABET[x] for x in k[1])
-        print(f"  {w1}-{w2} (len {len(k[0])}+{len(k[1])}) at word idx {v}, "
-              f"word-dist {[v[j+1]-v[j] for j in range(len(v)-1)]}")
+        print(
+            f"  {w1}-{w2} (len {len(k[0])}+{len(k[1])}) at word idx {v}, "
+            f"word-dist {[v[j + 1] - v[j] for j in range(len(v) - 1)]}"
+        )
 
     obs_sw, reps_sw = suffix_word_repeats(words)
     print(f"\nobserved suffix+word repeats (total len>=5): {obs_sw}")
@@ -102,11 +105,15 @@ def main() -> None:
     mc_pairs = np.array(mc_pairs)
     mc_sw = np.array(mc_sw)
     print(f"\nMC null ({SAMPLES} samples):")
-    print(f"  adjacent word-pair repeats: mean={mc_pairs.mean():.3f} "
-          f"sd={mc_pairs.std():.3f} max={mc_pairs.max()}  "
-          f"P(>= {obs_pairs}) = {(mc_pairs >= obs_pairs).mean():.4f}")
-    print(f"  suffix+word repeats: mean={mc_sw.mean():.3f} sd={mc_sw.std():.3f} "
-          f"max={mc_sw.max()}  P(>= {obs_sw}) = {(mc_sw >= obs_sw).mean():.4f}")
+    print(
+        f"  adjacent word-pair repeats: mean={mc_pairs.mean():.3f} "
+        f"sd={mc_pairs.std():.3f} max={mc_pairs.max()}  "
+        f"P(>= {obs_pairs}) = {(mc_pairs >= obs_pairs).mean():.4f}"
+    )
+    print(
+        f"  suffix+word repeats: mean={mc_sw.mean():.3f} sd={mc_sw.std():.3f} "
+        f"max={mc_sw.max()}  P(>= {obs_sw}) = {(mc_sw >= obs_sw).mean():.4f}"
+    )
     # joint probability of seeing both
     both = ((mc_pairs >= obs_pairs) & (mc_sw >= obs_sw)).mean()
     print(f"  P(both >= observed) = {both:.4f}")

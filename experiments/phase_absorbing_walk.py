@@ -72,23 +72,28 @@ def main() -> None:
             v += 40.0 * (diag_rate(mats[d][0], acc) - CHANCE) ** 2
         return v
 
-    g = min((tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng)
-             for _ in range(4)), key=g_obj)
+    g = min(
+        (tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng) for _ in range(4)),
+        key=g_obj,
+    )
 
     def s_obj(s):
         return (diag_rate(P1, s) - TARGET_SEAM) ** 2
 
-    sigmas = [tune(perm_from_cycles([9, 7, 7, 3, 3], rng), s_obj, rng,
-                   iters=10000) for _ in range(2)]
-    print(f"g diagonal {diag_rate(P1, g):.4f} (target {TARGET_WITHIN}); "
-          f"sigma diagonals {[f'{diag_rate(P1, s):.4f}' for s in sigmas]} "
-          f"(target {TARGET_SEAM})")
+    sigmas = [
+        tune(perm_from_cycles([9, 7, 7, 3, 3], rng), s_obj, rng, iters=10000)
+        for _ in range(2)
+    ]
+    print(
+        f"g diagonal {diag_rate(P1, g):.4f} (target {TARGET_WITHIN}); "
+        f"sigma diagonals {[f'{diag_rate(P1, s):.4f}' for s in sigmas]} "
+        f"(target {TARGET_SEAM})"
+    )
 
     stepkey = [rng.randrange(2) for _ in range(4096)]
     base0 = list(range(M))
     rng.shuffle(base0)
-    battery("PHASE-ABSORBING ORBIT+WALK",
-            encipher(words, g, base0, sigmas, stepkey))
+    battery("PHASE-ABSORBING ORBIT+WALK", encipher(words, g, base0, sigmas, stepkey))
 
 
 if __name__ == "__main__":

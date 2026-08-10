@@ -52,16 +52,18 @@ def main() -> None:
     for _ in range(REPS):
         pos = 0
         for L in lens:
-            w = np.array(plaintext[pos:pos + L])
+            w = np.array(plaintext[pos : pos + L])
             pos += L
             if L < 2:
                 continue
             c = (random_invertible(rng, L) @ w) % M
             pairs += L - 1
             doublets += int((c[:-1] == c[1:]).sum())
-    print(f"random per-word invertible matrices: within-word doublet rate "
-          f"{doublets / pairs:.4f} over {pairs} adjacencies "
-          f"(observed 0.0063; generic expectation 1/29 = 0.0345)")
+    print(
+        f"random per-word invertible matrices: within-word doublet rate "
+        f"{doublets / pairs:.4f} over {pairs} adjacencies "
+        f"(observed 0.0063; generic expectation 1/29 = 0.0345)"
+    )
 
 
 if __name__ == "__main__":

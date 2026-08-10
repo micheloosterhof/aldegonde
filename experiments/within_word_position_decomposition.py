@@ -102,8 +102,10 @@ def report_buckets(title: str, buckets: dict[str, tuple[int, int]]) -> None:
         table.append([k, n - k])
     if len(table) >= 2 and all(sum(row) > 0 for row in table):
         chi2, pv, dof, _ = chi2_contingency(table)
-        print(f"  homogeneity chi2={chi2:.2f} dof={dof} p={pv:.3f}"
-              f"  ({'FLAT' if pv > 0.05 else 'STRUCTURE'})")
+        print(
+            f"  homogeneity chi2={chi2:.2f} dof={dof} p={pv:.3f}"
+            f"  ({'FLAT' if pv > 0.05 else 'STRUCTURE'})"
+        )
 
 
 def main() -> None:
@@ -124,23 +126,32 @@ def main() -> None:
     d1 = collect(words, 1)
     report_buckets(
         "d1 doublet suppression by absolute start position:",
-        bucketize(d1, lambda i, L: {0: "i=0", 1: "i=1", 2: "i=2"}.get(i, "i>=3"),
-                  ["i=0", "i=1", "i=2", "i>=3"]),
+        bucketize(
+            d1,
+            lambda i, L: {0: "i=0", 1: "i=1", 2: "i=2"}.get(i, "i>=3"),
+            ["i=0", "i=1", "i=2", "i>=3"],
+        ),
     )
 
     # --- d5 echo by absolute position (drift signature) ---
     d5 = collect(words, 5)
     report_buckets(
         "d5 echo by absolute start position (drift -> decays with i):",
-        bucketize(d5, lambda i, L: {0: "i=0", 1: "i=1", 2: "i=2"}.get(i, "i>=3"),
-                  ["i=0", "i=1", "i=2", "i>=3"]),
+        bucketize(
+            d5,
+            lambda i, L: {0: "i=0", 1: "i=1", 2: "i=2"}.get(i, "i>=3"),
+            ["i=0", "i=1", "i=2", "i>=3"],
+        ),
     )
 
     # --- d5 echo by word length ---
     report_buckets(
         "d5 echo by word length:",
-        bucketize(d5, lambda i, L: {6: "L=6", 7: "L=7", 8: "L=8"}.get(L, "L>=9"),
-                  ["L=6", "L=7", "L=8", "L>=9"]),
+        bucketize(
+            d5,
+            lambda i, L: {6: "L=6", 7: "L=7", 8: "L=8"}.get(L, "L>=9"),
+            ["L=6", "L=7", "L=8", "L>=9"],
+        ),
     )
 
     # --- phase-1 consistency: d1 vs d6 ---

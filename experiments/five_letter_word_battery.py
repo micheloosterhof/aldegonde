@@ -63,8 +63,9 @@ def register_five_letter_words():
 def ioc(seq):
     c = Counter(seq)
     n = len(seq)
-    return sum(v * (v - 1) for v in c.values()) / (n * (n - 1) / M) / M \
-        if n > 1 else 0.0
+    return (
+        sum(v * (v - 1) for v in c.values()) / (n * (n - 1) / M) / M if n > 1 else 0.0
+    )
 
 
 def chi2_uniform(seq):
@@ -122,25 +123,32 @@ def main():
     print("== concatenated-stream fingerprint ==")
     print(f"  IoC (normalized): {ioc(runes):.4f}  (flat = 1.00)")
     chi = chi2_uniform(runes)
-    print(f"  unigram chi2 vs uniform: {chi:.1f}  (df 28, "
-          f"mean 28, ~1.6 sd = {28 + 1.65 * (2*28)**0.5:.0f})")
+    print(
+        f"  unigram chi2 vs uniform: {chi:.1f}  (df 28, "
+        f"mean 28, ~1.6 sd = {28 + 1.65 * (2 * 28) ** 0.5:.0f})"
+    )
 
     print("\n== per-position (phase) unigram uniformity ==")
     for k in range(5):
         col = [w[k] for w in W]
-        print(f"  position {k} (phase {k}): chi2 {chi2_uniform(col):.1f} "
-              f"(n={len(col)})")
+        print(
+            f"  position {k} (phase {k}): chi2 {chi2_uniform(col):.1f} (n={len(col)})"
+        )
 
     print("\n== within-frame coincidence by distance (= g^d diagonal) ==")
     hit, opp = coincidence_by_distance(W)
     null = perm_null(W)
-    print(f"  {'d':>2} {'phase rel':>10} {'obs':>5} {'opp':>4} "
-          f"{'rate':>7} {'null rate':>10} {'z':>6} {'p(>=)':>7}")
-    rel = {1: 'g^1', 2: 'g^2', 3: 'g^3', 4: 'g^4=g^-1'}
+    print(
+        f"  {'d':>2} {'phase rel':>10} {'obs':>5} {'opp':>4} "
+        f"{'rate':>7} {'null rate':>10} {'z':>6} {'p(>=)':>7}"
+    )
+    rel = {1: "g^1", 2: "g^2", 3: "g^3", 4: "g^4=g^-1"}
     for d in range(1, 5):
         mu, sd, z, p = z_and_p(hit[d], null[d])
-        print(f"  {d:>2} {rel[d]:>10} {hit[d]:>5} {opp[d]:>4} "
-              f"{hit[d]/opp[d]:>7.4f} {mu/opp[d]:>10.4f} {z:>6.2f} {p:>7.4f}")
+        print(
+            f"  {d:>2} {rel[d]:>10} {hit[d]:>5} {opp[d]:>4} "
+            f"{hit[d] / opp[d]:>7.4f} {mu / opp[d]:>10.4f} {z:>6.2f} {p:>7.4f}"
+        )
 
     print("\n== the (0,4) frame pair — word-bounded d4, in detail ==")
     obs04 = sum(1 for w in W if w[0] == w[4])
@@ -153,11 +161,14 @@ def main():
             c += s[0] == s[4]
         null04.append(c)
     mu, sd, z, p = z_and_p(obs04, null04)
-    print(f"  first == last rune: {obs04}/{len(W)} = {obs04/len(W):.4f}")
-    print(f"  within-word-shuffle null: {mu:.1f} +- {sd:.1f}  "
-          f"(z = {z:+.2f}, p(>=) = {p:.4f})")
-    print(f"  corpus-wide d4 leans +1.85 sigma; here z = {z:+.2f} "
-          f"on {len(W)} word frames")
+    print(f"  first == last rune: {obs04}/{len(W)} = {obs04 / len(W):.4f}")
+    print(
+        f"  within-word-shuffle null: {mu:.1f} +- {sd:.1f}  "
+        f"(z = {z:+.2f}, p(>=) = {p:.4f})"
+    )
+    print(
+        f"  corpus-wide d4 leans +1.85 sigma; here z = {z:+.2f} on {len(W)} word frames"
+    )
 
     print("\n== plaintext control: register 5-letter words ==")
     print("  (ciphertext coincidence at distance d leaks plaintext p_a=p_b")
@@ -165,15 +176,17 @@ def main():
     print("  at d=3,4, the cipher elevation is fixed-point leak, not anomaly)")
     pt5 = register_five_letter_words()
     RNG.shuffle(pt5)
-    pt5 = pt5[:2000]          # cap for the permutation null's cost
+    pt5 = pt5[:2000]  # cap for the permutation null's cost
     print(f"  register length-5 words (sampled): {len(pt5)}")
     phit, popp = coincidence_by_distance(pt5)
     pnull = perm_null(pt5)
     print(f"  {'d':>2} {'obs':>5} {'opp':>5} {'rate':>7} {'null':>7} {'z':>6}")
     for d in range(1, 5):
         mu, sd, z, p = z_and_p(phit[d], pnull[d])
-        print(f"  {d:>2} {phit[d]:>5} {popp[d]:>5} {phit[d]/popp[d]:>7.4f} "
-              f"{mu/popp[d]:>7.4f} {z:>6.2f}")
+        print(
+            f"  {d:>2} {phit[d]:>5} {popp[d]:>5} {phit[d] / popp[d]:>7.4f} "
+            f"{mu / popp[d]:>7.4f} {z:>6.2f}"
+        )
 
     print("\n== interpretation ==")
     print("  d=1 rare -> adjacent doublet suppression present in 5-frames;")

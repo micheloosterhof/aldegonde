@@ -5,12 +5,14 @@ Parses the corpus preserving word boundaries (- = word sep, / = line break
 within word stream, % = page break, . = sentence end, & = paragraph?,
 $ = segment, 0-9 etc = annotations).
 """
+
 import collections
 
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 assert len(RUNES) == 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 N = 29
+
 
 def parse(path: str):
     with open(path) as f:
@@ -43,8 +45,10 @@ def parse(path: str):
         pages.append(cur_words)
     return pages
 
+
 def flat(pages):
     return [r for page in pages for w in page for r in w]
+
 
 def ioc(seq):
     n = len(seq)
@@ -53,8 +57,10 @@ def ioc(seq):
     c = collections.Counter(seq)
     return sum(v * (v - 1) for v in c.values()) / (n * (n - 1))
 
+
 def nioc(seq):
     return ioc(seq) * N
+
 
 if __name__ == "__main__":
     pages = parse("data/page0-58.txt")
@@ -64,7 +70,7 @@ if __name__ == "__main__":
     print(f"global IoC (norm): {nioc(s):.4f}  (random=1.0, english-ish~1.78)")
     cnt = collections.Counter(s)
     print("unigram counts:", [cnt[i] for i in range(N)])
-    chi2 = sum((cnt[i] - len(s)/N)**2 / (len(s)/N) for i in range(N))
+    chi2 = sum((cnt[i] - len(s) / N) ** 2 / (len(s) / N) for i in range(N))
     print(f"chi2 vs uniform: {chi2:.1f} (df=28, expect ~28, p05~41.3)")
     wl = collections.Counter(len(w) for w in words)
     print("word lengths:", dict(sorted(wl.items())))

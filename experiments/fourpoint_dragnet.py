@@ -61,28 +61,38 @@ A0 = np.array([c3301.r2i(c) for c in text])
 #   add the genuine 4-gram repeat: c[i..i+1]==c[j..j+1] handled by P.
 # Family X (cross-lag at a position): c[i]==c[i+L] AND c[i+1]==c[i+1+L2], L!=L2
 
+
 def stat_P(a, L, s):
     M = a[:-L] == a[L:]
-    return int(np.sum(M[:len(M) - s] & M[s:]))
+    return int(np.sum(M[: len(M) - s] & M[s:]))
+
 
 def exp_P(L, s):
     m = n - L
     return (m - s) / (N * N)
 
+
 def stat_V(a, L, L2):
     lim = n - L2
-    return int(np.sum((a[:lim] == a[L:L + lim]) & (a[:lim] == a[L2:L2 + lim])))
+    return int(np.sum((a[:lim] == a[L : L + lim]) & (a[:lim] == a[L2 : L2 + lim])))
+
 
 def exp_V(L, L2):
     return (n - L2) / (N * N)
 
+
 def stat_X(a, L, L2):
     lim = n - max(L, L2) - 1
-    return int(np.sum((a[:lim] == a[L:L + lim]) &
-                      (a[1:1 + lim] == a[1 + L2:1 + L2 + lim])))
+    return int(
+        np.sum(
+            (a[:lim] == a[L : L + lim]) & (a[1 : 1 + lim] == a[1 + L2 : 1 + L2 + lim])
+        )
+    )
+
 
 def exp_X(L, L2):
     return (n - max(L, L2) - 1) / (N * N)
+
 
 def all_stats(a):
     """Return dict label->(obs, exp, z) for the whole family."""
@@ -103,6 +113,7 @@ def all_stats(a):
             out[("X", L, L2)] = (o, e, (o - e) / sqrt(e))
     return out
 
+
 obs = all_stats(A0)
 ntests = len(obs)
 ranked = sorted(obs.items(), key=lambda kv: -kv[1][2])
@@ -117,6 +128,7 @@ for lab, (o, e, z) in ranked[-3:]:
 # ---- global Monte Carlo: max |z| over the family under doublet-suppressed null ----
 rate = sum(1 for i in range(n - 1) if text[i] == text[i + 1]) / (n - 1)
 
+
 def gen():
     out = [random.randrange(N)]
     for _ in range(n - 1):
@@ -129,6 +141,7 @@ def gen():
             out.append(c)
     return np.array(out)
 
+
 obs_maxz = ranked[0][1][2]
 # the known lag-5 P-statistics, for reference
 known = max(obs[("P", 5, 1)][2], obs[("P", 5, 4)][2])
@@ -140,7 +153,9 @@ for _ in range(TRIALS):
 null_max.sort()
 exceed = sum(1 for v in null_max if v >= obs_maxz)
 print(f"\nobserved family max z = {obs_maxz:.2f} ({ranked[0][0]})")
-print(f"null max-z over family: median {null_max[TRIALS//2]:.2f}, "
-      f"95th pct {null_max[int(TRIALS*0.95)]:.2f}")
+print(
+    f"null max-z over family: median {null_max[TRIALS // 2]:.2f}, "
+    f"95th pct {null_max[int(TRIALS * 0.95)]:.2f}"
+)
 print(f"global P(null max >= observed) = {exceed}/{TRIALS}")
 print(f"(lag-5 reference: best P-stat z = {known:.2f})")

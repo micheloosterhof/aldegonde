@@ -39,8 +39,8 @@ from experiments.locate_marks import CORPUS, IMAGE_DIR, TEXT_BLOCK
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 PAGES = range(58)
-DOT_MAX = 16          # a single dot is about 10px square
-LINK = 45             # dots this close belong to one cluster
+DOT_MAX = 16  # a single dot is about 10px square
+LINK = 45  # dots this close belong to one cluster
 INK = 128
 
 
@@ -98,8 +98,10 @@ def main() -> None:
     txt = CORPUS.read_text()
     word = sum(1 for ch in txt if ch in c3301.WORD_MARKS)
     cluster_marks = sum(1 for ch in txt if ch in c3301.CLUSTER_MARKS)
-    print(f"\ntranscription records {word} word marks and {cluster_marks} clusters "
-          f"= {word + cluster_marks} marks")
+    print(
+        f"\ntranscription records {word} word marks and {cluster_marks} clusters "
+        f"= {word + cluster_marks} marks"
+    )
     print(f"scan finds {total} clusters, of which {sizes[1]} are single dots")
 
     print("\nclusters of 3+ dots, by size")

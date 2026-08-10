@@ -70,9 +70,7 @@ def nioc(text: str) -> float:
         return 0.0
     counts = Counter(text)
     return (
-        sum(v * (v - 1) for v in counts.values())
-        / (len(text) * (len(text) - 1))
-        * MOD
+        sum(v * (v - 1) for v in counts.values()) / (len(text) * (len(text) - 1)) * MOD
     )
 
 
@@ -142,8 +140,10 @@ def main() -> None:
     top = sorted(((v, k) for k, v in obs.items()), reverse=True)[:5]
     print(f"\njoint T(L) top 5: {[(lag, v) for v, lag in top]}")
     half = n // 2
-    print(f"T(5) split-half: {joint_t(text[:half], 5)} + {joint_t(text[half:], 5)}"
-          f" = {obs[5]}")
+    print(
+        f"T(5) split-half: {joint_t(text[:half], 5)} + {joint_t(text[half:], 5)}"
+        f" = {obs[5]}"
+    )
 
     rate = sum(1 for i in range(n - 1) if text[i] == text[i + 1]) / (n - 1)
     trials = 200
@@ -159,8 +159,10 @@ def main() -> None:
     sd5 = statistics.stdev(null_t5)
     p_local = sum(1 for v in null_t5 if v >= t5) / trials
     p_global = sum(1 for v in null_max if v >= t5) / trials
-    print(f"null T(5) = {mean5:.1f} +/- {sd5:.1f}; "
-          f"local z = {(t5 - mean5) / sd5:+.2f}, p_local = {p_local:.3f}")
+    print(
+        f"null T(5) = {mean5:.1f} +/- {sd5:.1f}; "
+        f"local z = {(t5 - mean5) / sd5:+.2f}, p_local = {p_local:.3f}"
+    )
     print(f"global (max over lags 2..50): p = {p_global:.3f}")
 
 

@@ -76,18 +76,27 @@ def main() -> None:
     schemes = {
         "(pos,wlen)": lambda i, j: (j, min(lens[i], cap)),
         "(pos,wlen,prev)": lambda i, j: (
-            j, min(lens[i], cap), min(lens[i - 1], cap) if i > 0 else -1),
+            j,
+            min(lens[i], cap),
+            min(lens[i - 1], cap) if i > 0 else -1,
+        ),
         "(pos,wlen,next)": lambda i, j: (
-            j, min(lens[i], cap),
-            min(lens[i + 1], cap) if i < nw - 1 else -1),
+            j,
+            min(lens[i], cap),
+            min(lens[i + 1], cap) if i < nw - 1 else -1,
+        ),
         "(pos,wlen,prev,next)": lambda i, j: (
-            j, min(lens[i], cap),
+            j,
+            min(lens[i], cap),
             min(lens[i - 1], cap) if i > 0 else -1,
-            min(lens[i + 1], cap) if i < nw - 1 else -1),
+            min(lens[i + 1], cap) if i < nw - 1 else -1,
+        ),
         "(pos,wlen,prev,prev2)": lambda i, j: (
-            j, min(lens[i], cap),
+            j,
+            min(lens[i], cap),
             min(lens[i - 1], cap) if i > 0 else -1,
-            min(lens[i - 2], cap) if i > 1 else -1),
+            min(lens[i - 2], cap) if i > 1 else -1,
+        ),
     }
     for name, fkey in schemes.items():
         rk = []
@@ -96,8 +105,10 @@ def main() -> None:
                 rk.append((fkey(i, j), r))
         rate, z, opp = bucket_kappa(rk)
         flag = " ***" if abs(z) > 4 else ""
-        print(f"  {name:<24} rate={rate:.5f} (1/29={1/N:.5f}) "
-              f"pairs={opp} z={z:+.2f}{flag}")
+        print(
+            f"  {name:<24} rate={rate:.5f} (1/29={1 / N:.5f}) "
+            f"pairs={opp} z={z:+.2f}{flag}"
+        )
     print("  (a length-keyed cipher would push rate toward ~0.06+)")
 
     print("\n=== 2. BOUNDARY AUTHENTICITY: length-sequence structure ===")
@@ -149,6 +160,7 @@ def main() -> None:
     # either sign, so it does NOT give a one-sided test.
     import glob
     import re
+
     eng = ""
     for f in glob.glob("hypotheses/*.md"):
         eng += Path(f).read_text()
@@ -164,8 +176,10 @@ def main() -> None:
     r_u, _ = perm_test(lens, 1)
     r_s, _ = perm_test(sl, 1)
     sd_diff = math.sqrt(1 / len(lens) + 1 / len(sl))
-    print(f"  register-matched lag-1 diff (solved {r_s:+.3f} vs unsolved "
-          f"{r_u:+.3f}): z={(r_s - r_u) / sd_diff:+.2f}")
+    print(
+        f"  register-matched lag-1 diff (solved {r_s:+.3f} vs unsolved "
+        f"{r_u:+.3f}): z={(r_s - r_u) / sd_diff:+.2f}"
+    )
 
     # fraction of 1-2 rune words adjacent to other 1-2 rune words
     def short_adj(seq):
@@ -175,10 +189,10 @@ def main() -> None:
         exp = (len(s) - 1) * p * p
         sd = math.sqrt(exp * (1 - p * p))
         return both, exp, (both - exp) / sd
+
     for seq, label in ((lens, "unsolved"), (sl, "solved")):
         b, e, z = short_adj(seq)
-        print(f"  {label}: adjacent short-short words {b} vs {e:.0f} exp "
-              f"(z={z:+.2f})")
+        print(f"  {label}: adjacent short-short words {b} vs {e:.0f} exp (z={z:+.2f})")
 
     print("\n=== 3. DOUBLET WORD LENGTHS ===")
     # word length distribution of doublet-containing words
@@ -195,7 +209,7 @@ def main() -> None:
     # baseline: probability a word of length L contains a doublet ~ (L-1)
     base = Counter()
     for L in lens:
-        base[min(L, cap)] += (L - 1)
+        base[min(L, cap)] += L - 1
     tot = sum(base.values())
     obs = Counter(dl)
     print(f"  {len(dwords)} doublet-containing words")

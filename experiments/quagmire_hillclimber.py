@@ -14,7 +14,8 @@ Attack approach:
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 import random  # noqa: I001
 import multiprocessing as mp
@@ -199,8 +200,15 @@ def hill_climb(
 
 def run_single_climb(args: tuple) -> tuple:
     """Worker function for parallel execution."""
-    (ciphertext, max_iterations, primer_idx, mode, autokey,
-     restart_threshold, score_fn_name) = args
+    (
+        ciphertext,
+        max_iterations,
+        primer_idx,
+        mode,
+        autokey,
+        restart_threshold,
+        score_fn_name,
+    ) = args
 
     # Select scoring function by name (can't pickle lambdas)
     if score_fn_name == "ioc_fast":
@@ -252,7 +260,11 @@ if __name__ == "__main__":
     RESTART_THRESHOLD = 500
     TEST_LENGTH = 729  # First chapter size
     SCORE_FN = score_ioc_fast  # score_quadgram, score_ioc, or score_ioc_fast
-    SCORE_NAME = "IOC-fast" if score_ioc_fast == SCORE_FN else ("IOC" if score_ioc == SCORE_FN else "quadgram")
+    SCORE_NAME = (
+        "IOC-fast"
+        if score_ioc_fast == SCORE_FN
+        else ("IOC" if score_ioc == SCORE_FN else "quadgram")
+    )
 
     # Load LP
     lp = load_lp()
@@ -290,15 +302,17 @@ if __name__ == "__main__":
     jobs = []
     for mode in modes:
         for primer_idx in primer_indices:
-            jobs.append((
-                test_text,
-                MAX_ITERATIONS,
-                primer_idx,
-                mode,
-                "ciphertext",
-                RESTART_THRESHOLD,
-                SCORE_NAME.lower().replace("-", "_"),  # Convert to function name
-            ))
+            jobs.append(
+                (
+                    test_text,
+                    MAX_ITERATIONS,
+                    primer_idx,
+                    mode,
+                    "ciphertext",
+                    RESTART_THRESHOLD,
+                    SCORE_NAME.lower().replace("-", "_"),  # Convert to function name
+                )
+            )
 
     print(f"\nRunning {len(jobs)} jobs across {NUM_WORKERS} workers...")
 
@@ -310,7 +324,7 @@ if __name__ == "__main__":
 
     # Process results
     best_overall = None
-    best_overall_score = float('-inf')
+    best_overall_score = float("-inf")
     best_by_mode: dict[str, tuple] = {}
 
     for result in results:
@@ -328,9 +342,13 @@ if __name__ == "__main__":
     # Print results by mode
     for mode in modes:
         if mode in best_by_mode:
-            alphabet, score, plaintext, mode_name, primer_idx, pt_ioc = best_by_mode[mode]
+            alphabet, score, plaintext, mode_name, primer_idx, pt_ioc = best_by_mode[
+                mode
+            ]
             primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
-            print(f"Best {mode:8}: primer={primer_name:2} score={score:.3f} IoC={pt_ioc:.3f}")
+            print(
+                f"Best {mode:8}: primer={primer_name:2} score={score:.3f} IoC={pt_ioc:.3f}"
+            )
             print(f"  English: {runes_to_english(plaintext[:60])}...")
 
     print("\n" + "=" * 70)

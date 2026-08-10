@@ -45,7 +45,7 @@ M = 29
 OBS_DOUBLETS = 86
 N_WITHIN = 10028
 N_SEAM = 2927
-TOL = 2.0            # sigmas of Poisson slack on the joint doublet count
+TOL = 2.0  # sigmas of Poisson slack on the joint doublet count
 
 
 def compose(a, b):
@@ -103,9 +103,11 @@ def main() -> None:
     tot = sum(ph.values())
     [ph[p] / tot for p in range(5)]
 
-    vocab = [x.strip() for x in Path(DICT).read_text().splitlines()
-             if 4 <= len(x.strip()) <= 12 and x.strip().isalpha()
-             and x.strip().isascii()]
+    vocab = [
+        x.strip()
+        for x in Path(DICT).read_text().splitlines()
+        if 4 <= len(x.strip()) <= 12 and x.strip().isalpha() and x.strip().isascii()
+    ]
     print(f"vocabulary {len(vocab):,} words x 4 rules")
 
     # ---- sigma candidates: keyword disks consistent with 23 seam doublets
@@ -133,8 +135,9 @@ def main() -> None:
             continue
         for rname, K in alphabets(seq):
             pos = inverse(K)
-            costs = [sum(within[K[(pos[x] + t) % M]][x] for x in range(M))
-                     for t in range(M)]
+            costs = [
+                sum(within[K[(pos[x] + t) % M]][x] for x in range(M)) for t in range(M)
+            ]
             if min(costs[1:]) > 0.0063:
                 continue
             gcand.append((min(costs[1:]), word, rname, K, costs))
@@ -170,13 +173,17 @@ def main() -> None:
     print(f"  passing the joint doublet count: {len(viable):,}")
     if viable:
         viable.sort(key=lambda t: abs(t[0] - OBS_DOUBLETS))
-        print(f"\n  {'total':>7} {'g keyword':<16}{'sigma keyword':<16}"
-              f"{'r_g':>8}{'r_sig':>8}")
+        print(
+            f"\n  {'total':>7} {'g keyword':<16}{'sigma keyword':<16}"
+            f"{'r_g':>8}{'r_sig':>8}"
+        )
         for v in viable[:10]:
             print(f"  {v[0]:>7.1f} {v[1]:<16}{v[3]:<16}{v[6]:>8.4f}{v[7]:>8.4f}")
         need_lo = (OBS_DOUBLETS - N_SEAM * sig[0][0]) / N_WITHIN
-        print(f"\n  with the best sigma (r={sig[0][0]:.4f}, {sig[0][1]}), the "
-              f"g schedule must supply r_g = {need_lo:.4f}")
+        print(
+            f"\n  with the best sigma (r={sig[0][0]:.4f}, {sig[0][1]}), the "
+            f"g schedule must supply r_g = {need_lo:.4f}"
+        )
 
 
 if __name__ == "__main__":

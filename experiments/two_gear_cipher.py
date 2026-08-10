@@ -44,11 +44,26 @@ M = 29
 R2I = {r: i for i, r in enumerate(ALPH)}
 SEED = 3301
 
-LEN_DIST = {1: 99, 2: 465, 3: 726, 4: 514, 5: 318, 6: 252, 7: 214,
-            8: 159, 9: 77, 10: 51, 11: 28, 12: 18, 13: 4, 14: 3}
+LEN_DIST = {
+    1: 99,
+    2: 465,
+    3: 726,
+    4: 514,
+    5: 318,
+    6: 252,
+    7: 214,
+    8: 159,
+    9: 77,
+    10: 51,
+    11: 28,
+    12: 18,
+    13: 4,
+    14: 3,
+}
 
 
 # ---------- data ----------
+
 
 def load_bigrams() -> np.ndarray:
     b = np.zeros((M, M))
@@ -95,12 +110,13 @@ def cut_words(stream: list[int], rng: random.Random) -> list[list[int]]:
         length = rng.choices(lengths, weights=weights, k=1)[0]
         if i + length > len(stream):
             break
-        words.append(stream[i:i + length])
+        words.append(stream[i : i + length])
         i += length
     return words
 
 
 # ---------- permutation tooling ----------
+
 
 def perm_from_cycles(cycle_lengths: list[int], rng: random.Random) -> list[int]:
     """Random permutation with the given cycle type (lengths must sum to 29)."""
@@ -109,7 +125,7 @@ def perm_from_cycles(cycle_lengths: list[int], rng: random.Random) -> list[int]:
     p = [0] * M
     pos = 0
     for length in cycle_lengths:
-        cyc = elems[pos:pos + length]
+        cyc = elems[pos : pos + length]
         for k in range(length):
             p[cyc[k]] = cyc[(k + 1) % length]
         pos += length
@@ -146,6 +162,7 @@ def ppow(p: list[int], k: int) -> list[int]:
 
 # ---------- the cipher ----------
 
+
 def encipher(words, g, h, base) -> list[list[int]]:
     gp = [ppow(g, k) for k in range(5)]
     hw = list(range(M))  # h^0
@@ -162,6 +179,7 @@ def encipher(words, g, h, base) -> list[list[int]]:
 
 
 # ---------- the complete battery ----------
+
 
 def ioc(seq) -> float:
     n = len(seq)
@@ -187,9 +205,15 @@ def battery(ct_words) -> None:
         return m, e
 
     print(f"  unigram IoC: {ioc(stream):.3f}   (target 1.00)")
-    for d, sw, target in ((1, True, 0.0063), (1, False, 0.0079),
-                          (2, True, 0.034), (3, True, 0.034), (4, True, 0.034),
-                          (5, True, 0.049), (5, False, 0.030)):
+    for d, sw, target in (
+        (1, True, 0.0063),
+        (1, False, 0.0079),
+        (2, True, 0.034),
+        (3, True, 0.034),
+        (4, True, 0.034),
+        (5, True, 0.049),
+        (5, False, 0.030),
+    ):
         m, e = rate(d, same_word=sw)
         where = "within" if sw else "cross "
         print(f"  d{d} {where}: {m:4d}/{e:<6d} = {m / e:.4f}   (LP {target})")
@@ -219,11 +243,15 @@ def main() -> None:
     def g_obj(g):
         return sum(B[g[x], x] for x in range(M))
 
-    g = min((tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng)
-             for _ in range(6)), key=g_obj)
+    g = min(
+        (tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng) for _ in range(6)),
+        key=g_obj,
+    )
     fixed = [x for x in range(M) if g[x] == x]
-    print(f"doublet floor, ORDER-5 constrained:       {g_obj(g):.4f}   "
-          f"(observed LP 0.0066)")
+    print(
+        f"doublet floor, ORDER-5 constrained:       {g_obj(g):.4f}   "
+        f"(observed LP 0.0066)"
+    )
     print(f"  g fixed points: {[c3301.CICADA_ENGLISH_ALPHABET[x] for x in fixed]}")
 
     # --- h: order 63 (cycles 9,7,7,3,3; 63 | 1449), seam diagonals tuned ---
@@ -237,18 +265,24 @@ def main() -> None:
             total += sum(B[gi[a][h[gp[(a + 1) % 5][v]]], v] for v in range(M))
         return total / 5
 
-    h = min((tune(perm_from_cycles([9, 7, 7, 3, 3], rng), h_obj, rng)
-             for _ in range(4)), key=h_obj)
-    print(f"seam-diagonal mean (h tuned, order 63):   {h_obj(h):.4f}   "
-          f"(observed seam rate 0.0079)\n")
+    h = min(
+        (tune(perm_from_cycles([9, 7, 7, 3, 3], rng), h_obj, rng) for _ in range(4)),
+        key=h_obj,
+    )
+    print(
+        f"seam-diagonal mean (h tuned, order 63):   {h_obj(h):.4f}   "
+        f"(observed seam rate 0.0079)\n"
+    )
 
     # --- generate and measure ---
     base = list(range(M))
     rng.shuffle(base)
     words = cut_words(gen_plaintext(load_trigram(), 40000, rng), rng)
     pt_stream = [x for w in words for x in w]
-    print(f"plaintext: {len(words)} words, {len(pt_stream)} runes, "
-          f"IoC {ioc(pt_stream):.2f}")
+    print(
+        f"plaintext: {len(words)} words, {len(pt_stream)} runes, "
+        f"IoC {ioc(pt_stream):.2f}"
+    )
     print("\nTWO-GEAR CIPHER  c[i] = base(h^w(g^(i mod 5)(p[i]))):")
     battery(encipher(words, g, h, base))
 

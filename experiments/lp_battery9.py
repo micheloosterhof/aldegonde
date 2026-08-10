@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Battery 9: prefix attack + drift-tolerant (Viterbi) keystream attack."""
+
 import collections
 import math
 import random
@@ -7,6 +8,7 @@ import random
 from lp_structure import R2I, N, parse
 
 pages = parse("data/page0-58.txt")[:55]
+
 
 def sieve(limit):
     pr = []
@@ -17,6 +19,8 @@ def sieve(limit):
             for j in range(i * i, limit, i):
                 is_c[j] = 1
     return pr
+
+
 PR = sieve(50000)
 
 # runeglish unigram log-probs
@@ -30,8 +34,10 @@ tot = sum(uni.values())
 LP_ = [math.log((uni[i] + 1) / tot) for i in range(N)]
 LL_UNIF = math.log(1 / N)
 
+
 def ll_gain(seq):
     return sum(LP_[x] - LL_UNIF for x in seq)
+
 
 maxlen = max(sum(len(w) for w in p) for p in pages) + 30
 fib = [1, 1]
@@ -47,7 +53,9 @@ streams = {
     "pi": [int(c) for c in (PI * 3)[:maxlen]],
 }
 
-print("=== prefix attack: decrypt first K runes of each page, sum LL gain over pages ===")
+print(
+    "=== prefix attack: decrypt first K runes of each page, sum LL gain over pages ==="
+)
 random.seed(5)
 for K in (15, 25):
     # Monte-Carlo null: LL gain of K uniform-random runes
@@ -56,7 +64,9 @@ for K in (15, 25):
         null.append(sum(ll_gain([random.randrange(N)]) for _ in range(K)))
     mu = sum(null) / len(null)
     sd = math.sqrt(sum((x - mu) ** 2 for x in null) / len(null))
-    print(f"\nK={K}: null per-page LL mu={mu:.2f} sd={sd:.2f}; corpus z uses sqrt(55)*sd")
+    print(
+        f"\nK={K}: null per-page LL mu={mu:.2f} sd={sd:.2f}; corpus z uses sqrt(55)*sd"
+    )
     for name, k in streams.items():
         for sign in (-1, 1):
             tot_ll = 0.0
@@ -69,14 +79,21 @@ for K in (15, 25):
                 best.append((g, j))
             z = (tot_ll - 55 * mu) / (math.sqrt(55) * sd)
             best.sort(reverse=True)
-            note = f" top pages {[(round(g,1),j) for g,j in best[:3]]}" if z > 3 else ""
-            print(f"  {name:9s} {'-' if sign<0 else '+'}: total LL={tot_ll:8.1f} z={z:+5.2f}{note}")
+            note = (
+                f" top pages {[(round(g, 1), j) for g, j in best[:3]]}" if z > 3 else ""
+            )
+            print(
+                f"  {name:9s} {'-' if sign < 0 else '+'}: total LL={tot_ll:8.1f} z={z:+5.2f}{note}"
+            )
 
-print("\n=== Viterbi drift attack: c[i] decrypted with k[i+drift], drift non-decreasing ===")
+print(
+    "\n=== Viterbi drift attack: c[i] decrypted with k[i+drift], drift non-decreasing ==="
+)
 # state: drift d in 0..DMAX; at each position may stay or +1 (penalty); emission = unigram LL
 DMAX = 25
-SKIP_LOGP = math.log(0.05)   # prior prob of a skip at any position
+SKIP_LOGP = math.log(0.05)  # prior prob of a skip at any position
 STAY_LOGP = math.log(0.95)
+
 
 def viterbi_page(cs, key, sign):
     m = len(cs)
@@ -103,6 +120,7 @@ def viterbi_page(cs, key, sign):
         cur = nxt
     return max(cur)
 
+
 random.seed(9)
 # null distribution: random pages
 nulls = []
@@ -124,9 +142,11 @@ for name in ("primes", "totient", "fib", "index"):
             scores.append((sc - mu * len(cs) / 236, j, len(cs)))
         scores.sort(reverse=True)
         top = [(round(sc, 1), j) for sc, j, L in scores[:3]]
-        print(f"{name:8s} {'-' if sign<0 else '+'}: top pages {top}")
+        print(f"{name:8s} {'-' if sign < 0 else '+'}: top pages {top}")
 
 # sanity: does viterbi light up on the SOLVED page 55 (re-parse with it included)?
 all_pages = parse("data/page0-58.txt")
 p55 = [r for w in all_pages[55] for r in w]
-print(f"\nsanity solved page55, totient-: viterbi={viterbi_page(p55, streams['totient'], -1):.1f} (null mu~{mu*len(p55)/236:.0f} sd~{sd:.0f})")
+print(
+    f"\nsanity solved page55, totient-: viterbi={viterbi_page(p55, streams['totient'], -1):.1f} (null mu~{mu * len(p55) / 236:.0f} sd~{sd:.0f})"
+)

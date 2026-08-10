@@ -87,8 +87,10 @@ def main() -> None:
     m = len(sums)
     exp = m * pp
     sd = math.sqrt(m * pp * (1 - pp))
-    print(f"  adjacent GP sums prime: obs={obs_prime} exp={exp:.1f} "
-          f"z={(obs_prime-exp)/sd:+.2f}")
+    print(
+        f"  adjacent GP sums prime: obs={obs_prime} exp={exp:.1f} "
+        f"z={(obs_prime - exp) / sd:+.2f}"
+    )
     # word GP sums prime
     wsums = [sum(int(gp[r]) for r in w) for w in words]
     obsw = sum(1 for s in wsums if isprime(s))
@@ -102,8 +104,10 @@ def main() -> None:
             tot += isprime(s)
         mc.append(tot)
     mc = np.array(mc)
-    print(f"  word GP sums prime: obs={obsw} mc_exp={mc.mean():.1f} "
-          f"mc_sd={mc.std():.1f} z={(obsw-mc.mean())/mc.std():+.2f}")
+    print(
+        f"  word GP sums prime: obs={obsw} mc_exp={mc.mean():.1f} "
+        f"mc_sd={mc.std():.1f} z={(obsw - mc.mean()) / mc.std():+.2f}"
+    )
     # word GP sums mod 29 / mod small primes uniformity
     for mod in (3, 5, 7, 29, 59):
         c = np.bincount(np.array(wsums) % mod, minlength=mod)
@@ -120,6 +124,7 @@ def main() -> None:
     print("\n=== rune vs covariates ===")
     # first rune vs word length
     from scipy.stats import chi2_contingency
+
     wl = [min(len(w), 8) for w in words]
     fr = [w[0] for w in words]
     tab = np.zeros((8, N))

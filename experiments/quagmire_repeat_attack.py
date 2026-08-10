@@ -16,7 +16,8 @@ This gives us:
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 import random  # noqa: I001
 import multiprocessing as mp
@@ -33,26 +34,31 @@ ALPHABET_SIZE = len(ALPHABET)  # 29
 @dataclass
 class RepeatInfo:
     """Information about a ciphertext repeat."""
+
     sequence: str
     positions: list[int]
     preceding_chars: list[str]
     constraints: list[tuple[str, str]]  # (prev1, prev2) pairs with different chars
 
 
-def find_repeats(ciphertext: str, min_length: int = 4, max_length: int = 15) -> dict[str, list[int]]:
+def find_repeats(
+    ciphertext: str, min_length: int = 4, max_length: int = 15
+) -> dict[str, list[int]]:
     """Find all repeated sequences in ciphertext."""
     repeats = defaultdict(list)
 
     for length in range(min_length, min(max_length + 1, len(ciphertext))):
         for i in range(len(ciphertext) - length + 1):
-            seq = ciphertext[i:i + length]
+            seq = ciphertext[i : i + length]
             repeats[seq].append(i)
 
     # Filter to sequences that appear multiple times
     return {seq: positions for seq, positions in repeats.items() if len(positions) >= 2}
 
 
-def extract_constraints(ciphertext: str, repeats: dict[str, list[int]]) -> list[RepeatInfo]:
+def extract_constraints(
+    ciphertext: str, repeats: dict[str, list[int]]
+) -> list[RepeatInfo]:
     """Extract constraint information from repeats."""
     results = []
 
@@ -79,12 +85,14 @@ def extract_constraints(ciphertext: str, repeats: dict[str, list[int]]) -> list[
                     constraints.append((prev_i, prev_j))
 
         if constraints:
-            results.append(RepeatInfo(
-                sequence=seq,
-                positions=positions,
-                preceding_chars=[p[1] for p in preceding if p[1] is not None],
-                constraints=constraints
-            ))
+            results.append(
+                RepeatInfo(
+                    sequence=seq,
+                    positions=positions,
+                    preceding_chars=[p[1] for p in preceding if p[1] is not None],
+                    constraints=constraints,
+                )
+            )
 
     return results
 
@@ -186,14 +194,18 @@ def score_with_repeat_penalty(
     char_to_pos, pos_to_char = build_lookup_tables(alphabet)
 
     # Decrypt full text
-    plaintext = quagmire3_decrypt(ciphertext, char_to_pos, pos_to_char, primer_pos, mode)
+    plaintext = quagmire3_decrypt(
+        ciphertext, char_to_pos, pos_to_char, primer_pos, mode
+    )
 
     # Base score from quadgrams
     base_score = score_quadgram(plaintext)
 
     # Penalty for inconsistent repeats (sample for speed)
     penalty = 0
-    sample = repeat_infos[:sample_size] if len(repeat_infos) > sample_size else repeat_infos
+    sample = (
+        repeat_infos[:sample_size] if len(repeat_infos) > sample_size else repeat_infos
+    )
     for ri in sample:
         if not check_repeat_consistency(ciphertext, alphabet, ri, primer_pos):
             penalty += 500  # Larger penalty per inconsistent repeat
@@ -260,20 +272,33 @@ def hill_climb(
 
     # Get final plaintext
     char_to_pos, pos_to_char = build_lookup_tables(best_alphabet)
-    best_plaintext = quagmire3_decrypt(ciphertext, char_to_pos, pos_to_char, primer_idx, mode)
+    best_plaintext = quagmire3_decrypt(
+        ciphertext, char_to_pos, pos_to_char, primer_idx, mode
+    )
 
     return best_alphabet, best_score, best_plaintext
 
 
 def run_single_climb(args: tuple) -> tuple:
     """Worker function for parallel execution."""
-    (ciphertext, repeat_infos_data, max_iterations, primer_idx, mode,
-     restart_threshold, use_repeat_penalty) = args
+    (
+        ciphertext,
+        repeat_infos_data,
+        max_iterations,
+        primer_idx,
+        mode,
+        restart_threshold,
+        use_repeat_penalty,
+    ) = args
 
     # Reconstruct RepeatInfo objects (can't pickle dataclasses directly in some cases)
     repeat_infos = [
-        RepeatInfo(sequence=d['seq'], positions=d['pos'],
-                   preceding_chars=d['prev'], constraints=d['cons'])
+        RepeatInfo(
+            sequence=d["seq"],
+            positions=d["pos"],
+            preceding_chars=d["prev"],
+            constraints=d["cons"],
+        )
         for d in repeat_infos_data
     ]
 
@@ -292,11 +317,21 @@ def run_single_climb(args: tuple) -> tuple:
 
     # Count consistent repeats
     consistent = sum(
-        1 for ri in repeat_infos
+        1
+        for ri in repeat_infos
         if check_repeat_consistency(ciphertext, alphabet, ri, primer_idx)
     )
 
-    return (alphabet, score, plaintext, mode, primer_idx, pt_ioc, consistent, len(repeat_infos))
+    return (
+        alphabet,
+        score,
+        plaintext,
+        mode,
+        primer_idx,
+        pt_ioc,
+        consistent,
+        len(repeat_infos),
+    )
 
 
 def runes_to_english(text: str) -> str:
@@ -336,7 +371,9 @@ def print_repeat_analysis(ciphertext: str, repeat_infos: list[RepeatInfo]) -> No
     # Sort by sequence length (longest first)
     sorted_infos = sorted(repeat_infos, key=lambda x: -len(x.sequence))
 
-    print(f"\nFound {len(sorted_infos)} significant repeats with constraint potential\n")
+    print(
+        f"\nFound {len(sorted_infos)} significant repeats with constraint potential\n"
+    )
 
     # Show longest repeats
     print("Longest repeats with different preceding chars:")
@@ -387,8 +424,12 @@ if __name__ == "__main__":
 
     # Prepare data for parallel workers
     repeat_infos_data = [
-        {'seq': ri.sequence, 'pos': ri.positions,
-         'prev': ri.preceding_chars, 'cons': ri.constraints}
+        {
+            "seq": ri.sequence,
+            "pos": ri.positions,
+            "prev": ri.preceding_chars,
+            "cons": ri.constraints,
+        }
         for ri in repeat_infos
     ]
 
@@ -413,15 +454,17 @@ if __name__ == "__main__":
     jobs = []
     for mode in modes:
         for primer_idx in primer_indices:
-            jobs.append((
-                test_text,
-                repeat_infos_data,
-                MAX_ITERATIONS,
-                primer_idx,
-                mode,
-                RESTART_THRESHOLD,
-                True,  # use_repeat_penalty
-            ))
+            jobs.append(
+                (
+                    test_text,
+                    repeat_infos_data,
+                    MAX_ITERATIONS,
+                    primer_idx,
+                    mode,
+                    RESTART_THRESHOLD,
+                    True,  # use_repeat_penalty
+                )
+            )
 
     print(f"\nRunning {len(jobs)} jobs across {NUM_WORKERS} workers...")
 
@@ -433,11 +476,20 @@ if __name__ == "__main__":
 
     # Process results
     best_overall = None
-    best_overall_score = float('-inf')
+    best_overall_score = float("-inf")
     best_by_mode: dict[str, tuple] = {}
 
     for result in results:
-        alphabet, score, plaintext, mode, primer_idx, pt_ioc, consistent, total_repeats = result
+        (
+            alphabet,
+            score,
+            plaintext,
+            mode,
+            primer_idx,
+            pt_ioc,
+            consistent,
+            total_repeats,
+        ) = result
 
         if mode not in best_by_mode or score > best_by_mode[mode][1]:
             best_by_mode[mode] = result
@@ -450,9 +502,20 @@ if __name__ == "__main__":
     print("Best results by mode:")
     for mode in modes:
         if mode in best_by_mode:
-            alphabet, score, plaintext, mode_name, primer_idx, pt_ioc, consistent, total = best_by_mode[mode]
+            (
+                alphabet,
+                score,
+                plaintext,
+                mode_name,
+                primer_idx,
+                pt_ioc,
+                consistent,
+                total,
+            ) = best_by_mode[mode]
             primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
-            print(f"\n  {mode:8}: primer={primer_name:2} score={score:.1f} IoC={pt_ioc:.3f} repeats={consistent}/{total}")
+            print(
+                f"\n  {mode:8}: primer={primer_name:2} score={score:.1f} IoC={pt_ioc:.3f} repeats={consistent}/{total}"
+            )
             print(f"            {runes_to_english(plaintext[:50])}...")
 
     print("\n" + "=" * 70)
@@ -460,7 +523,9 @@ if __name__ == "__main__":
     print("=" * 70)
 
     if best_overall:
-        alphabet, score, plaintext, mode, primer_idx, pt_ioc, consistent, total = best_overall
+        alphabet, score, plaintext, mode, primer_idx, pt_ioc, consistent, total = (
+            best_overall
+        )
         primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
 
         print(f"Mode:             {mode}")
@@ -474,15 +539,16 @@ if __name__ == "__main__":
 
         print("\nPlaintext preview (runes):")
         for i in range(0, min(200, len(plaintext)), 50):
-            print(f"  {plaintext[i:i+50]}")
+            print(f"  {plaintext[i : i + 50]}")
 
         print("\nPlaintext preview (english):")
         english_pt = runes_to_english(plaintext[:200])
         for i in range(0, min(200, len(english_pt)), 50):
-            print(f"  {english_pt[i:i+50]}")
+            print(f"  {english_pt[i : i + 50]}")
 
     # Save results to file
     import datetime
+
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     results_file = f"experiments/repeat_attack_results_{timestamp}.txt"
 
@@ -503,7 +569,7 @@ if __name__ == "__main__":
         for i, result in enumerate(sorted_results[:10]):
             alphabet, score, pt, mode, primer_idx, pt_ioc, consistent, total = result
             primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
-            f.write(f"Rank {i+1}:\n")
+            f.write(f"Rank {i + 1}:\n")
             f.write(f"  Mode: {mode}, Primer: {primer_idx} ({primer_name})\n")
             f.write(f"  Score: {score:.1f}, IoC: {pt_ioc:.3f}\n")
             f.write(f"  Consistent repeats: {consistent}/{total}\n")
@@ -512,12 +578,14 @@ if __name__ == "__main__":
             f.write("  Plaintext (first 300 chars, english):\n")
             eng_pt = runes_to_english(pt[:300])
             for j in range(0, 300, 60):
-                f.write(f"    {eng_pt[j:j+60]}\n")
+                f.write(f"    {eng_pt[j : j + 60]}\n")
             f.write("\n")
 
         # Also save full plaintext for best result
         if best_overall:
-            alphabet, score, pt, mode, primer_idx, pt_ioc, consistent, total = best_overall
+            alphabet, score, pt, mode, primer_idx, pt_ioc, consistent, total = (
+                best_overall
+            )
             f.write("=" * 70 + "\n")
             f.write("FULL PLAINTEXT (BEST RESULT)\n")
             f.write("=" * 70 + "\n")

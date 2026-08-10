@@ -26,6 +26,7 @@ def sections(text: str) -> list[str]:
 def stream(section: str, *, with_marks: bool) -> str:
     def keep(ch):
         return RUNE.match(ch) or (with_marks and ch in c3301.CLUSTER_MARKS)
+
     return "".join(ch for ch in section if keep(ch))
 
 
@@ -49,30 +50,43 @@ def doublets(s: str) -> int:
 
 def main() -> None:
     secs = sections(DATA.read_text())
-    for with_marks, name in ((False, "29-symbol (marks stripped)"),
-                             (True, "30-symbol (marks as positions)")):
+    for with_marks, name in (
+        (False, "29-symbol (marks stripped)"),
+        (True, "30-symbol (marks as positions)"),
+    ):
         parts = [stream(s, with_marks=with_marks) for s in secs]
         full = "".join(parts)
         print(f"=== {name}: {len(full)} symbols ===")
         d = doublets(full)
-        mark_flank = sum(1 for i in range(len(full) - 2)
-                         if full[i + 1] in c3301.CLUSTER_MARKS and full[i] == full[i + 2])
+        mark_flank = sum(
+            1
+            for i in range(len(full) - 2)
+            if full[i + 1] in c3301.CLUSTER_MARKS and full[i] == full[i + 2]
+        )
         note = f" (X.X identical-rune-around-mark: {mark_flank})" if with_marks else ""
         print(f"doublets: {d}{note}")
         for lag in (1, 5, 6, 11):
             hits, n, z = kappa(full, lag)
             print(f"kappa lag {lag}: {hits}/{n}  z={z:+.2f}")
         seps = pair_separations(full)
-        total_matches = len([i for i in range(len(full) - 5)
-                             if full[i] == full[i + 5]])
-        mark_matches = (sum(1 for i in range(len(full) - 5)
-                            if full[i] == full[i + 5]
-                            and full[i] in c3301.CLUSTER_MARKS)
-                        if with_marks else 0)
-        print(f"lag-5 matches: {total_matches}"
-              + (f" (of which mark==mark: {mark_matches})" if with_marks else ""))
-        print("lag-5 match-pair separations:",
-              {k: seps[k] for k in sorted(seps) if k <= 6})
+        total_matches = len([i for i in range(len(full) - 5) if full[i] == full[i + 5]])
+        mark_matches = (
+            sum(
+                1
+                for i in range(len(full) - 5)
+                if full[i] == full[i + 5] and full[i] in c3301.CLUSTER_MARKS
+            )
+            if with_marks
+            else 0
+        )
+        print(
+            f"lag-5 matches: {total_matches}"
+            + (f" (of which mark==mark: {mark_matches})" if with_marks else "")
+        )
+        print(
+            "lag-5 match-pair separations:",
+            {k: seps[k] for k in sorted(seps) if k <= 6},
+        )
         t5 = seps[1] + seps[4]
         print(f"T5 = d1 + d4 pairs = {seps[1]} + {seps[4]} = {t5}")
         print()
@@ -84,8 +98,10 @@ def main() -> None:
     mean_gap = sum(gaps) / len(gaps)
     small = sorted(g for g in gaps if g <= 12)
     expect_small = len(gaps) * (1 - 2.718281828 ** (-12 / mean_gap))
-    print(f"mark gaps: min {min(gaps)}, gaps <= 12: {small} "
-          f"(exponential expectation ~{expect_small:.1f})")
+    print(
+        f"mark gaps: min {min(gaps)}, gaps <= 12: {small} "
+        f"(exponential expectation ~{expect_small:.1f})"
+    )
     print()
 
     # DJU-BEI arithmetic under mark-inclusive counting (6-gram, start to start;
@@ -95,13 +111,14 @@ def main() -> None:
     a29 = full29.find(DJU_BEI)
     b29 = full29.find(DJU_BEI, a29 + 1)
     # map rune offsets into the 30-symbol stream
-    rune_positions = [i for i, ch in enumerate(full30)
-                      if ch not in c3301.CLUSTER_MARKS]
+    rune_positions = [i for i, ch in enumerate(full30) if ch not in c3301.CLUSTER_MARKS]
     a30, b30 = rune_positions[a29], rune_positions[b29]
     marks_between = sum(1 for ch in full30[a30:b30] if ch in c3301.CLUSTER_MARKS)
     print(f"DJU-BEI rune offsets {a29}/{b29}, stripped distance {b29 - a29}")
-    print(f"30-symbol offsets {a30}/{b30}, distance {b30 - a30} "
-          f"({marks_between} marks in between)")
+    print(
+        f"30-symbol offsets {a30}/{b30}, distance {b30 - a30} "
+        f"({marks_between} marks in between)"
+    )
     for n, label in ((b29 - a29, "stripped"), (b30 - a30, "30-symbol")):
         f, k, factors = n, 2, []
         while k * k <= f:

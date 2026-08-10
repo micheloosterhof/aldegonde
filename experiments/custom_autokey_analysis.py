@@ -160,7 +160,9 @@ def analyze_autokey_properties(
         "ciphertext_doublet_rate": ct_doublet_rate,
         "identity_char_frequency": identity_rate,
         "expected_random_doublet_rate": 1 / len(alphabet),
-        "doublet_suppression_factor": (1 / len(alphabet)) / ct_doublet_rate if ct_doublet_rate > 0 else float('inf'),
+        "doublet_suppression_factor": (1 / len(alphabet)) / ct_doublet_rate
+        if ct_doublet_rate > 0
+        else float("inf"),
     }
 
 
@@ -168,11 +170,32 @@ def generate_english_like_text(length: int) -> str:
     """Generate pseudo-English text for testing."""
     # Approximate English letter frequencies
     freq = {
-        'E': 12.7, 'T': 9.1, 'A': 8.2, 'O': 7.5, 'I': 7.0, 'N': 6.7,
-        'S': 6.3, 'H': 6.1, 'R': 6.0, 'D': 4.3, 'L': 4.0, 'C': 2.8,
-        'U': 2.8, 'M': 2.4, 'W': 2.4, 'F': 2.2, 'G': 2.0, 'Y': 2.0,
-        'P': 1.9, 'B': 1.5, 'V': 1.0, 'K': 0.8, 'J': 0.15, 'X': 0.15,
-        'Q': 0.10, 'Z': 0.07
+        "E": 12.7,
+        "T": 9.1,
+        "A": 8.2,
+        "O": 7.5,
+        "I": 7.0,
+        "N": 6.7,
+        "S": 6.3,
+        "H": 6.1,
+        "R": 6.0,
+        "D": 4.3,
+        "L": 4.0,
+        "C": 2.8,
+        "U": 2.8,
+        "M": 2.4,
+        "W": 2.4,
+        "F": 2.2,
+        "G": 2.0,
+        "Y": 2.0,
+        "P": 1.9,
+        "B": 1.5,
+        "V": 1.0,
+        "K": 0.8,
+        "J": 0.15,
+        "X": 0.15,
+        "Q": 0.10,
+        "Z": 0.07,
     }
     letters = list(freq.keys())
     weights = list(freq.values())
@@ -201,8 +224,10 @@ if __name__ == "__main__":
 
         print(f"Mixed alphabet: {result['mixed_alphabet'][:15]}...")
         print(f"Identity char (pos 0): {result['identity_char']}")
-        print(f"Identity char frequency in plaintext: {result['identity_char_frequency']:.4f}")
-        print(f"Ciphertext IoC: {result['ciphertext_ioc']:.4f} (random = {1/26:.4f})")
+        print(
+            f"Identity char frequency in plaintext: {result['identity_char_frequency']:.4f}"
+        )
+        print(f"Ciphertext IoC: {result['ciphertext_ioc']:.4f} (random = {1 / 26:.4f})")
         print(f"Ciphertext doublet rate: {result['ciphertext_doublet_rate']:.4f}")
         print(f"Expected random: {result['expected_random_doublet_rate']:.4f}")
         print(f"Doublet suppression: {result['doublet_suppression_factor']:.1f}x")

@@ -61,14 +61,19 @@ with open("data/page0-58.txt") as f:
 parts = raw.split("%")
 rune_parts = [i for i, p in enumerate(parts) if any(c in AB for c in p)]
 
+
 def page_lines(pg):
-    return ["".join(c for c in ln if c in AB)
-            for ln in parts[rune_parts[pg]].split("/")
-            if any(c in AB for c in ln)]
+    return [
+        "".join(c for c in ln if c in AB)
+        for ln in parts[rune_parts[pg]].split("/")
+        if any(c in AB for c in ln)
+    ]
+
 
 def load_binary(pg):
     im = Image.open(f"{IMG}/{rune_parts[pg]}.jpg").convert("L")
     return np.asarray(im) < 140
+
 
 def find_bands(binary):
     rows = binary[:, 700:1700].sum(axis=1)
@@ -92,6 +97,7 @@ def find_bands(binary):
             i += 1
     return [(a, b) for a, b in bands if 85 <= b - a <= 175]
 
+
 def font_templates():
     font = ImageFont.truetype(FONT, 131)
     out = {}
@@ -100,27 +106,29 @@ def font_templates():
         ImageDraw.Draw(img).text((100, 100), r, font=font, fill=0)
         a = np.asarray(img) < 128
         ys, xs = np.nonzero(a)
-        t = a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
+        t = a[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1]
         timg = Image.fromarray((t * 255).astype("uint8"))
         w = max(6, int(round(t.shape[1] * 0.73)))
-        out[r] = (np.asarray(timg.resize((w, t.shape[0]), Image.LANCZOS))
-                  > 100).astype(np.float32)
+        out[r] = (np.asarray(timg.resize((w, t.shape[0]), Image.LANCZOS)) > 100).astype(
+            np.float32
+        )
     return out
+
 
 def band_resp(band, tmpl):
     b = band.astype(np.float32)
     need = max(t.shape[0] for t in tmpl.values()) + 2
     if b.shape[0] < need:
-        b = np.vstack([b, np.zeros((need - b.shape[0], b.shape[1]),
-                                   np.float32)])
+        b = np.vstack([b, np.zeros((need - b.shape[0], b.shape[1]), np.float32)])
     out = {}
     for r, t in tmpl.items():
         ov = fftconvolve(b, t[::-1, ::-1], mode="valid")
         v = (2 * ov - t.sum()).max(axis=0)
         R = np.full(W, -1e18)
-        R[:min(len(v), W)] = v[:W]
+        R[: min(len(v), W)] = v[:W]
         out[r] = R
     return out
+
 
 def align(line, resp, tmpl):
     k = len(line)
@@ -132,7 +140,7 @@ def align(line, resp, tmpl):
             tw = tmpl[line[idx - 1]].shape[1]
             g = np.full(W, -1e18)
             for off in range(max(1, tw - 6), tw + 91):
-                g[off:] = np.maximum(g[off:], fprev[:W - off])
+                g[off:] = np.maximum(g[off:], fprev[: W - off])
             f = f + g
         layers.append(f.copy())
         fprev = f
@@ -143,9 +151,10 @@ def align(line, resp, tmpl):
         tw = tmpl[line[idx - 1]].shape[1]
         lo = max(0, xs[idx] - (tw + 90))
         hi = max(lo, xs[idx] - max(1, tw - 6))
-        seg = layers[idx - 1][lo:hi + 1]
+        seg = layers[idx - 1][lo : hi + 1]
         xs[idx - 1] = lo + int(np.argmax(seg))
     return xs
+
 
 def match_lines_to_bands(lines, bands, binary, tmpl):
     """Monotone matching: for each line pick best band after previous."""
@@ -156,14 +165,17 @@ def match_lines_to_bands(lines, bands, binary, tmpl):
         best = None
         for cand in range(bi, min(bi + 7, len(bands))):
             y0, y1 = bands[cand]
-            band = binary[max(0, y0 - 3):y1 + 3, 430:1970]
+            band = binary[max(0, y0 - 3) : y1 + 3, 430:1970]
             if cand not in cache:
                 cache[cand] = band_resp(band, tmpl)
             resp = cache[cand]
             xs = align(line, resp, tmpl)
-            cover = np.mean([
-                (resp[r][x] + tmpl[r].sum()) / (2 * tmpl[r].sum())
-                for r, x in zip(line, xs)])
+            cover = np.mean(
+                [
+                    (resp[r][x] + tmpl[r].sum()) / (2 * tmpl[r].sum())
+                    for r, x in zip(line, xs)
+                ]
+            )
             if best is None or cover > best[0]:
                 best = (cover, cand, xs, resp, band)
             if cover > 0.9:
@@ -174,6 +186,7 @@ def match_lines_to_bands(lines, bands, binary, tmpl):
         bi = best[1] + 1
         out.append(best)
     return out
+
 
 MODE = sys.argv[1]
 
@@ -193,8 +206,10 @@ if MODE == "harvest2":
             if r_ is None:
                 continue
             cover, cand, xs, resp, band = r_
-            covs = [(resp[r][x] + tmpl[r].sum()) / (2 * tmpl[r].sum())
-                    for r, x in zip(line, xs)]
+            covs = [
+                (resp[r][x] + tmpl[r].sum()) / (2 * tmpl[r].sum())
+                for r, x in zip(line, xs)
+            ]
             for gi, (r, x) in enumerate(zip(line, xs)):
                 left_ok = gi == 0 or covs[gi - 1] > 0.72
                 right_ok = gi == len(line) - 1 or covs[gi + 1] > 0.72
@@ -203,7 +218,7 @@ if MODE == "harvest2":
                 w = tmpl[r].shape[1]
                 # extract between this x and next glyph x (or x+w+6)
                 x2 = xs[gi + 1] if gi + 1 < len(xs) else x + w + 6
-                sub = band[:, x:min(x2 - 2, x + w + 10)]
+                sub = band[:, x : min(x2 - 2, x + w + 10)]
                 if sub.shape[1] < 6:
                     continue
                 # remove small detached components (separator dots, specks)
@@ -217,7 +232,7 @@ if MODE == "harvest2":
                 cols = np.nonzero(sub.sum(axis=0))[0]
                 if len(cols) == 0:
                     continue
-                sub = sub[:, cols[0]:cols[-1] + 1]
+                sub = sub[:, cols[0] : cols[-1] + 1]
                 if sub.sum() < 150:
                     continue
                 crops[r].append(sub.astype(np.float32))
@@ -249,7 +264,7 @@ if MODE == "harvest":
                     continue
                 # neighbors must not overlap badly
                 w = t.shape[1]
-                sub = band[:, x:x + w]
+                sub = band[:, x : x + w]
                 if sub.shape[1] != w:
                     continue
                 ys2, xs2 = np.nonzero(sub)
@@ -266,12 +281,12 @@ if MODE == "harvest":
 elif MODE == "build":
     with open("/tmp/harvest.pkl", "rb") as f:
         crops = pickle.load(f)
-    ftw = {r: max(6, int(round(t.shape[1] * 0.73)))
-           for r, t in font_templates().items()}
+    ftw = {
+        r: max(6, int(round(t.shape[1] * 0.73))) for r, t in font_templates().items()
+    }
     native = {}
     for r, lst in crops.items():
-        lst = [c for c in lst
-               if 0.55 * ftw[r] <= c.shape[1] <= 1.45 * ftw[r]]
+        lst = [c for c in lst if 0.55 * ftw[r] <= c.shape[1] <= 1.45 * ftw[r]]
         if len(lst) < 3:
             print(f"WARNING {ENG[c3301.r2i(r)]}: only {len(lst)} exemplars")
             continue
@@ -290,10 +305,10 @@ elif MODE == "build":
             cnt += 1
         t = (acc / cnt) > 0.5
         ys, xs = np.nonzero(t)
-        native[r] = t[ys.min():ys.max() + 1,
-                      xs.min():xs.max() + 1].astype(np.float32)
-        print(f"{ENG[c3301.r2i(r)]}: {cnt} exemplars, "
-              f"template {native[r].shape}")
+        native[r] = t[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1].astype(
+            np.float32
+        )
+        print(f"{ENG[c3301.r2i(r)]}: {cnt} exemplars, template {native[r].shape}")
     with open("/tmp/native.pkl", "wb") as f:
         pickle.dump(native, f)
 
@@ -324,21 +339,27 @@ elif MODE == "verify":
                     if r2 == r or native[r2].shape[1] > slot + 6:
                         continue
                     a2 = native[r2].sum()
-                    v = resp[r2][max(0, x - 6):x + 7].max()
+                    v = resp[r2][max(0, x - 6) : x + 7].max()
                     vc = (v + a2) / (2 * a2)
                     if vc > altb:
                         altb, altr = vc, r2
                 if c < 0.93 and (c < 0.60 or altb > c + 0.10):
                     altn = ENG[c3301.r2i(altr)] if altr != "?" else "?"
                     flags.append((ln, gi, ENG[c3301.r2i(r)], c, altn))
-        print(f"page {pg:2d}: mean cover "
-              f"{np.mean(covers) if covers else 0:.3f}, "
-              f"{len(flags)} flags", flush=True)
+        print(
+            f"page {pg:2d}: mean cover "
+            f"{np.mean(covers) if covers else 0:.3f}, "
+            f"{len(flags)} flags",
+            flush=True,
+        )
         for fl in flags:
-            print(f"    line {fl[0]+1} pos "
-                  f"{fl[1]+1 if fl[1] is not None else '-'}: "
-                  f"{fl[2]} cover={fl[3] if isinstance(fl[3], float) else 0:.2f} "
-                  f"alt={fl[4]}", flush=True)
+            print(
+                f"    line {fl[0] + 1} pos "
+                f"{fl[1] + 1 if fl[1] is not None else '-'}: "
+                f"{fl[2]} cover={fl[3] if isinstance(fl[3], float) else 0:.2f} "
+                f"alt={fl[4]}",
+                flush=True,
+            )
 
 if MODE == "inspect":
     # inspect page,line,pos: save crop of slot + claimed/alt templates
@@ -362,9 +383,10 @@ if MODE == "inspect":
     H = max(crop.shape[0], t.shape[0])
     Wt = crop.shape[1] + t.shape[1] + 20
     c = np.zeros((H, Wt))
-    c[:crop.shape[0], :crop.shape[1]] = crop
-    c[:t.shape[0], crop.shape[1] + 20:crop.shape[1] + 20 + t.shape[1]] = t
+    c[: crop.shape[0], : crop.shape[1]] = crop
+    c[: t.shape[0], crop.shape[1] + 20 : crop.shape[1] + 20 + t.shape[1]] = t
     out = f"/tmp/inspect_p{pg}_l{lnq}_g{posq}_{eng}.png"
     Image.fromarray((255 * (1 - c)).astype("uint8")).resize(
-        (Wt * 2, H * 2), Image.NEAREST).save(out)
+        (Wt * 2, H * 2), Image.NEAREST
+    ).save(out)
     print(out, "claimed", eng, "x", x)

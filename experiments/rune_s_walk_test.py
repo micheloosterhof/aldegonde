@@ -56,22 +56,25 @@ def main() -> None:
             echoed[stream[i]] += 1
     lp_total = sum(echoed.values())
     lp_max = max(echoed.values())
-    print(f"LP: {lp_total} within-word d5 pairs, max rune count {lp_max} "
-          f"(S), S unigram {sum(1 for r in stream if r == echoed.most_common(1)[0][0])} "
-          f"vs {len(stream) / M:.1f} expected")
+    print(
+        f"LP: {lp_total} within-word d5 pairs, max rune count {lp_max} "
+        f"(S), S unigram {sum(1 for r in stream if r == echoed.most_common(1)[0][0])} "
+        f"vs {len(stream) / M:.1f} expected"
+    )
 
     # register plaintext re-cut to LP word lengths
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
         print(f"downloading {PROSE_URL} -> {prose_path}")
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    prose_stream = [IDX_ENG[t] for w in prose_words(prose_path)
-                    for t in to_runeglish(w)]
+    prose_stream = [
+        IDX_ENG[t] for w in prose_words(prose_path) for t in to_runeglish(w)
+    ]
 
     def cut_words(offset: int) -> list[list[int]]:
         out, pos = [], offset
         for L in lp_lens:
-            out.append(prose_stream[pos:pos + L])
+            out.append(prose_stream[pos : pos + L])
             pos += L
         return out
 
@@ -97,15 +100,20 @@ def main() -> None:
             cond.append(mx)
 
     import statistics as st
+
     print(f"\nwalk simulation ({SIMS} runs, random tuned g / sigma / base0):")
-    print(f"  total pairs: mean {st.mean(totals):.0f} "
-          f"(LP {lp_total}); max-rune: mean {st.mean(maxima):.1f}, "
-          f"P(max >= {lp_max}) = "
-          f"{sum(1 for m in maxima if m >= lp_max) / len(maxima):.3f}")
+    print(
+        f"  total pairs: mean {st.mean(totals):.0f} "
+        f"(LP {lp_total}); max-rune: mean {st.mean(maxima):.1f}, "
+        f"P(max >= {lp_max}) = "
+        f"{sum(1 for m in maxima if m >= lp_max) / len(maxima):.3f}"
+    )
     if cond:
-        print(f"  conditioned on total within ±20 of LP ({len(cond)} runs): "
-              f"P(max >= {lp_max}) = "
-              f"{sum(1 for m in cond if m >= lp_max) / len(cond):.3f}")
+        print(
+            f"  conditioned on total within ±20 of LP ({len(cond)} runs): "
+            f"P(max >= {lp_max}) = "
+            f"{sum(1 for m in cond if m >= lp_max) / len(cond):.3f}"
+        )
 
     # fixed-channel arithmetic
     n = len(stream)
@@ -113,11 +121,14 @@ def main() -> None:
     allow = (446.8 - s_count) + 2 * (n / M * (1 - 1 / M)) ** 0.5
     phi_max = max(allow, 0) / (n * (1 - 1 / M))
     import math
+
     phi_need = math.sqrt(11 / (2073 * 1.6))
-    print(f"\nfixed-channel escape: needs freq(q) ~ {phi_need * 100:.1f}% to "
-          f"carry 11 echoes; S's flat unigram allows <= {phi_max * 100:.2f}% "
-          f"-> excluded by a factor ~{phi_need / max(phi_max, 1e-9):.0f} in "
-          f"frequency (~{(phi_need / max(phi_max, 1e-9)) ** 2:.0f}x in pairs)")
+    print(
+        f"\nfixed-channel escape: needs freq(q) ~ {phi_need * 100:.1f}% to "
+        f"carry 11 echoes; S's flat unigram allows <= {phi_max * 100:.2f}% "
+        f"-> excluded by a factor ~{phi_need / max(phi_max, 1e-9):.0f} in "
+        f"frequency (~{(phi_need / max(phi_max, 1e-9)) ** 2:.0f}x in pairs)"
+    )
 
 
 if __name__ == "__main__":

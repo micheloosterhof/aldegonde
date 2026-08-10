@@ -51,10 +51,13 @@ def main() -> None:
     mean_marker = float((La * p_len).sum())
     mean_ins = mean_marker + 1.0
     print(f"observed doublet-word mean length: {obs:.2f} (se {se:.2f})")
-    print(f"occupying-event prediction: {mean_marker:.2f} -> "
-          f"z={(obs - mean_marker) / se:+.2f}")
-    print(f"insertion prediction:       {mean_ins:.2f} -> "
-          f"z={(obs - mean_ins) / se:+.2f}")
+    print(
+        f"occupying-event prediction: {mean_marker:.2f} -> "
+        f"z={(obs - mean_marker) / se:+.2f}"
+    )
+    print(
+        f"insertion prediction:       {mean_ins:.2f} -> z={(obs - mean_ins) / se:+.2f}"
+    )
 
     rng = np.random.default_rng(4)
     for model, shift in (("occupying-event", 0.0), ("insertion", 1.0)):

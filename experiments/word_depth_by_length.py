@@ -44,7 +44,7 @@ CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
 N_RUNES = 29
-SHIFTS = 29           # states of the schedule being excluded
+SHIFTS = 29  # states of the schedule being excluded
 LENGTHS = (2, 3, 4, 5, 6, 7, 8)
 TRIALS = 4000
 LEXICON = 60000
@@ -114,7 +114,7 @@ def agreement_histogram(words: list[tuple[int, ...]]) -> list[int]:
     length = len(words[0])
     hist = [0] * (length + 1)
     for i, a in enumerate(words):
-        for b in words[i + 1:]:
+        for b in words[i + 1 :]:
             hist[sum(x == y for x, y in zip(a, b))] += 1
     return hist
 
@@ -124,8 +124,10 @@ def main() -> None:
     by_len = lp_words()
     rates = register_repeat_rates()
 
-    print(f"{'len':>4}{'words':>7}{'pairs':>10}{'full: obs':>11}{'null':>9}"
-          f"{'sd':>7}{'z':>7}{'repeat rate':>13}{'shift pred':>12}{'log10 P':>10}")
+    print(
+        f"{'len':>4}{'words':>7}{'pairs':>10}{'full: obs':>11}{'null':>9}"
+        f"{'sd':>7}{'z':>7}{'repeat rate':>13}{'shift pred':>12}{'log10 P':>10}"
+    )
     for length in LENGTHS:
         words = by_len.get(length, [])
         n = len(words)
@@ -148,13 +150,17 @@ def main() -> None:
         s = rates.get(length, 0.0)
         pred = mu + pairs * s / SHIFTS
         log_p = poisson_log10_tail(obs, pred)
-        print(f"{length:>4}{n:>7}{pairs:>10}{obs:>11}{mu:>9.1f}{sd:>7.1f}{zs}"
-              f"{s:>13.4f}{pred:>12.1f}{log_p:>10.1f}")
+        print(
+            f"{length:>4}{n:>7}{pairs:>10}{obs:>11}{mu:>9.1f}{sd:>7.1f}{zs}"
+            f"{s:>13.4f}{pred:>12.1f}{log_p:>10.1f}"
+        )
 
     print("\nlog10 P = Poisson tail P(observed or fewer | shift prediction).")
     print("full = pairs agreeing at EVERY position; null shuffles each position")
     print("independently across words, so it keeps every marginal and breaks only")
-    print(f"the link between positions. shift pred = null + pairs x repeat rate / {SHIFTS}.")
+    print(
+        f"the link between positions. shift pred = null + pairs x repeat rate / {SHIFTS}."
+    )
 
     print("\nagreement histograms (how many pairs agree at k of L positions)")
     for length in LENGTHS:

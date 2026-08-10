@@ -21,7 +21,6 @@ Also simulates the memoryless variant M[i] = g(P[i]) as a sanity check
 (should pass, showing the test discriminates).
 """
 
-
 import numpy as np
 from scipy.stats import chi2_contingency
 
@@ -106,8 +105,11 @@ def encrypt(P, g, context):
         elif context == 2:
             m = g[P[i], P[i - 1], P[i - 2]] if i >= 2 else g[P[i], P[i - 1], 0]
         else:
-            m = (g[P[i], P[i - 1], P[i - 2], P[i - 3]]
-                 if i >= 3 else g[P[i], P[i - 1], 0, 0])
+            m = (
+                g[P[i], P[i - 1], P[i - 2], P[i - 3]]
+                if i >= 3
+                else g[P[i], P[i - 1], 0, 0]
+            )
         C[i] = (C[i - 1] - m) % N
     return C
 
@@ -170,8 +172,11 @@ def main() -> None:
 
     print(f"{'model':<22} {'J marginal chi2':>16} {'J d=1 chi2':>12} {'dbl rate':>9}")
     print(f"{'observed cipher':<22} {41.7:>16.1f} {684.2:>12.1f} {'0.675%':>9}")
-    for context, label in ((0, "memoryless g(P)"), (1, "lag-1 g(P,P')"),
-                           (2, "lag-2 g(P,P',P'')")):
+    for context, label in (
+        (0, "memoryless g(P)"),
+        (1, "lag-1 g(P,P')"),
+        (2, "lag-2 g(P,P',P'')"),
+    ):
         margs, d1s, dbls = [], [], []
         for _ in range(SAMPLES):
             P = gen_plaintext(trans, dig, n, rng)
@@ -182,9 +187,11 @@ def main() -> None:
             margs.append(marg)
             d1s.append(d1)
             dbls.append(dbl)
-        print(f"{label:<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
-              f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
-              f"{100 * np.mean(dbls):>8.2f}%")
+        print(
+            f"{label:<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+            f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+            f"{100 * np.mean(dbls):>8.2f}%"
+        )
 
     # lag-3 with order-3 plaintext (fair: richest available plaintext model)
     trans3, tri3 = load_quadgram_model()
@@ -197,9 +204,11 @@ def main() -> None:
         margs.append(marg)
         d1s.append(d1)
         dbls.append(dbl)
-    print(f"{'lag-3 g(4 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
-          f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
-          f"{100 * np.mean(dbls):>8.2f}%")
+    print(
+        f"{'lag-3 g(4 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+        f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+        f"{100 * np.mean(dbls):>8.2f}%"
+    )
 
     # lag-4 (5 runes of context), flat int8 table of 29^5 cells.
     # NOTE: the order-3 plaintext model only carries genuine structure up to
@@ -214,9 +223,11 @@ def main() -> None:
         margs.append(marg)
         d1s.append(d1)
         dbls.append(dbl)
-    print(f"{'lag-4 g(5 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
-          f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
-          f"{100 * np.mean(dbls):>8.2f}%")
+    print(
+        f"{'lag-4 g(5 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+        f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+        f"{100 * np.mean(dbls):>8.2f}%"
+    )
 
     # lag-5 (6 runes of context) via hash-realized table (29^6 cells would
     # not fit in memory as an array)
@@ -228,12 +239,16 @@ def main() -> None:
         margs.append(marg)
         d1s.append(d1)
         dbls.append(dbl)
-    print(f"{'lag-5 g(6 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
-          f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
-          f"{100 * np.mean(dbls):>8.2f}%")
-    print(f"\nnull references: J marginal dof={M - 1} (mean 27), "
-          f"d=1 contingency dof={(M - 1) ** 2} (mean 729); "
-          f"observed exact: marginal 41.7, d=1 contingency 684.2")
+    print(
+        f"{'lag-5 g(6 runes)':<22} {np.mean(margs):>10.0f}±{np.std(margs):<5.0f} "
+        f"{np.mean(d1s):>7.0f}±{np.std(d1s):<4.0f} "
+        f"{100 * np.mean(dbls):>8.2f}%"
+    )
+    print(
+        f"\nnull references: J marginal dof={M - 1} (mean 27), "
+        f"d=1 contingency dof={(M - 1) ** 2} (mean 729); "
+        f"observed exact: marginal 41.7, d=1 contingency 684.2"
+    )
 
 
 if __name__ == "__main__":

@@ -60,8 +60,11 @@ def main() -> None:
     for si, s in enumerate(sections[:-1]):
         m = marks_per_sec.get(si, 0)
         rate = len(s) / m if m else float("inf")
-        print(f"    section {si:2d}: {m:3d} marks, {len(s):5d} runes "
-              f"({rate:.0f} runes/mark)" + ("  <- NO MARKS" if m == 0 and len(s) > 200 else ""))
+        print(
+            f"    section {si:2d}: {m:3d} marks, {len(s):5d} runes "
+            f"({rate:.0f} runes/mark)"
+            + ("  <- NO MARKS" if m == 0 and len(s) > 200 else "")
+        )
 
     # sentence lengths in words (unsolved)
     slens = []
@@ -82,12 +85,16 @@ def main() -> None:
             curw = 0
     slens = [x for x in slens if x > 0]
     arr = np.array(slens)
-    print(f"\n  unsolved sentence lengths: n={len(arr)} mean={arr.mean():.1f} "
-          f"median={np.median(arr):.0f} max={arr.max()}")
+    print(
+        f"\n  unsolved sentence lengths: n={len(arr)} mean={arr.mean():.1f} "
+        f"median={np.median(arr):.0f} max={arr.max()}"
+    )
     # geometric fit: for geometric, mean ~ sd and mode = 1; English humped
-    print(f"    sd={arr.std():.1f} (geometric predicts sd~mean), "
-          f"share of 1-3 word sentences = {np.mean(arr <= 3):.2%} "
-          f"(geometric with this mean predicts ~{1 - (1 - 1/arr.mean())**3:.2%})")
+    print(
+        f"    sd={arr.std():.1f} (geometric predicts sd~mean), "
+        f"share of 1-3 word sentences = {np.mean(arr <= 3):.2%} "
+        f"(geometric with this mean predicts ~{1 - (1 - 1 / arr.mean()) ** 3:.2%})"
+    )
 
     # sentence-initial / final word lengths
     first_w = []
@@ -108,18 +115,23 @@ def main() -> None:
     def perm_z(vals, pop, reps=20000):
         vals = np.array(vals, float)
         obs = vals.mean()
-        null = np.array([rng.choice(pop, size=len(vals), replace=False).mean()
-                         for _ in range(reps)])
+        null = np.array(
+            [rng.choice(pop, size=len(vals), replace=False).mean() for _ in range(reps)]
+        )
         return obs, (obs - null.mean()) / null.std()
 
     o, z = perm_z(first_w, la)
-    print(f"\n  sentence-INITIAL word length: mean={o:.2f} "
-          f"(overall {la.mean():.2f}) permutation z={z:+.2f}, n={len(first_w)}")
+    print(
+        f"\n  sentence-INITIAL word length: mean={o:.2f} "
+        f"(overall {la.mean():.2f}) permutation z={z:+.2f}, n={len(first_w)}"
+    )
     o, z = perm_z(last_w, la)
     print(f"  sentence-FINAL   word length: mean={o:.2f} permutation z={z:+.2f}")
     fshort = np.mean(np.array(last_w) <= 2)
-    print(f"  finals that are 1-2 runes: {100*fshort:.1f}% "
-          f"(overall {100*np.mean(la <= 2):.1f}%)")
+    print(
+        f"  finals that are 1-2 runes: {100 * fshort:.1f}% "
+        f"(overall {100 * np.mean(la <= 2):.1f}%)"
+    )
     print("  English predicts final >> overall (content words end sentences)")
 
     # solved-pages control
@@ -164,20 +176,25 @@ def main() -> None:
                 sol_final.append(pend)
     sa = np.array(sol_lens, float)
     o, z = perm_z(sol_final, sa)
-    print(f"  SOLVED control: final mean={o:.2f} (overall {sa.mean():.2f}) "
-          f"permutation z={z:+.2f}, n={len(sol_final)}; finals 1-2 runes: "
-          f"{100*np.mean(np.array(sol_final) <= 2):.1f}% "
-          f"(overall {100*np.mean(sa <= 2):.1f}%)")
+    print(
+        f"  SOLVED control: final mean={o:.2f} (overall {sa.mean():.2f}) "
+        f"permutation z={z:+.2f}, n={len(sol_final)}; finals 1-2 runes: "
+        f"{100 * np.mean(np.array(sol_final) <= 2):.1f}% "
+        f"(overall {100 * np.mean(sa <= 2):.1f}%)"
+    )
     eff_u = np.mean(last_w) - la.mean()
     eff_s = np.mean(sol_final) - sa.mean()
     se_u = la.std() / math.sqrt(len(last_w))
     se_s = sa.std() / math.sqrt(len(sol_final))
     zc = (eff_s - eff_u) / math.sqrt(se_u**2 + se_s**2)
-    print(f"  CONTRAST (solved {eff_s:+.2f} vs unsolved {eff_u:+.2f}): "
-          f"z={zc:+.2f} -> the '.' marks in the unsolved section do NOT "
-          f"select English sentence-final words")
+    print(
+        f"  CONTRAST (solved {eff_s:+.2f} vs unsolved {eff_u:+.2f}): "
+        f"z={zc:+.2f} -> the '.' marks in the unsolved section do NOT "
+        f"select English sentence-final words"
+    )
 
     print("\n=== 2. NEAR-REPEAT EXTENSION ===")
+
     def extend_with_mismatches(i, j, k_allowed):
         """Maximal window around seed allowing k mismatches total."""
         # expand greedily left and right
@@ -198,12 +215,18 @@ def main() -> None:
             best = None
             if ri < n - 1 and rj < n - 1:
                 e = 0
-                while ri + 1 + e < n and rj + 1 + e < n and C[ri + 1 + e] == C[rj + 1 + e]:
+                while (
+                    ri + 1 + e < n and rj + 1 + e < n and C[ri + 1 + e] == C[rj + 1 + e]
+                ):
                     e += 1
                 best = ("R", e)
             if li > 0 and lj > 0:
                 e = 0
-                while li - 1 - e >= 0 and lj - 1 - e >= 0 and C[li - 1 - e] == C[lj - 1 - e]:
+                while (
+                    li - 1 - e >= 0
+                    and lj - 1 - e >= 0
+                    and C[li - 1 - e] == C[lj - 1 - e]
+                ):
                     e += 1
                 if best is None or e > best[1]:
                     best = ("L", e)
@@ -237,12 +260,14 @@ def main() -> None:
     # null expectation for L>=11 with <=2 mismatches: ~C(n,2)*C(10,2)*p^9*q^2
     pairs = n * (n - 1) / 2
     exp11 = pairs * math.comb(10, 2) * (1 / N) ** 9 * (28 / 29) ** 2
-    print(f"  near-repeats len>=11 with <=2 mismatches: {len(found)} "
-          f"(rough null expectation ~{exp11:.2f})")
+    print(
+        f"  near-repeats len>=11 with <=2 mismatches: {len(found)} "
+        f"(rough null expectation ~{exp11:.2f})"
+    )
     for (i0, j0), (L, mis) in sorted(found.items(), key=lambda x: -x[1][0])[:8]:
         s1 = "".join(c3301.CICADA_ALPHABET[x] for x in C[i0 : i0 + L])
         s2 = "".join(c3301.CICADA_ALPHABET[x] for x in C[j0 : j0 + L])
-        print(f"    {i0} & {j0} (d={j0-i0}) len={L} mis={mis}")
+        print(f"    {i0} & {j0} (d={j0 - i0}) len={L} mis={mis}")
         print(f"      {s1}")
         print(f"      {s2}")
 

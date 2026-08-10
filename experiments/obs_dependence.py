@@ -3,6 +3,7 @@
 """Pairwise dependence. Significance: chi-square of the 29x29 contingency table
 of (C[i], C[i+d]) vs independence, at each lag. Only d=1 (the doublet diagonal)
 departs; every d>=2 is within the 784-df noise band."""
+
 from __future__ import annotations
 
 import math
@@ -39,9 +40,11 @@ def main() -> None:
         if d <= 10 or abs(z) > 2.5:
             tag = "  <-- doublet diagonal" if d == 1 else ""
             print(f"  {d:3d} : {chi2:7.1f}                {z:+.2f}{tag}")
-    print(f"lags 11..100: printed only if |z| > 2.5; worst d>=2 is "
-          f"lag {worst[1]} at z = {worst[0]:+.2f} "
-          f"(99 lags, two-sided Bonferroni bar ~3.5)")
+    print(
+        f"lags 11..100: printed only if |z| > 2.5; worst d>=2 is "
+        f"lag {worst[1]} at z = {worst[0]:+.2f} "
+        f"(99 lags, two-sided Bonferroni bar ~3.5)"
+    )
     print("VERDICT: only lag 1 (doublets) shows dependence; lags 2..100 at chance")
 
 

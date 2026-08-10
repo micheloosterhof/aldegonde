@@ -60,12 +60,13 @@ text = "".join(x for i in keep for x in parts[i] if x in AB)
 n = len(text)
 a = np.array([c3301.r2i(c) for c in text])
 
+
 def profile(s: np.ndarray) -> dict:
     out = {}
     out["dbl%"] = 100 * float(np.mean(s[:-1] == s[1:]))
     out["tripl"] = int(np.sum((s[:-2] == s[1:-1]) & (s[1:-1] == s[2:])))
     # AABB: adjacent doublets back-to-back with different values
-    dd = (s[:-1] == s[1:])
+    dd = s[:-1] == s[1:]
     aabb = int(np.sum(dd[:-2] & dd[2:] & (s[:-3] != s[2:-1])))
     out["AABB"] = aabb
     # pair structure of lag-1..6 matches at separations 1..4 (top cell)
@@ -82,6 +83,7 @@ def profile(s: np.ndarray) -> dict:
     out["top-pair"] = f"z={best[0]:+.1f}@(L{best[1]},d{best[2]})"
     return out
 
+
 def untranspose_block(s: np.ndarray, rows: int, width: int) -> np.ndarray:
     """Assume visible was produced by writing pre row-major into rows x width
     blocks and reading column-major. Invert per block; remainder unchanged."""
@@ -89,10 +91,11 @@ def untranspose_block(s: np.ndarray, rows: int, width: int) -> np.ndarray:
     nb = len(s) // blk
     out = s.copy()
     for b in range(nb):
-        seg = s[b * blk:(b + 1) * blk]
+        seg = s[b * blk : (b + 1) * blk]
         grid = seg.reshape(width, rows).T  # visible was grid.T.flatten()
-        out[b * blk:(b + 1) * blk] = grid.flatten()
+        out[b * blk : (b + 1) * blk] = grid.flatten()
     return out
+
 
 print("visible:", profile(a))
 print()
@@ -109,7 +112,9 @@ for width in list(range(2, 31)) + [n // 5]:
 for width in (2, 3, 4, 6, 10):
     pre = untranspose_block(a, width, 5)
     p = profile(pre)
-    print(f"{f'{width} rows x 5':22s} {p['dbl%']:5.2f} {p['tripl']:5d} {p['AABB']:4d}  {p['top-pair']}")
+    print(
+        f"{f'{width} rows x 5':22s} {p['dbl%']:5.2f} {p['tripl']:5d} {p['AABB']:4d}  {p['top-pair']}"
+    )
 
 # baseline for AABB/triplets in doublet-suppressed random (visible-like)
 
@@ -126,9 +131,13 @@ for _ in range(6):
                 c += 1
             out.append(c)
     sims.append(profile(np.array(out)))
-print(f"\nnull visible-like:  dbl {np.mean([s['dbl%'] for s in sims]):.2f}  "
-      f"tripl {np.mean([s['tripl'] for s in sims]):.1f}  "
-      f"AABB {np.mean([s['AABB'] for s in sims]):.1f}")
+print(
+    f"\nnull visible-like:  dbl {np.mean([s['dbl%'] for s in sims]):.2f}  "
+    f"tripl {np.mean([s['tripl'] for s in sims]):.1f}  "
+    f"AABB {np.mean([s['AABB'] for s in sims]):.1f}"
+)
 # expected AABB / triplets for UNIFORM pre-stream with normal doublets:
-print(f"uniform-stream expectation: dbl 3.45%, tripl ~{(n-2)/841:.0f}, "
-      f"AABB ~{(n-3)/841*(28/29):.0f}")
+print(
+    f"uniform-stream expectation: dbl 3.45%, tripl ~{(n - 2) / 841:.0f}, "
+    f"AABB ~{(n - 3) / 841 * (28 / 29):.0f}"
+)

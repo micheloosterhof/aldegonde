@@ -16,7 +16,8 @@ If these match, the hypothesis is confirmed.
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 from collections import Counter
 from collections.abc import Sequence
@@ -25,13 +26,40 @@ from aldegonde import c3301
 
 # Gematria Primus mapping (digraphs first)
 GEMATRIA_RULES = [
-    ("ing", "ᛝ"), ("ng", "ᛝ"), ("th", "ᚦ"), ("ea", "ᛠ"), ("eo", "ᛇ"),
-    ("oe", "ᛟ"), ("ae", "ᚫ"), ("ia", "ᛡ"), ("io", "ᛡ"),
-    ("f", "ᚠ"), ("u", "ᚢ"), ("o", "ᚩ"), ("r", "ᚱ"), ("c", "ᚳ"),
-    ("k", "ᚳ"), ("g", "ᚷ"), ("w", "ᚹ"), ("h", "ᚻ"), ("n", "ᚾ"),
-    ("i", "ᛁ"), ("j", "ᛄ"), ("p", "ᛈ"), ("x", "ᛉ"), ("s", "ᛋ"),
-    ("z", "ᛋ"), ("t", "ᛏ"), ("b", "ᛒ"), ("e", "ᛖ"), ("m", "ᛗ"),
-    ("l", "ᛚ"), ("d", "ᛞ"), ("a", "ᚪ"), ("y", "ᚣ"), ("q", "ᚳ"),
+    ("ing", "ᛝ"),
+    ("ng", "ᛝ"),
+    ("th", "ᚦ"),
+    ("ea", "ᛠ"),
+    ("eo", "ᛇ"),
+    ("oe", "ᛟ"),
+    ("ae", "ᚫ"),
+    ("ia", "ᛡ"),
+    ("io", "ᛡ"),
+    ("f", "ᚠ"),
+    ("u", "ᚢ"),
+    ("o", "ᚩ"),
+    ("r", "ᚱ"),
+    ("c", "ᚳ"),
+    ("k", "ᚳ"),
+    ("g", "ᚷ"),
+    ("w", "ᚹ"),
+    ("h", "ᚻ"),
+    ("n", "ᚾ"),
+    ("i", "ᛁ"),
+    ("j", "ᛄ"),
+    ("p", "ᛈ"),
+    ("x", "ᛉ"),
+    ("s", "ᛋ"),
+    ("z", "ᛋ"),
+    ("t", "ᛏ"),
+    ("b", "ᛒ"),
+    ("e", "ᛖ"),
+    ("m", "ᛗ"),
+    ("l", "ᛚ"),
+    ("d", "ᛞ"),
+    ("a", "ᚪ"),
+    ("y", "ᚣ"),
+    ("q", "ᚳ"),
     ("v", "ᚢ"),
 ]
 
@@ -46,7 +74,7 @@ def english_to_runeglish(text: str) -> str:
     while i < len(text):
         matched = False
         for pattern, rune in GEMATRIA_RULES:
-            if text[i:i+len(pattern)] == pattern:
+            if text[i : i + len(pattern)] == pattern:
                 result.append(rune)
                 i += len(pattern)
                 matched = True
@@ -174,7 +202,7 @@ def frequency_flatness(text: str, alphabet: list[str]) -> float:
 
     # Chi-squared-like measure
     deviations = sum((counts.get(c, 0) - expected) ** 2 for c in alphabet)
-    max_deviation = (n - expected) ** 2 + (len(alphabet) - 1) * expected ** 2
+    max_deviation = (n - expected) ** 2 + (len(alphabet) - 1) * expected**2
 
     return 1.0 - (deviations / max_deviation) if max_deviation > 0 else 1.0
 
@@ -186,7 +214,8 @@ def load_sample_english() -> str:
             return f.read()[:100000]  # First 100k chars
     except OSError:
         # Fallback
-        return """
+        return (
+            """
         Four score and seven years ago our fathers brought forth on this continent
         a new nation conceived in Liberty and dedicated to the proposition that
         all men are created equal. Now we are engaged in a great civil war testing
@@ -199,7 +228,9 @@ def load_sample_english() -> str:
         and dead who struggled here have consecrated it far above our poor power
         to add or detract. The world will little note nor long remember what we
         say here but it can never forget what they did here.
-        """ * 20
+        """
+            * 20
+        )
 
 
 if __name__ == "__main__":
@@ -213,7 +244,7 @@ if __name__ == "__main__":
 
     print(f"\nPlaintext (Runeglish): {len(runeglish)} runes")
     print(f"Plaintext IoC: {ioc(runeglish):.4f}")
-    print(f"Plaintext doublet rate: {count_doublets(runeglish)[2]*100:.2f}%")
+    print(f"Plaintext doublet rate: {count_doublets(runeglish)[2] * 100:.2f}%")
 
     # LP target values
     print("\n--- LP Target Values ---")
@@ -232,10 +263,19 @@ if __name__ == "__main__":
         "ᛖᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛝᛗᛚᛟᛞᚪᚫᚣᛡᛠ",  # E first (common)
     ]
 
-    keyword_names = ["NG-first", "W-first", "TH-first", "EA-first", "F-first", "E-first"]
+    keyword_names = [
+        "NG-first",
+        "W-first",
+        "TH-first",
+        "EA-first",
+        "F-first",
+        "E-first",
+    ]
 
     print("\n--- Testing Keywords ---")
-    print(f"{'Keyword':<10} {'Identity':<8} {'Doublet%':>10} {'IoC':>8} {'Flatness':>10} {'Match?':>8}")
+    print(
+        f"{'Keyword':<10} {'Identity':<8} {'Doublet%':>10} {'IoC':>8} {'Flatness':>10} {'Match?':>8}"
+    )
     print("-" * 60)
 
     for kw, name in zip(keywords_to_test, keyword_names):
@@ -255,7 +295,9 @@ if __name__ == "__main__":
         identity = kw[0]
         identity_name = c3301.CICADA_ENGLISH_ALPHABET[ALPHABET.index(identity)]
 
-        print(f"{name:<10} {identity_name:<8} {doublet_rate*100:>9.2f}% {ct_ioc:>8.4f} {flatness:>10.4f} {match:>8}")
+        print(
+            f"{name:<10} {identity_name:<8} {doublet_rate * 100:>9.2f}% {ct_ioc:>8.4f} {flatness:>10.4f} {match:>8}"
+        )
 
     # Detailed analysis of best candidate
     print("\n" + "=" * 70)
@@ -269,17 +311,19 @@ if __name__ == "__main__":
 
     print(f"\nCiphertext length: {len(ciphertext)}")
     print(f"Ciphertext IoC: {ioc(ciphertext):.4f} (target: 0.0345)")
-    print(f"Ciphertext doublet rate: {count_doublets(ciphertext)[2]*100:.3f}% (target: 0.68%)")
+    print(
+        f"Ciphertext doublet rate: {count_doublets(ciphertext)[2] * 100:.3f}% (target: 0.68%)"
+    )
 
     # Frequency distribution
     print("\n--- Ciphertext Frequency Distribution ---")
     counts = Counter(ciphertext)
     total = len(ciphertext)
-    freqs = sorted([(c, counts[c]/total) for c in ALPHABET], key=lambda x: x[1])
+    freqs = sorted([(c, counts[c] / total) for c in ALPHABET], key=lambda x: x[1])
 
-    print(f"Min: {freqs[0][0]} = {freqs[0][1]*100:.2f}%")
-    print(f"Max: {freqs[-1][0]} = {freqs[-1][1]*100:.2f}%")
-    print(f"Range: {(freqs[-1][1] - freqs[0][1])*100:.2f}%")
+    print(f"Min: {freqs[0][0]} = {freqs[0][1] * 100:.2f}%")
+    print(f"Max: {freqs[-1][0]} = {freqs[-1][1] * 100:.2f}%")
+    print(f"Range: {(freqs[-1][1] - freqs[0][1]) * 100:.2f}%")
 
     # Test single-key autokey decryption (without knowing the keyword)
     print("\n--- Single-Key Autokey Decryption Test ---")
@@ -292,7 +336,9 @@ if __name__ == "__main__":
         _, _, dec_doublet = count_doublets(decrypted)
 
         primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
-        print(f"  Primer {primer_name}: IoC={dec_ioc:.4f}, doublet={dec_doublet*100:.2f}%")
+        print(
+            f"  Primer {primer_name}: IoC={dec_ioc:.4f}, doublet={dec_doublet * 100:.2f}%"
+        )
 
     print("\n" + "=" * 70)
     print("Conclusion")

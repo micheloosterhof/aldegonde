@@ -76,8 +76,7 @@ def conj_shift(K, t):
 
 
 def offset_costs(K, T):
-    return [sum(T[conj_shift(K, t)[x]][x] for x in range(M))
-            for t in range(M)]
+    return [sum(T[conj_shift(K, t)[x]][x] for x in range(M)) for t in range(M)]
 
 
 def pick_schedule(costs, weights, target):
@@ -92,8 +91,7 @@ def pick_schedule(costs, weights, target):
                 for e in cheap:
                     f = (-(a + b + c + e)) % M
                     ds = [a, b, c, e, f]
-                    cost = sum(weights[order[i]] * costs[ds[i]]
-                               for i in range(5))
+                    cost = sum(weights[order[i]] * costs[ds[i]] for i in range(5))
                     if abs(cost - target) < abs(best[0] - target):
                         sched = [0] * 5
                         for i, p in enumerate(order):
@@ -107,7 +105,7 @@ def rand_order5(rng):
     rng.shuffle(pts)
     g = list(range(M))
     for c in range(5):
-        cy = pts[c * 5:(c + 1) * 5]
+        cy = pts[c * 5 : (c + 1) * 5]
         for i in range(5):
             g[cy[i]] = cy[(i + 1) % 5]
     return g
@@ -122,6 +120,7 @@ def conjugate(p, a, b):
 def anneal_to(p, T, target, rng, iters=4000, *, order5=True):
     def obj(q):
         return abs(sum(T[q[y]][y] for y in range(M)) - target)
+
     cur, best, bp = obj(p), obj(p), p[:]
     for _ in range(iters):
         a, b = rng.sample(range(M), 2)
@@ -157,12 +156,12 @@ def battery(words):
     c = Counter(stream)
     n = len(stream)
     uni = sum(v * (v - 1) for v in c.values()) / (n * (n - 1)) * M
-    trip = sum(1 for i in range(n - 2)
-               if stream[i] == stream[i + 1] == stream[i + 2])
+    trip = sum(1 for i in range(n - 2) if stream[i] == stream[i + 1] == stream[i + 2])
     kap = {}
     for d in (1, 2, 5):
-        kap[d] = sum(1 for i in range(n - d)
-                     if stream[i] == stream[i + d]) / (n - d) * M
+        kap[d] = (
+            sum(1 for i in range(n - d) if stream[i] == stream[i + d]) / (n - d) * M
+        )
     return prof, seam_d / seam_n, uni, trip, kap
 
 
@@ -202,31 +201,41 @@ def main() -> None:
 
     print("keyword-derived K: can a schedule land on the observed 0.0063?")
     chosen = None
-    for kw in ("DIUINITY", "CIRCUMFERENCE", "INSTAR", "PARABLE", "WISDOM",
-               "PRIMES", "AETHEREAL", "MOBIUS"):
+    for kw in (
+        "DIUINITY",
+        "CIRCUMFERENCE",
+        "INSTAR",
+        "PARABLE",
+        "WISDOM",
+        "PRIMES",
+        "AETHEREAL",
+        "MOBIUS",
+    ):
         K = keyword_alphabet(kw)
         costs = offset_costs(K, within)
         cost, sched = pick_schedule(costs, weights, TARGET_D1)
         print(f"  {kw:<14} best-fit schedule cost {cost:.4f}  offsets {sched}")
-        if chosen is None or abs(cost - TARGET_D1) < abs(chosen[0]
-                                                         - TARGET_D1):
+        if chosen is None or abs(cost - TARGET_D1) < abs(chosen[0] - TARGET_D1):
             chosen = (cost, kw, K, sched)
+    assert chosen is not None, "no schedule scored"
     cost, kw, K, sched = chosen
     print(f"\nusing keyword {kw}, offsets {sched}, predicted d1 {cost:.4f}\n")
 
     hdr = "".join(f"{f'd{d}':>7}" for d in range(1, MAXD + 1))
     print(f"{'model':<22}{hdr}{'seam':>8}{'uni':>7}{'trip':>6}")
-    print(f"{'LP observed':<22}"
-          + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1))
-          + f"{lp_seam:>8.4f}{lp_uni:>7.3f}{lp_trip:>6}")
+    print(
+        f"{'LP observed':<22}"
+        + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1))
+        + f"{lp_seam:>8.4f}{lp_uni:>7.3f}{lp_trip:>6}"
+    )
 
     for label in ("quagmire", "order-5 g"):
         acc, cnt = Counter(), Counter()
         seams, unis, trips = [], [], []
         for _ in range(RUNS):
             sigma = anneal_to(
-                list(np.random.permutation(M)), cross, TARGET_SEAM,
-                rng, order5=False)
+                list(np.random.permutation(M)), cross, TARGET_SEAM, rng, order5=False
+            )
             base = list(range(M))
             rng.shuffle(base)
             if label == "quagmire":
@@ -251,11 +260,15 @@ def main() -> None:
             seams.append(seam)
             unis.append(uni)
             trips.append(trip)
-        print(f"{label:<22}"
-              + "".join(f"{acc[dd] / cnt[dd]:>7.4f}" if cnt[dd] else f"{'·':>7}"
-                        for dd in range(1, MAXD + 1))
-              + f"{np.mean(seams):>8.4f}{np.mean(unis):>7.3f}"
-              + f"{np.mean(trips):>6.1f}")
+        print(
+            f"{label:<22}"
+            + "".join(
+                f"{acc[dd] / cnt[dd]:>7.4f}" if cnt[dd] else f"{'·':>7}"
+                for dd in range(1, MAXD + 1)
+            )
+            + f"{np.mean(seams):>8.4f}{np.mean(unis):>7.3f}"
+            + f"{np.mean(trips):>6.1f}"
+        )
 
     print("\ndiscriminator — conjugated shifts have NO fixed points, so the")
     print("quagmire model must show d2/d3/d4 at background (~0.0345) with no")

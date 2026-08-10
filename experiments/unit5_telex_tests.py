@@ -55,8 +55,7 @@ def load() -> tuple[str, list[int]]:
     with open(DATA) as f:
         raw = f.read()
     parts = raw.split("%")
-    keep = set([i for i, p in enumerate(parts)
-                if any(c in ALPHABET for c in p)][:-2])
+    keep = set([i for i, p in enumerate(parts) if any(c in ALPHABET for c in p)][:-2])
     clean: list[str] = []
     wordpos: list[int] = []
     cur: list[str] = []
@@ -116,9 +115,13 @@ def main() -> None:
     print(f"doublet rate by wordpos: {' '.join(rates)} (no period-5 comb)")
     mv = [text[i] == text[i + 5] for i in range(n - 5)]
     m = len(mv)
-    cons = Counter(b - a for a, b in zip(
-        [i for i, v in enumerate(mv) if v][:-1],
-        [i for i, v in enumerate(mv) if v][1:]))
+    cons = Counter(
+        b - a
+        for a, b in zip(
+            [i for i, v in enumerate(mv) if v][:-1],
+            [i for i, v in enumerate(mv) if v][1:],
+        )
+    )
     p1 = sum(mv) / m
     print("lag-5 match consecutive gaps (obs vs geometric):")
     for g in range(1, 9):
@@ -141,11 +144,15 @@ def main() -> None:
         base = pairs * dist_exp[h] / tot
         redraw = base + missing * dist_exp[h] / nonzero_mass
         o = obs_h.get(h, 0)
-        print(f"  d_H={h}: obs={o:5d} redraw-model={redraw:7.1f} "
-              f"z={(o - redraw) / sqrt(redraw):+5.2f}")
+        print(
+            f"  d_H={h}: obs={o:5d} redraw-model={redraw:7.1f} "
+            f"z={(o - redraw) / sqrt(redraw):+5.2f}"
+        )
     obs5 = Counter(ham(r2i(text[i]), r2i(text[i + 5])) for i in range(n - 5))
-    parts_ = [f"d_H={h}:{(obs5.get(h, 0) - (n - 5) * dist_exp[h] / tot) / sqrt((n - 5) * dist_exp[h] / tot):+.1f}"
-              for h in range(6)]
+    parts_ = [
+        f"d_H={h}:{(obs5.get(h, 0) - (n - 5) * dist_exp[h] / tot) / sqrt((n - 5) * dist_exp[h] / tot):+.1f}"
+        for h in range(6)
+    ]
     print("lag-5 pair Hamming z-scores: " + " ".join(parts_))
 
 

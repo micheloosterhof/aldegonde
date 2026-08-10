@@ -117,8 +117,7 @@ def stats(stream: list[int], wid: list[int], pos: list[int]):
                 ep = pooled[a][b] * s / psum
                 if ep >= 3:
                     ph += (phase[p][a][b] - ep) ** 2 / ep
-    return (chi2_off, zmax, zmin, anti, hom, split_mean(0), split_mean(1),
-            ph, mat)
+    return (chi2_off, zmax, zmin, anti, hom, split_mean(0), split_mean(1), ph, mat)
 
 
 def main() -> None:
@@ -131,15 +130,22 @@ def main() -> None:
         p = p + 1 if w == last else 0
         last = w
         pos.append(p)
-    dbl_rate = sum(1 for i in range(len(stream) - 1)
-                   if stream[i] == stream[i + 1]) / (len(stream) - 1)
+    dbl_rate = sum(1 for i in range(len(stream) - 1) if stream[i] == stream[i + 1]) / (
+        len(stream) - 1
+    )
     null_model = doublet_shuffle(dbl_rate)
 
     obs = stats(stream, wid, pos)
-    names = ("off-diag chi2 (812 cells)", "max cell z", "min cell z",
-             "antisymmetry chi2", "within-vs-cross homogeneity chi2",
-             "mean successor split nIoC", "mean predecessor split nIoC",
-             "phase homogeneity chi2")
+    names = (
+        "off-diag chi2 (812 cells)",
+        "max cell z",
+        "min cell z",
+        "antisymmetry chi2",
+        "within-vs-cross homogeneity chi2",
+        "mean successor split nIoC",
+        "mean predecessor split nIoC",
+        "phase homogeneity chi2",
+    )
     null_vals = [[] for _ in names]
     for _ in range(TRIALS):
         surr = list(null_model(stream, rng))
@@ -147,27 +153,34 @@ def main() -> None:
         for k in range(len(names)):
             null_vals[k].append(s[k])
 
-    print(f"clean corpus: {len(stream)} runes, doublet rate {dbl_rate:.4f}; "
-          f"null = doublet_shuffle at that rate, {TRIALS} surrogates, real "
-          f"word structure overlaid\n")
+    print(
+        f"clean corpus: {len(stream)} runes, doublet rate {dbl_rate:.4f}; "
+        f"null = doublet_shuffle at that rate, {TRIALS} surrogates, real "
+        f"word structure overlaid\n"
+    )
     for k, name in enumerate(names):
         arr = np.array(null_vals[k])
         o = obs[k]
         z = (o - arr.mean()) / arr.std()
         p_hi = float((arr >= o).mean())
         p_lo = float((arr <= o).mean())
-        print(f"  {name:<34} obs {o:>9.3f}  null {arr.mean():>9.3f} "
-              f"± {arr.std():>7.3f}  z {z:+5.2f}  p(hi/lo) "
-              f"{p_hi:.3f}/{p_lo:.3f}")
+        print(
+            f"  {name:<34} obs {o:>9.3f}  null {arr.mean():>9.3f} "
+            f"± {arr.std():>7.3f}  z {z:+5.2f}  p(hi/lo) "
+            f"{p_hi:.3f}/{p_lo:.3f}"
+        )
 
     mat = obs[-1]
-    off_cells = [(int(mat[a][b]), a, b) for a in range(M) for b in range(M)
-                 if a != b]
+    off_cells = [(int(mat[a][b]), a, b) for a in range(M) for b in range(M) if a != b]
     off_cells.sort(reverse=True)
+
     def fmt(c):
         return f"{ALPHABET[c[1]]}{ALPHABET[c[2]]}={c[0]}"
-    print(f"\n  top cells: {', '.join(fmt(c) for c in off_cells[:5])} "
-          f"(uniform expectation {12955 / 841:.1f})")
+
+    print(
+        f"\n  top cells: {', '.join(fmt(c) for c in off_cells[:5])} "
+        f"(uniform expectation {12955 / 841:.1f})"
+    )
     print(f"  bottom cells: {', '.join(fmt(c) for c in off_cells[-5:])}")
 
 

@@ -55,8 +55,9 @@ LEGACY = "."
 def verdicts() -> dict[tuple[int, str], str]:
     if not REVIEW.exists():
         return {}
-    return {(v["page"], str(v["line"])): v["value"]
-            for v in json.loads(REVIEW.read_text())}
+    return {
+        (v["page"], str(v["line"])): v["value"] for v in json.loads(REVIEW.read_text())
+    }
 
 
 def reader_marks(band) -> list[str]:
@@ -81,7 +82,7 @@ def promote(line: str, marks: list[str]) -> tuple[str, str | None]:
             if m not in CIRCLED_SET:
                 return line, f"scan reads {m!r} where the text has '.'"
             out[i] = m
-    return "".join(out) + line[len(body):], None
+    return "".join(out) + line[len(body) :], None
 
 
 def main() -> None:
@@ -113,8 +114,10 @@ def main() -> None:
     for k in ("from a reviewed verdict", "from the scan", "refused"):
         print(f"   {k:>24}: {stats[k]}")
     census = Counter(c for _, new in pairs for c in new if c in CIRCLED_SET)
-    print("\nglyphs introduced: " + "  ".join(
-        f"{c}{n}" for c, n in sorted(census.items()) if c != "①"))
+    print(
+        "\nglyphs introduced: "
+        + "  ".join(f"{c}{n}" for c, n in sorted(census.items()) if c != "①")
+    )
     if problems:
         print(f"\n{len(problems)} lines left alone:")
         for p in problems[:15]:

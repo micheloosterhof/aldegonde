@@ -64,8 +64,7 @@ def fitness(idx: list[int]) -> float:
     runes = [ALPHA[i] for i in idx]
     if len(runes) < 3:
         return FLOOR
-    s = sum(LOGP.get("".join(runes[i:i + 3]), FLOOR)
-            for i in range(len(runes) - 2))
+    s = sum(LOGP.get("".join(runes[i : i + 3]), FLOOR) for i in range(len(runes) - 2))
     return s / (len(runes) - 2)
 
 
@@ -78,7 +77,7 @@ def keyword_indices(word: str) -> list[int]:
     i = 0
     while i < len(word):
         for ln in (2, 1):
-            seg = word[i:i + ln]
+            seg = word[i : i + ln]
             if seg in ENG:
                 out.append(ENG.index(seg))
                 i += ln
@@ -103,8 +102,11 @@ def beam_vigenere(ct: list[int], keyword: str) -> tuple[list[int], int]:
                 opts.append((0, j, 1))
             for p, j2, isint in opts:
                 pt2 = pt + [p]
-                sc2 = sc + (LOGP.get("".join(ALPHA[x] for x in pt2[-3:]), FLOOR)
-                            if len(pt2) >= 3 else 0.0)
+                sc2 = sc + (
+                    LOGP.get("".join(ALPHA[x] for x in pt2[-3:]), FLOOR)
+                    if len(pt2) >= 3
+                    else 0.0
+                )
                 if j2 not in new or sc2 > new[j2][0]:
                     new[j2] = (sc2, pt2, ni + isint)
         beams = new
@@ -131,8 +133,10 @@ def recover_plaintext(segs: list[list[int]]) -> list[int]:
     out: list[int] = []
 
     def add(name: str, pt: list[int]) -> None:
-        print(f"  {name:<28} {len(pt):>4} runes  fit {fitness(pt):.3f}  "
-              f"{translit(pt)[:60]}")
+        print(
+            f"  {name:<28} {len(pt):>4} runes  fit {fitness(pt):.3f}  "
+            f"{translit(pt)[:60]}"
+        )
         out.extend(pt)
 
     add("seg0 atbash", [(28 - c) % M for c in segs[0]])
@@ -163,7 +167,7 @@ def slide(clean: np.ndarray, key: np.ndarray) -> tuple[float, str, int]:
     n, m = len(clean), len(key)
     best = (0.0, "", -1)
     for off in range(n - m):
-        seg = clean[off:off + m]
+        seg = clean[off : off + m]
         for tag, v in (("V", (seg - key) % M), ("B", (seg + key) % M)):
             z = abs(zioc(v))
             if z > best[0]:
@@ -175,14 +179,15 @@ def main() -> None:
     segs = solved_segments()
     print(f"solved region: {sum(map(len, segs))} runes in {len(segs)} segments")
     plaintext = recover_plaintext(segs)
-    print(f"recovered plaintext: {len(plaintext)} runes, "
-          f"overall fitness {fitness(plaintext):.3f}")
+    print(
+        f"recovered plaintext: {len(plaintext)} runes, "
+        f"overall fitness {fitness(plaintext):.3f}"
+    )
 
     clean = np.array(load_clean()[0])
     key = np.array(plaintext)
     print(f"\nrunning-key slide vs clean corpus ({len(clean)} runes):")
-    for name, kk in (("solved-plaintext", key),
-                     ("solved-plaintext-rev", key[::-1])):
+    for name, kk in (("solved-plaintext", key), ("solved-plaintext-rev", key[::-1])):
         z, tag, off = slide(clean, kk)
         print(f"  {name}: max |z| = {z:.1f} ({tag}) at offset {off}")
 
@@ -193,8 +198,10 @@ def main() -> None:
         rng.shuffle(perm)
         z, _, _ = slide(clean, key[perm])
         null.append(z)
-    print(f"  shuffled-key null max |z| over {len(null)} trials: "
-          f"{min(null):.1f}-{max(null):.1f}")
+    print(
+        f"  shuffled-key null max |z| over {len(null)} trials: "
+        f"{min(null):.1f}-{max(null):.1f}"
+    )
 
 
 if __name__ == "__main__":

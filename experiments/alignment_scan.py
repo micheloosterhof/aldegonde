@@ -46,8 +46,10 @@ def align_test(units, label, max_units=None):
     sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
     z = (hits - exp) / sd
     flag = " ***" if abs(z) > 4 else (" *" if abs(z) > 3 else "")
-    print(f"  {label}: pairs-opportunities={opp} hits={hits} exp={exp:.1f} "
-          f"z={z:+.2f}{flag}")
+    print(
+        f"  {label}: pairs-opportunities={opp} hits={hits} exp={exp:.1f} "
+        f"z={z:+.2f}{flag}"
+    )
     # also right-aligned
     hits = opp = 0
     for i in range(len(units)):
@@ -80,6 +82,7 @@ def main() -> None:
         if acc >= nplain:
             break
     words = words[:-parable_words]
+
     # crude trim for lines/pages: drop trailing units summing to ~nplain
     def trim(units):
         acc = 0
@@ -90,11 +93,14 @@ def main() -> None:
             if acc >= nplain:
                 break
         return units[:-k]
+
     lines = trim(lines)
     pages = trim(pages)
     n = len(cipher)
-    print(f"cipher: {n} runes, {len(words)} words, {len(lines)} lines, "
-          f"{len(pages)} pages, {len(sections)} sections")
+    print(
+        f"cipher: {n} runes, {len(words)} words, {len(lines)} lines, "
+        f"{len(pages)} pages, {len(sections)} sections"
+    )
 
     print("\n=== 1. KEYSTREAM-RESTART ALIGNMENT ===")
     align_test(sections, "sections aligned at start")
@@ -147,7 +153,7 @@ def main() -> None:
     for m, k in best[:8]:
         ncol = n / k
         print(f"    k={k}: mean nIoC={m:.4f} (col len ~{ncol:.0f})")
-    print(f"  bottom 3: {[(k, round(m,4)) for m, k in best[-3:]]}")
+    print(f"  bottom 3: {[(k, round(m, 4)) for m, k in best[-3:]]}")
 
     print("\n=== 4. DELTA STREAM SERIAL DEPENDENCE ===")
     d = [(cipher[i + 1] - cipher[i]) % N for i in range(n - 1)]
@@ -179,13 +185,16 @@ def main() -> None:
         col = od.sum(axis=0)
         tot = od.sum()
         exp = np.outer(row, col) / tot
-        statod = float(np.nansum(np.where(mask, (od - exp) ** 2 / np.where(exp > 0, exp, 1), 0)))
-        print(f"    off-diagonal quasi-chi2={statod:.1f} (dof~{28*28-1})")
+        statod = float(
+            np.nansum(np.where(mask, (od - exp) ** 2 / np.where(exp > 0, exp, 1), 0))
+        )
+        print(f"    off-diagonal quasi-chi2={statod:.1f} (dof~{28 * 28 - 1})")
 
     print("\n=== 6. ISOMORPHS ===")
     # NOTE: this baseline is uniform random text; see isomorph_corrected.py
     # for the doublet-corrected null, which removes the apparent anomaly.
     from aldegonde.stats.isomorph import print_isomorph_statistics
+
     print_isomorph_statistics(cipher)
 
     print("\n=== 7. DOUBLET MICRO-STRUCTURE ===")
@@ -204,21 +213,29 @@ def main() -> None:
         for j in range(len(l)):
             pos_in_line[k] = (j, len(l))
             k += 1
-    rel = [pos_in_line[i][0] / max(pos_in_line[i][1] - 1, 1) for i in dpos if i in pos_in_line]
-    print(f"  doublet relative position in line: mean={np.mean(rel):.3f} (exp 0.5), n={len(rel)}")
+    rel = [
+        pos_in_line[i][0] / max(pos_in_line[i][1] - 1, 1)
+        for i in dpos
+        if i in pos_in_line
+    ]
+    print(
+        f"  doublet relative position in line: mean={np.mean(rel):.3f} (exp 0.5), n={len(rel)}"
+    )
 
     print("\n=== 8. LINE/PAGE CHECKSUMS MOD 29 ===")
     lsums = [sum(l) % N for l in lines]
     c = np.bincount(lsums, minlength=N)
     m = len(lsums)
     stat = ((c - m / N) ** 2 / (m / N)).sum()
-    print(f"  line sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.4f}")
+    print(f"  line sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.4f}")
     psums = [sum(p_) % N for p_ in pages]
     c = np.bincount(psums, minlength=N)
     m = len(psums)
     stat = ((c - m / N) ** 2 / (m / N)).sum()
-    print(f"  page sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.4f} "
-          f"(n={m}, low power)")
+    print(
+        f"  page sums mod 29: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.4f} "
+        f"(n={m}, low power)"
+    )
     print(f"  page sums: {sorted(psums)}")
 
 

@@ -9,7 +9,8 @@ at that frequency could be the "identity character" in an autokey cipher.
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 from collections import Counter  # noqa: I001
 from aldegonde import c3301
@@ -39,8 +40,9 @@ def count_triplets(text: str) -> tuple[int, int, float]:
     """Count three consecutive identical characters."""
     if len(text) < 3:
         return 0, 0, 0.0
-    count = sum(1 for i in range(len(text) - 2)
-                if text[i] == text[i + 1] == text[i + 2])
+    count = sum(
+        1 for i in range(len(text) - 2) if text[i] == text[i + 1] == text[i + 2]
+    )
     possible = len(text) - 2
     return count, possible, count / possible
 
@@ -51,7 +53,7 @@ def frequency_analysis(text: str) -> list[tuple[str, int, float]]:
     total = len(text)
     return sorted(
         [(char, count, count / total) for char, count in counts.items()],
-        key=lambda x: x[2]  # Sort by frequency ascending
+        key=lambda x: x[2],  # Sort by frequency ascending
     )
 
 
@@ -73,13 +75,17 @@ if __name__ == "__main__":
     triplets, _, triplet_rate = count_triplets(runes)
 
     expected_doublet_rate = 1 / 29
-    suppression_factor = expected_doublet_rate / doublet_rate if doublet_rate > 0 else float('inf')
+    suppression_factor = (
+        expected_doublet_rate / doublet_rate if doublet_rate > 0 else float("inf")
+    )
 
     print("\n--- Doublet Statistics ---")
     print(f"Doublets found: {doublets}")
     print(f"Possible positions: {possible}")
     print(f"Doublet rate: {doublet_rate:.6f} ({doublet_rate * 100:.4f}%)")
-    print(f"Expected random: {expected_doublet_rate:.6f} ({expected_doublet_rate * 100:.4f}%)")
+    print(
+        f"Expected random: {expected_doublet_rate:.6f} ({expected_doublet_rate * 100:.4f}%)"
+    )
     print(f"Suppression factor: {suppression_factor:.2f}x")
     print(f"\nTriplets found: {triplets}")
     print(f"Triplet rate: {triplet_rate:.6f}")
@@ -93,18 +99,26 @@ if __name__ == "__main__":
         # Mark runes with frequency close to doublet rate
         marker = " <-- MATCHES DOUBLET RATE" if abs(freq - doublet_rate) < 0.003 else ""
         idx = c3301.CICADA_ALPHABET.index(rune) if rune in c3301.CICADA_ALPHABET else -1
-        english = c3301.CICADA_ENGLISH_ALPHABET[idx] if 0 <= idx < len(c3301.CICADA_ENGLISH_ALPHABET) else "?"
-        print(f"  {rune} ({english:2s}) idx={idx:2d}: {count:4d} = {freq*100:5.2f}%{marker}")
+        english = (
+            c3301.CICADA_ENGLISH_ALPHABET[idx]
+            if 0 <= idx < len(c3301.CICADA_ENGLISH_ALPHABET)
+            else "?"
+        )
+        print(
+            f"  {rune} ({english:2s}) idx={idx:2d}: {count:4d} = {freq * 100:5.2f}%{marker}"
+        )
 
     # Calculate which frequency matches doublet rate
     print("\n--- Identity Character Candidates ---")
-    print(f"Looking for rune with frequency ≈ {doublet_rate*100:.2f}%")
+    print(f"Looking for rune with frequency ≈ {doublet_rate * 100:.2f}%")
 
     for rune, _count, freq in freqs:
         if abs(freq - doublet_rate) < 0.005:  # Within 0.5%
             idx = c3301.CICADA_ALPHABET.index(rune)
             english = c3301.CICADA_ENGLISH_ALPHABET[idx]
-            print(f"  CANDIDATE: {rune} ({english}) at {freq*100:.2f}% (diff: {abs(freq-doublet_rate)*100:.3f}%)")
+            print(
+                f"  CANDIDATE: {rune} ({english}) at {freq * 100:.2f}% (diff: {abs(freq - doublet_rate) * 100:.3f}%)"
+            )
 
     # Show doublet details
     print("\n--- Doublet Locations ---")
@@ -128,5 +142,7 @@ if __name__ == "__main__":
         if len(seg_runes) < 10:
             continue
         d, p, rate = count_doublets(seg_runes)
-        supp = (1/29) / rate if rate > 0 else float('inf')
-        print(f"  Segment {i}: len={len(seg_runes):4d}, doublets={d:3d}, rate={rate*100:.3f}%, suppression={supp:.1f}x")
+        supp = (1 / 29) / rate if rate > 0 else float("inf")
+        print(
+            f"  Segment {i}: len={len(seg_runes):4d}, doublets={d:3d}, rate={rate * 100:.3f}%, suppression={supp:.1f}x"
+        )

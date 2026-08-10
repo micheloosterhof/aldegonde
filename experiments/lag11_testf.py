@@ -38,7 +38,7 @@ D = 11
 CHANCE = 0.03455  # sum f^2 on the clean corpus
 
 
-def load_sections() -> list[list[int]]:
+def load_sections() -> list[tuple[list[int], list[int]]]:
     """Per-section word-length sequences AND rune streams for sections 0-9."""
     text = (ROOT / "data" / "page0-58.txt").read_text()
     sections = [s for s in text.split("$") if RUNE.search(s)][:10]
@@ -112,14 +112,18 @@ def main() -> None:
     assert len(wid) == n, (len(wid), n)
 
     total_m = sum(match[i] for i in range(n - D))
-    print(f"clean corpus: {n} runes, lag {D}: {total_m} matches "
-          f"(chance {CHANCE * (n - D):.1f})")
+    print(
+        f"clean corpus: {n} runes, lag {D}: {total_m} matches "
+        f"(chance {CHANCE * (n - D):.1f})"
+    )
 
     strata, hits, same_pos = stratified_counts(match, wid, pos, wl, n)
     cross_pairs = sum(strata.values())
     cross_hits = sum(hits.values())
-    print(f"cross-word pairs {cross_pairs}, matches {cross_hits} "
-          f"(rate {cross_hits / cross_pairs:.4f} vs chance {CHANCE:.4f})")
+    print(
+        f"cross-word pairs {cross_pairs}, matches {cross_hits} "
+        f"(rate {cross_hits / cross_pairs:.4f} vs chance {CHANCE:.4f})"
+    )
 
     print("\nPart 1a: alignment strata (pos of i x pos of i+11), obs rate vs chance z:")
     print(f"{'stratum':>16} {'pairs':>6} {'match':>6} {'rate':>7} {'z':>6}")
@@ -127,12 +131,16 @@ def main() -> None:
         e = strata[key] * CHANCE
         sd = (strata[key] * CHANCE * (1 - CHANCE)) ** 0.5
         z = (hits[key] - e) / sd if sd else float("nan")
-        print(f"{'-'.join(key):>16} {strata[key]:>6} {hits[key]:>6} "
-              f"{hits[key] / strata[key]:>7.4f} {z:>+6.2f}")
+        print(
+            f"{'-'.join(key):>16} {strata[key]:>6} {hits[key]:>6} "
+            f"{hits[key] / strata[key]:>7.4f} {z:>+6.2f}"
+        )
     e = same_pos[1] * CHANCE
     sd = (same_pos[1] * CHANCE * (1 - CHANCE)) ** 0.5
-    print(f"{'same-pos-in-word':>16} {same_pos[1]:>6} {same_pos[0]:>6} "
-          f"{same_pos[0] / same_pos[1]:>7.4f} {(same_pos[0] - e) / sd:>+6.2f}")
+    print(
+        f"{'same-pos-in-word':>16} {same_pos[1]:>6} {same_pos[0]:>6} "
+        f"{same_pos[0] / same_pos[1]:>7.4f} {(same_pos[0] - e) / sd:>+6.2f}"
+    )
 
     # Part 1b: is the OBSERVED cross-word deficit bigger than under
     # word-length-sequence permutation? If boundary structure caused it,
@@ -153,15 +161,19 @@ def main() -> None:
                 tot += match[i]
         null.append(tot)
     mu, sd = float(np.mean(null)), float(np.std(null))
-    print(f"  cross-word matches: obs {obs} vs null {mu:.1f} ± {sd:.1f} "
-          f"(z = {(obs - mu) / sd:+.2f})")
+    print(
+        f"  cross-word matches: obs {obs} vs null {mu:.1f} ± {sd:.1f} "
+        f"(z = {(obs - mu) / sd:+.2f})"
+    )
     print("  (near-zero z = the deficit is indifferent to where boundaries sit;")
     print("   the boundary structure is not the cause)")
 
     # Part 2: word-length periodicity per section
     print("\nPart 2: word-length-sequence periodicity per section")
-    print(f"{'sec':>4} {'words':>6} {'maxpow/mean':>12} {'null95':>7} "
-          f"{'max|acf| lag1-20':>17} {'null95':>7}")
+    print(
+        f"{'sec':>4} {'words':>6} {'maxpow/mean':>12} {'null95':>7} "
+        f"{'max|acf| lag1-20':>17} {'null95':>7}"
+    )
     for k, (_, wlseq) in enumerate(secs):
         x = np.array(wlseq, dtype=float)
         if len(x) < 40:
@@ -182,9 +194,11 @@ def main() -> None:
             r, a = stats(y)
             rs.append(r)
             as_.append(a)
-        print(f"{k:>4} {len(x):>6} {r_obs:>12.2f} {np.quantile(rs, 0.95):>7.2f} "
-              f"{a_obs:>17.3f} {np.quantile(as_, 0.95):>7.3f}"
-              + ("   <- carries the d11 deficit" if k in (1, 8) else ""))
+        print(
+            f"{k:>4} {len(x):>6} {r_obs:>12.2f} {np.quantile(rs, 0.95):>7.2f} "
+            f"{a_obs:>17.3f} {np.quantile(as_, 0.95):>7.3f}"
+            + ("   <- carries the d11 deficit" if k in (1, 8) else "")
+        )
 
 
 if __name__ == "__main__":

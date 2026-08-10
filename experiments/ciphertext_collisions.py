@@ -45,7 +45,7 @@ def maximal_repeats(stream: list[int], kmin: int) -> list[tuple[int, list[int]]]
     n = len(stream)
     seed: dict[tuple, list[int]] = defaultdict(list)
     for i in range(n - kmin + 1):
-        seed[tuple(stream[i:i + kmin])].append(i)
+        seed[tuple(stream[i : i + kmin])].append(i)
     out = []
     seen_spans: set[tuple[int, int]] = set()
     for starts in seed.values():
@@ -73,7 +73,7 @@ def maximal_repeats(stream: list[int], kmin: int) -> list[tuple[int, list[int]]]
 
 
 def expected_by_chance(n: int, k: int) -> float:
-    return n * n / (2 * M ** k)
+    return n * n / (2 * M**k)
 
 
 def main() -> None:
@@ -84,8 +84,10 @@ def main() -> None:
     kmin = 5
     repeats = maximal_repeats(stream, kmin)
     print(f"maximal repeated substrings (length >= {kmin}): {len(repeats)} classes")
-    print(f"(expected by chance: k=5 ~{expected_by_chance(n,5):.1f}, "
-          f"k=6 ~{expected_by_chance(n,6):.2f}, k=7 ~{expected_by_chance(n,7):.3f})\n")
+    print(
+        f"(expected by chance: k=5 ~{expected_by_chance(n, 5):.1f}, "
+        f"k=6 ~{expected_by_chance(n, 6):.2f}, k=7 ~{expected_by_chance(n, 7):.3f})\n"
+    )
 
     for L, starts in repeats:
         if L < 6 and len(starts) == 2:
@@ -104,8 +106,9 @@ def main() -> None:
             note.append("all word-initial")
         if len(phases) == 1:
             note.append(f"same phase {phases.pop()}")
-        print(f"  len {L} x{len(starts)} [{genuine}, ~{chance:.3g} exp] "
-              f"{' '.join(note)}")
+        print(
+            f"  len {L} x{len(starts)} [{genuine}, ~{chance:.3g} exp] {' '.join(note)}"
+        )
         print(f"      {'  '.join(occ)}")
         # state-return constraint for the first pair (if word-aligned)
         if len(starts) >= 2 and wordstart:
@@ -113,8 +116,10 @@ def main() -> None:
             interval = list(range(w1, w2))
             sig_count = len(interval)
             gpow = sum((len(words[w]) - 1) % 5 for w in interval) % 5
-            print(f"      => base_w{w1} = base_w{w2}: sigma-count {sig_count}, "
-                  f"sum(L-1) mod5 = {gpow}  (prod of steps = id)")
+            print(
+                f"      => base_w{w1} = base_w{w2}: sigma-count {sig_count}, "
+                f"sum(L-1) mod5 = {gpow}  (prod of steps = id)"
+            )
     print()
 
     # whole-word ciphertext repeats (a word's exact ciphertext recurring)

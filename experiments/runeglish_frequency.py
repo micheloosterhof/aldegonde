@@ -13,7 +13,8 @@ would match the observed 0.68%.
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 from collections import Counter  # noqa: I001
 
@@ -21,21 +22,21 @@ from collections import Counter  # noqa: I001
 # Gematria Primus mapping (simplified - digraphs first, then single letters)
 # Order matters: check digraphs before single letters
 GEMATRIA_RULES = [
-    ("ing", "ᛝ"),   # ING -> NG rune (special case)
-    ("ng", "ᛝ"),    # NG
-    ("th", "ᚦ"),    # TH
-    ("ea", "ᛠ"),    # EA
-    ("eo", "ᛇ"),    # EO
-    ("oe", "ᛟ"),    # OE
-    ("ae", "ᚫ"),    # AE
-    ("ia", "ᛡ"),    # IA
-    ("io", "ᛡ"),    # IO (same rune as IA)
+    ("ing", "ᛝ"),  # ING -> NG rune (special case)
+    ("ng", "ᛝ"),  # NG
+    ("th", "ᚦ"),  # TH
+    ("ea", "ᛠ"),  # EA
+    ("eo", "ᛇ"),  # EO
+    ("oe", "ᛟ"),  # OE
+    ("ae", "ᚫ"),  # AE
+    ("ia", "ᛡ"),  # IA
+    ("io", "ᛡ"),  # IO (same rune as IA)
     ("f", "ᚠ"),
     ("u", "ᚢ"),
     ("o", "ᚩ"),
     ("r", "ᚱ"),
     ("c", "ᚳ"),
-    ("k", "ᚳ"),     # K -> C rune
+    ("k", "ᚳ"),  # K -> C rune
     ("g", "ᚷ"),
     ("w", "ᚹ"),
     ("h", "ᚻ"),
@@ -45,7 +46,7 @@ GEMATRIA_RULES = [
     ("p", "ᛈ"),
     ("x", "ᛉ"),
     ("s", "ᛋ"),
-    ("z", "ᛋ"),     # Z -> S rune
+    ("z", "ᛋ"),  # Z -> S rune
     ("t", "ᛏ"),
     ("b", "ᛒ"),
     ("e", "ᛖ"),
@@ -54,16 +55,40 @@ GEMATRIA_RULES = [
     ("d", "ᛞ"),
     ("a", "ᚪ"),
     ("y", "ᚣ"),
-    ("q", "ᚳ"),     # Q -> C rune (usually QU)
-    ("v", "ᚢ"),     # V -> U rune
+    ("q", "ᚳ"),  # Q -> C rune (usually QU)
+    ("v", "ᚢ"),  # V -> U rune
 ]
 
 RUNE_NAMES = {
-    "ᚠ": "F", "ᚢ": "U", "ᚦ": "TH", "ᚩ": "O", "ᚱ": "R", "ᚳ": "C/K",
-    "ᚷ": "G", "ᚹ": "W", "ᚻ": "H", "ᚾ": "N", "ᛁ": "I", "ᛄ": "J",
-    "ᛇ": "EO", "ᛈ": "P", "ᛉ": "X", "ᛋ": "S/Z", "ᛏ": "T", "ᛒ": "B",
-    "ᛖ": "E", "ᛗ": "M", "ᛚ": "L", "ᛝ": "NG", "ᛟ": "OE", "ᛞ": "D",
-    "ᚪ": "A", "ᚫ": "AE", "ᚣ": "Y", "ᛡ": "IA/IO", "ᛠ": "EA",
+    "ᚠ": "F",
+    "ᚢ": "U",
+    "ᚦ": "TH",
+    "ᚩ": "O",
+    "ᚱ": "R",
+    "ᚳ": "C/K",
+    "ᚷ": "G",
+    "ᚹ": "W",
+    "ᚻ": "H",
+    "ᚾ": "N",
+    "ᛁ": "I",
+    "ᛄ": "J",
+    "ᛇ": "EO",
+    "ᛈ": "P",
+    "ᛉ": "X",
+    "ᛋ": "S/Z",
+    "ᛏ": "T",
+    "ᛒ": "B",
+    "ᛖ": "E",
+    "ᛗ": "M",
+    "ᛚ": "L",
+    "ᛝ": "NG",
+    "ᛟ": "OE",
+    "ᛞ": "D",
+    "ᚪ": "A",
+    "ᚫ": "AE",
+    "ᚣ": "Y",
+    "ᛡ": "IA/IO",
+    "ᛠ": "EA",
 }
 
 
@@ -75,7 +100,7 @@ def english_to_runeglish(text: str) -> str:
     while i < len(text):
         matched = False
         for pattern, rune in GEMATRIA_RULES:
-            if text[i:i+len(pattern)] == pattern:
+            if text[i : i + len(pattern)] == pattern:
                 result.append(rune)
                 i += len(pattern)
                 matched = True
@@ -86,7 +111,9 @@ def english_to_runeglish(text: str) -> str:
     return "".join(result)
 
 
-def analyze_runeglish_frequencies(text: str) -> list[tuple[str, int, float]]:
+def analyze_runeglish_frequencies(
+    text: str,
+) -> list[tuple[str, str, int, float]]:
     """Analyze frequencies of runes in Runeglish text."""
     runeglish = english_to_runeglish(text)
     counts = Counter(runeglish)
@@ -107,12 +134,10 @@ SAMPLE_TEXTS = {
         continent a new nation conceived in Liberty and dedicated to the proposition
         that all men are created equal Now we are engaged in a great civil war testing
         whether that nation or any nation so conceived and so dedicated can long endure""",
-
     "philosophy": """The unexamined life is not worth living Knowledge is the food of
         the soul The only true wisdom is in knowing you know nothing I cannot teach
         anybody anything I can only make them think There is only one good knowledge
         and one evil ignorance""",
-
     "technical": """The algorithm processes each input sequentially applying the
         transformation function to generate output The complexity is logarithmic
         in the worst case scenario Memory usage scales linearly with input size
@@ -153,14 +178,14 @@ if __name__ == "__main__":
             marker = " <-- VERY RARE (<1%)"
         elif freq < 0.02:
             marker = " <-- RARE (<2%)"
-        print(f"  {rune} ({name:5s}): {count:6d} = {freq*100:5.2f}%{marker}")
+        print(f"  {rune} ({name:5s}): {count:6d} = {freq * 100:5.2f}%{marker}")
 
     print("\n--- Candidates for Identity Character ---")
     print("(Runes with frequency close to observed doublet rate of 0.68%)\n")
 
     for rune, name, _count, freq in freqs:
         if freq < 0.015:  # Under 1.5%
-            print(f"  {rune} ({name}): {freq*100:.2f}%")
+            print(f"  {rune} ({name}): {freq * 100:.2f}%")
 
     print("\n" + "=" * 70)
     print("Key Finding:")

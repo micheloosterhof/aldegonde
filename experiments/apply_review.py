@@ -53,7 +53,7 @@ MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
 MASTER_TARGET = ROOT / "data" / "liber-primus__transcription--master.marks.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 CIRCLED = {chr(0x2460 + n) for n in range(20)} | {chr(0x3251 + n) for n in range(15)}
-CIRCLED.add("\u2448")          # unrecognised dot count, flagged for review
+CIRCLED.add("\u2448")  # unrecognised dot count, flagged for review
 # Digits and Latin letters are CONTENT, not annotation: the hex block and the
 # plaintext Parable in sections 10-11 carry them, and page 10 line 7 has a
 # bare "7" inside the runic text. They pass through untouched.
@@ -66,8 +66,10 @@ def normalise(value: str) -> str:
     """Accept a reviewer's shorthand: `(N)` for a dot count, and whitespace
     anywhere for readability. Neither is meaningful in the encoding, so both
     are normalised away rather than refused."""
+
     def sub(m: re.Match[str]) -> str:
         return CIRCLED_BY_N.get(int(m.group(1)), m.group(0))
+
     return re.sub(r"\s+", "", re.sub(r"\((\d{1,2})\)", sub, value))
 
 
@@ -88,11 +90,14 @@ def rebuild(original: str, value: str) -> tuple[str, str | None]:
         if len(got) != len(want):
             return original, f"rune count {len(got)} != {len(want)}"
         return original, "rune or content identities changed"
-    bad = {c for c in value
-           if not RUNE.match(c) and c not in CIRCLED and not CONTENT.match(c)}
+    bad = {
+        c
+        for c in value
+        if not RUNE.match(c) and c not in CIRCLED and not CONTENT.match(c)
+    }
     if bad:
         return original, f"unrecognised characters {''.join(sorted(bad))}"
-    return value + original[len(original.rstrip("/")):], None
+    return value + original[len(original.rstrip("/")) :], None
 
 
 def migrate_separators(text: str) -> tuple[str, int, int]:
@@ -139,10 +144,13 @@ def write_master(original_body: str, new_body: str) -> None:
     if not master.endswith(original_body):
         sys.exit("master does not end with page0-58.txt verbatim; refusing to splice")
     head, head_moved, head_skipped = migrate_separators(
-        master[: len(master) - len(original_body)])
+        master[: len(master) - len(original_body)]
+    )
     updated = head + new_body
-    print(f"   solved intro: {head_moved} '-' became ①, "
-          f"{head_skipped} left on numeric lines")
+    print(
+        f"   solved intro: {head_moved} '-' became ①, "
+        f"{head_skipped} left on numeric lines"
+    )
 
     before, after = _payload(master), _payload(updated)
     if before != after:
@@ -155,9 +163,11 @@ def write_master(original_body: str, new_body: str) -> None:
     # Compare line by line, and account for the marks themselves.
     old_lines, new_lines = master.split("\n"), updated.split("\n")
     differing = sum(1 for a, b in zip(old_lines, new_lines) if a != b)
-    delta = {c: updated.count(c) - master.count(c)
-             for c in sorted(CIRCLED | {"-", "."})
-             if updated.count(c) != master.count(c)}
+    delta = {
+        c: updated.count(c) - master.count(c)
+        for c in sorted(CIRCLED | {"-", "."})
+        if updated.count(c) != master.count(c)
+    }
 
     MASTER_TARGET.write_text(updated, encoding="utf-8")
     print(f"\nwrote {MASTER_TARGET.relative_to(ROOT)}")
@@ -168,7 +178,7 @@ def write_master(original_body: str, new_body: str) -> None:
 
 def main() -> None:
     if len(sys.argv) < 2:
-        sys.exit(__doc__.strip().splitlines()[-1])
+        sys.exit((__doc__ or "").strip().splitlines()[-1])
     verdicts = json.loads(Path(sys.argv[1]).read_text())
     # an unpaired band carries a slot id like "~9", not a line number
     by_key = {(v["page"], str(v["line"])): v for v in verdicts}
@@ -177,7 +187,7 @@ def main() -> None:
     stats: Counter[str] = Counter()
     problems: list[str] = []
 
-    seen: set[tuple[int, int]] = set()
+    seen: set[tuple[int, str]] = set()
     for page, block in enumerate(blocks):
         lines = block.split("\n")
         idx = -1
@@ -194,8 +204,11 @@ def main() -> None:
             if err:
                 stats["refused"] += 1
             else:
-                stats[{"txt": "txt kept", "scan": "scan taken",
-                       "edit": "edited"}.get(v.get("source"), "applied")] += 1
+                stats[
+                    {"txt": "txt kept", "scan": "scan taken", "edit": "edited"}.get(
+                        v.get("source"), "applied"
+                    )
+                ] += 1
             if err:
                 problems.append(f"page {page} line {idx}: {err}")
                 continue
@@ -209,18 +222,28 @@ def main() -> None:
     if new_body.count("\n") != original_body.count("\n"):
         sys.exit("line count changed; a review may not add or remove lines")
     TARGET.write_text(new_body, encoding="utf-8")
-    print(f"\nword separators encoded: {moved} '-' became ①"
-          + (f", {skipped} left on non-runic lines" if skipped else ""))
+    print(
+        f"\nword separators encoded: {moved} '-' became ①"
+        + (f", {skipped} left on non-runic lines" if skipped else "")
+    )
 
     print(f"read {len(verdicts)} verdicts")
-    for k in ("txt kept", "scan taken", "edited", "refused",
-              "lines changed", "unreviewed"):
+    for k in (
+        "txt kept",
+        "scan taken",
+        "edited",
+        "refused",
+        "lines changed",
+        "unreviewed",
+    ):
         print(f"   {k:>15}: {stats[k]}")
     orphan = [k for k in by_key if k not in seen]
     if orphan:
-        print(f"\n{len(orphan)} verdicts match no transcription line "
-              f"(the reader saw a band the text has no line for -- these are "
-              f"content the transcription omits, not corrections):")
+        print(
+            f"\n{len(orphan)} verdicts match no transcription line "
+            f"(the reader saw a band the text has no line for -- these are "
+            f"content the transcription omits, not corrections):"
+        )
         for page, line in sorted(orphan, key=lambda k: (k[0], str(k[1]))):
             note = by_key[(page, line)].get("note", "")
             print(f"   page {page} slot {line}  {note}")
@@ -230,8 +253,10 @@ def main() -> None:
             print(f"   {p}")
     text = TARGET.read_text()
     print(f"\nwrote {TARGET.relative_to(ROOT)}")
-    print("   mark census: " + "  ".join(
-        f"{c} {text.count(c)}" for c in sorted(CIRCLED) if text.count(c)))
+    print(
+        "   mark census: "
+        + "  ".join(f"{c} {text.count(c)}" for c in sorted(CIRCLED) if text.count(c))
+    )
     print(f"   remaining legacy '-' {text.count('-')}  '.' {text.count('.')}")
     write_master(original_body, new_body)
 

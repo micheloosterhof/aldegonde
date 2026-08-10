@@ -148,8 +148,7 @@ def enc_word_ct_autokey(pt: str, wl: list[int]) -> str:
     prev = "ᚠᚢᚦ"
     out = []
     for w in chop(pt, wl):
-        cw = [i2r((r2i(c) + r2i(prev[k % len(prev)])) % MOD)
-              for k, c in enumerate(w)]
+        cw = [i2r((r2i(c) + r2i(prev[k % len(prev)])) % MOD) for k, c in enumerate(w)]
         out.extend(cw)
         prev = "".join(cw)
     return "".join(out)
@@ -261,8 +260,9 @@ def make_sparse_linear(k: int) -> Mechanism:
     return enc
 
 
-def make_lorenz(*, motor: bool, reject_invalid: bool,
-                reject_doublet: bool) -> Mechanism:
+def make_lorenz(
+    *, motor: bool, reject_invalid: bool, reject_doublet: bool
+) -> Mechanism:
     """Lorenz SZ42-style telex cipher on 5-bit rune codes.
 
     C = P xor chi xor psi per bit; chi wheels (periods 41,31,29,26,23) step
@@ -314,8 +314,11 @@ def make_lorenz(*, motor: bool, reject_invalid: bool,
             c = p ^ key()
             for _ in range(60):
                 bad = (reject_invalid and c >= MOD) or (
-                    reject_doublet and out and i2r(c % MOD) == out[-1]
-                    and random.random() > 0.2)
+                    reject_doublet
+                    and out
+                    and i2r(c % MOD) == out[-1]
+                    and random.random() > 0.2
+                )
                 if not bad:
                     break
                 step()
@@ -414,10 +417,14 @@ def main() -> None:
         ("gf841-w5", make_gf841_seriation(5)),
         ("gf841-w10", make_gf841_seriation(10)),
         ("sparse-lin-k5", make_sparse_linear(5)),
-        ("lorenz-basic", make_lorenz(motor=True, reject_invalid=False,
-                                     reject_doublet=False)),
-        ("lorenz-rej32+dbl", make_lorenz(motor=True, reject_invalid=True,
-                                         reject_doublet=True)),
+        (
+            "lorenz-basic",
+            make_lorenz(motor=True, reject_invalid=False, reject_doublet=False),
+        ),
+        (
+            "lorenz-rej32+dbl",
+            make_lorenz(motor=True, reject_invalid=True, reject_doublet=True),
+        ),
         ("norepeat-keystrm", enc_norepeat_keystream),
         ("lfg-1-5", make_lfg(1, 5, avoid=False)),
         ("lfg-4-5", make_lfg(4, 5, avoid=False)),
@@ -425,18 +432,22 @@ def main() -> None:
         ("output-avoidance", enc_output_avoidance),
     ]
 
-    print(f"{'mechanism':18s} {'dbl%':>5s} {'tripl':>5s} {'nIoC':>6s} "
-          f"{'monoK5':>6s} {'d1':>4s} {'d2':>4s} {'d3':>4s} {'d4':>4s} {'T5z':>6s}")
+    print(
+        f"{'mechanism':18s} {'dbl%':>5s} {'tripl':>5s} {'nIoC':>6s} "
+        f"{'monoK5':>6s} {'d1':>4s} {'d2':>4s} {'d3':>4s} {'d4':>4s} {'T5z':>6s}"
+    )
     for name, fn in mechs:
         if fn is None:
             fps = [fingerprint(text)]
         else:
             fps = [fingerprint(fn(gen(len(text)), wlens)) for _ in range(reps)]
         avg = {k: sum(f[k] for f in fps) / len(fps) for k in fps[0]}
-        print(f"{name:18s} {avg['doublet%']:5.2f} {avg['triplets']:5.1f} "
-              f"{avg['nIoC']:6.3f} {avg['monoK5']:6.3f} {avg['d1']:4.0f} "
-              f"{avg['d2']:4.0f} {avg['d3']:4.0f} {avg['d4']:4.0f} "
-              f"{avg['T5z']:+6.2f}")
+        print(
+            f"{name:18s} {avg['doublet%']:5.2f} {avg['triplets']:5.1f} "
+            f"{avg['nIoC']:6.3f} {avg['monoK5']:6.3f} {avg['d1']:4.0f} "
+            f"{avg['d2']:4.0f} {avg['d3']:4.0f} {avg['d4']:4.0f} "
+            f"{avg['T5z']:+6.2f}"
+        )
 
 
 if __name__ == "__main__":

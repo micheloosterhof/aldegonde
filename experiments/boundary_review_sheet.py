@@ -52,7 +52,7 @@ ORDER = {"separator": 0, "trailing": 1, "reader": 2}
 def classify(img: list[str], txt: list[str]) -> str | None:
     if img == txt:
         return None
-    if img[:len(txt)] == txt and all(t in c3301.MARK_CHARS for t in img[len(txt):]):
+    if img[: len(txt)] == txt and all(t in c3301.MARK_CHARS for t in img[len(txt) :]):
         return "trailing"
     return "reader" if img.count("R") != txt.count("R") else "separator"
 
@@ -60,8 +60,12 @@ def classify(img: list[str], txt: list[str]) -> str | None:
 def crop(page: int, line: list, path: Path) -> None:
     ys = [g[1] for g in line]
     xs = [g[2] for g in line]
-    box = (max(0, min(xs) - MARGIN), max(0, min(ys) - MARGIN),
-           min(2400, max(xs) + 160), min(3600, min(ys) + 114 + MARGIN))
+    box = (
+        max(0, min(xs) - MARGIN),
+        max(0, min(ys) - MARGIN),
+        min(2400, max(xs) + 160),
+        min(3600, min(ys) + 114 + MARGIN),
+    )
     Image.open(IMAGE_DIR / f"{page}.jpg").convert("L").crop(box).save(path)
 
 
@@ -77,15 +81,28 @@ def main() -> None:
             continue
         for idx, (line, text) in enumerate(zip(img_lines, lines)):
             img = [t for t in tokens(line) if t not in "'\""]
-            txt = ["R" if RUNE.match(c) else c
-                   for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
+            txt = [
+                "R" if RUNE.match(c) else c
+                for c in text
+                if RUNE.match(c) or c in c3301.MARK_CHARS
+            ]
             kind = classify(img, txt)
             if kind is None:
                 continue
             name = f"p{page:02d}_l{idx:02d}_{kind}.png"
             crop(page, line, OUT / name)
-            rows.append((ORDER[kind], page, idx, kind, name,
-                         "".join(img), "".join(txt), text.rstrip("/")))
+            rows.append(
+                (
+                    ORDER[kind],
+                    page,
+                    idx,
+                    kind,
+                    name,
+                    "".join(img),
+                    "".join(txt),
+                    text.rstrip("/"),
+                )
+            )
 
     rows.sort()
     counts = {k: sum(1 for r in rows if r[3] == k) for k in ORDER}
@@ -110,9 +127,11 @@ def main() -> None:
     for _, page, idx, kind, name, img, txt, raw in rows:
         css = "sep" if kind == "separator" else kind
         parts.append(f"<h2 class='{css}'>page {page} line {idx} &mdash; {kind}</h2>")
-        parts.append(f"<div><code>img</code> <code>{html.escape(img)}</code><br>"
-                     f"<code>txt</code> <code>{html.escape(txt)}</code><br>"
-                     f"<code>{html.escape(raw)}</code></div>")
+        parts.append(
+            f"<div><code>img</code> <code>{html.escape(img)}</code><br>"
+            f"<code>txt</code> <code>{html.escape(txt)}</code><br>"
+            f"<code>{html.escape(raw)}</code></div>"
+        )
         parts.append(f"<img src='{name}'>")
 
     (OUT / "index.html").write_text("\n".join(parts), encoding="utf-8")

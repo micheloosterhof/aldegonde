@@ -40,8 +40,9 @@ def powers(p: list[int], upto: int) -> list[list[int]]:
     return out
 
 
-def bases(base0: list[int], g: list[int], sigma: list[int],
-          lengths: list[int]) -> list[list[int]]:
+def bases(
+    base0: list[int], g: list[int], sigma: list[int], lengths: list[int]
+) -> list[list[int]]:
     """The per-word base_w for w = 0..len(lengths)-1 (base for the LAST word is
     not stepped past). base_{w+1} = base_w ∘ g^((L_w-1) mod 5) ∘ σ."""
     gp = powers(g, 5)
@@ -53,8 +54,9 @@ def bases(base0: list[int], g: list[int], sigma: list[int],
     return out
 
 
-def encrypt(words: list[list[int]], base0: list[int], g: list[int],
-            sigma: list[int]) -> list[list[int]]:
+def encrypt(
+    words: list[list[int]], base0: list[int], g: list[int], sigma: list[int]
+) -> list[list[int]]:
     gp = powers(g, 5)
     lengths = [len(w) for w in words]
     ct = []
@@ -63,8 +65,9 @@ def encrypt(words: list[list[int]], base0: list[int], g: list[int],
     return ct
 
 
-def decrypt(ct: list[list[int]], base0: list[int], g: list[int],
-            sigma: list[int]) -> list[list[int]]:
+def decrypt(
+    ct: list[list[int]], base0: list[int], g: list[int], sigma: list[int]
+) -> list[list[int]]:
     gip = [inverse(p) for p in powers(g, 5)]  # g^-(k)
     lengths = [len(w) for w in ct]
     pt = []
@@ -75,6 +78,7 @@ def decrypt(ct: list[list[int]], base0: list[int], g: list[int],
 
 
 # ---------- key construction ----------
+
 
 def order5_from_grid(order25: list[int], fixed4: list[int]) -> list[int]:
     """g = five 5-cycles (columns of a 5x5 grid) + 4 fixed. order25 is 25 runes
@@ -101,8 +105,7 @@ def _selftest() -> None:
     base0 = list(range(M))
     rng.shuffle(base0)
 
-    words = [[rng.randrange(M) for _ in range(rng.randint(1, 12))]
-             for _ in range(500)]
+    words = [[rng.randrange(M) for _ in range(rng.randint(1, 12))] for _ in range(500)]
     ct = encrypt(words, base0, g, sigma)
     rec = decrypt(ct, base0, g, sigma)
     assert rec == words, "round-trip failed"

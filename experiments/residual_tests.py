@@ -77,26 +77,33 @@ def main() -> None:
     counts = [ident[i] for i in range(N)]
     exp = len(dpos) / N
     stat = sum((c - exp) ** 2 / exp for c in counts)
-    print(f"  doubled-rune identity: chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.4f}")
+    print(f"  doubled-rune identity: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.4f}")
     print(f"  counts: {counts}")
     # C[i+2]-C[i] and C[i-1]-C[i] at doublets
     after = [(int(cipher[i + 2]) - int(cipher[i])) % N for i in dpos if i + 2 < n]
     before = [(int(cipher[i - 1]) - int(cipher[i])) % N for i in dpos if i > 0]
-    for name, vals in (("delta after doublet", after), ("delta before doublet", before)):
+    for name, vals in (
+        ("delta after doublet", after),
+        ("delta before doublet", before),
+    ):
         c = Counter(vals)
         counts = [c[i] for i in range(N)]
         m = len(vals)
         stat = sum((x - m / N) ** 2 / (m / N) for x in counts)
-        print(f"  {name}: n={m} chi2={stat:.1f} p={chi2_dist.sf(stat, N-1):.4f} "
-              f"(note 0 suppressed by no-triplet)")
+        print(
+            f"  {name}: n={m} chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.4f} "
+            f"(note 0 suppressed by no-triplet)"
+        )
     # doublet position mod 29, mod 7
     for mod in (7, 29):
         c = Counter(i % mod for i in dpos)
         counts = [c[i] for i in range(mod)]
         m = len(dpos)
         stat = sum((x - m / mod) ** 2 / (m / mod) for x in counts)
-        print(f"  doublet positions mod {mod}: chi2={stat:.1f} "
-              f"p={chi2_dist.sf(stat, mod-1):.4f}")
+        print(
+            f"  doublet positions mod {mod}: chi2={stat:.1f} "
+            f"p={chi2_dist.sf(stat, mod - 1):.4f}"
+        )
 
     print("\n=== DIGRAPHIC/TRIGRAPHIC KAPPA AT ALL SHIFTS ===")
     arr = cipher
@@ -115,10 +122,14 @@ def main() -> None:
             worst.append((abs(z), s, hits, exp))
         zs = np.array(zs)
         worst.sort(reverse=True)
-        print(f"  {name}: {len(zs)} shifts, mean z={zs.mean():+.3f} sd={zs.std():.3f}, "
-              f"expected max ~{math.sqrt(2*math.log(len(zs))):.1f}")
+        print(
+            f"  {name}: {len(zs)} shifts, mean z={zs.mean():+.3f} sd={zs.std():.3f}, "
+            f"expected max ~{math.sqrt(2 * math.log(len(zs))):.1f}"
+        )
         for _absz, s, hits, exp in worst[:4]:
-            print(f"    shift {s}: hits={hits} exp={exp:.1f} z={(hits-exp)/math.sqrt(exp):+.2f}")
+            print(
+                f"    shift {s}: hits={hits} exp={exp:.1f} z={(hits - exp) / math.sqrt(exp):+.2f}"
+            )
 
     print("\n=== SENTENCE / WORD STRUCTURE (consistent conventions) ===")
     # Both the solved prefix and the unsolved section wrap words across line
@@ -130,7 +141,12 @@ def main() -> None:
     u_cipher = "$".join(u_raw.split("$")[:-2])
 
     def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
-        seps_ = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + ("" if merge_lines else "/")
+        seps_ = (
+            c3301.MARK_CHARS
+            + "%&$"
+            + c3301.NUMERAL_CHARS
+            + ("" if merge_lines else "/")
+        )
         out: list[int] = []
         cur = 0
         for ch in text:
@@ -173,15 +189,19 @@ def main() -> None:
         uw = word_lengths(u_cipher, merge_lines=merge)
         sw = word_lengths(solved, merge_lines=merge)
         ks, p = ks_2samp(uw, sw)
-        print(f"  words (merge_lines={merge}): unsolved n={len(uw)} "
-              f"mean={np.mean(uw):.2f} | solved n={len(sw)} "
-              f"mean={np.mean(sw):.2f} | KS D={ks:.3f} p={p:.2e}")
+        print(
+            f"  words (merge_lines={merge}): unsolved n={len(uw)} "
+            f"mean={np.mean(uw):.2f} | solved n={len(sw)} "
+            f"mean={np.mean(sw):.2f} | KS D={ks:.3f} p={p:.2e}"
+        )
     su = sentence_lengths(u_cipher)
     ss = sentence_lengths(solved)
     ks, p = ks_2samp(su, ss)
-    print(f"  sentences: unsolved n={len(su)} mean={np.mean(su):.1f} "
-          f"median={np.median(su)} | solved n={len(ss)} mean={np.mean(ss):.1f} "
-          f"median={np.median(ss)} | KS D={ks:.3f} p={p:.2e}")
+    print(
+        f"  sentences: unsolved n={len(su)} mean={np.mean(su):.1f} "
+        f"median={np.median(su)} | solved n={len(ss)} mean={np.mean(ss):.1f} "
+        f"median={np.median(ss)} | KS D={ks:.3f} p={p:.2e}"
+    )
 
 
 if __name__ == "__main__":

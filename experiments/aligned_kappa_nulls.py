@@ -74,8 +74,10 @@ def aligned_kappa_battery(units: list[str], name: str) -> None:
     expected = tot_n / MOD
     z = (tot_hits - expected) / sqrt(tot_n * (1 / MOD) * (1 - 1 / MOD))
     pair_z.sort(reverse=True)
-    print(f"{name}-aligned kappa: hits={tot_hits} expected={expected:.0f} "
-          f"z={z:+.2f} sigma (ratio {tot_hits / expected:.3f})")
+    print(
+        f"{name}-aligned kappa: hits={tot_hits} expected={expected:.0f} "
+        f"z={z:+.2f} sigma (ratio {tot_hits / expected:.3f})"
+    )
     tops = ", ".join(f"({i},{j})={zz:+.1f}" for zz, i, j in pair_z[:5])
     print(f"  top pairs (sigma): {tops}")
 
@@ -128,8 +130,7 @@ def digraphic_kappa(text: str, skip: int) -> tuple[int, float]:
 def main() -> None:
     """Run all three validation experiments."""
     pages, sections, text = load()
-    print(f"{len(pages)} unsolved pages, {len(text)} runes, "
-          f"{len(sections)} sections\n")
+    print(f"{len(pages)} unsolved pages, {len(text)} runes, {len(sections)} sections\n")
 
     aligned_kappa_battery(pages, "page")
     aligned_kappa_battery(sections, "section")
@@ -143,17 +144,22 @@ def main() -> None:
         sims_b.append(bigram_nioc(m))
         sims_r2.append(repeat_pairs(m, 2))
         sims_r3.append(repeat_pairs(m, 3))
-    print(f"\nbigram nIOC: observed={bigram_nioc(text):.4f} "
-          f"doublet-suppressed null={statistics.mean(sims_b):.4f}"
-          f"+/-{statistics.stdev(sims_b):.4f} (plain uniform theory: 1.0357)")
-    print(f"2-gram repeat pairs: observed={repeat_pairs(text, 2)} "
-          f"null={statistics.mean(sims_r2):.0f}+/-{statistics.stdev(sims_r2):.0f}")
-    print(f"3-gram repeat pairs: observed={repeat_pairs(text, 3)} "
-          f"null={statistics.mean(sims_r3):.0f}+/-{statistics.stdev(sims_r3):.0f}")
+    print(
+        f"\nbigram nIOC: observed={bigram_nioc(text):.4f} "
+        f"doublet-suppressed null={statistics.mean(sims_b):.4f}"
+        f"+/-{statistics.stdev(sims_b):.4f} (plain uniform theory: 1.0357)"
+    )
+    print(
+        f"2-gram repeat pairs: observed={repeat_pairs(text, 2)} "
+        f"null={statistics.mean(sims_r2):.0f}+/-{statistics.stdev(sims_r2):.0f}"
+    )
+    print(
+        f"3-gram repeat pairs: observed={repeat_pairs(text, 3)} "
+        f"null={statistics.mean(sims_r3):.0f}+/-{statistics.stdev(sims_r3):.0f}"
+    )
 
     half = len(text) // 2
-    for name, seg in [("full", text), ("half1", text[:half]),
-                      ("half2", text[half:])]:
+    for name, seg in [("full", text), ("half1", text[:half]), ("half2", text[half:])]:
         parts = []
         for skip in (2, 3, 4, 5, 6, 7, 10):
             hits, exp = digraphic_kappa(seg, skip)
@@ -167,8 +173,10 @@ def main() -> None:
         hits, exp = digraphic_kappa(p, 5)
         hits5 += hits
         exp5 += exp
-    print(f"\nwithin-page digraphic skip=5: hits={hits5:.0f} "
-          f"expected={exp5:.1f} z={(hits5 - exp5) / sqrt(exp5):+.2f} sigma")
+    print(
+        f"\nwithin-page digraphic skip=5: hits={hits5:.0f} "
+        f"expected={exp5:.1f} z={(hits5 - exp5) / sqrt(exp5):+.2f} sigma"
+    )
 
 
 if __name__ == "__main__":

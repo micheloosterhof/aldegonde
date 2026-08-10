@@ -3,6 +3,7 @@
 """Periodicity. Significance: for each period p, average the IoC of the p
 columns (runes at i mod p). A period-p key spikes this toward plaintext IoC
 (~1.7 normalized); observed stays ~1.0 for all p."""
+
 from __future__ import annotations
 
 from collections import Counter

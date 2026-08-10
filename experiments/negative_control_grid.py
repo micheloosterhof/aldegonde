@@ -91,19 +91,24 @@ def main() -> None:
     stream, words = load()
     pairs = within_pairs(words)
     print(f"clean corpus: {len(stream)} runes, {len(words)} words")
-    print(f"grid: {len(WITHIN_D)} within-word distances + "
-          f"{len(LAGS)}x{len(SEPS)} lag-pair cells = "
-          f"{len(WITHIN_D) + len(LAGS) * len(SEPS)} cells")
-    print(f"surrogate: boundaries held, runes redrawn at the observed doublet "
-          f"rate ({DRAWS} draws)\n")
+    print(
+        f"grid: {len(WITHIN_D)} within-word distances + "
+        f"{len(LAGS)}x{len(SEPS)} lag-pair cells = "
+        f"{len(WITHIN_D) + len(LAGS) * len(SEPS)} cells"
+    )
+    print(
+        f"surrogate: boundaries held, runes redrawn at the observed doublet "
+        f"rate ({DRAWS} draws)\n"
+    )
 
     real = grid(stream, pairs)
     keys = list(real)
     model = c3301.low_doublet_null()
     draws = np.empty((DRAWS, len(keys)))
     for t in range(DRAWS):
-        surr = np.array(model(stream.tolist(), random.Random(rng.randrange(2**32))),
-                        dtype=np.int8)
+        surr = np.array(
+            model(stream.tolist(), random.Random(rng.randrange(2**32))), dtype=np.int8
+        )
         cells = grid(surr, pairs)
         draws[t] = [cells[k] for k in keys]
 
@@ -116,22 +121,27 @@ def main() -> None:
     print("strongest ten cells on the real corpus")
     print(f"{'cell':>14}{'real':>12}{'surrogate':>12}{'sd':>9}{'z':>8}")
     for i in order[:10]:
-        print(f"{keys[i]:>14}{real[keys[i]]:>12.4f}{mu[i]:>12.4f}{sd[i]:>9.4f}"
-              f"{z_real[i]:>+8.2f}")
+        print(
+            f"{keys[i]:>14}{real[keys[i]]:>12.4f}{mu[i]:>12.4f}{sd[i]:>9.4f}"
+            f"{z_real[i]:>+8.2f}"
+        )
 
     real_max = float(np.max(np.abs(z_real)))
     surr_max = np.max(np.abs(z_draws), axis=1)
     beat = int(np.count_nonzero(surr_max >= real_max))
     print(f"\nfamily-wise scan correction over {len(keys)} cells")
     print(f"   real corpus largest |z| : {real_max:.2f}  ({keys[order[0]]})")
-    print(f"   surrogate largest |z|   : {surr_max.mean():.2f} +- "
-          f"{surr_max.std():.2f}, 95th pct {np.percentile(surr_max, 95):.2f}")
+    print(
+        f"   surrogate largest |z|   : {surr_max.mean():.2f} +- "
+        f"{surr_max.std():.2f}, 95th pct {np.percentile(surr_max, 95):.2f}"
+    )
     print(f"   p = {(beat + 1) / (DRAWS + 1):.4f}")
 
     threshold = float(np.percentile(surr_max, 95))
     survivors = [(keys[i], z_real[i]) for i in order if abs(z_real[i]) >= threshold]
-    print(f"\ncells clearing the scan threshold |z| >= {threshold:.2f}: "
-          f"{len(survivors)}")
+    print(
+        f"\ncells clearing the scan threshold |z| >= {threshold:.2f}: {len(survivors)}"
+    )
     for name, z in survivors:
         print(f"   {name:>14}  z = {z:+.2f}")
     if not survivors:
@@ -142,7 +152,9 @@ def main() -> None:
     # within each family instead.
     print("\nper-family correction (the families ask different questions)")
     fam = {
-        "within-word d1..d12": [i for i, k in enumerate(keys) if k.startswith("within")],
+        "within-word d1..d12": [
+            i for i, k in enumerate(keys) if k.startswith("within")
+        ],
         "lag-pair grid": [i for i, k in enumerate(keys) if k.startswith("lag")],
     }
     for name, ids in fam.items():
@@ -150,8 +162,10 @@ def main() -> None:
         sm = np.max(np.abs(z_draws[:, ids]), axis=1)
         p = (int(np.count_nonzero(sm >= rm)) + 1) / (DRAWS + 1)
         top = keys[ids[int(np.argmax(np.abs(z_real[ids])))]]
-        print(f"   {name:>22}  {len(ids):>3} cells  real max |z| {rm:.2f} ({top}) "
-              f" surrogate {sm.mean():.2f}+-{sm.std():.2f}  p = {p:.4f}")
+        print(
+            f"   {name:>22}  {len(ids):>3} cells  real max |z| {rm:.2f} ({top}) "
+            f" surrogate {sm.mean():.2f}+-{sm.std():.2f}  p = {p:.4f}"
+        )
 
     # The max statistic also throws away the structure: the top cells are all
     # lag 5. Ask instead whether any LAG is special, aggregating its separations.
@@ -167,8 +181,10 @@ def main() -> None:
     p = (int(np.count_nonzero(surr_best >= real_best)) + 1) / (DRAWS + 1)
     for lag in sorted(LAGS, key=lambda x: -agg_real[x])[:5]:
         print(f"   lag {lag:>2}: sum z^2 = {agg_real[lag]:6.1f}")
-    print(f"   best lag is {best}; against the surrogate's best lag "
-          f"({surr_best.mean():.1f} +- {surr_best.std():.1f})  p = {p:.4f}")
+    print(
+        f"   best lag is {best}; against the surrogate's best lag "
+        f"({surr_best.mean():.1f} +- {surr_best.std():.1f})  p = {p:.4f}"
+    )
 
 
 if __name__ == "__main__":

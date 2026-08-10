@@ -3,6 +3,7 @@
 """Line-initial bias. Lines are filled with as many runes as fit, breaking words
 arbitrarily, so the first rune of each line is glyph-width-biased. Significance:
 chi-square of first-rune-of-line vs uniform; contrast with line-FINAL (uniform)."""
+
 from __future__ import annotations
 
 import math
@@ -42,7 +43,9 @@ def main() -> None:
             lasts[IDX[rs[-1]]] += 1
     cf, pf, nf = chi2_uniform(firsts)
     cl, pl, nl = chi2_uniform(lasts)
-    print(f"line-initial runes: n={nf}, chi2={cf:.1f} (28 df)  p={pf:.1e}  <-- non-uniform")
+    print(
+        f"line-initial runes: n={nf}, chi2={cf:.1f} (28 df)  p={pf:.1e}  <-- non-uniform"
+    )
     print(f"line-final runes:   n={nl}, chi2={cl:.1f} (28 df)  p={pl:.2f}")
     print("VERDICT: line-initial strongly non-uniform, line-final uniform --")
     print("consistent with glyph-width-driven line wrap (layout), not cipher.")

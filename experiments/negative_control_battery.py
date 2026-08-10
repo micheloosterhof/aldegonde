@@ -83,11 +83,11 @@ def recut(stream: list[int], words: list[list[int]], lines: list[list[int]]):
     """Re-impose the real word and line shapes on a new rune stream."""
     out_w, out_l, i = [], [], 0
     for w in words:
-        out_w.append(stream[i:i + len(w)])
+        out_w.append(stream[i : i + len(w)])
         i += len(w)
     i = 0
     for line in lines:
-        out_l.append(stream[i:i + len(line)])
+        out_l.append(stream[i : i + len(line)])
         i += len(line)
     return out_w, out_l
 

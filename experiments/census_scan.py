@@ -75,15 +75,14 @@ def prose_K(lens, rng, samples=40):
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    prose = [IDX_ENG[t] for w in prose_words(prose_path)
-             for t in to_runeglish(w)]
+    prose = [IDX_ENG[t] for w in prose_words(prose_path) for t in to_runeglish(w)]
     m: Counter = Counter()
     s: Counter = Counter()
     for _ in range(samples):
         off = rng.randrange(len(prose) - sum(lens))
         pos = off
         for L in lens:
-            w = prose[pos:pos + L]
+            w = prose[pos : pos + L]
             pos += L
             for j in range(L):
                 for d in DS:
@@ -125,8 +124,7 @@ def main() -> None:
     obs, se, lens = lp_rates()
     K = prose_K(lens, rng)
     B = {d: (1 - K[d]) / 28 for d in DS}
-    print("LP within-word rates: "
-          + "  ".join(f"d{d} {obs[d]:.4f}" for d in DS))
+    print("LP within-word rates: " + "  ".join(f"d{d} {obs[d]:.4f}" for d in DS))
 
     results = []
     n_scanned = 0
@@ -138,8 +136,7 @@ def main() -> None:
         chi, s_hat, A, Bs = score(census, obs, se, K, B)
         results.append((chi, census, s_hat))
     results.sort()
-    print(f"\nscanned {n_scanned} feasible censuses (of 4565 partitions); "
-          f"top 15:")
+    print(f"\nscanned {n_scanned} feasible censuses (of 4565 partitions); top 15:")
     print(f"{'census':>34} {'chi2':>7} {'s':>7} {'order':>6}  worst cells")
     for chi, census, s_hat in results[:15]:
         order = 1
@@ -147,9 +144,16 @@ def main() -> None:
             order = order * L // math.gcd(order, L)
         _, _, A, Bs = score(census, obs, se, K, B)
         pulls = sorted(
-            ((abs((A[d] + Bs[d] * s_hat - obs[d]) / se[d]), d,
-              (A[d] + Bs[d] * s_hat - obs[d]) / se[d]) for d in DS),
-            reverse=True)[:2]
+            (
+                (
+                    abs((A[d] + Bs[d] * s_hat - obs[d]) / se[d]),
+                    d,
+                    (A[d] + Bs[d] * s_hat - obs[d]) / se[d],
+                )
+                for d in DS
+            ),
+            reverse=True,
+        )[:2]
         wc = ", ".join(f"d{d}:{z:+.1f}" for _, d, z in pulls)
         cs = "+".join(str(L) for L in sorted(census, reverse=True) if L > 1)
         nf = sum(1 for L in census if L == 1)
@@ -159,16 +163,20 @@ def main() -> None:
     # reference censuses
     print("\nreference censuses:")
     for name, census in (
-            ("Michel 4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
-            ("standard 5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1)),
-            ("prime 5+5+5+7+7", (5, 5, 5, 7, 7)),
-            ("primes 11+7+5+3+2+1f", (11, 7, 5, 3, 2, 1))):
+        ("Michel 4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
+        ("standard 5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1)),
+        ("prime 5+5+5+7+7", (5, 5, 5, 7, 7)),
+        ("primes 11+7+5+3+2+1f", (11, 7, 5, 3, 2, 1)),
+    ):
         chi, s_hat, A, Bs = score(census, obs, se, K, B)
         rank = 1 + sum(1 for c, _, _ in results if c < chi - 1e-12)
         cells = "  ".join(
-            f"d{d}:{(A[d] + Bs[d] * s_hat - obs[d]) / se[d]:+.1f}" for d in DS)
-        print(f"  {name:<22} chi2 {chi:6.2f}  s {s_hat:.4f}  "
-              f"rank {rank:>4}/{n_scanned}  {cells}")
+            f"d{d}:{(A[d] + Bs[d] * s_hat - obs[d]) / se[d]:+.1f}" for d in DS
+        )
+        print(
+            f"  {name:<22} chi2 {chi:6.2f}  s {s_hat:.4f}  "
+            f"rank {rank:>4}/{n_scanned}  {cells}"
+        )
 
 
 if __name__ == "__main__":

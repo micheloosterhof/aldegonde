@@ -126,11 +126,12 @@ def main() -> None:
         return all(leg(x)[0] != 1 for x in (i, i + 4))
 
     obs_ok = sum(1 for i in events if legs_ok(i))
-    null_ok = sum(1 for _ in range(trials)
-                  if legs_ok(rng.randrange(n - 9)))
-    print(f"\nTest 2 — events with both legs walk-explainable (b in 0,2): "
-          f"{obs_ok}/{len(events)} vs {null_ok / trials * len(events):.1f} "
-          f"expected from geometry alone")
+    null_ok = sum(1 for _ in range(trials) if legs_ok(rng.randrange(n - 9)))
+    print(
+        f"\nTest 2 — events with both legs walk-explainable (b in 0,2): "
+        f"{obs_ok}/{len(events)} vs {null_ok / trials * len(events):.1f} "
+        f"expected from geometry alone"
+    )
 
     # Test 3 — the direct R_a test, independent of the d4 pairing: if
     # sigma g^a sigma = g^(a+2) holds for some a, then EVERY lag-5 pair at
@@ -157,8 +158,7 @@ def main() -> None:
     for key in sorted(cells):
         m_, o_ = hits[key], cells[key]
         sd = (o_ * p0 * (1 - p0)) ** 0.5
-        print(f"{key:>16} {o_:>6} {m_:>6} {m_ / o_:>7.4f} "
-              f"{(m_ - o_ * p0) / sd:>+9.2f}")
+        print(f"{key:>16} {o_:>6} {m_:>6} {m_ / o_:>7.4f} {(m_ - o_ * p0) / sd:>+9.2f}")
 
 
 if __name__ == "__main__":

@@ -37,8 +37,22 @@ R2I = {r: i for i, r in enumerate(ALPH)}
 SEED = 3301
 
 # observed LP clean-corpus word-length distribution (length: count)
-LEN_DIST = {1: 99, 2: 465, 3: 726, 4: 514, 5: 318, 6: 252, 7: 214,
-            8: 159, 9: 77, 10: 51, 11: 28, 12: 18, 13: 4, 14: 3}
+LEN_DIST = {
+    1: 99,
+    2: 465,
+    3: 726,
+    4: 514,
+    5: 318,
+    6: 252,
+    7: 214,
+    8: 159,
+    9: 77,
+    10: 51,
+    11: 28,
+    12: 18,
+    13: 4,
+    14: 3,
+}
 
 
 def load_trigram() -> dict[tuple[int, int], list[float]]:
@@ -82,7 +96,7 @@ def cut_words(stream: list[int], rng: random.Random) -> list[list[int]]:
         length = rng.choices(lengths, weights=weights, k=1)[0]
         if i + length > len(stream):
             break
-        words.append(stream[i:i + length])
+        words.append(stream[i : i + length])
         i += length
     return words
 
@@ -140,10 +154,12 @@ def measure(words) -> dict:
 
 def show(label: str, m: dict) -> None:
     r = m["rates"]
-    print(f"{label:<12} uniIoC={m['uni_ioc']:.3f}  "
-          f"d1={r[1]:.4f} d2={r[2]:.4f} d3={r[3]:.4f} "
-          f"d4={r[4]:.4f} d5={r[5]:.4f} d6={r[6]:.4f}  "
-          f"cols={[round(c,2) for c in m['cols']]}")
+    print(
+        f"{label:<12} uniIoC={m['uni_ioc']:.3f}  "
+        f"d1={r[1]:.4f} d2={r[2]:.4f} d3={r[3]:.4f} "
+        f"d4={r[4]:.4f} d5={r[5]:.4f} d6={r[6]:.4f}  "
+        f"cols={[round(c, 2) for c in m['cols']]}"
+    )
 
 
 def main() -> None:
@@ -152,8 +168,10 @@ def main() -> None:
     stream = gen_plaintext(trans, 40000, rng)
     words = cut_words(stream, rng)
     print(f"generated {len(words)} words, {sum(len(w) for w in words)} runes\n")
-    print("TARGET (unsolved LP): uniIoC=1.00  d1=0.0066 d5=0.0492 "
-          "d2/3/4~0.034 (chance)  cols flat (~1.0)\n")
+    print(
+        "TARGET (unsolved LP): uniIoC=1.00  d1=0.0066 d5=0.0492 "
+        "d2/3/4~0.034 (chance)  cols flat (~1.0)\n"
+    )
     show("PLAINTEXT", measure(words))
     for model in ("positional", "perword", "wordkey"):
         show(model, measure(encipher(words, model, rng)))

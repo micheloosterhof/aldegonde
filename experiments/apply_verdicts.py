@@ -72,12 +72,16 @@ def pairs_from(review: Path) -> tuple[list[tuple[str, str]], Counter, list[str]]
             bad = {c for c in want if not PAYLOAD.match(c) and c not in c3301.MARKS}
             if bad:
                 problems.append(
-                    f"page {page} line {lineno}: unrecognised {''.join(sorted(bad))}")
+                    f"page {page} line {lineno}: unrecognised {''.join(sorted(bad))}"
+                )
                 stats["refused"] += 1
                 continue
-            stats[{"txt": "txt kept", "scan": "scan taken",
-                   "edit": "edited"}.get(v.get("source"), "applied")] += 1
-            new = want + text[len(body):]
+            stats[
+                {"txt": "txt kept", "scan": "scan taken", "edit": "edited"}.get(
+                    v.get("source"), "applied"
+                )
+            ] += 1
+            new = want + text[len(body) :]
             if new != text:
                 pairs.append((text, new))
     stats["no such line"] = len(verdicts)
@@ -89,8 +93,14 @@ def main() -> None:
         sys.exit("usage: python3 -m experiments.apply_verdicts <review.json> [--write]")
     pairs, stats, problems = pairs_from(Path(sys.argv[1]))
 
-    for k in ("txt kept", "scan taken", "edited", "refused", "unreviewed",
-              "no such line"):
+    for k in (
+        "txt kept",
+        "scan taken",
+        "edited",
+        "refused",
+        "unreviewed",
+        "no such line",
+    ):
         if stats[k]:
             print(f"   {k:>14}: {stats[k]}")
     print(f"\n{len(pairs)} lines would change")
@@ -120,8 +130,10 @@ def main() -> None:
         if before.count("\n") != text.count("\n"):
             sys.exit(f"{path.name}: line count changed; refusing")
         path.write_text(text, encoding="utf-8")
-        print(f"{path.name}: {applied} applied"
-              + (f", {skipped} lines absent from this file" if skipped else ""))
+        print(
+            f"{path.name}: {applied} applied"
+            + (f", {skipped} lines absent from this file" if skipped else "")
+        )
 
 
 if __name__ == "__main__":

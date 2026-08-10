@@ -95,8 +95,10 @@ def main() -> None:
         ur, uk, un = short_rate(u)
         sr, sk, sn = short_rate(s)
         se = sqrt(ur * (1 - ur) / un + sr * (1 - sr) / sn)
-        print(f"{name:>24}{f'{ur:.1%} ({uk}/{un})':>22}"
-              f"{f'{sr:.1%} ({sk}/{sn})':>22}{(sr - ur) / se:>+8.2f}")
+        print(
+            f"{name:>24}{f'{ur:.1%} ({uk}/{un})':>22}"
+            f"{f'{sr:.1%} ({sk}/{sn})':>22}{(sr - ur) / se:>+8.2f}"
+        )
 
     b = CONVENTIONS["- . % & $ (lp_corpus)"]
     u, s = words(unsolved, b), words(solved, b)
@@ -126,19 +128,23 @@ def main() -> None:
     pooled = sum(k for k, _ in rows) / sum(n for _, n in rows)
     chi2 = sum((k - n * pooled) ** 2 / (n * pooled * (1 - pooled)) for k, n in rows)
     df = len(rows) - 1
-    print(f"\n   homogeneity across sections: chi2 = {chi2:.2f} on {df} df, "
-          f"p = {stats.chi2.sf(chi2, df):.3f}")
+    print(
+        f"\n   homogeneity across sections: chi2 = {chi2:.2f} on {df} df, "
+        f"p = {stats.chi2.sf(chi2, df):.3f}"
+    )
 
     print("\n4. does it drift through the book?\n")
     quarters = 4
     per = len(u) // quarters
     for q in range(quarters):
-        part = u[q * per:(q + 1) * per] if q < quarters - 1 else u[q * per:]
+        part = u[q * per : (q + 1) * per] if q < quarters - 1 else u[q * per :]
         r, k, n = short_rate(part)
         print(f"   words {q * per:>5}-{q * per + len(part):<5} {r:>7.1%} ({k}/{n})")
     tau = stats.kendalltau(range(len(u)), [1 if v <= SHORT else 0 for v in u])
-    print(f"   rank correlation of shortness with position: tau = "
-          f"{tau.statistic:+.4f}, p = {tau.pvalue:.3f}")
+    print(
+        f"   rank correlation of shortness with position: tau = "
+        f"{tau.statistic:+.4f}, p = {tau.pvalue:.3f}"
+    )
 
 
 if __name__ == "__main__":

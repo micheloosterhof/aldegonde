@@ -38,8 +38,22 @@ M = 29
 R2I = {r: i for i, r in enumerate(ALPH)}
 SEED = 3301
 
-LEN_DIST = {1: 99, 2: 465, 3: 726, 4: 514, 5: 318, 6: 252, 7: 214,
-            8: 159, 9: 77, 10: 51, 11: 28, 12: 18, 13: 4, 14: 3}
+LEN_DIST = {
+    1: 99,
+    2: 465,
+    3: 726,
+    4: 514,
+    5: 318,
+    6: 252,
+    7: 214,
+    8: 159,
+    9: 77,
+    10: 51,
+    11: 28,
+    12: 18,
+    13: 4,
+    14: 3,
+}
 
 
 def load_trigram():
@@ -77,12 +91,13 @@ def cut_words(stream, rng):
         length = rng.choices(lengths, weights=weights, k=1)[0]
         if i + length > len(stream):
             break
-        words.append(stream[i:i + length])
+        words.append(stream[i : i + length])
         i += length
     return words
 
 
 # ---------- permutation tooling ----------
+
 
 def perm_from_cycles(cycle_lengths, rng):
     elems = list(range(M))
@@ -90,7 +105,7 @@ def perm_from_cycles(cycle_lengths, rng):
     p = [0] * M
     pos = 0
     for length in cycle_lengths:
-        cyc = elems[pos:pos + length]
+        cyc = elems[pos : pos + length]
         for k in range(length):
             p[cyc[k]] = cyc[(k + 1) % length]
         pos += length
@@ -144,6 +159,7 @@ def diag_rate(mat, rel):
 
 # ---------- ciphers ----------
 
+
 def encipher_v1(words, g5, base0, steps, stepkey, rng):
     gp = [ppow(g5, k) for k in range(5)]
     base = base0[:]
@@ -165,17 +181,18 @@ def encipher_v2(words, g4, base0, steps, stepkey, rng):
         for j, p in enumerate(w):
             if j > 0 and j % 5 != r:
                 e = (e + 1) % 4
-            cw.append(base[ppow(g4, e)[p]] if False else base[_G4P[e][p]])
+            cw.append(base[_G4P[e][p]])
         out.append(cw)
         s = steps[stepkey[wi % len(stepkey)]]
         base = [base[s[x]] for x in range(M)]
     return out
 
 
-_G4P = None  # set in main: powers of g4
+_G4P: list[list[int]] = []  # set in main: powers of g4
 
 
 # ---------- battery ----------
+
 
 def ioc(seq):
     n = len(seq)
@@ -205,9 +222,13 @@ def battery(label, ct_words):
     r1w = rate(1, same=True)[0]
     r1x = rate(1, same=False)[0]
     print(f"d1w {r1w:.4f} (0.0063)  d1seam {r1x:.4f} (0.0079)")
-    print(f"  d2w {rate(2, same=True)[0]:.4f}  d3w {rate(3, same=True)[0]:.4f}  "
-          f"d4w {rate(4, same=True)[0]:.4f}  (all 0.0345)")
-    print(f"  d5w {rate(5, same=True)[0]:.4f} (0.049)   d5x {rate(5, same=False)[0]:.4f} (0.030)")
+    print(
+        f"  d2w {rate(2, same=True)[0]:.4f}  d3w {rate(3, same=True)[0]:.4f}  "
+        f"d4w {rate(4, same=True)[0]:.4f}  (all 0.0345)"
+    )
+    print(
+        f"  d5w {rate(5, same=True)[0]:.4f} (0.049)   d5x {rate(5, same=False)[0]:.4f} (0.030)"
+    )
     cols = [round(ioc([w[j] for w in ct_words if len(w) > j]), 2) for j in range(3)]
     pioc = [round(sum(ioc(stream[k::p]) for k in range(p)) / p, 2) for p in (2, 5)]
     print(f"  cols {cols} (1.0)   periodicIoC p2,p5 {pioc} (1.0)")
@@ -223,8 +244,10 @@ def battery(label, ct_words):
     gaps = [dpos[k + 1] - dpos[k] for k in range(len(dpos) - 1)]
     small = sum(1 for gp in gaps if gp <= 5)
     print(f"  doublets {len(dpos)}; by pos%5 {phases} (flat)")
-    print(f"  doublet gaps<=5: {small}/{len(gaps)}  min gap {min(gaps) if gaps else '-'}"
-          f"  (LP: 0 gaps<=5, min 6)")
+    print(
+        f"  doublet gaps<=5: {small}/{len(gaps)}  min gap {min(gaps) if gaps else '-'}"
+        f"  (LP: 0 gaps<=5, min 6)"
+    )
     # d1 delta chi2 excluding delta0
     dc = Counter((stream[i] - stream[i - 1]) % M for i in range(1, n))
     nz = sum(dc.values()) - dc[0]
@@ -242,8 +265,10 @@ def main() -> None:
     P1 = mats[1][0]
     pt_dbl = diag_rate(P1, list(range(M)))
     print(f"plaintext: {len(words)} words; plaintext doublet rate {pt_dbl:.4f}")
-    print(f"predicted V2 doublet rate (1/5 x that + advance leak): "
-          f"~{pt_dbl / 5:.4f}+eps   (LP 0.0066)\n")
+    print(
+        f"predicted V2 doublet rate (1/5 x that + advance leak): "
+        f"~{pt_dbl / 5:.4f}+eps   (LP 0.0066)\n"
+    )
 
     chance = 1 / M
 
@@ -256,8 +281,10 @@ def main() -> None:
             v += 40.0 * (diag_rate(mats[d][0], acc) - chance) ** 2
         return v
 
-    g5 = min((tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g5_obj, rng)
-              for _ in range(4)), key=g5_obj)
+    g5 = min(
+        (tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g5_obj, rng) for _ in range(4)),
+        key=g5_obj,
+    )
 
     # V2 tuning: g4 order 4 (7 four-cycles + 1 fixed); same objective shape
     def g4_obj(g):
@@ -268,12 +295,16 @@ def main() -> None:
             v += 40.0 * (diag_rate(mats[d][0], acc) - chance) ** 2
         return v
 
-    g4 = min((tune(perm_from_cycles([4] * 7 + [1], rng), g4_obj, rng)
-              for _ in range(4)), key=g4_obj)
+    g4 = min(
+        (tune(perm_from_cycles([4] * 7 + [1], rng), g4_obj, rng) for _ in range(4)),
+        key=g4_obj,
+    )
     _G4P = [ppow(g4, k) for k in range(4)]
 
-    print(f"g5 diagonal on P1: {diag_rate(P1, g5):.4f}   "
-          f"g4 diagonal on P1: {diag_rate(P1, g4):.4f}")
+    print(
+        f"g5 diagonal on P1: {diag_rate(P1, g5):.4f}   "
+        f"g4 diagonal on P1: {diag_rate(P1, g4):.4f}"
+    )
 
     # walk generators: tuned so seam diagonals are rare for both schedules
     def seam_obj_for(gpows):
@@ -283,22 +314,34 @@ def main() -> None:
                 rel = [gpows[a][s[x]] for x in range(M)]
                 v += diag_rate(P1, rel)
             return v / len(gpows)
+
         return obj
 
     g5p = [ppow(g5, k) for k in range(5)]
-    steps1 = [tune(perm_from_cycles([9, 7, 7, 3, 3], rng),
-                   seam_obj_for(g5p), rng, iters=12000) for _ in range(2)]
-    steps2 = [tune(perm_from_cycles([9, 7, 7, 3, 3], rng),
-                   seam_obj_for(_G4P), rng, iters=12000) for _ in range(2)]
+    steps1 = [
+        tune(
+            perm_from_cycles([9, 7, 7, 3, 3], rng), seam_obj_for(g5p), rng, iters=12000
+        )
+        for _ in range(2)
+    ]
+    steps2 = [
+        tune(
+            perm_from_cycles([9, 7, 7, 3, 3], rng), seam_obj_for(_G4P), rng, iters=12000
+        )
+        for _ in range(2)
+    ]
     stepkey = [rng.randrange(2) for _ in range(4096)]
 
     base0 = list(range(M))
     rng.shuffle(base0)
 
-    battery("V1 ORBIT+WALK (g order 5)",
-            encipher_v1(words, g5, base0, steps1, stepkey, rng))
-    battery("V2 STAY-SLOT (g order 4, 1-in-5 hold)",
-            encipher_v2(words, g4, base0, steps2, stepkey, rng))
+    battery(
+        "V1 ORBIT+WALK (g order 5)", encipher_v1(words, g5, base0, steps1, stepkey, rng)
+    )
+    battery(
+        "V2 STAY-SLOT (g order 4, 1-in-5 hold)",
+        encipher_v2(words, g4, base0, steps2, stepkey, rng),
+    )
 
 
 if __name__ == "__main__":

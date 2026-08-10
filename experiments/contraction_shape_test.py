@@ -55,7 +55,9 @@ def main() -> None:
     n_words = len(lengths)
     mean = sum(lengths) / n_words
     print(f"clean corpus: {n_words} words, mean length {mean:.2f}")
-    print(f"observed hosts: lengths {[l for l, _ in OBSERVED]}, all with a 1-rune tail\n")
+    print(
+        f"observed hosts: lengths {[l for l, _ in OBSERVED]}, all with a 1-rune tail\n"
+    )
 
     # words of length 1 have no internal slot and cannot host a mark
     hostable = [l for l in lengths if l >= 2]
@@ -66,9 +68,7 @@ def main() -> None:
         if all(tail_is_one(l, rng) for l, _ in OBSERVED):
             hits_a += 1
         drawn = [rng.choice(hostable) for _ in OBSERVED]
-        if all(tail_is_one(l, rng) for l in drawn) and all(
-            d <= 4 for d in drawn
-        ):
+        if all(tail_is_one(l, rng) for l in drawn) and all(d <= 4 for d in drawn):
             hits_b += 1
 
     exact_a = 1.0
@@ -76,8 +76,10 @@ def main() -> None:
         exact_a *= 1 / (length - 1)
 
     print("null A (position only, host words fixed)")
-    print(f"   all four with a 1-rune tail: p = {hits_a / TRIALS:.4f} "
-          f"(exact {exact_a:.4f} = 1 in {1 / exact_a:.0f})")
+    print(
+        f"   all four with a 1-rune tail: p = {hits_a / TRIALS:.4f} "
+        f"(exact {exact_a:.4f} = 1 in {1 / exact_a:.0f})"
+    )
     print("null B (word and position drawn)")
     print(f"   all four short AND 1-rune tail: p = {hits_b / TRIALS:.5f}")
 

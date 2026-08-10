@@ -27,11 +27,39 @@ from collections import Counter
 from d5_partial_leak import to_runeglish
 
 DICT = "/usr/share/dict/web2"
-RUNE_ORDER = "FU" "TH" "ORCGWHNI" "J" "EO" "PX" "S" "TB" "E" "M" "L" "NG" "OE" "DA" "AE" "Y" "IA" "EA"
+RUNE_ORDER = "FUTHORCGWHNIJEOPXSTBEMLNGOEDAAEYIAEA"
 # map runeglish tokens to indices 0..28 (order irrelevant for coincidence)
-TOKENS = ["F", "U", "TH", "O", "R", "C", "G", "W", "H", "N", "I", "J", "EO",
-          "P", "X", "S", "T", "B", "E", "M", "L", "NG", "OE", "D", "A", "AE",
-          "Y", "IA", "EA"]
+TOKENS = [
+    "F",
+    "U",
+    "TH",
+    "O",
+    "R",
+    "C",
+    "G",
+    "W",
+    "H",
+    "N",
+    "I",
+    "J",
+    "EO",
+    "P",
+    "X",
+    "S",
+    "T",
+    "B",
+    "E",
+    "M",
+    "L",
+    "NG",
+    "OE",
+    "D",
+    "A",
+    "AE",
+    "Y",
+    "IA",
+    "EA",
+]
 TOK2I = {t: i for i, t in enumerate(TOKENS)}
 
 
@@ -63,10 +91,13 @@ def report(name: str, stream, wid) -> None:
         d1, d4 = seps[1], seps[4]
         base = (seps[2] + seps[3] + seps[5]) / 3
         tag = "within-word" if within else "all pairs "
-        print(f"  {name} [{tag}]: d1={d1} d4={d4} | d2={seps[2]} d3={seps[3]} "
-              f"d5={seps[5]} (mean {base:.1f}) | (d1+d4)/2 vs base: "
-              f"{(d1 + d4) / 2:.1f} vs {base:.1f}  ratio {(d1 + d4) / 2 / base:.2f}"
-              if base else f"  {name} [{tag}]: sparse")
+        print(
+            f"  {name} [{tag}]: d1={d1} d4={d4} | d2={seps[2]} d3={seps[3]} "
+            f"d5={seps[5]} (mean {base:.1f}) | (d1+d4)/2 vs base: "
+            f"{(d1 + d4) / 2:.1f} vs {base:.1f}  ratio {(d1 + d4) / 2 / base:.2f}"
+            if base
+            else f"  {name} [{tag}]: sparse"
+        )
 
 
 def main() -> None:
@@ -84,7 +115,9 @@ def main() -> None:
     samp = [to_runeglish(w) for w in rng.sample(words, 60000)]
     samp = [w for w in samp if len(w) >= 6]  # need length >=6 to hold a lag-5 pair
     stream, wid = build_stream(samp)
-    print(f"runeglish plaintext stream: {len(stream)} runes, {len(samp)} words (len>=6)")
+    print(
+        f"runeglish plaintext stream: {len(stream)} runes, {len(samp)} words (len>=6)"
+    )
     print("\nreal runeglish plaintext:")
     report("real", stream, wid)
 

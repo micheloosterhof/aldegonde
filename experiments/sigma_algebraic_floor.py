@@ -73,14 +73,10 @@ def diag(T, perm):
 
 def families():
     """(name, iterable of permutations) for each arithmetic family."""
-    yield ("additive  x+b", [[(x + b) % M for x in range(M)]
-                             for b in range(M)])
-    yield ("multiplicative a*x", [[(a * x) % M for x in range(M)]
-                                  for a in range(1, M)])
-    yield ("beaufort   b-x", [[(b - x) % M for x in range(M)]
-                              for b in range(M)])
-    aff = [[(a * x + b) % M for x in range(M)]
-           for a in range(1, M) for b in range(M)]
+    yield ("additive  x+b", [[(x + b) % M for x in range(M)] for b in range(M)])
+    yield ("multiplicative a*x", [[(a * x) % M for x in range(M)] for a in range(1, M)])
+    yield ("beaufort   b-x", [[(b - x) % M for x in range(M)] for b in range(M)])
+    aff = [[(a * x + b) % M for x in range(M)] for a in range(1, M) for b in range(M)]
     yield ("affine   a*x+b", aff)
     invs = []
     for a in range(1, M):
@@ -97,8 +93,7 @@ def report(name, T, observed):
     for fname, fam in families():
         vals = [diag(T, p) for p in fam]
         lo, hi = min(vals), max(vals)
-        verdict = ("CANNOT reach observed" if lo > observed
-                   else "can reach observed")
+        verdict = "CANNOT reach observed" if lo > observed else "can reach observed"
         print(f"  {fname:<20} {lo:>8.4f} {hi:>8.4f} {verdict:>28}")
     row, col = linear_sum_assignment(T.T)
     perm = [0] * M
@@ -111,10 +106,14 @@ def report(name, T, observed):
         p = list(range(M))
         rng2.shuffle(p)
         rnd.append(diag(T, p))
-    print(f"  {'unconstrained perm':<20} {floor:>8.4f} {'':>8} "
-          f"{'(assignment-problem floor)':>28}")
-    print(f"  {'random permutation':<20} {np.mean(rnd):>8.4f} "
-          f"{'':>8} {'(mean; sd ' + f'{np.std(rnd):.4f})':>28}")
+    print(
+        f"  {'unconstrained perm':<20} {floor:>8.4f} {'':>8} "
+        f"{'(assignment-problem floor)':>28}"
+    )
+    print(
+        f"  {'random permutation':<20} {np.mean(rnd):>8.4f} "
+        f"{'':>8} {'(mean; sd ' + f'{np.std(rnd):.4f})':>28}"
+    )
 
 
 def main() -> None:
@@ -126,14 +125,14 @@ def main() -> None:
     words = [d[k] for k in sorted(d)]
     lens = [len(w) for w in words]
 
-    seam_d = sum(1 for i in range(len(words) - 1)
-                 if words[i][-1] == words[i + 1][0])
-    within_d = sum(1 for w in words for i in range(len(w) - 1)
-                   if w[i] == w[i + 1])
+    seam_d = sum(1 for i in range(len(words) - 1) if words[i][-1] == words[i + 1][0])
+    within_d = sum(1 for w in words for i in range(len(w) - 1) if w[i] == w[i + 1])
     within_n = sum(len(w) - 1 for w in words)
-    print(f"LP: seam doublets {seam_d}/{len(words) - 1} = "
-          f"{seam_d / (len(words) - 1):.4f}; within-word {within_d}/{within_n}"
-          f" = {within_d / within_n:.4f}")
+    print(
+        f"LP: seam doublets {seam_d}/{len(words) - 1} = "
+        f"{seam_d / (len(words) - 1):.4f}; within-word {within_d}/{within_n}"
+        f" = {within_d / within_n:.4f}"
+    )
 
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
@@ -145,18 +144,20 @@ def main() -> None:
             pools.setdefault(len(r), []).append(r)
     cross, within = tables(lens, pools, rng)
 
-    print("\ncross-word table shape: word-final vs word-initial marginals "
-          "differ strongly in English")
+    print(
+        "\ncross-word table shape: word-final vs word-initial marginals "
+        "differ strongly in English"
+    )
     fin = cross.sum(1)
     ini = cross.sum(0)
+
     def top(v):
-        return ", ".join(
-            f"{i}:{v[i]:.3f}" for i in np.argsort(v)[::-1][:5])
+        return ", ".join(f"{i}:{v[i]:.3f}" for i in np.argsort(v)[::-1][:5])
+
     print(f"  most common finals (index:freq):  {top(fin)}")
     print(f"  most common initials(index:freq): {top(ini)}")
 
-    report("SIGMA on the cross-word table", cross,
-           seam_d / (len(words) - 1))
+    report("SIGMA on the cross-word table", cross, seam_d / (len(words) - 1))
     report("G on the within-word table", within, within_d / within_n)
 
     # Could the period-5 step be a 5-letter VIGENERE (shift schedule)
@@ -183,13 +184,14 @@ def main() -> None:
             best = (rate, ds)
     obs = within_d / within_n
     print(f"  rarest plaintext adjacent delta:      {rarest:.4f}")
-    print(f"  best 5-shift schedule (sum=0 mod 29): {best[0]:.4f} "
-          f"shifts {best[1]}")
+    print(f"  best 5-shift schedule (sum=0 mod 29): {best[0]:.4f} shifts {best[1]}")
     print(f"  observed within-word doublet rate:    {obs:.4f}")
-    print(f"  => shift schedules are {best[0] / obs:.1f}x too high; even "
-          f"ignoring the\n     period-5 closure the floor is "
-          f"{rarest:.4f} ({rarest / obs:.1f}x). A Vigenere step cannot\n"
-          f"     supply the suppression — English has no delta rare enough.")
+    print(
+        f"  => shift schedules are {best[0] / obs:.1f}x too high; even "
+        f"ignoring the\n     period-5 closure the floor is "
+        f"{rarest:.4f} ({rarest / obs:.1f}x). A Vigenere step cannot\n"
+        f"     supply the suppression — English has no delta rare enough."
+    )
 
 
 if __name__ == "__main__":

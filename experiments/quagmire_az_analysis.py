@@ -6,7 +6,8 @@ Generate Quagmire III autokey ciphertext with A-Z alphabet and analyze it.
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 import random  # noqa: I001
 

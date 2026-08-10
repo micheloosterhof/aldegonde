@@ -28,12 +28,44 @@ RUNES = set(c3301.CICADA_ALPHABET)
 WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS)
 
 # Greedy English -> runeglish (Gematria Primus). Digraphs win over singles.
-DIGRAPHS = {"TH": "ᚦ", "EO": "ᛇ", "NG": "ᛝ", "OE": "ᛟ", "AE": "ᚫ",
-            "IA": "ᛡ", "IO": "ᛡ", "EA": "ᛠ"}
-SINGLE = {"F": "ᚠ", "U": "ᚢ", "O": "ᚩ", "R": "ᚱ", "C": "ᚳ", "K": "ᚳ", "G": "ᚷ",
-          "W": "ᚹ", "H": "ᚻ", "N": "ᚾ", "I": "ᛁ", "J": "ᛄ", "P": "ᛈ", "X": "ᛉ",
-          "S": "ᛋ", "T": "ᛏ", "B": "ᛒ", "E": "ᛖ", "M": "ᛗ", "L": "ᛚ", "D": "ᛞ",
-          "A": "ᚪ", "Y": "ᚣ", "Q": "ᚳ", "V": "ᚠ", "Z": "ᛋ"}
+DIGRAPHS = {
+    "TH": "ᚦ",
+    "EO": "ᛇ",
+    "NG": "ᛝ",
+    "OE": "ᛟ",
+    "AE": "ᚫ",
+    "IA": "ᛡ",
+    "IO": "ᛡ",
+    "EA": "ᛠ",
+}
+SINGLE = {
+    "F": "ᚠ",
+    "U": "ᚢ",
+    "O": "ᚩ",
+    "R": "ᚱ",
+    "C": "ᚳ",
+    "K": "ᚳ",
+    "G": "ᚷ",
+    "W": "ᚹ",
+    "H": "ᚻ",
+    "N": "ᚾ",
+    "I": "ᛁ",
+    "J": "ᛄ",
+    "P": "ᛈ",
+    "X": "ᛉ",
+    "S": "ᛋ",
+    "T": "ᛏ",
+    "B": "ᛒ",
+    "E": "ᛖ",
+    "M": "ᛗ",
+    "L": "ᛚ",
+    "D": "ᛞ",
+    "A": "ᚪ",
+    "Y": "ᚣ",
+    "Q": "ᚳ",
+    "V": "ᚠ",
+    "Z": "ᛋ",
+}
 
 
 def to_runeglish(word: str) -> list[str] | None:
@@ -43,7 +75,7 @@ def to_runeglish(word: str) -> list[str] | None:
     out: list[str] = []
     i = 0
     while i < len(w):
-        dg = w[i:i + 2]
+        dg = w[i : i + 2]
         if dg in DIGRAPHS:
             out.append(DIGRAPHS[dg])
             i += 2
@@ -107,18 +139,26 @@ def report(label: str, cribs: list[tuple], ea_dict) -> None:
         scored.append((cnt, w, L, p, kind, examples))
     scored.sort(key=lambda x: (x[0], x[2]))
     nz = [s for s in scored if s[0] > 0]
-    print(f"affected words: {len(scored)}   with >=1 dictionary match: {len(nz)}   "
-          f"no match: {len(scored) - len(nz)}")
+    print(
+        f"affected words: {len(scored)}   with >=1 dictionary match: {len(nz)}   "
+        f"no match: {len(scored) - len(nz)}"
+    )
     sizes = Counter(min(s[0], 50) for s in scored)
-    print(f"candidate-set sizes: unique(1)={sizes[1]}  2-5="
-          f"{sum(v for k, v in sizes.items() if 2 <= k <= 5)}  "
-          f"6-20={sum(v for k, v in sizes.items() if 6 <= k <= 20)}  "
-          f">20={sum(v for k, v in sizes.items() if k > 20)}  none={sizes[0]}")
+    print(
+        f"candidate-set sizes: unique(1)={sizes[1]}  2-5="
+        f"{sum(v for k, v in sizes.items() if 2 <= k <= 5)}  "
+        f"6-20={sum(v for k, v in sizes.items() if 6 <= k <= 20)}  "
+        f">20={sum(v for k, v in sizes.items() if k > 20)}  none={sizes[0]}"
+    )
     print("\nStrongest cribs (fewest candidates first):")
-    print(f"  {'cipher word':<18} {'L':>2} {'EA@':>3} {'kind':<6} {'#cand':>5}  examples")
+    print(
+        f"  {'cipher word':<18} {'L':>2} {'EA@':>3} {'kind':<6} {'#cand':>5}  examples"
+    )
     for cnt, w, L, p, kind, ex in scored[:24]:
-        marker = w[:p - 1] + f"[{EA}]" + w[p:]
-        print(f"  {marker:<24} {L:>2} {p:>3} {kind:<6} {cnt:>5}  {', '.join(ex) if ex else '(none)'}")
+        marker = w[: p - 1] + f"[{EA}]" + w[p:]
+        print(
+            f"  {marker:<24} {L:>2} {p:>3} {kind:<6} {cnt:>5}  {', '.join(ex) if ex else '(none)'}"
+        )
 
 
 def main() -> None:
@@ -142,46 +182,68 @@ def main() -> None:
 
     print(f"Source {DATA}: {len(words)} words, {n} runes, {len(doublets)} doublets.")
     lone = sum(1 for i in doublets if wlen[i] == 1 or wlen[i + 1] == 1)
-    print(f"Doublets touching a 1-rune word: {lone}  "
-          f"(consistency: EA is never a standalone word, so this should be 0)")
+    print(
+        f"Doublets touching a 1-rune word: {lone}  "
+        f"(consistency: EA is never a standalone word, so this should be 0)"
+    )
     print("Building runeglish dictionary (this reads /usr/share/dict/words)...")
     ea_dict = load_ea_dictionary()
     print(f"  dictionary words whose runeglish contains EA: {len(ea_dict)}")
 
     # EA = 2nd rune of the doublet (forward keystream)
-    cribs_2nd = [(words[wid[i + 1]], wlen[i + 1], pos1[i + 1],
-                  "cross" if wid[i] != wid[i + 1] else "in") for i in doublets]
+    cribs_2nd = [
+        (
+            words[wid[i + 1]],
+            wlen[i + 1],
+            pos1[i + 1],
+            "cross" if wid[i] != wid[i + 1] else "in",
+        )
+        for i in doublets
+    ]
     report("EA = 2nd rune of each doublet (forward keystream)", cribs_2nd, ea_dict)
 
     # EA = 1st rune of the doublet (reverse keystream)
-    cribs_1st = [(words[wid[i]], wlen[i], pos1[i],
-                  "cross" if wid[i] != wid[i + 1] else "in") for i in doublets]
+    cribs_1st = [
+        (words[wid[i]], wlen[i], pos1[i], "cross" if wid[i] != wid[i + 1] else "in")
+        for i in doublets
+    ]
     report("EA = 1st rune of each doublet (reverse keystream)", cribs_1st, ea_dict)
 
     # Multi-EA words: a single word carrying two distinct marker positions is a
     # far stronger crib (both EAs fixed). Count distinct markers per word.
-    for label, marker_of in (("forward (EA=2nd rune)", lambda i: (wid[i + 1], pos1[i + 1])),
-                             ("reverse (EA=1st rune)", lambda i: (wid[i], pos1[i]))):
+    for label, marker_of in (
+        ("forward (EA=2nd rune)", lambda i: (wid[i + 1], pos1[i + 1])),
+        ("reverse (EA=1st rune)", lambda i: (wid[i], pos1[i])),
+    ):
         per_word: dict[int, set[int]] = {}
         for i in doublets:
             w, p = marker_of(i)
             per_word.setdefault(w, set()).add(p)
         multi = {w: ps for w, ps in per_word.items() if len(ps) >= 2}
         print("\n" + "=" * 72)
-        print(f"MULTI-EA words, {label}: {len(multi)} word(s) with >=2 fixed EA positions")
+        print(
+            f"MULTI-EA words, {label}: {len(multi)} word(s) with >=2 fixed EA positions"
+        )
         print("=" * 72)
         for w, ps in sorted(multi.items()):
             rw, L = words[w], len(words[w])
             ps_sorted = sorted(ps)
-            hits = [d for (d, dl, dpos) in ea_dict
-                    if dl == L and all(p in dpos for p in ps_sorted)]
+            hits = [
+                d
+                for (d, dl, dpos) in ea_dict
+                if dl == L and all(p in dpos for p in ps_sorted)
+            ]
             seen: dict[str, None] = {}
             for h in hits:
                 seen.setdefault(h, None)
             uniq = list(seen)
-            marked = "".join(f"[{EA}]" if (j + 1) in ps else r for j, r in enumerate(rw))
-            print(f"  {marked}  L={L} EA@{ps_sorted}  #cand={len(uniq)}: "
-                  f"{', '.join(uniq[:10]) if uniq else '(NONE - tension with EA assumption)'}")
+            marked = "".join(
+                f"[{EA}]" if (j + 1) in ps else r for j, r in enumerate(rw)
+            )
+            print(
+                f"  {marked}  L={L} EA@{ps_sorted}  #cand={len(uniq)}: "
+                f"{', '.join(uniq[:10]) if uniq else '(NONE - tension with EA assumption)'}"
+            )
 
 
 if __name__ == "__main__":

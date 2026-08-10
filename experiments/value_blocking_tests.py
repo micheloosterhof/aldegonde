@@ -61,9 +61,16 @@ def window_z(vals: list[int], positions: list[int], w: int) -> tuple[float, floa
     return statistics.mean(obs), z
 
 
-def boundary_scan(pages_vals: list[list[int]], dpos: list[int], n: int,
-                  cmin: int, cmax: int, step: int, *,
-                  carry: bool) -> tuple[float, int, int]:
+def boundary_scan(
+    pages_vals: list[list[int]],
+    dpos: list[int],
+    n: int,
+    cmin: int,
+    cmax: int,
+    step: int,
+    *,
+    carry: bool,
+) -> tuple[float, int, int]:
     """Scan capacities; return best (z, capacity, hits) for doublet
     enrichment on reconstructed block boundaries."""
     best = (-99.0, 0, 0)
@@ -99,8 +106,10 @@ def main() -> None:
     idx = [c3301.r2i(c) for c in text]
     gpv = [c3301.r2v(c) for c in text]
     dpos = [i for i in range(n - 1) if text[i] == text[i + 1]]
-    print(f"{n} runes, {len(dpos)} doublets; mean index {sum(idx)/n:.2f}, "
-          f"mean GP {sum(gpv)/n:.2f}")
+    print(
+        f"{n} runes, {len(dpos)} doublets; mean index {sum(idx) / n:.2f}, "
+        f"mean GP {sum(gpv) / n:.2f}"
+    )
 
     print("\nvalue windows before doublets (z vs random positions):")
     for name, vals in (("index", idx), ("GP", gpv)):
@@ -109,8 +118,10 @@ def main() -> None:
             print(f"  {name:5s} w={w}: mean={mean:6.2f} z={z:+.2f}")
 
     mv = [text[i] == text[i + 5] for i in range(n - 5)]
-    ev = sorted({i for i in range(len(mv) - 1) if mv[i] and mv[i + 1]}
-                | {i for i in range(len(mv) - 4) if mv[i] and mv[i + 4]})
+    ev = sorted(
+        {i for i in range(len(mv) - 1) if mv[i] and mv[i + 1]}
+        | {i for i in range(len(mv) - 4) if mv[i] and mv[i + 4]}
+    )
     print("\nvalue windows before lag-5 d1/d4 events:")
     for name, vals in (("index", idx), ("GP", gpv)):
         for w in (3, 5):
@@ -125,11 +136,12 @@ def main() -> None:
         ("GP", pages_gpv, 120, 450, 2),
     ):
         for carry in (False, True):
-            z, cap, hits = boundary_scan(pv, dpos, n, cmin, cmax, step,
-                                         carry=carry)
+            z, cap, hits = boundary_scan(pv, dpos, n, cmin, cmax, step, carry=carry)
             tag = "carry" if carry else "reset"
-            print(f"  {name}-{tag}: best z={z:+.2f} at capacity {cap} "
-                  f"(hits {hits}/{len(dpos)})")
+            print(
+                f"  {name}-{tag}: best z={z:+.2f} at capacity {cap} "
+                f"(hits {hits}/{len(dpos)})"
+            )
     print("(~600 rules scanned; the expected max-z under the null is ~3.1)")
 
 

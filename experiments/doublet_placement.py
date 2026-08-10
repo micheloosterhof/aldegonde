@@ -20,7 +20,7 @@ from collections import defaultdict
 from experiments.within_word_position_decomposition import load_words
 
 
-def chi2_uniform_rate(bins: dict[object, tuple[int, int]]) -> tuple[float, int, float]:
+def chi2_uniform_rate(bins: dict[object, tuple[int, ...]]) -> tuple[float, int, float]:
     """bins: label -> (eligible, doublets). Chi-square that the rate is uniform
     across bins given exposure. Returns (chi2, dof, p_approx)."""
     from scipy.stats import chi2 as chi2dist
@@ -39,7 +39,7 @@ def chi2_uniform_rate(bins: dict[object, tuple[int, int]]) -> tuple[float, int, 
     return chi, dof, float(chi2dist.sf(chi, dof))
 
 
-def report(title: str, bins: dict[object, tuple[int, int]], order=None) -> None:
+def report(title: str, bins: dict[object, tuple[int, ...]], order=None) -> None:
     keys = order if order is not None else sorted(bins)
     chi, dof, pv = chi2_uniform_rate(bins)
     verdict = "FLAT" if pv > 0.05 else "CLUSTERED"
@@ -59,12 +59,12 @@ def main() -> None:
     nwords = len(words)
 
     # within-word adjacent pairs, tagged with every placement axis
-    wordphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])   # j%5 (0-idx)
-    fromend: dict[int, list[int]] = defaultdict(lambda: [0, 0])     # (L-1-j)%5
-    absphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])    # abs pos %5
-    widxphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])   # word index %5
-    bylen: dict[int, list[int]] = defaultdict(lambda: [0, 0])       # word length
-    region: dict[str, list[int]] = defaultdict(lambda: [0, 0])      # text thirds
+    wordphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])  # j%5 (0-idx)
+    fromend: dict[int, list[int]] = defaultdict(lambda: [0, 0])  # (L-1-j)%5
+    absphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])  # abs pos %5
+    widxphase: dict[int, list[int]] = defaultdict(lambda: [0, 0])  # word index %5
+    bylen: dict[int, list[int]] = defaultdict(lambda: [0, 0])  # word length
+    region: dict[str, list[int]] = defaultdict(lambda: [0, 0])  # text thirds
     seam: list[int] = [0, 0]
 
     abs_pos = 0
@@ -83,8 +83,13 @@ def main() -> None:
                 ):
                     tbl[key][0] += 1
                     tbl[key][1] += is_d
-                reg = ("early" if abs_pos + j < ntotal / 3 else
-                       "mid" if abs_pos + j < 2 * ntotal / 3 else "late")
+                reg = (
+                    "early"
+                    if abs_pos + j < ntotal / 3
+                    else "mid"
+                    if abs_pos + j < 2 * ntotal / 3
+                    else "late"
+                )
                 region[reg][0] += 1
                 region[reg][1] += is_d
         # seam pair: last rune of this word vs first of next
@@ -98,22 +103,35 @@ def main() -> None:
     print(f"words {nwords}, runes {ntotal}")
     tk = sum(t[1] for t in wordphase.values())
     tn = sum(t[0] for t in wordphase.values())
-    print(f"within-word doublets {tk}/{tn} = {tk/tn:.4f}; "
-          f"seam {seam[1]}/{seam[0]} = {seam[1]/seam[0]:.4f}")
+    print(
+        f"within-word doublets {tk}/{tn} = {tk / tn:.4f}; "
+        f"seam {seam[1]}/{seam[0]} = {seam[1] / seam[0]:.4f}"
+    )
 
-    report("position-in-word mod 5 (0-indexed j) -- the hold slot if fixed",
-           {k: tuple(v) for k, v in wordphase.items()}, order=range(5))
-    report("distance-from-word-end mod 5 -- hold if end-anchored",
-           {k: tuple(v) for k, v in fromend.items()}, order=range(5))
-    report("absolute text position mod 5",
-           {k: tuple(v) for k, v in absphase.items()}, order=range(5))
-    report("word index mod 5",
-           {k: tuple(v) for k, v in widxphase.items()}, order=range(5))
-    report("text region (thirds)",
-           {k: tuple(v) for k, v in region.items()}, order=["early", "mid", "late"])
-    report("word length",
-           {k: tuple(v) for k, v in bylen.items()},
-           order=sorted(bylen))
+    report(
+        "position-in-word mod 5 (0-indexed j) -- the hold slot if fixed",
+        {k: tuple(v) for k, v in wordphase.items()},
+        order=range(5),
+    )
+    report(
+        "distance-from-word-end mod 5 -- hold if end-anchored",
+        {k: tuple(v) for k, v in fromend.items()},
+        order=range(5),
+    )
+    report(
+        "absolute text position mod 5",
+        {k: tuple(v) for k, v in absphase.items()},
+        order=range(5),
+    )
+    report(
+        "word index mod 5", {k: tuple(v) for k, v in widxphase.items()}, order=range(5)
+    )
+    report(
+        "text region (thirds)",
+        {k: tuple(v) for k, v in region.items()},
+        order=["early", "mid", "late"],
+    )
+    report("word length", {k: tuple(v) for k, v in bylen.items()}, order=sorted(bylen))
 
 
 if __name__ == "__main__":

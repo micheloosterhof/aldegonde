@@ -6,20 +6,48 @@ Generate Quagmire III autokey ciphertext and analyze bigram patterns.
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 from aldegonde import c3301
 from aldegonde.grams import bigram_diagram
 
 # Gematria Primus mapping
 GEMATRIA_RULES = [
-    ("ing", "ᛝ"), ("ng", "ᛝ"), ("th", "ᚦ"), ("ea", "ᛠ"), ("eo", "ᛇ"),
-    ("oe", "ᛟ"), ("ae", "ᚫ"), ("ia", "ᛡ"), ("io", "ᛡ"),
-    ("f", "ᚠ"), ("u", "ᚢ"), ("o", "ᚩ"), ("r", "ᚱ"), ("c", "ᚳ"),
-    ("k", "ᚳ"), ("g", "ᚷ"), ("w", "ᚹ"), ("h", "ᚻ"), ("n", "ᚾ"),
-    ("i", "ᛁ"), ("j", "ᛄ"), ("p", "ᛈ"), ("x", "ᛉ"), ("s", "ᛋ"),
-    ("z", "ᛋ"), ("t", "ᛏ"), ("b", "ᛒ"), ("e", "ᛖ"), ("m", "ᛗ"),
-    ("l", "ᛚ"), ("d", "ᛞ"), ("a", "ᚪ"), ("y", "ᚣ"), ("q", "ᚳ"),
+    ("ing", "ᛝ"),
+    ("ng", "ᛝ"),
+    ("th", "ᚦ"),
+    ("ea", "ᛠ"),
+    ("eo", "ᛇ"),
+    ("oe", "ᛟ"),
+    ("ae", "ᚫ"),
+    ("ia", "ᛡ"),
+    ("io", "ᛡ"),
+    ("f", "ᚠ"),
+    ("u", "ᚢ"),
+    ("o", "ᚩ"),
+    ("r", "ᚱ"),
+    ("c", "ᚳ"),
+    ("k", "ᚳ"),
+    ("g", "ᚷ"),
+    ("w", "ᚹ"),
+    ("h", "ᚻ"),
+    ("n", "ᚾ"),
+    ("i", "ᛁ"),
+    ("j", "ᛄ"),
+    ("p", "ᛈ"),
+    ("x", "ᛉ"),
+    ("s", "ᛋ"),
+    ("z", "ᛋ"),
+    ("t", "ᛏ"),
+    ("b", "ᛒ"),
+    ("e", "ᛖ"),
+    ("m", "ᛗ"),
+    ("l", "ᛚ"),
+    ("d", "ᛞ"),
+    ("a", "ᚪ"),
+    ("y", "ᚣ"),
+    ("q", "ᚳ"),
     ("v", "ᚢ"),
 ]
 
@@ -34,7 +62,7 @@ def english_to_runeglish(text: str) -> str:
     while i < len(text):
         matched = False
         for pattern, rune in GEMATRIA_RULES:
-            if text[i:i+len(pattern)] == pattern:
+            if text[i : i + len(pattern)] == pattern:
                 result.append(rune)
                 i += len(pattern)
                 matched = True
@@ -114,8 +142,10 @@ if __name__ == "__main__":
     print(f"Ciphertext length: {len(ciphertext)} runes")
 
     # Count doublets
-    doublets = sum(1 for i in range(len(ciphertext)-1) if ciphertext[i] == ciphertext[i+1])
-    print(f"Doublets: {doublets} ({doublets/(len(ciphertext)-1)*100:.3f}%)")
+    doublets = sum(
+        1 for i in range(len(ciphertext) - 1) if ciphertext[i] == ciphertext[i + 1]
+    )
+    print(f"Doublets: {doublets} ({doublets / (len(ciphertext) - 1) * 100:.3f}%)")
 
     print("\n" + "=" * 70)
     print("BIGRAM DIAGRAM (Quagmire III Autokey Ciphertext)")

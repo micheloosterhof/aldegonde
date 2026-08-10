@@ -61,6 +61,7 @@ def runes(values: list[int]) -> str:
 
 # --- Additive autokeys (no division needed) ---
 
+
 def decrypt_additive_ct_autokey(C: list[int], primer_c: int) -> list[int]:
     """C(i) = P(i) + C(i-1)  =>  P(i) = C(i) - C(i-1)"""
     P = []
@@ -105,6 +106,7 @@ def decrypt_beaufort_pt_autokey(C: list[int], primer_p: int) -> list[int]:
 
 # --- Multiplicative autokeys (EA fallback on div-by-zero) ---
 
+
 def decrypt_mult_ct_autokey(C: list[int], primer_c: int) -> list[int]:
     """C(i) = P(i) * C(i-1)  =>  P(i) = C(i) / C(i-1)"""
     P = []
@@ -127,6 +129,7 @@ def decrypt_mult_pt_autokey(C: list[int], primer_p: int) -> list[int]:
 
 
 # --- Mixed additive + multiplicative with two primers ---
+
 
 def decrypt_pp_plus_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i)*P(i-1) + C(i-1)  =>  P(i) = (C(i)-C(i-1)) / P(i-1)"""
@@ -221,6 +224,7 @@ def decrypt_pp_times_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 # --- Additional mixed variants ---
 
+
 def decrypt_p_plus_c_times_c(C: list[int], primer_c: int) -> list[int]:
     """C(i) = P(i) + C(i-1)*C(i-2)  =>  P(i) = C(i) - C(i-1)*C(i-2)"""
     P = []
@@ -249,7 +253,7 @@ def decrypt_p_times_c_plus_c(C: list[int], primer_c: int) -> list[int]:
 
 def decrypt_pc_plus_cp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i)*C(i-1) + C(i-1)*P(i-1)  =>  C(i) = C(i-1)*(P(i)+P(i-1))
-       P(i)+P(i-1) = C(i)/C(i-1)  =>  P(i) = C(i)/C(i-1) - P(i-1)"""
+    P(i)+P(i-1) = C(i)/C(i-1)  =>  P(i) = C(i)/C(i-1) - P(i-1)"""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -263,7 +267,7 @@ def decrypt_pc_plus_cp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_p_times_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i)*(P(i-1)+C(i-1))  =>  P(i) = C(i) / (P(i-1)+C(i-1))
-       Same as decrypt_p_times_c_plus_p but listing explicitly for clarity."""
+    Same as decrypt_p_times_c_plus_p but listing explicitly for clarity."""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -277,7 +281,7 @@ def decrypt_p_times_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_cp_plus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = C(i-1)*P(i) + P(i)*P(i-1) = P(i)*(C(i-1)+P(i-1))
-       => P(i) = C(i) / (C(i-1)+P(i-1))"""
+    => P(i) = C(i) / (C(i-1)+P(i-1))"""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -304,7 +308,7 @@ def decrypt_c_times_p_plus_p(C: list[int], primer_c: int, primer_p: int) -> list
 
 def decrypt_p_plus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i) + P(i-1)*P(i-1)  =>  P(i) = C(i) - P(i-1)^2
-       Uses plaintext autokey with quadratic feedback."""
+    Uses plaintext autokey with quadratic feedback."""
     P = []
     prev_p = primer_p
     for c in C:
@@ -316,8 +320,8 @@ def decrypt_p_plus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_c_plus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = C(i-1) + P(i)*P(i-1)  [user's suggestion]
-       P(i)*P(i-1) = C(i) - C(i-1)
-       P(i) = (C(i)-C(i-1)) / P(i-1)"""
+    P(i)*P(i-1) = C(i) - C(i-1)
+    P(i) = (C(i)-C(i-1)) / P(i-1)"""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -331,8 +335,8 @@ def decrypt_c_plus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_c_minus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = C(i-1) - P(i)*P(i-1)
-       P(i)*P(i-1) = C(i-1) - C(i)
-       P(i) = (C(i-1)-C(i)) / P(i-1)"""
+    P(i)*P(i-1) = C(i-1) - C(i)
+    P(i) = (C(i-1)-C(i)) / P(i-1)"""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -346,8 +350,8 @@ def decrypt_c_minus_pp(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_pp_minus_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i)*P(i-1) - C(i-1)
-       P(i)*P(i-1) = C(i) + C(i-1)
-       P(i) = (C(i)+C(i-1)) / P(i-1)"""
+    P(i)*P(i-1) = C(i) + C(i-1)
+    P(i) = (C(i)+C(i-1)) / P(i-1)"""
     P = []
     prev_c = primer_c
     prev_p = primer_p
@@ -361,7 +365,7 @@ def decrypt_pp_minus_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 
 def decrypt_p_plus_c_times_p(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i) + C(i-1)*P(i)  = P(i)*(1+C(i-1))
-       P(i) = C(i) / (1+C(i-1))"""
+    P(i) = C(i) / (1+C(i-1))"""
     P = []
     prev_c = primer_c
     for c in C:
@@ -384,7 +388,7 @@ def decrypt_p_times_1_plus_p(C: list[int], primer_p: int) -> list[int]:
 
 def decrypt_p_times_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
     """C(i) = P(i) * C(i-1) (pure multiplicative ct autokey, 2-primer version)
-       P(i) = C(i) / C(i-1)"""
+    P(i) = C(i) / C(i-1)"""
     P = []
     prev_c = primer_c
     for c in C:
@@ -407,6 +411,7 @@ with open("data/page0-58.txt") as f:
 # ============================================================================
 SEPARATORS = set(c3301.MARK_CHARS + "/&%$\n" + c3301.NUMERAL_CHARS)
 
+
 def parse_words(text: str) -> list[tuple[str, int]]:
     """Parse text into (word_runes, start_position).
     Position is index into the rune-only stream."""
@@ -427,6 +432,7 @@ def parse_words(text: str) -> list[tuple[str, int]]:
     if current_word:
         words.append(("".join(current_word), word_start))
     return words
+
 
 def rune_to_eng(rune_str: str) -> str:
     """Convert rune string to runeglish English."""
@@ -456,8 +462,8 @@ for i in range(1, len(C)):
 
 print(f"\nTotal doublets (C[i]=C[i-1]): {len(doublets)}")
 print(f"Total runes: {len(C)}")
-print(f"Doublet rate: {len(doublets)/len(C)*100:.2f}%")
-print(f"Expected for random (1/29): {100/29:.2f}%")
+print(f"Doublet rate: {len(doublets) / len(C) * 100:.2f}%")
+print(f"Expected for random (1/29): {100 / 29:.2f}%")
 
 # Build word lookup: for each rune position, which word is it in?
 pos_to_word: dict[int, tuple[int, int]] = {}  # pos -> (word_idx, offset_in_word)
@@ -508,11 +514,17 @@ for v in range(N):
     marker = " *** SUPPRESSED" if (ap < 1.5 or mp < 1.5) else ""
     print(f"{v:4d} {ac:10d} {ap:6.2f}% {mc:11d} {mp:6.2f}%  {eng}{marker}")
 
-print(f"\nAdditive delta=0 (doublets): {add_deltas[0]} = {add_deltas[0]/total_add*100:.2f}%")
-print(f"Mult ratio=1 (value 1=F):    {mult_ratios.get(1,0)} = {mult_ratios.get(1,0)/total_mult*100:.2f}%")
-print(f"Expected if random:          {100/N:.2f}%")
+print(
+    f"\nAdditive delta=0 (doublets): {add_deltas[0]} = {add_deltas[0] / total_add * 100:.2f}%"
+)
+print(
+    f"Mult ratio=1 (value 1=F):    {mult_ratios.get(1, 0)} = {mult_ratios.get(1, 0) / total_mult * 100:.2f}%"
+)
+print(f"Expected if random:          {100 / N:.2f}%")
 print("\nBOTH are suppressed ~5x below expected!")
-print("This strongly suggests a cipher with BOTH additive and multiplicative components.")
+print(
+    "This strongly suggests a cipher with BOTH additive and multiplicative components."
+)
 
 # ========================================================================
 # DOUBLET SUPPRESSION: within-word vs cross-boundary
@@ -539,9 +551,13 @@ for i in range(1, len(C)):
             if C[i] == C[i - 1]:
                 cross_doublets += 1
 
-print(f"\nWithin-word:     {within_doublets}/{within_pairs} = {within_doublets/within_pairs*100:.2f}%")
-print(f"Cross-boundary:  {cross_doublets}/{cross_pairs} = {cross_doublets/cross_pairs*100:.2f}%")
-print(f"Expected random: {100/N:.2f}%")
+print(
+    f"\nWithin-word:     {within_doublets}/{within_pairs} = {within_doublets / within_pairs * 100:.2f}%"
+)
+print(
+    f"Cross-boundary:  {cross_doublets}/{cross_pairs} = {cross_doublets / cross_pairs * 100:.2f}%"
+)
+print(f"Expected random: {100 / N:.2f}%")
 print("\nBoth equally suppressed => cipher chain runs THROUGH word boundaries")
 
 # ========================================================================
@@ -552,11 +568,17 @@ print(f"\n{'=' * 90}")
 print("2-RUNE DOUBLET WORDS")
 print("=" * 90)
 
-two_rune_words = [(widx, w, start) for widx, (w, start) in enumerate(words) if len(w) == 2]
-two_rune_doublets = [(widx, w, start) for widx, w, start in two_rune_words if C[start] == C[start + 1]]
+two_rune_words = [
+    (widx, w, start) for widx, (w, start) in enumerate(words) if len(w) == 2
+]
+two_rune_doublets = [
+    (widx, w, start) for widx, w, start in two_rune_words if C[start] == C[start + 1]
+]
 
 print(f"\nTotal 2-rune words: {len(two_rune_words)}")
-print(f"2-rune doublet words: {len(two_rune_doublets)}  (expected ~{len(two_rune_words)//N})")
+print(
+    f"2-rune doublet words: {len(two_rune_doublets)}  (expected ~{len(two_rune_words) // N})"
+)
 
 for widx, w, start in two_rune_doublets:
     eng = rune_to_eng(w)
@@ -608,8 +630,12 @@ for widx, w, start in ea_start_3:
     h2 = (safe_div(c2, c1) - 1) % N if c1 != 0 else -1
 
     print(f"  w{widx:4d} pos={start:5d} cipher='{eng}' vals=[{c0:2d},{c1:2d},{c2:2d}]")
-    print(f"         additive:  EA+{d1_eng}+{d2_eng}  [{0},{d1},{d2}]  {'<= EACH!' if d1==6 and d2==9 else ''}")
-    print(f"         beaufort:  EA+{b1_eng}+{b2_eng}  [{0},{b1},{b2}]  {'<= EACH!' if b1==6 and b2==9 else ''}")
+    print(
+        f"         additive:  EA+{d1_eng}+{d2_eng}  [{0},{d1},{d2}]  {'<= EACH!' if d1 == 6 and d2 == 9 else ''}"
+    )
+    print(
+        f"         beaufort:  EA+{b1_eng}+{b2_eng}  [{0},{b1},{b2}]  {'<= EACH!' if b1 == 6 and b2 == 9 else ''}"
+    )
     print(f"         mult ct:   {m1_eng}+{m2_eng}     [{m1},{m2}]")
     print(f"         C*(1+P):   [{h1},{h2}]")
     print()
@@ -626,6 +652,7 @@ print("Decryption: P(i) = C(i)/C(i-1) - 1")
 print("Explains both additive and multiplicative suppression")
 print("=" * 90)
 
+
 def decrypt_c_times_1pp(C: list[int], primer: int) -> list[int]:
     """C(i) = C(i-1) * (1+P(i)) => P(i) = C(i)/C(i-1) - 1"""
     P = []
@@ -637,6 +664,7 @@ def decrypt_c_times_1pp(C: list[int], primer: int) -> list[int]:
             P.append((safe_div(c, prev) - 1) % N)
         prev = c
     return P
+
 
 best_score = -float("inf")
 best_primer = 0
@@ -660,6 +688,8 @@ dist_p = Counter(P)
 print("\nPlaintext dist (top 5 most common):")
 for v, cnt in dist_p.most_common(5):
     eng = c3301.CICADA_ENGLISH_ALPHABET[(v - 1) % N]
-    print(f"  {eng}: {cnt} ({cnt/len(P)*100:.2f}%)")
-print(f"EA count: {dist_p.get(0, 0)} ({dist_p.get(0,0)/len(P)*100:.2f}%)")
-print("\nStill flat => model alone is not the full cipher, but dual suppression is real.")
+    print(f"  {eng}: {cnt} ({cnt / len(P) * 100:.2f}%)")
+print(f"EA count: {dist_p.get(0, 0)} ({dist_p.get(0, 0) / len(P) * 100:.2f}%)")
+print(
+    "\nStill flat => model alone is not the full cipher, but dual suppression is real."
+)

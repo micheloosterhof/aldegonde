@@ -74,8 +74,9 @@ def trend(stream: np.ndarray, groups: dict, floor: int = 20) -> float:
 def surrogates(stream: np.ndarray, rng: random.Random):
     model = c3301.low_doublet_null()
     for _ in range(DRAWS):
-        yield np.array(model(stream.tolist(), random.Random(rng.randrange(2**32))),
-                       dtype=np.int8)
+        yield np.array(
+            model(stream.tolist(), random.Random(rng.randrange(2**32))), dtype=np.int8
+        )
 
 
 def main() -> None:
@@ -95,36 +96,48 @@ def main() -> None:
         draws_t.append(trend(surr, posn))
 
     print("1. within-word profile, all distances\n")
-    print(f"{'d':>3}{'pairs':>8}{'match':>7}{'rate':>9}{'surrogate':>11}"
-          f"{'sd':>8}{'z':>7}   phase")
+    print(
+        f"{'d':>3}{'pairs':>8}{'match':>7}{'rate':>9}{'surrogate':>11}"
+        f"{'sd':>8}{'z':>7}   phase"
+    )
     for d, (a, b) in dist.items():
         n = len(a)
         m = int(np.count_nonzero(stream[a] == stream[b]))
         mu, sd = np.mean(draws_d[d]), np.std(draws_d[d])
         z = (m / n - mu) / sd if sd else float("nan")
         phase = "0 (echo)" if d % 5 == 0 else str(d % 5)
-        print(f"{d:>3}{n:>8}{m:>7}{m / n:>9.4f}{mu:>11.4f}{sd:>8.4f}{z:>+7.2f}"
-              f"   {phase}")
+        print(
+            f"{d:>3}{n:>8}{m:>7}{m / n:>9.4f}{mu:>11.4f}{sd:>8.4f}{z:>+7.2f}   {phase}"
+        )
 
     a10, b10 = dist[10]
     n10 = len(a10)
     echo = float(np.mean(stream[dist[5][0]] == stream[dist[5][1]]))
     se10 = sqrt(FLAT * (1 - FLAT) / n10)
     need = FLAT * (1 - FLAT) / ((echo - FLAT) / 2) ** 2
-    print(f"\n2. what d10 can test: {n10} pairs, "
-          f"{int(np.count_nonzero(stream[a10] == stream[b10]))} matches")
-    print(f"   flat predicts {FLAT * n10:.1f} matches, a d5-strength echo "
-          f"{echo * n10:.1f} — a gap of {(echo - FLAT) * n10:.1f}")
-    print(f"   the standard error on the rate is {se10:.4f}, so the two "
-          f"hypotheses sit {(echo - FLAT) / se10:.2f} sd apart")
-    print(f"   separating them at 2 sigma needs ~{need:.0f} pairs against the "
-          f"{n10} available ({need / n10:.0f}x the long-word supply)")
-    print("   d10 is therefore not a test; a flat d10 is not evidence against "
-          "the echo")
+    print(
+        f"\n2. what d10 can test: {n10} pairs, "
+        f"{int(np.count_nonzero(stream[a10] == stream[b10]))} matches"
+    )
+    print(
+        f"   flat predicts {FLAT * n10:.1f} matches, a d5-strength echo "
+        f"{echo * n10:.1f} — a gap of {(echo - FLAT) * n10:.1f}"
+    )
+    print(
+        f"   the standard error on the rate is {se10:.4f}, so the two "
+        f"hypotheses sit {(echo - FLAT) / se10:.2f} sd apart"
+    )
+    print(
+        f"   separating them at 2 sigma needs ~{need:.0f} pairs against the "
+        f"{n10} available ({need / n10:.0f}x the long-word supply)"
+    )
+    print("   d10 is therefore not a test; a flat d10 is not evidence against the echo")
 
     print("\n3. where the d5 echo sits inside the word\n")
-    print(f"{'runes':>10}{'pairs':>8}{'match':>7}{'rate':>9}{'surrogate':>11}"
-          f"{'sd':>8}{'z':>7}")
+    print(
+        f"{'runes':>10}{'pairs':>8}{'match':>7}{'rate':>9}{'surrogate':>11}"
+        f"{'sd':>8}{'z':>7}"
+    )
     obs = []
     for i, (a, b) in posn.items():
         n = len(a)
@@ -132,21 +145,27 @@ def main() -> None:
         mu, sd = np.mean(draws_p[i]), np.std(draws_p[i])
         z = (m / n - mu) / sd if sd else float("nan")
         obs.append((m, n))
-        print(f"{f'{i + 1} & {i + 1 + ECHO_D}':>10}{n:>8}{m:>7}{m / n:>9.4f}"
-              f"{mu:>11.4f}{sd:>8.4f}{z:>+7.2f}")
+        print(
+            f"{f'{i + 1} & {i + 1 + ECHO_D}':>10}{n:>8}{m:>7}{m / n:>9.4f}"
+            f"{mu:>11.4f}{sd:>8.4f}{z:>+7.2f}"
+        )
 
     tot_m, tot_n = sum(m for m, _ in obs), sum(n for _, n in obs)
     p = tot_m / tot_n
     chi2 = sum((m - n * p) ** 2 / (n * p * (1 - p)) for m, n in obs)
     df = len(obs) - 1
     print(f"\n   pooled {tot_m}/{tot_n} = {p:.4f}")
-    print(f"   homogeneity across start positions: chi2 = {chi2:.2f} on {df} df, "
-          f"p = {stats.chi2.sf(chi2, df):.3f}")
+    print(
+        f"   homogeneity across start positions: chi2 = {chi2:.2f} on {df} df, "
+        f"p = {stats.chi2.sf(chi2, df):.3f}"
+    )
 
     t_real = trend(stream, posn)
     t_mu, t_sd = np.mean(draws_t), np.std(draws_t)
-    print(f"\n   slope against start position: real {t_real:+.5f}, surrogate "
-          f"{t_mu:+.5f} +- {t_sd:.5f}, z = {(t_real - t_mu) / t_sd:+.2f}")
+    print(
+        f"\n   slope against start position: real {t_real:+.5f}, surrogate "
+        f"{t_mu:+.5f} +- {t_sd:.5f}, z = {(t_real - t_mu) / t_sd:+.2f}"
+    )
     print("   base drift inside a word would make this NEGATIVE (the echo")
     print("   decaying as more drift accumulates). It does not.")
 

@@ -112,28 +112,28 @@ def sequences(nmax: int) -> dict[str, list[int]]:
             cnt += 1
         primepi.append(cnt)
     seqs = {
-        "index":        list(range(1, nmax + 1)),                   # Trithemius
-        "prime":        primes,
-        "prime_gap":    [primes[k] - primes[k - 1] for k in range(1, nmax)] + [0],
-        "prime_sum":    prime_sum,
-        "totient":      tot,
-        "totient_sum":  tot_sum,
-        "fibonacci":    fib[1:nmax + 1],
-        "lucas":        lucas[:nmax],
-        "tribonacci":   trib[2:nmax + 2],
-        "triangular":   [k * (k + 1) // 2 for k in range(1, nmax + 1)],
-        "square":       [k * k for k in range(1, nmax + 1)],
-        "cube":         [k ** 3 for k in range(1, nmax + 1)],
-        "mobius":       [mobius(k) for k in range(1, nmax + 1)],
-        "divisor_sum":  [divisor_sum(k) for k in range(1, nmax + 1)],
-        "omega":        [omega(k) for k in range(1, nmax + 1)],
-        "primecount":   primepi,
+        "index": list(range(1, nmax + 1)),  # Trithemius
+        "prime": primes,
+        "prime_gap": [primes[k] - primes[k - 1] for k in range(1, nmax)] + [0],
+        "prime_sum": prime_sum,
+        "totient": tot,
+        "totient_sum": tot_sum,
+        "fibonacci": fib[1 : nmax + 1],
+        "lucas": lucas[:nmax],
+        "tribonacci": trib[2 : nmax + 2],
+        "triangular": [k * (k + 1) // 2 for k in range(1, nmax + 1)],
+        "square": [k * k for k in range(1, nmax + 1)],
+        "cube": [k**3 for k in range(1, nmax + 1)],
+        "mobius": [mobius(k) for k in range(1, nmax + 1)],
+        "divisor_sum": [divisor_sum(k) for k in range(1, nmax + 1)],
+        "omega": [omega(k) for k in range(1, nmax + 1)],
+        "primecount": primepi,
     }
     return {k: [int(x) % M for x in v] for k, v in seqs.items()}
 
 
 def apply_key(ct: list[int], key: list[int], op: str) -> list[int]:
-    if op == "vig":       # c - k
+    if op == "vig":  # c - k
         return [(ct[i] - key[i]) % M for i in range(len(ct))]
     if op == "beaufort":  # k - c
         return [(key[i] - ct[i]) % M for i in range(len(ct))]
@@ -164,7 +164,7 @@ def framings(sections: list[tuple[list[int], list[int]]], seqs: dict[str, list[i
     for name, seq in seqs.items():
         key = []
         for runes, _ in sections:
-            key += seq[:len(runes)]
+            key += seq[: len(runes)]
         yield f"{name}/persection", stream, key[:n]
 
 
@@ -187,7 +187,7 @@ def main() -> None:
     for v, label, op in results[:12]:
         flag = "  <== HIT" if v > 1.15 else ""
         print(f"  {v:.3f}  {label:<22} {op}{flag}")
-    print(f"\nbest deviation from 1.00: {max(abs(r[0]-1) for r in results):.3f}")
+    print(f"\nbest deviation from 1.00: {max(abs(r[0] - 1) for r in results):.3f}")
     if all(r[0] < 1.15 for r in results):
         print("=> no pure-shift number-sequence key linearizes the ciphertext.")
 

@@ -117,8 +117,10 @@ def main() -> None:
     print("   a shared-base schedule forces these two to diverge sharply")
 
     print("\nwhat a shift-like schedule would predict")
-    print(f"   {THE_SHARE[0]}-{THE_SHARE[1]} of the {n} are THE, but the argument "
-          "does not need that count:")
+    print(
+        f"   {THE_SHARE[0]}-{THE_SHARE[1]} of the {n} are THE, but the argument "
+        "does not need that count:"
+    )
     print("   ANY repeated 2-rune plaintext collides fully when the shifts match.")
     # README: 2-rune words are 22.8% of register tokens, top-8 function words 69%.
     # Given 8 words summing to 0.69, sum p^2 is minimised when they are equal,
@@ -126,25 +128,38 @@ def main() -> None:
     same_pt = 8 * (0.69 / 8) ** 2
     same_pairs = same_pt * pairs
     collide = same_pairs / N_RUNES
-    print(f"   top-8 cover 69% -> same-plaintext pair rate >= {same_pt:.4f} "
-          f"({same_pairs:.0f} of {pairs} pairs)")
-    print(f"   with {N_RUNES} shifts, >= {collide:.0f} of those collide at BOTH "
-          "positions")
-    print(f"   predicted both-agree >= {exp * pairs + collide:.0f}, "
-          f"observed {p01 * pairs:.0f}  ->  excluded at "
-          f"{(exp * pairs + collide - p01 * pairs) / (sd * pairs):.0f} sigma")
+    print(
+        f"   top-8 cover 69% -> same-plaintext pair rate >= {same_pt:.4f} "
+        f"({same_pairs:.0f} of {pairs} pairs)"
+    )
+    print(
+        f"   with {N_RUNES} shifts, >= {collide:.0f} of those collide at BOTH positions"
+    )
+    print(
+        f"   predicted both-agree >= {exp * pairs + collide:.0f}, "
+        f"observed {p01 * pairs:.0f}  ->  excluded at "
+        f"{(exp * pairs + collide - p01 * pairs) / (sd * pairs):.0f} sigma"
+    )
 
     # Invert: how many pairs can share a base before the excess would show?
     excess = (p01 - mu) * pairs
     ceiling = 2 * sd * pairs
-    print(f"\nbound on base reuse: observed excess is {excess:+.1f} pairs, "
-          f"2 sigma is {ceiling:.1f}")
-    print(f"   at most ~{ceiling:.0f} of {pairs} pairs share a base, so the "
-          f"same-plaintext collision")
-    print(f"   rate is below {ceiling / same_pairs:.2e} against the "
-          f"{1 / N_RUNES:.3f} a 29-shift schedule needs")
-    print(f"   -> the base must take >= ~{same_pairs / ceiling:.0f} effective "
-          f"values; there are only {n} two-rune words")
+    print(
+        f"\nbound on base reuse: observed excess is {excess:+.1f} pairs, "
+        f"2 sigma is {ceiling:.1f}"
+    )
+    print(
+        f"   at most ~{ceiling:.0f} of {pairs} pairs share a base, so the "
+        f"same-plaintext collision"
+    )
+    print(
+        f"   rate is below {ceiling / same_pairs:.2e} against the "
+        f"{1 / N_RUNES:.3f} a 29-shift schedule needs"
+    )
+    print(
+        f"   -> the base must take >= ~{same_pairs / ceiling:.0f} effective "
+        f"values; there are only {n} two-rune words"
+    )
     print("      and 2,928 words in the corpus, so the base essentially never repeats.")
 
 

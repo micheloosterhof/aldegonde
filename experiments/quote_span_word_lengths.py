@@ -38,7 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
-SHORT = 2          # "short word" = 1-2 runes, as in the deficit measurement
+SHORT = 2  # "short word" = 1-2 runes, as in the deficit measurement
 SOLVED_SHORT_RATE = 0.279
 TRIALS = 20000
 SEED = 3301
@@ -86,27 +86,38 @@ def main() -> None:
     rng = random.Random(SEED)
 
     print("word segmentation convention check")
-    for label, bset in (("- . % & $  (lp_corpus)", BOUNDARY), ("- .  (section D)", c3301.MARK_CHARS)):
+    for label, bset in (
+        ("- . % & $  (lp_corpus)", BOUNDARY),
+        ("- .  (section D)", c3301.MARK_CHARS),
+    ):
         w = words_with_quote_flag(bset)
         ins = [v for v, q in w if q]
         out = [v for v, q in w if not q]
-        print(f"   {label:24} {len(w):5} words | inside n={len(ins):3} "
-              f"mean {statistics.mean(ins):.2f} short {stats(ins)[1]:5.1%} | "
-              f"outside mean {statistics.mean(out):.2f} short {stats(out)[1]:5.1%}")
+        print(
+            f"   {label:24} {len(w):5} words | inside n={len(ins):3} "
+            f"mean {statistics.mean(ins):.2f} short {stats(ins)[1]:5.1%} | "
+            f"outside mean {statistics.mean(out):.2f} short {stats(out)[1]:5.1%}"
+        )
     print()
 
     words = words_with_quote_flag()
     inside = [v for v, q in words if q]
     outside = [v for v, q in words if not q]
-    print(f"clean corpus: {len(words)} words; {len(inside)} inside the seven "
-          f"quoted spans, {len(outside)} outside\n")
+    print(
+        f"clean corpus: {len(words)} words; {len(inside)} inside the seven "
+        f"quoted spans, {len(outside)} outside\n"
+    )
 
     for name, sample in (("inside quotes", inside), ("outside quotes", outside)):
         mean, short = stats(sample)
-        print(f"{name:16} n={len(sample):5}  mean length {mean:.2f}  "
-              f"1-2 runes {short:.1%}")
-    print(f"{'solved register':16} {'':11}{'':17}1-2 runes {SOLVED_SHORT_RATE:.1%}"
-          "   (word-length-keystream-and-boundaries.md)")
+        print(
+            f"{name:16} n={len(sample):5}  mean length {mean:.2f}  "
+            f"1-2 runes {short:.1%}"
+        )
+    print(
+        f"{'solved register':16} {'':11}{'':17}1-2 runes {SOLVED_SHORT_RATE:.1%}"
+        "   (word-length-keystream-and-boundaries.md)"
+    )
 
     print("\nlength histogram")
     top = max(max(inside), 12)
@@ -137,7 +148,7 @@ def main() -> None:
         picked: list[int] = []
         for size in sizes:
             start = rng.randrange(0, len(lengths) - size)
-            picked.extend(lengths[start:start + size])
+            picked.extend(lengths[start : start + size])
         m, s = stats(picked)
         null_mean.append(m)
         null_short.append(s)
@@ -148,20 +159,30 @@ def main() -> None:
         return (extreme + 1) / (TRIALS + 1)
 
     print(f"\ncontiguous-block permutation null ({TRIALS} draws)")
-    print(f"   mean length      observed {obs_mean:.2f}  null "
-          f"{statistics.mean(null_mean):.2f} +- {statistics.pstdev(null_mean):.2f}"
-          f"  p = {two_sided(null_mean, obs_mean):.3f}")
-    print(f"   1-2 rune share   observed {obs_short:.1%}  null "
-          f"{statistics.mean(null_short):.1%} +- {statistics.pstdev(null_short):.1%}"
-          f"  p = {two_sided(null_short, obs_short):.3f}")
+    print(
+        f"   mean length      observed {obs_mean:.2f}  null "
+        f"{statistics.mean(null_mean):.2f} +- {statistics.pstdev(null_mean):.2f}"
+        f"  p = {two_sided(null_mean, obs_mean):.3f}"
+    )
+    print(
+        f"   1-2 rune share   observed {obs_short:.1%}  null "
+        f"{statistics.mean(null_short):.1%} +- {statistics.pstdev(null_short):.1%}"
+        f"  p = {two_sided(null_short, obs_short):.3f}"
+    )
 
     sd = statistics.pstdev(null_short)
-    print(f"\npower: at n={len(inside)} the short-word share has a null sd of "
-          f"{sd:.1%}, so only a")
-    print(f"   shift beyond ~{2 * sd:.1%} is detectable at 2 sigma. The deficit in "
-          f"question is {SOLVED_SHORT_RATE - stats(outside)[1]:.1%}")
-    print(f"   ({stats(outside)[1]:.1%} outside vs {SOLVED_SHORT_RATE:.1%} solved), "
-          "which is inside that band.")
+    print(
+        f"\npower: at n={len(inside)} the short-word share has a null sd of "
+        f"{sd:.1%}, so only a"
+    )
+    print(
+        f"   shift beyond ~{2 * sd:.1%} is detectable at 2 sigma. The deficit in "
+        f"question is {SOLVED_SHORT_RATE - stats(outside)[1]:.1%}"
+    )
+    print(
+        f"   ({stats(outside)[1]:.1%} outside vs {SOLVED_SHORT_RATE:.1%} solved), "
+        "which is inside that band."
+    )
 
 
 if __name__ == "__main__":

@@ -35,8 +35,9 @@ def clean_runes(text: str) -> str:
 def get_words(text: str) -> list[str]:
     """Extract words (delimited by - . / % & $ and newlines)."""
     import re
+
     # Split on non-rune characters
-    words = re.split(r'[^' + ''.join(c3301.CICADA_ALPHABET) + r']+', text)
+    words = re.split(r"[^" + "".join(c3301.CICADA_ALPHABET) + r"]+", text)
     return [w for w in words if len(w) > 0]
 
 
@@ -105,11 +106,15 @@ def main() -> None:
 
     ea_as_first = sum(1 for pos in doublet_positions if runes[pos] == EA)
     # EA is the doublet rune itself (both positions are EA)
-    print(f"\nEA IS the doubled rune: {ea_as_first} times (out of {len(doublet_positions)} doublets)")
+    print(
+        f"\nEA IS the doubled rune: {ea_as_first} times (out of {len(doublet_positions)} doublets)"
+    )
 
     # More interesting: does EA appear adjacent to doublets?
     ea_before = sum(1 for pos in doublet_positions if pos > 0 and runes[pos - 1] == EA)
-    ea_after = sum(1 for pos in doublet_positions if pos + 2 < len(runes) and runes[pos + 2] == EA)
+    ea_after = sum(
+        1 for pos in doublet_positions if pos + 2 < len(runes) and runes[pos + 2] == EA
+    )
     print(f"EA appears immediately BEFORE doublet: {ea_before}")
     print(f"EA appears immediately AFTER doublet: {ea_after}")
 
@@ -117,29 +122,33 @@ def main() -> None:
     # Count EA frequency in ciphertext
     ea_count = runes.count(EA)
     ea_freq = ea_count / len(runes)
-    print(f"\nEA frequency in ciphertext: {ea_count} ({ea_freq*100:.2f}%)")
-    print(f"Doublet rate: {len(doublet_positions)/(len(runes)-1)*100:.2f}%")
+    print(f"\nEA frequency in ciphertext: {ea_count} ({ea_freq * 100:.2f}%)")
+    print(f"Doublet rate: {len(doublet_positions) / (len(runes) - 1) * 100:.2f}%")
 
     # Hypothesis: if the cipher produces a doublet exactly when plaintext has EA
     # Then we'd expect #doublets ≈ #EA_in_plaintext
     # EA in English runeglish appears rarely (each, ear, eat, etc.)
     print("\nIf doublets = EA occurrences in plaintext:")
     print("  Expected EA frequency in runeglish: ~1-3%")
-    print(f"  Observed doublet rate: {len(doublet_positions)/(len(runes)-1)*100:.3f}%")
+    print(
+        f"  Observed doublet rate: {len(doublet_positions) / (len(runes) - 1) * 100:.3f}%"
+    )
     print("  This is LOW for EA but could work if EA is very rare in runeglish")
 
     # Check: what rune does EA appear as in the FIRST position of doublets
     # vs what rune appears in position BEFORE a doublet when that rune is EA
     print("\nDetailed doublet-EA correlation:")
     for pos in doublet_positions:
-        ctx_before = runes[pos-1] if pos > 0 else "^"
-        ctx_after = runes[pos+2] if pos+2 < len(runes) else "$"
+        ctx_before = runes[pos - 1] if pos > 0 else "^"
+        ctx_after = runes[pos + 2] if pos + 2 < len(runes) else "$"
         doubled = runes[pos]
         idx = c3301.CICADA_ALPHABET.index(doubled)
         ea_marker = " <-- EA" if doubled == EA else ""
         ea_before_m = " [EA before]" if ctx_before == EA else ""
         ea_after_m = " [EA after]" if ctx_after == EA else ""
-        print(f"  pos={pos:5d}: ...{ctx_before}{doubled}{doubled}{ctx_after}... (idx={idx:2d}){ea_marker}{ea_before_m}{ea_after_m}")
+        print(
+            f"  pos={pos:5d}: ...{ctx_before}{doubled}{doubled}{ctx_after}... (idx={idx:2d}){ea_marker}{ea_before_m}{ea_after_m}"
+        )
 
     # ================================================================
     # 3. TRANSITION MATRIX ANALYSIS
@@ -157,9 +166,13 @@ def main() -> None:
     diagonal_sum = sum(transitions[r][r] for r in c3301.CICADA_ALPHABET)
     off_diagonal_sum = total_trans - diagonal_sum
 
-    print(f"Diagonal (doublets): {diagonal_sum} ({diagonal_sum/total_trans*100:.2f}%)")
-    print(f"Off-diagonal: {off_diagonal_sum} ({off_diagonal_sum/total_trans*100:.2f}%)")
-    print(f"Expected diagonal (random): {total_trans/29:.0f} ({100/29:.2f}%)")
+    print(
+        f"Diagonal (doublets): {diagonal_sum} ({diagonal_sum / total_trans * 100:.2f}%)"
+    )
+    print(
+        f"Off-diagonal: {off_diagonal_sum} ({off_diagonal_sum / total_trans * 100:.2f}%)"
+    )
+    print(f"Expected diagonal (random): {total_trans / 29:.0f} ({100 / 29:.2f}%)")
 
     # Check if off-diagonal is uniform
     print("\nOff-diagonal uniformity check:")
@@ -170,12 +183,12 @@ def main() -> None:
                 off_diag_counts.append(transitions[r1][r2])
 
     mean_off = sum(off_diag_counts) / len(off_diag_counts)
-    var_off = sum((x - mean_off)**2 for x in off_diag_counts) / len(off_diag_counts)
-    std_off = var_off ** 0.5
+    var_off = sum((x - mean_off) ** 2 for x in off_diag_counts) / len(off_diag_counts)
+    std_off = var_off**0.5
     print(f"  Off-diagonal mean: {mean_off:.2f}")
     print(f"  Off-diagonal std: {std_off:.2f}")
-    print(f"  Expected mean (uniform): {total_trans / (29*28):.2f}")
-    print(f"  CV (coefficient of variation): {std_off/mean_off:.3f}")
+    print(f"  Expected mean (uniform): {total_trans / (29 * 28):.2f}")
+    print(f"  CV (coefficient of variation): {std_off / mean_off:.3f}")
 
     # Per-rune: which rune has highest/lowest self-transition?
     print("\nSelf-transition rate per rune:")
@@ -185,7 +198,9 @@ def main() -> None:
         idx = c3301.CICADA_ALPHABET.index(r)
         eng = c3301.CICADA_ENGLISH_ALPHABET[idx]
         bar = "*" * transitions[r][r]
-        print(f"  {r} ({eng:2s}): {transitions[r][r]:2d}/{total_from_r:3d} = {self_rate*100:5.2f}% {bar}")
+        print(
+            f"  {r} ({eng:2s}): {transitions[r][r]:2d}/{total_from_r:3d} = {self_rate * 100:5.2f}% {bar}"
+        )
 
     # ================================================================
     # 4. BIGRAM ASYMMETRY
@@ -196,7 +211,7 @@ def main() -> None:
 
     bigrams_counter = Counter()
     for i in range(len(runes) - 1):
-        bigrams_counter[runes[i] + runes[i+1]] += 1
+        bigrams_counter[runes[i] + runes[i + 1]] += 1
 
     # Check asymmetry
     asymmetry_scores = []
@@ -216,7 +231,9 @@ def main() -> None:
         i2 = c3301.CICADA_ALPHABET.index(r2)
         e1 = c3301.CICADA_ENGLISH_ALPHABET[i1]
         e2 = c3301.CICADA_ENGLISH_ALPHABET[i2]
-        print(f"  {r1}{r2} ({e1}{e2})={ab:3d} vs {r2}{r1} ({e2}{e1})={ba:3d}  asym={asym:.3f}")
+        print(
+            f"  {r1}{r2} ({e1}{e2})={ab:3d} vs {r2}{r1} ({e2}{e1})={ba:3d}  asym={asym:.3f}"
+        )
 
     avg_asym = sum(s[4] for s in asymmetry_scores) / len(asymmetry_scores)
     print(f"\nAverage asymmetry: {avg_asym:.4f}")
@@ -232,7 +249,7 @@ def main() -> None:
     word_lengths = [len(w) for w in words]
     length_dist = Counter(word_lengths)
     print(f"Total words: {len(words)}")
-    print(f"Mean word length: {sum(word_lengths)/len(word_lengths):.2f}")
+    print(f"Mean word length: {sum(word_lengths) / len(word_lengths):.2f}")
     print(f"Max word length: {max(word_lengths)}")
 
     print("\nLength distribution:")
@@ -243,9 +260,26 @@ def main() -> None:
 
     # English word lengths in runeglish: "the"=2 runes (ᚦᛖ), "and"=3, etc.
     print("\nCommon English words in runeglish length:")
-    test_words = {"the": 2, "and": 3, "of": 2, "to": 2, "a": 1, "in": 2, "is": 2,
-                  "it": 2, "that": 4, "for": 3, "was": 3, "on": 2, "are": 3,
-                  "with": 3, "this": 3, "be": 2, "not": 3, "but": 3}
+    test_words = {
+        "the": 2,
+        "and": 3,
+        "of": 2,
+        "to": 2,
+        "a": 1,
+        "in": 2,
+        "is": 2,
+        "it": 2,
+        "that": 4,
+        "for": 3,
+        "was": 3,
+        "on": 2,
+        "are": 3,
+        "with": 3,
+        "this": 3,
+        "be": 2,
+        "not": 3,
+        "but": 3,
+    }
     for word, rlen in sorted(test_words.items(), key=lambda x: x[1]):
         print(f"  '{word}' -> {rlen} runes")
 
@@ -281,7 +315,10 @@ def main() -> None:
                 idx = c3301.CICADA_ALPHABET.index(w[i])
                 eng = c3301.CICADA_ENGLISH_ALPHABET[idx]
                 # Convert whole word
-                word_eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w)
+                word_eng = "".join(
+                    c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)]
+                    for c in w
+                )
                 print(f"  '{w}' ({word_eng}) - doubled {w[i]} ({eng}) at pos {i}")
 
     # ================================================================
@@ -294,7 +331,7 @@ def main() -> None:
     indices = [c3301.r2i(r) for r in runes]
 
     # Delta = difference between consecutive runes mod 29
-    deltas = [(indices[i+1] - indices[i]) % 29 for i in range(len(indices) - 1)]
+    deltas = [(indices[i + 1] - indices[i]) % 29 for i in range(len(indices) - 1)]
     delta_dist = Counter(deltas)
 
     print("Delta (C[i+1] - C[i] mod 29) distribution:")
@@ -306,16 +343,20 @@ def main() -> None:
         print(f"  Δ={d:2d}: {cnt:4d} ({pct:5.2f}%) {bar}{marker}")
 
     # Delta of deltas (second differences)
-    delta2 = [(deltas[i+1] - deltas[i]) % 29 for i in range(len(deltas) - 1)]
+    delta2 = [(deltas[i + 1] - deltas[i]) % 29 for i in range(len(deltas) - 1)]
     delta2_dist = Counter(delta2)
-    print(f"\nSecond difference (Δ²) at 0: {delta2_dist[0]} ({delta2_dist[0]/len(delta2)*100:.2f}%)")
-    print(f"Expected random: {len(delta2)/29:.0f} ({100/29:.2f}%)")
+    print(
+        f"\nSecond difference (Δ²) at 0: {delta2_dist[0]} ({delta2_dist[0] / len(delta2) * 100:.2f}%)"
+    )
+    print(f"Expected random: {len(delta2) / 29:.0f} ({100 / 29:.2f}%)")
 
     # Doublets in delta stream
-    delta_doublets = sum(1 for i in range(len(deltas) - 1) if deltas[i] == deltas[i+1])
+    delta_doublets = sum(
+        1 for i in range(len(deltas) - 1) if deltas[i] == deltas[i + 1]
+    )
     print(f"\nDoublets in delta stream: {delta_doublets}")
-    print(f"Expected random: {len(deltas)/29:.0f}")
-    print(f"Ratio: {delta_doublets / (len(deltas)/29):.3f}")
+    print(f"Expected random: {len(deltas) / 29:.0f}")
+    print(f"Ratio: {delta_doublets / (len(deltas) / 29):.3f}")
 
     # ================================================================
     # 8. SKIP-PATTERN ANALYSIS
@@ -329,10 +370,12 @@ def main() -> None:
         matches = sum(1 for i in range(len(runes) - k) if runes[i] == runes[i + k])
         expected = (len(runes) - k) / 29
         ratio = matches / expected
-        sigma = (matches - expected) / (expected ** 0.5)
+        sigma = (matches - expected) / (expected**0.5)
         marker = " ***" if abs(sigma) > 3 else ""
         if k <= 30 or abs(sigma) > 2:
-            print(f"  skip={k:2d}: {matches:4d} (expected {expected:.0f}, ratio={ratio:.3f}, σ={sigma:+.1f}){marker}")
+            print(
+                f"  skip={k:2d}: {matches:4d} (expected {expected:.0f}, ratio={ratio:.3f}, σ={sigma:+.1f}){marker}"
+            )
 
     # ================================================================
     # 9. POSITION-IN-WORD ANALYSIS
@@ -349,16 +392,17 @@ def main() -> None:
     for rune, cnt in first_rune.most_common(10):
         idx = c3301.CICADA_ALPHABET.index(rune)
         eng = c3301.CICADA_ENGLISH_ALPHABET[idx]
-        print(f"  {rune} ({eng:2s}): {cnt:4d} ({cnt/len(words)*100:.1f}%)")
+        print(f"  {rune} ({eng:2s}): {cnt:4d} ({cnt / len(words) * 100:.1f}%)")
 
     print("\nLast rune of words (top 10):")
     for rune, cnt in last_rune.most_common(10):
         idx = c3301.CICADA_ALPHABET.index(rune)
         eng = c3301.CICADA_ENGLISH_ALPHABET[idx]
-        print(f"  {rune} ({eng:2s}): {cnt:4d} ({cnt/len(words)*100:.1f}%)")
+        print(f"  {rune} ({eng:2s}): {cnt:4d} ({cnt / len(words) * 100:.1f}%)")
 
     # Is first/last rune distribution uniform?
     from scipy.stats import chisquare
+
     first_counts = [first_rune.get(r, 0) for r in c3301.CICADA_ALPHABET]
     last_counts = [last_rune.get(r, 0) for r in c3301.CICADA_ALPHABET]
     chi2_first, p_first = chisquare(first_counts)
@@ -426,7 +470,9 @@ def main() -> None:
     two_dist = Counter(two_rune_words)
     print("Most common 2-rune words (top 15):")
     for w, cnt in two_dist.most_common(15):
-        eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w)
+        eng = "".join(
+            c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w
+        )
         print(f"  {w} ({eng}): {cnt}")
 
     # Isomorphic pattern analysis for common English words
@@ -450,14 +496,19 @@ def main() -> None:
 
     # Show interesting patterns
     print("\nWords with repeated-letter patterns (3+ runes):")
-    interesting = [(p, ws) for p, ws in pattern_words.items()
-                   if len(set(p)) < len(p) and len(ws) >= 2]
+    interesting = [
+        (p, ws)
+        for p, ws in pattern_words.items()
+        if len(set(p)) < len(p) and len(ws) >= 2
+    ]
     interesting.sort(key=lambda x: -len(x[1]))
     for pattern, ws in interesting[:20]:
         sample = ws[:5]
         sample_eng = []
         for w in sample:
-            eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w)
+            eng = "".join(
+                c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w
+            )
             sample_eng.append(f"{w}({eng})")
         print(f"  pattern {pattern}: {len(ws)} words, e.g. {', '.join(sample_eng)}")
 
@@ -487,8 +538,9 @@ def main() -> None:
                 cond_entropy -= p_r1 * p_r2_given_r1 * math.log2(p_r2_given_r1)
 
     marginal_entropy = -sum(
-        (runes.count(r)/len(runes)) * math.log2(runes.count(r)/len(runes))
-        for r in c3301.CICADA_ALPHABET if runes.count(r) > 0
+        (runes.count(r) / len(runes)) * math.log2(runes.count(r) / len(runes))
+        for r in c3301.CICADA_ALPHABET
+        if runes.count(r) > 0
     )
 
     print(f"H(C) marginal entropy:     {marginal_entropy:.4f} bits")
@@ -511,7 +563,11 @@ def main() -> None:
     run_lengths = []
     current_run = 1
     for i in range(len(indices) - 1):
-        direction = "up" if indices[i+1] > indices[i] else ("down" if indices[i+1] < indices[i] else "same")
+        direction = (
+            "up"
+            if indices[i + 1] > indices[i]
+            else ("down" if indices[i + 1] < indices[i] else "same")
+        )
         if direction == current_direction:
             current_run += 1
         else:
@@ -523,7 +579,7 @@ def main() -> None:
     run_lengths.append(current_run)
 
     print(f"Total runs: {runs}")
-    print(f"Expected runs (random): ~{2*(len(indices)-1)/3:.0f}")
+    print(f"Expected runs (random): ~{2 * (len(indices) - 1) / 3:.0f}")
     run_dist = Counter(run_lengths)
     print("Run length distribution:")
     for length in sorted(run_dist.keys()):
@@ -537,11 +593,13 @@ def main() -> None:
     print("=" * 70)
 
     mean_idx = sum(indices) / len(indices)
-    var_idx = sum((x - mean_idx)**2 for x in indices) / len(indices)
+    var_idx = sum((x - mean_idx) ** 2 for x in indices) / len(indices)
 
     for lag in range(1, 51):
-        cov = sum((indices[i] - mean_idx) * (indices[i+lag] - mean_idx)
-                  for i in range(len(indices) - lag)) / (len(indices) - lag)
+        cov = sum(
+            (indices[i] - mean_idx) * (indices[i + lag] - mean_idx)
+            for i in range(len(indices) - lag)
+        ) / (len(indices) - lag)
         autocorr = cov / var_idx
         marker = " ***" if abs(autocorr) > 0.03 else ""
         if lag <= 30 or abs(autocorr) > 0.02:
@@ -558,13 +616,15 @@ def main() -> None:
     for r1 in c3301.CICADA_ALPHABET:
         for r2 in c3301.CICADA_ALPHABET:
             if r1 != r2:
-                off_diag_bigrams.append(bigrams_counter.get(r1+r2, 0))
+                off_diag_bigrams.append(bigrams_counter.get(r1 + r2, 0))
 
     chi2_bi, p_bi = chisquare(off_diag_bigrams)
     print(f"Chi-square test on {len(off_diag_bigrams)} off-diagonal bigrams:")
     print(f"  chi2={chi2_bi:.2f}, p={p_bi:.5f}")
-    print(f"  Mean count: {sum(off_diag_bigrams)/len(off_diag_bigrams):.2f}")
-    print(f"  Std count: {(sum((x - sum(off_diag_bigrams)/len(off_diag_bigrams))**2 for x in off_diag_bigrams) / len(off_diag_bigrams))**0.5:.2f}")
+    print(f"  Mean count: {sum(off_diag_bigrams) / len(off_diag_bigrams):.2f}")
+    print(
+        f"  Std count: {(sum((x - sum(off_diag_bigrams) / len(off_diag_bigrams)) ** 2 for x in off_diag_bigrams) / len(off_diag_bigrams)) ** 0.5:.2f}"
+    )
 
 
 if __name__ == "__main__":

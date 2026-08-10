@@ -50,9 +50,7 @@ print("\nper-section (0-9, title excluded):")
 for i, s in enumerate(secs):
     if len(s) < 100:
         continue
-    print(
-        f"  sec {i}: {len(s):5d} runes  nIoC {nioc(s):.3f}  fitness {fitness(s):.3f}"
-    )
+    print(f"  sec {i}: {len(s):5d} runes  nIoC {nioc(s):.3f}  fitness {fitness(s):.3f}")
 
 W, STEP = 500, 100
 

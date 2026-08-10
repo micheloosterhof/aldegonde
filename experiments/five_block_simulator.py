@@ -29,7 +29,8 @@ import statistics
 from collections.abc import Callable
 
 _spec = importlib.util.spec_from_file_location(
-    "mf", "experiments/mechanism_fingerprint.py")
+    "mf", "experiments/mechanism_fingerprint.py"
+)
 assert _spec is not None and _spec.loader is not None
 mf = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(mf)
@@ -38,15 +39,32 @@ MOD = 29
 i2r = mf.i2r
 r2i = mf.r2i
 
-TARGET = {"doublet%": 0.664, "triplets": 0.0, "nIoC": 1.000, "monoK5": 1.073,
-          "d1": 29.0, "d2": 15.0, "d3": 14.0, "d4": 28.0}
+TARGET = {
+    "doublet%": 0.664,
+    "triplets": 0.0,
+    "nIoC": 1.000,
+    "monoK5": 1.073,
+    "d1": 29.0,
+    "d2": 15.0,
+    "d3": 14.0,
+    "d4": 28.0,
+}
 # tolerances ~ sampling sd at corpus size
-SCALE = {"doublet%": 0.09, "triplets": 1.0, "nIoC": 0.006, "monoK5": 0.035,
-         "d1": 4.2, "d2": 4.2, "d3": 4.2, "d4": 4.2}
+SCALE = {
+    "doublet%": 0.09,
+    "triplets": 1.0,
+    "nIoC": 0.006,
+    "monoK5": 0.035,
+    "d1": 4.2,
+    "d2": 4.2,
+    "d3": 4.2,
+    "d4": 4.2,
+}
 
 
-def make_five_block(qa: float, qb: float, e: float,
-                    drift: float = 0.15) -> Callable[[str, list[int]], str]:
+def make_five_block(
+    qa: float, qb: float, e: float, drift: float = 0.15
+) -> Callable[[str, list[int]], str]:
     """Five-block cipher with echo parameters qa, qb, e."""
 
     def enc(pt: str, wl: list[int]) -> str:
@@ -146,26 +164,31 @@ def main() -> None:
         for qb in grid_qb:
             for e in grid_e:
                 enc = make_five_block(qa, qb, e)
-                fps = [extended_fingerprint(enc(gen(n), wlens))
-                       for _ in range(reps)]
+                fps = [extended_fingerprint(enc(gen(n), wlens)) for _ in range(reps)]
                 avg = {k: statistics.mean(f[k] for f in fps) for k in fps[0]}
                 results.append((score(avg), qa, qb, e, avg))
     results.sort(key=lambda x: x[0])
 
-    print(f"\n{'qa':>4s} {'qb':>4s} {'e':>5s} {'scr':>6s} {'dbl%':>5s} "
-          f"{'trip':>4s} {'nIoC':>6s} {'mK5':>5s} "
-          f"{'d1':>4s} {'d2':>4s} {'d3':>4s} {'d4':>4s} {'d5':>4s} {'mgap':>4s}")
+    print(
+        f"\n{'qa':>4s} {'qb':>4s} {'e':>5s} {'scr':>6s} {'dbl%':>5s} "
+        f"{'trip':>4s} {'nIoC':>6s} {'mK5':>5s} "
+        f"{'d1':>4s} {'d2':>4s} {'d3':>4s} {'d4':>4s} {'d5':>4s} {'mgap':>4s}"
+    )
     for sc, qa, qb, e, a in results[:10]:
-        print(f"{qa:4.2f} {qb:4.2f} {e:5.2f} {sc:6.1f} {a['doublet%']:5.2f} "
-              f"{a['triplets']:4.1f} {a['nIoC']:6.3f} {a['monoK5']:5.3f} "
-              f"{a['d1']:4.0f} {a['d2']:4.0f} {a['d3']:4.0f} {a['d4']:4.0f} "
-              f"{a['d5']:4.0f} {a['mingap']:4.0f}")
+        print(
+            f"{qa:4.2f} {qb:4.2f} {e:5.2f} {sc:6.1f} {a['doublet%']:5.2f} "
+            f"{a['triplets']:4.1f} {a['nIoC']:6.3f} {a['monoK5']:5.3f} "
+            f"{a['d1']:4.0f} {a['d2']:4.0f} {a['d3']:4.0f} {a['d4']:4.0f} "
+            f"{a['d5']:4.0f} {a['mingap']:4.0f}"
+        )
     print("...worst 3:")
     for sc, qa, qb, e, a in results[-3:]:
-        print(f"{qa:4.2f} {qb:4.2f} {e:5.2f} {sc:6.1f} {a['doublet%']:5.2f} "
-              f"{a['triplets']:4.1f} {a['nIoC']:6.3f} {a['monoK5']:5.3f} "
-              f"{a['d1']:4.0f} {a['d2']:4.0f} {a['d3']:4.0f} {a['d4']:4.0f} "
-              f"{a['d5']:4.0f} {a['mingap']:4.0f}")
+        print(
+            f"{qa:4.2f} {qb:4.2f} {e:5.2f} {sc:6.1f} {a['doublet%']:5.2f} "
+            f"{a['triplets']:4.1f} {a['nIoC']:6.3f} {a['monoK5']:5.3f} "
+            f"{a['d1']:4.0f} {a['d2']:4.0f} {a['d3']:4.0f} {a['d4']:4.0f} "
+            f"{a['d5']:4.0f} {a['mingap']:4.0f}"
+        )
 
     # rerun the best setting with more reps for stable estimates
     sc, qa, qb, e, _ = results[0]
@@ -174,8 +197,18 @@ def main() -> None:
     avg = {k: statistics.mean(f[k] for f in fps) for k in fps[0]}
     sd = {k: statistics.stdev(f[k] for f in fps) for k in fps[0]}
     print(f"\nbest setting qa={qa} qb={qb} e={e}, 8 reps:")
-    for k in ("doublet%", "triplets", "nIoC", "monoK5",
-              "d1", "d2", "d3", "d4", "d5", "mingap"):
+    for k in (
+        "doublet%",
+        "triplets",
+        "nIoC",
+        "monoK5",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "mingap",
+    ):
         tgt = obs.get(k, float("nan"))
         print(f"  {k:9s}: sim {avg[k]:7.3f} +/- {sd[k]:5.3f}   LP {tgt:7.3f}")
 

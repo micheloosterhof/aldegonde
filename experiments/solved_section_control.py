@@ -74,9 +74,11 @@ def d5_stats(words: list[list[int]], label: str) -> None:
             reps += int(w[k] == w[k + D] and w[k + 1] == w[k + D + 1])
     bt = binomtest(matches, pairs, 1 / MOD) if pairs else None
     p = bt.pvalue if bt else 1.0
-    print(f"{label}: {matches}/{pairs} = "
-          f"{matches/max(pairs,1):.4f} (binom p={p:.3f} vs 1/29); "
-          f"XY..XY {reps}/{opps}")
+    print(
+        f"{label}: {matches}/{pairs} = "
+        f"{matches / max(pairs, 1):.4f} (binom p={p:.3f} vs 1/29); "
+        f"XY..XY {reps}/{opps}"
+    )
 
 
 def main() -> None:
@@ -86,14 +88,18 @@ def main() -> None:
     print(f"master transcription: {len(master)} sections")
     enc = [w for i, s in enumerate(master) if i in ENCRYPTED_SOLVED for w in s]
     n_runes = sum(len(w) for w in enc)
-    print(f"\nencrypted-solved control (sections {sorted(ENCRYPTED_SOLVED)}, "
-          f"{n_runes} runes, {len(enc)} words)")
+    print(
+        f"\nencrypted-solved control (sections {sorted(ENCRYPTED_SOLVED)}, "
+        f"{n_runes} runes, {len(enc)} words)"
+    )
     d5_stats(enc, "  within-word d=5")
     for i in sorted(ENCRYPTED_SOLVED):
         d5_stats(master[i], f"  section {i}")
 
     # sanity: the unsolved corpus with the same machinery
-    unsolved = parse_sections(UNSOLVED, set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS))[:10]
+    unsolved = parse_sections(
+        UNSOLVED, set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
+    )[:10]
     uw = [w for s in unsolved for w in s]
     print(f"\nunsolved corpus sanity ({sum(len(w) for w in uw)} runes)")
     d5_stats(uw, "  within-word d=5")
@@ -107,17 +113,58 @@ def main() -> None:
             return None
         for a, b in (("K", "C"), ("Q", "C"), ("V", "U"), ("Z", "S")):
             w = w.replace(a, b)
-        digraphs = {"TH": 2, "EO": 12, "NG": 21, "OE": 22, "AE": 25,
-                    "IA": 27, "IO": 27, "EA": 28}
-        singles = {c: i for i, c in enumerate(
-            ["F", "U", None, "O", "R", "C", "G", "W", "H", "N", "I", "J",
-             None, "P", "X", "S", "T", "B", "E", "M", "L", None, None, "D",
-             "A", None, "Y", None, None]) if c}
+        digraphs = {
+            "TH": 2,
+            "EO": 12,
+            "NG": 21,
+            "OE": 22,
+            "AE": 25,
+            "IA": 27,
+            "IO": 27,
+            "EA": 28,
+        }
+        singles = {
+            c: i
+            for i, c in enumerate(
+                [
+                    "F",
+                    "U",
+                    None,
+                    "O",
+                    "R",
+                    "C",
+                    "G",
+                    "W",
+                    "H",
+                    "N",
+                    "I",
+                    "J",
+                    None,
+                    "P",
+                    "X",
+                    "S",
+                    "T",
+                    "B",
+                    "E",
+                    "M",
+                    "L",
+                    None,
+                    None,
+                    "D",
+                    "A",
+                    None,
+                    "Y",
+                    None,
+                    None,
+                ]
+            )
+            if c
+        }
         out: list[int] = []
         i = 0
         while i < len(w):
-            if w[i:i + 2] in digraphs:
-                out.append(digraphs[w[i:i + 2]])
+            if w[i : i + 2] in digraphs:
+                out.append(digraphs[w[i : i + 2]])
                 i += 2
             elif w[i] in singles:
                 out.append(singles[w[i]])
@@ -149,8 +196,7 @@ def main() -> None:
     print(f"{'k':>3} {'LP rate':>9} {'lexicon plaintext rate':>23}")
     for k in range(7):
         lp = lp_pos_match[k] / lp_pos_pairs[k] if lp_pos_pairs[k] else 0
-        lx = (lex_pos_reps[k] / lex_pos_pairs[k]
-              if lex_pos_pairs[k] else 0)
+        lx = lex_pos_reps[k] / lex_pos_pairs[k] if lex_pos_pairs[k] else 0
         print(f"{k:>3} {lp:>9.4f} {lx:>23.4f}")
 
 

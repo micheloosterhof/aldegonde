@@ -47,6 +47,7 @@ print("\n" + "=" * 80)
 print("SPECIFIC BOUNDARY REPEATS")
 print("=" * 80)
 
+
 def find_in_segment(seg_idx: int, pattern: str) -> list[int]:
     """Find all occurrences of pattern in a segment, return local positions."""
     seg = segments[seg_idx]
@@ -60,13 +61,47 @@ def find_in_segment(seg_idx: int, pattern: str) -> list[int]:
         start = idx + 1
     return positions
 
+
 def to_english_approx(runes: str) -> str:
     """Convert runes to approximate English letters for display."""
-    eng_map = dict(zip(CICADA_ALPHABET, [
-        "F","U","TH","O","R","C","G","W","H","N","I","J","EO","P","X",
-        "S","T","B","E","M","L","NG","OE","D","A","AE","Y","IA","EA"
-    ]))
+    eng_map = dict(
+        zip(
+            CICADA_ALPHABET,
+            [
+                "F",
+                "U",
+                "TH",
+                "O",
+                "R",
+                "C",
+                "G",
+                "W",
+                "H",
+                "N",
+                "I",
+                "J",
+                "EO",
+                "P",
+                "X",
+                "S",
+                "T",
+                "B",
+                "E",
+                "M",
+                "L",
+                "NG",
+                "OE",
+                "D",
+                "A",
+                "AE",
+                "Y",
+                "IA",
+                "EA",
+            ],
+        )
+    )
     return "".join(eng_map.get(r, "?") for r in runes)
+
 
 # Define the specific repeats to check
 boundary_repeats = [
@@ -77,7 +112,9 @@ boundary_repeats = [
     ("OAAEH", "ᚩᚪᚫᚻ", [(6, "START+5"), (8, 2134)]),
 ]
 
-print(f"\n{'Repeat':<12} {'Runes':<10} {'Eng':<12} {'Seg':<5} {'Local Pos':<12} {'Abs Pos':<10} {'Distance':<10}")
+print(
+    f"\n{'Repeat':<12} {'Runes':<10} {'Eng':<12} {'Seg':<5} {'Local Pos':<12} {'Abs Pos':<10} {'Distance':<10}"
+)
 print("-" * 80)
 
 for name, rune_pattern, _locations in boundary_repeats:
@@ -108,14 +145,19 @@ for name, rune_pattern, _locations in boundary_repeats:
             pos_desc += " (START)"
         elif local >= seg_len - len(rune_pattern) - 5:
             pos_desc += " (END)"
-        print(f"{name:<12} {rune_pattern:<10} {eng:<12} {si:<5} {pos_desc:<12} {abs_pos:<10}")
+        print(
+            f"{name:<12} {rune_pattern:<10} {eng:<12} {si:<5} {pos_desc:<12} {abs_pos:<10}"
+        )
 
     # Print distances between all pairs
     if len(all_abs_positions) > 1:
         for i in range(len(all_abs_positions)):
             for j in range(i + 1, len(all_abs_positions)):
                 d = all_abs_positions[j] - all_abs_positions[i]
-                print(f"  -> distance between pos {all_abs_positions[i]} and {all_abs_positions[j]}: {d} (factors: ", end="")
+                print(
+                    f"  -> distance between pos {all_abs_positions[i]} and {all_abs_positions[j]}: {d} (factors: ",
+                    end="",
+                )
                 factors = []
                 for f in range(2, min(d + 1, 200)):
                     if d % f == 0:
@@ -153,8 +195,16 @@ for length in range(4, 11):
                 dists.append(d)
                 all_distances.append(d)
 
-        eng_approx = to_english_approx(ngram_str.replace("(", "").replace(")", "").replace("'", "").replace(",", "").replace(" ", ""))
-        print(f"  {ngram_str}  count={len(positions)}  positions={positions}  segs={seg_info}  distances={dists}")
+        eng_approx = to_english_approx(
+            ngram_str.replace("(", "")
+            .replace(")", "")
+            .replace("'", "")
+            .replace(",", "")
+            .replace(" ", "")
+        )
+        print(
+            f"  {ngram_str}  count={len(positions)}  positions={positions}  segs={seg_info}  distances={dists}"
+        )
 
 # ── 5. GCD analysis ───────────────────────────────────────────────────────────
 print("\n" + "=" * 80)

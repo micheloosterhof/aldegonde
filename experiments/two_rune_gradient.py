@@ -59,7 +59,7 @@ def rand_order5(rng):
     rng.shuffle(pts)
     g = list(range(M))
     for c in range(5):
-        cy = pts[c * 5:(c + 1) * 5]
+        cy = pts[c * 5 : (c + 1) * 5]
         for i in range(5):
             g[cy[i]] = cy[(i + 1) % 5]
     return g
@@ -129,8 +129,10 @@ def main() -> None:
     tot = sum(two_counts.values())
     table = {k: math.log(v / tot) for k, v in two_counts.items()}
     floor = math.log(0.2 / tot)
-    print(f"register 2-rune vocabulary: {len(two_counts)} types, {tot} tokens; "
-          f"top: {sorted(two_counts.values(), reverse=True)[:5]}")
+    print(
+        f"register 2-rune vocabulary: {len(two_counts)} types, {tot} tokens; "
+        f"top: {sorted(two_counts.values(), reverse=True)[:5]}"
+    )
 
     # plaintext matched to the LP length structure
     plain = []
@@ -141,8 +143,7 @@ def main() -> None:
         plain.append(rng.choice(pools[LL])[:L])
     idx2 = [i for i, w in enumerate(plain) if len(w) == 2]
     print(f"simulated corpus: {len(plain)} words, {len(idx2)} of length 2")
-    the = sum(1 for i in idx2 if tuple(plain[i]) == (IDX_ENG['TH'],
-                                                     IDX_ENG['E']))
+    the = sum(1 for i in idx2 if tuple(plain[i]) == (IDX_ENG["TH"], IDX_ENG["E"]))
     print(f"  planted THE count: {the}")
 
     # true key
@@ -154,32 +155,31 @@ def main() -> None:
     cipher = encrypt(plain, base_true, g_true, sigma_true)
     cipher2 = [tuple(cipher[i]) for i in idx2]
 
-    true_score = score(cipher2, idx2, base_true, g_true, sigma_true, lens,
-                       table, floor)
+    true_score = score(cipher2, idx2, base_true, g_true, sigma_true, lens, table, floor)
     rnd_scores = []
     for _ in range(200):
         b = list(range(M))
         rng.shuffle(b)
-        rnd_scores.append(score(cipher2, idx2, b, g_true, sigma_true, lens,
-                                table, floor))
+        rnd_scores.append(
+            score(cipher2, idx2, b, g_true, sigma_true, lens, table, floor)
+        )
     mu = sum(rnd_scores) / len(rnd_scores)
     print(f"\nscore of TRUE key:   {true_score:10.1f}")
-    print(f"score of random base_0: {mu:10.1f} "
-          f"(best of 200: {max(rnd_scores):.1f})")
-    print(f"  gap = {true_score - mu:.1f} nats over {len(idx2)} words "
-          f"({(true_score - mu) / len(idx2):.3f} per word)")
+    print(f"score of random base_0: {mu:10.1f} (best of 200: {max(rnd_scores):.1f})")
+    print(
+        f"  gap = {true_score - mu:.1f} nats over {len(idx2)} words "
+        f"({(true_score - mu) / len(idx2):.3f} per word)"
+    )
 
     # Stage 1: recover base_0 with g, sigma known
     print("\nStage 1: hill-climb base_0 (g, sigma known)")
     best = list(range(M))
     rng.shuffle(best)
-    bs_score = score(cipher2, idx2, best, g_true, sigma_true, lens, table,
-                     floor)
+    bs_score = score(cipher2, idx2, best, g_true, sigma_true, lens, table, floor)
     for restart in range(8):
         cur = list(range(M))
         rng.shuffle(cur)
-        cur_s = score(cipher2, idx2, cur, g_true, sigma_true, lens, table,
-                      floor)
+        cur_s = score(cipher2, idx2, cur, g_true, sigma_true, lens, table, floor)
         improved = True
         while improved:
             improved = False
@@ -187,8 +187,9 @@ def main() -> None:
                 for b in range(a + 1, M):
                     cand = cur[:]
                     cand[a], cand[b] = cand[b], cand[a]
-                    s = score(cipher2, idx2, cand, g_true, sigma_true, lens,
-                              table, floor)
+                    s = score(
+                        cipher2, idx2, cand, g_true, sigma_true, lens, table, floor
+                    )
                     if s > cur_s + 1e-9:
                         cur, cur_s = cand, s
                         improved = True
@@ -199,11 +200,13 @@ def main() -> None:
         for k, i in enumerate(idx2):
             binv = inverse(bs[i])
             c0, c1 = cipher2[k]
-            if (binv[c0], ginv[binv[c1]]) == (IDX_ENG['TH'], IDX_ENG['E']):
+            if (binv[c0], ginv[binv[c1]]) == (IDX_ENG["TH"], IDX_ENG["E"]):
                 hits += 1
-        print(f"  restart {restart}: score {cur_s:9.1f} "
-              f"(true {true_score:.1f})  base_0 agreement {agree:>2}/29  "
-              f"THE decrypts {hits:>3} (planted {the})")
+        print(
+            f"  restart {restart}: score {cur_s:9.1f} "
+            f"(true {true_score:.1f})  base_0 agreement {agree:>2}/29  "
+            f"THE decrypts {hits:>3} (planted {the})"
+        )
         if cur_s > bs_score:
             best, bs_score = cur, cur_s
         if agree == M:
@@ -249,8 +252,10 @@ def main() -> None:
         ab = sum(1 for x in range(M) if b[x] == base_true[x])
         ag = sum(1 for x in range(M) if g[x] == g_true[x])
         asg = sum(1 for x in range(M) if sg[x] == sigma_true[x])
-        print(f"  {label}: score {s:9.1f} (true {true_score:.1f})  "
-              f"base_0 {ab:>2}/29  g {ag:>2}/29  sigma {asg:>2}/29")
+        print(
+            f"  {label}: score {s:9.1f} (true {true_score:.1f})  "
+            f"base_0 {ab:>2}/29  g {ag:>2}/29  sigma {asg:>2}/29"
+        )
 
     print("\nStage 2: anneal base_0 + g (sigma known)")
     anneal(fix_g=False, fix_sigma=True, label="run")
@@ -274,8 +279,7 @@ def main() -> None:
                     for b in range(a + 1, M):
                         cand = cur[:]
                         cand[a], cand[b] = cand[b], cand[a]
-                        v = score(cipher2, idx2, cand, g, sg, lens, table,
-                                  floor)
+                        v = score(cipher2, idx2, cand, g, sg, lens, table, floor)
                         if v > cs + 1e-9:
                             cur, cs, imp = cand, v, True
                 if not imp:
@@ -295,11 +299,12 @@ def main() -> None:
     for n in (1, 2, 4):
         v = max(fit_base(g_true, perturb(sigma_true, n)) for _ in range(3))
         print(f"  sigma off by {n} swap(s):      {v:9.1f}")
-    v = max(fit_base(conjugate(g_true, *rng.sample(range(M), 2)), sigma_true)
-            for _ in range(3))
+    v = max(
+        fit_base(conjugate(g_true, *rng.sample(range(M), 2)), sigma_true)
+        for _ in range(3)
+    )
     print(f"  g off by 1 conjugation:     {v:9.1f}")
-    v = max(fit_base(rand_order5(rng), perturb(sigma_true, M))
-            for _ in range(3))
+    v = max(fit_base(rand_order5(rng), perturb(sigma_true, M)) for _ in range(3))
     print(f"  random (g, sigma):          {v:9.1f}")
 
 

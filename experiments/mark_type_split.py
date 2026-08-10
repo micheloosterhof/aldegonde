@@ -50,7 +50,7 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 PAGES = range(58)
 DOT_MAX = 16
 LINK = 45
-BIG = 8            # clusters with at least this many dots are the second glyph
+BIG = 8  # clusters with at least this many dots are the second glyph
 
 
 def page_glyphs(page: int):
@@ -65,7 +65,10 @@ def page_glyphs(page: int):
             continue
         if RUNE_HEIGHT[0] <= h <= RUNE_HEIGHT[1]:
             runes.append(("R", y, x, 0))
-        elif TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1] and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]:
+        elif (
+            TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1]
+            and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]
+        ):
             ticks.append(("t", y, x, 0))
         elif h <= DOT_MAX and w <= DOT_MAX:
             dots.append((y + h // 2, x + w // 2))
@@ -86,8 +89,10 @@ def page_glyphs(page: int):
     groups = defaultdict(list)
     for i, p in enumerate(dots):
         groups[find(i)].append(p)
-    marks = [("m", min(p[0] for p in g), min(p[1] for p in g), len(g))
-             for g in groups.values()]
+    marks = [
+        ("m", min(p[0] for p in g), min(p[1] for p in g), len(g))
+        for g in groups.values()
+    ]
     return runes + ticks + marks
 
 
@@ -124,7 +129,7 @@ def line_tokens(line):
 
 def main() -> None:
     blocks = CORPUS.read_text().split("%")
-    inventory: list[tuple[int, int]] = []      # (dot count, length of preceding word)
+    inventory: list[tuple[int, int, str]] = []  # (dot count, length of preceding word)
     skipped = 0
 
     for page in PAGES:
@@ -136,8 +141,11 @@ def main() -> None:
             continue
         for band, text in zip(bands, lines):
             img = line_tokens(band)
-            txt = [("R", c) if RUNE.match(c) else ("M", c)
-                   for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
+            txt = [
+                ("R", c) if RUNE.match(c) else ("M", c)
+                for c in text
+                if RUNE.match(c) or c in c3301.MARK_CHARS
+            ]
             if [t[0] for t in img] != [t[0] for t in txt]:
                 skipped += 1
                 continue
@@ -166,12 +174,17 @@ def main() -> None:
     allw = [w for _, w in dots_only if w]
     print("\nword length before the mark, by glyph")
     print(f"{'glyph':>18}{'n':>6}{'mean':>8}{'1-2 runes':>12}")
-    for name, sample in ((f"small (<{BIG} dots)", small), (f"large (>={BIG} dots)", large),
-                         ("pooled", allw)):
+    for name, sample in (
+        (f"small (<{BIG} dots)", small),
+        (f"large (>={BIG} dots)", large),
+        ("pooled", allw),
+    ):
         if not sample:
             continue
         short = sum(1 for v in sample if v <= 2) / len(sample)
-        print(f"{name:>18}{len(sample):>6}{statistics.mean(sample):>8.2f}{short:>12.1%}")
+        print(
+            f"{name:>18}{len(sample):>6}{statistics.mean(sample):>8.2f}{short:>12.1%}"
+        )
 
     if small and large:
         t = stats.ttest_ind(small, large, equal_var=False)

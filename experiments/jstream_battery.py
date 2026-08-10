@@ -41,11 +41,15 @@ def main() -> None:
     J = ((delta[nondbl] - 1) % M).astype(np.int64)  # compressed stream
     rawpos = np.where(nondbl)[0]  # original step index of each J symbol
     nj = len(J)
-    print(f"J stream: {nj} symbols over Z{M} (deleted {int((~nondbl).sum())} doublet steps)")
+    print(
+        f"J stream: {nj} symbols over Z{M} (deleted {int((~nondbl).sum())} doublet steps)"
+    )
     c = np.bincount(J, minlength=M)
     stat = ((c - nj / M) ** 2 / (nj / M)).sum()
-    print(f"marginal: chi2={stat:.1f} p={chi2_dist.sf(stat, M - 1):.4f}, "
-          f"nIoC={ioc(J.tolist()) * M:.4f}")
+    print(
+        f"marginal: chi2={stat:.1f} p={chi2_dist.sf(stat, M - 1):.4f}, "
+        f"nIoC={ioc(J.tolist()) * M:.4f}"
+    )
 
     print("\n=== KAPPA ON COMPRESSED J (EA consumes no key) ===")
     zs = []
@@ -60,8 +64,10 @@ def main() -> None:
         worst.append((abs(z), s, z))
     zs = np.array(zs)
     worst.sort(reverse=True)
-    print(f"  {len(zs)} shifts: mean z={zs.mean():+.3f} sd={zs.std():.3f}, "
-          f"expected max ~{math.sqrt(2 * math.log(len(zs))):.1f}")
+    print(
+        f"  {len(zs)} shifts: mean z={zs.mean():+.3f} sd={zs.std():.3f}, "
+        f"expected max ~{math.sqrt(2 * math.log(len(zs))):.1f}"
+    )
     print(f"  top: {[(s, round(z, 2)) for _, s, z in worst[:5]]}")
 
     print("\n=== FRIEDMAN (column IoC) ON COMPRESSED J, periods 2..120 ===")
@@ -111,9 +117,11 @@ def main() -> None:
             z = (hits - exp) / sd
             if abs(z) > abs(zbest):
                 zbest, sbest = z, s
-        print(f"  mod {mod}: marginal chi2 p={chi2_dist.sf(stat, mod - 1):.3f}, "
-              f"kappa max |z|={zbest:+.2f} at shift {sbest} "
-              f"(expected max ~{math.sqrt(2 * math.log(nj // 2)):.1f})")
+        print(
+            f"  mod {mod}: marginal chi2 p={chi2_dist.sf(stat, mod - 1):.3f}, "
+            f"kappa max |z|={zbest:+.2f} at shift {sbest} "
+            f"(expected max ~{math.sqrt(2 * math.log(nj // 2)):.1f})"
+        )
 
     print("\n=== LINEAR FUNCTIONALS MOD 28 ===")
     hits = []
@@ -140,8 +148,10 @@ def main() -> None:
         stat, p, dof, _ = chi2_contingency(joint + 1e-9)
         results.append((p, d))
     results.sort()
-    print(f"  top: {[(d, round(p, 4)) for p, d in results[:4]]} "
-          f"(Bonferroni 50 tests at 0.01: 2e-4)")
+    print(
+        f"  top: {[(d, round(p, 4)) for p, d in results[:4]]} "
+        f"(Bonferroni 50 tests at 0.01: 2e-4)"
+    )
 
     print("\n=== DFT ON COMPRESSED J ===")
     peaks = []
@@ -153,8 +163,10 @@ def main() -> None:
         peaks.append((float(power[t]), mlt, int(t + 1)))
     peaks.sort(reverse=True)
     nbins = (M - 1) * (nj // 2 - 1)
-    print(f"  threshold ~{math.log(nbins) + 3:.1f}; "
-          f"top: {[(round(pw, 1), mlt, f) for pw, mlt, f in peaks[:4]]}")
+    print(
+        f"  threshold ~{math.log(nbins) + 3:.1f}; "
+        f"top: {[(round(pw, 1), mlt, f) for pw, mlt, f in peaks[:4]]}"
+    )
 
     print("\n=== J BY POSITION-IN-WORD ===")
     # map each J symbol to the word-position of the step's second rune
@@ -180,8 +192,10 @@ def main() -> None:
         g = grouped[j]
         cc = np.bincount(np.array(g), minlength=M)
         stat = ((cc - len(g) / M) ** 2 / (len(g) / M)).sum()
-        print(f"  word-pos {j}: n={len(g)} nIoC={ioc(g) * M:.3f} "
-              f"chi2 p={chi2_dist.sf(stat, M - 1):.3f}")
+        print(
+            f"  word-pos {j}: n={len(g)} nIoC={ioc(g) * M:.3f} "
+            f"chi2 p={chi2_dist.sf(stat, M - 1):.3f}"
+        )
 
     print("\n=== REPEATED J N-GRAMS (compressed) ===")
     for L in (5, 6, 7):

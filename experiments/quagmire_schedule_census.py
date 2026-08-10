@@ -86,8 +86,9 @@ def observed_rates(words: list[list[int]]) -> dict[int, tuple[int, int]]:
     return out
 
 
-def sample_register(lp_lens: list[int],
-                    pools: dict[int, list[list[int]]]) -> list[list[int]]:
+def sample_register(
+    lp_lens: list[int], pools: dict[int, list[list[int]]]
+) -> list[list[int]]:
     """Register words matched to the LP length sequence (as in tables())."""
     words = []
     for L in lp_lens:
@@ -153,8 +154,9 @@ def delta_vectors(K: list[int], T: np.ndarray, sign: int) -> np.ndarray:
     return v
 
 
-def simulate(K: list[int], sched: list[int],
-             words: list[list[int]]) -> dict[int, float]:
+def simulate(
+    K: list[int], sched: list[int], words: list[list[int]]
+) -> dict[int, float]:
     """Direct Quagmire-walk within-word coincidence rates (base cancels)."""
     pos = {r: i for i, r in enumerate(K)}
     out = {}
@@ -180,9 +182,11 @@ def self_test(T1, T4, T6, words) -> None:
     v1 = delta_vectors(K, T1, -1)
     v4 = delta_vectors(K, T4, +1)
     v6 = delta_vectors(K, T6, -1)
-    pred = {1: sum(v1[f][sched[f]] for f in range(5)),
-            4: sum(v4[f][sched[f]] for f in range(5)),
-            6: sum(v6[f][sched[f]] for f in range(5))}
+    pred = {
+        1: sum(v1[f][sched[f]] for f in range(5)),
+        4: sum(v4[f][sched[f]] for f in range(5)),
+        6: sum(v6[f][sched[f]] for f in range(5)),
+    }
     sim = simulate(K, sched, words)
     for dist in (1, 4, 6):
         if abs(pred[dist] - sim[dist]) > 1e-9:
@@ -190,20 +194,31 @@ def self_test(T1, T4, T6, words) -> None:
                 f"self-test failed at d{dist}: analytic {pred[dist]:.6f} "
                 f"vs simulated {sim[dist]:.6f}"
             )
-            raise AssertionError(
-                msg)
+            raise AssertionError(msg)
     r = np.arange(M, dtype=np.int64)
-    idx0 = (-(r[:, None, None, None] + r[None, :, None, None]
-              + r[None, None, :, None] + r[None, None, None, :])) % M
-    g4 = (v1[1][:, None, None, None] + v1[2][None, :, None, None]
-          + v1[3][None, None, :, None] + v1[4][None, None, None, :])
+    idx0 = (
+        -(
+            r[:, None, None, None]
+            + r[None, :, None, None]
+            + r[None, None, :, None]
+            + r[None, None, None, :]
+        )
+    ) % M
+    g4 = (
+        v1[1][:, None, None, None]
+        + v1[2][None, :, None, None]
+        + v1[3][None, None, :, None]
+        + v1[4][None, None, None, :]
+    )
     grid_min = float((g4 + v1[0][idx0]).min())
     if abs(grid_min - constrained_floor(v1)) > 1e-12:
         msg = "DP floor != brute-force grid minimum"
         raise AssertionError(msg)
-    print(f"self-test OK: analytic == simulated at d1/d4/d6 "
-          f"({pred[1]:.4f}/{pred[4]:.4f}/{pred[6]:.4f}); "
-          f"DP floor == grid minimum")
+    print(
+        f"self-test OK: analytic == simulated at d1/d4/d6 "
+        f"({pred[1]:.4f}/{pred[4]:.4f}/{pred[6]:.4f}); "
+        f"DP floor == grid minimum"
+    )
 
 
 def main() -> None:
@@ -216,7 +231,7 @@ def main() -> None:
     for dist in (1, 4, 6):
         k, n = obs[dist]
         lo, hi = wilson(k, n)
-        print(f"  d{dist}: {k}/{n} = {k/n:.4f}  95% CI [{lo:.4f}, {hi:.4f}]")
+        print(f"  d{dist}: {k}/{n} = {k / n:.4f}  95% CI [{lo:.4f}, {hi:.4f}]")
 
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     pools: dict[int, list[list[int]]] = {}
@@ -240,8 +255,8 @@ def main() -> None:
             x = line.strip()
             if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
                 vocab.append(x)
-    if len(sys.argv) > 2:       # smoke-test limit
-        vocab = vocab[:int(sys.argv[2])]
+    if len(sys.argv) > 2:  # smoke-test limit
+        vocab = vocab[: int(sys.argv[2])]
 
     # offset-grid index of the forced fifth offset, and the no-zero-offset
     # mask: a zero offset is an identity letter step, whose doublets are
@@ -249,11 +264,22 @@ def main() -> None:
     # measured mod-5 uniformity of doublet positions and by the flat
     # position profile that killed stay-slot-hold.
     r = np.arange(M, dtype=np.int64)
-    IDX0 = (-(r[:, None, None, None] + r[None, :, None, None]
-              + r[None, None, :, None] + r[None, None, None, :])) % M
+    IDX0 = (
+        -(
+            r[:, None, None, None]
+            + r[None, :, None, None]
+            + r[None, None, :, None]
+            + r[None, None, None, :]
+        )
+    ) % M
     nz = r != 0
-    NZ = (nz[:, None, None, None] & nz[None, :, None, None]
-          & nz[None, None, :, None] & nz[None, None, None, :] & (IDX0 != 0))
+    NZ = (
+        nz[:, None, None, None]
+        & nz[None, :, None, None]
+        & nz[None, None, :, None]
+        & nz[None, None, None, :]
+        & (IDX0 != 0)
+    )
 
     n_alpha = 0
     uniq: set[bytes] = set()
@@ -262,9 +288,9 @@ def main() -> None:
     tot_sched_d6 = 0
     n_alpha_sched = 0
     n_alpha_d6 = 0
-    best_rows = []          # (min predicted d6 among in-band-d1, word, rule)
-    zero_off_frac_num = 0   # in-band-d1 schedules containing a zero offset
-    d4_elev = 0             # in-band-d1 & in-CI-d6 schedules with pred d4 > background
+    best_rows = []  # (min predicted d6 among in-band-d1, word, rule)
+    zero_off_frac_num = 0  # in-band-d1 schedules containing a zero offset
+    d4_elev = 0  # in-band-d1 & in-CI-d6 schedules with pred d4 > background
     sig_turns_tot = 0
     sig_alpha = 0
     min_d6_global = 9.0
@@ -279,10 +305,14 @@ def main() -> None:
             uniq.add(bytes(K))
             v1 = delta_vectors(K, T1, -1)
             if constrained_floor(v1) > hi1:
-                continue          # no schedule can reach the band
+                continue  # no schedule can reach the band
             pre_pass += 1
-            g4 = (v1[1][:, None, None, None] + v1[2][None, :, None, None]
-                  + v1[3][None, None, :, None] + v1[4][None, None, None, :])
+            g4 = (
+                v1[1][:, None, None, None]
+                + v1[2][None, :, None, None]
+                + v1[3][None, None, :, None]
+                + v1[4][None, None, None, :]
+            )
             rate1 = g4 + v1[0][IDX0]
             band = (rate1 >= lo1) & (rate1 <= hi1)
             zero_off_frac_num += int((band & ~NZ).sum())
@@ -295,8 +325,7 @@ def main() -> None:
             i1, i2, i3, i4 = np.nonzero(mask)
             i0 = IDX0[i1, i2, i3, i4]
             v6a = delta_vectors(K, T6, -1)
-            rate6 = (v6a[0][i0] + v6a[1][i1] + v6a[2][i2]
-                     + v6a[3][i3] + v6a[4][i4])
+            rate6 = v6a[0][i0] + v6a[1][i1] + v6a[2][i2] + v6a[3][i3] + v6a[4][i4]
             m6 = float(rate6.min())
             min_d6_global = min(min_d6_global, m6)
             best_rows.append((m6, word, rname))
@@ -306,8 +335,13 @@ def main() -> None:
                 n_alpha_d6 += 1
                 tot_sched_d6 += c6
                 v4a = delta_vectors(K, T4, +1)
-                rate4 = (v4a[0][i0[sel]] + v4a[1][i1[sel]] + v4a[2][i2[sel]]
-                         + v4a[3][i3[sel]] + v4a[4][i4[sel]])
+                rate4 = (
+                    v4a[0][i0[sel]]
+                    + v4a[1][i1[sel]]
+                    + v4a[2][i2[sel]]
+                    + v4a[3][i3[sel]]
+                    + v4a[4][i4[sel]]
+                )
                 d4_elev += int((rate4 > 1 / M).sum())
 
     # sigma: single turn per disk, cross-word table, phase-blind
@@ -326,40 +360,55 @@ def main() -> None:
                 sig_alpha += 1
                 sig_turns_tot += n
 
-    print(f"\nkeyword alphabets scanned: {n_alpha:,} "
-          f"({len(uniq):,} unique permutations)")
-    print(f"d1 prefilter (phase-decomposed floor <= {hi1:.4f}): "
-          f"{pre_pass:,} alphabets")
-    print(f"\n=== g side: schedules with predicted d1 in "
-          f"[{lo1:.4f}, {hi1:.4f}], no zero offset ===")
+    print(
+        f"\nkeyword alphabets scanned: {n_alpha:,} ({len(uniq):,} unique permutations)"
+    )
+    print(f"d1 prefilter (phase-decomposed floor <= {hi1:.4f}): {pre_pass:,} alphabets")
+    print(
+        f"\n=== g side: schedules with predicted d1 in "
+        f"[{lo1:.4f}, {hi1:.4f}], no zero offset ==="
+    )
     print(f"  alphabets with >=1 in-band schedule: {n_alpha_sched:,}")
     print(f"  TOTAL in-band (alphabet, schedule) pairs: {tot_sched:,}")
-    print(f"  in-band schedules REJECTED for a zero offset (identity "
-          f"step, mod-5 doublet comb): {zero_off_frac_num:,}")
-    print(f"\n=== d6 filter: predicted d6 in [{lo6:.4f}, {hi6:.4f}] "
-          f"(observed {obs[6][0]}/{obs[6][1]} = "
-          f"{obs[6][0]/obs[6][1]:.4f}) ===")
-    print(f"  minimum predicted d6 over ALL in-band-d1 schedules: "
-          f"{min_d6_global:.4f}  (background 1/29 = {1/M:.4f})")
+    print(
+        f"  in-band schedules REJECTED for a zero offset (identity "
+        f"step, mod-5 doublet comb): {zero_off_frac_num:,}"
+    )
+    print(
+        f"\n=== d6 filter: predicted d6 in [{lo6:.4f}, {hi6:.4f}] "
+        f"(observed {obs[6][0]}/{obs[6][1]} = "
+        f"{obs[6][0] / obs[6][1]:.4f}) ==="
+    )
+    print(
+        f"  minimum predicted d6 over ALL in-band-d1 schedules: "
+        f"{min_d6_global:.4f}  (background 1/29 = {1 / M:.4f})"
+    )
     print(f"  alphabets surviving d1 AND d6: {n_alpha_d6:,}")
-    print(f"  surviving (alphabet, schedule) pairs: {tot_sched_d6:,} "
-          f"(cut factor vs d1-only: "
-          f"{tot_sched/max(tot_sched_d6,1):.0f}x)")
-    print(f"  of those, schedules predicting d4 above background: "
-          f"{d4_elev:,} ({d4_elev/max(tot_sched_d6,1):.1%}; observed d4 "
-          f"leans high, {obs[4][0]/obs[4][1]:.4f})")
+    print(
+        f"  surviving (alphabet, schedule) pairs: {tot_sched_d6:,} "
+        f"(cut factor vs d1-only: "
+        f"{tot_sched / max(tot_sched_d6, 1):.0f}x)"
+    )
+    print(
+        f"  of those, schedules predicting d4 above background: "
+        f"{d4_elev:,} ({d4_elev / max(tot_sched_d6, 1):.1%}; observed d4 "
+        f"leans high, {obs[4][0] / obs[4][1]:.4f})"
+    )
     best_rows.sort()
     print("  deepest predicted d6 (alphabet minima):")
     for m6, word, rname in best_rows[:8]:
         print(f"     {m6:.4f}  {word:<14} [{rname}]")
-    print(f"\n=== sigma side: turns with seam rate in "
-          f"[{lo_s:.4f}, {hi_s:.4f}] ===")
-    print(f"  alphabets with >=1 in-CI turn: {sig_alpha:,}; "
-          f"total (disk, turn) pairs: {sig_turns_tot:,}")
+    print(f"\n=== sigma side: turns with seam rate in [{lo_s:.4f}, {hi_s:.4f}] ===")
+    print(
+        f"  alphabets with >=1 in-CI turn: {sig_alpha:,}; "
+        f"total (disk, turn) pairs: {sig_turns_tot:,}"
+    )
     if tot_sched_d6 and sig_turns_tot:
-        print(f"\njoint full-key space (g-side x sigma-side): "
-              f"{tot_sched_d6:,} x {sig_turns_tot:,} = "
-              f"{tot_sched_d6 * sig_turns_tot:.2e}")
+        print(
+            f"\njoint full-key space (g-side x sigma-side): "
+            f"{tot_sched_d6:,} x {sig_turns_tot:,} = "
+            f"{tot_sched_d6 * sig_turns_tot:.2e}"
+        )
 
 
 if __name__ == "__main__":

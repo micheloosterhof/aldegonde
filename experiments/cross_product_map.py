@@ -57,7 +57,9 @@ GRID_WINDOWS = 700
 SWEEP_WINDOWS = [29, 58, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000]
 
 
-def window_counts(stream: np.ndarray, window: int, stride: int) -> tuple[np.ndarray, np.ndarray]:
+def window_counts(
+    stream: np.ndarray, window: int, stride: int
+) -> tuple[np.ndarray, np.ndarray]:
     """Per-rune counts of each window, shape (n_windows, 29), plus offsets."""
     onehot = np.zeros((len(stream) + 1, N_RUNES), dtype=np.int32)
     onehot[np.arange(1, len(stream) + 1), stream] = 1
@@ -77,10 +79,12 @@ def make_null(kind: str):
     the observed doublet rate, so known doublet suppression is not read as
     signal (`c3301.low_doublet_null`)."""
     if kind == "shuffle":
+
         def draw(stream: np.ndarray, rng: np.random.Generator) -> np.ndarray:
             out = stream.copy()
             rng.shuffle(out)
             return out
+
         return draw
 
     from aldegonde import c3301
@@ -95,7 +99,10 @@ def make_null(kind: str):
 
 
 def analyse(
-    stream: np.ndarray, window: int, stride: int, rng: np.random.Generator,
+    stream: np.ndarray,
+    window: int,
+    stride: int,
+    rng: np.random.Generator,
     null_kind: str = "shuffle",
 ) -> dict:
     """Observed and null cross-product spread at one window size."""
@@ -173,8 +180,10 @@ def section_homogeneity(stream: np.ndarray, rng: np.random.Generator) -> None:
             [stats.chi2_contingency(table(draw(stream, rng)))[0] for _ in range(300)]
         )
         beat = int((vals >= chi2).sum())
-        print(f"   {kind} null: chi2 mean {vals.mean():.1f} sd {vals.std():.1f}"
-              f" -> permutation p = {(beat + 1) / 301:.4f}")
+        print(
+            f"   {kind} null: chi2 mean {vals.mean():.1f} sd {vals.std():.1f}"
+            f" -> permutation p = {(beat + 1) / 301:.4f}"
+        )
 
 
 def section_of_positions(stream: np.ndarray) -> np.ndarray:
@@ -196,14 +205,27 @@ def render(res: dict, out: str) -> None:
     mpl.use("Agg")
     import matplotlib.pyplot as plt
 
-    chi, null, starts, window = res["chi"], res["null_chi"], res["starts"], res["window"]
+    chi, null, starts, window = (
+        res["chi"],
+        res["null_chi"],
+        res["starts"],
+        res["window"],
+    )
     lo = min(chi.min(), null.min())
     hi = max(np.percentile(chi, 99.9), np.percentile(null, 99.9))
     extent = [starts[0], starts[-1] + window, starts[-1] + window, starts[0]]
     fig, axes = plt.subplots(1, 2, figsize=(13, 6), sharey=True)
-    for ax, data, name in ((axes[0], chi, "Liber Primus"), (axes[1], null, "shuffled null")):
+    for ax, data, name in (
+        (axes[0], chi, "Liber Primus"),
+        (axes[1], null, "shuffled null"),
+    ):
         im = ax.imshow(
-            data, cmap="viridis", extent=extent, vmin=lo, vmax=hi, interpolation="nearest"
+            data,
+            cmap="viridis",
+            extent=extent,
+            vmin=lo,
+            vmax=hi,
+            interpolation="nearest",
         )
         ax.set_title(name, fontsize=11)
         ax.set_xlabel("window offset (runes)")
@@ -227,14 +249,25 @@ def render_grid(results: list[dict], out: str) -> None:
 
     fig, axes = plt.subplots(2, len(results), figsize=(3.1 * len(results), 6.6))
     for col, res in enumerate(results):
-        chi, null, starts, window = res["chi"], res["null_chi"], res["starts"], res["window"]
+        chi, null, starts, window = (
+            res["chi"],
+            res["null_chi"],
+            res["starts"],
+            res["window"],
+        )
         lo = min(np.percentile(chi, 0.1), np.percentile(null, 0.1))
         hi = max(np.percentile(chi, 99.9), np.percentile(null, 99.9))
         extent = [starts[0], starts[-1] + window, starts[-1] + window, starts[0]]
         for row, data in ((0, chi), (1, null)):
             ax = axes[row, col]
-            ax.imshow(data, cmap="viridis", extent=extent, vmin=lo, vmax=hi,
-                      interpolation="nearest")
+            ax.imshow(
+                data,
+                cmap="viridis",
+                extent=extent,
+                vmin=lo,
+                vmax=hi,
+                interpolation="nearest",
+            )
             ax.set_xticks([])
             ax.set_yticks([])
             if row == 0:
@@ -264,20 +297,28 @@ def main() -> None:
 
     stream = np.array(load_clean()[0], dtype=np.int64)
     rng = np.random.default_rng(SEED)
-    print(f"clean corpus: {len(stream)} runes, {NULL_DRAWS} draws of the "
-          f"{args.null} null per point\n")
+    print(
+        f"clean corpus: {len(stream)} runes, {NULL_DRAWS} draws of the "
+        f"{args.null} null per point\n"
+    )
 
     if args.sweep:
         print("cross-product spread against a shuffled null, by window size")
-        print("(spread above the null is what localised alphabet structure looks like)\n")
-        print(f"{'window':>7}{'wins':>6}{'pairs':>9}{'obs sd':>10}{'null sd':>10}"
-              f"{'ratio':>8}{'z':>7}")
+        print(
+            "(spread above the null is what localised alphabet structure looks like)\n"
+        )
+        print(
+            f"{'window':>7}{'wins':>6}{'pairs':>9}{'obs sd':>10}{'null sd':>10}"
+            f"{'ratio':>8}{'z':>7}"
+        )
         for window in SWEEP_WINDOWS:
             stride = max(1, window // 4)
             res = analyse(stream, window, stride, rng, args.null)
-            print(f"{window:>7}{res['n_windows']:>6}{res['n_pairs']:>9}"
-                  f"{res['obs_sd']:>10.5f}{res['null_sd']:>10.5f}"
-                  f"{res['ratio']:>8.4f}{res['z']:>+7.2f}")
+            print(
+                f"{window:>7}{res['n_windows']:>6}{res['n_pairs']:>9}"
+                f"{res['obs_sd']:>10.5f}{res['null_sd']:>10.5f}"
+                f"{res['ratio']:>8.4f}{res['z']:>+7.2f}"
+            )
         print()
         section_homogeneity(stream, rng)
         return
@@ -296,11 +337,15 @@ def main() -> None:
 
     stride = args.stride or max(1, args.window // 30)
     res = analyse(stream, args.window, stride, rng, args.null)
-    print(f"window {args.window}, stride {stride}: {res['n_windows']} windows, "
-          f"{res['n_pairs']} non-overlapping pairs")
+    print(
+        f"window {args.window}, stride {stride}: {res['n_windows']} windows, "
+        f"{res['n_pairs']} non-overlapping pairs"
+    )
     print(f"   observed sd {res['obs_sd']:.5f}")
-    print(f"   null sd     {res['null_sd']:.5f} +- {res['null_sd_sd']:.5f} "
-          f"({NULL_DRAWS} draws)")
+    print(
+        f"   null sd     {res['null_sd']:.5f} +- {res['null_sd_sd']:.5f} "
+        f"({NULL_DRAWS} draws)"
+    )
     print(f"   spread ratio {res['ratio']:.4f}, z = {res['z']:+.2f}")
 
     print()

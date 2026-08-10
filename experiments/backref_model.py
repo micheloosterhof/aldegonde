@@ -40,7 +40,8 @@ import random
 import statistics
 
 _spec = importlib.util.spec_from_file_location(
-    "mf", "experiments/mechanism_fingerprint.py")
+    "mf", "experiments/mechanism_fingerprint.py"
+)
 assert _spec is not None and _spec.loader is not None
 mf = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(mf)
@@ -87,12 +88,24 @@ def main() -> None:
     pt_d4 = []
     for _ in range(6):
         pt = gen(n)
-        pt_d1.append(sum(1 for i in range(5, n - 1)
-                         if pt[i] == pt[i - 5] and pt[i + 1] == pt[i - 4]))
-        pt_d4.append(sum(1 for i in range(5, n - 4)
-                         if pt[i] == pt[i - 5] and pt[i + 4] == pt[i - 1]))
-    print(f"plaintext opportunities: d1 {statistics.mean(pt_d1):.0f}, "
-          f"d4 {statistics.mean(pt_d4):.0f} (observed events: 29, 28)")
+        pt_d1.append(
+            sum(
+                1
+                for i in range(5, n - 1)
+                if pt[i] == pt[i - 5] and pt[i + 1] == pt[i - 4]
+            )
+        )
+        pt_d4.append(
+            sum(
+                1
+                for i in range(5, n - 4)
+                if pt[i] == pt[i - 5] and pt[i + 4] == pt[i - 1]
+            )
+        )
+    print(
+        f"plaintext opportunities: d1 {statistics.mean(pt_d1):.0f}, "
+        f"d4 {statistics.mean(pt_d4):.0f} (observed events: 29, 28)"
+    )
 
     obs = mf.fingerprint(text)
     fps = [mf.fingerprint(enc_backref(gen(n))) for _ in range(8)]

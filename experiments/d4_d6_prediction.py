@@ -77,8 +77,10 @@ def main() -> None:
     rng = random.Random(SEED)
     words = real_words(rng)
     mats = pair_matrices(words, dmax=DMAX)
-    print(f"real runeglish words: {len(words)}, fitted on d{FIT_CELLS}, "
-          f"d5 and d6 left free\n")
+    print(
+        f"real runeglish words: {len(words)}, fitted on d{FIT_CELLS}, "
+        f"d5 and d6 left free\n"
+    )
 
     plain = {d: diag_rate(mats[d][0], list(range(29))) for d in range(1, DMAX + 1)}
     print("plaintext reference: " + "  ".join(f"d{d} {plain[d]:.4f}" for d in plain))
@@ -86,48 +88,62 @@ def main() -> None:
     fits = [fit_one(mats, rng) for _ in range(RESTARTS)]
     profiles = [p for _, p in fits]
 
-    print(f"\n{'cell':>5}{'observed':>10}{'fitted mean':>13}{'sd':>9}"
-          f"{'min':>9}{'max':>9}   in fit?")
+    print(
+        f"\n{'cell':>5}{'observed':>10}{'fitted mean':>13}{'sd':>9}"
+        f"{'min':>9}{'max':>9}   in fit?"
+    )
     for d in range(1, DMAX + 1):
         vals = [p[d] for p in profiles]
         mark = "fitted" if d in FIT_CELLS else "PREDICTED"
-        print(f"{'d' + str(d):>5}{OBSERVED[d]:>10.4f}{statistics.mean(vals):>13.4f}"
-              f"{statistics.pstdev(vals):>9.4f}{min(vals):>9.4f}{max(vals):>9.4f}"
-              f"   {mark}")
+        print(
+            f"{'d' + str(d):>5}{OBSERVED[d]:>10.4f}{statistics.mean(vals):>13.4f}"
+            f"{statistics.pstdev(vals):>9.4f}{min(vals):>9.4f}{max(vals):>9.4f}"
+            f"   {mark}"
+        )
 
     d6 = [p[6] for p in profiles]
     covered = sum(1 for v in d6 if v <= OBSERVED[6])
     print("\nd6 is the out-of-sample cell.")
-    print(f"   observed {OBSERVED[6]:.4f}; fitted g predicts "
-          f"{statistics.mean(d6):.4f} +- {statistics.pstdev(d6):.4f}")
+    print(
+        f"   observed {OBSERVED[6]:.4f}; fitted g predicts "
+        f"{statistics.mean(d6):.4f} +- {statistics.pstdev(d6):.4f}"
+    )
     print(f"   {covered} of {len(d6)} fits predict d6 at or below the observed value")
 
     ratios = [p[4] / p[6] for p in profiles if p[6] > 0]
     obs_ratio = OBSERVED[4] / OBSERVED[6]
     print("\nd4/d6 ratio (register offsets largely cancel)")
     print(f"   observed {obs_ratio:.2f}")
-    print(f"   fitted   {statistics.mean(ratios):.2f} +- {statistics.pstdev(ratios):.2f}"
-          f"  range {min(ratios):.2f}-{max(ratios):.2f}")
+    print(
+        f"   fitted   {statistics.mean(ratios):.2f} +- {statistics.pstdev(ratios):.2f}"
+        f"  range {min(ratios):.2f}-{max(ratios):.2f}"
+    )
     print("   the independence approximation that motivated the puzzle predicts 1.00")
 
     # The LP cells carry their own binomial error, and d6 rests on 31 events.
     # Comparing a cell to the model means carrying both errors.
     print("\nobserved vs the model's own prediction, both errors carried")
-    se = {d: (OBSERVED[d] * (1 - OBSERVED[d]) / n) ** 0.5 for d, (_, n) in COUNTS.items()}
+    se = {
+        d: (OBSERVED[d] * (1 - OBSERVED[d]) / n) ** 0.5 for d, (_, n) in COUNTS.items()
+    }
     for d, (k, n) in sorted(COUNTS.items()):
         print(f"   d{d}: {k}/{n} = {OBSERVED[d]:.4f} +- {se[d]:.4f} (binomial)")
 
     pred6, spread6 = statistics.mean(d6), statistics.pstdev(d6)
     z6 = (pred6 - OBSERVED[6]) / (se[6] ** 2 + spread6**2) ** 0.5
-    print(f"\n   d6      observed {OBSERVED[6]:.4f} +- {se[6]:.4f} vs model "
-          f"{pred6:.4f} +- {spread6:.4f}  ->  z = {z6:+.2f}")
+    print(
+        f"\n   d6      observed {OBSERVED[6]:.4f} +- {se[6]:.4f} vs model "
+        f"{pred6:.4f} +- {spread6:.4f}  ->  z = {z6:+.2f}"
+    )
 
     rel = ((se[4] / OBSERVED[4]) ** 2 + (se[6] / OBSERVED[6]) ** 2) ** 0.5
     se_ratio = obs_ratio * rel
     m_ratio, s_ratio = statistics.mean(ratios), statistics.pstdev(ratios)
     zr = (obs_ratio - m_ratio) / (se_ratio**2 + s_ratio**2) ** 0.5
-    print(f"   d4/d6   observed {obs_ratio:.2f} +- {se_ratio:.2f} vs model "
-          f"{m_ratio:.2f} +- {s_ratio:.2f}  ->  z = {zr:+.2f}")
+    print(
+        f"   d4/d6   observed {obs_ratio:.2f} +- {se_ratio:.2f} vs model "
+        f"{m_ratio:.2f} +- {s_ratio:.2f}  ->  z = {zr:+.2f}"
+    )
 
     # Sharper than "is d6 predicted": can any order-5 g hit every cell at once?
     joint = tuple(sorted(FIT_CELLS + (6,)))

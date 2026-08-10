@@ -47,6 +47,8 @@ gaps_obs = [b - a for a, b in zip(dpos, dpos[1:])]
 # ---- 1. categorical marker-rune tests ----
 print("=== 1. do specific runes flank doublets? (chi2 vs corpus, df=28) ===")
 corpus_freq = Counter(text)
+
+
 def cat_test(positions: list[int], name: str) -> None:
     vals = Counter(text[p] for p in positions if 0 <= p < n)
     tot = sum(vals.values())
@@ -56,18 +58,28 @@ def cat_test(positions: list[int], name: str) -> None:
         chi2 += (vals.get(r, 0) - e) ** 2 / e
     print(f"  {name}: chi2={chi2:.1f} (28 df; >41 is p<0.05)")
 
+
 cat_test([i - 1 for i in dpos], "rune BEFORE doublet")
 cat_test(list(dpos), "doubled rune itself")
 cat_test([i + 2 for i in dpos], "rune AFTER doublet")
 
 # ---- 2. gap-process Monte Carlo for group-size variants ----
 print("\n=== 2. doublet gap process under group-size variants ===")
-print(f"observed: {len(dpos)} doublets, min gap {min(gaps_obs)}, "
-      f"gaps<=5: {sum(1 for g in gaps_obs if g <= 5)}, "
-      f"gaps mod5 {sorted(Counter(g % 5 for g in gaps_obs).items())}")
+print(
+    f"observed: {len(dpos)} doublets, min gap {min(gaps_obs)}, "
+    f"gaps<=5: {sum(1 for g in gaps_obs if g <= 5)}, "
+    f"gaps mod5 {sorted(Counter(g % 5 for g in gaps_obs).items())}"
+)
 
-def simulate(lengths: list[int], probs: list[float], *, reset: bool,
-             protect_first: bool, reps: int = 400) -> None:
+
+def simulate(
+    lengths: list[int],
+    probs: list[float],
+    *,
+    reset: bool,
+    protect_first: bool,
+    reps: int = 400,
+) -> None:
     tot_d, tot_min, tot_le5, mod5 = [], [], [], Counter()
     for _ in range(reps):
         pos = 0
@@ -80,8 +92,9 @@ def simulate(lengths: list[int], probs: list[float], *, reset: bool,
                 if not protected and random.random() < 1 / N:
                     doublets.append(pos)
                     if reset:
-                        next_boundary = pos + 1 + random.choices(
-                            lengths, weights=probs)[0]
+                        next_boundary = (
+                            pos + 1 + random.choices(lengths, weights=probs)[0]
+                        )
                         protected = protect_first
                         pos += 1
                         continue
@@ -97,17 +110,20 @@ def simulate(lengths: list[int], probs: list[float], *, reset: bool,
     m5 = [mod5[k] for k in range(5)]
     m5n = sum(m5)
     chi5 = sum((c - m5n / 5) ** 2 / (m5n / 5) for c in m5) if m5n else 0
-    print(f"  doublets {statistics.mean(tot_d):6.1f}+/-{statistics.stdev(tot_d):4.1f} "
-          f"min-gap {statistics.mean(tot_min):4.1f} "
-          f"gaps<=5 {statistics.mean(tot_le5):4.2f} "
-          f"mod5-chi2/rep {chi5 / len(tot_d) / 4:.2f}")
+    print(
+        f"  doublets {statistics.mean(tot_d):6.1f}+/-{statistics.stdev(tot_d):4.1f} "
+        f"min-gap {statistics.mean(tot_min):4.1f} "
+        f"gaps<=5 {statistics.mean(tot_le5):4.2f} "
+        f"mod5-chi2/rep {chi5 / len(tot_d) / 4:.2f}"
+    )
+
 
 for name, L, P, rs, pf in [
-    ("{4,5,6} free          ", [4, 5, 6], [.15, .7, .15], False, False),
-    ("{4,5,6} reset@doublet ", [4, 5, 6], [.15, .7, .15], True, False),
-    ("{4,5,6} reset+protect ", [4, 5, 6], [.15, .7, .15], True, True),
-    ("{5,6}   free          ", [5, 6], [.5, .5], False, False),
-    ("{4,5}   free          ", [4, 5], [.5, .5], False, False),
+    ("{4,5,6} free          ", [4, 5, 6], [0.15, 0.7, 0.15], False, False),
+    ("{4,5,6} reset@doublet ", [4, 5, 6], [0.15, 0.7, 0.15], True, False),
+    ("{4,5,6} reset+protect ", [4, 5, 6], [0.15, 0.7, 0.15], True, True),
+    ("{5,6}   free          ", [5, 6], [0.5, 0.5], False, False),
+    ("{4,5}   free          ", [4, 5], [0.5, 0.5], False, False),
     ("fixed 5 reset@doublet ", [5], [1.0], True, False),
     ("fixed 5 free (lattice)", [5], [1.0], False, False),
 ]:
@@ -118,9 +134,12 @@ for name, L, P, rs, pf in [
 print("\n=== 3. Hill 5x5 over GF(29) with internal-doublet rejection ===")
 
 spec = importlib.util.spec_from_file_location(
-    "mf", "experiments/mechanism_fingerprint.py")
+    "mf", "experiments/mechanism_fingerprint.py"
+)
+assert spec is not None and spec.loader is not None, "cannot load mechanism_fingerprint"
 mf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mf)
+
 
 def rand_invertible() -> list[list[int]]:
     while True:
@@ -142,24 +161,28 @@ def rand_invertible() -> list[list[int]]:
         if ok:
             return M
 
+
 def enc_hill_reject(pt: str, wl: list[int]) -> str:
     M = rand_invertible()
     v = [1 + random.randrange(N - 1) for _ in range(5)]
     out: list[str] = []
     for b in range(0, len(pt) - 4, 5):
-        block = [r2i(c) for c in pt[b:b + 5]]
+        block = [r2i(c) for c in pt[b : b + 5]]
         t = 0
         while True:
-            cb = [(sum(M[r][c] * block[c] for c in range(5)) + t * v[r]) % N
-                  for r in range(5)]
+            cb = [
+                (sum(M[r][c] * block[c] for c in range(5)) + t * v[r]) % N
+                for r in range(5)
+            ]
             if all(cb[j] != cb[j + 1] for j in range(4)):
                 break
             t += 1
         out.extend(mf.i2r(x) for x in cb)
     rem = len(pt) % 5
     if rem:
-        out.extend(pt[len(pt) - rem:])
+        out.extend(pt[len(pt) - rem :])
     return "".join(out)
+
 
 textc, wlens = mf.load_corpus()
 gen = mf.build_markov()
@@ -169,5 +192,7 @@ print("  " + " ".join(f"{k}={v:.3f}" for k, v in avg.items()))
 # doublet position lattice check
 s = enc_hill_reject(gen(len(textc)), wlens)
 dp = [i for i in range(len(s) - 1) if s[i] == s[i + 1]]
-print(f"  doublet positions mod 5: {sorted(Counter(i % 5 for i in dp).items())}"
-      f"   <- fixed-aligned blocks leave a lattice; LP has none")
+print(
+    f"  doublet positions mod 5: {sorted(Counter(i % 5 for i in dp).items())}"
+    f"   <- fixed-aligned blocks leave a lattice; LP has none"
+)

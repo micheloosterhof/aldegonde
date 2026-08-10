@@ -58,10 +58,7 @@ def load_clean() -> np.ndarray:
     r2i = {r: i for i, r in enumerate(ALPHABET)}
     with open(DATA) as f:
         raw = f.read()
-    pages = [
-        [r2i[ch] for ch in page if ch in r2i]
-        for page in raw.split("%")
-    ]
+    pages = [[r2i[ch] for ch in page if ch in r2i] for page in raw.split("%")]
     pages = [p for p in pages if p][:-2]
     return np.array([x for p in pages for x in p], dtype=np.int64)
 
@@ -77,8 +74,9 @@ def repeat_counts(delta: np.ndarray, d: int) -> tuple[int, int]:
     return int(zero.sum()), int((eq & ~zero).sum())
 
 
-def surrogates(n_sur: int, length: int, rate: float, rng: np.random.Generator
-               ) -> np.ndarray:
+def surrogates(
+    n_sur: int, length: int, rate: float, rng: np.random.Generator
+) -> np.ndarray:
     """n_sur doublet-suppressed uniform streams, shape (n_sur, length)."""
     steps = rng.integers(1, MOD, size=(n_sur, length))
     steps[rng.random(size=(n_sur, length)) < rate] = 0
@@ -115,8 +113,10 @@ def main() -> None:
         done += b
     print(f"null: {n_sur} doublet-suppressed surrogates\n")
 
-    header = (f"{'sep':>3} | {'zero obs':>8} {'null':>8} {'z':>6} {'p':>8} | "
-              f"{'nonzero obs':>11} {'null':>10} {'z':>6} {'p':>8}")
+    header = (
+        f"{'sep':>3} | {'zero obs':>8} {'null':>8} {'z':>6} {'p':>8} | "
+        f"{'nonzero obs':>11} {'null':>10} {'z':>6} {'p':>8}"
+    )
     print(header)
     print("-" * len(header))
     for d in SEPARATIONS:
@@ -127,8 +127,10 @@ def main() -> None:
         znz = (onz - nz.mean()) / nz.std()
         pz = (np.sum(z0 >= oz) + 1) / (n_sur + 1)
         pnz = (np.sum(nz >= onz) + 1) / (n_sur + 1)
-        print(f"{d:>3} | {oz:>8} {z0.mean():>8.1f} {zz:>+6.2f} {pz:>8.4f} | "
-              f"{onz:>11} {nz.mean():>10.1f} {znz:>+6.2f} {pnz:>8.4f}")
+        print(
+            f"{d:>3} | {oz:>8} {z0.mean():>8.1f} {zz:>+6.2f} {pz:>8.4f} | "
+            f"{onz:>11} {nz.mean():>10.1f} {znz:>+6.2f} {pnz:>8.4f}"
+        )
 
     # per-value breakdown at the two anomalous separations
     for d in (1, 4):
@@ -136,8 +138,10 @@ def main() -> None:
         vals, counts = np.unique(delta[:-d][eq], return_counts=True)
         per_val = dict(zip(vals.tolist(), counts.tolist()))
         expect = (len(delta) - d) / MOD**2  # rough per-value null
-        print(f"\nsep {d}: repeated-delta counts per value "
-              f"(rough null ~{expect:.1f} each):")
+        print(
+            f"\nsep {d}: repeated-delta counts per value "
+            f"(rough null ~{expect:.1f} each):"
+        )
         row = [f"{v}:{per_val.get(v, 0)}" for v in range(MOD)]
         print("  " + "  ".join(row))
 

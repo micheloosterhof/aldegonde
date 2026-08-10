@@ -69,8 +69,7 @@ def batteries(words: list[list[int]]):
             if n < 20:
                 continue
             c = Counter(v)
-            vals.append(sum(x * (x - 1) for x in c.values())
-                        / (n * (n - 1)) * M)
+            vals.append(sum(x * (x - 1) for x in c.values()) / (n * (n - 1)) * M)
         if vals:
             split[d] = float(np.mean(vals))
     return m, s, split
@@ -80,15 +79,17 @@ def hetero(m: Counter, s: Counter) -> dict[int, float]:
     """Chi2 across cells within each distance (translation invariance)."""
     out = {}
     for d in range(1, MAXPOS):
-        cells = [(m[(j, j + d)], s[(j, j + d)])
-                 for j in range(MAXPOS - d) if s[(j, j + d)] >= MIN_CELL]
+        cells = [
+            (m[(j, j + d)], s[(j, j + d)])
+            for j in range(MAXPOS - d)
+            if s[(j, j + d)] >= MIN_CELL
+        ]
         tot_m = sum(c[0] for c in cells)
         tot_s = sum(c[1] for c in cells)
         if len(cells) < 2 or not tot_m:
             continue
         p = tot_m / tot_s
-        out[d] = sum((mm - ss * p) ** 2 / (ss * p * (1 - p))
-                     for mm, ss in cells)
+        out[d] = sum((mm - ss * p) ** 2 / (ss * p * (1 - p)) for mm, ss in cells)
     return out
 
 
@@ -96,8 +97,9 @@ def main() -> None:
     rng = random.Random(3301)
     stream, wid = load_clean()
     words = word_list(stream, wid)
-    dbl_rate = sum(1 for i in range(len(stream) - 1)
-                   if stream[i] == stream[i + 1]) / (len(stream) - 1)
+    dbl_rate = sum(1 for i in range(len(stream) - 1) if stream[i] == stream[i + 1]) / (
+        len(stream) - 1
+    )
     null_model = doublet_shuffle(dbl_rate)
 
     obs_m, obs_s, obs_split = batteries(words)
@@ -118,11 +120,15 @@ def main() -> None:
         for d, v in nh.items():
             null_het.setdefault(d, []).append(v)
 
-    print(f"clean corpus, {len(words)} words; null = doublet_shuffle "
-          f"({TRIALS} surrogates, real word structure)\n")
+    print(
+        f"clean corpus, {len(words)} words; null = doublet_shuffle "
+        f"({TRIALS} surrogates, real word structure)\n"
+    )
 
-    print("A. match rate per position pair (1-based labels; cells with "
-          f">= {MIN_CELL} samples; z vs surrogates):")
+    print(
+        "A. match rate per position pair (1-based labels; cells with "
+        f">= {MIN_CELL} samples; z vs surrogates):"
+    )
     print("  j\\k " + "".join(f"{k + 1:>7}" for k in range(1, MAXPOS)))
     for j in range(MAXPOS - 1):
         row = [f"{j + 1:>5}"]
@@ -144,20 +150,30 @@ def main() -> None:
         ss = sum(obs_s[(j, j + d)] for j in range(MAXPOS - d))
         if ss < MIN_CELL:
             continue
-        arr = np.array([sum(null_cell[(j, j + d)][t]
-                            for j in range(MAXPOS - d)
-                            if (j, j + d) in null_cell)
-                        for t in range(TRIALS)])
-        print(f"  d={d}: {mm:>4}/{ss:>5} = {mm / ss:.4f}  "
-              f"null {arr.mean() / ss:.4f}  z {(mm - arr.mean()) / arr.std():+6.2f}")
+        arr = np.array(
+            [
+                sum(
+                    null_cell[(j, j + d)][t]
+                    for j in range(MAXPOS - d)
+                    if (j, j + d) in null_cell
+                )
+                for t in range(TRIALS)
+            ]
+        )
+        print(
+            f"  d={d}: {mm:>4}/{ss:>5} = {mm / ss:.4f}  "
+            f"null {arr.mean() / ss:.4f}  z {(mm - arr.mean()) / arr.std():+6.2f}"
+        )
 
     print("\nC. translation invariance (chi2 across j at fixed d):")
     for d in sorted(obs_het):
         arr = np.array(null_het[d])
         o = obs_het[d]
-        print(f"  d={d}: obs {o:6.2f}  null {arr.mean():6.2f} ± {arr.std():5.2f}"
-              f"  z {(o - arr.mean()) / arr.std():+5.2f}  "
-              f"p(hi) {float((arr >= o).mean()):.3f}")
+        print(
+            f"  d={d}: obs {o:6.2f}  null {arr.mean():6.2f} ± {arr.std():5.2f}"
+            f"  z {(o - arr.mean()) / arr.std():+5.2f}  "
+            f"p(hi) {float((arr >= o).mean()):.3f}"
+        )
 
     print("\nD. conditional split (mean nIoC of rune-at-k | rune-at-j) by d:")
     for d in sorted(obs_split):
@@ -165,8 +181,10 @@ def main() -> None:
             continue
         arr = np.array(null_split[d])
         o = obs_split[d]
-        print(f"  d={d}: obs {o:.4f}  null {arr.mean():.4f} ± {arr.std():.4f}"
-              f"  z {(o - arr.mean()) / arr.std():+5.2f}")
+        print(
+            f"  d={d}: obs {o:.4f}  null {arr.mean():.4f} ± {arr.std():.4f}"
+            f"  z {(o - arr.mean()) / arr.std():+5.2f}"
+        )
 
 
 if __name__ == "__main__":

@@ -22,7 +22,6 @@ Usage:  python3 experiments/apostrophe_census.py [image_dir]
 
 from __future__ import annotations
 
-import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -31,17 +30,15 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
-IMAGE_DIR = Path(
-    "/Users/mich/src/cicada-2014/stage11/ky2khlqdf7qdznac.onion"
-)
+IMAGE_DIR = Path("/Users/mich/src/cicada-2014/stage11/ky2khlqdf7qdznac.onion")
 
 # The pages are digital renderings at a fixed glyph size, so the tick has an
 # exact footprint. Loosening these past 42 x 13 starts admitting artwork
 # strokes from the marginal illustrations.
 TICK_HEIGHT = (38, 42)
 TICK_WIDTH = (10, 13)
-PAIR_SPACING = 40      # px between the two ticks of a double quote
-TEXT_BLOCK_X = (500, 2000)   # margins hold artwork, not text
+PAIR_SPACING = 40  # px between the two ticks of a double quote
+TEXT_BLOCK_X = (500, 2000)  # margins hold artwork, not text
 INK = 128
 
 
@@ -96,14 +93,14 @@ def main() -> None:
     directory = Path(sys.argv[1]) if len(sys.argv) > 1 else IMAGE_DIR
     pages = sorted(
         directory.glob("*.jpg"),
-        key=lambda p: int(re.search(r"(\d+)\.jpg", p.name).group(1)),
+        key=lambda p: int(p.stem),
     )
     if not pages:
         sys.exit(f"no page images under {directory}")
 
     totals: defaultdict[str, int] = defaultdict(int)
     for path in pages:
-        page = int(re.search(r"(\d+)\.jpg", path.name).group(1))
+        page = int(path.stem)
         apostrophes, quotes = classify(ticks(path))
         if not (apostrophes or quotes):
             continue

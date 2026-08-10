@@ -40,8 +40,12 @@ sys.path.insert(0, str(ROOT / "experiments"))
 from d5_partial_leak import to_runeglish  # noqa: E402, I001
 from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
-from solved_plaintext_running_key import (RUNES, R2I, SOLVED_RUNES,  # noqa: E402
-                                          beam_vigenere)
+from solved_plaintext_running_key import (  # noqa: E402
+    RUNES,
+    R2I,
+    SOLVED_RUNES,  # noqa: E402
+    beam_vigenere,
+)
 
 M = 29
 CATS = ("start", "middle", "end", "whole-word")
@@ -76,8 +80,8 @@ def solved_plain_words() -> list[list[int]]:
     """Solved-region plaintext as words: decrypt each segment, re-split on
     the transcription's word boundaries."""
     text = (ROOT / "data/liber-primus__transcription--master.txt").read_text()
-    segs: list[list[int]] = [[]]     # rune indices per segment
-    wlens: list[list[int]] = [[]]    # word lengths per segment
+    segs: list[list[int]] = [[]]  # rune indices per segment
+    wlens: list[list[int]] = [[]]  # word lengths per segment
     cur = 0
     count = 0
     for ch in text:
@@ -114,13 +118,13 @@ def solved_plain_words() -> list[list[int]]:
 
     # segments 1+2 share one Vigenere key stream
     pt12 = beam_vigenere(segs[1] + segs[2], "DIUINITY")[0]
-    plains = {1: pt12[:len(segs[1])], 2: pt12[len(segs[1]):]}
+    plains = {1: pt12[: len(segs[1])], 2: pt12[len(segs[1]) :]}
     words: list[list[int]] = []
     for k, (ct, wl) in enumerate(zip(segs, wlens)):
         pt = plains.get(k) or decrypt(k, ct)
         pos = 0
         for L in wl:
-            words.append(pt[pos:pos + L])
+            words.append(pt[pos : pos + L])
             pos += L
         assert pos == len(pt), (k, pos, len(pt))
     return words
@@ -132,10 +136,10 @@ def g_test(obs: Counter, pred: dict[str, float]) -> tuple[float, float]:
     exp = {c: n * pred[c] / tot for c in CATS}
     if any(obs[c] > 0 and exp[c] == 0 for c in CATS):
         return math.inf, 0.0  # events observed in a zero-probability cell
-    g = 2 * sum(obs[c] * math.log(obs[c] / exp[c])
-                for c in CATS if obs[c] > 0)
+    g = 2 * sum(obs[c] * math.log(obs[c] / exp[c]) for c in CATS if obs[c] > 0)
     try:
         from scipy.stats import chi2
+
         p = float(chi2.sf(g, len([c for c in CATS if exp[c] > 0]) - 1))
     except ImportError:  # pragma: no cover
         p = float("nan")
@@ -145,15 +149,20 @@ def g_test(obs: Counter, pred: dict[str, float]) -> tuple[float, float]:
 def show(name: str, dbl: Counter, opp: Counter) -> dict[str, float]:
     tot_d, tot_o = sum(dbl.values()), sum(opp.values())
     rates = {}
-    print(f"\n{name}: {tot_d} doublets / {tot_o} adjacencies "
-          f"({tot_d / tot_o * 100:.2f}%)")
-    print(f"{'category':>12} {'dbl':>5} {'opp':>7} {'rate%':>7} {'share%':>7} "
-          f"{'opp-share%':>10}")
+    print(
+        f"\n{name}: {tot_d} doublets / {tot_o} adjacencies ({tot_d / tot_o * 100:.2f}%)"
+    )
+    print(
+        f"{'category':>12} {'dbl':>5} {'opp':>7} {'rate%':>7} {'share%':>7} "
+        f"{'opp-share%':>10}"
+    )
     for c in CATS:
         rates[c] = dbl[c] / opp[c] if opp[c] else 0.0
-        print(f"{c:>12} {dbl[c]:>5} {opp[c]:>7} {rates[c] * 100:>7.2f} "
-              f"{(dbl[c] / tot_d * 100 if tot_d else 0):>7.1f} "
-              f"{opp[c] / tot_o * 100:>10.1f}")
+        print(
+            f"{c:>12} {dbl[c]:>5} {opp[c]:>7} {rates[c] * 100:>7.2f} "
+            f"{(dbl[c] / tot_d * 100 if tot_d else 0):>7.1f} "
+            f"{opp[c] / tot_o * 100:>10.1f}"
+        )
     return rates
 
 
@@ -176,20 +185,19 @@ def main() -> None:
     elif not prose_path.exists():
         print(f"downloading {PROSE_URL} -> {prose_path}")
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    prose = [[IDX_ENG[t] for t in to_runeglish(w)]
-             for w in prose_words(prose_path)]
+    prose = [[IDX_ENG[t] for t in to_runeglish(w)] for w in prose_words(prose_path)]
     prose = [w for w in prose if w]
     r_prose = show("prose runeglish (Gutenberg 1342)", *profile(prose))
 
     # predictions for the LP doublets
     print("\npredictions for the LP within-word doublets:")
     flat = {c: float(lp_opp[c]) for c in CATS}
-    for name, rates in (("hold model (solved rates)", r_solved),
-                        ("hold model (prose rates)", r_prose),
-                        ("key event (flat baseline)",
-                         dict.fromkeys(CATS, 1.0))):
-        pred = {c: lp_opp[c] * rates[c] for c in CATS} \
-            if "hold" in name else flat
+    for name, rates in (
+        ("hold model (solved rates)", r_solved),
+        ("hold model (prose rates)", r_prose),
+        ("key event (flat baseline)", dict.fromkeys(CATS, 1.0)),
+    ):
+        pred = {c: lp_opp[c] * rates[c] for c in CATS} if "hold" in name else flat
         n = sum(lp_dbl[c] for c in CATS)
         tot = sum(pred.values())
         exp = {c: n * pred[c] / tot for c in CATS}

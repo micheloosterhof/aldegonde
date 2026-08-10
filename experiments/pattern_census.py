@@ -49,6 +49,7 @@ def main() -> None:
         tot = n - L + 1
         # enumerate all pattern classes of length L
         pats = set(obs)
+
         # also include classes with zero observations
         def gen(prefix, k, L=L, pats=pats):
             if len(prefix) == L:
@@ -56,6 +57,7 @@ def main() -> None:
                 return
             for j in range(k + 1):
                 gen(prefix + [chr(ord("A") + j)], max(k, j + 1))
+
         gen([], 0)
         rows = []
         for pat in sorted(pats):
@@ -64,7 +66,7 @@ def main() -> None:
             k = len(set(pat))
             nseq = 1.0
             for i in range(k):
-                nseq *= (N - i)
+                nseq *= N - i
             p = 1.0 / N
             for i in range(1, L):
                 p *= p_dd if pat[i] == pat[i - 1] else (1 - p_dd) / 28
@@ -91,7 +93,9 @@ def main() -> None:
         worst.append((abs(z), shift, hits, exp, z))
     zs = np.array(zs)
     print(f"shifts tested: {len(zs)}, mean z={zs.mean():+.3f}, sd={zs.std():.3f}")
-    print(f"max |z| expected under null for {len(zs)} trials: ~{math.sqrt(2*math.log(len(zs))):.2f}")
+    print(
+        f"max |z| expected under null for {len(zs)} trials: ~{math.sqrt(2 * math.log(len(zs))):.2f}"
+    )
     worst.sort(reverse=True)
     print("top 12 shifts by |z|:")
     for _absz, shift, hits, exp, z in worst[:12]:

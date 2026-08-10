@@ -52,7 +52,7 @@ TRIALS = 400
 def segment(stream, lens):
     out, pos = [], 0
     for L in lens:
-        out.append(tuple(stream[pos:pos + L]))
+        out.append(tuple(stream[pos : pos + L]))
         pos += L
     return out
 
@@ -94,8 +94,8 @@ def measure(words):
     rep_rune = sum(len(w) - len(set(w)) for w in lw)
     bigr = trigr = 0
     for w in lw:
-        bs = [w[i:i + 2] for i in range(len(w) - 1)]
-        ts = [w[i:i + 3] for i in range(len(w) - 2)]
+        bs = [w[i : i + 2] for i in range(len(w) - 1)]
+        ts = [w[i : i + 3] for i in range(len(w) - 2)]
         bigr += len(bs) - len(set(bs))
         trigr += len(ts) - len(set(ts))
     st["rep_rune"] = rep_rune
@@ -113,7 +113,7 @@ def measure(words):
         seen: Counter = Counter()
         for _i, w in enumerate(lw):
             for j in range(len(w) - k + 1):
-                seen[w[j:j + k]] += 1
+                seen[w[j : j + k]] += 1
         st[f"sub{k}"] = sum(v * (v - 1) // 2 for v in seen.values())
     return st
 
@@ -128,24 +128,27 @@ def main() -> None:
     lens = [len(w) for w in words]
     lw = [w for w in words if len(w) >= MINLEN]
 
-    print(f"A. census: {len(lw)} words of length >= {MINLEN} "
-          f"({len(lw) / len(words) * 100:.1f}% of {len(words)}), "
-          f"{sum(len(w) for w in lw)} runes")
+    print(
+        f"A. census: {len(lw)} words of length >= {MINLEN} "
+        f"({len(lw) / len(words) * 100:.1f}% of {len(words)}), "
+        f"{sum(len(w) for w in lw)} runes"
+    )
     hist = Counter(len(w) for w in lw)
     print("   lengths: " + "  ".join(f"{L}:{hist[L]}" for L in sorted(hist)))
     print("   doublet rate by length class (suppression must be flat):")
     for lo, hi, label in ((1, 4, "1-4"), (5, 7, "5-7"), (8, 20, "8+")):
         sel = [w for w in words if lo <= len(w) <= hi]
         adj = sum(len(w) - 1 for w in sel)
-        dbl = sum(1 for w in sel for i in range(len(w) - 1)
-                  if w[i] == w[i + 1])
+        dbl = sum(1 for w in sel for i in range(len(w) - 1) if w[i] == w[i + 1])
         se = math.sqrt(dbl) if dbl else 1
-        print(f"     len {label:>3}: {dbl:>3}/{adj:>5} = {dbl / adj:.4f} "
-              f"± {se / adj:.4f}")
+        print(
+            f"     len {label:>3}: {dbl:>3}/{adj:>5} = {dbl / adj:.4f} ± {se / adj:.4f}"
+        )
 
     obs = measure(words)
-    rate = sum(1 for i in range(len(stream) - 1)
-               if stream[i] == stream[i + 1]) / (len(stream) - 1)
+    rate = sum(1 for i in range(len(stream) - 1) if stream[i] == stream[i + 1]) / (
+        len(stream) - 1
+    )
     model = doublet_shuffle(rate)
     null: dict[str, list[float]] = {k: [] for k in obs}
     for _ in range(TRIALS):
@@ -158,12 +161,13 @@ def main() -> None:
         mu, sd = arr.mean(), arr.std()
         z = (obs[key] - mu) / sd if sd else float("nan")
         p = float((arr >= obs[key]).mean())
-        print(f"   {label:<34} obs {fmt.format(obs[key]):>8}  "
-              f"null {fmt.format(mu):>8} ± {fmt.format(sd):>7}  "
-              f"z {z:+5.2f}  p(hi) {p:.3f}")
+        print(
+            f"   {label:<34} obs {fmt.format(obs[key]):>8}  "
+            f"null {fmt.format(mu):>8} ± {fmt.format(sd):>7}  "
+            f"z {z:+5.2f}  p(hi) {p:.3f}"
+        )
 
-    print(f"\nB. within-word distance profile (long words only, "
-          f"{TRIALS} surrogates):")
+    print(f"\nB. within-word distance profile (long words only, {TRIALS} surrogates):")
     for dd in range(1, 11):
         line(f"d{dd}", f"d = {dd}")
 
@@ -185,13 +189,20 @@ def main() -> None:
         line(f"sub{k}", f"shared {k}-rune substrings (pairs)", "{:.0f}")
 
     print("\nF. positional rune uniformity (long words):")
-    for pos, label in ((0, "first"), (1, "second"), (2, "third"),
-                       (-1, "last"), (-2, "second-to-last")):
+    for pos, label in (
+        (0, "first"),
+        (1, "second"),
+        (2, "third"),
+        (-1, "last"),
+        (-2, "second-to-last"),
+    ):
         c = Counter(w[pos] for w in lw)
         e = len(lw) / 29
         chi = sum((c[r] - e) ** 2 / e for r in range(29))
-        print(f"   {label:<16} chi2 {chi:6.1f} (28 df, p "
-              f"{'<0.05' if chi > 41.3 else '>0.05'})")
+        print(
+            f"   {label:<16} chi2 {chi:6.1f} (28 df, p "
+            f"{'<0.05' if chi > 41.3 else '>0.05'})"
+        )
 
 
 if __name__ == "__main__":

@@ -44,8 +44,18 @@ def main() -> None:
         total += len(w)
 
     print("=== O. LINEAR RECURRENCE SCAN ===")
-    lag_pairs = [(1, 2), (1, 3), (2, 3), (1, 4), (2, 4), (3, 4),
-                 (1, 5), (2, 5), (5, 10), (7, 11)]
+    lag_pairs = [
+        (1, 2),
+        (1, 3),
+        (2, 3),
+        (1, 4),
+        (2, 4),
+        (3, 4),
+        (1, 5),
+        (2, 5),
+        (5, 10),
+        (7, 11),
+    ]
     worst = []
     ntests = 0
     for d1, d2 in lag_pairs:
@@ -67,8 +77,10 @@ def main() -> None:
     print(f"  3-term: {ntests} tests, Bonferroni chi2 threshold {thresh:.1f}")
     for stat, d1, d2, a, b in worst:
         p = chi2_dist.sf(stat, N - 1)
-        print(f"    lags ({d1},{d2}) coeffs (1,{a},{b}): chi2={stat:.1f} "
-              f"raw p={p:.2e}{' ***' if stat > thresh else ''}")
+        print(
+            f"    lags ({d1},{d2}) coeffs (1,{a},{b}): chi2={stat:.1f} "
+            f"raw p={p:.2e}{' ***' if stat > thresh else ''}"
+        )
     # 4-term +-1 taps
     worst4 = []
     ntests4 = 0
@@ -93,9 +105,11 @@ def main() -> None:
     thresh4 = chi2_dist.isf(0.01 / ntests4, N - 1)
     print(f"  4-term +-1 taps: {ntests4} tests, threshold {thresh4:.1f}")
     for stat, a_, b_, c_, s1, s2, s3 in worst4:
-        print(f"    taps (0,{a_},{b_},{c_}) signs (+,{'+' if s1==1 else '-'},"
-              f"{'+' if s2==1 else '-'},{'+' if s3==1 else '-'}): chi2={stat:.1f}"
-              f"{' ***' if stat > thresh4 else ''}")
+        print(
+            f"    taps (0,{a_},{b_},{c_}) signs (+,{'+' if s1 == 1 else '-'},"
+            f"{'+' if s2 == 1 else '-'},{'+' if s3 == 1 else '-'}): chi2={stat:.1f}"
+            f"{' ***' if stat > thresh4 else ''}"
+        )
 
     print("\n=== P. SENTENCE-RESTART ALIGNMENT ===")
     # split cipher into sentences using seps
@@ -117,8 +131,10 @@ def main() -> None:
             hits += sum(1 for k in range(L) if a[k] == b[k])
     exp = opp / N
     sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-    print(f"  {len(sentences)} sentences, start-aligned: hits={hits} "
-          f"exp={exp:.1f} z={(hits - exp) / sd:+.2f}")
+    print(
+        f"  {len(sentences)} sentences, start-aligned: hits={hits} "
+        f"exp={exp:.1f} z={(hits - exp) / sd:+.2f}"
+    )
     hits = opp = 0
     for i in range(len(sentences)):
         for j in range(i + 1, len(sentences)):
@@ -148,8 +164,10 @@ def main() -> None:
         exp = opp / N
         sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
         z = (hits - exp) / sd
-        print(f"  len {L}: {len(ws)} words, positional coincident pairs "
-              f"{hits} exp {exp:.0f} z={z:+.2f}")
+        print(
+            f"  len {L}: {len(ws)} words, positional coincident pairs "
+            f"{hits} exp {exp:.0f} z={z:+.2f}"
+        )
 
     print("\n=== R. PAGE-GRID 2D ALIGNMENT ===")
     data = Path("data/page0-58.txt").read_text().replace("\n", "")
@@ -182,8 +200,10 @@ def main() -> None:
             hits += sum(1 for k in range(L) if l1[k] == l2[k])
     exp = opp / N
     sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-    print(f"  consecutive pages, same (line,col): hits={hits} exp={exp:.1f} "
-          f"z={(hits - exp) / sd:+.2f}")
+    print(
+        f"  consecutive pages, same (line,col): hits={hits} exp={exp:.1f} "
+        f"z={(hits - exp) / sd:+.2f}"
+    )
     # diagonal adjacency within pages
     for dc, name in ((-1, "down-left"), (1, "down-right")):
         hits = opp = 0
@@ -195,7 +215,9 @@ def main() -> None:
                         hits += l1[k] == l2[k + dc]
         exp = opp / N
         sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-        print(f"  diagonal {name}: hits={hits} exp={exp:.1f} z={(hits - exp) / sd:+.2f}")
+        print(
+            f"  diagonal {name}: hits={hits} exp={exp:.1f} z={(hits - exp) / sd:+.2f}"
+        )
     # boustrophedon adjacency: line end <-> next line end
     hits = opp = 0
     deltas = Counter()
@@ -207,8 +229,10 @@ def main() -> None:
                 deltas[(l2[-1] - l1[-1]) % N] += 1
     exp = opp / N
     sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-    print(f"  boustrophedon (line-end to line-end): hits={hits} exp={exp:.1f} "
-          f"z={(hits - exp) / sd:+.2f}")
+    print(
+        f"  boustrophedon (line-end to line-end): hits={hits} exp={exp:.1f} "
+        f"z={(hits - exp) / sd:+.2f}"
+    )
 
     print("\n=== S. DOUBLET PAIR-DISTANCE SPECTRUM ===")
     dpos = np.array([i for i in range(n - 1) if cipher[i] == cipher[i + 1]])
@@ -221,9 +245,12 @@ def main() -> None:
     lam = npairs / (n - 1)
     # P(max multiplicity >= mx) via Poisson tail x n
     from scipy.stats import poisson
+
     pmax = 1 - poisson.cdf(mx - 1, lam) ** (n - 1)
-    print(f"  doublet pairs: {npairs}, max same-distance multiplicity {mx} "
-          f"(lambda={lam:.3f}, P(max>=obs)~{pmax:.3f})")
+    print(
+        f"  doublet pairs: {npairs}, max same-distance multiplicity {mx} "
+        f"(lambda={lam:.3f}, P(max>=obs)~{pmax:.3f})"
+    )
     top = sorted(dists.items(), key=lambda x: -x[1])[:5]
     print(f"  top distances: {top}")
 
@@ -250,13 +277,17 @@ def main() -> None:
     tab = np.vstack([D1.ravel(), D2.ravel()])
     keep = tab.sum(axis=0) > 0
     stat, p, dof, _ = chi2_contingency(tab[:, keep])
-    print(f"  word-initial vs mid-word digraphs (two-sample): chi2={stat:.1f} "
-          f"dof={dof} p={p:.4f}")
+    print(
+        f"  word-initial vs mid-word digraphs (two-sample): chi2={stat:.1f} "
+        f"dof={dof} p={p:.4f}"
+    )
     tab = np.vstack([Df.ravel(), D2.ravel()])
     keep = tab.sum(axis=0) > 0
     stat, p, dof, _ = chi2_contingency(tab[:, keep])
-    print(f"  word-final vs mid-word digraphs (two-sample): chi2={stat:.1f} "
-          f"dof={dof} p={p:.4f}")
+    print(
+        f"  word-final vs mid-word digraphs (two-sample): chi2={stat:.1f} "
+        f"dof={dof} p={p:.4f}"
+    )
 
 
 if __name__ == "__main__":

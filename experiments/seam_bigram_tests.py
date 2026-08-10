@@ -77,8 +77,18 @@ def seam_stats(words: list[list[int]]):
 
     mean_fwd, max_fwd = split(by_last)
     mean_rev, max_rev = split(by_first)
-    return (diag, chi2_off, pioc, maxcell, mean_fwd, max_fwd,
-            mean_rev, max_rev, lasts, firsts)
+    return (
+        diag,
+        chi2_off,
+        pioc,
+        maxcell,
+        mean_fwd,
+        max_fwd,
+        mean_rev,
+        max_rev,
+        lasts,
+        firsts,
+    )
 
 
 def main() -> None:
@@ -89,14 +99,26 @@ def main() -> None:
         words_d.setdefault(w, []).append(stream[i])
     words = [words_d[k] for k in sorted(words_d)]
 
-    (diag, chi2_off, pioc, maxcell, mean_fwd, max_fwd, mean_rev, max_rev,
-     lasts, firsts) = seam_stats(words)
+    (
+        diag,
+        chi2_off,
+        pioc,
+        maxcell,
+        mean_fwd,
+        max_fwd,
+        mean_rev,
+        max_rev,
+        lasts,
+        firsts,
+    ) = seam_stats(words)
     nseams = len(words) - 1
     print(f"seams: {nseams}")
 
     # permutation null
-    null = {k: [] for k in ("diag", "chi2", "pioc", "maxcell",
-                            "mfwd", "xfwd", "mrev", "xrev")}
+    null = {
+        k: []
+        for k in ("diag", "chi2", "pioc", "maxcell", "mfwd", "xfwd", "mrev", "xrev")
+    }
     perm = words[:]
     for _ in range(2000):
         rng.shuffle(perm)
@@ -109,13 +131,19 @@ def main() -> None:
         mu, sd = arr.mean(), arr.std()
         p_hi = float((arr >= obs).mean())
         p_lo = float((arr <= obs).mean())
-        print(f"  {name:<38} obs {obs:>8.3f}  null {mu:8.3f} ± {sd:6.3f}  "
-              f"z {(obs - mu) / sd:+5.2f}  p(hi/lo) {p_hi:.3f}/{p_lo:.3f}"
-              f"  {note}")
+        print(
+            f"  {name:<38} obs {obs:>8.3f}  null {mu:8.3f} ± {sd:6.3f}  "
+            f"z {(obs - mu) / sd:+5.2f}  p(hi/lo) {p_hi:.3f}/{p_lo:.3f}"
+            f"  {note}"
+        )
 
     print("\nA/B. seam matrix vs word-order permutation null:")
-    rep("diagonal (cross-word doublets)", diag, "diag",
-        "(the seam suppression itself, vs random word pairing)")
+    rep(
+        "diagonal (cross-word doublets)",
+        diag,
+        "diag",
+        "(the seam suppression itself, vs random word pairing)",
+    )
     rep("off-diagonal chi2", chi2_off, "chi2")
     rep("pair-distribution IoC (x841)", pioc, "pioc")
     rep("max repeated seam bigram", maxcell, "maxcell")
@@ -137,8 +165,10 @@ def main() -> None:
     for cls in range(5):
         o, n_ = dbylen[cls], bylen[cls]
         sd = (n_ * p0 * (1 - p0)) ** 0.5
-        print(f"  (L-1)%5={cls}: {o:>3}/{n_:>4} = {o / n_:.4f} "
-              f"(z vs pooled {(o - n_ * p0) / sd:+.2f})")
+        print(
+            f"  (L-1)%5={cls}: {o:>3}/{n_:>4} = {o / n_:.4f} "
+            f"(z vs pooled {(o - n_ * p0) / sd:+.2f})"
+        )
 
     print("\nE. marginals:")
     for name, vals in (("last runes", lasts), ("first runes", firsts)):
@@ -150,8 +180,11 @@ def main() -> None:
     # F. review decomposition: what drives the pair-IoC lean — diagonal
     # deficit, marginal non-uniformity, or genuine off-diagonal clumping?
     def offdiag_pioc(ws: list[list[int]]) -> float:
-        seams = [(ws[i][-1], ws[i + 1][0]) for i in range(len(ws) - 1)
-                 if ws[i][-1] != ws[i + 1][0]]
+        seams = [
+            (ws[i][-1], ws[i + 1][0])
+            for i in range(len(ws) - 1)
+            if ws[i][-1] != ws[i + 1][0]
+        ]
         return pair_ioc(seams)
 
     obs_off = offdiag_pioc(words)
@@ -160,10 +193,13 @@ def main() -> None:
         rng.shuffle(perm)
         null_off.append(offdiag_pioc(perm))
     arr = np.array(null_off)
-    print("\nF. off-diagonal-only pair IoC (isolates clumping from the "
-          "diagonal deficit):")
-    print(f"  obs {obs_off:.4f}  null {arr.mean():.4f} ± {arr.std():.4f}  "
-          f"z {(obs_off - arr.mean()) / arr.std():+.2f}")
+    print(
+        "\nF. off-diagonal-only pair IoC (isolates clumping from the diagonal deficit):"
+    )
+    print(
+        f"  obs {obs_off:.4f}  null {arr.mean():.4f} ± {arr.std():.4f}  "
+        f"z {(obs_off - arr.mean()) / arr.std():+.2f}"
+    )
 
     # G. deeper conditionals across the seam (d=2 reach in both directions)
     def cond_split(pairs: list[tuple[int, int]]) -> float:
@@ -189,28 +225,37 @@ def main() -> None:
         a, b = deep_pairs(perm)
         n_p2f.append(a)
         n_l2s.append(b)
-    for name, obs, arr in (("first | second-to-last", obs_p2f,
-                            np.array(n_p2f)),
-                           ("second | last", obs_l2s, np.array(n_l2s))):
-        print(f"G. mean nIoC {name:<24} obs {obs:.4f}  "
-              f"null {arr.mean():.4f} ± {arr.std():.4f}  "
-              f"z {(obs - arr.mean()) / arr.std():+.2f}")
+    for name, obs, arr in (
+        ("first | second-to-last", obs_p2f, np.array(n_p2f)),
+        ("second | last", obs_l2s, np.array(n_l2s)),
+    ):
+        print(
+            f"G. mean nIoC {name:<24} obs {obs:.4f}  "
+            f"null {arr.mean():.4f} ± {arr.std():.4f}  "
+            f"z {(obs - arr.mean()) / arr.std():+.2f}"
+        )
 
     # H. reach r: last rune of word w vs rune r of word w+1, r = 1..6.
     # Walk prediction: match iff p_last = sigma(g^(r-1)(p_r)) — a fixed
     # permutation diagonal per reach; sigma is tuned rare only at r=1, so
     # r>=2 should sit at chance with no conditional structure.
     def reach_stats(ws: list[list[int]], r: int) -> tuple[int, int, float]:
-        pairs = [(ws[i][-1], ws[i + 1][r - 1])
-                 for i in range(len(ws) - 1) if len(ws[i + 1]) >= r]
+        pairs = [
+            (ws[i][-1], ws[i + 1][r - 1])
+            for i in range(len(ws) - 1)
+            if len(ws[i + 1]) >= r
+        ]
         hits = sum(1 for a, b in pairs if a == b)
         return hits, len(pairs), cond_split(pairs)
 
-    print("\nH. reach into the next word (last rune vs rune r), "
-          "walk: chance for r >= 2:")
-    print(f"{'r':>3} {'pairs':>6} {'match':>6} {'rate':>7} "
-          f"{'null rate':>16} {'z':>6} | {'split nIoC':>10} "
-          f"{'null':>14} {'z':>6}")
+    print(
+        "\nH. reach into the next word (last rune vs rune r), walk: chance for r >= 2:"
+    )
+    print(
+        f"{'r':>3} {'pairs':>6} {'match':>6} {'rate':>7} "
+        f"{'null rate':>16} {'z':>6} | {'split nIoC':>10} "
+        f"{'null':>14} {'z':>6}"
+    )
     for r in range(1, 7):
         hits, n_r, split_obs = reach_stats(words, r)
         nh, ns = [], []
@@ -221,11 +266,13 @@ def main() -> None:
             ns.append(s_)
         ah, as_ = np.array(nh), np.array(ns)
         rate = hits / n_r
-        print(f"{r:>3} {n_r:>6} {hits:>6} {rate:>7.4f} "
-              f"{ah.mean():>8.4f} ± {ah.std():.4f} "
-              f"{(rate - ah.mean()) / ah.std():>+6.2f} | "
-              f"{split_obs:>10.4f} {as_.mean():>7.4f} ± {as_.std():.4f} "
-              f"{(split_obs - as_.mean()) / as_.std():>+6.2f}")
+        print(
+            f"{r:>3} {n_r:>6} {hits:>6} {rate:>7.4f} "
+            f"{ah.mean():>8.4f} ± {ah.std():.4f} "
+            f"{(rate - ah.mean()) / ah.std():>+6.2f} | "
+            f"{split_obs:>10.4f} {as_.mean():>7.4f} ± {as_.std():.4f} "
+            f"{(split_obs - as_.mean()) / as_.std():>+6.2f}"
+        )
 
 
 if __name__ == "__main__":

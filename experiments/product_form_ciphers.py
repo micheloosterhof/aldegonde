@@ -57,17 +57,45 @@ def transliterate(word: str) -> list[int] | None:
         return None
     for a, b in (("K", "C"), ("Q", "C"), ("V", "U"), ("Z", "S")):
         w = w.replace(a, b)
-    digraphs = {"TH": 2, "EO": 12, "NG": 21, "OE": 22, "AE": 25,
-                "IA": 27, "IO": 27, "EA": 28}
-    singles = {"F": 0, "U": 1, "O": 3, "R": 4, "C": 5, "G": 6, "W": 7,
-               "H": 8, "N": 9, "I": 10, "J": 11, "P": 13, "X": 14,
-               "S": 15, "T": 16, "B": 17, "E": 18, "M": 19, "L": 20,
-               "D": 23, "A": 24, "Y": 26}
+    digraphs = {
+        "TH": 2,
+        "EO": 12,
+        "NG": 21,
+        "OE": 22,
+        "AE": 25,
+        "IA": 27,
+        "IO": 27,
+        "EA": 28,
+    }
+    singles = {
+        "F": 0,
+        "U": 1,
+        "O": 3,
+        "R": 4,
+        "C": 5,
+        "G": 6,
+        "W": 7,
+        "H": 8,
+        "N": 9,
+        "I": 10,
+        "J": 11,
+        "P": 13,
+        "X": 14,
+        "S": 15,
+        "T": 16,
+        "B": 17,
+        "E": 18,
+        "M": 19,
+        "L": 20,
+        "D": 23,
+        "A": 24,
+        "Y": 26,
+    }
     out: list[int] = []
     i = 0
     while i < len(w):
-        if w[i:i + 2] in digraphs:
-            out.append(digraphs[w[i:i + 2]])
+        if w[i : i + 2] in digraphs:
+            out.append(digraphs[w[i : i + 2]])
             i += 2
         elif w[i] in singles:
             out.append(singles[w[i]])
@@ -79,6 +107,7 @@ def transliterate(word: str) -> list[int] | None:
 
 def plaintext(n_runes: int, rng) -> tuple[list[int], list[int]]:
     from wordfreq import top_n_list, word_frequency
+
     lex, weights = [], []
     for eng in top_n_list("en", 30000):
         r = transliterate(eng)
@@ -156,10 +185,18 @@ def fingerprint(c: list[int], p: list[int], word_of: list[int]) -> dict:
     inw = wa[:-5] == wa[5:]
     use_in = float(m[prep & inw].mean()) if (prep & inw).any() else 0.0
     use_x = float(m[prep & ~inw].mean()) if (prep & ~inw).any() else 0.0
-    return {"uni_chi2": chi, "nIoC": nioc, "dbl%": 100 * dbl,
-            "triplets": tri, "mono5%": 100 * mono,
-            "d1": d1p, "d4": d4p, "nz_rep_sep1": nz1,
-            "use_in%": 100 * use_in, "use_x%": 100 * use_x}
+    return {
+        "uni_chi2": chi,
+        "nIoC": nioc,
+        "dbl%": 100 * dbl,
+        "triplets": tri,
+        "mono5%": 100 * mono,
+        "d1": d1p,
+        "d4": d4p,
+        "nz_rep_sep1": nz1,
+        "use_in%": 100 * use_in,
+        "use_x%": 100 * use_x,
+    }
 
 
 def joint_split_test() -> None:
@@ -182,11 +219,15 @@ def joint_split_test() -> None:
         iocs.append(float((cnt * (cnt - 1)).sum() / (k * (k - 1)) * MOD))
         weights.append(k)
     mean = float(np.average(iocs, weights=weights))
-    print(f"\nJOINT TWO-TAP SPLIT TEST on the real LP: mean nIoC of "
-          f"C(n) | (C(n-1), C(n-5)) over {len(iocs)} groups (>=5 members) "
-          f"= {mean:.3f}")
-    print("  any deterministic C(n)=f(P(n),C(n-1),C(n-5)) injective in "
-          "P(n) forces ~1.7 (plaintext IoC); random forces ~1.0")
+    print(
+        f"\nJOINT TWO-TAP SPLIT TEST on the real LP: mean nIoC of "
+        f"C(n) | (C(n-1), C(n-5)) over {len(iocs)} groups (>=5 members) "
+        f"= {mean:.3f}"
+    )
+    print(
+        "  any deterministic C(n)=f(P(n),C(n-1),C(n-5)) injective in "
+        "P(n) forces ~1.7 (plaintext IoC); random forces ~1.0"
+    )
 
 
 def main() -> None:
@@ -194,31 +235,47 @@ def main() -> None:
     n_runes = 260_000
     p, word_of = plaintext(n_runes, rng)
 
-    lp = {"uni_chi2": 25.9, "nIoC": 1.000, "dbl%": 0.664, "triplets": 0,
-          "mono5%": 3.70, "d1": "29/13k", "d4": "28/13k",
-          "nz_rep_sep1": "chance", "use_in%": "~25 (marks)",
-          "use_x%": "~10 (marks)"}
-    print(f"{'form':>5} {'uni_chi2':>9} {'nIoC':>6} {'dbl%':>6} "
-          f"{'tripl':>6} {'mono5%':>7} {'d1':>6} {'d4':>6} "
-          f"{'nzrep1':>7} {'use_in%':>8} {'use_x%':>7}")
-    print(f"{'LP':>5} {lp['uni_chi2']:>9} {lp['nIoC']:>6} {lp['dbl%']:>6} "
-          f"{lp['triplets']:>6} {lp['mono5%']:>7} {lp['d1']:>6} "
-          f"{lp['d4']:>6} {lp['nz_rep_sep1']:>7} {lp['use_in%']:>8} "
-          f"{lp['use_x%']:>7}")
+    lp = {
+        "uni_chi2": 25.9,
+        "nIoC": 1.000,
+        "dbl%": 0.664,
+        "triplets": 0,
+        "mono5%": 3.70,
+        "d1": "29/13k",
+        "d4": "28/13k",
+        "nz_rep_sep1": "chance",
+        "use_in%": "~25 (marks)",
+        "use_x%": "~10 (marks)",
+    }
+    print(
+        f"{'form':>5} {'uni_chi2':>9} {'nIoC':>6} {'dbl%':>6} "
+        f"{'tripl':>6} {'mono5%':>7} {'d1':>6} {'d4':>6} "
+        f"{'nzrep1':>7} {'use_in%':>8} {'use_x%':>7}"
+    )
+    print(
+        f"{'LP':>5} {lp['uni_chi2']:>9} {lp['nIoC']:>6} {lp['dbl%']:>6} "
+        f"{lp['triplets']:>6} {lp['mono5%']:>7} {lp['d1']:>6} "
+        f"{lp['d4']:>6} {lp['nz_rep_sep1']:>7} {lp['use_in%']:>8} "
+        f"{lp['use_x%']:>7}"
+    )
     for form in ("F1", "F2", "F3", "F4", "F5"):
         c = encrypt(p, form, rng)
         fp = fingerprint(c, p, word_of)
         # scale d1/d4/nz counts to per-13k for comparability
         scale = 12956 / n_runes
-        print(f"{form:>5} {fp['uni_chi2']:>9.0f} {fp['nIoC']:>6.3f} "
-              f"{fp['dbl%']:>6.2f} {fp['triplets']:>6} "
-              f"{fp['mono5%']:>7.2f} {fp['d1']*scale:>6.1f} "
-              f"{fp['d4']*scale:>6.1f} {fp['nz_rep_sep1']*scale:>7.1f} "
-              f"{fp['use_in%']:>8.1f} {fp['use_x%']:>7.1f}")
-    print("\n(nzrep1 = nonzero repeated lag-5 deltas at separation 1 per "
-          "13k runes; LP is at chance ~430 with zero-value pairs at 29. "
-          "use_in/use_x = fraction of plaintext lag-5 repeats that became "
-          "ciphertext copies, in-word / cross-word.)")
+        print(
+            f"{form:>5} {fp['uni_chi2']:>9.0f} {fp['nIoC']:>6.3f} "
+            f"{fp['dbl%']:>6.2f} {fp['triplets']:>6} "
+            f"{fp['mono5%']:>7.2f} {fp['d1'] * scale:>6.1f} "
+            f"{fp['d4'] * scale:>6.1f} {fp['nz_rep_sep1'] * scale:>7.1f} "
+            f"{fp['use_in%']:>8.1f} {fp['use_x%']:>7.1f}"
+        )
+    print(
+        "\n(nzrep1 = nonzero repeated lag-5 deltas at separation 1 per "
+        "13k runes; LP is at chance ~430 with zero-value pairs at 29. "
+        "use_in/use_x = fraction of plaintext lag-5 repeats that became "
+        "ciphertext copies, in-word / cross-word.)"
+    )
 
     joint_split_test()
 

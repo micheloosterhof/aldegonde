@@ -3,6 +3,7 @@
 """Doublet suppression. Significance: z of the observed doublet count vs the
 binomial expectation at 1/29, and a within-word vs cross-word split showing the
 suppression ignores word boundaries."""
+
 from __future__ import annotations
 
 import math

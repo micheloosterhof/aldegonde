@@ -68,13 +68,16 @@ def main() -> None:
     parts = raw.split("%")
     rune_pages = [i for i, p in enumerate(parts) if any(c in ALPHABET for c in p)]
     keep = set(rune_pages[:-2])
-    text = "".join(
-        x for i in sorted(keep) for x in parts[i] if x in ALPHABET
-    )
+    text = "".join(x for i in sorted(keep) for x in parts[i] if x in ALPHABET)
     n = len(text)
     arr = np.array([c3301.r2i(c) for c in text], dtype=np.int8)
-    sections = [s for s in ("".join(x for x in sec if x in ALPHABET)
-                            for sec in raw.split("$")[:10]) if s]
+    sections = [
+        s
+        for s in (
+            "".join(x for x in sec if x in ALPHABET) for sec in raw.split("$")[:10]
+        )
+        if s
+    ]
     print(f"corpus {n} runes")
 
     print("\n=== 1. mono kappa, all lags 1..6400 ===")
@@ -94,19 +97,21 @@ def main() -> None:
         if ls < 50:
             continue
         dbl = sum(1 for i in range(ls - 1) if s[i] == s[i + 1]) / (ls - 1)
-        best = max(
-            (sum(nioc(s[k::p]) for k in range(p)) / p, p) for p in range(2, 31)
+        best = max((sum(nioc(s[k::p]) for k in range(p)) / p, p) for p in range(2, 31))
+        print(
+            f"  section {si}: len={ls:5d} doublets={100 * dbl:.2f}% "
+            f"best period {best[1]} (colIoC {best[0]:.3f}) "
+            f"splitL1={split_depth(s, 1):.3f}"
         )
-        print(f"  section {si}: len={ls:5d} doublets={100 * dbl:.2f}% "
-              f"best period {best[1]} (colIoC {best[0]:.3f}) "
-              f"splitL1={split_depth(s, 1):.3f}")
 
     print("\n=== 3. depth-L split on REVERSED corpus ===")
     rev = text[::-1]
     print("  " + " ".join(f"L{d}={split_depth(rev, d):.3f}" for d in range(1, 9)))
 
     print("\n=== 4. acrostic streams ===")
-    streams: dict[str, list[str]] = {k: [] for k in ("word", "line", "sentence", "page")}
+    streams: dict[str, list[str]] = {
+        k: [] for k in ("word", "line", "sentence", "page")
+    }
     for pi in sorted(keep):
         flags = dict.fromkeys(streams, True)
         for ch in parts[pi]:
@@ -123,8 +128,10 @@ def main() -> None:
                 flags["line"] = flags["word"] = True
     for name, st_ in streams.items():
         s = "".join(st_)
-        print(f"  first-of-{name:9s}: n={len(s):5d} nIoC={nioc(s):.3f} "
-              f"quad={c3301.quadgramscore(s) / max(len(s), 1):.2f}")
+        print(
+            f"  first-of-{name:9s}: n={len(s):5d} nIoC={nioc(s):.3f} "
+            f"quad={c3301.quadgramscore(s) / max(len(s), 1):.2f}"
+        )
 
     print("\n=== 5. doublet rune values ===")
     dbls = Counter(text[i] for i in range(n - 1) if text[i] == text[i + 1])
@@ -146,14 +153,18 @@ def main() -> None:
         hits += sum(1 for k in range(m) if a[k] == b[k])
         tot_n += m
     exp = tot_n / MOD
-    print(f"  {len(lines)} lines: {hits} vs {exp:.0f} "
-          f"(z={(hits - exp) / sqrt(exp * (1 - 1 / MOD)):+.2f})")
+    print(
+        f"  {len(lines)} lines: {hits} vs {exp:.0f} "
+        f"(z={(hits - exp) / sqrt(exp * (1 - 1 / MOD)):+.2f})"
+    )
 
     print("\n=== 7. compression ===")
     b_obs = bytes(arr.tolist())
     b_rnd = bytes(random.randrange(MOD) for _ in range(n))
-    print(f"  zlib-9: observed {len(zlib.compress(b_obs, 9))}, "
-          f"random {len(zlib.compress(b_rnd, 9))} bytes")
+    print(
+        f"  zlib-9: observed {len(zlib.compress(b_obs, 9))}, "
+        f"random {len(zlib.compress(b_rnd, 9))} bytes"
+    )
 
     print("\n=== 8. word GP-sums ===")
     words = []
@@ -176,14 +187,15 @@ def main() -> None:
 
     obs = chi2_mod29([sum(c3301.r2v(c) for c in w) for w in words])
     nulls = [
-        chi2_mod29([sum(c3301.r2v(random.choice(ALPHABET)) for _ in w)
-                    for w in words])
+        chi2_mod29([sum(c3301.r2v(random.choice(ALPHABET)) for _ in w) for w in words])
         for _ in range(60)
     ]
     exceeded = sum(1 for x in nulls if x >= obs)
-    print(f"  mod-29 chi2: observed {obs:.1f}, null "
-          f"{statistics.mean(nulls):.1f}+/-{statistics.stdev(nulls):.1f}, "
-          f"p~{exceeded / 60:.2f}")
+    print(
+        f"  mod-29 chi2: observed {obs:.1f}, null "
+        f"{statistics.mean(nulls):.1f}+/-{statistics.stdev(nulls):.1f}, "
+        f"p~{exceeded / 60:.2f}"
+    )
 
 
 if __name__ == "__main__":

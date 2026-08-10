@@ -14,7 +14,8 @@ Attack approach:
 """
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 import random  # noqa: I001
 import multiprocessing as mp
@@ -66,7 +67,7 @@ def score_quadgram(text: str) -> float:
 
     score = 0.0
     for i in range(len(text) - 3):
-        qg = text[i:i+4]
+        qg = text[i : i + 4]
         score += ENGLISH_QUADGRAMS.get(qg, QUADGRAM_FLOOR)
     return score
 
@@ -233,8 +234,15 @@ def hill_climb(
 
 def run_single_climb(args: tuple) -> tuple:
     """Worker function for parallel execution."""
-    (ciphertext, max_iterations, primer_idx, mode, autokey,
-     restart_threshold, score_fn_name) = args
+    (
+        ciphertext,
+        max_iterations,
+        primer_idx,
+        mode,
+        autokey,
+        restart_threshold,
+        score_fn_name,
+    ) = args
 
     # Select scoring function by name (can't pickle lambdas)
     if score_fn_name == "quadgram":
@@ -305,7 +313,9 @@ def quagmire3_autokey_encrypt(
     return "".join(ciphertext)
 
 
-def create_test_ciphertext(plaintext_file: str = "data/sample_plaintext.txt") -> tuple[str, list[str], int, str]:
+def create_test_ciphertext(
+    plaintext_file: str = "data/sample_plaintext.txt",
+) -> tuple[str, list[str], int, str, str]:
     """Create test ciphertext with known parameters.
 
     Returns: (ciphertext, alphabet, primer_idx, mode)
@@ -358,7 +368,9 @@ if __name__ == "__main__":
     print("=" * 70)
 
     random.seed(42)  # Reproducible
-    ciphertext, true_alphabet, true_primer, true_mode, plaintext = create_test_ciphertext()
+    ciphertext, true_alphabet, true_primer, true_mode, plaintext = (
+        create_test_ciphertext()
+    )
 
     print(f"Plaintext length:  {len(plaintext)}")
     print(f"Ciphertext length: {len(ciphertext)}")
@@ -407,15 +419,17 @@ if __name__ == "__main__":
     for _ in range(num_parallel_runs):
         for mode in modes:
             for primer_idx in primer_indices:
-                jobs.append((
-                    ciphertext,
-                    MAX_ITERATIONS,
-                    primer_idx,
-                    mode,
-                    "ciphertext",
-                    RESTART_THRESHOLD,
-                    "quadgram",
-                ))
+                jobs.append(
+                    (
+                        ciphertext,
+                        MAX_ITERATIONS,
+                        primer_idx,
+                        mode,
+                        "ciphertext",
+                        RESTART_THRESHOLD,
+                        "quadgram",
+                    )
+                )
 
     print(f"\nRunning {len(jobs)} jobs across {NUM_WORKERS} workers...")
 
@@ -427,7 +441,7 @@ if __name__ == "__main__":
 
     # Process results
     best_overall = None
-    best_overall_score = float('-inf')
+    best_overall_score = float("-inf")
     best_by_mode: dict[str, tuple] = {}
 
     for result in results:
@@ -446,7 +460,9 @@ if __name__ == "__main__":
     for mode in modes:
         if mode in best_by_mode:
             alphabet, score, pt, mode_name, primer_idx, pt_ioc = best_by_mode[mode]
-            print(f"Best {mode:8}: primer={ALPHABET[primer_idx]} score={score:.3f} IoC={pt_ioc:.3f}")
+            print(
+                f"Best {mode:8}: primer={ALPHABET[primer_idx]} score={score:.3f} IoC={pt_ioc:.3f}"
+            )
             print(f"  Plaintext: {pt[:60]}...")
 
     print("\n" + "=" * 70)

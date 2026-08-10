@@ -48,8 +48,8 @@ RUNE_HEIGHT = (80, 180)
 TICK_HEIGHT = (36, 44)
 TICK_WIDTH = (8, 16)
 DOT_MAX = 14
-PAIR_SPACING = 40       # two ticks this close are one double quote
-DOT_SPACING = 25        # dots this close belong to one mark
+PAIR_SPACING = 40  # two ticks this close are one double quote
+DOT_SPACING = 25  # dots this close belong to one mark
 LINE_GAP = 60
 
 
@@ -65,7 +65,10 @@ def glyphs(page: int) -> list[tuple[str, int, int]]:
             continue
         if RUNE_HEIGHT[0] <= h <= RUNE_HEIGHT[1]:
             out.append(("R", y, x))
-        elif TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1] and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]:
+        elif (
+            TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1]
+            and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]
+        ):
             out.append(("t", y, x))
         elif h <= DOT_MAX and w <= DOT_MAX:
             out.append(("d", y, x))
@@ -126,7 +129,11 @@ def tokens(line: list) -> list[str]:
 
 def text_tokens(text: str) -> list[str]:
     """Transcription line as tokens; existing tick marks are not glyphs here."""
-    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
+    return [
+        "R" if RUNE.match(c) else c
+        for c in text
+        if RUNE.match(c) or c in c3301.MARK_CHARS
+    ]
 
 
 def recorded(text: str) -> list[tuple[int, str]]:
@@ -174,7 +181,10 @@ def placements() -> list[tuple[int, str, str]]:
             # a line may carry a trailing separator the transcription omits;
             # every mark still sits inside the agreeing prefix
             common = min(len(stripped), len(expected))
-            if stripped[:common] != expected[:common] or max(i for i, _ in marks) > common:
+            if (
+                stripped[:common] != expected[:common]
+                or max(i for i, _ in marks) > common
+            ):
                 print(f"page {page} line SKIPPED (sequence disagrees): {text}")
                 continue
             # token indices shift by the marks sitting before them
@@ -192,7 +202,9 @@ def main() -> None:
     quotes = sum(line.count('"') for _, _, line in found)
     for page, _old, new in found:
         print(f"page {page:3}: {new}")
-    print(f"\n{len(found)} lines carry marks: {apostrophes} apostrophes, {quotes} quotation marks")
+    print(
+        f"\n{len(found)} lines carry marks: {apostrophes} apostrophes, {quotes} quotation marks"
+    )
 
     if "--write" not in sys.argv:
         print("\n(dry run; pass --write to update the transcriptions)")

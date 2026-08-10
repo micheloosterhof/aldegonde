@@ -96,13 +96,17 @@ def main() -> None:
     words = prose_words(prose_path)
     cat, total = ea_profile(words)
     runes_total = sum(len(to_runeglish(w)) for w in words)
-    print(f"prose: {len(words)} word tokens, {runes_total} runes, "
-          f"{total} EA tokens ({total / runes_total * 100:.3f}%)")
+    print(
+        f"prose: {len(words)} word tokens, {runes_total} runes, "
+        f"{total} EA tokens ({total / runes_total * 100:.3f}%)"
+    )
     keys = ("start", "middle", "end")
     frac = [cat[k] / total for k in keys]
-    print("EA profile (token-weighted): "
-          + "  ".join(f"{k} {cat[k]} ({cat[k]/total*100:.1f}%)" for k in keys)
-          + f"  lone {cat['lone']}")
+    print(
+        "EA profile (token-weighted): "
+        + "  ".join(f"{k} {cat[k]} ({cat[k] / total * 100:.1f}%)" for k in keys)
+        + f"  lone {cat['lone']}"
+    )
 
     # LP doublet-rune splits, clean corpus
     with open(DATA, encoding="utf-8") as f:
@@ -125,22 +129,27 @@ def main() -> None:
     base_frac = [baseline[k] / len(stream) for k in keys]
 
     print(f"\nLP clean corpus: {len(stream)} runes, {len(doublets)} doublets")
-    print(f"{'split':>10} {'start':>6} {'middle':>7} {'end':>5} | "
-          f"{'chi2 vs EA':>10} {'p':>7} | {'chi2 vs base':>12} {'p':>7}")
-    for name, idxs in (("1st rune", doublets),
-                       ("2nd rune", [i + 1 for i in doublets])):
+    print(
+        f"{'split':>10} {'start':>6} {'middle':>7} {'end':>5} | "
+        f"{'chi2 vs EA':>10} {'p':>7} | {'chi2 vs base':>12} {'p':>7}"
+    )
+    for name, idxs in (("1st rune", doublets), ("2nd rune", [i + 1 for i in doublets])):
         c = Counter(label(i) for i in idxs)
         obs = [c[k] for k in keys]
         s_ea, p_ea = chi2_gof(obs, frac)
         s_b, p_b = chi2_gof(obs, base_frac)
-        print(f"{name:>10} {obs[0]:>6} {obs[1]:>7} {obs[2]:>5} | "
-              f"{s_ea:>10.2f} {p_ea:>7.3f} | {s_b:>12.2f} {p_b:>7.3f}")
-    print(f"{'all runes':>10} "
-          f"{baseline['start']:>6} {baseline['middle']:>7} {baseline['end']:>5}"
-          f"   (baseline fractions "
-          + "/".join(f"{f*100:.1f}%" for f in base_frac) + ")")
-    print(f"{'EA prose':>10} "
-          + " ".join(f"{f*100:>5.1f}%" for f in frac))
+        print(
+            f"{name:>10} {obs[0]:>6} {obs[1]:>7} {obs[2]:>5} | "
+            f"{s_ea:>10.2f} {p_ea:>7.3f} | {s_b:>12.2f} {p_b:>7.3f}"
+        )
+    print(
+        f"{'all runes':>10} "
+        f"{baseline['start']:>6} {baseline['middle']:>7} {baseline['end']:>5}"
+        f"   (baseline fractions "
+        + "/".join(f"{f * 100:.1f}%" for f in base_frac)
+        + ")"
+    )
+    print(f"{'EA prose':>10} " + " ".join(f"{f * 100:>5.1f}%" for f in frac))
 
 
 if __name__ == "__main__":

@@ -136,9 +136,11 @@ def main() -> None:
     q_dom = np.array(controls["in_domain"]["Q"], dtype=float)
     q_dom /= q_dom.sum()
     if controls.get("lexicon") is None:
-        print("(lexicon control absent -- using in-domain Q for the projection "
-              "direction; install wordfreq and rerun plaintext_control_corpus.py "
-              "for the frequency-weighted lexicon Q.)")
+        print(
+            "(lexicon control absent -- using in-domain Q for the projection "
+            "direction; install wordfreq and rerun plaintext_control_corpus.py "
+            "for the frequency-weighted lexicon Q.)"
+        )
         q_lex = q_dom
     else:
         q_lex = np.array(controls["lexicon"]["Q"], dtype=float)
@@ -148,10 +150,11 @@ def main() -> None:
     words = [w for s in sections for w in s]
     h = delta_hist(words)
     n = int(h.sum())
-    print(f"corpus: {len(words)} words, {n} within-word (k,k+{D}) pairs, "
-          f"{h[0]} matches ({h[0]/n:.4f})")
-    print("delta histogram (x29/uniform): "
-          + " ".join(f"{MOD*v/n:.2f}" for v in h))
+    print(
+        f"corpus: {len(words)} words, {n} within-word (k,k+{D}) pairs, "
+        f"{h[0]} matches ({h[0] / n:.4f})"
+    )
+    print("delta histogram (x29/uniform): " + " ".join(f"{MOD * v / n:.2f}" for v in h))
 
     # ---------------------------------------------------------- model fits
     u = np.full(MOD, 1 / MOD)
@@ -161,12 +164,15 @@ def main() -> None:
     f_dom, p_mixd, ll_mixd = fit_mixture(h, q_dom)
     print("\nlog-likelihoods (1-param models, same df):")
     print(f"  uniform            : {ll_u:.2f}")
-    print(f"  copy    e={e:.4f}   : {ll_copy:.2f}  "
-          f"(vs uniform +{ll_copy-ll_u:.2f})")
-    print(f"  mixture f={f_lex:.3f} (lexicon Q) : {ll_mix:.2f}  "
-          f"(vs copy {ll_mix-ll_copy:+.2f})")
-    print(f"  mixture f={f_dom:.3f} (in-domain Q): {ll_mixd:.2f}  "
-          f"(vs copy {ll_mixd-ll_copy:+.2f})")
+    print(f"  copy    e={e:.4f}   : {ll_copy:.2f}  (vs uniform +{ll_copy - ll_u:.2f})")
+    print(
+        f"  mixture f={f_lex:.3f} (lexicon Q) : {ll_mix:.2f}  "
+        f"(vs copy {ll_mix - ll_copy:+.2f})"
+    )
+    print(
+        f"  mixture f={f_dom:.3f} (in-domain Q): {ll_mixd:.2f}  "
+        f"(vs copy {ll_mixd - ll_copy:+.2f})"
+    )
 
     # --------------------------------------- projection test on nonzero bins
     t_obs = projection_stat(h, q_lex)
@@ -183,7 +189,7 @@ def main() -> None:
             rng.shuffle(ls2)
             pos = 0
             for L in ls2:
-                w = stream[pos:pos + L]
+                w = stream[pos : pos + L]
                 pos += L
                 for k in range(L - D):
                     hh[(w[k + D] - w[k]) % MOD] += 1
@@ -193,9 +199,11 @@ def main() -> None:
     p_hi = (np.sum(t_null >= t_obs) + 1) / (n_perms + 1)
     p_lo = (np.sum(t_null <= t_obs) + 1) / (n_perms + 1)
     print("\nprojection test (nonzero bins vs lexicon-Q direction):")
-    print(f"  observed T = {t_obs:+.3f}; permutation null "
-          f"{t_null.mean():+.3f} ± {t_null.std():.3f}; z = {z:+.2f}; "
-          f"P(>=) = {p_hi:.4f}, P(<=) = {p_lo:.4f}")
+    print(
+        f"  observed T = {t_obs:+.3f}; permutation null "
+        f"{t_null.mean():+.3f} ± {t_null.std():.3f}; z = {z:+.2f}; "
+        f"P(>=) = {p_hi:.4f}, P(<=) = {p_lo:.4f}"
+    )
 
     # ------------------------------------------- constrained key-sharing test
     # Key-sharing must explain the WHOLE 0-bin excess, which pins f:
@@ -204,13 +212,16 @@ def main() -> None:
     ll_pin = loglik(h, p_pin)
     # predicted projection statistic at f_pin (linear in f), bootstrap sd
     rng_pin = np.random.default_rng(11)
-    t_pin = np.array([projection_stat(rng_pin.multinomial(n, p_pin), q_lex)
-                      for _ in range(4000)])
+    t_pin = np.array(
+        [projection_stat(rng_pin.multinomial(n, p_pin), q_lex) for _ in range(4000)]
+    )
     z_rej = (t_pin.mean() - t_obs) / t_pin.std()
     print(f"\nconstrained key-sharing (f pinned by the 0-bin = {f_pin:.3f}):")
-    print(f"  log-likelihood {ll_pin:.2f} (vs copy {ll_pin-ll_copy:+.2f})")
-    print(f"  predicted T = {t_pin.mean():+.3f} ± {t_pin.std():.3f}; "
-          f"observed {t_obs:+.3f}; rejection z = {z_rej:+.2f}")
+    print(f"  log-likelihood {ll_pin:.2f} (vs copy {ll_pin - ll_copy:+.2f})")
+    print(
+        f"  predicted T = {t_pin.mean():+.3f} ± {t_pin.std():.3f}; "
+        f"observed {t_obs:+.3f}; rejection z = {z_rej:+.2f}"
+    )
 
     # ----------------------------------------------------------- power
     f_implied = f_lex if f_lex > 0 else 0.55
@@ -223,28 +234,39 @@ def main() -> None:
         t_boot[i] = projection_stat(hb, q_lex)
     thresh = np.quantile(t_null, 0.95)
     power = float((t_boot >= thresh).mean())
-    print(f"\npower: if key-sharing at the implied f = {f_implied:.3f} were "
-          f"true, P(T >= 95% null quantile) = {power:.2f}")
-    print(f"  (bootstrapped T under mixture: {t_boot.mean():+.3f} "
-          f"± {t_boot.std():.3f}; null 95% threshold {thresh:+.3f})")
+    print(
+        f"\npower: if key-sharing at the implied f = {f_implied:.3f} were "
+        f"true, P(T >= 95% null quantile) = {power:.2f}"
+    )
+    print(
+        f"  (bootstrapped T under mixture: {t_boot.mean():+.3f} "
+        f"± {t_boot.std():.3f}; null 95% threshold {thresh:+.3f})"
+    )
 
     # --------------------------------------------------- secondary readouts
     d10_pairs = sum(max(0, len(w) - 10) for w in words)
-    d10_match = sum(1 for w in words for k in range(len(w) - 10)
-                    if w[k] == w[k + 10])
-    print(f"\nd=10 within-word tail: {d10_match}/{d10_pairs} = "
-          f"{d10_match/max(d10_pairs,1):.4f} "
-          f"(uniform 0.0345, plaintext-leak ~0.061; low power)")
+    d10_match = sum(1 for w in words for k in range(len(w) - 10) if w[k] == w[k + 10])
+    print(
+        f"\nd=10 within-word tail: {d10_match}/{d10_pairs} = "
+        f"{d10_match / max(d10_pairs, 1):.4f} "
+        f"(uniform 0.0345, plaintext-leak ~0.061; low power)"
+    )
 
     opps = sum(max(0, len(w) - 6) for w in words)
-    reps = sum(1 for w in words for k in range(len(w) - 6)
-               if w[k] == w[k + 5] and w[k + 1] == w[k + 6])
+    reps = sum(
+        1
+        for w in words
+        for k in range(len(w) - 6)
+        if w[k] == w[k + 5] and w[k + 1] == w[k + 6]
+    )
     ctrl = controls["lexicon"] if controls.get("lexicon") else controls["in_domain"]
     lex_rate = ctrl["digraph_reps"] / ctrl["digraph_opps"]
-    print(f"XY..XY: observed {reps}/{opps} opportunities; "
-          f"uniform {opps/MOD**2:.1f}; full-plaintext-leak "
-          f"{opps*lex_rate:.1f}; f-mixture "
-          f"{f_implied*opps*lex_rate + (1-f_implied)*opps/MOD**2:.1f}")
+    print(
+        f"XY..XY: observed {reps}/{opps} opportunities; "
+        f"uniform {opps / MOD**2:.1f}; full-plaintext-leak "
+        f"{opps * lex_rate:.1f}; f-mixture "
+        f"{f_implied * opps * lex_rate + (1 - f_implied) * opps / MOD**2:.1f}"
+    )
 
 
 if __name__ == "__main__":

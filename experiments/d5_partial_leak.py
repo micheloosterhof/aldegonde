@@ -81,8 +81,8 @@ def to_runeglish(word: str) -> list[str]:
     out: list[str] = []
     i = 0
     while i < len(w):
-        if i + 1 < len(w) and w[i:i + 2] in DIGRAPHS:
-            out.append(w[i:i + 2])
+        if i + 1 < len(w) and w[i : i + 2] in DIGRAPHS:
+            out.append(w[i : i + 2])
             i += 2
         elif w[i] in SINGLES:
             out.append(w[i])
@@ -131,12 +131,15 @@ def main() -> None:
     stream, wid = load_lp()
     print(f"LP clean corpus: {len(stream)} runes\n")
     print(f"flat baseline 1/29 = {FLAT:.4f} (IoC 1.00)")
-    print(f"full-leak reference (real prose): d5 {PROSE_D5:.4f} (IoC "
-          f"{PROSE_D5 * M:.2f})")
+    print(
+        f"full-leak reference (real prose): d5 {PROSE_D5:.4f} (IoC {PROSE_D5 * M:.2f})"
+    )
     if os.path.exists(DICT):
         wi, cr = plaintext_reference(random.Random(7))
-        print(f"  cross-check, dictionary proxy: d5 {wi:.4f} (IoC "
-              f"{wi * M:.2f})  [biased high]")
+        print(
+            f"  cross-check, dictionary proxy: d5 {wi:.4f} (IoC "
+            f"{wi * M:.2f})  [biased high]"
+        )
 
     plain = PROSE_D5
     print("\nLP within-word coincidence profile:")
@@ -150,22 +153,26 @@ def main() -> None:
 
     r5, m5, e5 = coincidence(stream, wid, 5, same=True)
     q = (r5 - FLAT) / (plain - FLAT)
-    print(f"\n  same-alphabet fraction at within-word d5: q = {q:.2f} "
-          f"(point estimate)")
+    print(f"\n  same-alphabet fraction at within-word d5: q = {q:.2f} (point estimate)")
 
     # Is q meaningfully < 1? Test observed matches against the full-leak
     # expectation. Full leak (word-locked, exact order-5 g) predicts the
     # plaintext d5 rate; flat predicts 1/29.
     import math
+
     exp_flat = e5 / M
     exp_full = PROSE_D5 * e5
     z_flat = (m5 - exp_flat) / math.sqrt(e5 * (1 / M) * ((M - 1) / M))
     z_full = (m5 - exp_full) / math.sqrt(exp_full * (1 - exp_full / e5))
     print(f"  {m5} matches vs flat {exp_flat:.0f}: z={z_flat:+.1f} -> echo is REAL")
-    print(f"  {m5} matches vs full-leak {exp_full:.0f}: z={z_full:+.1f} -> "
-          "partial NOT significant; word-locked (q=1) is consistent")
-    print("  => the echo is real and word-anchored; partial-vs-full is "
-          "underpowered on this corpus")
+    print(
+        f"  {m5} matches vs full-leak {exp_full:.0f}: z={z_full:+.1f} -> "
+        "partial NOT significant; word-locked (q=1) is consistent"
+    )
+    print(
+        "  => the echo is real and word-anchored; partial-vs-full is "
+        "underpowered on this corpus"
+    )
 
 
 if __name__ == "__main__":

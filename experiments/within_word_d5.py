@@ -28,7 +28,9 @@ from aldegonde import c3301
 M = 29
 R2I = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 RUNES = set(R2I)
-WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)  # '/' and newline are line wraps, not boundaries
+WORD_BOUNDARIES = set(
+    c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS
+)  # '/' and newline are line wraps, not boundaries
 
 N_PERMS = 10000
 
@@ -84,19 +86,23 @@ def main() -> None:
     rng = random.Random(1279)
 
     # 1. exact binomial on the clean corpus
-    hits, _, _ = (sum(x) for x in zip(
-        *(cut_stats(st, ls, 5) for st, ls in zip(streams, lenseqs)),
-    ))
+    hits, _, _ = (
+        sum(x)
+        for x in zip(
+            *(cut_stats(st, ls, 5) for st, ls in zip(streams, lenseqs)),
+        )
+    )
     trials = sum(max(0, length - 5) for ls in lenseqs for length in ls)
-    print(f"clean corpus within-word d=5: {hits}/{trials} = {hits/trials:.3%}"
-          f"  (1/29 = {1/M:.3%})")
-    print(f"  exact binomial P(>= {hits}) = {binom.sf(hits - 1, trials, 1/M):.2e}")
+    print(
+        f"clean corpus within-word d=5: {hits}/{trials} = {hits / trials:.3%}"
+        f"  (1/29 = {1 / M:.3%})"
+    )
+    print(f"  exact binomial P(>= {hits}) = {binom.sf(hits - 1, trials, 1 / M):.2e}")
 
     # 2+3. boundary-permutation null at every distance
     print(f"\nboundary-permutation null ({N_PERMS} perms per distance):")
     for d in range(1, 9):
-        obs = sum(cut_stats(st, ls, d)[0]
-                  for st, ls in zip(streams, lenseqs))
+        obs = sum(cut_stats(st, ls, d)[0] for st, ls in zip(streams, lenseqs))
         null = []
         for _ in range(N_PERMS):
             tot = 0
@@ -110,13 +116,18 @@ def main() -> None:
         p_hi = sum(1 for x in null if x >= obs) / N_PERMS
         p_lo = sum(1 for x in null if x <= obs) / N_PERMS
         mark = "  <== " if p_hi < 0.01 or p_lo < 0.01 else ""
-        print(f"  d={d}: obs {obs:4d}  null {mu:6.1f}±{sd:4.1f}"
-              f"  P(>=obs)={p_hi:.4f}  P(<=obs)={p_lo:.4f}{mark}")
+        print(
+            f"  d={d}: obs {obs:4d}  null {mu:6.1f}±{sd:4.1f}"
+            f"  P(>=obs)={p_hi:.4f}  P(<=obs)={p_lo:.4f}{mark}"
+        )
 
     # 4a. distinct words and bigram repeats at d=5, with permutation null
-    obs3 = [sum(x) for x in zip(
-        *(cut_stats(st, ls, 5) for st, ls in zip(streams, lenseqs)),
-    )]
+    obs3 = [
+        sum(x)
+        for x in zip(
+            *(cut_stats(st, ls, 5) for st, ls in zip(streams, lenseqs)),
+        )
+    ]
     nulls: tuple[list[int], ...] = ([], [], [])
     for _ in range(N_PERMS):
         tot = [0, 0, 0]
@@ -130,15 +141,14 @@ def main() -> None:
             nulls[i].append(tot[i])
     print("\nd=5 statistics vs permutation null:")
     for i, name in enumerate(
-            ("single hits", "distinct words with a hit",
-             "bigram repeats at d=5")):
+        ("single hits", "distinct words with a hit", "bigram repeats at d=5")
+    ):
         mu = statistics.mean(nulls[i])
         sd = statistics.pstdev(nulls[i])
         p = sum(1 for x in nulls[i] if x >= obs3[i]) / N_PERMS
-        print(f"  {name}: obs {obs3[i]}  null {mu:.1f}±{sd:.1f}"
-              f"  P(>=obs)={p:.4f}")
+        print(f"  {name}: obs {obs3[i]}  null {mu:.1f}±{sd:.1f}  P(>=obs)={p:.4f}")
     opp = sum(max(0, length - 6) for ls in lenseqs for length in ls)
-    print(f"  (bigram@d5 uniform-random expectation: {opp}/841 = {opp/841:.2f})")
+    print(f"  (bigram@d5 uniform-random expectation: {opp}/841 = {opp / 841:.2f})")
 
     # 4b. per-section breakdown
     print("\nper-section d=5 (obs vs null, 2000 perms):")
@@ -151,8 +161,10 @@ def main() -> None:
             null.append(cut_stats(st, ls2, 5)[0])
         mu = statistics.mean(null)
         sd = statistics.pstdev(null) or 1.0
-        print(f"  sec {si}: obs {obs:3d}  null {mu:5.1f}±{sd:4.1f}"
-              f"  z={(obs - mu) / sd:+.2f}")
+        print(
+            f"  sec {si}: obs {obs:3d}  null {mu:5.1f}±{sd:4.1f}"
+            f"  z={(obs - mu) / sd:+.2f}"
+        )
 
     # 4c. the multi-hit words, spelled out
     print("\nwords with >= 2 hits at d=5:")

@@ -40,9 +40,37 @@ RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟ�
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 R2I["ᛂ"] = R2I["ᛄ"]  # both glyph variants of J appear in the data files
-LETTERS = ["F", "U", "TH", "O", "R", "C", "G", "W", "H", "N", "I", "J",
-           "EO", "P", "X", "S", "T", "B", "E", "M", "L", "NG", "OE", "D",
-           "A", "AE", "Y", "IA", "EA"]
+LETTERS = [
+    "F",
+    "U",
+    "TH",
+    "O",
+    "R",
+    "C",
+    "G",
+    "W",
+    "H",
+    "N",
+    "I",
+    "J",
+    "EO",
+    "P",
+    "X",
+    "S",
+    "T",
+    "B",
+    "E",
+    "M",
+    "L",
+    "NG",
+    "OE",
+    "D",
+    "A",
+    "AE",
+    "Y",
+    "IA",
+    "EA",
+]
 MASTER = "data/liber-primus__transcription--master.txt"
 QUADGRAMS = "src/aldegonde/data/ngrams/runeglish/quadgrams.txt"
 OUT_JSON = "experiments/plaintext_control_stats.json"
@@ -70,7 +98,7 @@ def load_quadgram_scorer():
             return floor
         s = 0.0
         for i in range(len(seq) - 3):
-            s += scores.get(tuple(seq[i:i + 4]), floor)
+            s += scores.get(tuple(seq[i : i + 4]), floor)
         return s / (len(seq) - 3)
 
     return score
@@ -103,11 +131,12 @@ def parse_sections(path: str) -> list[list[list[int]]]:
 def candidate_decodes(section: list[list[int]]):
     """(name, decoded words) for identity/shift/atbash+shift transforms."""
     for shift in range(MOD):
-        yield (f"shift-{shift}",
-               [[(c - shift) % MOD for c in w] for w in section])
+        yield (f"shift-{shift}", [[(c - shift) % MOD for c in w] for w in section])
     for shift in range(MOD):
-        yield (f"atbash+{shift}",
-               [[(MOD - 1 - c - shift) % MOD for c in w] for w in section])
+        yield (
+            f"atbash+{shift}",
+            [[(MOD - 1 - c - shift) % MOD for c in w] for w in section],
+        )
 
 
 def to_english(words: list[list[int]]) -> str:
@@ -140,10 +169,12 @@ def within_word_stats(words: list[list[int]], weights=None):
             if w[k] == w[k + 5] and w[k + 1] == w[k + 6]:
                 digraph_reps += wt
     return {
-        "pairs": pairs, "matches": matches,
+        "pairs": pairs,
+        "matches": matches,
         "rate": matches / pairs if pairs else 0.0,
         "Q": q,
-        "digraph_reps": digraph_reps, "digraph_opps": digraph_opps,
+        "digraph_reps": digraph_reps,
+        "digraph_opps": digraph_opps,
         "by_len": {k: v for k, v in sorted(by_len.items()) if v[0] > 0},
     }
 
@@ -160,8 +191,10 @@ def stream_lag5_q(words: list[list[int]]) -> list[float]:
 def main() -> None:
     score = load_quadgram_scorer()
     sections = parse_sections(MASTER)
-    print(f"master transcription: {len(sections)} sections, "
-          f"{sum(len(w) for s in sections for w in s)} runes total\n")
+    print(
+        f"master transcription: {len(sections)} sections, "
+        f"{sum(len(w) for s in sections for w in s)} runes total\n"
+    )
 
     accepted: list[list[list[int]]] = []
     for idx, sec in enumerate(sections):
@@ -177,32 +210,42 @@ def main() -> None:
         ok = best_score > -5.5
         tag = "ACCEPT" if ok else "reject"
         preview = to_english(best_words)[:72]
-        print(f"section {idx:>2} ({flat_len:>5} runes) best={best_name:<10}"
-              f" score={best_score:>6.2f} {tag}  {preview}")
+        print(
+            f"section {idx:>2} ({flat_len:>5} runes) best={best_name:<10}"
+            f" score={best_score:>6.2f} {tag}  {preview}"
+        )
         if ok:
             accepted.append(best_words)
 
     words = [w for s in accepted for w in s]
-    print(f"\nIN-DOMAIN control: {len(accepted)} sections, {len(words)} words,"
-          f" {sum(len(w) for w in words)} runes")
+    print(
+        f"\nIN-DOMAIN control: {len(accepted)} sections, {len(words)} words,"
+        f" {sum(len(w) for w in words)} runes"
+    )
     dom = within_word_stats(words)
     dom["stream_Q"] = stream_lag5_q(words)
-    print(f"  within-word d=5: {dom['matches']:.0f}/{dom['pairs']:.0f}"
-          f" = {dom['rate']:.4f} (uniform 0.0345)")
-    print(f"  XY..XY repeats: {dom['digraph_reps']:.0f}"
-          f" / {dom['digraph_opps']:.0f} opportunities"
-          f" = {dom['digraph_reps']/max(dom['digraph_opps'],1):.5f}")
+    print(
+        f"  within-word d=5: {dom['matches']:.0f}/{dom['pairs']:.0f}"
+        f" = {dom['rate']:.4f} (uniform 0.0345)"
+    )
+    print(
+        f"  XY..XY repeats: {dom['digraph_reps']:.0f}"
+        f" / {dom['digraph_opps']:.0f} opportunities"
+        f" = {dom['digraph_reps'] / max(dom['digraph_opps'], 1):.5f}"
+    )
     q = dom["Q"]
     tot = sum(q)
     print("  Q (within-word lag-5 delta distribution, x29/uniform):")
-    print("   " + " ".join(f"{MOD*v/tot:.2f}" for v in q))
+    print("   " + " ".join(f"{MOD * v / tot:.2f}" for v in q))
 
     # ------------------------------------------------------------- lexicon
     try:
         from wordfreq import top_n_list, word_frequency
     except ModuleNotFoundError:
         print("\nLEXICON control skipped: `pip install wordfreq` to enable it.")
-        print("(The in-domain control above is the register-matched, load-bearing one.)")
+        print(
+            "(The in-domain control above is the register-matched, load-bearing one.)"
+        )
         with open(OUT_JSON, "w") as f:
             json.dump({"in_domain": dom, "lexicon": None}, f)
         print(f"wrote {OUT_JSON} (in-domain only)")
@@ -216,15 +259,43 @@ def main() -> None:
         w = w.replace("Z", "S")
         out: list[int] = []
         i = 0
-        digraphs = {"TH": 2, "EO": 12, "NG": 21, "OE": 22, "AE": 25,
-                    "IA": 27, "IO": 27, "EA": 28}
-        singles = {"F": 0, "U": 1, "O": 3, "R": 4, "C": 5, "G": 6, "W": 7,
-                   "H": 8, "N": 9, "I": 10, "J": 11, "P": 13, "X": 14,
-                   "S": 15, "T": 16, "B": 17, "E": 18, "M": 19, "L": 20,
-                   "D": 23, "A": 24, "Y": 26}
+        digraphs = {
+            "TH": 2,
+            "EO": 12,
+            "NG": 21,
+            "OE": 22,
+            "AE": 25,
+            "IA": 27,
+            "IO": 27,
+            "EA": 28,
+        }
+        singles = {
+            "F": 0,
+            "U": 1,
+            "O": 3,
+            "R": 4,
+            "C": 5,
+            "G": 6,
+            "W": 7,
+            "H": 8,
+            "N": 9,
+            "I": 10,
+            "J": 11,
+            "P": 13,
+            "X": 14,
+            "S": 15,
+            "T": 16,
+            "B": 17,
+            "E": 18,
+            "M": 19,
+            "L": 20,
+            "D": 23,
+            "A": 24,
+            "Y": 26,
+        }
         while i < len(w):
-            if w[i:i + 2] in digraphs:
-                out.append(digraphs[w[i:i + 2]])
+            if w[i : i + 2] in digraphs:
+                out.append(digraphs[w[i : i + 2]])
                 i += 2
             elif w[i] in singles:
                 out.append(singles[w[i]])
@@ -240,23 +311,36 @@ def main() -> None:
         if runes:
             lex_words.append(runes)
             lex_weights.append(word_frequency(eng, "en"))
-    print(f"\nLEXICON control: {len(lex_words)} transliterated words,"
-          f" frequency-weighted")
+    print(
+        f"\nLEXICON control: {len(lex_words)} transliterated words, frequency-weighted"
+    )
     lex = within_word_stats(lex_words, lex_weights)
     print(f"  within-word d=5 rate: {lex['rate']:.4f} (uniform 0.0345)")
-    print(f"  XY..XY rate per opportunity: "
-          f"{lex['digraph_reps']/max(lex['digraph_opps'],1e-12):.5f}")
+    print(
+        f"  XY..XY rate per opportunity: "
+        f"{lex['digraph_reps'] / max(lex['digraph_opps'], 1e-12):.5f}"
+    )
     qq = lex["Q"]
     tot = sum(qq)
     print("  Q (within-word lag-5 delta distribution, x29/uniform):")
-    print("   " + " ".join(f"{MOD*v/tot:.2f}" for v in qq))
-    print("  by length (pairs-weight, rate): "
-          + ", ".join(f"L{k}:{v[1]/v[0]:.3f}" for k, v in lex["by_len"].items()
-                      if k <= 12 and v[0] > 0))
+    print("   " + " ".join(f"{MOD * v / tot:.2f}" for v in qq))
+    print(
+        "  by length (pairs-weight, rate): "
+        + ", ".join(
+            f"L{k}:{v[1] / v[0]:.3f}"
+            for k, v in lex["by_len"].items()
+            if k <= 12 and v[0] > 0
+        )
+    )
 
     with open(OUT_JSON, "w") as f:
-        json.dump({"in_domain": dom, "lexicon":
-                   {k: v for k, v in lex.items() if k != "by_len"}}, f)
+        json.dump(
+            {
+                "in_domain": dom,
+                "lexicon": {k: v for k, v in lex.items() if k != "by_len"},
+            },
+            f,
+        )
     print(f"\nwrote {OUT_JSON}")
 
 

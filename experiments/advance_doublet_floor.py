@@ -72,7 +72,7 @@ def cycles_to_perm(cyclens: list[int], layout: list[int]) -> list[int]:
     g = list(range(N))
     p = 0
     for clen in cyclens:
-        cyc = layout[p:p + clen]
+        cyc = layout[p : p + clen]
         for k in range(clen):
             g[cyc[k]] = cyc[(k + 1) % clen]
         p += clen
@@ -80,7 +80,10 @@ def cycles_to_perm(cyclens: list[int], layout: list[int]) -> list[int]:
 
 
 def anneal_cycletype(
-    m: np.ndarray, cyclens: list[int], seed: int, restarts: int = 20,
+    m: np.ndarray,
+    cyclens: list[int],
+    seed: int,
+    restarts: int = 20,
     iters: int = 40000,
 ) -> tuple[float, list[int]]:
     """Minimize the advance diagonal over all permutations with the given cycle
@@ -154,8 +157,9 @@ def main() -> None:
     print(f"  MAX (worst assignment):          {max_rate:.4f}")
     print()
     print(f"optimal g: cycle structure = {cycle_structure(g_min)}")
-    print(f"  fixed points: {fixed}, near-zero diagonal cells (<{tiny:.1e}): "
-          f"{zeros}/{N}")
+    print(
+        f"  fixed points: {fixed}, near-zero diagonal cells (<{tiny:.1e}): {zeros}/{N}"
+    )
     print()
     r5, g5 = anneal_cycletype(m, [5, 5, 5, 5, 5], seed=3301)
     print("order-5 advance (five 5-cycles + 4 fixed) -- grid/g^5=id model:")

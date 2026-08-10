@@ -86,16 +86,20 @@ def main() -> None:
             acc[L][1].append(r[L][1])
 
     print(f"\nnull = Markov chain with suppressed diagonal, {SAMPLES} samples")
-    print(f"{'L':>3} {'obs_dist':>9} {'null_dist':>16} {'z':>7}   "
-          f"{'obs_dup':>8} {'null_dup':>16} {'z':>7}")
+    print(
+        f"{'L':>3} {'obs_dist':>9} {'null_dist':>16} {'z':>7}   "
+        f"{'obs_dup':>8} {'null_dup':>16} {'z':>7}"
+    )
     for L in LENGTHS:
         d0, u0 = obs[L]
         dm, ds = np.mean(acc[L][0]), np.std(acc[L][0])
         um, us = np.mean(acc[L][1]), np.std(acc[L][1])
         zd = (d0 - dm) / ds if ds > 0 else float("nan")
         zu = (u0 - um) / us if us > 0 else float("nan")
-        print(f"{L:>3} {d0:>9} {dm:>10.1f}±{ds:<5.1f} {zd:>+7.2f}   "
-              f"{u0:>8} {um:>10.1f}±{us:<5.1f} {zu:>+7.2f}")
+        print(
+            f"{L:>3} {d0:>9} {dm:>10.1f}±{ds:<5.1f} {zd:>+7.2f}   "
+            f"{u0:>8} {um:>10.1f}±{us:<5.1f} {zu:>+7.2f}"
+        )
 
 
 if __name__ == "__main__":

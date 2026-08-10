@@ -67,7 +67,7 @@ def main() -> None:
     sections = parse_clean_sections()
     words = [w for s in sections for w in s]
 
-    pairs = []   # (word_index, k, L, matched)
+    pairs = []  # (word_index, k, L, matched)
     for wi, w in enumerate(words):
         L = len(w)
         for k in range(L - D):
@@ -82,7 +82,7 @@ def main() -> None:
     print("\nstart position k: matches / pairs (rate)")
     for k in sorted(pos_all):
         n, m = pos_all[k], pos_hit.get(k, 0)
-        print(f"  k={k}: {m:>3} / {n:>4}  ({m/n:.4f})")
+        print(f"  k={k}: {m:>3} / {n:>4}  ({m / n:.4f})")
 
     # 2. alignment tests ----------------------------------------------
     def enrich(name, sel):
@@ -90,9 +90,14 @@ def main() -> None:
         hit = sum(1 for p in matched if sel(p))
         exp = n_match * tot / n_pairs
         # permutation: choose n_match of n_pairs without replacement
-        var = (n_match * (tot / n_pairs) * (1 - tot / n_pairs)
-               * (n_pairs - n_match) / (n_pairs - 1))
-        z = (hit - exp) / var ** 0.5 if var else 0.0
+        var = (
+            n_match
+            * (tot / n_pairs)
+            * (1 - tot / n_pairs)
+            * (n_pairs - n_match)
+            / (n_pairs - 1)
+        )
+        z = (hit - exp) / var**0.5 if var else 0.0
         print(f"  {name}: {hit} vs {exp:.1f} expected (z={z:+.2f})")
 
     print("\nalignment of matched pairs:")
@@ -112,7 +117,7 @@ def main() -> None:
         bt = binomtest(m, n, 1 / MOD)
         lo, hi = bt.proportion_ci(0.95)
         lab = f"{L}" if L < 13 else "13+"
-        print(f"  L={lab:>3}: {m:>3}/{n:>4} = {m/n:.4f} [{lo:.4f},{hi:.4f}]")
+        print(f"  L={lab:>3}: {m:>3}/{n:>4} = {m / n:.4f} [{lo:.4f},{hi:.4f}]")
 
     # 4. XY..XY words --------------------------------------------------
     print("\nXY..XY words (digraph repeat at distance 5):")
@@ -122,16 +127,20 @@ def main() -> None:
             if w[k] == w[k + D] and w[k + 1] == w[k + D + 1]:
                 opens = k == 0
                 closes = k + D + 1 == L - 1
-                print(f"  word {wi} L={L} k={k} "
-                      f"opens={opens} closes={closes} "
-                      f"runes={''.join(RUNES[c] for c in w)}")
+                print(
+                    f"  word {wi} L={L} k={k} "
+                    f"opens={opens} closes={closes} "
+                    f"runes={''.join(RUNES[c] for c in w)}"
+                )
 
     # 5. spatial clustering of hit words -------------------------------
     hit_words = sorted({p[0] for p in matched})
     weights = np.array([max(0, len(w) - D) for w in words], dtype=float)
     k_hits = len(hit_words)
-    print(f"\n{k_hits} distinct hit words; clustering tests "
-          f"(null: hits reassigned ∝ word pair count):")
+    print(
+        f"\n{k_hits} distinct hit words; clustering tests "
+        f"(null: hits reassigned ∝ word pair count):"
+    )
 
     def nn_stat(hw: list[int]) -> float:
         arr = np.array(sorted(hw))
@@ -153,13 +162,22 @@ def main() -> None:
         hw = rng_np.choice(len(words), size=k_hits, replace=False, p=p_idx)
         nn_null[i] = nn_stat(hw.tolist())
         wv_null[i] = window_var(hw.tolist())
-    for name, obs, null in (("mean gap between hit words", obs_nn, nn_null),
-                            ("100-word window count variance", obs_wv, wv_null)):
+    for name, obs, null in (
+        ("mean gap between hit words", obs_nn, nn_null),
+        ("100-word window count variance", obs_wv, wv_null),
+    ):
         z = (obs - null.mean()) / null.std()
-        p_two = min((np.sum(null >= obs) + 1) / (n_perms + 1),
-                    (np.sum(null <= obs) + 1) / (n_perms + 1)) * 2
-        print(f"  {name}: {obs:.2f} vs {null.mean():.2f} ± {null.std():.2f} "
-              f"(z={z:+.2f}, two-sided p={p_two:.3f})")
+        p_two = (
+            min(
+                (np.sum(null >= obs) + 1) / (n_perms + 1),
+                (np.sum(null <= obs) + 1) / (n_perms + 1),
+            )
+            * 2
+        )
+        print(
+            f"  {name}: {obs:.2f} vs {null.mean():.2f} ± {null.std():.2f} "
+            f"(z={z:+.2f}, two-sided p={p_two:.3f})"
+        )
 
 
 if __name__ == "__main__":

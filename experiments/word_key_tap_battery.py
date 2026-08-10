@@ -53,7 +53,7 @@ CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
 N_RUNES = 29
-MAX_POS = 5          # positions 0..4 carry almost all the mass
+MAX_POS = 5  # positions 0..4 carry almost all the mass
 TRIALS = 1000
 SEED = 3301
 PLAINTEXT_RATE = 0.06
@@ -75,7 +75,9 @@ def words() -> list[tuple[int, ...]]:
     return out
 
 
-def build_taps(ws: list[tuple[int, ...]], rng: random.Random) -> dict[str, list[int | None]]:
+def build_taps(
+    ws: list[tuple[int, ...]], rng: random.Random
+) -> dict[str, list[int | None]]:
     """Candidate keying functions of the preceding text, one value per word."""
     gp = [c3301.r2v(r) for r in c3301.CICADA_ALPHABET]
     running, starts = [], []
@@ -91,33 +93,53 @@ def build_taps(ws: list[tuple[int, ...]], rng: random.Random) -> dict[str, list[
     taps: dict[str, list[int | None]] = {
         "prev last rune": [p[-1] if (p := prev(i)) else None for i in range(len(ws))],
         "prev first rune": [p[0] if (p := prev(i)) else None for i in range(len(ws))],
-        "prev sum mod 29": [sum(p) % N_RUNES if (p := prev(i)) else None
-                            for i in range(len(ws))],
-        "prev product mod 29": [prod(x + 1 for x in p) % N_RUNES if (p := prev(i))
-                                else None for i in range(len(ws))],
-        "prev GP sum mod 29": [sum(gp[x] for x in p) % N_RUNES if (p := prev(i))
-                               else None for i in range(len(ws))],
-        "prev GP product 29": [prod(gp[x] for x in p) % N_RUNES if (p := prev(i))
-                               else None for i in range(len(ws))],
-        "prev alt sum mod 29": [sum(x * (-1) ** j for j, x in enumerate(p)) % N_RUNES
-                                if (p := prev(i)) else None for i in range(len(ws))],
+        "prev sum mod 29": [
+            sum(p) % N_RUNES if (p := prev(i)) else None for i in range(len(ws))
+        ],
+        "prev product mod 29": [
+            prod(x + 1 for x in p) % N_RUNES if (p := prev(i)) else None
+            for i in range(len(ws))
+        ],
+        "prev GP sum mod 29": [
+            sum(gp[x] for x in p) % N_RUNES if (p := prev(i)) else None
+            for i in range(len(ws))
+        ],
+        "prev GP product 29": [
+            prod(gp[x] for x in p) % N_RUNES if (p := prev(i)) else None
+            for i in range(len(ws))
+        ],
+        "prev alt sum mod 29": [
+            sum(x * (-1) ** j for j, x in enumerate(p)) % N_RUNES
+            if (p := prev(i))
+            else None
+            for i in range(len(ws))
+        ],
         "prev length": [len(p) if (p := prev(i)) else None for i in range(len(ws))],
-        "prev length mod 5": [len(p) % 5 if (p := prev(i)) else None
-                              for i in range(len(ws))],
-        "prev 2 words sum": [(sum(ws[i - 1]) + sum(ws[i - 2])) % N_RUNES if i >= 2
-                             else None for i in range(len(ws))],
-        "accumulated sum": [sum(sum(w) for w in ws[:i]) % N_RUNES if i >= 1 else None
-                            for i in range(len(ws))],
-        "rune offset mod 29": [starts[i] % N_RUNES if i >= 1 else None
-                               for i in range(len(ws))],
+        "prev length mod 5": [
+            len(p) % 5 if (p := prev(i)) else None for i in range(len(ws))
+        ],
+        "prev 2 words sum": [
+            (sum(ws[i - 1]) + sum(ws[i - 2])) % N_RUNES if i >= 2 else None
+            for i in range(len(ws))
+        ],
+        "accumulated sum": [
+            sum(sum(w) for w in ws[:i]) % N_RUNES if i >= 1 else None
+            for i in range(len(ws))
+        ],
+        "rune offset mod 29": [
+            starts[i] % N_RUNES if i >= 1 else None for i in range(len(ws))
+        ],
         "word index mod 29": [i % N_RUNES if i >= 1 else None for i in range(len(ws))],
-        "random (control)": [rng.randrange(N_RUNES) if i >= 1 else None
-                             for i in range(len(ws))],
+        "random (control)": [
+            rng.randrange(N_RUNES) if i >= 1 else None for i in range(len(ws))
+        ],
     }
     return taps
 
 
-def agreement(ws: list[tuple[int, ...]], tap: list[int | None]) -> tuple[float, float, int]:
+def agreement(
+    ws: list[tuple[int, ...]], tap: list[int | None]
+) -> tuple[float, float, int]:
     """Agreement rate when the tap matches, when it differs, and matched pairs."""
     m_agree = m_pairs = a_agree = a_pairs = 0
     for k in range(MAX_POS):
@@ -147,13 +169,19 @@ def main() -> None:
     taps = build_taps(ws, rng)
     predicted = PLAINTEXT_RATE - 1 / N_RUNES
     print(f"clean corpus: {len(ws)} words, positions 0-{MAX_POS - 1}")
-    print(f"flat baseline 1/29 = {1 / N_RUNES:.4f}; a shared alphabet lifts "
-          f"matched-tap agreement")
-    print(f"to the runeglish plaintext rate ~{PLAINTEXT_RATE}, a gap of "
-          f"{predicted:+.4f}\n")
+    print(
+        f"flat baseline 1/29 = {1 / N_RUNES:.4f}; a shared alphabet lifts "
+        f"matched-tap agreement"
+    )
+    print(
+        f"to the runeglish plaintext rate ~{PLAINTEXT_RATE}, a gap of "
+        f"{predicted:+.4f}\n"
+    )
 
-    print(f"{'tap':>22}{'classes':>9}{'matched':>11}{'agree':>9}{'differs':>9}"
-          f"{'gap':>9}{'sd':>8}{'z':>7}{'share':>8}")
+    print(
+        f"{'tap':>22}{'classes':>9}{'matched':>11}{'agree':>9}{'differs':>9}"
+        f"{'gap':>9}{'sd':>8}{'z':>7}{'share':>8}"
+    )
     results = []
     for name, tap in taps.items():
         matched, other, m_pairs = agreement(ws, tap)
@@ -171,17 +199,23 @@ def main() -> None:
         z = (gap - mu) / sd if sd else float("nan")
         share = (gap + 2 * sd) / predicted
         results.append((name, z))
-        print(f"{name:>22}{classes:>9}{m_pairs:>11}{matched:>9.4f}{other:>9.4f}"
-              f"{gap:>+9.4f}{sd:>8.4f}{z:>+7.2f}{share:>7.1%}")
+        print(
+            f"{name:>22}{classes:>9}{m_pairs:>11}{matched:>9.4f}{other:>9.4f}"
+            f"{gap:>+9.4f}{sd:>8.4f}{z:>+7.2f}{share:>7.1%}"
+        )
 
     print("\nclasses = distinct tap values; matched = pairs sharing one.")
     print("share = the tap's maximum contribution to alphabet selection, from")
     print("the 2-sigma upper edge of the gap divided by the full-keying gap.")
     worst = max(results, key=lambda r: abs(r[1]))
-    print(f"\n{len(taps)} taps scanned; largest |z| is {worst[0]} at "
-          f"{worst[1]:+.2f}, which needs")
-    print(f"|z| > {2.7:.1f} to clear the scan. A tap that keyed the alphabet "
-          f"would sit at z ~ {predicted / 0.0003:.0f}.")
+    print(
+        f"\n{len(taps)} taps scanned; largest |z| is {worst[0]} at "
+        f"{worst[1]:+.2f}, which needs"
+    )
+    print(
+        f"|z| > {2.7:.1f} to clear the scan. A tap that keyed the alphabet "
+        f"would sit at z ~ {predicted / 0.0003:.0f}."
+    )
 
 
 if __name__ == "__main__":

@@ -62,8 +62,9 @@ def circled(dots: int) -> str:
     return CIRCLED.get(dots, UNKNOWN)
 
 
-def fill_runes(scan: list[tuple[str, str]],
-               txt: list[tuple[str, str]]) -> list[tuple[str, str]]:
+def fill_runes(
+    scan: list[tuple[str, str]], txt: list[tuple[str, str]]
+) -> list[tuple[str, str]]:
     """The scan's structure carrying the transcription's actual runes.
 
     The scan cannot name a rune, but it does know where one sits, and the
@@ -87,7 +88,7 @@ def fill_runes(scan: list[tuple[str, str]],
     return out
 
 
-GAP = 0.72        # cost of leaving a band or a line unpaired
+GAP = 0.72  # cost of leaving a band or a line unpaired
 
 
 def align(bands: list, lines: list[str]) -> list[tuple]:
@@ -100,11 +101,18 @@ def align(bands: list, lines: list[str]) -> list[tuple]:
     signature to align against — a Needleman-Wunsch over the token kinds, with
     gaps for a band the text has no line for and vice versa.
     """
-    bs = ["".join("R" if g.kind == "R" else "M"
-                  for g in with_ticks(b) if g.kind != "t") for b in bands]
-    ls = ["".join("R" if RUNE.match(c) or CONTENT.match(c) else "M"
-                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in c3301.MARK_CHARS)
-          for line in lines]
+    bs = [
+        "".join("R" if g.kind == "R" else "M" for g in with_ticks(b) if g.kind != "t")
+        for b in bands
+    ]
+    ls = [
+        "".join(
+            "R" if RUNE.match(c) or CONTENT.match(c) else "M"
+            for c in line
+            if RUNE.match(c) or CONTENT.match(c) or c in c3301.MARK_CHARS
+        )
+        for line in lines
+    ]
     n, m = len(bs), len(ls)
     inf = float("inf")
     cost = [[inf] * (m + 1) for _ in range(n + 1)]
@@ -177,8 +185,12 @@ def crop(page: int, line, path: Path) -> None:
     ys = [g.y for g in line]
     xs = [g.x for g in line]
     height = 520 if any(g.kind == "R" and g.tall for g in line) else 114
-    box = (max(0, min(xs) - MARGIN), max(0, min(ys) - MARGIN),
-           min(2400, max(xs) + 170), min(3600, min(ys) + height + MARGIN))
+    box = (
+        max(0, min(xs) - MARGIN),
+        max(0, min(ys) - MARGIN),
+        min(2400, max(xs) + 170),
+        min(3600, min(ys) + height + MARGIN),
+    )
     Image.open(IMAGE_DIR / f"{page}.jpg").crop(box).save(path, optimize=True)
 
 
@@ -193,8 +205,9 @@ def row(tokens: list[tuple[str, str]], other: list[tuple[str, str]], kind: str) 
     for i, (ch, cls) in enumerate(tokens):
         theirs = other[i][0] if i < len(other) else None
         bad = theirs != ch
-        cells.append(f"<span class='c {cls}{' bad' if bad else ''}'>"
-                     f"{html.escape(ch)}</span>")
+        cells.append(
+            f"<span class='c {cls}{' bad' if bad else ''}'>{html.escape(ch)}</span>"
+        )
     return f"<div class='row'><span class='lbl'>{kind}</span>{''.join(cells)}</div>"
 
 
@@ -245,48 +258,68 @@ def main() -> None:
                 crop(page, band, OUT / name)
             tt = txt_tokens(text)
             it = fill_runes(img_tokens(band), tt) if band else []
-            entries.append({
-                "page": page, "line": idx, "png": name, "aligned": ok,
-                "img": it, "txt": tt,
-                "scan": "".join(c for c, _ in it),
-                "text": "".join(c for c, _ in tt),
-                "runes": text.rstrip("/"),
-                "differs": _kinds(it) != _kinds(tt),
-                "slot": slot,
-            })
+            entries.append(
+                {
+                    "page": page,
+                    "line": idx,
+                    "png": name,
+                    "aligned": ok,
+                    "img": it,
+                    "txt": tt,
+                    "scan": "".join(c for c, _ in it),
+                    "text": "".join(c for c, _ in tt),
+                    "runes": text.rstrip("/"),
+                    "differs": _kinds(it) != _kinds(tt),
+                    "slot": slot,
+                }
+            )
 
     body = [HEAD]
     for e in entries:
         it, tt = e["img"], e["txt"]
-        flag = "" if e["aligned"] else (
-            " <b class='warn'>unpaired: "
-            + ("no transcription line for this scanned line" if e["png"]
-               else "no scanned line for this transcription line") + "</b>")
+        flag = (
+            ""
+            if e["aligned"]
+            else (
+                " <b class='warn'>unpaired: "
+                + (
+                    "no transcription line for this scanned line"
+                    if e["png"]
+                    else "no scanned line for this transcription line"
+                )
+                + "</b>"
+            )
+        )
         cls = "e differs" if e["differs"] or not e["aligned"] else "e agrees"
         body.append(
             f"<section class='{cls}' id='p{e['page']}l{e['line']}' "
             f"data-page='{e['page']}' data-line='{e['line']}' "
             f"data-scan='{html.escape(e['scan'])}' data-txt='{html.escape(e['text'])}'>"
             f"<h2>page {e['page']} &middot; line {e['line']}{flag}</h2>"
-            + (f"<img loading='lazy' src='{e['png']}'>" if e["png"] else
-               "<p class='warn'>no crop: reader found no band for this line</p>")
+            + (
+                f"<img loading='lazy' src='{e['png']}'>"
+                if e["png"]
+                else "<p class='warn'>no crop: reader found no band for this line</p>"
+            )
             + row(it, tt, "scan")
             + row(tt, it, "txt")
             + "<div class='ctl'>"
-              "<button class='b-txt'>txt row is right</button>"
-              "<button class='b-scan'>scan row is right</button>"
-              "<button class='b-edit'>use my edit &rarr;</button>"
-              f"<input class='val' placeholder='runes and marks, e.g. ᚦᛖ①ᛗᚪᚾ④' "
-              f"value='{html.escape(e['scan'])}'>"
-              "<input class='note' placeholder='note'>"
-              "<span class='state'></span></div></section>")
+            "<button class='b-txt'>txt row is right</button>"
+            "<button class='b-scan'>scan row is right</button>"
+            "<button class='b-edit'>use my edit &rarr;</button>"
+            f"<input class='val' placeholder='runes and marks, e.g. ᚦᛖ①ᛗᚪᚾ④' "
+            f"value='{html.escape(e['scan'])}'>"
+            "<input class='note' placeholder='note'>"
+            "<span class='state'></span></div></section>"
+        )
     body.append(FOOT.replace("__TOTAL__", str(len(entries))))
     html_text = "\n".join(body)
     check_script(html_text)
     (OUT / "index.html").write_text(html_text, encoding="utf-8")
 
-    (OUT / "entries.json").write_text(json.dumps(entries, ensure_ascii=False, indent=1),
-                                      encoding="utf-8")
+    (OUT / "entries.json").write_text(
+        json.dumps(entries, ensure_ascii=False, indent=1), encoding="utf-8"
+    )
     print(f"{len(entries)} lines written to {OUT}")
     print(f"   {sum(1 for e in entries if e['differs'])} differ from the transcription")
     print(f"   {warned} pages where the reader's band count disagrees with the text")

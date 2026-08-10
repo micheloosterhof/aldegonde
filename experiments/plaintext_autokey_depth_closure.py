@@ -46,7 +46,7 @@ M = 29
 
 
 def repeated_pairs(stream, n: int) -> int:
-    c = Counter(tuple(stream[i:i + n]) for i in range(len(stream) - n + 1))
+    c = Counter(tuple(stream[i : i + n]) for i in range(len(stream) - n + 1))
     return sum(v * (v - 1) // 2 for v in c.values())
 
 
@@ -67,35 +67,39 @@ def validate(pt: list[int], L: int, n: int) -> None:
     sim = repeated_pairs(ct, n)
     forced = forced_pairs(pt, L, n)
     if sim < forced:
-        msg = (
-            f"validation failed at L={L}, n={n}: simulated {sim} < "
-            f"forced {forced}"
-        )
-        raise AssertionError(
-            msg)
-    print(f"validation OK (L={L}, n={n}): simulated ciphertext repeats "
-          f"{sim} >= forced {forced}")
+        msg = f"validation failed at L={L}, n={n}: simulated {sim} < forced {forced}"
+        raise AssertionError(msg)
+    print(
+        f"validation OK (L={L}, n={n}): simulated ciphertext repeats "
+        f"{sim} >= forced {forced}"
+    )
 
 
 def main() -> None:
     pt = recover_plaintext(solved_segments())
     clean, _ = load_clean()
     scale = (len(clean) / len(pt)) ** 2
-    print(f"plaintext register: {len(pt)} runes; clean corpus "
-          f"{len(clean)} runes; pair-count scale x{scale:.1f}")
+    print(
+        f"plaintext register: {len(pt)} runes; clean corpus "
+        f"{len(clean)} runes; pair-count scale x{scale:.1f}"
+    )
     for L in range(1, 11):
         validate(pt, L, 4)
 
     obs = {n: repeated_pairs(clean, n) for n in (4, 5, 6)}
-    print(f"\nobserved clean-corpus repeated n-grams: "
-          f"4: {obs[4]}, 5: {obs[5]}, 6: {obs[6]} "
-          f"(doublet-corrected chance: 124 +- 10 / 4 +- 2 / ~0)")
+    print(
+        f"\nobserved clean-corpus repeated n-grams: "
+        f"4: {obs[4]}, 5: {obs[5]}, 6: {obs[6]} "
+        f"(doublet-corrected chance: 124 +- 10 / 4 +- 2 / ~0)"
+    )
     # forced repeats add ON TOP of chance, so the binding comparison is
     # against the allowed excess over the null, not the raw observed count
     excess_bar = obs[4] - 124 + 3 * 10
     print(f"allowed forced excess over chance (3 sigma): ~{excess_bar}")
-    print(f"\n{'L':>3} {'forced 4-gram pairs':>20} {'predicted (scaled)':>19} "
-          f"{'vs excess bar':>14}")
+    print(
+        f"\n{'L':>3} {'forced 4-gram pairs':>20} {'predicted (scaled)':>19} "
+        f"{'vs excess bar':>14}"
+    )
     for L in range(1, 11):
         f4 = forced_pairs(pt, L, 4)
         pred = f4 * scale

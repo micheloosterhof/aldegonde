@@ -73,7 +73,7 @@ def prose_k(lp_lens, prose_stream, rng, samples=40):
         off = rng.randrange(len(prose_stream) - sum(lp_lens))
         pos = off
         for L in lp_lens:
-            w = prose_stream[pos:pos + L]
+            w = prose_stream[pos : pos + L]
             pos += L
             for j in range(L):
                 for d in range(1, min(MAXD + 1, L - j)):
@@ -92,7 +92,7 @@ def make_g(census: tuple[int, ...], rng) -> list[int]:
     g = list(range(M))
     i = 0
     for L in census:
-        cyc = pts[i:i + L]
+        cyc = pts[i : i + L]
         i += L
         for k in range(L):
             g[cyc[k]] = cyc[(k + 1) % L]
@@ -108,13 +108,16 @@ def main() -> None:
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    prose_stream = [IDX_ENG[t] for w in prose_words(prose_path)
-                    for t in to_runeglish(w)]
+    prose_stream = [
+        IDX_ENG[t] for w in prose_words(prose_path) for t in to_runeglish(w)
+    ]
     K = prose_k(lp_lens, prose_stream, rng)
 
     print("Part 1 — phi ladder inverted from the LP staircase:")
-    print(f"{'d':>2} {'LP rate':>8} {'K_d':>7} {'phi_d':>7} {'± (1σ)':>7} "
-          f"{'letters (29·phi)':>16}")
+    print(
+        f"{'d':>2} {'LP rate':>8} {'K_d':>7} {'phi_d':>7} {'± (1σ)':>7} "
+        f"{'letters (29·phi)':>16}"
+    )
     phi_est = {}
     for d in range(1, MAXD + 1):
         r = obs_m[d] / obs_s[d]
@@ -124,8 +127,10 @@ def main() -> None:
         sd_phi = sd_r / (K[d] - b)
         phi_est[d] = (phi, sd_phi)
         note = " (diagonal-tuned channel)" if d == 1 else ""
-        print(f"{d:>2} {r:>8.4f} {K[d]:>7.4f} {phi:>7.2f} {sd_phi:>7.2f} "
-              f"{29 * phi:>+16.1f}{note}")
+        print(
+            f"{d:>2} {r:>8.4f} {K[d]:>7.4f} {phi:>7.2f} {sd_phi:>7.2f} "
+            f"{29 * phi:>+16.1f}{note}"
+        )
 
     # census search: partitions of 29 into parts 1..6, scored on d2..d5
     # (d6 reported as the discriminating cell, not fitted)
@@ -138,41 +143,60 @@ def main() -> None:
                         rest = M - (6 * n6 + 5 * n5 + 4 * n4 + 3 * n3 + 2 * n2)
                         if rest < 0:
                             continue
-                        census = ((1,) * rest + (2,) * n2 + (3,) * n3
-                                  + (4,) * n4 + (5,) * n5 + (6,) * n6)
-                        chi = sum(((census_phi(census, d) - phi_est[d][0])
-                                   / phi_est[d][1]) ** 2
-                                  for d in (2, 3, 4, 5))
+                        census = (
+                            (1,) * rest
+                            + (2,) * n2
+                            + (3,) * n3
+                            + (4,) * n4
+                            + (5,) * n5
+                            + (6,) * n6
+                        )
+                        chi = sum(
+                            ((census_phi(census, d) - phi_est[d][0]) / phi_est[d][1])
+                            ** 2
+                            for d in (2, 3, 4, 5)
+                        )
                         best.append((chi, census))
     best.sort()
     print("\nbest cycle censuses (fitted on d2-d5; d6 prediction shown):")
-    print(f"{'census':>28} {'chi2(d2-5)':>10} {'phi6 pred':>9} "
-          f"{'phi6 obs':>8} {'d6 pull':>8}")
+    print(
+        f"{'census':>28} {'chi2(d2-5)':>10} {'phi6 pred':>9} "
+        f"{'phi6 obs':>8} {'d6 pull':>8}"
+    )
     for chi, census in best[:5]:
         p6 = census_phi(census, 6)
         pull = (p6 - phi_est[6][0]) / phi_est[6][1]
         cs = "+".join(str(L) for L in census if L > 1) or "id"
         n1 = sum(1 for L in census if L == 1)
-        print(f"{cs + (f' +{n1}fix' if n1 else ''):>28} {chi:>10.2f} "
-              f"{p6:>9.2f} {phi_est[6][0]:>8.2f} {pull:>+8.1f}")
+        print(
+            f"{cs + (f' +{n1}fix' if n1 else ''):>28} {chi:>10.2f} "
+            f"{p6:>9.2f} {phi_est[6][0]:>8.2f} {pull:>+8.1f}"
+        )
 
     # order-5 baseline for comparison
     o5 = (5, 5, 5, 5, 5, 1, 1, 1, 1)
-    chi5 = sum(((census_phi(o5, d) - phi_est[d][0]) / phi_est[d][1]) ** 2
-               for d in (2, 3, 4, 5))
+    chi5 = sum(
+        ((census_phi(o5, d) - phi_est[d][0]) / phi_est[d][1]) ** 2 for d in (2, 3, 4, 5)
+    )
     p6 = census_phi(o5, 6)
-    print(f"{'order-5 (5x5 +4fix)':>28} {chi5:>10.2f} {p6:>9.2f} "
-          f"{phi_est[6][0]:>8.2f} "
-          f"{(p6 - phi_est[6][0]) / phi_est[6][1]:>+8.1f}")
+    print(
+        f"{'order-5 (5x5 +4fix)':>28} {chi5:>10.2f} {p6:>9.2f} "
+        f"{phi_est[6][0]:>8.2f} "
+        f"{(p6 - phi_est[6][0]) / phi_est[6][1]:>+8.1f}"
+    )
 
     # Part 2 — simulate best census vs order-5
-    print("\nPart 2 — simulated within-word staircases (30 runs each, "
-          "random letter assignment, random base per word):")
+    print(
+        "\nPart 2 — simulated within-word staircases (30 runs each, "
+        "random letter assignment, random base per word):"
+    )
     print(f"{'model':>28} " + "".join(f"{f'd{d}':>8}" for d in range(1, MAXD + 1)))
     lp_rates = [obs_m[d] / obs_s[d] for d in range(1, MAXD + 1)]
     print(f"{'LP observed':>28} " + "".join(f"{r:>8.4f}" for r in lp_rates))
-    print(f"{'prose K_d (no cipher)':>28} "
-          + "".join(f"{K[d]:>8.4f}" for d in range(1, MAXD + 1)))
+    print(
+        f"{'prose K_d (no cipher)':>28} "
+        + "".join(f"{K[d]:>8.4f}" for d in range(1, MAXD + 1))
+    )
 
     for name, census in (("best fit", best[0][1]), ("order-5", o5)):
         acc_m = Counter()
@@ -188,7 +212,7 @@ def main() -> None:
             off = rng.randrange(len(prose_stream) - sum(lp_lens))
             pos = off
             for L in lp_lens:
-                w = prose_stream[pos:pos + L]
+                w = prose_stream[pos : pos + L]
                 pos += L
                 base = list(range(M))
                 rng.shuffle(base)
@@ -198,9 +222,10 @@ def main() -> None:
                         acc_s[d] += 1
                         acc_m[d] += ct[j] == ct[j + d]
         cs = "+".join(str(L) for L in census if L > 1)
-        print(f"{name + ' (' + cs + ')':>28} "
-              + "".join(f"{acc_m[d] / acc_s[d]:>8.4f}"
-                        for d in range(1, MAXD + 1)))
+        print(
+            f"{name + ' (' + cs + ')':>28} "
+            + "".join(f"{acc_m[d] / acc_s[d]:>8.4f}" for d in range(1, MAXD + 1))
+        )
 
 
 if __name__ == "__main__":

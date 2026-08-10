@@ -41,16 +41,16 @@ def main() -> None:
     print("=== J. DOUBLET CHANNEL ===")
     dpos = [i for i in range(n - 1) if cipher[i] == cipher[i + 1]]
     dvals = [int(cipher[i]) for i in dpos]
-    print(f"  doubled-rune sequence ({len(dvals)} runes): nIoC={ioc(dvals)*N:.3f}")
+    print(f"  doubled-rune sequence ({len(dvals)} runes): nIoC={ioc(dvals) * N:.3f}")
     dl = np.diff(dpos)
     gaps29 = (dl % N).tolist()
-    print(f"  gaps mod 29 ({len(gaps29)}): nIoC={ioc(gaps29)*N:.3f}")
+    print(f"  gaps mod 29 ({len(gaps29)}): nIoC={ioc(gaps29) * N:.3f}")
     # adjacency of doubled runes
     pairs = list(zip(dvals, dvals[1:]))
     eq = sum(1 for a, b in pairs if a == b)
-    print(f"  consecutive doubled runes equal: {eq} (exp {len(pairs)/N:.1f})")
+    print(f"  consecutive doubled runes equal: {eq} (exp {len(pairs) / N:.1f})")
     dd = [(b - a) % N for a, b in pairs]
-    print(f"  deltas of doubled runes: nIoC={ioc(dd)*N:.3f}")
+    print(f"  deltas of doubled runes: nIoC={ioc(dd) * N:.3f}")
     # best shift match to runeglish unigram frequencies
     # The unigram file is keyed by rune character: "<rune> <count>"
     fvec = np.zeros(N)
@@ -74,12 +74,16 @@ def main() -> None:
 
     obs_fit = best_fit(cnt)
     rng = np.random.default_rng(31)
-    mcf = [best_fit(np.bincount(rng.integers(0, N, len(dvals)), minlength=N).astype(float))
-           for _ in range(300)]
+    mcf = [
+        best_fit(np.bincount(rng.integers(0, N, len(dvals)), minlength=N).astype(float))
+        for _ in range(300)
+    ]
     mcf = np.array(mcf)
-    print(f"  best shift/flip chi2 of doubled runes vs runeglish: obs={obs_fit:.1f} "
-          f"| uniform-random baseline {mcf.mean():.1f}±{mcf.std():.1f} "
-          f"P(<=obs)={(mcf <= obs_fit).mean():.3f}")
+    print(
+        f"  best shift/flip chi2 of doubled runes vs runeglish: obs={obs_fit:.1f} "
+        f"| uniform-random baseline {mcf.mean():.1f}±{mcf.std():.1f} "
+        f"P(<=obs)={(mcf <= obs_fit).mean():.3f}"
+    )
 
     print("\n=== K. WORD-COUNTER PERIODICITY (word-initial runes) ===")
     first = [w[0] for w in cw]
@@ -91,8 +95,10 @@ def main() -> None:
             m = float(np.mean([ioc(col) * N for col in cols if len(col) > 20]))
             best.append((m, k))
         best.sort(reverse=True)
-        print(f"  {name}-rune word-index periods, top3 nIoC: "
-              f"{[(k, round(m, 3)) for m, k in best[:3]]}")
+        print(
+            f"  {name}-rune word-index periods, top3 nIoC: "
+            f"{[(k, round(m, 3)) for m, k in best[:3]]}"
+        )
 
     print("\n=== L. AFFINE-NORMALIZED REPEAT CENSUS ===")
     # canonical form: normalize deltas by first nonzero delta
@@ -114,7 +120,7 @@ def main() -> None:
             d[sig].append(i)
         reps = {k: v for k, v in d.items() if len(v) > 1}
         npairs = sum(len(v) * (len(v) - 1) // 2 for v in reps.values())
-        exp = (n - L) ** 2 / 2 * (N * (N - 1)) / N ** L
+        exp = (n - L) ** 2 / 2 * (N * (N - 1)) / N**L
         print(f"  affine-class repeated {L}-grams: {npairs} pairs (exp~{exp:.2f})")
         if npairs and L >= 9:
             for _k, v in reps.items():
@@ -129,9 +135,9 @@ def main() -> None:
         hits = 0
         for i in range(len(dneg) - L + 1):
             t = tuple(dneg[i : i + L])
-            if d1.get(t, 0) > 0 and tuple(delta[i:i+L]) != t:
+            if d1.get(t, 0) > 0 and tuple(delta[i : i + L]) != t:
                 hits += 1
-        exp = (len(delta) - L + 1) ** 2 / N ** L
+        exp = (len(delta) - L + 1) ** 2 / N**L
         print(f"  delta vs -delta common {L}-grams: {hits} (exp~{exp:.2f})")
         rev = dneg[::-1]
         hits = 0
@@ -146,7 +152,7 @@ def main() -> None:
     # doublet-suppressed null is slightly above 29^-k
     p_dd = 0.00675
     # per-step match prob ratio vs uniform (cf. digraph calc):
-    (p_dd ** 2 / N + (1 - p_dd) ** 2 / (N - 1) ** 0) and None
+    (p_dd**2 / N + (1 - p_dd) ** 2 / (N - 1) ** 0) and None
     for L in (4, 5):
         d = defaultdict(int)
         for i in range(n - L + 1):
@@ -162,14 +168,20 @@ def main() -> None:
             same = rng.random(n) < p_dd
             jump = rng.integers(0, N - 1, n)
             for i in range(1, n):
-                out[i] = out[i - 1] if same[i] else (jump[i] if jump[i] < out[i - 1] else jump[i] + 1)
+                out[i] = (
+                    out[i - 1]
+                    if same[i]
+                    else (jump[i] if jump[i] < out[i - 1] else jump[i] + 1)
+                )
             dd_ = defaultdict(int)
             for i in range(n - L + 1):
                 dd_[tuple(int(x) for x in out[i : i + L])] += 1
             mc.append(sum(v * (v - 1) // 2 for v in dd_.values()))
         mc = np.array(mc)
         z = (npairs - mc.mean()) / mc.std()
-        print(f"  repeated {L}-gram pairs: obs={npairs} null={mc.mean():.1f}±{mc.std():.1f} z={z:+.2f}")
+        print(
+            f"  repeated {L}-gram pairs: obs={npairs} null={mc.mean():.1f}±{mc.std():.1f} z={z:+.2f}"
+        )
 
 
 if __name__ == "__main__":

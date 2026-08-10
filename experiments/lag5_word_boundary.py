@@ -82,9 +82,7 @@ def split_paired(positions: list[int]) -> tuple[set[int], set[int]]:
     """Split match positions into paired (another match at +-1 or +-4) and isolated."""
     pos = set(positions)
     paired = {
-        i
-        for i in pos
-        if any(i + d in pos or i - d in pos for d in PAIR_SEPARATIONS)
+        i for i in pos if any(i + d in pos or i - d in pos for d in PAIR_SEPARATIONS)
     }
     return paired, pos - paired
 
@@ -101,16 +99,22 @@ def main() -> None:
     # ------------------------------------------------------------------
     split = boundary_coincidence(words, LAG)
     print("\n[within-word instrument]  (published: 102/2073 vs 377/10878)")
-    print(f"  within: {split.within_observed}/{split.within_pairs} "
-          f"= {split.within_observed / split.within_pairs:.4f}")
-    print(f"  across: {split.across_observed}/{split.across_pairs} "
-          f"= {split.across_observed / split.across_pairs:.4f}   (1/29 = {1 / 29:.4f})")
+    print(
+        f"  within: {split.within_observed}/{split.within_pairs} "
+        f"= {split.within_observed / split.within_pairs:.4f}"
+    )
+    print(
+        f"  across: {split.across_observed}/{split.across_pairs} "
+        f"= {split.across_observed / split.across_pairs:.4f}   (1/29 = {1 / 29:.4f})"
+    )
 
     joint = joint_coincidence(stream, LAG, PAIR_SEPARATIONS)
     print("\n[paired-match instrument]  (published: d1 29, d4 28, expected ~17.7)")
     for d in PAIR_SEPARATIONS:
-        print(f"  pairs at separation {d}: {joint[d].observed} "
-              f"(chance {joint[d].expected:.1f})")
+        print(
+            f"  pairs at separation {d}: {joint[d].observed} "
+            f"(chance {joint[d].expected:.1f})"
+        )
 
     # ------------------------------------------------------------------
     # 2. The joint decomposition neither analysis ran
@@ -122,16 +126,19 @@ def main() -> None:
         ids.extend([index] * len(w))
     within = {i for i in positions if ids[i] == ids[i + LAG]}
 
-    print(f"\n[joint decomposition]  {len(positions)} matches "
-          f"(expected {(n - LAG) / 29:.1f})")
+    print(
+        f"\n[joint decomposition]  {len(positions)} matches "
+        f"(expected {(n - LAG) / 29:.1f})"
+    )
     header = f"  {'':<10} {'within':>8} {'across':>8} {'total':>8}"
     print(header)
     for label, group in (("paired", paired), ("isolated", isolated)):
         w_count = len(group & within)
-        print(f"  {label:<10} {w_count:>8} {len(group) - w_count:>8} "
-              f"{len(group):>8}")
-    print(f"  {'total':<10} {len(within):>8} "
-          f"{len(positions) - len(within):>8} {len(positions):>8}")
+        print(f"  {label:<10} {w_count:>8} {len(group) - w_count:>8} {len(group):>8}")
+    print(
+        f"  {'total':<10} {len(within):>8} "
+        f"{len(positions) - len(within):>8} {len(positions):>8}"
+    )
     assert len(within) == split.within_observed
 
     # Pair events: both matches of a d1/d4 pair within the same word?
@@ -141,9 +148,11 @@ def main() -> None:
         both = [i for i in events if i in within and i + d in within]
         one = [i for i in events if (i in within) != (i + d in within)]
         neither = [i for i in events if i not in within and i + d not in within]
-        print(f"  separation {d}: {len(events)} events — "
-              f"both within {len(both)}, one within {len(one)}, "
-              f"neither {len(neither)}")
+        print(
+            f"  separation {d}: {len(events)} events — "
+            f"both within {len(both)}, one within {len(one)}, "
+            f"neither {len(neither)}"
+        )
         if d == 1:
             for i in both:
                 print(f"    in-word digraph repeat at {i}: {runes(words[ids[i]])}")
@@ -192,8 +201,10 @@ def main() -> None:
         for k, v in groups.items():
             null[k].append(within_count(v, cuts))
 
-    print(f"\n[boundary permutation, {N_PERMS} perms] "
-          "do boundaries know where the matches are?")
+    print(
+        f"\n[boundary permutation, {N_PERMS} perms] "
+        "do boundaries know where the matches are?"
+    )
     print(f"  {'group':<10} {'obs.within':>10} {'null':>14} {'p(>=obs)':>9}")
     for k in groups:
         mean, sd = fmean(null[k]), pstdev(null[k])
@@ -202,39 +213,45 @@ def main() -> None:
 
     # The published within-word test, via the library, as a cross-check.
     result = boundary_permutation_test(sections, LAG, permutations=N_PERMS, seed=SEED)
-    print(f"  {'all':<10} {result.observed:>10} "
-          f"{result.null_mean:>8.1f} ± {result.null_sd:<4.1f} "
-          f"{result.p_value:>9.4f}   (published: 102, 76.5 ± 7.9, p 0.0014)")
+    print(
+        f"  {'all':<10} {result.observed:>10} "
+        f"{result.null_mean:>8.1f} ± {result.null_sd:<4.1f} "
+        f"{result.p_value:>9.4f}   (published: 102, 76.5 ± 7.9, p 0.0014)"
+    )
 
     # ------------------------------------------------------------------
     # 4. Verdict
     # ------------------------------------------------------------------
     print("\n[verdict]")
-    excess = {
-        k: observed[k] - fmean(null[k])
-        for k in groups
-    }
-    aware = {
-        k: excess[k] > 2 * pstdev(null[k]) > 0
-        for k in groups
-    }
-    print(f"  within-word excess over the boundary null: "
-          f"paired {excess['paired']:+.1f}, isolated {excess['isolated']:+.1f}")
+    excess = {k: observed[k] - fmean(null[k]) for k in groups}
+    aware = {k: excess[k] > 2 * pstdev(null[k]) > 0 for k in groups}
+    print(
+        f"  within-word excess over the boundary null: "
+        f"paired {excess['paired']:+.1f}, isolated {excess['isolated']:+.1f}"
+    )
     if aware["paired"]:
-        print("  -> paired matches are word-boundary-aware; "
-              "'events freely cross word boundaries' is falsified")
+        print(
+            "  -> paired matches are word-boundary-aware; "
+            "'events freely cross word boundaries' is falsified"
+        )
     else:
         print("  -> paired matches show no boundary preference")
     if aware["paired"] and aware["isolated"]:
-        print("  -> isolated matches are boundary-aware too: one word-aware "
-              "lag-5 phenomenon, of which the {1,4} pairing is a facet, "
-              "not two separate effects")
+        print(
+            "  -> isolated matches are boundary-aware too: one word-aware "
+            "lag-5 phenomenon, of which the {1,4} pairing is a facet, "
+            "not two separate effects"
+        )
     elif aware["isolated"]:
-        print("  -> only isolated matches are boundary-aware; the pairing "
-              "and the within-word excess are separate effects")
+        print(
+            "  -> only isolated matches are boundary-aware; the pairing "
+            "and the within-word excess are separate effects"
+        )
     elif aware["paired"]:
-        print("  -> isolated matches are boundary-blind; the within-word "
-              "excess and the pairing are the same phenomenon")
+        print(
+            "  -> isolated matches are boundary-blind; the within-word "
+            "excess and the pairing are the same phenomenon"
+        )
 
 
 if __name__ == "__main__":

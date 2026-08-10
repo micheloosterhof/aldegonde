@@ -47,7 +47,11 @@ def census(arr, bound):
                 i, j = v[a], v[b]
                 # extend to maximal run
                 s = 0
-                while i - s - 1 >= 0 and j - s - 1 >= 0 and arr[i - s - 1] == arr[j - s - 1]:
+                while (
+                    i - s - 1 >= 0
+                    and j - s - 1 >= 0
+                    and arr[i - s - 1] == arr[j - s - 1]
+                ):
                     s += 1
                 e = MINLEN
                 while i + e < n and j + e < n and arr[i + e] == arr[j + e]:
@@ -85,7 +89,7 @@ def main() -> None:
     print(f"observed anchored boundary-consistent repeats (len>={MINLEN}): {obs}")
     for i0, j0, L, pat in examples:
         s1 = "".join(c3301.CICADA_ALPHABET[x] for x in arr[i0 : i0 + L])
-        print(f"  pos {i0} & {j0}, len {L}, dist {j0-i0}: {s1} boundaries {pat}")
+        print(f"  pos {i0} & {j0}, len {L}, dist {j0 - i0}: {s1} boundaries {pat}")
 
     rng = np.random.default_rng(11)
     SAMPLES = 400
@@ -105,8 +109,10 @@ def main() -> None:
         c, _ = census(out, bound)
         mc.append(c)
     mc = np.array(mc)
-    print(f"\nMC null ({SAMPLES} samples): mean={mc.mean():.3f} sd={mc.std():.3f} "
-          f"max={mc.max()}")
+    print(
+        f"\nMC null ({SAMPLES} samples): mean={mc.mean():.3f} sd={mc.std():.3f} "
+        f"max={mc.max()}"
+    )
     print(f"P(>= {obs}) = {(mc >= obs).mean():.5f}")
     print(f"distribution: {np.bincount(mc).tolist()}")
 

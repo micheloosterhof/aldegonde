@@ -51,7 +51,11 @@ from math import sqrt
 import numpy as np
 
 _spec = importlib.util.spec_from_file_location(
-    "mf", "experiments/mechanism_fingerprint.py")
+    "mf", "experiments/mechanism_fingerprint.py"
+)
+assert _spec is not None and _spec.loader is not None, (
+    "cannot load mechanism_fingerprint"
+)
 mf = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(mf)
 
@@ -61,6 +65,7 @@ i2r, r2i = mf.i2r, mf.r2i
 text, wlens = mf.load_corpus()
 n = len(text)
 gen = mf.build_markov()
+
 
 def profile(s: str, lags=(2, 5, 9, 19)) -> dict:
     """1st/2nd/4th-order profile."""
@@ -75,8 +80,9 @@ def profile(s: str, lags=(2, 5, 9, 19)) -> dict:
         x, y = a[:-L], a[L:]
         joint = np.zeros((N, N))
         np.add.at(joint, (x, y), 1)
-        exp = np.outer(np.bincount(x, minlength=N),
-                       np.bincount(y, minlength=N)) / len(x)
+        exp = np.outer(np.bincount(x, minlength=N), np.bincount(y, minlength=N)) / len(
+            x
+        )
         od = ~np.eye(N, dtype=bool) & (exp > 1)
         chi = ((joint - exp) ** 2 / np.where(od, exp, 1))[od].sum()
         df = od.sum() - 1
@@ -92,6 +98,7 @@ def profile(s: str, lags=(2, 5, 9, 19)) -> dict:
             best = (z, L)
     out["4pt-max"] = f"z={best[0]:+.1f}@L={best[1]}"
     return out
+
 
 # ---- mechanisms ----
 def enc_homophonic_cycling(pt: str, wl) -> str:
@@ -124,14 +131,16 @@ def enc_homophonic_cycling(pt: str, wl) -> str:
         ptr[p] += 1
     return "".join(out)
 
+
 def enc_homo_cycle_transpose(pt: str, wl, lag: int = 19) -> str:
     """Transposition with `lag` ROWS: plaintext-adjacent symbols land
     exactly `lag` apart in the ciphertext (the Zodiac-340 geometry)."""
     s = enc_homophonic_cycling(pt, wl)
     cols = len(s) // lag
-    s = s[:cols * lag]
+    s = s[: cols * lag]
     grid = np.array([r2i(c) for c in s]).reshape(lag, cols)
     return "".join(i2r(int(v)) for v in grid.T.flatten())
+
 
 def enc_keystream_rewind(pt: str, wl, dist: int = 9, prob: float = 0.004) -> str:
     """OTP whose generator occasionally rewinds `dist` steps for 2 outputs."""
@@ -149,26 +158,38 @@ def enc_keystream_rewind(pt: str, wl, dist: int = 9, prob: float = 0.004) -> str
         k = random.randrange(N)
         keys.append(k)
         out.append(i2r((r2i(c) + k) % N))
-    return "".join(out[:len(pt)])
+    return "".join(out[: len(pt)])
 
-print(f"{'mechanism':26s} {'dbl%':>5s} {'nIoC':>6s} "
-      f"{'2pt L2':>7s} {'2pt L5':>7s} {'2pt L9':>7s} {'2pt L19':>7s} {'4pt max':>14s}")
+
+print(
+    f"{'mechanism':26s} {'dbl%':>5s} {'nIoC':>6s} "
+    f"{'2pt L2':>7s} {'2pt L5':>7s} {'2pt L9':>7s} {'2pt L19':>7s} {'4pt max':>14s}"
+)
 mechs = [
     ("LP observed", None),
     ("homophonic+cycling", enc_homophonic_cycling),
     ("homo+cycle+transp(w19)", enc_homo_cycle_transpose),
     ("keystream-rewind(d9)", enc_keystream_rewind),
-    ("otp control", lambda pt, wl: "".join(
-        i2r((r2i(c) + random.randrange(N)) % N) for c in pt)),
+    (
+        "otp control",
+        lambda pt, wl: "".join(i2r((r2i(c) + random.randrange(N)) % N) for c in pt),
+    ),
 ]
 for name, fn in mechs:
     if fn is None:
         p = profile(text)
     else:
         ps = [profile(fn(gen(n), wlens)) for _ in range(3)]
-        p = {k: (statistics.mean(v[k] for v in ps)
-                 if not isinstance(ps[0][k], str) else ps[1][k])
-             for k in ps[0]}
-    print(f"{name:26s} {p['dbl%']:5.2f} {p['nIoC']:6.3f} "
-          f"{p['2pt-L2']:7.1f} {p['2pt-L5']:7.1f} {p['2pt-L9']:7.1f} "
-          f"{p['2pt-L19']:7.1f} {p['4pt-max']:>14s}")
+        p = {
+            k: (
+                statistics.mean(v[k] for v in ps)
+                if not isinstance(ps[0][k], str)
+                else ps[1][k]
+            )
+            for k in ps[0]
+        }
+    print(
+        f"{name:26s} {p['dbl%']:5.2f} {p['nIoC']:6.3f} "
+        f"{p['2pt-L2']:7.1f} {p['2pt-L5']:7.1f} {p['2pt-L9']:7.1f} "
+        f"{p['2pt-L19']:7.1f} {p['4pt-max']:>14s}"
+    )

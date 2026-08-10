@@ -42,6 +42,7 @@ M = [text[i] == text[i + 5] for i in range(n - 5)]
 d1ev = [i for i in range(len(M) - 1) if M[i] and M[i + 1]]
 d4ev = [i for i in range(len(M) - 4) if M[i] and M[i + 4]]
 
+
 # {5,6}-expressible differences (0 = same boundary is consistent)
 def expressible(upto: int) -> set[int]:
     ok = {0}
@@ -50,11 +51,14 @@ def expressible(upto: int) -> set[int]:
             ok.add(v)
     return ok
 
+
 OK = expressible(40)
 WINDOW = 19  # only differences <= 19 are informative
 
-def consistency(boundaries_a: list[int], boundaries_b: list[int],
-                *, exclude_same: bool = False) -> tuple[int, int]:
+
+def consistency(
+    boundaries_a: list[int], boundaries_b: list[int], *, exclude_same: bool = False
+) -> tuple[int, int]:
     """Count informative close pairs and how many are {5,6}-consistent."""
     inf = cons = 0
     bs = sorted(set(boundaries_b))
@@ -69,17 +73,20 @@ def consistency(boundaries_a: list[int], boundaries_b: list[int],
                     cons += 1
     return inf, cons
 
+
 # boundary hypotheses
 B_doublet = [i + 1 for i in dpos]
 # d4 event at j: 5-groups [j..j+4],[j+5..j+9] -> boundaries j, j+5, j+10
 B_d4 = [b for j in d4ev for b in (j, j + 5, j + 10)]
 # d1 event at j, two interpretations:
-B_d1_start = [b for j in d1ev for b in (j, j + 5, j + 10)]   # copy at group start
-B_d1_flank = [b for j in d1ev for b in (j + 1, j + 6)]       # boundary-flanking
+B_d1_start = [b for j in d1ev for b in (j, j + 5, j + 10)]  # copy at group start
+B_d1_flank = [b for j in d1ev for b in (j + 1, j + 6)]  # boundary-flanking
 
 print(f"{len(dpos)} doublets, {len(d1ev)} d1, {len(d4ev)} d4 events")
-print(f"non-expressible diffs in 1..19: "
-      f"{sorted(set(range(1,20)) - OK)} (10/19 -> chance ~47%)")
+print(
+    f"non-expressible diffs in 1..19: "
+    f"{sorted(set(range(1, 20)) - OK)} (10/19 -> chance ~47%)"
+)
 
 tests = [
     ("doublet vs doublet", B_doublet, B_doublet, True),  # noqa: FBT003
@@ -119,9 +126,11 @@ for _ in range(2000):
     if i_:
         rates.append(c_ / i_)
 
-print(f"  observed {obs_cons}/{obs_inf} = "
-      f"{obs_cons/obs_inf if obs_inf else float('nan'):.2f}; "
-      f"null rate {st.mean(rates):.2f} +/- {st.stdev(rates):.2f}")
+print(
+    f"  observed {obs_cons}/{obs_inf} = "
+    f"{obs_cons / obs_inf if obs_inf else float('nan'):.2f}; "
+    f"null rate {st.mean(rates):.2f} +/- {st.stdev(rates):.2f}"
+)
 
 # d1+d4 combined grids vs doublets, both d1 conventions
 for nm, b1 in (("start", B_d1_start), ("flank", B_d1_flank)):
@@ -134,10 +143,12 @@ for i in dpos:
     for j in d4ev:
         d = abs((i + 1) - j)
         if d <= WINDOW:
-            print(f"  doublet@{i} d4@{j} delta(anchor)={j-(i+1)} "
-                  f"{'OK' if abs(j-(i+1)) in OK or abs((i+1)-j) in OK else 'X'}")
+            print(
+                f"  doublet@{i} d4@{j} delta(anchor)={j - (i + 1)} "
+                f"{'OK' if abs(j - (i + 1)) in OK or abs((i + 1) - j) in OK else 'X'}"
+            )
 for i in dpos:
     for j in d1ev:
         d = abs((i + 1) - j)
         if d <= WINDOW:
-            print(f"  doublet@{i} d1@{j} delta={j-(i+1)}")
+            print(f"  doublet@{i} d1@{j} delta={j - (i + 1)}")

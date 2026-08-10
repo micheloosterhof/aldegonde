@@ -74,12 +74,7 @@ def null_mean(words: list[list[int]], rune: int, d: int) -> float:
 
 def observed(words: list[list[int]], rune: int, d: int) -> int:
     """Observed within-word d-pairs of `rune`."""
-    return sum(
-        1
-        for w in words
-        for i in range(len(w) - d)
-        if w[i] == w[i + d] == rune
-    )
+    return sum(1 for w in words for i in range(len(w) - d) if w[i] == w[i + d] == rune)
 
 
 def observed_any(words: list[list[int]], d: int) -> tuple[int, float]:
@@ -115,10 +110,14 @@ def main() -> None:
 
     tot_obs, tot_exp = observed_any(words, 5)
     s_obs, s_exp = observed(words, S, 5), null_mean(words, S, 5)
-    print(f"\ntotal within-word d=5 excess: {tot_obs} - {tot_exp:.1f} = "
-          f"{tot_obs - tot_exp:.1f}")
-    print(f"S share of the excess: ({s_obs} - {s_exp:.1f}) / "
-          f"({tot_obs} - {tot_exp:.1f}) = {(s_obs - s_exp) / (tot_obs - tot_exp):.0%}")
+    print(
+        f"\ntotal within-word d=5 excess: {tot_obs} - {tot_exp:.1f} = "
+        f"{tot_obs - tot_exp:.1f}"
+    )
+    print(
+        f"S share of the excess: ({s_obs} - {s_exp:.1f}) / "
+        f"({tot_obs} - {tot_exp:.1f}) = {(s_obs - s_exp) / (tot_obs - tot_exp):.0%}"
+    )
 
     # within vs cross-word at d=5
     stream = [x for w in words for x in w]
@@ -126,13 +125,21 @@ def main() -> None:
     for wi, w in enumerate(words):
         wid += [wi] * len(w)
     fS = Counter(stream)[S] / len(stream)
-    win = sum(1 for i in range(len(stream) - 5)
-              if wid[i] == wid[i + 5] and stream[i] == stream[i + 5] == S)
-    cro = sum(1 for i in range(len(stream) - 5)
-              if wid[i] != wid[i + 5] and stream[i] == stream[i + 5] == S)
+    win = sum(
+        1
+        for i in range(len(stream) - 5)
+        if wid[i] == wid[i + 5] and stream[i] == stream[i + 5] == S
+    )
+    cro = sum(
+        1
+        for i in range(len(stream) - 5)
+        if wid[i] != wid[i + 5] and stream[i] == stream[i + 5] == S
+    )
     cp = sum(1 for i in range(len(stream) - 5) if wid[i] != wid[i + 5])
-    print(f"\nd=5 S echo: within-word {win} (null {s_exp:.1f}) | "
-          f"cross-word {cro} (chance {cp * fS * fS:.1f})")
+    print(
+        f"\nd=5 S echo: within-word {win} (null {s_exp:.1f}) | "
+        f"cross-word {cro} (chance {cp * fS * fS:.1f})"
+    )
 
     print("\nthe S-echo words:")
     for w in words:

@@ -43,27 +43,27 @@ TICK_HEIGHT, TICK_WIDTH = (36, 44), (8, 16)
 DOT_MAX = 16
 DOT_LINK = 45
 LINE_GAP = 60
-MARGIN = 120          # how far past the end runes a mark may sit
-WIDE = 1.5            # only blobs this much wider than the median can split
-VALLEY = 0.22         # a cut needs the column ink to fall to this fraction of mean
-RED_MIN = 110         # red channel floor for a red glyph
-RED_EDGE = 55         # how far red must lead the other channels
-RED_SHARE = 0.5       # fraction of a blob's ink that must be red to call it red
-BODY_HEIGHT = (100, 130)   # the body hand, which defines the text block
-BOX_PAD_X = 95        # a trailing mark sits ~50px past the last rune
+MARGIN = 120  # how far past the end runes a mark may sit
+WIDE = 1.5  # only blobs this much wider than the median can split
+VALLEY = 0.22  # a cut needs the column ink to fall to this fraction of mean
+RED_MIN = 110  # red channel floor for a red glyph
+RED_EDGE = 55  # how far red must lead the other channels
+RED_SHARE = 0.5  # fraction of a blob's ink that must be red to call it red
+BODY_HEIGHT = (100, 130)  # the body hand, which defines the text block
+BOX_PAD_X = 95  # a trailing mark sits ~50px past the last rune
 BOX_PAD_Y = 150
-ROW_TOL = 60          # body blobs within this y of each other are one line
-MIN_ROW = 3           # a text line has at least three runes, a decoration one or two
+ROW_TOL = 60  # body blobs within this y of each other are one line
+MIN_ROW = 3  # a text line has at least three runes, a decoration one or two
 
 
 @dataclass
 class Glyph:
-    kind: str          # "R" rune, "M" dot cluster, "t" tick
+    kind: str  # "R" rune, "M" dot cluster, "t" tick
     y: int
     x: int
     dots: int = 0
     red: bool = False
-    tall: bool = False   # a drop cap, which spans more than one line height
+    tall: bool = False  # a drop cap, which spans more than one line height
 
 
 def _blobs(page: int) -> tuple[list, list, np.ndarray]:
@@ -80,7 +80,10 @@ def _blobs(page: int) -> tuple[list, list, np.ndarray]:
         if RUNE_HEIGHT[0] <= h <= RUNE_HEIGHT[1] and w <= RUNE_MAX_WIDTH:
             is_red = red[ys, xs].sum() / max(ink[ys, xs].sum(), 1) > RED_SHARE
             tall.append((ys.start, xs.start, h, w, is_red))
-        elif TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1] and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]:
+        elif (
+            TICK_HEIGHT[0] <= h <= TICK_HEIGHT[1]
+            and TICK_WIDTH[0] <= w <= TICK_WIDTH[1]
+        ):
             tall.append((ys.start, xs.start, h, w, False, "t"))
         elif h <= DOT_MAX and w <= DOT_MAX:
             dots.append((ys.start + h // 2, xs.start + w // 2))
@@ -99,14 +102,14 @@ def _split_wide(box: tuple, ink: np.ndarray, unit: float) -> list[int]:
     y, x, h, w = box[:4]
     if w < unit * WIDE:
         return [x]
-    profile = ink[y:y + h, x:x + w].sum(axis=0).astype(float)
+    profile = ink[y : y + h, x : x + w].sum(axis=0).astype(float)
     floor = VALLEY * profile[profile > 0].mean() if (profile > 0).any() else 0
     edge = int(unit * 0.45)
     cuts = [c for c in range(edge, w - edge) if profile[c] <= floor]
     if not cuts:
         return [x]
     # keep one cut per valley
-    keep, last = [], -10**9
+    keep, last = [], -(10**9)
     for c in cuts:
         if c - last > edge:
             keep.append(c)
@@ -152,8 +155,12 @@ def text_box(tall: list) -> tuple[int, int, int, int] | None:
         return None
     xs = [t[1] for t in text]
     ys = [t[0] for t in text]
-    return (min(xs) - BOX_PAD_X, max(xs) + BOX_PAD_X,
-            min(ys) - BOX_PAD_Y, max(ys) + BOX_PAD_Y)
+    return (
+        min(xs) - BOX_PAD_X,
+        max(xs) + BOX_PAD_X,
+        min(ys) - BOX_PAD_Y,
+        max(ys) + BOX_PAD_Y,
+    )
 
 
 def read_page(page: int) -> list[list[Glyph]]:
@@ -193,8 +200,9 @@ def read_page(page: int) -> list[list[Glyph]]:
     groups = defaultdict(list)
     for i, p in enumerate(dots):
         groups[find(i)].append(p)
-    clusters = [(min(p[0] for p in g), min(p[1] for p in g), len(g))
-                for g in groups.values()]
+    clusters = [
+        (min(p[0] for p in g), min(p[1] for p in g), len(g)) for g in groups.values()
+    ]
     ticks = [t for t in tall if len(t) == 6]
 
     out = []
@@ -206,7 +214,7 @@ def read_page(page: int) -> list[list[Glyph]]:
         glyphs: list[Glyph] = []
         for b in band:
             tall_cap = b[2] > 180
-            for gx in ([b[1]] if tall_cap else _split_wide(b, ink, unit)):
+            for gx in [b[1]] if tall_cap else _split_wide(b, ink, unit):
                 glyphs.append(Glyph("R", b[0], gx, 0, b[4], tall_cap))
         lo_y = min(b[0] for b in band) - 30
         hi_y = max(b[0] for b in band) + 140
@@ -239,8 +247,11 @@ def with_ticks(line: list[Glyph], pair_within: int = 40) -> list[Glyph]:
             out.append(g)
             i += 1
             continue
-        twin = (i + 1 < len(ordered) and ordered[i + 1].kind == "t"
-                and ordered[i + 1].x - g.x <= pair_within)
+        twin = (
+            i + 1 < len(ordered)
+            and ordered[i + 1].kind == "t"
+            and ordered[i + 1].x - g.x <= pair_within
+        )
         out.append(Glyph('"' if twin else "'", g.y, g.x))
         i += 2 if twin else 1
     return out

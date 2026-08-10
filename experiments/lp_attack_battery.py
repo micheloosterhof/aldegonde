@@ -156,9 +156,7 @@ def page_attack_battery(
         for sg, sgnm in [(-1, "minus"), (1, "plus")]:
             consider(
                 f"{nm}{sgnm}-totient",
-                "".join(
-                    c3301.i2r((c + sg * k) % MOD) for c, k in zip(base, keystream)
-                ),
+                "".join(c3301.i2r((c + sg * k) % MOD) for c, k in zip(base, keystream)),
             )
 
     # totient keystream with ᚠ interrupts (the "AN END" scheme)
@@ -229,12 +227,18 @@ def main() -> None:
     threshold = random_ref + 0.55 * (plain_ref - random_ref)
 
     print(f"pages: {len(pages)}, unsolved runes: {len(unsolved)}")
-    print(f"plaintext reference (parable): fitness={plain_ref:.3f} "
-          f"nIoC={nioc(parable):.3f} doublets={doublet_rate(parable):.4f}")
-    print(f"random reference: fitness={random_ref:.3f} nIoC={nioc(rnd):.3f} "
-          f"doublets={doublet_rate(rnd):.4f}")
-    print(f"unsolved corpus: nIoC={nioc(unsolved):.3f} "
-          f"doublets={doublet_rate(unsolved):.4f}")
+    print(
+        f"plaintext reference (parable): fitness={plain_ref:.3f} "
+        f"nIoC={nioc(parable):.3f} doublets={doublet_rate(parable):.4f}"
+    )
+    print(
+        f"random reference: fitness={random_ref:.3f} nIoC={nioc(rnd):.3f} "
+        f"doublets={doublet_rate(rnd):.4f}"
+    )
+    print(
+        f"unsolved corpus: nIoC={nioc(unsolved):.3f} "
+        f"doublets={doublet_rate(unsolved):.4f}"
+    )
     print(f"hit threshold: fitness > {threshold:.3f}\n")
 
     print("columnar nIoC by period (top 5):")
@@ -253,8 +257,10 @@ def main() -> None:
         best = page_attack_battery(page, keystream)[0]
         score, name, text = best
         hit = score > threshold
-        print(f"page {pi:2d} len={len(page):3d} best={name} fitness={score:.3f}"
-              + ("  <<< HIT" if hit else ""))
+        print(
+            f"page {pi:2d} len={len(page):3d} best={name} fitness={score:.3f}"
+            + ("  <<< HIT" if hit else "")
+        )
         if hit:
             print(f"   {to_english(text)}")
 

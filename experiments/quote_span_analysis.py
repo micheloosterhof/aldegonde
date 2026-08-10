@@ -62,11 +62,13 @@ def scan() -> tuple[list[dict], int, int]:
         if char != '"':
             continue
         # the separator this mark attaches to, looking outward
-        before = next((c for c in reversed(text[:i]) if c in SEPARATORS or RUNE.match(c)), "")
-        after = next((c for c in text[i + 1:] if c in SEPARATORS or RUNE.match(c)), "")
+        before = next(
+            (c for c in reversed(text[:i]) if c in SEPARATORS or RUNE.match(c)), ""
+        )
+        after = next((c for c in text[i + 1 :] if c in SEPARATORS or RUNE.match(c)), "")
         opening = before in SEPARATORS
         # a line wrap '/' immediately after the mark means it sits at a line end
-        trailing = text[i + 1:i + 3]
+        trailing = text[i + 1 : i + 3]
         quotes.append(
             {
                 "at": i,
@@ -88,11 +90,13 @@ def main() -> None:
 
     text = clean_text()
     print("the seven spans")
-    print(f"{'#':>2} {'words':>6} {'runes':>6} {'. inside':>9}  {'opens on':>9} {'closes on':>10}")
+    print(
+        f"{'#':>2} {'words':>6} {'runes':>6} {'. inside':>9}  {'opens on':>9} {'closes on':>10}"
+    )
     spans = list(zip(quotes[::2], quotes[1::2]))
     lengths = []
     for n, (a, b) in enumerate(spans, 1):
-        inner = text[a["at"] + 1:b["at"]]
+        inner = text[a["at"] + 1 : b["at"]]
         # words are maximal runs of runes; line wraps and page breaks are not
         # boundaries, but they are also never inside a run, so splitting on
         # every non-rune would over-count words that wrap. Merge those first.
@@ -105,20 +109,24 @@ def main() -> None:
             f"  {a['sep']:>9} {b['sep']:>10}"
         )
     print(f"\nspan lengths in words: {sorted(lengths)}")
-    print(f"   median {sorted(lengths)[len(lengths) // 2]}, range {min(lengths)}-{max(lengths)}")
+    print(
+        f"   median {sorted(lengths)[len(lengths) // 2]}, range {min(lengths)}-{max(lengths)}"
+    )
 
     # A span that wraps one '.'-delimited unit should not straddle a '.'.
     inside = sum(
-        sum(1 for ch in text[a["at"] + 1:b["at"]] if ch in c3301.CLUSTER_MARKS)
+        sum(1 for ch in text[a["at"] + 1 : b["at"]] if ch in c3301.CLUSTER_MARKS)
         for a, b in spans
     )
-    internal = sum(lengths) - len(spans)          # boundaries strictly inside spans
+    internal = sum(lengths) - len(spans)  # boundaries strictly inside spans
     exp_inside = internal * base
     p_inside = sum(
         comb(internal, k) * base**k * (1 - base) ** (internal - k)
         for k in range(inside + 1)
     )
-    print(f"\n'.' marks strictly inside spans: {inside} across {internal} internal boundaries")
+    print(
+        f"\n'.' marks strictly inside spans: {inside} across {internal} internal boundaries"
+    )
     print(f"   expected {exp_inside:.1f};  P(<= {inside}) = {p_inside:.3f}")
 
     hits = sum(1 for q in quotes if q["sep"] in c3301.CLUSTER_MARKS)
@@ -140,8 +148,10 @@ def main() -> None:
             for k in range(hits, len(quotes) + 1)
         )
         lo, hi = (lo, mid) if tail > 0.05 else (mid, hi)
-    print(f"   robustness: '.' would have to be {lo:.0%} of boundaries at "
-          f"quote-eligible positions ({lo / base:.1f}x the corpus rate) before")
+    print(
+        f"   robustness: '.' would have to be {lo:.0%} of boundaries at "
+        f"quote-eligible positions ({lo / base:.1f}x the corpus rate) before"
+    )
     print(f"   {hits} of {len(quotes)} stopped being surprising at p=0.05.")
     print("   The strongest layout coupling on record is '.' at line ends, 3.7x.")
 
@@ -175,6 +185,7 @@ def main() -> None:
                 length = 0
         elif char in "'\"":
             continue
+
     def mean(v: list[int]) -> float:
         return sum(v) / len(v) if v else float("nan")
 

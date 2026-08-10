@@ -105,8 +105,9 @@ def main() -> None:
                 joint[l1[c], l2[c]] += 1
     exp = vopp / N
     sd = math.sqrt(vopp * (1 / N) * (1 - 1 / N))
-    print(f"  vertical doublets: obs={vhits} exp={exp:.1f} z={(vhits-exp)/sd:+.2f}")
+    print(f"  vertical doublets: obs={vhits} exp={exp:.1f} z={(vhits - exp) / sd:+.2f}")
     from scipy.stats import chi2_contingency
+
     stat, p, dof, _ = chi2_contingency(joint + 1e-9)
     print(f"  vertical contingency: chi2={stat:.1f} dof={dof} p={p:.4f}")
 
@@ -121,8 +122,10 @@ def main() -> None:
         hits = sum(v * (v - 1) // 2 for v in c.values())
         exp = pairs / N
         sd = math.sqrt(pairs * (1 / N))
-        print(f"  col {col}: n={m} coincident-pairs={hits} exp={exp:.0f} "
-              f"z={(hits-exp)/sd:+.2f}")
+        print(
+            f"  col {col}: n={m} coincident-pairs={hits} exp={exp:.0f} "
+            f"z={(hits - exp) / sd:+.2f}"
+        )
 
     print("\n=== 5. CONTROL: SOLVED SECTIONS LINE-INITIAL BIAS ===")
     # The solved pages are the FIRST 2797 runes of the master transcription;
@@ -153,12 +156,15 @@ def main() -> None:
     m = sum(li.values())
     counts = np.array([li[i] for i in range(N)])
     stat = ((counts - m / N) ** 2 / (m / N)).sum()
-    print(f"  solved-section lines: {m}, line-initial chi2={stat:.1f} "
-          f"p={chi2_dist.sf(stat, N-1):.5f}")
+    print(
+        f"  solved-section lines: {m}, line-initial chi2={stat:.1f} "
+        f"p={chi2_dist.sf(stat, N - 1):.5f}"
+    )
     print(f"  counts: {counts.tolist()}")
 
     print("\n=== 6. ISOMORPHS ===")
     from aldegonde.stats.isomorph import print_isomorph_statistics
+
     print_isomorph_statistics(list(cipher))
 
     print("\n=== 7. COMPRESSIBILITY ===")
@@ -169,8 +175,10 @@ def main() -> None:
     for _ in range(20):
         r = bytes(rng.integers(0, N, n).astype(np.uint8).tolist())
         rand_sizes.append(len(zlib.compress(r, 9)))
-    print(f"  cipher zlib: {comp}, random mean: {np.mean(rand_sizes):.0f} "
-          f"sd {np.std(rand_sizes):.1f} z={(comp-np.mean(rand_sizes))/np.std(rand_sizes):+.2f}")
+    print(
+        f"  cipher zlib: {comp}, random mean: {np.mean(rand_sizes):.0f} "
+        f"sd {np.std(rand_sizes):.1f} z={(comp - np.mean(rand_sizes)) / np.std(rand_sizes):+.2f}"
+    )
 
 
 if __name__ == "__main__":

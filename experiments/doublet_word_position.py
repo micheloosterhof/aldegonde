@@ -27,7 +27,9 @@ DATA = "data/page0-58.txt"
 UNIGRAMS = "src/aldegonde/data/ngrams/runeglish/unigrams.txt"
 
 RUNES = set(c3301.CICADA_ALPHABET)
-WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS)  # delimiters that end a word
+WORD_BOUNDARIES = set(
+    c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS
+)  # delimiters that end a word
 
 # Runeglish names of the runes that name a digraph, for the identity-rune filter.
 RUNE_NAME = {"ᚠ": "F", "ᛝ": "NG", "ᛡ": "IA/IO", "ᛠ": "EA"}
@@ -70,7 +72,9 @@ def parse_words(text: str) -> list[tuple[str, str]]:
     return words
 
 
-def build_stream(words: list[tuple[str, str]]) -> tuple[str, list[int], list[int], list[int]]:
+def build_stream(
+    words: list[tuple[str, str]],
+) -> tuple[str, list[int], list[int], list[int]]:
     """Concatenate words into the rune stream with parallel metadata arrays.
 
     Returns (stream, word_id, pos1, wlen) where for stream[i]:
@@ -117,12 +121,22 @@ def main() -> None:
     print("=" * 72)
     print(f"Source: {DATA}")
     print(f"Rune words: {len(rune_words)}   Runes in stream: {n}")
-    print(f"Word length: min {min(wlens)}  max {max(wlens)}  mean {sum(wlens)/len(wlens):.2f}")
+    print(
+        f"Word length: min {min(wlens)}  max {max(wlens)}  mean {sum(wlens) / len(wlens):.2f}"
+    )
     longest = max(rune_words, key=len)
-    print(f"Longest word ({len(longest)} runes): {longest}"
-          + ("   <-- check: possible merge across a number page" if len(longest) > 20 else ""))
+    print(
+        f"Longest word ({len(longest)} runes): {longest}"
+        + (
+            "   <-- check: possible merge across a number page"
+            if len(longest) > 20
+            else ""
+        )
+    )
     doublets = [i for i in range(n - 1) if stream[i] == stream[i + 1]]
-    print(f"Doublets (C[i]==C[i+1]): {len(doublets)}   rate {len(doublets)/n*100:.3f}%")
+    print(
+        f"Doublets (C[i]==C[i+1]): {len(doublets)}   rate {len(doublets) / n * 100:.3f}%"
+    )
     print("=" * 72)
 
     # --- within-word vs cross-word ---
@@ -132,13 +146,19 @@ def main() -> None:
     # vs cross-word? If the doublet suppression is uniform, doublets should split
     # in the same proportion (this is the correct null, not boundaries * 1/29).
     within_opp = sum(len(w) - 1 for w in rune_words)  # adjacent pairs inside words
-    cross_opp = (n - 1) - within_opp                  # adjacent pairs across words
+    cross_opp = (n - 1) - within_opp  # adjacent pairs across words
     exp_within = len(doublets) * within_opp / (n - 1)
     exp_cross = len(doublets) * cross_opp / (n - 1)
-    print(f"\nWITHIN-WORD doublets: {len(within):>3}   (opportunity-expected {exp_within:.1f})")
-    print(f"CROSS-WORD doublets:  {len(cross):>3}   (opportunity-expected {exp_cross:.1f})")
-    print(f"  adjacency opportunities: within {within_opp}, cross {cross_opp} "
-          f"({cross_opp/(n-1)*100:.1f}% of pairs are cross-word)")
+    print(
+        f"\nWITHIN-WORD doublets: {len(within):>3}   (opportunity-expected {exp_within:.1f})"
+    )
+    print(
+        f"CROSS-WORD doublets:  {len(cross):>3}   (opportunity-expected {exp_cross:.1f})"
+    )
+    print(
+        f"  adjacency opportunities: within {within_opp}, cross {cross_opp} "
+        f"({cross_opp / (n - 1) * 100:.1f}% of pairs are cross-word)"
+    )
 
     # Cross-word doublets broken down by the boundary delimiter crossed.
     print("\nCross-word doublets by boundary between the two words:")
@@ -147,9 +167,13 @@ def main() -> None:
         b = words[word_id[i + 1]][1] or "(none/adjacent)"
         cross_by_boundary[b] += 1
     for b, c in sorted(cross_by_boundary.items(), key=lambda x: -x[1]):
-        kind = ("word mark" if b in c3301.WORD_MARKS
-                else "cluster mark" if b in c3301.CLUSTER_MARKS
-                else f"other {b!r}")
+        kind = (
+            "word mark"
+            if b in c3301.WORD_MARKS
+            else "cluster mark"
+            if b in c3301.CLUSTER_MARKS
+            else f"other {b!r}"
+        )
         print(f"  {b!r:>16}  x{c}   [{kind}]")
 
     # --- start / middle / end for within-word doublets ---
@@ -206,7 +230,7 @@ def main() -> None:
         cells = []
         for p in range(1, maxp + 1):
             if p <= L - 1 and opp[(L, p)]:
-                cells.append(f"{obs[(L, p)]/opp[(L, p)]*1000:>5.0f}")
+                cells.append(f"{obs[(L, p)] / opp[(L, p)] * 1000:>5.0f}")
             else:
                 cells.append(f"{'.':>5}")
         # only print rows that have any opportunities
@@ -229,17 +253,26 @@ def main() -> None:
     print("\n" + "-" * 72)
     print("WORD-POSITION of each rune of the doublet (all 89):")
     print(f"{'':>10}{'start':>8}{'middle':>8}{'end':>8}{'lone':>8}")
-    for which, idxs in (("1st rune", list(doublets)),
-                        ("2nd rune", [i + 1 for i in doublets])):
+    for which, idxs in (
+        ("1st rune", list(doublets)),
+        ("2nd rune", [i + 1 for i in doublets]),
+    ):
         c = Counter(position_label(i) for i in idxs)
-        print(f"{which:>10}" + "".join(f"{c[k]:>8}" for k in ("start", "middle", "end", "lone")))
-    print("  (cross-word doublets force 1st rune=end of word A, 2nd rune=start of word B)")
+        print(
+            f"{which:>10}"
+            + "".join(f"{c[k]:>8}" for k in ("start", "middle", "end", "lone"))
+        )
+    print(
+        "  (cross-word doublets force 1st rune=end of word A, 2nd rune=start of word B)"
+    )
 
     # --- identity-rune filter: frequency must match the doublet rate ---
     print("\n" + "-" * 72)
     print("IDENTITY-RUNE FREQUENCY FILTER")
     rate = len(doublets) / n
-    print(f"Doublet rate = {rate*100:.3f}%. If each doublet marks one fixed plaintext")
+    print(
+        f"Doublet rate = {rate * 100:.3f}%. If each doublet marks one fixed plaintext"
+    )
     print("rune, that rune's runeglish frequency must match this rate.")
     freq = runeglish_frequencies()
     band = sorted(
@@ -249,25 +282,35 @@ def main() -> None:
     print(f"{'rune':>4} {'name':>6} {'freq%':>7}  note")
     for r in band:
         word_initial = "can start words" if r == "ᛠ" else "rarely/never word-initial"
-        print(f"{r:>4} {RUNE_NAME.get(r, '?'):>6} {freq[r]*100:7.3f}  {word_initial}")
+        print(f"{r:>4} {RUNE_NAME.get(r, '?'):>6} {freq[r] * 100:7.3f}  {word_initial}")
     f_ea, f_f = freq["ᛠ"] * 100, freq["ᚠ"] * 100
-    print(f"\nF (ᚠ) = {f_f:.3f}% -> predicts {f_f:.2f}% doublets, REFUTED (observed {rate*100:.2f}%).")
+    print(
+        f"\nF (ᚠ) = {f_f:.3f}% -> predicts {f_f:.2f}% doublets, REFUTED (observed {rate * 100:.2f}%)."
+    )
     print(f"EA (ᛠ) = {f_ea:.3f}% -> predicts {f_ea:.2f}% doublets, MATCHES.")
     # word-initial filter: the marker rune demonstrably appears word-initial
     init_2nd = sum(1 for i in doublets if pos1[i + 1] == 1)
     init_1st = sum(1 for i in doublets if pos1[i] == 1)
-    print(f"\nWord-initial filter: the marker appears word-initial "
-          f"{init_2nd}x (as 2nd rune) / {init_1st}x (as 1st rune).")
-    print("  NG never starts an English word; IO only in rare 'ion/iota' -> both REFUTED.")
+    print(
+        f"\nWord-initial filter: the marker appears word-initial "
+        f"{init_2nd}x (as 2nd rune) / {init_1st}x (as 1st rune)."
+    )
+    print(
+        "  NG never starts an English word; IO only in rare 'ion/iota' -> both REFUTED."
+    )
     print("  EA starts each/ear/earth/east -> SURVIVES. Unique on both filters.")
 
     # --- cross-word: lengths of the two words involved ---
     print("\n" + "-" * 72)
     print("CROSS-WORD doublets: by definition END-of-word A meets START-of-word B.")
-    print(f"  word A (ends in 1st rune) length distribution: "
-          f"{dict(sorted(Counter(wlen[i] for i in cross).items()))}")
-    print(f"  word B (starts 2nd rune) length distribution: "
-          f"{dict(sorted(Counter(wlen[i + 1] for i in cross).items()))}")
+    print(
+        f"  word A (ends in 1st rune) length distribution: "
+        f"{dict(sorted(Counter(wlen[i] for i in cross).items()))}"
+    )
+    print(
+        f"  word B (starts 2nd rune) length distribution: "
+        f"{dict(sorted(Counter(wlen[i + 1] for i in cross).items()))}"
+    )
 
 
 if __name__ == "__main__":

@@ -43,20 +43,31 @@ def main() -> None:
         c = np.bincount(vals, minlength=N)
         m = len(vals)
         stat = ((c - m / N) ** 2 / (m / N)).sum()
-        print(f"  {name}: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.3f} "
-              f"max count {int(c.max())} (exp {m / N:.1f})")
+        print(
+            f"  {name}: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.3f} "
+            f"max count {int(c.max())} (exp {m / N:.1f})"
+        )
 
     print("\ncontext PAIR collisions (explode under small pair-trigger sets):")
-    for offs, name in (((-2, -1), "(C[i-2],C[i-1])"), ((-1, 0), "(C[i-1],doubled)"),
-                       ((2, 3), "(C[i+2],C[i+3])"), ((0, 2), "(doubled,C[i+2])")):
-        pairs = [(int(C[i + offs[0]]), int(C[i + offs[1]]))
-                 for i in dpos if 0 <= i + offs[0] < n and 0 <= i + offs[1] < n]
+    for offs, name in (
+        ((-2, -1), "(C[i-2],C[i-1])"),
+        ((-1, 0), "(C[i-1],doubled)"),
+        ((2, 3), "(C[i+2],C[i+3])"),
+        ((0, 2), "(doubled,C[i+2])"),
+    ):
+        pairs = [
+            (int(C[i + offs[0]]), int(C[i + offs[1]]))
+            for i in dpos
+            if 0 <= i + offs[0] < n and 0 <= i + offs[1] < n
+        ]
         cnt = Counter(pairs)
         coll = sum(v * (v - 1) // 2 for v in cnt.values())
         m = len(pairs)
         exp = m * (m - 1) / 2 / (N * N)
-        print(f"  {name}: collisions={coll} exp={exp:.1f} "
-              f"P(>=obs)={poisson.sf(coll - 1, exp):.3f}")
+        print(
+            f"  {name}: collisions={coll} exp={exp:.1f} "
+            f"P(>=obs)={poisson.sf(coll - 1, exp):.3f}"
+        )
 
 
 if __name__ == "__main__":

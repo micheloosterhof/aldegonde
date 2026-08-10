@@ -48,6 +48,7 @@ def main() -> None:
     print(f"cipher: {n} runes, {nw} words")
 
     print("\n=== A. WORD-LENGTH-SEQUENCE REPEATED RUNS ===")
+
     # longest repeated k-gram in the word-length sequence vs MC with
     # shuffled word lengths (preserves length distribution, kills order)
     def longest_rep(seq):
@@ -81,11 +82,15 @@ def main() -> None:
     obs8 = count_reps(list(lens), 8)
     mc_longest = np.array(mc_longest)
     mc_counts8 = np.array(mc_counts8)
-    print(f"  longest repeated word-length run: obs={obs_longest} "
-          f"mc mean={mc_longest.mean():.1f} max={mc_longest.max()} "
-          f"P(>=obs)={(mc_longest >= obs_longest).mean():.3f}")
-    print(f"  repeated 8-grams: obs={obs8} mc mean={mc_counts8.mean():.1f} "
-          f"sd={mc_counts8.std():.1f} z={(obs8 - mc_counts8.mean()) / mc_counts8.std():+.2f}")
+    print(
+        f"  longest repeated word-length run: obs={obs_longest} "
+        f"mc mean={mc_longest.mean():.1f} max={mc_longest.max()} "
+        f"P(>=obs)={(mc_longest >= obs_longest).mean():.3f}"
+    )
+    print(
+        f"  repeated 8-grams: obs={obs8} mc mean={mc_counts8.mean():.1f} "
+        f"sd={mc_counts8.std():.1f} z={(obs8 - mc_counts8.mean()) / mc_counts8.std():+.2f}"
+    )
     # show the longest run(s)
     k = obs_longest
     d = defaultdict(list)
@@ -121,9 +126,13 @@ def main() -> None:
     hits = tot[: n + m - 1]
     overlap = np.array([min(i + 1, m, n, n + m - 1 - i) for i in range(n + m - 1)])
     mask = overlap >= 200
-    z = (hits[mask] - overlap[mask] / N) / np.sqrt(overlap[mask] * (1 / N) * (1 - 1 / N))
-    print(f"  alignments tested: {mask.sum()}, max z={z.max():+.2f} min z={z.min():+.2f} "
-          f"(expected max ~{math.sqrt(2 * math.log(mask.sum())):.1f})")
+    z = (hits[mask] - overlap[mask] / N) / np.sqrt(
+        overlap[mask] * (1 / N) * (1 - 1 / N)
+    )
+    print(
+        f"  alignments tested: {mask.sum()}, max z={z.max():+.2f} min z={z.min():+.2f} "
+        f"(expected max ~{math.sqrt(2 * math.log(mask.sum())):.1f})"
+    )
 
     print("\n=== C. BIGRAM ANTISYMMETRY ===")
     J = np.zeros((N, N))
@@ -165,6 +174,7 @@ def main() -> None:
     print(f"  rune x pos-in-page (25-rune bands): chi2={stat:.1f} dof={dof} p={p:.4f}")
 
     print("\n=== E. WITHIN-WORD DELTA CONCENTRATION ===")
+
     # If each word had a coherent progressive shift, within-word deltas
     # would cluster per word. Statistic: mean resultant length of deltas
     # per word (circular), averaged over words of len>=4.
@@ -176,6 +186,7 @@ def main() -> None:
                 ang = 2 * np.pi * dl / N
                 rs.append(abs(np.exp(1j * ang).mean()))
         return float(np.mean(rs))
+
     obs_r = mean_resultant(cw)
     rng = np.random.default_rng(5)
     mc = []
@@ -183,8 +194,10 @@ def main() -> None:
         sim = [rng.integers(0, N, len(w)) for w in cw]
         mc.append(mean_resultant(sim))
     mc = np.array(mc)
-    print(f"  mean resultant length: obs={obs_r:.4f} mc={mc.mean():.4f}±{mc.std():.4f} "
-          f"z={(obs_r - mc.mean()) / mc.std():+.2f}")
+    print(
+        f"  mean resultant length: obs={obs_r:.4f} mc={mc.mean():.4f}±{mc.std():.4f} "
+        f"z={(obs_r - mc.mean()) / mc.std():+.2f}"
+    )
 
     print("\n=== F. STATIONARITY ===")
     secs = [s_ for s_ in sections[:-1] if len(s_) >= 300]
@@ -193,16 +206,20 @@ def main() -> None:
         for r in s_:
             tab[i, r] += 1
     stat, p, dof, _ = chi2_contingency(tab)
-    print(f"  rune x section ({len(secs)} sections >=300): chi2={stat:.1f} dof={dof} p={p:.4f}")
+    print(
+        f"  rune x section ({len(secs)} sections >=300): chi2={stat:.1f} dof={dof} p={p:.4f}"
+    )
     worst = []
     for r in range(N):
         posr = np.where(cipher == r)[0] / n
         stat_ks = kstest(posr, "uniform")
         worst.append((stat_ks.pvalue, r))
     worst.sort()
-    print(f"  per-rune positional KS, 3 lowest p: "
-          f"{[(c3301.CICADA_ALPHABET[r], round(p_, 4)) for p_, r in worst[:3]]} "
-          f"(29 tests, Bonferroni 0.0017)")
+    print(
+        f"  per-rune positional KS, 3 lowest p: "
+        f"{[(c3301.CICADA_ALPHABET[r], round(p_, 4)) for p_, r in worst[:3]]} "
+        f"(29 tests, Bonferroni 0.0017)"
+    )
 
     print("\n=== G. SHORTEST ALL-29 WINDOW ===")
     best = (10**9, -1)
@@ -241,8 +258,10 @@ def main() -> None:
                 left += 1
         mcb.append(bb)
     mcb = np.array(mcb)
-    print(f"  shortest window with all 29 runes: obs={best[0]} at {best[1]} | "
-          f"mc mean={mcb.mean():.1f} min={mcb.min()} P(<=obs)={(mcb <= best[0]).mean():.3f}")
+    print(
+        f"  shortest window with all 29 runes: obs={best[0]} at {best[1]} | "
+        f"mc mean={mcb.mean():.1f} min={mcb.min()} P(<=obs)={(mcb <= best[0]).mean():.3f}"
+    )
 
     print("\n=== H. SENTENCE-INITIAL/FINAL RUNES ===")
     si = [stream[i + 1] for i, sp in enumerate(seps[: n - 1]) if sp == "s"]
@@ -259,8 +278,10 @@ def main() -> None:
     X = np.abs(np.fft.rfft(x)) ** 2 / len(x)
     pw = X[1:]
     peak = pw.max() / pw.mean()
-    print(f"  max power / mean = {peak:.1f} "
-          f"(white-noise expectation ~{math.log(len(pw)):.1f})")
+    print(
+        f"  max power / mean = {peak:.1f} "
+        f"(white-noise expectation ~{math.log(len(pw)):.1f})"
+    )
 
 
 if __name__ == "__main__":

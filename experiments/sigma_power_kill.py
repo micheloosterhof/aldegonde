@@ -51,14 +51,15 @@ def random_order5(rng: random.Random) -> list[int]:
     rng.shuffle(pts)
     g = list(range(M))
     for c in range(5):
-        cyc = pts[c * 5:(c + 1) * 5]
+        cyc = pts[c * 5 : (c + 1) * 5]
         for i in range(5):
             g[cyc[i]] = cyc[(i + 1) % 5]
     return g
 
 
-def encrypt(words: list[list[int]], base0: list[int], g: list[int],
-            sigma: list[int]) -> list[list[int]]:
+def encrypt(
+    words: list[list[int]], base0: list[int], g: list[int], sigma: list[int]
+) -> list[list[int]]:
     gpow = [list(range(M))]
     for _ in range(4):
         gpow.append(compose(g, gpow[-1]))
@@ -98,17 +99,20 @@ def main() -> None:
     if not prose_path.exists():
         print(f"downloading {PROSE_URL} -> {prose_path}")
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    all_words = [[IDX_ENG[t] for t in to_runeglish(w)]
-                 for w in prose_words(prose_path)]
+    all_words = [[IDX_ENG[t] for t in to_runeglish(w)] for w in prose_words(prose_path)]
     all_words = [w for w in all_words if w]
     start = rng.randrange(len(all_words) - NWORDS)
-    words = all_words[start:start + NWORDS]
+    words = all_words[start : start + NWORDS]
     pt_pairs = identity_pairs(words)
     n_runes = sum(map(len, words))
-    print(f"plaintext: {NWORDS} words, {n_runes} runes, "
-          f"{pt_pairs} repeated identical word pairs (len >= 3)")
-    print("LP reference: identity pairs 17 (chance 10.7 ± 3.3), "
-          "unigram nIoC 1.000, kappa5 1.073, Friedman5 ~1.00\n")
+    print(
+        f"plaintext: {NWORDS} words, {n_runes} runes, "
+        f"{pt_pairs} repeated identical word pairs (len >= 3)"
+    )
+    print(
+        "LP reference: identity pairs 17 (chance 10.7 ± 3.3), "
+        "unigram nIoC 1.000, kappa5 1.073, Friedman5 ~1.00\n"
+    )
 
     g = random_order5(rng)
     base0 = list(range(M))
@@ -126,14 +130,18 @@ def main() -> None:
     cases = [(f"sigma = g^{k}", gpow[k]) for k in range(5)]
     cases += [("sigma = g^2 . (a b)", near), ("sigma random mixed", sig_rand)]
 
-    print(f"{'sigma':<22} {'ident pairs':>11} {'pred n/5':>8} "
-          f"{'uni nIoC':>9} {'kappa5':>7} {'Fried5':>7}")
+    print(
+        f"{'sigma':<22} {'ident pairs':>11} {'pred n/5':>8} "
+        f"{'uni nIoC':>9} {'kappa5':>7} {'Fried5':>7}"
+    )
     for name, sigma in cases:
         ct = encrypt(words, base0, g, sigma)
         stream = [r for w in ct for r in w]
-        print(f"{name:<22} {identity_pairs(ct):>11} {pt_pairs / 5:>8.0f} "
-              f"{nioc(stream):>9.3f} {kappa(stream, 5):>7.3f} "
-              f"{friedman5(stream):>7.3f}")
+        print(
+            f"{name:<22} {identity_pairs(ct):>11} {pt_pairs / 5:>8.0f} "
+            f"{nioc(stream):>9.3f} {kappa(stream, 5):>7.3f} "
+            f"{friedman5(stream):>7.3f}"
+        )
 
 
 if __name__ == "__main__":

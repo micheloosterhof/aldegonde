@@ -75,8 +75,8 @@ def main() -> None:
 
     delta = (cipher[1:] - cipher[:-1]) % N
     nz = delta != 0
-    Jc = ((delta[nz] - 1) % M).astype(np.int64)          # compressed
-    raw_idx = np.where(nz)[0]                             # gapped key index
+    Jc = ((delta[nz] - 1) % M).astype(np.int64)  # compressed
+    raw_idx = np.where(nz)[0]  # gapped key index
     # compressed C: drop the second rune of each doublet
     keep = np.ones(n, dtype=bool)
     keep[1:][delta == 0] = False
@@ -127,11 +127,15 @@ def main() -> None:
         # empirical instead:
     rng = np.random.default_rng(1)
     null = [ioc_counts(rng.integers(0, M, len(Jc)), M) for _ in range(60)]
-    print(f"null nIoC for len {len(Jc)} mod {M}: mean={np.mean(null):.4f} "
-          f"sd={np.std(null):.4f}")
+    print(
+        f"null nIoC for len {len(Jc)} mod {M}: mean={np.mean(null):.4f} "
+        f"sd={np.std(null):.4f}"
+    )
     thresh = 1.0 + 6 * np.std(null)
-    print(f"{ntests} tests; flag threshold nIoC > {thresh:.4f} "
-          f"(6 sigma; english signal would be ~1.5+)")
+    print(
+        f"{ntests} tests; flag threshold nIoC > {thresh:.4f} "
+        f"(6 sigma; english signal would be ~1.5+)"
+    )
     print("top 12 results:")
     for v, label, off in results[:12]:
         print(f"  nIoC={v:.4f} {label} offset={off}")

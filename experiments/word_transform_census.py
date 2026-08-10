@@ -200,9 +200,7 @@ def main() -> None:
             out["reversal+shift"] += cross_count(deltas, revs, same=True)
             anag = Counter(tuple(sorted(w)) for w in ws)
             out["anagram"] += pairs_count(anag) - pairs_count(ident)
-            rots = Counter(
-                min(tuple(w[i:] + w[:i]) for i in range(L)) for w in ws
-            )
+            rots = Counter(min(tuple(w[i:] + w[:i]) for i in range(L)) for w in ws)
             out["rotation"] += pairs_count(rots) - pairs_count(ident)
         return out
 
@@ -232,8 +230,10 @@ def main() -> None:
         a = np.array(acc[key])
         z = (obs_tot[key] - a.mean()) / a.std() if a.std() > 0 else float("nan")
         flag = " ***" if abs(z) > 4 else (" *" if abs(z) > 3 else "")
-        print(f"  {key:<16} obs={obs_tot[key]:>6} null={a.mean():>9.1f}±{a.std():<6.1f} "
-              f"z={z:+.2f}{flag}")
+        print(
+            f"  {key:<16} obs={obs_tot[key]:>6} null={a.mean():>9.1f}±{a.std():<6.1f} "
+            f"z={z:+.2f}{flag}"
+        )
 
 
 if __name__ == "__main__":

@@ -131,8 +131,10 @@ def chisq_uniform(counts, label):
 
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
-    print(f"runes={len(stream)} words={len(words)} lines={len(lines)} "
-          f"pages={len(pages)} sections={len(sections)}")
+    print(
+        f"runes={len(stream)} words={len(words)} lines={len(lines)} "
+        f"pages={len(pages)} sections={len(sections)}"
+    )
     print(f"sep counts: {Counter(seps)}")
 
     print("\n=== 1. POSITION-IN-WORD ===")
@@ -152,8 +154,10 @@ def main() -> None:
         # compare against overall distribution
         rest = [overall_counts[i] - counts[i] for i in range(N)]
         stat, p, dof, _ = chi2_contingency([counts, rest])
-        print(f"  pos {j}: n={len(bypos[j])} ioc={ioc(bypos[j])*N:.3f} "
-              f"chi2-vs-rest p={p:.4f}{' ***' if p < 0.001 else ''}")
+        print(
+            f"  pos {j}: n={len(bypos[j])} ioc={ioc(bypos[j]) * N:.3f} "
+            f"chi2-vs-rest p={p:.4f}{' ***' if p < 0.001 else ''}"
+        )
     for j in range(8):
         if len(byend[j]) < 100:
             break
@@ -161,8 +165,10 @@ def main() -> None:
         counts = [c[i] for i in range(N)]
         rest = [overall_counts[i] - counts[i] for i in range(N)]
         stat, p, dof, _ = chi2_contingency([counts, rest])
-        print(f"  endpos {j}: n={len(byend[j])} ioc={ioc(byend[j])*N:.3f} "
-              f"chi2-vs-rest p={p:.4f}{' ***' if p < 0.001 else ''}")
+        print(
+            f"  endpos {j}: n={len(byend[j])} ioc={ioc(byend[j]) * N:.3f} "
+            f"chi2-vs-rest p={p:.4f}{' ***' if p < 0.001 else ''}"
+        )
 
     print("\n=== 2. WORD-LEVEL ===")
     # repeated words vs analytic expectation
@@ -176,12 +182,14 @@ def main() -> None:
         n = len(ws)
         cnt = Counter(ws)
         obs_pairs = sum(v * (v - 1) // 2 for v in cnt.values())
-        exp_pairs = n * (n - 1) / 2 / (N ** L)
+        exp_pairs = n * (n - 1) / 2 / (N**L)
         tot_obs_pairs += obs_pairs
         tot_exp_pairs += exp_pairs
         if exp_pairs > 0.01 or obs_pairs > 0:
-            print(f"  len {L}: {n} words, identical pairs obs={obs_pairs} "
-                  f"exp={exp_pairs:.2f}")
+            print(
+                f"  len {L}: {n} words, identical pairs obs={obs_pairs} "
+                f"exp={exp_pairs:.2f}"
+            )
     print(f"  TOTAL identical word pairs: obs={tot_obs_pairs} exp={tot_exp_pairs:.2f}")
 
     # word sums mod 29 (index based)
@@ -199,8 +207,10 @@ def main() -> None:
             hits += x == y
     exp = opp / N
     sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-    print(f"  consecutive-word aligned coincidences: obs={hits} exp={exp:.1f} "
-          f"z={(hits - exp) / sd:+.2f}")
+    print(
+        f"  consecutive-word aligned coincidences: obs={hits} exp={exp:.1f} "
+        f"z={(hits - exp) / sd:+.2f}"
+    )
     # same for words at distance 2..5
     for d in range(2, 6):
         hits = opp = 0
@@ -210,15 +220,25 @@ def main() -> None:
                 hits += x == y
         exp = opp / N
         sd = math.sqrt(opp * (1 / N) * (1 - 1 / N))
-        print(f"  word-dist {d} aligned coincidences: obs={hits} exp={exp:.1f} "
-              f"z={(hits - exp) / sd:+.2f}")
+        print(
+            f"  word-dist {d} aligned coincidences: obs={hits} exp={exp:.1f} "
+            f"z={(hits - exp) / sd:+.2f}"
+        )
 
     print("\n=== 3. DELTAS BY BOUNDARY TYPE ===")
-    for kind, name in [("", "within-word"), ("w", "word-boundary"),
-                       ("s", "sentence-boundary"), ("l", "line-break"),
-                       ("p", "page-boundary"), ("S", "section-boundary")]:
-        deltas = [ (stream[i + 1] - stream[i]) % N
-                   for i in range(len(stream) - 1) if seps[i] == kind ]
+    for kind, name in [
+        ("", "within-word"),
+        ("w", "word-boundary"),
+        ("s", "sentence-boundary"),
+        ("l", "line-break"),
+        ("p", "page-boundary"),
+        ("S", "section-boundary"),
+    ]:
+        deltas = [
+            (stream[i + 1] - stream[i]) % N
+            for i in range(len(stream) - 1)
+            if seps[i] == kind
+        ]
         if len(deltas) < 100:
             print(f"  {name}: n={len(deltas)} (too few)")
             continue
@@ -234,11 +254,15 @@ def main() -> None:
     print("\n=== 4. PER-SECTION / PER-PAGE ===")
     for si, s in enumerate(sections):
         dbl = sum(1 for a, b in zip(s, s[1:]) if a == b)
-        print(f"  section {si}: n={len(s)} ioc={ioc(s)*N:.3f} doublets={dbl} "
-              f"(exp {len(s)/N:.1f})")
+        print(
+            f"  section {si}: n={len(s)} ioc={ioc(s) * N:.3f} doublets={dbl} "
+            f"(exp {len(s) / N:.1f})"
+        )
     iocs = [ioc(p) * N for p in pages if len(p) > 100]
-    print(f"  page nIoC: min={min(iocs):.3f} max={max(iocs):.3f} "
-          f"mean={sum(iocs)/len(iocs):.3f} (n={len(iocs)} pages)")
+    print(
+        f"  page nIoC: min={min(iocs):.3f} max={max(iocs):.3f} "
+        f"mean={sum(iocs) / len(iocs):.3f} (n={len(iocs)} pages)"
+    )
 
     print("\n=== 5. LINE LAYOUT ===")
     linestart = [l[0] for l in lines if l]
@@ -258,6 +282,7 @@ def main() -> None:
     print(f"  line lengths: {sorted(llen.items())[:10]} ...")
 
     print("\n=== 6. MIRROR / ATBASH SYMMETRY ===")
+
     def mirror_test(seq, label):
         n = len(seq)
         half = n // 2
@@ -266,7 +291,10 @@ def main() -> None:
         exp = half / N
         sd = math.sqrt(half * (1 / N) * (1 - 1 / N))
         if abs(eq - exp) > 3 * sd or abs(at - exp) > 3 * sd:
-            print(f"  {label}: eq z={(eq-exp)/sd:+.2f} atbash z={(at-exp)/sd:+.2f} ***")
+            print(
+                f"  {label}: eq z={(eq - exp) / sd:+.2f} atbash z={(at - exp) / sd:+.2f} ***"
+            )
+
     mirror_test(stream, "whole text")
     for si, s in enumerate(sections):
         mirror_test(s, f"section {si}")

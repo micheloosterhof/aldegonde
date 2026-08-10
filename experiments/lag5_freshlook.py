@@ -36,8 +36,9 @@ parts = raw.split("%")
 keep = [i for i, p in enumerate(parts) if any(c in AB for c in p)][:-2]
 text = "".join(x for i in keep for x in parts[i] if x in AB)
 n = len(text)
-sections = [s for s in ("".join(x for x in t if x in AB)
-                        for t in raw.split("$")[:10]) if s]
+sections = [
+    s for s in ("".join(x for x in t if x in AB) for t in raw.split("$")[:10]) if s
+]
 sec_bounds = []
 acc = 0
 for s in sections:
@@ -84,11 +85,15 @@ for _ in range(trials):
             null_sizes[len(cur)] += 1
             cur = [p]
     null_sizes[len(cur)] += 1
-print("null cluster sizes (per realization): "
-      + ", ".join(f"{k}:{v/trials:.1f}" for k, v in sorted(null_sizes.items())))
+print(
+    "null cluster sizes (per realization): "
+    + ", ".join(f"{k}:{v / trials:.1f}" for k, v in sorted(null_sizes.items()))
+)
 
 # ---- B. locality: T(5) excluding section 4 (and 4+8) ----
 print("\n=== B. is the signal corpus-wide or local? ===")
+
+
 def T5_in(rangelist: list[tuple[int, int]]) -> tuple[int, float]:
     t = 0
     m_eff = 0
@@ -101,18 +106,25 @@ def T5_in(rangelist: list[tuple[int, int]]) -> tuple[int, float]:
     exp = 2 * m_eff / (N * N)
     return t, exp
 
+
 full = [(0, n)]
 no4 = [(a, b) for k, (a, b) in enumerate(sec_bounds) if k != 4]
 no48 = [(a, b) for k, (a, b) in enumerate(sec_bounds) if k not in (4, 8)]
 only4 = [sec_bounds[4]]
-for name, rl in (("full corpus", full), ("without sec 4", no4),
-                 ("without sec 4+8", no48), ("section 4 only", only4)):
+for name, rl in (
+    ("full corpus", full),
+    ("without sec 4", no4),
+    ("without sec 4+8", no48),
+    ("section 4 only", only4),
+):
     t, exp = T5_in(rl)
     z = (t - exp) / sqrt(exp)
     print(f"  {name:18s}: T5={t:3d} exp={exp:5.1f} z={z:+.2f}")
 
 # ---- C. fair 2D scan: pair counts for all (lag L, separation d) cells ----
 print("\n=== C. fair 2D scan, L in 2..30 x d in 1..6 ===")
+
+
 def cell_counts(s: str) -> dict[tuple[int, int], int]:
     out = {}
     sn = len(s)
@@ -123,12 +135,15 @@ def cell_counts(s: str) -> dict[tuple[int, int], int]:
             out[(lag, d)] = sum(1 for i in range(mm - d) if mv[i] and mv[i + d])
     return out
 
+
 obs_cells = cell_counts(text)
 exp_cell = (n - 10) / (N * N)
 ranked = sorted(obs_cells.items(), key=lambda kv: -kv[1])
 print("top 6 cells (L,d):", [(k, v) for k, v in ranked[:6]], f"(exp ~{exp_cell:.0f})")
 # Monte Carlo: P(some lag L has TWO cells among d=1..6 with counts >= obs pair)
 obs_pair = sorted((obs_cells[(5, 1)], obs_cells[(5, 4)]))
+
+
 def doublet_suppressed(length: int, rate: float) -> str:
     out = [random.randrange(N)]
     for _ in range(length - 1):
@@ -140,6 +155,7 @@ def doublet_suppressed(length: int, rate: float) -> str:
                 c += 1
             out.append(c)
     return "".join(AB[c] for c in out)
+
 
 rate = sum(1 for i in range(n - 1) if text[i] == text[i + 1]) / (n - 1)
 trials = 60
@@ -154,18 +170,15 @@ for _ in range(trials):
             found = True
             break
     hits += found
-print(f"P(any lag has two cells >= ({obs_pair[1]},{obs_pair[0]})) "
-      f"= {hits}/{trials}")
+print(f"P(any lag has two cells >= ({obs_pair[1]},{obs_pair[0]})) = {hits}/{trials}")
 
 # ---- F. full delta histogram at lag 5 vs control lags ----
 print("\n=== F. delta distribution at lag 5 (is only delta=0 special?) ===")
 for lag in (4, 5, 6):
-    deltas = Counter((r2i(text[i + lag]) - r2i(text[i])) % N
-                     for i in range(n - lag))
+    deltas = Counter((r2i(text[i + lag]) - r2i(text[i])) % N for i in range(n - lag))
     tot = n - lag
     exp = tot / N
     top = sorted(deltas.items(), key=lambda kv: -kv[1])[:3]
     z0 = (deltas[0] - exp) / sqrt(exp * (1 - 1 / N))
     chi = sum((v - exp) ** 2 / exp for v in deltas.values())
-    print(f"  lag {lag}: delta=0 z={z0:+.2f}; top deltas {top}; "
-          f"chi2={chi:.1f} (df 28)")
+    print(f"  lag {lag}: delta=0 z={z0:+.2f}; top deltas {top}; chi2={chi:.1f} (df 28)")

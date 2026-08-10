@@ -3,6 +3,7 @@
 """Kappa spectrum. Significance: z of coincidence count at each skip vs the
 frequency-based expectation. Only skip 1 (the doublet deficit) departs; skip 5
 is mildly elevated (the lag-5 structure) but far weaker."""
+
 from __future__ import annotations
 
 import math
@@ -26,7 +27,9 @@ def main() -> None:
     for skip in range(1, 61):
         hits, z = kappa_z(stream, skip)
         if skip <= 12 or abs(z) > 2:
-            tag = "  <-- anomalous" if abs(z) > 3 else ("  (lag-5)" if skip == 5 else "")
+            tag = (
+                "  <-- anomalous" if abs(z) > 3 else ("  (lag-5)" if skip == 5 else "")
+            )
             print(f"  {skip:2d} : {hits:5d}       {z:+.2f}{tag}")
         if abs(z) > 3:
             flagged.append(skip)

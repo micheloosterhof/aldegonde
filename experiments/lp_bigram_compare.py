@@ -2,7 +2,8 @@
 # ABOUTME: Verify LP matches the pattern of autokey-encrypted text
 
 import sys  # noqa: I001
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 
 from aldegonde import c3301
 from aldegonde.grams import bigram_diagram
@@ -26,8 +27,8 @@ if __name__ == "__main__":
     print(f"\nLength: {len(lp)} runes")
 
     # Count doublets
-    doublets = sum(1 for i in range(len(lp)-1) if lp[i] == lp[i+1])
-    print(f"Doublets: {doublets} ({doublets/(len(lp)-1)*100:.3f}%)")
+    doublets = sum(1 for i in range(len(lp) - 1) if lp[i] == lp[i + 1])
+    print(f"Doublets: {doublets} ({doublets / (len(lp) - 1) * 100:.3f}%)")
 
     print("\n")
     bigram_diagram.print_auto_bigram_diagram(lp, alphabet=ALPHABET)

@@ -114,7 +114,9 @@ def load_quadgrams() -> tuple[dict[tuple[int, ...], float], float]:
     idx = {r: i for i, r in enumerate(A)}
     table: dict[tuple[int, ...], int] = {}
     total = 0
-    path = ROOT / "src" / "aldegonde" / "data" / "ngrams" / "runeglish" / "quadgrams.txt"
+    path = (
+        ROOT / "src" / "aldegonde" / "data" / "ngrams" / "runeglish" / "quadgrams.txt"
+    )
     for line in path.read_text().splitlines():
         g, c = line.split()
         if len(g) == 4 and all(ch in idx for ch in g):
@@ -126,7 +128,9 @@ def load_quadgrams() -> tuple[dict[tuple[int, ...], float], float]:
 
 
 # ---- cascade ----
-def step_products(g: np.ndarray, sigma: np.ndarray, lengths: list[int]) -> list[np.ndarray]:
+def step_products(
+    g: np.ndarray, sigma: np.ndarray, lengths: list[int]
+) -> list[np.ndarray]:
     """M_w for each word w: M_0 = id, M_{w+1} = M_w o (g^((L_w-1)%5) o sigma)."""
     gpow = [ppow(g, k) for k in range(5)]
     Ms = [np.arange(M)]
@@ -173,7 +177,9 @@ def diagonal_rate(P: np.ndarray, perm: np.ndarray) -> float:
     return float(P[np.arange(M), perm].sum())
 
 
-def dewalk_perms(g: np.ndarray, Ms: list[np.ndarray], words: list[list[int]]) -> np.ndarray:
+def dewalk_perms(
+    g: np.ndarray, Ms: list[np.ndarray], words: list[list[int]]
+) -> np.ndarray:
     """D_i per rune position such that p[i] = D_i[ base0inv[c[i]] ]."""
     ginv_pow = [inverse(ppow(g, k)) for k in range(5)]
     D = []
@@ -202,7 +208,9 @@ def solve_base0(
         p = D[np.arange(n), z]
         s = 0.0
         for i in range(n - 3):
-            s += logp.get((int(p[i]), int(p[i + 1]), int(p[i + 2]), int(p[i + 3])), floor)
+            s += logp.get(
+                (int(p[i]), int(p[i + 1]), int(p[i + 2]), int(p[i + 3])), floor
+            )
         return s / (n - 3)
 
     best_fit, best_b = -1e9, None
@@ -300,7 +308,9 @@ def selftest() -> None:
 
     Ms = step_products(g, sigma, lengths)
     interval_returns = np.array_equal(Ms[DJU], Ms[BEI])
-    print(f"self-test: order(g)={order(g)}, random-key interval returns? {interval_returns}")
+    print(
+        f"self-test: order(g)={order(g)}, random-key interval returns? {interval_returns}"
+    )
 
     # round-trip: encipher synthetic plaintext (real word shapes), decrypt with true key
     synth = [[rng.randrange(M) for _ in w] for w in words]
@@ -320,8 +330,10 @@ def selftest() -> None:
     res_true = verify(g, sigma, words, P, None, rng, do_base0=False)
     sigma2 = perm_from_cycles([9, 7, 7, 3, 3], rng)
     res_rand = verify(g, sigma2, words, P, None, rng, do_base0=False)
-    print(f"self-test: true key pass_hard={res_true['pass_hard']} (should match interval), "
-          f"random sigma pass_hard={res_rand['pass_hard']} (should be False)")
+    print(
+        f"self-test: true key pass_hard={res_true['pass_hard']} (should match interval), "
+        f"random sigma pass_hard={res_rand['pass_hard']} (should be False)"
+    )
     print("self-test OK" if ok else "self-test FAILED (round-trip)")
 
 

@@ -69,8 +69,7 @@ def alphabets(seq: list[int]):
     yield "R2 reversed", seq + rest[::-1]
     if seq:
         k = seq[-1]
-        cyc = [i for i in list(range(k + 1, M)) + list(range(k + 1))
-               if i not in seq]
+        cyc = [i for i in list(range(k + 1, M)) + list(range(k + 1)) if i not in seq]
         yield "R3 cyclic", seq + cyc
     full = seq + rest
     cols = [full[c::6] for c in range(6)]
@@ -115,8 +114,10 @@ def main() -> None:
     print(f"dictionary: {len(vocab)} words of length 4-12")
 
     results = {}
-    for tname, T, target in (("g (within-word)", within, TARGET_G),
-                             ("sigma (cross-word)", cross, TARGET_S)):
+    for tname, T, target in (
+        ("g (within-word)", within, TARGET_G),
+        ("sigma (cross-word)", cross, TARGET_S),
+    ):
         floors = []
         hits = []
         for word in vocab:
@@ -132,13 +133,19 @@ def main() -> None:
         hits.sort()
         results[tname] = (floors, hits, target)
         print(f"\n=== {tname}: target {target} ===")
-        print(f"  {len(floors):,} keyword-alphabet candidates "
-              f"({len(vocab):,} words x 4 rules)")
-        print(f"  floor distribution: min {floors.min():.4f}  "
-              f"1st pct {np.percentile(floors,1):.4f}  "
-              f"median {np.median(floors):.4f}")
-        print(f"  reaching the target: {len(hits):,} "
-              f"({len(hits)/len(floors)*100:.3f}%)")
+        print(
+            f"  {len(floors):,} keyword-alphabet candidates "
+            f"({len(vocab):,} words x 4 rules)"
+        )
+        print(
+            f"  floor distribution: min {floors.min():.4f}  "
+            f"1st pct {np.percentile(floors, 1):.4f}  "
+            f"median {np.median(floors):.4f}"
+        )
+        print(
+            f"  reaching the target: {len(hits):,} "
+            f"({len(hits) / len(floors) * 100:.3f}%)"
+        )
         for f, word, rname in hits[:8]:
             print(f"     {f:.4f}  {word:<14} [{rname}]")
 
@@ -149,9 +156,11 @@ def main() -> None:
             rng.shuffle(K)
             rfl.append(floor_of(K, T))
         rfl = np.array(rfl)
-        print(f"  RANDOM alphabets, same count: min {rfl.min():.4f}  "
-              f"median {np.median(rfl):.4f}  "
-              f"reaching target {(rfl<=target).mean()*100:.3f}%")
+        print(
+            f"  RANDOM alphabets, same count: min {rfl.min():.4f}  "
+            f"median {np.median(rfl):.4f}  "
+            f"reaching target {(rfl <= target).mean() * 100:.3f}%"
+        )
         kp = (rfl < np.median(floors)).mean() * 100
         print(f"  keyword median sits at the {kp:.0f}th percentile of random")
 

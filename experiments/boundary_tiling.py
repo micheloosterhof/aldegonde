@@ -24,7 +24,6 @@ Results:
   CONSISTENT with the data but only strict patterns are actually excluded.
 """
 
-
 import random
 
 from aldegonde import c3301
@@ -49,12 +48,14 @@ for p in pages:
     page_starts.append(acc)
     acc += len(p)
 
+
 def expressible_set(lengths: tuple[int, ...], upto: int) -> set[int]:
     ok = {0}
     for v in range(1, upto + 1):
         if any(v - L in ok for L in lengths if v >= L):
             ok.add(v)
     return ok
+
 
 # which page is a position on?
 def page_of(i: int) -> int:
@@ -63,8 +64,11 @@ def page_of(i: int) -> int:
             return k
     return 0
 
-print(f"{len(dpos)} doublets, {len(gaps)} gaps; gaps < 25: "
-      f"{sorted(g for g in gaps if g < 25)}")
+
+print(
+    f"{len(dpos)} doublets, {len(gaps)} gaps; gaps < 25: "
+    f"{sorted(g for g in gaps if g < 25)}"
+)
 
 LSETS = [(5, 6), (4, 5, 6), (4, 5), (5, 6, 7), (4, 6), (3, 4, 5, 6, 7)]
 print("\n=== A. continuous tiling (no resets): every gap must be expressible ===")
@@ -96,6 +100,8 @@ for ls in LSETS:
 print("\n=== C. null comparison: how often would random positions pass? ===")
 
 ok56 = expressible_set((5, 6), n)
+
+
 def count_bad(positions: list[int]) -> int:
     bad = 0
     for k, pg in enumerate(pages):
@@ -109,14 +115,20 @@ def count_bad(positions: list[int]) -> int:
             prev = q
     return bad
 
+
 obs_bad = count_bad(dpos)
 trials = 2000
-worse = sum(1 for _ in range(trials)
-            if count_bad(sorted(random.sample(range(n - 1), len(dpos)))) <= obs_bad)
+worse = sum(
+    1
+    for _ in range(trials)
+    if count_bad(sorted(random.sample(range(n - 1), len(dpos)))) <= obs_bad
+)
 print(f"  observed infeasible-with-page-reset ({{5,6}}): {obs_bad}")
-print(f"  random-position null: P(<= observed) = {worse/trials:.3f}")
+print(f"  random-position null: P(<= observed) = {worse / trials:.3f}")
 
 print("\n=== D. strict periodic patterns (boundaries at fixed residues) ===")
+
+
 # pattern P of lengths repeating: boundaries at cumsum mod sum(P)
 def residues(pat: tuple[int, ...]) -> tuple[int, set[int]]:
     s = sum(pat)
@@ -127,6 +139,7 @@ def residues(pat: tuple[int, ...]) -> tuple[int, set[int]]:
         res.add(c % s)
     return s, res
 
+
 for pat in [(5, 6), (6, 5), (5,), (6,), (5, 5, 6), (5, 6, 6), (5, 6, 5, 6, 6)]:
     s, res = residues(pat)
     # global phase unknown: find best phase
@@ -135,5 +148,7 @@ for pat in [(5, 6), (6, 5), (5,), (6,), (5, 5, 6), (5, 6, 6), (5, 6, 5, 6, 6)]:
         hits = sum(1 for i in dpos if (i + 1 - ph) % s in res)
         best = max(best, hits)
     exp = len(dpos) * len(res) / s
-    print(f"  pattern {pat} (period {s}): best phase hits {best}/{len(dpos)} "
-          f"(chance ~{exp:.0f})")
+    print(
+        f"  pattern {pat} (period {s}): best phase hits {best}/{len(dpos)} "
+        f"(chance ~{exp:.0f})"
+    )

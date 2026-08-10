@@ -166,14 +166,13 @@ class MealyCipher:
             _make_permutation(key_seed + i, self.alphabet_size)
             for i in range(self.state_count)
         ]
-        self.inv_permutations = [
-            _invert_permutation(p) for p in self.permutations
-        ]
+        self.inv_permutations = [_invert_permutation(p) for p in self.permutations]
 
         # 13x13 transition matrix
         if no_self_loops:
             self.transition = _make_deranged_transition(
-                self.state_count, transition_seed,
+                self.state_count,
+                transition_seed,
             )
         else:
             self.transition = _make_latin_square(self.state_count, transition_seed)
@@ -527,12 +526,15 @@ def print_simulation_results() -> None:
 
     for no_self_loops in [True, False]:
         result = simulate_mealy(
-            plaintext_length=13000, no_self_loops=no_self_loops,
+            plaintext_length=13000,
+            no_self_loops=no_self_loops,
         )
         label = "no self-loops" if no_self_loops else "with self-loops"
         print(f"\n  --- {label} ---")
-        print(f"  Delta=0: {result['delta0_count']}/{result['delta0_total']} "
-              f"({result['delta0_rate']:.4f})")
+        print(
+            f"  Delta=0: {result['delta0_count']}/{result['delta0_total']} "
+            f"({result['delta0_rate']:.4f})"
+        )
         print(f"  Expected uniform: {result['expected_uniform']:.4f}")
         print(f"  Suppression ratio: {result['suppression_ratio']:.4f}")
 
@@ -542,20 +544,23 @@ def print_simulation_results() -> None:
 
     for derangement in [True, False]:
         result = simulate_latin_square(
-            plaintext_length=13000, derangement=derangement,
+            plaintext_length=13000,
+            derangement=derangement,
         )
         label = "derangement" if derangement else "standard"
         print(f"\n  --- {label} ---")
-        print(f"  Input runes: {result['input_runes']}, "
-              f"Output digits: {result['output_digits']} "
-              f"(expansion: {result['expansion_ratio']:.2f}x)")
-        print(f"  Delta=0 (base13): "
-              f"{result['delta0_count_base13']}/{result['delta0_total_base13']} "
-              f"({result['delta0_rate_base13']:.4f})")
-        print(f"  Expected uniform (base13): "
-              f"{result['expected_uniform_base13']:.4f}")
-        print(f"  Suppression ratio: "
-              f"{result['suppression_ratio_base13']:.4f}")
+        print(
+            f"  Input runes: {result['input_runes']}, "
+            f"Output digits: {result['output_digits']} "
+            f"(expansion: {result['expansion_ratio']:.2f}x)"
+        )
+        print(
+            f"  Delta=0 (base13): "
+            f"{result['delta0_count_base13']}/{result['delta0_total_base13']} "
+            f"({result['delta0_rate_base13']:.4f})"
+        )
+        print(f"  Expected uniform (base13): {result['expected_uniform_base13']:.4f}")
+        print(f"  Suppression ratio: {result['suppression_ratio_base13']:.4f}")
 
 
 if __name__ == "__main__":

@@ -41,8 +41,22 @@ M = 29
 R2I = {r: i for i, r in enumerate(ALPH)}
 SEED = 3301
 
-LEN_DIST = {1: 99, 2: 465, 3: 726, 4: 514, 5: 318, 6: 252, 7: 214,
-            8: 159, 9: 77, 10: 51, 11: 28, 12: 18, 13: 4, 14: 3}
+LEN_DIST = {
+    1: 99,
+    2: 465,
+    3: 726,
+    4: 514,
+    5: 318,
+    6: 252,
+    7: 214,
+    8: 159,
+    9: 77,
+    10: 51,
+    11: 28,
+    12: 18,
+    13: 4,
+    14: 3,
+}
 
 
 def load_bigrams() -> np.ndarray:
@@ -91,7 +105,7 @@ def cut_words(stream: list[int], rng: random.Random) -> list[list[int]]:
         length = rng.choices(lengths, weights=weights, k=1)[0]
         if i + length > len(stream):
             break
-        words.append(stream[i:i + length])
+        words.append(stream[i : i + length])
         i += length
     return words
 
@@ -120,13 +134,16 @@ def report_doublet_floor(bigrams: np.ndarray) -> None:
     bn = bigrams / bigrams.sum()
     affine = min(
         sum(bn[v, (a * v + b) % M] for v in range(M))
-        for a in range(1, M) for b in range(M)
+        for a in range(1, M)
+        for b in range(M)
     )
     rows, cols = linear_sum_assignment(bn)
     mixed = bn[rows, cols].sum()
     print("Doublet-rate floor on runeglish bigrams (lowest a substitution can reach):")
     print(f"  affine relations only : {affine:.4f}")
-    print(f"  general mixed relation: {mixed:.4f}   <- 0.66% observed lives here, not affine")
+    print(
+        f"  general mixed relation: {mixed:.4f}   <- 0.66% observed lives here, not affine"
+    )
     print(f"  chance 1/29           : {1 / M:.4f}\n")
 
 
@@ -167,10 +184,13 @@ def main() -> None:
     m = measure(encipher(words, g, rng))
     r = m["rates"]
     print("Per-word related-alphabet cipher  (A_phi = base_word o g^phi):")
-    print(f"  uniIoC={m['uni_ioc']:.3f}  d1={r[1]:.4f} d2={r[2]:.4f} d3={r[3]:.4f} "
-          f"d4={r[4]:.4f} d5={r[5]:.4f}  cols={[round(c, 2) for c in m['cols']]}")
-    print("  TARGET (unsolved LP): uniIoC=1.00 d1=0.0066 d2/3/4~0.034 "
-          "d5=0.049 cols flat")
+    print(
+        f"  uniIoC={m['uni_ioc']:.3f}  d1={r[1]:.4f} d2={r[2]:.4f} d3={r[3]:.4f} "
+        f"d4={r[4]:.4f} d5={r[5]:.4f}  cols={[round(c, 2) for c in m['cols']]}"
+    )
+    print(
+        "  TARGET (unsolved LP): uniIoC=1.00 d1=0.0066 d2/3/4~0.034 d5=0.049 cols flat"
+    )
     print("\nAll five observables from one mechanism; the doublet suppression is")
     print("inherent to the alphabet relation g (no separate rule, no autokey).")
 

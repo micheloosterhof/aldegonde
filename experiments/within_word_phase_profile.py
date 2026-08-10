@@ -75,7 +75,7 @@ def cut(runes: list[int], lengths: list[int]) -> list[list[int]]:
     out = []
     p = 0
     for length in lengths:
-        out.append(runes[p:p + length])
+        out.append(runes[p : p + length])
         p += length
     return out
 
@@ -114,8 +114,10 @@ def main() -> None:
         p_le = sum(x <= obs[d] for x in nd) / NPERM
         p = min(p_ge, p_le)
         tail = "excess" if obs[d] > mu else "deficit"
-        print(f"{d:2d} | {obs[d]:3d} | {mu:5.1f} +/- {sd:4.1f} | {z:+.2f} | "
-              f"{p:.4f} | {d % 5} ({tail})")
+        print(
+            f"{d:2d} | {obs[d]:3d} | {mu:5.1f} +/- {sd:4.1f} | {z:+.2f} | "
+            f"{p:.4f} | {d % 5} ({tail})"
+        )
 
 
 if __name__ == "__main__":

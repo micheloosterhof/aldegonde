@@ -58,7 +58,7 @@ def make_g(census, rng):
     g = list(range(M))
     i = 0
     for L in census:
-        cyc = pts[i:i + L]
+        cyc = pts[i : i + L]
         i += L
         for k in range(L):
             g[cyc[k]] = cyc[(k + 1) % L]
@@ -74,6 +74,7 @@ def conjugate(g, a, b):
 def anneal(g, T1, rng, iters=6000):
     def diag(gg):
         return sum(T1[gg[y]][y] for y in range(M))
+
     cur = diag(g)
     best_g, best = g[:], cur
     temp = 0.004
@@ -117,11 +118,11 @@ def battery(words_ct):
     for d in range(1, 9):
         hits = sum(1 for i in range(n - d) if stream[i] == stream[i + d])
         kap[d] = hits / (n - d) * M
-    trip = sum(1 for i in range(n - 2)
-               if stream[i] == stream[i + 1] == stream[i + 2])
+    trip = sum(1 for i in range(n - 2) if stream[i] == stream[i + 1] == stream[i + 2])
     e = len(dbl_vals) / M if dbl_vals else 0
-    chi_dbl = (sum((v - e) ** 2 / e for v in
-                   np.bincount(dbl_vals, minlength=M)) if e else 0.0)
+    chi_dbl = (
+        sum((v - e) ** 2 / e for v in np.bincount(dbl_vals, minlength=M)) if e else 0.0
+    )
     return prof, seam_d / seam_n, uni, kap, trip, chi_dbl
 
 
@@ -138,8 +139,7 @@ def main() -> None:
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
         urllib.request.urlretrieve(PROSE_URL, prose_path)
-    prose = [IDX_ENG[t] for w in prose_words(prose_path)
-             for t in to_runeglish(w)]
+    prose = [IDX_ENG[t] for w in prose_words(prose_path) for t in to_runeglish(w)]
 
     # adjacent within-word bigram table for annealing
     T1 = np.zeros((M, M))
@@ -147,18 +147,22 @@ def main() -> None:
         off = rng.randrange(len(prose) - sum(lp_lens))
         pos = off
         for L in lp_lens:
-            w = prose[pos:pos + L]
+            w = prose[pos : pos + L]
             pos += L
             for j in range(L - 1):
                 T1[w[j]][w[j + 1]] += 1
     T1 /= T1.sum()
 
-    hdr = ("".join(f"{f'd{d}':>7}" for d in range(1, MAXD + 1))
-           + f"{'seam':>7}{'uni':>7}{'trip':>5}{'dblchi':>7}")
+    hdr = (
+        "".join(f"{f'd{d}':>7}" for d in range(1, MAXD + 1))
+        + f"{'seam':>7}{'uni':>7}{'trip':>5}{'dblchi':>7}"
+    )
     print(f"{'model':<20}" + hdr)
-    print(f"{'LP observed':<20}"
-          + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1))
-          + f"{lp_seam:>7.4f}{lp_uni:>7.3f}{lp_trip:>5}{lp_chi:>7.1f}")
+    print(
+        f"{'LP observed':<20}"
+        + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1))
+        + f"{lp_seam:>7.4f}{lp_uni:>7.3f}{lp_trip:>5}{lp_chi:>7.1f}"
+    )
 
     for name, census in CENSUSES:
         order = 1
@@ -183,7 +187,7 @@ def main() -> None:
             pos = off
             ct = []
             for L in lp_lens:
-                w = prose[pos:pos + L]
+                w = prose[pos : pos + L]
                 pos += L
                 ct.append([base[gp[j % order][p]] for j, p in enumerate(w)])
                 base = compose(base, compose(gp[(L - 1) % order], sigma))
@@ -195,15 +199,20 @@ def main() -> None:
             unis.append(uni)
             trips.append(trip)
             chis.append(chi)
-        print(f"{name:<20}"
-              + "".join(f"{prof_acc[d] / prof_n[d]:>7.4f}"
-                        if prof_n[d] else f"{'·':>7}"
-                        for d in range(1, MAXD + 1))
-              + f"{np.mean(seams):>7.4f}{np.mean(unis):>7.3f}"
-              + f"{np.mean(trips):>5.0f}{np.mean(chis):>7.1f}")
-        print(f"{'':<20}  annealed diagonal floor: "
-              f"{np.mean(floors):.4f} ± {np.std(floors):.4f} "
-              f"(order {order}; LP needs ~0.003-0.005 after fixed-point leak)")
+        print(
+            f"{name:<20}"
+            + "".join(
+                f"{prof_acc[d] / prof_n[d]:>7.4f}" if prof_n[d] else f"{'·':>7}"
+                for d in range(1, MAXD + 1)
+            )
+            + f"{np.mean(seams):>7.4f}{np.mean(unis):>7.3f}"
+            + f"{np.mean(trips):>5.0f}{np.mean(chis):>7.1f}"
+        )
+        print(
+            f"{'':<20}  annealed diagonal floor: "
+            f"{np.mean(floors):.4f} ± {np.std(floors):.4f} "
+            f"(order {order}; LP needs ~0.003-0.005 after fixed-point leak)"
+        )
 
 
 if __name__ == "__main__":

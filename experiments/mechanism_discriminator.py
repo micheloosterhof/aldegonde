@@ -41,8 +41,22 @@ TOKEN2I = {tok: i for i, tok in enumerate(c3301.CICADA_ENGLISH_ALPHABET)}
 DICT = "/usr/share/dict/web2"
 SEED = 3301
 # LP word-length distribution (stay_slot_cipher.LEN_DIST) to match d-pair weights
-LEN_DIST = {1: 99, 2: 465, 3: 726, 4: 514, 5: 318, 6: 252, 7: 214,
-            8: 159, 9: 77, 10: 51, 11: 28, 12: 18, 13: 4, 14: 3}
+LEN_DIST = {
+    1: 99,
+    2: 465,
+    3: 726,
+    4: 514,
+    5: 318,
+    6: 252,
+    7: 214,
+    8: 159,
+    9: 77,
+    10: 51,
+    11: 28,
+    12: 18,
+    13: 4,
+    14: 3,
+}
 OBSERVED = {1: 0.0064, 2: 0.0347, 3: 0.0370, 4: 0.0410, 5: 0.0492, 6: 0.0245}
 
 
@@ -84,8 +98,9 @@ def enc_v1(words: list[list[int]], g5: list[int]) -> list[list[int]]:
     return [[gp[j % 5][p] for j, p in enumerate(w)] for w in words]
 
 
-def enc_v2(words: list[list[int]], g4: list[int],
-           rng: random.Random) -> list[list[int]]:
+def enc_v2(
+    words: list[list[int]], g4: list[int], rng: random.Random
+) -> list[list[int]]:
     g4p = [ppow(g4, k) for k in range(4)]
     out = []
     for w in words:
@@ -100,8 +115,12 @@ def enc_v2(words: list[list[int]], g4: list[int],
     return out
 
 
-def tune_g(words: list[list[int]], cyclens: list[int], rng: random.Random,
-           dshoulder: tuple[int, ...]) -> list[int]:
+def tune_g(
+    words: list[list[int]],
+    cyclens: list[int],
+    rng: random.Random,
+    dshoulder: tuple[int, ...],
+) -> list[int]:
     """Minimize the d1 diagonal while keeping the g^d shoulder diagonals near
     chance (reproducing observed d2/d3/d4 ~ chance)."""
     mats = pair_matrices(words, dmax=max(dshoulder))
@@ -116,8 +135,9 @@ def tune_g(words: list[list[int]], cyclens: list[int], rng: random.Random,
             v += 40.0 * (diag_rate(mats[d][0], acc) - chance) ** 2
         return v
 
-    return min((tune(perm_from_cycles(cyclens, rng), obj, rng) for _ in range(4)),
-               key=obj)
+    return min(
+        (tune(perm_from_cycles(cyclens, rng), obj, rng) for _ in range(4)), key=obj
+    )
 
 
 def show(label: str, prof: dict[int, float]) -> None:
@@ -128,8 +148,7 @@ def show(label: str, prof: dict[int, float]) -> None:
 def main() -> None:
     rng = random.Random(SEED)
     words = real_words(rng)
-    print(f"real runeglish words: {len(words)} "
-          f"(matched to LP length distribution)\n")
+    print(f"real runeglish words: {len(words)} (matched to LP length distribution)\n")
 
     g5 = tune_g(words, [5] * 5 + [1] * 4, rng, (2, 3, 4))
     g4 = tune_g(words, [4] * 7 + [1], rng, (2, 3))
@@ -150,8 +169,9 @@ def main() -> None:
         print(f"  {label:<16} SSE={sse:.3f}")
 
     print("\nkey cells -- d5 echo and d6:")
-    print(f"  plaintext d5 {prof_pt[5]:.4f} (the full-leak ceiling), "
-          f"d6 {prof_pt[6]:.4f}")
+    print(
+        f"  plaintext d5 {prof_pt[5]:.4f} (the full-leak ceiling), d6 {prof_pt[6]:.4f}"
+    )
     print("  LP d5 0.0492, d6 0.0245")
 
 

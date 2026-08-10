@@ -52,8 +52,10 @@ def main() -> None:
             cipher = [index[r] for r in section]
             for primer in range(29):
                 worst = max(worst, nioc(decrypt(cipher, primer, beaufort=beaufort)))
-        print(f"{name}: max per-section nIoC over all 29 primers = {worst:.4f} "
-              f"(random ~1.0, English ~1.6-1.8)")
+        print(
+            f"{name}: max per-section nIoC over all 29 primers = {worst:.4f} "
+            f"(random ~1.0, English ~1.6-1.8)"
+        )
 
 
 if __name__ == "__main__":

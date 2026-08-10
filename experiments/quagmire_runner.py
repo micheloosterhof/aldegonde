@@ -55,7 +55,7 @@ from lp_corpus import load_clean  # noqa: E402
 from two_rune_gradient import compose, inverse  # noqa: E402
 
 M = 29
-DJU_A, DJU_B = 1477, 2926      # word indices of the two DJU-BEI occurrences
+DJU_A, DJU_B = 1477, 2926  # word indices of the two DJU-BEI occurrences
 
 
 def conj_shift(K: list[int], delta: int) -> list[int]:
@@ -181,8 +181,7 @@ def fit_base0(cipher2, idx2, Mw, g_phase1, table, floor, rng, restarts=6):
             for a in range(M):
                 for b in range(a + 1, M):
                     cur[a], cur[b] = cur[b], cur[a]
-                    s = _fast_score(cipher2, minv2, inverse(cur), g1inv,
-                                    table, floor)
+                    s = _fast_score(cipher2, minv2, inverse(cur), g1inv, table, floor)
                     if s > cur_s + 1e-9:
                         cur_s = s
                         improved = True
@@ -246,7 +245,7 @@ def manufactured_test(ctx, rng):
             seen.add(r)
             K.append(r)
     sched = [3, 7, 5, 11, (0 - 3 - 7 - 5 - 11) % M]
-    sigma = conj_shift(K, 8)          # in <conj-shifts of K> -> small walk group
+    sigma = conj_shift(K, 8)  # in <conj-shifts of K> -> small walk group
     g_by_phase = letter_steps(K, sched)
 
     Mw = word_products(g_by_phase, sigma, lens)
@@ -268,8 +267,7 @@ def manufactured_test(ctx, rng):
     bad[0], bad[1] = bad[1], bad[0]
     fp_bad = fixed_points(interval_product(g_by_phase, bad, phases_ab))
     assert fp_bad < M, f"one-swap sigma wrongly passed: fp={fp_bad}"
-    print(f"  gate: genuine key fp=29 (accept), one-swap sigma fp={fp_bad} "
-          f"(reject)")
+    print(f"  gate: genuine key fp=29 (accept), one-swap sigma fp={fp_bad} (reject)")
 
     base_true = list(range(M))
     rng.shuffle(base_true)
@@ -277,8 +275,9 @@ def manufactured_test(ctx, rng):
     idx2 = ctx["idx2"]
     cipher2 = [tuple(cipher[i]) for i in idx2]
 
-    s_fit, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
-                          ctx["table"], ctx["floor"], rng)
+    s_fit, b0 = fit_base0(
+        cipher2, idx2, Mw, g_by_phase[1], ctx["table"], ctx["floor"], rng
+    )
     agree = sum(1 for x in range(M) if b0[x] == base_true[x])
     print(f"  base_0 fit: {agree}/29 runes recovered (2-rune LL {s_fit:.1f})")
     assert agree >= 27, f"base_0 fit failed: {agree}/29"
@@ -286,8 +285,10 @@ def manufactured_test(ctx, rng):
     dec = decrypt_walk(cipher, b0, g_by_phase, sigma)
     ok = sum(1 for w in range(len(dec)) if dec[w] == ctx["plain"][w])
     frac = ok / len(dec)
-    print(f"  full decrypt with recovered key: {ok}/{len(dec)} words "
-          f"({frac:.1%}) match the planted plaintext")
+    print(
+        f"  full decrypt with recovered key: {ok}/{len(dec)} words "
+        f"({frac:.1%}) match the planted plaintext"
+    )
     assert frac >= 0.99, f"decrypt round-trip only {frac:.1%}"
 
     # Force a genuine return at the PRODUCTION anchor (1477/2926) and check
@@ -310,17 +311,27 @@ def manufactured_test(ctx, rng):
     sigma2 = conj_shift(K, d)
     fp_prod = check_key(K, sched, sigma2, ctx, strict=True)
     assert fp_prod == M, f"production check_key rejected a forced return: {fp_prod}"
-    print(f"  production gate (check_key at {DJU_A}/{DJU_B}): forced-return "
-          f"key with sigma delta {d} accepted (fp=29)")
-    print("  manufactured-sample test PASSED "
-          "(found the key, recovered base_0, decrypted)\n")
+    print(
+        f"  production gate (check_key at {DJU_A}/{DJU_B}): forced-return "
+        f"key with sigma delta {d} accepted (fp=29)"
+    )
+    print(
+        "  manufactured-sample test PASSED "
+        "(found the key, recovered base_0, decrypted)\n"
+    )
 
 
 def verify_candidate_generation(ctx, prose_path):
     """g_candidates over a vocab slice must match the census count."""
-    from quagmire_schedule_census import (lp_words, observed_rates, wilson,  # noqa: I001
-                                          phase_tables, sample_register)
     from keyword_exhaustion import DICT
+    from quagmire_schedule_census import (
+        lp_words,
+        observed_rates,
+        phase_tables,
+        sample_register,
+        wilson,  # noqa: I001
+    )
+
     print("=== candidate-generation cross-check ===")
     lens = ctx["lens"]
     words = lp_words()
@@ -344,8 +355,10 @@ def verify_candidate_generation(ctx, prose_path):
     slice_ = vocab[:500]
     gen = sum(1 for _ in g_candidates(slice_, T1, lo1, hi1, None))
     print(f"  g_candidates over first 500 words: {gen:,} (K, schedule) pairs")
-    print("  cross-check: `quagmire_schedule_census.py <prose> 500` reports "
-          "the same in-band total (1,219 at the seed-3301 register draw)")
+    print(
+        "  cross-check: `quagmire_schedule_census.py <prose> 500` reports "
+        "the same in-band total (1,219 at the seed-3301 register draw)"
+    )
     return gen
 
 
@@ -388,8 +401,9 @@ def self_test(ctx, rng):
     Mw = word_products(g_by_phase, sigma, lens)
     real = build_bases(K, sched, sigma, base_true, lens)
     for w in (0, 1, 500, 1477, 2926, len(lens)):
-        assert compose(base_true, Mw[w]) == real[w], \
+        assert compose(base_true, Mw[w]) == real[w], (
             f"base-free product wrong at word {w}"
+        )
     print("  base_0 . M_w == true base_w at all checked indices")
 
     # (2) gate is exact and base_0-independent: find a coinciding index pair
@@ -398,16 +412,20 @@ def self_test(ctx, rng):
     same = dju_delta(Mw[7], Mw[7])
     diff = dju_delta(Mw[DJU_A], Mw[DJU_B])
     assert same == M, "dju_delta of equal products != 29"
-    assert (diff == M) == (real[DJU_A] == real[DJU_B]), \
+    assert (diff == M) == (real[DJU_A] == real[DJU_B]), (
         "gate disagrees with actual base equality"
+    )
     # base_0 truly cancels: recompute the gate with a different base_0
     b2 = list(range(M))
     rng.shuffle(b2)
     real2 = build_bases(K, sched, sigma, b2, lens)
-    assert (real2[DJU_A] == real2[DJU_B]) == (diff == M), \
+    assert (real2[DJU_A] == real2[DJU_B]) == (diff == M), (
         "DJU-BEI return depends on base_0 (it must not)"
-    print(f"  gate base_0-invariant; DJU-BEI fp at 1477/2926 = {diff} "
-          f"(random key, so <29 expected)")
+    )
+    print(
+        f"  gate base_0-invariant; DJU-BEI fp at 1477/2926 = {diff} "
+        f"(random key, so <29 expected)"
+    )
 
     # (3) base_0 fit: encrypt with the true key, recover base_0 from 2-rune
     cipher, base = [], base_true[:]
@@ -415,13 +433,17 @@ def self_test(ctx, rng):
         cipher.append([base[g_by_phase[j % 5][p]] for j, p in enumerate(w)])
         base = compose(base, compose(g_by_phase[(len(w) - 1) % 5], sigma))
     cipher2 = [tuple(cipher[i]) for i in ctx["idx2"]]
-    s_true = score_2rune(cipher2, ctx["idx2"], base_true, Mw,
-                         g_by_phase[1], ctx["table"], ctx["floor"])
-    s_fit, b_fit = fit_base0(cipher2, ctx["idx2"], Mw, g_by_phase[1],
-                             ctx["table"], ctx["floor"], rng)
+    s_true = score_2rune(
+        cipher2, ctx["idx2"], base_true, Mw, g_by_phase[1], ctx["table"], ctx["floor"]
+    )
+    s_fit, b_fit = fit_base0(
+        cipher2, ctx["idx2"], Mw, g_by_phase[1], ctx["table"], ctx["floor"], rng
+    )
     agree = sum(1 for x in range(M) if b_fit[x] == base_true[x])
-    print(f"  base_0 fit: score {s_fit:.1f} vs true {s_true:.1f}, "
-          f"{agree}/29 runes recovered")
+    print(
+        f"  base_0 fit: score {s_fit:.1f} vs true {s_true:.1f}, "
+        f"{agree}/29 runes recovered"
+    )
     assert agree >= 27, f"base_0 fit recovered only {agree}/29"
     print("  self-test PASSED\n")
 
@@ -446,8 +468,7 @@ def main() -> None:
             LL += 1
         plain.append(rng.choice(pools[LL])[:L])
     idx2 = [i for i, w in enumerate(plain) if len(w) == 2]
-    ctx = {"lens": lens, "plain": plain, "idx2": idx2,
-           "table": table, "floor": floor}
+    ctx = {"lens": lens, "plain": plain, "idx2": idx2, "table": table, "floor": floor}
 
     self_test(ctx, rng)
 
@@ -463,8 +484,10 @@ def main() -> None:
         return
 
     if "--run" not in sys.argv:
-        print("self-test only. pass --run [limit] to stream candidates, "
-              "or --parallel N for the full sweep.")
+        print(
+            "self-test only. pass --run [limit] to stream candidates, "
+            "or --parallel N for the full sweep."
+        )
         return
 
     limit = None
@@ -477,6 +500,7 @@ def main() -> None:
 def sigma_candidates(vocab, cross, lo_s, hi_s):
     """Keyword disks whose seam diagonal sits in the observed CI."""
     from keyword_exhaustion import alphabets, kw_runes
+
     out = []
     posv = np.empty(M, dtype=np.int64)
     for word in vocab:
@@ -502,12 +526,24 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
     """
     from keyword_exhaustion import alphabets, kw_runes
     from quagmire_schedule_census import constrained_floor, delta_vectors
+
     r = np.arange(M, dtype=np.int64)
-    IDX0 = (-(r[:, None, None, None] + r[None, :, None, None]
-              + r[None, None, :, None] + r[None, None, None, :])) % M
+    IDX0 = (
+        -(
+            r[:, None, None, None]
+            + r[None, :, None, None]
+            + r[None, None, :, None]
+            + r[None, None, None, :]
+        )
+    ) % M
     nz = r != 0
-    NZ = (nz[:, None, None, None] & nz[None, :, None, None]
-          & nz[None, None, :, None] & nz[None, None, None, :] & (IDX0 != 0))
+    NZ = (
+        nz[:, None, None, None]
+        & nz[None, :, None, None]
+        & nz[None, None, :, None]
+        & nz[None, None, None, :]
+        & (IDX0 != 0)
+    )
     n = 0
     for word in vocab:
         seq = kw_runes(word)
@@ -517,8 +553,12 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
             v1 = delta_vectors(K, T1, -1)
             if constrained_floor(v1) > hi1:
                 continue
-            g4 = (v1[1][:, None, None, None] + v1[2][None, :, None, None]
-                  + v1[3][None, None, :, None] + v1[4][None, None, None, :])
+            g4 = (
+                v1[1][:, None, None, None]
+                + v1[2][None, :, None, None]
+                + v1[3][None, None, :, None]
+                + v1[4][None, None, None, :]
+            )
             rate1 = g4 + v1[0][IDX0]
             mask = (rate1 >= lo1) & (rate1 <= hi1) & NZ
             i1, i2, i3, i4 = np.nonzero(mask)
@@ -532,11 +572,15 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
 
 def build_setup(prose_path, lens):
     """Register tables, sigma candidates, vocab — shared by pilot/workers."""
-    from quagmire_schedule_census import (observed_rates, phase_tables,  # noqa: I001
-                                          sample_register, wilson)
     from keyword_exhaustion import DICT
+    from quagmire_schedule_census import (
+        lp_words,
+        observed_rates,
+        phase_tables,  # noqa: I001
+        sample_register,
+        wilson,
+    )
 
-    from quagmire_schedule_census import lp_words
     words = lp_words()
     obs = observed_rates(words)
     lo1, hi1 = wilson(*obs[1])
@@ -559,9 +603,23 @@ def build_setup(prose_path, lens):
     return words, vocab, T1, lo1, hi1, sigmas
 
 
-def sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases, lens,
-                cipher2, idx2, table, floor, rng,
-                thresh=-4000.0, min_fp=6, limit=None):
+def sweep_chunk(
+    vocab,
+    T1,
+    lo1,
+    hi1,
+    sigmas,
+    phases,
+    lens,
+    cipher2,
+    idx2,
+    table,
+    floor,
+    rng,
+    thresh=-4000.0,
+    min_fp=6,
+    limit=None,
+):
     """Stream a vocab slice through the CORRECT DJU-BEI test.
 
     The observed DJU-BEI ciphertext repeat forces base_1477 and base_2926
@@ -585,8 +643,9 @@ def sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases, lens,
                 continue
             weak += 1
             Mw = word_products(g_by_phase, sigma, lens)
-            ll, b0 = fit_base0(cipher2, idx2, Mw, g_by_phase[1],
-                               table, floor, rng, restarts=2)
+            ll, b0 = fit_base0(
+                cipher2, idx2, Mw, g_by_phase[1], table, floor, rng, restarts=2
+            )
             if ll > thresh:
                 distinct = len({tuple(m) for m in Mw})
                 cands.append((K, sched, si, fp, distinct, round(ll, 1), b0))
@@ -608,16 +667,28 @@ def pilot(ctx, prose_path, rng, limit):
     _, table, floor = load_register(prose_path)
     phases = interval_phases(lens)
     t0 = time.time()
-    tested, weak, cands = sweep_chunk(vocab, T1, lo1, hi1, sigmas, phases,
-                                      lens, real_cipher2, real_idx2, table,
-                                      floor, rng, limit=limit)
+    tested, weak, cands = sweep_chunk(
+        vocab,
+        T1,
+        lo1,
+        hi1,
+        sigmas,
+        phases,
+        lens,
+        real_cipher2,
+        real_idx2,
+        table,
+        floor,
+        rng,
+        limit=limit,
+    )
     dt = time.time() - t0
     rate = tested / dt if dt else 0
     print(f"tested {tested:,} full keys in {dt:.1f}s ({rate:,.0f}/s)")
-    print(f"  weak DJU-BEI (fp>=6): {weak}; candidates (2-rune LL>-4000): "
-          f"{len(cands)}")
-    for _K, sched, _si, fp, distinct, ll, _b0 in sorted(
-            cands, key=lambda c: -c[5])[:10]:
+    print(f"  weak DJU-BEI (fp>=6): {weak}; candidates (2-rune LL>-4000): {len(cands)}")
+    for _K, sched, _si, fp, distinct, ll, _b0 in sorted(cands, key=lambda c: -c[5])[
+        :10
+    ]:
         tag = "degen" if distinct < 600 else "GENUINE"
         print(f"    LL {ll} fp {fp} bases {distinct} [{tag}] sched {sched}")
 
@@ -639,23 +710,26 @@ def analyze_survivor(K, sched, sigma, lens, cipher2, idx2, table, floor, rng):
 def report_survivors(survivors, sigmas, lens, cipher2, idx2, ctx, rng):
     """base_0-fit the strict survivors on the real 2-rune words."""
     if not survivors:
-        print("no strict DJU-BEI survivors in this slice "
-              "(expected unless the true key is in the family).")
+        print(
+            "no strict DJU-BEI survivors in this slice "
+            "(expected unless the true key is in the family)."
+        )
         return
     print(f"fitting base_0 on {min(len(survivors), 50)} survivors:")
     scored = []
     for K, sched, si in survivors[:50]:
-        distinct, ll, _ = analyze_survivor(K, sched, sigmas[si], lens,
-                                           cipher2, idx2, ctx["table"],
-                                           ctx["floor"], rng)
+        distinct, ll, _ = analyze_survivor(
+            K, sched, sigmas[si], lens, cipher2, idx2, ctx["table"], ctx["floor"], rng
+        )
         scored.append((ll, distinct, sched))
     scored.sort(reverse=True)
     for ll, distinct, sched in scored[:10]:
         tag = "DEGENERATE" if distinct < 600 else "non-degenerate"
-        print(f"  2-rune LL {ll:.1f}  bases {distinct:>4} [{tag}]  "
-              f"sched {sched}")
-    print("(a real key: many bases AND high 2-rune LL; degenerate = the "
-          "excluded sigma-in-<g> return)")
+        print(f"  2-rune LL {ll:.1f}  bases {distinct:>4} [{tag}]  sched {sched}")
+    print(
+        "(a real key: many bases AND high 2-rune LL; degenerate = the "
+        "excluded sigma-in-<g> return)"
+    )
 
 
 _W = {}
@@ -668,15 +742,35 @@ def _init_worker(prose_path, lens):
     _, table, floor = load_register(prose_path)
     idx2 = [i for i, w in enumerate(words) if len(w) == 2]
     cipher2 = [tuple(words[i]) for i in idx2]
-    _W.update(words=words, T1=T1, lo1=lo1, hi1=hi1, sigmas=sigmas,
-              cipher2=cipher2, idx2=idx2, table=table, floor=floor,
-              rng=random.Random(3301))
+    _W.update(
+        words=words,
+        T1=T1,
+        lo1=lo1,
+        hi1=hi1,
+        sigmas=sigmas,
+        cipher2=cipher2,
+        idx2=idx2,
+        table=table,
+        floor=floor,
+        rng=random.Random(3301),
+    )
 
 
 def _work(chunk):
-    return sweep_chunk(chunk, _W["T1"], _W["lo1"], _W["hi1"], _W["sigmas"],
-                       _W["phases"], _W["lens"], _W["cipher2"], _W["idx2"],
-                       _W["table"], _W["floor"], _W["rng"])
+    return sweep_chunk(
+        chunk,
+        _W["T1"],
+        _W["lo1"],
+        _W["hi1"],
+        _W["sigmas"],
+        _W["phases"],
+        _W["lens"],
+        _W["cipher2"],
+        _W["idx2"],
+        _W["table"],
+        _W["floor"],
+        _W["rng"],
+    )
 
 
 def parallel(ctx, prose_path, nproc):
@@ -685,6 +779,7 @@ def parallel(ctx, prose_path, nproc):
     from multiprocessing import Pool
 
     from keyword_exhaustion import DICT
+
     lens = ctx["lens"]
     vocab = []
     with open(DICT) as fh:
@@ -696,14 +791,15 @@ def parallel(ctx, prose_path, nproc):
     chunks = [vocab[i::nchunks] for i in range(nchunks)]
     out_path = ROOT / "experiments" / "quagmire_candidates.jsonl"
     with out_path.open("w") as fout:
-        print(f"=== parallel sweep (weak-DJU-BEI + 2-rune fit): "
-              f"{len(vocab):,} words, {nproc} workers ===")
+        print(
+            f"=== parallel sweep (weak-DJU-BEI + 2-rune fit): "
+            f"{len(vocab):,} words, {nproc} workers ==="
+        )
         print(f"candidates (2-rune LL > -4000) -> {out_path}")
         t0 = time.time()
         tested = weak = ncand = 0
         best_ll = -1e18
-        with Pool(nproc, initializer=_init_worker,
-                  initargs=(prose_path, lens)) as pool:
+        with Pool(nproc, initializer=_init_worker, initargs=(prose_path, lens)) as pool:
             for tc, wk, cands in pool.imap_unordered(_work, chunks):
                 tested += tc
                 weak += wk
@@ -711,24 +807,41 @@ def parallel(ctx, prose_path, nproc):
                     ncand += 1
                     best_ll = max(best_ll, ll)
                     degen = distinct < 600
-                    rec = {"sched": sched, "sigma_idx": si, "fp": fp,
-                           "bases": distinct, "two_rune_ll": ll,
-                           "degenerate": degen, "K": K, "base0": b0}
+                    rec = {
+                        "sched": sched,
+                        "sigma_idx": si,
+                        "fp": fp,
+                        "bases": distinct,
+                        "two_rune_ll": ll,
+                        "degenerate": degen,
+                        "K": K,
+                        "base0": b0,
+                    }
                     fout.write(json.dumps(rec) + "\n")
                     fout.flush()
-                    print(f"  *** CANDIDATE #{ncand}: 2-rune LL {ll} fp {fp} "
-                          f"bases {distinct} {'[degen]' if degen else '[GENUINE]'}"
-                          f" sched {sched}", flush=True)
-                print(f"  progress: {tested:,} keys, {weak} weak(fp>=6), "
-                      f"{ncand} cands, best LL {best_ll:.0f}, "
-                      f"{time.time()-t0:.0f}s", flush=True)
+                    print(
+                        f"  *** CANDIDATE #{ncand}: 2-rune LL {ll} fp {fp} "
+                        f"bases {distinct} {'[degen]' if degen else '[GENUINE]'}"
+                        f" sched {sched}",
+                        flush=True,
+                    )
+                print(
+                    f"  progress: {tested:,} keys, {weak} weak(fp>=6), "
+                    f"{ncand} cands, best LL {best_ll:.0f}, "
+                    f"{time.time() - t0:.0f}s",
+                    flush=True,
+                )
     dt = time.time() - t0
-    print(f"\nDONE: {tested:,} keys in {dt/3600:.2f}h "
-          f"({tested/dt:,.0f}/s); {weak} weak(fp>=6), {ncand} candidates, "
-          f"best 2-rune LL {best_ll:.0f}")
+    print(
+        f"\nDONE: {tested:,} keys in {dt / 3600:.2f}h "
+        f"({tested / dt:,.0f}/s); {weak} weak(fp>=6), {ncand} candidates, "
+        f"best 2-rune LL {best_ll:.0f}"
+    )
     print(f"candidates written to {out_path}")
-    print("(a genuine keyword-Quagmire key: 2-rune LL ~-1300, non-degenerate; "
-          "if best LL stays ~-4900 the family is excluded)")
+    print(
+        "(a genuine keyword-Quagmire key: 2-rune LL ~-1300, non-degenerate; "
+        "if best LL stays ~-4900 the family is excluded)"
+    )
 
 
 if __name__ == "__main__":

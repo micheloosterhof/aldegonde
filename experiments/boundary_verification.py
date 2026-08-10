@@ -76,14 +76,20 @@ def main() -> None:
             continue
         for idx, (line, text) in enumerate(zip(img_lines, lines)):
             img = [t for t in tokens(line) if t not in "'\""]
-            txt = ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
+            txt = [
+                "R" if RUNE.match(c) else c
+                for c in text
+                if RUNE.match(c) or c in c3301.MARK_CHARS
+            ]
             totals["lines compared"] += 1
             if img == txt:
                 totals["exact match"] += 1
                 continue
             # a trailing separator the transcription omits at a line end is a
             # known convention difference, not a missing word break
-            if img[:len(txt)] == txt and all(t in c3301.MARK_CHARS for t in img[len(txt):]):
+            if img[: len(txt)] == txt and all(
+                t in c3301.MARK_CHARS for t in img[len(txt) :]
+            ):
                 totals["extra trailing separator"] += 1
                 continue
             totals["genuine mismatch"] += 1
@@ -103,17 +109,26 @@ def main() -> None:
                 detail.append((page, idx, "".join(img), "".join(txt)))
 
     print("word-separator verification, image against transcription\n")
-    for k in ("lines compared", "exact match", "extra trailing separator",
-              "genuine mismatch", "reader fault (rune count differs)",
-              "clean separator disagreement", "  image has more separators",
-              "  text has more separators", "page line-count mismatch"):
+    for k in (
+        "lines compared",
+        "exact match",
+        "extra trailing separator",
+        "genuine mismatch",
+        "reader fault (rune count differs)",
+        "clean separator disagreement",
+        "  image has more separators",
+        "  text has more separators",
+        "page line-count mismatch",
+    ):
         print(f"   {k:>28}: {totals[k]}")
 
     compared = totals["lines compared"]
     if compared:
         clean = totals["exact match"] + totals["extra trailing separator"]
-        print(f"\n   {clean}/{compared} = {clean / compared:.1%} of lines carry "
-              "exactly the transcribed separators")
+        print(
+            f"\n   {clean}/{compared} = {clean / compared:.1%} of lines carry "
+            "exactly the transcribed separators"
+        )
 
     if detail:
         print("\nfirst mismatching lines (img above, txt below)")

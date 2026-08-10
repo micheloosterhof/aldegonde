@@ -3,6 +3,7 @@
 """Zero triplets. Significance: Poisson tail of observing 0 given the count
 expected from the OBSERVED doublet rate (not the uniform rate) -- i.e. even
 granting doublet suppression, are triplets rarer still?"""
+
 from __future__ import annotations
 
 import math
@@ -22,7 +23,9 @@ def main() -> None:
     exp_given_doublet = (n - 2) * p_d * p_d
     print(f"triplets observed: {trip}")
     print(f"expected under uniform (1/29^2): {exp_uniform:.1f}")
-    print(f"expected if doublets were independent at observed rate: {exp_given_doublet:.2f}")
+    print(
+        f"expected if doublets were independent at observed rate: {exp_given_doublet:.2f}"
+    )
     print(f"Poisson P(0 | uniform expectation) = {math.exp(-exp_uniform):.1e}")
     print("VERDICT: zero triplets -- consistent with doublet suppression extending")
     print("to runs (a doubled rune is never immediately re-doubled).")

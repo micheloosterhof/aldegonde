@@ -41,7 +41,7 @@ from sigma_algebraic_floor import tables  # noqa: E402
 
 M = 29
 TARGET = 0.0063
-BAND = (0.004, 0.009)   # plausible range for the g diagonal
+BAND = (0.004, 0.009)  # plausible range for the g diagonal
 
 
 def orderings(rng):
@@ -49,14 +49,53 @@ def orderings(rng):
     base = list(range(M))
     yield "gematria order", base
     yield "reversed", base[::-1]
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
-              59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109]
+    primes = [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17,
+        19,
+        23,
+        29,
+        31,
+        37,
+        41,
+        43,
+        47,
+        53,
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
+        101,
+        103,
+        107,
+        109,
+    ]
     yield "prime-value order", sorted(base, key=lambda i: primes[i])
     yield "prime-value desc", sorted(base, key=lambda i: -primes[i])
     eng = c3301.CICADA_ENGLISH_ALPHABET
     yield "english-alphabetical", sorted(base, key=lambda i: eng[i])
-    for kw in ("DIUINITY", "CIRCUMFERENCE", "INSTAR", "PARABLE", "PRIMES",
-               "TOTIENT", "AETHEREAL", "MOBIUS", "SHADOW", "WISDOM"):
+    for kw in (
+        "DIUINITY",
+        "CIRCUMFERENCE",
+        "INSTAR",
+        "PARABLE",
+        "PRIMES",
+        "TOTIENT",
+        "AETHEREAL",
+        "MOBIUS",
+        "SHADOW",
+        "WISDOM",
+    ):
         seq, seen = [], set()
         for ch in kw:
             for i, name in enumerate(eng):
@@ -68,17 +107,19 @@ def orderings(rng):
 
 
 def fills():
-    yield "row-major", lambda cells: [cells[r * 5:(r + 1) * 5]
-                                      for r in range(5)]
-    yield "column-major", lambda cells: [[cells[c * 5 + r] for c in range(5)]
-                                         for r in range(5)]
+    yield "row-major", lambda cells: [cells[r * 5 : (r + 1) * 5] for r in range(5)]
+    yield (
+        "column-major",
+        lambda cells: [[cells[c * 5 + r] for c in range(5)] for r in range(5)],
+    )
 
     def boustro(cells):
         rows = []
         for r in range(5):
-            row = cells[r * 5:(r + 1) * 5]
+            row = cells[r * 5 : (r + 1) * 5]
             rows.append(row if r % 2 == 0 else row[::-1])
         return rows
+
     yield "boustrophedon", boustro
 
 
@@ -110,6 +151,7 @@ def main() -> None:
     from d5_partial_leak import to_runeglish
     from doublet_position_profile import IDX_ENG
     from ea_direction_test import PROSE_CACHE, prose_words
+
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     pools: dict[int, list[list[int]]] = {}
     for w in prose_words(prose_path):
@@ -118,13 +160,17 @@ def main() -> None:
             pools.setdefault(len(r), []).append(r)
     _, within = tables(lens, pools, rng)
 
-    print(f"required g diagonal ~{TARGET} (band {BAND[0]}-{BAND[1]}); "
-          f"random order-5 permutation gives ~0.034\n")
+    print(
+        f"required g diagonal ~{TARGET} (band {BAND[0]}-{BAND[1]}); "
+        f"random order-5 permutation gives ~0.034\n"
+    )
     offset_sets = list(itertools.product([1, 2, 3, 4], repeat=5))
     fixed_choices = list(itertools.combinations(range(M), 4))
-    print(f"search space per ordering x fill: {len(fixed_choices)} fixed-rune "
-          f"choices x {len(offset_sets)} rotation sets = "
-          f"{len(fixed_choices) * len(offset_sets):,}")
+    print(
+        f"search space per ordering x fill: {len(fixed_choices)} fixed-rune "
+        f"choices x {len(offset_sets)} rotation sets = "
+        f"{len(fixed_choices) * len(offset_sets):,}"
+    )
 
     # The diagonal decomposes as a sum over the 4 fixed runes plus one
     # independent term per column, so the best rotation can be chosen per
@@ -135,8 +181,10 @@ def main() -> None:
         total = 0.0
         for c in range(5):
             col = [grid[r][c] for r in range(5)]
-            total += min(sum(within[col[(r + k) % 5]][col[r]]
-                             for r in range(5)) for k in (1, 2, 3, 4))
+            total += min(
+                sum(within[col[(r + k) % 5]][col[r]] for r in range(5))
+                for k in (1, 2, 3, 4)
+            )
         return total
 
     overall = []
@@ -152,16 +200,22 @@ def main() -> None:
                 if v < best[0]:
                     best = (v, fixed)
             overall.append((best[0], oname, fname))
-            print(f"  {oname:<22} {fname:<14} min diagonal {best[0]:.4f}"
-                  + ("  <-- IN BAND" if BAND[0] <= best[0] <= BAND[1] else ""))
+            print(
+                f"  {oname:<22} {fname:<14} min diagonal {best[0]:.4f}"
+                + ("  <-- IN BAND" if BAND[0] <= best[0] <= BAND[1] else "")
+            )
     overall.sort()
-    print(f"\nbest structured construction: {overall[0][0]:.4f} "
-          f"({overall[0][1]}, {overall[0][2]})")
+    print(
+        f"\nbest structured construction: {overall[0][0]:.4f} "
+        f"({overall[0][1]}, {overall[0][2]})"
+    )
     print(f"required: {TARGET:.4f}")
     if overall[0][0] > BAND[1]:
-        print("=> NO structured grid construction reaches the required "
-              "diagonal:\n   g cannot be order- or keyword-derived; it must "
-              "be tuned\n   against the bigram table directly.")
+        print(
+            "=> NO structured grid construction reaches the required "
+            "diagonal:\n   g cannot be order- or keyword-derived; it must "
+            "be tuned\n   against the bigram table directly."
+        )
 
 
 if __name__ == "__main__":

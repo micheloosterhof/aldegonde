@@ -71,7 +71,9 @@ def copy_overlay(flat, word_of, rate, rng):
                 part = i + 1 if rng.random() < 0.5 else i - 4
                 if 5 <= part < len(out):
                     c2 = out[part - 5]
-                    if c2 != out[part - 1] and (part + 1 >= len(out) or c2 != out[part + 1]):
+                    if c2 != out[part - 1] and (
+                        part + 1 >= len(out) or c2 != out[part + 1]
+                    ):
                         out[part] = c2
                 i += 5
                 continue
@@ -101,7 +103,9 @@ def stats(flat, word_of):
     matches = [i for i in range(n - 5) if flat[i] == flat[i + 5]]
     seps = Counter(b - a for a, b in zip(matches, matches[1:]))
     return {
-        "doublets": doub, "triplets": trip, "nioc": round(nioc, 3),
+        "doublets": doub,
+        "triplets": trip,
+        "nioc": round(nioc, 3),
         "d5_ioc": round(d5_ioc, 2),
         "pairs": {d: seps[d] for d in (1, 2, 3, 4, 5, 6)},
         "lag5_matches": len(matches),
@@ -122,27 +126,37 @@ def main() -> None:
             v += 40.0 * (diag_rate(mats[d][0], acc) - CHANCE) ** 2
         return v
 
-    g = min((tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng)
-             for _ in range(4)), key=g_obj)
-    sigma = tune(perm_from_cycles([9, 7, 7, 3, 3], rng),
-                 lambda s: (diag_rate(P1, s) - 0.0079) ** 2, rng, iters=10000)
+    g = min(
+        (tune(perm_from_cycles([5] * 5 + [1] * 4, rng), g_obj, rng) for _ in range(4)),
+        key=g_obj,
+    )
+    sigma = tune(
+        perm_from_cycles([9, 7, 7, 3, 3], rng),
+        lambda s: (diag_rate(P1, s) - 0.0079) ** 2,
+        rng,
+        iters=10000,
+    )
     base0 = list(range(M))
     rng.shuffle(base0)
 
     cipher_words = encipher(words, g, base0, sigma)
     flat, word_of = flatten_with_bounds(cipher_words)
 
-    print("LP targets (12,956 runes): doublets 86, triplets 0, nIoC 1.00, "
-          "d5_ioc 1.43; lag-5 pairs d1 29, d4 28, d2/d3/d5 ~14 (at chance)")
+    print(
+        "LP targets (12,956 runes): doublets 86, triplets 0, nIoC 1.00, "
+        "d5_ioc 1.43; lag-5 pairs d1 29, d4 28, d2/d3/d5 ~14 (at chance)"
+    )
     print("Selectivity test: does d1,d4 >> d2,d3,d5? (LP: yes; that's the anomaly)\n")
 
     def show(label, flat_):
         s = stats(flat_, word_of)
         p = s["pairs"]
         chance = (p[2] + p[3] + p[5]) / 3
-        print(f"{label}: doub {s['doublets']} trip {s['triplets']} nIoC {s['nioc']} "
-              f"d5_ioc {s['d5_ioc']} | pairs {p} | "
-              f"d1+d4={p[1] + p[4]} vs 2*(d2,d3,d5 mean)={2 * chance:.0f}")
+        print(
+            f"{label}: doub {s['doublets']} trip {s['triplets']} nIoC {s['nioc']} "
+            f"d5_ioc {s['d5_ioc']} | pairs {p} | "
+            f"d1+d4={p[1] + p[4]} vs 2*(d2,d3,d5 mean)={2 * chance:.0f}"
+        )
 
     show("walk alone                ", flat)
     for rate in (0.001, 0.002, 0.004):

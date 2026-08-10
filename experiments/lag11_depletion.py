@@ -82,7 +82,9 @@ def coincidence_prob(stream: list[int]) -> float:
     return sum((c / n) ** 2 for c in counts)
 
 
-def kappa_z(stream: list[int], skip: int, prob: float) -> tuple[int, float, float, float]:
+def kappa_z(
+    stream: list[int], skip: int, prob: float
+) -> tuple[int, float, float, float]:
     """Return (count, expected, z, normalized_ioc) for one skip, frequency-based null.
 
     Expected and its standard deviation come from a Bernoulli(prob) model over
@@ -189,11 +191,16 @@ def test_d_montecarlo(stream: list[int]) -> None:
     skips = list(range(2, MAX_LAG + 1))
 
     def statistic(sample):
-        return {s: float(sum(1 for i in range(len(sample) - s)
-                             if sample[i] == sample[i + s])) for s in skips}
+        return {
+            s: float(
+                sum(1 for i in range(len(sample) - s) if sample[i] == sample[i + s])
+            )
+            for s in skips
+        }
 
-    results = monte_carlo_map(statistic, null, stream, keys=skips,
-                              trials=5000, seed=SEED)
+    results = monte_carlo_map(
+        statistic, null, stream, keys=skips, trials=5000, seed=SEED
+    )
     comp = results[FOCUS_LAG]
     p_mc = comp.p_lower
     z = comp.z
@@ -218,8 +225,7 @@ def test_e_word_boundary(sections: list[list[list[int]]]) -> None:
     across = bc.across_observed / bc.across_pairs if bc.across_pairs else 0.0
     print(f"  within-word: {bc.within_observed}/{bc.within_pairs} = {within:.4f}")
     print(f"  across-word: {bc.across_observed}/{bc.across_pairs} = {across:.4f}")
-    perm = boundary_permutation_test(sections, FOCUS_LAG,
-                                     permutations=5000, seed=SEED)
+    perm = boundary_permutation_test(sections, FOCUS_LAG, permutations=5000, seed=SEED)
     print(
         f"  within-word matches vs length-shuffle null: obs={perm.observed} "
         f"null={perm.null_mean:.1f}+-{perm.null_sd:.1f} p(>=obs)={perm.p_value:.4f}"
@@ -232,8 +238,10 @@ def main() -> None:
     sections = parse_clean_sections()
     stream = [r for s in sections for w in s for r in w]
     prob = coincidence_prob(stream)
-    print(f"corpus: {len(stream)} runes, {len(sections)} sections, "
-          f"chance match rate {prob:.5f} (uniform 1/29 = {1/ALPHA:.5f})\n")
+    print(
+        f"corpus: {len(stream)} runes, {len(sections)} sections, "
+        f"chance match rate {prob:.5f} (uniform 1/29 = {1 / ALPHA:.5f})\n"
+    )
     rows = test_a_wide_scan(stream, prob)
     test_b_mod5(rows)
     test_c_sections(sections, prob)

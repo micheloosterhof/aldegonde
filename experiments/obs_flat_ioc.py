@@ -2,6 +2,7 @@
 # ABOUTME: and a chi-square uniformity test that does not reject uniformity.
 """Flat unigram distribution. Significance: chi-square goodness-of-fit vs uniform
 (28 df) and the normalized IoC (1.00 = random)."""
+
 from __future__ import annotations
 
 from collections import Counter
@@ -17,6 +18,7 @@ def main() -> None:
     chi2 = sum((c[i] - exp) ** 2 / exp for i in range(N))
     # chi-square survival for 28 df via Wilson-Hilferty approximation
     import math
+
     k = N - 1
     x = chi2 / k
     z = (x ** (1 / 3) - (1 - 2 / (9 * k))) / math.sqrt(2 / (9 * k))

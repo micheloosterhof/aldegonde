@@ -89,7 +89,7 @@ def make_g(census, rng):
     g = list(range(M))
     i = 0
     for L in census:
-        cyc = pts[i:i + L]
+        cyc = pts[i : i + L]
         i += L
         for k in range(L):
             g[cyc[k]] = cyc[(k + 1) % L]
@@ -105,8 +105,10 @@ def conjugate(g, a, b):
 def anneal_to_target(g, T1, rng, target, iters=6000):
     """Anneal |diag - target| so the tuning depth matches the LP, not the
     floor."""
+
     def obj(gg):
         return abs(sum(T1[gg[y]][y] for y in range(M)) - target)
+
     cur = obj(g)
     best_g, best = g[:], cur
     temp = 0.003
@@ -137,8 +139,7 @@ def main() -> None:
         for j in range(L):
             for d in range(1, min(MAXD + 1, L - j)):
                 counts[d] += 1
-    se = {d: math.sqrt(lp_prof[d] * (1 - lp_prof[d]) / counts[d])
-          for d in lp_prof}
+    se = {d: math.sqrt(lp_prof[d] * (1 - lp_prof[d]) / counts[d]) for d in lp_prof}
 
     prose_path = Path(sys.argv[1]) if len(sys.argv) > 1 else PROSE_CACHE
     if not prose_path.exists():
@@ -156,8 +157,10 @@ def main() -> None:
             nacc[d] += 1
     K = {d: acc[d] / nacc[d] for d in acc}
     B = {d: (1 - K[d]) / 28 for d in K}
-    print("corrected real-word K_d: "
-          + "  ".join(f"d{d} {K[d]:.4f}" for d in sorted(K) if d <= 8))
+    print(
+        "corrected real-word K_d: "
+        + "  ".join(f"d{d} {K[d]:.4f}" for d in sorted(K) if d <= 8)
+    )
     print("(first-pass segment K_d was d2 .0430 d3 .0576 d4 .0581 d5 .0602)")
 
     print("\ncorrected phi ladder:")
@@ -165,8 +168,10 @@ def main() -> None:
         b = B[d]
         phi = (lp_prof[d] - b) / (K[d] - b)
         sd = se[d] / (K[d] - b)
-        print(f"  d={d}: phi {phi:+.2f} ± {sd:.2f}"
-              + ("  (order-5 predicts 1.0)" if d == 5 else ""))
+        print(
+            f"  d={d}: phi {phi:+.2f} ± {sd:.2f}"
+            + ("  (order-5 predicts 1.0)" if d == 5 else "")
+        )
 
     # corrected census scan
     def score(census):
@@ -185,8 +190,9 @@ def main() -> None:
             A[d], Bs[d] = a, bsum
         w = {d: 1 / se[d] ** 2 for d in DS}
         den = sum(w[d] * Bs[d] ** 2 for d in DS)
-        s_hat = (sum(w[d] * Bs[d] * (lp_prof[d] - A[d]) for d in DS) / den
-                 if den else 0.0)
+        s_hat = (
+            sum(w[d] * Bs[d] * (lp_prof[d] - A[d]) for d in DS) / den if den else 0.0
+        )
         s_hat = min(max(s_hat, 0.0), 0.0345)
         chi = sum(w[d] * (A[d] + Bs[d] * s_hat - lp_prof[d]) ** 2 for d in DS)
         return chi, s_hat
@@ -203,9 +209,11 @@ def main() -> None:
         cs = "+".join(str(L) for L in sorted(census, reverse=True) if L > 1)
         nf = sum(1 for L in census if L == 1)
         print(f"  {cs + (f'+{nf}f' if nf else ''):>30}  chi2 {chi:6.2f}")
-    for name, census in (("5+5+5+7+7", (7, 7, 5, 5, 5)),
-                         ("4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
-                         ("5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1))):
+    for name, census in (
+        ("5+5+5+7+7", (7, 7, 5, 5, 5)),
+        ("4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
+        ("5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1)),
+    ):
         chi, _ = score(census)
         rank = 1 + sum(1 for c, _ in results if c < chi - 1e-12)
         print(f"  {name:>30}  chi2 {chi:6.2f}  rank {rank}/{len(results)}")
@@ -218,15 +226,17 @@ def main() -> None:
                 T1[w[j]][w[j + 1]] += 1
     T1 /= T1.sum()
 
-    print(f"\ncorrected simulations (real words, diagonal tuned to "
-          f"{DIAG_TARGET}):")
-    print(f"{'model':<18}"
-          + "".join(f"{f'd{d}':>7}" for d in range(1, MAXD + 1)))
-    print(f"{'LP observed':<18}"
-          + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1)))
-    for name, census in (("5+5+5+7+7", (7, 7, 5, 5, 5)),
-                         ("4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
-                         ("5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1))):
+    print(f"\ncorrected simulations (real words, diagonal tuned to {DIAG_TARGET}):")
+    print(f"{'model':<18}" + "".join(f"{f'd{d}':>7}" for d in range(1, MAXD + 1)))
+    print(
+        f"{'LP observed':<18}"
+        + "".join(f"{lp_prof.get(d, 0):>7.4f}" for d in range(1, MAXD + 1))
+    )
+    for name, census in (
+        ("5+5+5+7+7", (7, 7, 5, 5, 5)),
+        ("4x5+2x4+1f", (5, 5, 5, 5, 4, 4, 1)),
+        ("5x5+4f", (5, 5, 5, 5, 5, 1, 1, 1, 1)),
+    ):
         order = 1
         for L in set(census):
             order = order * L // math.gcd(order, L)
@@ -249,9 +259,13 @@ def main() -> None:
             for d, v in p.items():
                 pacc[d] += v
                 pn[d] += 1
-        print(f"{name:<18}"
-              + "".join(f"{pacc[d] / pn[d]:>7.4f}" if pn[d] else f"{'·':>7}"
-                        for d in range(1, MAXD + 1)))
+        print(
+            f"{name:<18}"
+            + "".join(
+                f"{pacc[d] / pn[d]:>7.4f}" if pn[d] else f"{'·':>7}"
+                for d in range(1, MAXD + 1)
+            )
+        )
 
 
 if __name__ == "__main__":
