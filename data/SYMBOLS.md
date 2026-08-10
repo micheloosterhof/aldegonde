@@ -77,6 +77,45 @@ A word therefore cannot run through one. `c3301.NUMERALS` is part of
 text after the next numeral, and the clean corpus reads 2,927 words instead of
 2,928.
 
+**Verse 3 opens without a closing mark, and that is on the page.** Four of the
+five verses are closed by a cluster mark before the next numeral — verse 1 by
+`⑩`, verse 2 by `④` then the page break, verses 4 and 5 by `④`. Verse 3 is
+preceded directly by the runes `ᚠᛒ` at the end of page 37 line 3, with no mark
+between them and the numeral. Both the page image and an independent read of the
+scan agree no mark is there.
+
+**No marker is written there, and none should be.** A circled numeral would
+claim a dot count the page does not show, and a `-` would show a separator the
+page does not have — besides colliding with the 236 literal `-` that are base-60
+separators in these files. The transcription therefore records exactly what is
+there: a line wrap, then the numeral. The boundary is carried by the numeral
+itself, which `WORD_BOUNDARY` already honours, so nothing is lost by writing
+nothing.
+
+So the word before verse 3 is bounded by the numeral alone. Under the rule above
+that yields `ᚠᛒ` and `ᛞᚢᛈ`; without it they would be the single 5-rune word
+`ᚠᛒᛞᚢᛈ`. The choice moves exactly one word out of 2,928 — the 2-rune class
+shifts 465 to 464 — so no statistic can turn on it. It is recorded here because
+`ᚠᛒ` should not be read as an ordinary short word: it is the one word in the
+corpus whose end is marked by a verse number rather than by a dot.
+
+**A numeral also appears inline inside the ciphertext, and it is dotted.** Page
+10 line 7 reads `ᛉᚩ①ᛇᛁᛡᚠᛟᛒᚦᚠ①ᛋᛒ①ᚠᛞᛇ①ᚩᚦᛏ①7①ᚷ①ᛚᛄᛖᚫ` — a black `7`, rune-sized,
+set inline with a separator dot on each side. It sits after rune 2,566, in
+`$`-section 2, so it is inside the encrypted corpus rather than the solved
+sections. It is the ONLY inline numeral there: every other digit before rune
+12,956 belongs to a base-60 block (at runes 3,612 and 12,114) or is a verse
+number.
+
+This is the precedent for treating a numeral as a word-level token. The `7` is
+delimited exactly as a word is, so it splits the text either way — the dots do
+the work, and `NUMERALS` is redundant at that site. It also sharpens the verse-3
+anomaly above: where the scribe wrote a numeral inline, they dotted BOTH sides
+of it, which is why the missing dot before verse 3 stands out.
+
+Note the `7` yields no word of its own in any rune-based count, since a word is
+a run of runes. It is a boundary that carries content.
+
 Digits also appear in the final sections — the hex block and the plaintext
 Parable in sections 10-11 — where they are content. Treating them as boundaries
 costs nothing there, since those runs hold no runes.
