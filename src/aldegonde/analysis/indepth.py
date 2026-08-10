@@ -99,9 +99,7 @@ def alignment_coincidence(
             if align == "left":
                 hits += sum(first[k] == second[k] for k in range(overlap))
             else:
-                hits += sum(
-                    first[-1 - k] == second[-1 - k] for k in range(overlap)
-                )
+                hits += sum(first[-1 - k] == second[-1 - k] for k in range(overlap))
 
     probability = 1 / alphabetsize
     expected = opportunities * probability

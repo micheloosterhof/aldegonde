@@ -95,6 +95,7 @@ DOT_MARKS = CIRCLED_ONE_TO_TWENTY | CIRCLED_TWENTY_ONE_UP
 LEGACY_MARKS = frozenset("-.")
 MARKS = DOT_MARKS | LEGACY_MARKS
 
+
 def dot_count(mark: str) -> int:
     """How many dots the mark draws on the page.
 
@@ -124,9 +125,7 @@ MARK_CHARS = "".join(sorted(MARKS))
 #: Marks of four dots or more, which the transcription collapsed onto `.`.
 #: Membership is by dot count, an observed property; what the clusters MEAN is
 #: still open, so the grouping deliberately claims nothing beyond size.
-CLUSTER_MARKS = frozenset(
-    [m for m in DOT_MARKS if dot_count(m) >= 4] + ["."]
-)
+CLUSTER_MARKS = frozenset([m for m in DOT_MARKS if dot_count(m) >= 4] + ["."])
 
 #: Marks of fewer than four dots, which the transcription collapsed onto `-`.
 #: `①` is the word separator; `③` is the triple-dot mark.

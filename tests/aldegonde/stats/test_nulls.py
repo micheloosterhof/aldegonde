@@ -13,6 +13,7 @@ from aldegonde.stats.nulls import doublet_shuffle, no_doublet_shuffle, shuffle
 def _doublet_rate(seq: Sequence[object]) -> float:
     return sum(1 for a, b in zip(seq, seq[1:]) if a == b) / (len(seq) - 1)
 
+
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 

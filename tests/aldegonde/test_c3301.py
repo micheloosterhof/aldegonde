@@ -94,7 +94,10 @@ def test_dot_count_refuses_the_legacy_marks() -> None:
 
 def test_cluster_marks_are_what_the_transcription_wrote_as_a_dot() -> None:
     """'.' collapsed every mark of four dots or more; '-' the one- and three-dot."""
-    assert frozenset("④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟.") == c3301.CLUSTER_MARKS
+    assert (
+        frozenset("④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟.")
+        == c3301.CLUSTER_MARKS
+    )
     assert frozenset("①②③-") == c3301.WORD_MARKS
     assert c3301.CLUSTER_MARKS | c3301.WORD_MARKS == c3301.MARKS
     assert not c3301.CLUSTER_MARKS & c3301.WORD_MARKS
@@ -119,6 +122,6 @@ def test_numeral_chars_is_the_numeral_set_as_a_string() -> None:
 
 def test_word_boundary_is_marks_structure_and_numerals() -> None:
     """A script composing its own boundary set must be able to match this."""
-    assert frozenset(
-        c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
-    ) == c3301.WORD_BOUNDARY
+    assert (
+        frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS) == c3301.WORD_BOUNDARY
+    )

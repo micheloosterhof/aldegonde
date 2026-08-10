@@ -44,7 +44,9 @@ def test_monte_carlo_empirical_pvalues() -> None:
 
 def test_monte_carlo_two_sided_property() -> None:
     res = monte_carlo(_scalar, _rng_null, [0.99], trials=200, seed=0)
-    assert res.p_two_sided == pytest.approx(min(1.0, 2.0 * min(res.p_upper, res.p_lower)))
+    assert res.p_two_sided == pytest.approx(
+        min(1.0, 2.0 * min(res.p_upper, res.p_lower))
+    )
 
 
 def test_monte_carlo_is_deterministic() -> None:
@@ -64,11 +66,15 @@ def _stat_map(seq: Sequence[float]) -> Mapping[int, float]:
 
 
 def test_monte_carlo_map_keys_match_scalar() -> None:
-    result = monte_carlo_map(_stat_map, _rng_null, [0.5], keys=[1, 2], trials=100, seed=0)
+    result = monte_carlo_map(
+        _stat_map, _rng_null, [0.5], keys=[1, 2], trials=100, seed=0
+    )
     draws = _reference_draws(100, 0)
     assert set(result) == {1, 2}
     assert result[1].null_mean == pytest.approx(statistics.fmean(draws))
-    assert result[2].null_mean == pytest.approx(statistics.fmean([2.0 * v for v in draws]))
+    assert result[2].null_mean == pytest.approx(
+        statistics.fmean([2.0 * v for v in draws])
+    )
     assert result[1].observed == 0.5
     assert result[2].observed == 1.0
 

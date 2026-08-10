@@ -97,7 +97,6 @@ def validate_tabula_recta(tr: dict[T, dict[T, T]], alphabet: Sequence[T]) -> Non
 
     # Check each inner dictionary
     for outer_key, inner_dict in tr.items():
-
         # Check that all alphabet symbols are present as inner keys
         missing_inner = alphabet_set - set(inner_dict.keys())
         if missing_inner:

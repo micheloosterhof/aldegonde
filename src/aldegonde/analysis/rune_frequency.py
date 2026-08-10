@@ -84,10 +84,7 @@ class FrequencyProfile:
     def suppression_ratio(self) -> dict[int, float]:
         """Ratio of each symbol's frequency to uniform expectation."""
         uniform = 1.0 / self.alphabet_size
-        return {
-            k: freq / uniform
-            for k, freq in self.expected_frequencies.items()
-        }
+        return {k: freq / uniform for k, freq in self.expected_frequencies.items()}
 
 
 def _validate_alphabet_size(alphabet_size: int) -> None:
@@ -257,7 +254,9 @@ def truncated_byte_mapping(
             alphabet_size=alphabet_size,
         )
 
-    return _forced_mapping(byte_size, alphabet_size, suppressed_symbol, suppressed_count)
+    return _forced_mapping(
+        byte_size, alphabet_size, suppressed_symbol, suppressed_count
+    )
 
 
 def find_best_suppression(

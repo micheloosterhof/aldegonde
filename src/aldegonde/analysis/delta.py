@@ -12,11 +12,11 @@ from aldegonde.maths.modular import modDivide
 class DeltaOp(Enum):
     """Arithmetic combining each symbol with the one `skip` positions later."""
 
-    SUB = "sub"    # c[i+skip] - c[i]
+    SUB = "sub"  # c[i+skip] - c[i]
     RSUB = "rsub"  # c[i] - c[i+skip]
-    ADD = "add"    # c[i+skip] + c[i]
-    MUL = "mul"    # c[i+skip] * c[i]
-    DIV = "div"    # c[i+skip] / c[i]; raises on a non-invertible divisor
+    ADD = "add"  # c[i+skip] + c[i]
+    MUL = "mul"  # c[i+skip] * c[i]
+    DIV = "div"  # c[i+skip] / c[i]; raises on a non-invertible divisor
     RDIV = "rdiv"  # c[i] / c[i+skip]; raises on a non-invertible divisor
 
 
