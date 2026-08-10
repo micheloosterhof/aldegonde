@@ -66,6 +66,11 @@ def isomorph_statistics(dist: dict[str, int]) -> tuple[int, int]:
     return (distinct, duplicate)
 
 
+#: Seed for the isomorph null when the caller supplies no source. Fixed so a
+#: quoted z-score can be reproduced; pass `rng` to vary the draw deliberately.
+DEFAULT_NULL_SEED = 3301
+
+
 def random_isomorph_statistics(
     sequencelength: int,
     isomorphlength: int,
@@ -73,14 +78,29 @@ def random_isomorph_statistics(
     alphabetlen: int = 29,
     *,
     trace: bool = False,
+    rng: random.Random | None = None,
 ) -> tuple[float, float, float, float]:
-    """Return the mean and stdev of distinct isomorphs and mean and stdev of duplicate isomorphs."""
+    """Mean and stdev of distinct and of duplicate isomorphs in random text.
+
+    Args:
+        sequencelength: Length of each random sequence drawn
+        isomorphlength: Length of the isomorphs counted
+        samples: How many random sequences to draw
+        alphabetlen: Size of the alphabet drawn from
+        trace: Unused, kept for call compatibility
+        rng: Injected random source. Defaults to one seeded with
+            `DEFAULT_NULL_SEED`, so the null is the same on every run.
+
+    Returns:
+        (mean distinct, stdev distinct, mean duplicate, stdev duplicate)
+    """
+    source = random.Random(DEFAULT_NULL_SEED) if rng is None else rng
     distincts: list[int] = []
     duplicates: list[int] = []
 
     for _ in range(samples):
         rand: list[int] = [
-            random.randrange(0, alphabetlen) for _ in range(sequencelength)
+            source.randrange(0, alphabetlen) for _ in range(sequencelength)
         ]
         isos = isomorph_distribution(rand, isomorphlength)
         (distinct, duplicate) = isomorph_statistics(isos)

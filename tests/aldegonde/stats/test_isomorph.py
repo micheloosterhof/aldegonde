@@ -1,6 +1,12 @@
 """tests for doublets.py."""
 
-from aldegonde.stats.isomorph import isomorph, isomorph_distribution
+import random
+
+from aldegonde.stats.isomorph import (
+    isomorph,
+    isomorph_distribution,
+    random_isomorph_statistics,
+)
 
 
 def test_isomorph() -> None:
@@ -19,3 +25,19 @@ def test_all_isomorphs() -> None:
         "AABC": 1,
         "ABCD": 1,
     }
+
+
+def test_random_isomorph_statistics_is_reproducible() -> None:
+    """The null must not change between runs, or no figure quoting it is stable."""
+    first = random_isomorph_statistics(200, 4, samples=5)
+    second = random_isomorph_statistics(200, 4, samples=5)
+    assert first == second
+
+
+def test_random_isomorph_statistics_takes_an_injected_source() -> None:
+    """A caller supplying its own seeded source controls the draw."""
+    a = random_isomorph_statistics(200, 4, samples=5, rng=random.Random(7))
+    b = random_isomorph_statistics(200, 4, samples=5, rng=random.Random(7))
+    c = random_isomorph_statistics(200, 4, samples=5, rng=random.Random(8))
+    assert a == b
+    assert a != c
