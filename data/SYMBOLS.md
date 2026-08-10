@@ -67,9 +67,19 @@ Anything sensitive to word length should be reported under both.
 
 ## Other content
 
-Digits and Latin letters appear in the final sections: the hex block and the
-plaintext Parable in sections 10-11 of `page0-58.txt`. They are content, not
-annotation.
+**Verse numbers.** Pages 36-38 open each block with a large **red Arabic
+numeral** — 1, 2, 3, 4, 5 — set against whitespace and abutting the runes with
+no separator dot. They are on the page, in red like the opening runes, and they
+divide the text into numbered verses.
+
+A word therefore cannot run through one. `c3301.NUMERALS` is part of
+`WORD_BOUNDARY` for that reason: without it, a line that ends mid-word joins the
+text after the next numeral, and the clean corpus reads 2,927 words instead of
+2,928.
+
+Digits also appear in the final sections — the hex block and the plaintext
+Parable in sections 10-11 — where they are content. Treating them as boundaries
+costs nothing there, since those runs hold no runes.
 
 ## Content the transcription omits entirely
 

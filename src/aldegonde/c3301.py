@@ -97,8 +97,16 @@ MARKS = DOT_MARKS | LEGACY_MARKS
 #: Division the project added, not glyphs on the page: page, paragraph, section.
 STRUCTURE = frozenset("%&$")
 
+#: Verse numbers. Pages 36-38 open each block with a large red Arabic numeral,
+#: set against whitespace and abutting the runes with no separator dot. They are
+#: on the page but they are not runes, and a word cannot run through one: the
+#: numeral starts a new verse. Without this, a line ending mid-word joins the
+#: text after the next numeral, which is how the clean corpus briefly read 2,927
+#: words instead of 2,928.
+NUMERALS = frozenset("0123456789")
+
 #: Everything that ends a word.
-WORD_BOUNDARY = MARKS | STRUCTURE
+WORD_BOUNDARY = MARKS | STRUCTURE | NUMERALS
 
 #: Line wraps. A word runs THROUGH these -- they are not word boundaries.
 LINE_WRAP = frozenset("/\n")

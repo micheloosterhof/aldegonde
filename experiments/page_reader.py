@@ -49,6 +49,11 @@ VALLEY = 0.22         # a cut needs the column ink to fall to this fraction of m
 RED_MIN = 110         # red channel floor for a red glyph
 RED_EDGE = 55         # how far red must lead the other channels
 RED_SHARE = 0.5       # fraction of a blob's ink that must be red to call it red
+BODY_HEIGHT = (100, 130)   # the body hand, which defines the text block
+BOX_PAD_X = 95        # a trailing mark sits ~50px past the last rune
+BOX_PAD_Y = 150
+ROW_TOL = 60          # body blobs within this y of each other are one line
+MIN_ROW = 3           # a text line has at least three runes, a decoration one or two
 
 
 @dataclass
@@ -113,9 +118,54 @@ def _split_wide(box: tuple, ink: np.ndarray, unit: float) -> list[int]:
     return starts
 
 
+def text_box(tall: list) -> tuple[int, int, int, int] | None:
+    """The rectangle the body text occupies, as (x0, x1, y0, y1).
+
+    The rune text always sits in a rectangular block in the middle of the page;
+    everything outside it is decoration — the marginal crosses, spirals, plants
+    and page ornaments that the reader kept mistaking for dots. Rather than
+    filter those by shape, which needs a new rule per ornament, take the block
+    itself: the BODY runes are a dense grid at one height, so their extent is
+    the box, and anything beyond it is not text.
+
+    The box comes from the dense ROWS of body-height blobs, not from their
+    extremes. Decoration reaches body height too — the plants flanking the
+    base-60 pages have fragments 100-130px tall — and a single such fragment at
+    the page edge would define an extreme and open the box back up. A text line
+    is a row of many blobs; a plant is a row of one or two.
+
+    Returns None when the page carries no rune text at all, as the base-60
+    pages do.
+
+    Drop caps are excluded from defining it (they are taller and sit at the left
+    edge) but fall inside it, so they still read.
+    """
+    body = [t for t in tall if BODY_HEIGHT[0] <= t[2] <= BODY_HEIGHT[1]]
+    rows: list[list] = []
+    for t in sorted(body):
+        if rows and t[0] - rows[-1][-1][0] <= ROW_TOL:
+            rows[-1].append(t)
+        else:
+            rows.append([t])
+    text = [t for row in rows if len(row) >= MIN_ROW for t in row]
+    if not text:
+        return None
+    xs = [t[1] for t in text]
+    ys = [t[0] for t in text]
+    return (min(xs) - BOX_PAD_X, max(xs) + BOX_PAD_X,
+            min(ys) - BOX_PAD_Y, max(ys) + BOX_PAD_Y)
+
+
 def read_page(page: int) -> list[list[Glyph]]:
-    """Glyphs of each text line, in reading order, with artwork excluded."""
+    """Glyphs of each text line, in reading order, with decoration excluded."""
     tall, dots, ink = _blobs(page)
+
+    box = text_box(tall)
+    if box is None:
+        return []
+    x0, x1, y0, y1 = box
+    tall = [t for t in tall if x0 <= t[1] <= x1 and y0 <= t[0] <= y1]
+    dots = [d for d in dots if x0 <= d[1] <= x1 and y0 <= d[0] <= y1]
 
     runes = sorted([t for t in tall if len(t) == 5])
     bands: list[list] = []

@@ -7,6 +7,8 @@ from pathlib import Path
 import pytest
 
 from aldegonde.c3301 import CICADA_ALPHABET
+from aldegonde.c3301 import LINE_WRAP as CICADA_WRAPS
+from aldegonde.c3301 import MARKS as CICADA_MARKS
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "experiments"))
@@ -74,8 +76,11 @@ def test_quotes_alternate() -> None:
     for i, char in enumerate(text):
         if char != '"':
             continue
-        opening = text[i - 1] in "①-.\n/"
-        closing = text[i + 1] in "①-.\n/"
+        # a mark in either encoding, or a line wrap; taken from the library so
+        # a change to the mark alphabet cannot silently break this test
+        delims = CICADA_MARKS | CICADA_WRAPS
+        opening = text[i - 1] in delims
+        closing = text[i + 1] in delims
         assert opening != closing, f"mark at {i} is neither an open nor a close"
         kinds.append("open" if opening else "close")
     assert kinds == ["open", "close"] * (QUOTE_COUNT // 2)
