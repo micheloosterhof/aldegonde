@@ -123,22 +123,31 @@ def _doublet_fill(data: Sequence[T], rng: random.Random, factor: float) -> list[
     draw = rng.random
     out: list[T] = []
     previous: T | None = None
+    # `bound` is an UPPER bound on the largest remaining count, refreshed to the
+    # exact value whenever it is consulted. Counts only fall, so a stale bound
+    # can only be too high, which costs an extra scan but can never miss a
+    # symbol that must be placed now.
+    bound = max(remaining.values())
     for slots in range(n, 0, -1):
         half = slots // 2
-        # One pass over the alphabet: total candidate weight, and the at-most-one
-        # symbol whose remaining count forces it to be placed now
-        total = 0.0
         forced: T | None = None
-        for symbol in symbols:
-            count = remaining[symbol]
-            if count > half:
-                forced = symbol
-                break
-            if count:
-                total += count * (factor if symbol == previous else 1.0)
+        if bound > half:
+            # only here is a pass over the alphabet needed, and only near the end
+            bound = 0
+            for symbol in symbols:
+                count = remaining[symbol]
+                bound = max(bound, count)
+                if count > half:
+                    forced = symbol
         if forced is not None:
             chosen: T = forced
         else:
+            # The candidate weight has a closed form: remaining counts sum to the
+            # slots left, so down-weighting one symbol subtracts a known amount.
+            # That removes a second pass over the alphabet at every position.
+            total = float(slots)
+            if previous is not None:
+                total -= remaining[previous] * (1.0 - factor)
             # Weighted pick proportional to remaining count, down-weighting the
             # previous symbol by factor; equivalent to a cumulative-weight scan
             target = draw() * total

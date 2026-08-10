@@ -57,8 +57,16 @@ def iterngrams(
     Specify `cut=1` to return non-overlapping blocks of runes: ABC, DEF, ...
     Specify `cut=2` to return non-overlapping blocks of runes: BCD, EFG, ...
     """
-    for _, gram in iterngram_positions(runes, length=length, cut=cut):
-        yield gram
+    # Slice here rather than dropping the position from iterngram_positions: this
+    # runs once per ngram over the whole corpus, and delegating costs a second
+    # generator frame every time.
+    total = len(runes)
+    if cut == 0:
+        for i in range(total - length + 1):
+            yield runes[i : i + length]
+    elif 0 < cut <= length:
+        for i in range(cut - 1, total - length + 1, length):
+            yield runes[i : i + length]
 
 
 def ngrams(runes: Sequence[T], length: int, cut: int = 0) -> list[Sequence[T]]:

@@ -54,6 +54,20 @@ def doublets(
     if num_comparisons <= 0:
         return ([], 0)
 
+    if length == 1:
+        # The monographic case is the one a resampling run repeats thousands of
+        # times, and it needs no n-gram at all: comparing the two symbols is the
+        # whole test, where building a pair of one-element tuples is not.
+        positions = [
+            index
+            for index in range(num_comparisons)
+            if text[index] == text[index + skip]
+        ]
+        if trace:
+            for index in positions:
+                print(f"doublet at {index}: {text[index]} (skip={skip}, length=1)")
+        return (positions, num_comparisons)
+
     for index in range(num_comparisons):
         # Compare n-gram starting at index with n-gram starting at index + skip
         ngram1 = tuple(text[index : index + length])
