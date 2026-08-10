@@ -7,7 +7,9 @@ from pathlib import Path
 
 from aldegonde import c3301
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 random.seed(1)

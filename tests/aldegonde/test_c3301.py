@@ -120,10 +120,11 @@ def test_numeral_chars_is_the_numeral_set_as_a_string() -> None:
     assert c3301.NUMERAL_CHARS == "0123456789"
 
 
-def test_word_boundary_is_marks_structure_and_numerals() -> None:
+def test_word_boundary_is_marks_structure_numerals_and_quotes() -> None:
     """A script composing its own boundary set must be able to match this."""
     assert (
-        frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS) == c3301.WORD_BOUNDARY
+        frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
+        == c3301.WORD_BOUNDARY
     )
 
 
@@ -134,3 +135,28 @@ def test_randomrunes_accepts_an_injected_source() -> None:
     c = c3301.randomrunes(40, rng=random.Random(10))
     assert a == b
     assert a != c
+
+
+def _split(text: str) -> list[str]:
+    """Words of a rune text under the library's boundary rule."""
+    out: list[str] = []
+    cur = ""
+    for char in text:
+        if char in c3301.RUNE_SET:
+            cur += char
+        elif char in c3301.WORD_BOUNDARY and cur:
+            out.append(cur)
+            cur = ""
+    if cur:
+        out.append(cur)
+    return out
+
+
+def test_a_quote_ends_a_word() -> None:
+    """A quotation mark opens or closes speech, so it bounds the word."""
+    assert _split('ᚠᚢ"ᚦᚩ') == ["ᚠᚢ", "ᚦᚩ"]
+
+
+def test_an_apostrophe_does_not_end_a_word() -> None:
+    """A contraction is one word: the apostrophe sits inside it."""
+    assert _split("ᚠᚢ'ᚦᚩ") == ["ᚠᚢᚦᚩ"]

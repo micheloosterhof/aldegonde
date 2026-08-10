@@ -32,7 +32,9 @@ from pathlib import Path
 
 from aldegonde import c3301
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
@@ -209,7 +211,9 @@ def main() -> None:
 # rune-name -> index for the prose encoder output; IO is the IA rune
 from aldegonde import c3301  # noqa: E402
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 IDX_ENG = {name: i for i, name in enumerate(c3301.CICADA_ENGLISH_ALPHABET)}
 IDX_ENG["IO"] = IDX_ENG["IA"]

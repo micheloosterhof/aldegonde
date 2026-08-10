@@ -28,7 +28,7 @@ UNIGRAMS = "src/aldegonde/data/ngrams/runeglish/unigrams.txt"
 
 RUNES = set(c3301.CICADA_ALPHABET)
 WORD_BOUNDARIES = set(
-    c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS
+    c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
 )  # delimiters that end a word
 
 # Runeglish names of the runes that name a digraph, for the identity-rune filter.

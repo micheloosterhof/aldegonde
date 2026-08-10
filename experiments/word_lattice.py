@@ -27,7 +27,9 @@ from anomaly_scan import parse
 
 from aldegonde import c3301
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 N = 29
 RUNESET = set("".join(c3301.CICADA_ALPHABET))

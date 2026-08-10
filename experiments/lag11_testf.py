@@ -31,7 +31,9 @@ from lp_corpus import IDX, RUNE
 
 from aldegonde import c3301
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "%&" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 D = 11

@@ -50,7 +50,9 @@ from aldegonde import c3301
 # Fixed so every figure this script prints can be reproduced.
 random.seed(3301)
 
-BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "/" + c3301.NUMERAL_CHARS)
+BOUNDARY_CHARS = frozenset(
+    c3301.MARK_CHARS + "/" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
+)
 
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29

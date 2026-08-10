@@ -145,8 +145,17 @@ NUMERALS = frozenset("0123456789")
 #: The numerals as a string, to compose a boundary set alongside `MARK_CHARS`.
 NUMERAL_CHARS = "".join(sorted(NUMERALS))
 
+#: Quotation marks, recovered from the page scans. Speech opens or closes at
+#: one, so it ends the word beside it. The apostrophe is deliberately NOT here:
+#: it sits INSIDE a word, and a contraction is one word, not two.
+QUOTES = frozenset('"')
+
+#: The quotation marks as a string, to compose a boundary set alongside
+#: `MARK_CHARS` and `NUMERAL_CHARS`.
+QUOTE_CHARS = "".join(sorted(QUOTES))
+
 #: Everything that ends a word.
-WORD_BOUNDARY = MARKS | STRUCTURE | NUMERALS
+WORD_BOUNDARY = MARKS | STRUCTURE | NUMERALS | QUOTES
 
 #: Line wraps. A word runs THROUGH these -- they are not word boundaries.
 LINE_WRAP = frozenset("/\n")

@@ -48,7 +48,7 @@ MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 DATA = "data/page0-58.txt"
 CONTROLS = "experiments/plaintext_control_stats.json"
-WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
+WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
 D = 5
 
 

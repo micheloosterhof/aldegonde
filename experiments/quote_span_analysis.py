@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 SEPARATORS = c3301.MARK_CHARS
-BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
+BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
 
 
 def clean_text() -> str:

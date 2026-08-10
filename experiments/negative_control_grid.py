@@ -36,7 +36,7 @@ from aldegonde import c3301
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
+BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
 WITHIN_D = range(1, 13)
 LAGS = range(2, 16)
 SEPS = range(1, 9)
