@@ -200,12 +200,22 @@ def v2i(value: int) -> int:
     raise ValueError
 
 
-def randomrunes(length: int, maximum: int = 29) -> list[int]:
-    """Random list of runes of lenth len."""
-    output: list[int] = []
-    for _ in range(length):
-        output.append(random.randrange(0, maximum))
-    return output
+def randomrunes(
+    length: int, maximum: int = 29, rng: random.Random | None = None
+) -> list[int]:
+    """Random list of rune indices.
+
+    Args:
+        length: How many runes to draw
+        maximum: Exclusive upper bound on the index drawn
+        rng: Injected random source. Defaults to the system source; pass a
+            seeded `Random` to reproduce a draw.
+
+    Returns:
+        A list of `length` rune indices
+    """
+    source = random.Random() if rng is None else rng
+    return [source.randrange(0, maximum) for _ in range(length)]
 
 
 def _observed_doublet_rate(data: Sequence[int]) -> float:

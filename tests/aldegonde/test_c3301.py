@@ -125,3 +125,12 @@ def test_word_boundary_is_marks_structure_and_numerals() -> None:
     assert (
         frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS) == c3301.WORD_BOUNDARY
     )
+
+
+def test_randomrunes_accepts_an_injected_source() -> None:
+    """A seeded source makes the draw reproducible."""
+    a = c3301.randomrunes(40, rng=random.Random(9))
+    b = c3301.randomrunes(40, rng=random.Random(9))
+    c = c3301.randomrunes(40, rng=random.Random(10))
+    assert a == b
+    assert a != c

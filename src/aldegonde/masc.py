@@ -84,10 +84,21 @@ def atbashkey(alphabet: Sequence[T]) -> dict[T, T]:
     return key
 
 
-def randomkey(alphabet: Sequence[T]) -> dict[T, T]:
-    """Generate a random key for use in the previous functions."""
+def randomkey(alphabet: Sequence[T], rng: random.Random | None = None) -> dict[T, T]:
+    """Generate a random key for use in the previous functions.
+
+    Args:
+        alphabet: Symbols the key permutes
+        rng: Injected random source. Defaults to the system source, because a
+            cipher key must not be predictable; pass a seeded `Random` when a
+            reproducible key is wanted, as a test does.
+
+    Returns:
+        A key mapping each symbol of the alphabet to another
+    """
+    source = random.Random() if rng is None else rng
     key: dict[T, T] = {}
-    shuffled = random.sample(alphabet, len(alphabet))
+    shuffled = source.sample(alphabet, len(alphabet))
     for k, v in zip(alphabet, shuffled):
         key[k] = v
     return key

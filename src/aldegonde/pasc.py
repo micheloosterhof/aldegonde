@@ -213,11 +213,22 @@ def pasc_decrypt_interrupted(
         yield output
 
 
-def random_tr(alphabet: Sequence[T]) -> TR[T]:
-    """Generate a random TR for use in the previous functions."""
+def random_tr(alphabet: Sequence[T], rng: random.Random | None = None) -> TR[T]:
+    """Generate a random TR for use in the previous functions.
+
+    Args:
+        alphabet: Symbols the tabula recta is built over
+        rng: Injected random source. Defaults to the system source, because the
+            tabula recta is key material and must not be predictable; pass a
+            seeded `Random` for a reproducible one.
+
+    Returns:
+        A tabula recta whose every row is an independent permutation
+    """
+    source = random.Random() if rng is None else rng
     tr: TR[T] = defaultdict(dict)
     for key in alphabet:
-        shuffled = random.sample(alphabet, len(alphabet))
+        shuffled = source.sample(alphabet, len(alphabet))
         for k, v in zip(alphabet, shuffled, strict=True):
             tr[key][k] = v
     return tr

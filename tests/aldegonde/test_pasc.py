@@ -1,3 +1,5 @@
+import random
+
 from aldegonde import masc, pasc
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -263,3 +265,12 @@ Encipher the following Paul Brandt quote "Don’t let anyone tell you the sky is
     Plaintext:  dontlet anyonet ellyout heskyis thelimi twhenth erearef ootprin tsonthe moon
     Ciphertext: KFBIFIC EWQVIIC OSXRXNC SBLSNMQ LNDCSQJ LJEKIGI OVDDHIG YFANHMD LHJGKLF XFJG
 """
+
+
+def test_random_tr_accepts_an_injected_source() -> None:
+    """A seeded source makes the tabula recta reproducible."""
+    a = pasc.random_tr(ABC, rng=random.Random(5))
+    b = pasc.random_tr(ABC, rng=random.Random(5))
+    c = pasc.random_tr(ABC, rng=random.Random(6))
+    assert a == b
+    assert a != c

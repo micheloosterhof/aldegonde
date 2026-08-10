@@ -1,3 +1,5 @@
+import random
+
 from aldegonde import masc
 from aldegonde.exceptions import AldegondeKeyError
 
@@ -71,3 +73,18 @@ def test_cycles() -> None:
     key = masc.mixedalphabet2key(plainalphabet=alphabet, cipheralphabet=mixedalphabet)
     cycles = [list(x) for x in ["AFGSOH", "BLRM", "CYXWVTPJ", "DIUQKEN", "Z"]]
     assert masc.cycles(key) == cycles
+
+
+def test_randomkey_accepts_an_injected_source() -> None:
+    """A seeded source makes key generation reproducible for a caller."""
+    a = masc.randomkey(ABC, rng=random.Random(11))
+    b = masc.randomkey(ABC, rng=random.Random(11))
+    c = masc.randomkey(ABC, rng=random.Random(12))
+    assert a == b
+    assert a != c
+
+
+def test_randomkey_is_unpredictable_by_default() -> None:
+    """Without a source the key must not be fixed: it is a cipher key."""
+    keys = {tuple(sorted(masc.randomkey(ABC).items())) for _ in range(8)}
+    assert len(keys) > 1
