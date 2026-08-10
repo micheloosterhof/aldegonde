@@ -4,9 +4,11 @@
 frequency-based expectation. Only skip 1 (the doublet deficit) departs; skip 5
 is mildly elevated (the lag-5 structure) but far weaker."""
 from __future__ import annotations
+
 import math
 from collections import Counter
-from lp_corpus import load_clean, N
+
+from lp_corpus import load_clean
 
 
 def kappa_z(stream, skip):

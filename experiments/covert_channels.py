@@ -14,12 +14,11 @@ N. Repeated 4/5-gram totals vs doublet-corrected expectation.
 """
 
 import math
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 import numpy as np
-from scipy.stats import chi2 as chi2_dist
+from anomaly_scan import ioc, parse
 
-from anomaly_scan import parse, ioc
 from aldegonde import c3301
 
 N = 29
@@ -118,7 +117,7 @@ def main() -> None:
         exp = (n - L) ** 2 / 2 * (N * (N - 1)) / N ** L
         print(f"  affine-class repeated {L}-grams: {npairs} pairs (exp~{exp:.2f})")
         if npairs and L >= 9:
-            for k, v in reps.items():
+            for _k, v in reps.items():
                 print(f"    at {v}")
 
     print("\n=== M. BEAUFORT-STYLE SEGMENT REUSE ===")
@@ -147,7 +146,7 @@ def main() -> None:
     # doublet-suppressed null is slightly above 29^-k
     p_dd = 0.00675
     # per-step match prob ratio vs uniform (cf. digraph calc):
-    ratio2 = (p_dd ** 2 / N + (1 - p_dd) ** 2 / (N - 1) ** 0) and None
+    (p_dd ** 2 / N + (1 - p_dd) ** 2 / (N - 1) ** 0) and None
     for L in (4, 5):
         d = defaultdict(int)
         for i in range(n - L + 1):

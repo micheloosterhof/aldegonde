@@ -2,12 +2,13 @@
 """Analyze repeats in Liber Primus page0-58 data to find key period candidates."""
 
 import math
-from collections import Counter, defaultdict
+from collections import Counter
+
 from aldegonde.c3301 import CICADA_ALPHABET
 from aldegonde.stats.repeats import repeat_positions
 
 # ── 1. Parse LP data ──────────────────────────────────────────────────────────
-with open("data/page0-58.txt", "r") as f:
+with open("data/page0-58.txt") as f:
     raw = f.read()
 
 # Split by "$" to get segments
@@ -32,7 +33,7 @@ print(f"\nTotal concatenated length: {len(concat)} runes")
 
 seg_starts: list[int] = []
 pos = 0
-for i, seg in enumerate(segments):
+for _i, seg in enumerate(segments):
     seg_starts.append(pos)
     pos += len(seg)
 
@@ -79,7 +80,7 @@ boundary_repeats = [
 print(f"\n{'Repeat':<12} {'Runes':<10} {'Eng':<12} {'Seg':<5} {'Local Pos':<12} {'Abs Pos':<10} {'Distance':<10}")
 print("-" * 80)
 
-for name, rune_pattern, locations in boundary_repeats:
+for name, rune_pattern, _locations in boundary_repeats:
     eng = to_english_approx(rune_pattern)
     # Find all occurrences in the entire concatenated text
     all_abs_positions = []

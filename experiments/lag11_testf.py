@@ -20,7 +20,6 @@ within-section shuffle null.
 from __future__ import annotations
 
 import random
-import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -28,7 +27,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lp_corpus import ALPHABET, IDX, RUNE
+from lp_corpus import IDX, RUNE
 
 from aldegonde import c3301
 
@@ -143,7 +142,7 @@ def main() -> None:
     null = []
     for _ in range(2000):
         perm_lens: list[int] = []
-        for _, (s, wlseq) in enumerate(secs):
+        for _, (_s, wlseq) in enumerate(secs):
             w = wlseq[:]
             rng.shuffle(w)
             perm_lens.extend(w)

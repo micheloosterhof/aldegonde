@@ -32,9 +32,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
 
 M = 29
 NWORDS = 2928  # LP-sized corpus
@@ -107,8 +107,8 @@ def main() -> None:
     n_runes = sum(map(len, words))
     print(f"plaintext: {NWORDS} words, {n_runes} runes, "
           f"{pt_pairs} repeated identical word pairs (len >= 3)")
-    print(f"LP reference: identity pairs 17 (chance 10.7 ± 3.3), "
-          f"unigram nIoC 1.000, kappa5 1.073, Friedman5 ~1.00\n")
+    print("LP reference: identity pairs 17 (chance 10.7 ± 3.3), "
+          "unigram nIoC 1.000, kappa5 1.073, Friedman5 ~1.00\n")
 
     g = random_order5(rng)
     base0 = list(range(M))

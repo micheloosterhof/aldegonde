@@ -5,6 +5,7 @@ doublet value-level context, digraphic kappa at all shifts, sentence stats.
 
 import math
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
 from anomaly_scan import parse
@@ -33,7 +34,7 @@ def main() -> None:
     unsolved = np.array([cu[i] for i in range(N)], dtype=float)
     # The solved pages are the FIRST 2797 runes of the master transcription;
     # page0-58.txt (13,136 runes) is the remainder.
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = 0
     for i, ch in enumerate(master):
@@ -116,7 +117,7 @@ def main() -> None:
         worst.sort(reverse=True)
         print(f"  {name}: {len(zs)} shifts, mean z={zs.mean():+.3f} sd={zs.std():.3f}, "
               f"expected max ~{math.sqrt(2*math.log(len(zs))):.1f}")
-        for absz, s, hits, exp in worst[:4]:
+        for _absz, s, hits, exp in worst[:4]:
             print(f"    shift {s}: hits={hits} exp={exp:.1f} z={(hits-exp)/math.sqrt(exp):+.2f}")
 
     print("\n=== SENTENCE / WORD STRUCTURE (consistent conventions) ===")
@@ -124,7 +125,7 @@ def main() -> None:
     # breaks (bare '/' mid-word). Compare both texts under the SAME
     # convention. merge_lines=True joins line-wrapped words ('/' ignored);
     # False treats '/' as a word boundary.
-    u_raw = open("data/page0-58.txt").read()
+    u_raw = Path("data/page0-58.txt").read_text()
     # drop the last two $-sections (solved AN END page + plaintext Parable)
     u_cipher = "$".join(u_raw.split("$")[:-2])
 

@@ -14,11 +14,12 @@
 import math
 import zlib
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2 as chi2_dist
 
-from anomaly_scan import parse
 from aldegonde import c3301
 
 N = 29
@@ -71,7 +72,7 @@ def main() -> None:
     print("\n=== 3. VERTICAL GRID ADJACENCY ===")
     # rebuild lines per page (without parable)
     # parse() gives flat lines; we need page->lines. reparse simply:
-    data = open("data/page0-58.txt").read().replace("\n", "")
+    data = Path("data/page0-58.txt").read_text().replace("\n", "")
     pages_lines = []
     cur_page = []
     cur_line = []
@@ -127,7 +128,7 @@ def main() -> None:
     # The solved pages are the FIRST 2797 runes of the master transcription;
     # page0-58.txt is the remaining 13,136 runes (verified by substring
     # match: page0-58 starts at rune offset 2797 of the master).
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = None
     for i, ch in enumerate(master):

@@ -169,8 +169,8 @@ def main() -> None:
     print("Per-word related-alphabet cipher  (A_phi = base_word o g^phi):")
     print(f"  uniIoC={m['uni_ioc']:.3f}  d1={r[1]:.4f} d2={r[2]:.4f} d3={r[3]:.4f} "
           f"d4={r[4]:.4f} d5={r[5]:.4f}  cols={[round(c, 2) for c in m['cols']]}")
-    print(f"  TARGET (unsolved LP): uniIoC=1.00 d1=0.0066 d2/3/4~0.034 "
-          f"d5=0.049 cols flat")
+    print("  TARGET (unsolved LP): uniIoC=1.00 d1=0.0066 d2/3/4~0.034 "
+          "d5=0.049 cols flat")
     print("\nAll five observables from one mechanism; the doublet suppression is")
     print("inherent to the alphabet relation g (no separate rule, no autokey).")
 

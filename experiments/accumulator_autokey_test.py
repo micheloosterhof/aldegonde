@@ -32,7 +32,7 @@ def nioc(seq: list[int]) -> float:
     return 29 * sum(c * (c - 1) for c in counts.values()) / (n * (n - 1))
 
 
-def decrypt(cipher: list[int], primer: int, beaufort: bool) -> list[int]:
+def decrypt(cipher: list[int], primer: int, *, beaufort: bool) -> list[int]:
     plain = []
     s = primer
     for i, c in enumerate(cipher):
@@ -51,7 +51,7 @@ def main() -> None:
         for section in clean_sections(DATA.read_text()):
             cipher = [index[r] for r in section]
             for primer in range(29):
-                worst = max(worst, nioc(decrypt(cipher, primer, beaufort)))
+                worst = max(worst, nioc(decrypt(cipher, primer, beaufort=beaufort)))
         print(f"{name}: max per-section nIoC over all 29 primers = {worst:.4f} "
               f"(random ~1.0, English ~1.6-1.8)")
 

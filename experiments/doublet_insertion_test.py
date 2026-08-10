@@ -12,7 +12,6 @@ forbidden zero step), word lengths are unchanged.
 import math
 
 import numpy as np
-
 from anomaly_scan import parse
 
 

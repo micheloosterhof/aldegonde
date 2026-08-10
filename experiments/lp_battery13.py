@@ -6,28 +6,35 @@ around each OBSERVED doublet (the rule fired and still collided / lapsed).
 Variants: extra +1 after doublet, +1 before, +2, +29. Score with runeglish
 unigram LL per page (key restarts per page) and over the whole corpus.
 """
-import math
+
 import collections
+import math
+
 import numpy as np
-from lp_structure import parse, flat, N, R2I
+from lp_structure import R2I, N, flat, parse
 
 pages = parse("data/page0-58.txt")[:55]
 s = flat(pages)
 
+
 def sieve(limit):
-    pr = []; is_c = bytearray(limit)
+    pr = []
+    is_c = bytearray(limit)
     for i in range(2, limit):
         if not is_c[i]:
             pr.append(i)
             for j in range(i * i, limit, i):
                 is_c[j] = 1
     return pr
+
+
 PR = sieve(300000)
 
 uni = collections.Counter()
 with open("src/aldegonde/data/ngrams/runeglish/unigrams.txt") as f:
     for line in f:
-        g, c = line.split(); g = g.replace("ᛂ", "ᛄ")
+        g, c = line.split()
+        g = g.replace("ᛂ", "ᛄ")
         uni[R2I[g]] += int(c)
 tot = sum(uni.values())
 LL = np.array([math.log((uni[i] + 1) / tot) - math.log(1 / N) for i in range(N)])
@@ -53,11 +60,12 @@ STREAMS = {
     "2^i": np.array([pow(2, i, N) for i in range(mx)]),
 }
 
+
 def key_indices(cs, mode):
     """key index j(i) for each rune position, with extra advances at doublets."""
     j = 0
     out = []
-    for i, c in enumerate(cs):
+    for i, _c in enumerate(cs):
         if i > 0 and cs[i] == cs[i - 1]:
             if mode == "after":
                 pass  # extra advance applied after emitting (below)
@@ -73,8 +81,9 @@ def key_indices(cs, mode):
             j += 1
     return np.array(out)
 
-null_mu, null_sd = 0.0, math.sqrt(float(np.mean(LL ** 2)) - float(np.mean(LL)) ** 2)
-print("per-rune null LL gain: mu=%.4f sd=%.4f" % (float(np.mean(LL)), null_sd))
+
+null_mu, null_sd = 0.0, math.sqrt(float(np.mean(LL**2)) - float(np.mean(LL)) ** 2)
+print(f"per-rune null LL gain: mu={float(np.mean(LL)):.4f} sd={null_sd:.4f}")
 
 print("\n=== corpus-wide (key continuous over all 55 pages) ===")
 best = []
@@ -89,7 +98,7 @@ for mode in ("none", "before+1", "before+2", "before+29", "after"):
             best.append((zz, mode, name, sign))
 best.sort(reverse=True)
 for zz, mode, name, sign in best[:8]:
-    print(f"z={zz:+5.2f} mode={mode:10s} {name} {'-' if sign<0 else '+'}")
+    print(f"z={zz:+5.2f} mode={mode:10s} {name} {'-' if sign < 0 else '+'}")
 
 print("\n=== per-page (key restarts each page), top combos by max page z ===")
 results = []
@@ -110,4 +119,6 @@ results.sort(reverse=True)
 ntests = 5 * len(STREAMS) * 2 * 55
 print(f"({ntests} page-tests; need max z ~> 4.4 after correction)")
 for zz, mode, name, sign, top in results[:8]:
-    print(f"max page z={zz:+5.2f} mode={mode:10s} {name} {'-' if sign<0 else '+'} top {[(round(a,2),b) for a,b in top]}")
+    print(
+        f"max page z={zz:+5.2f} mode={mode:10s} {name} {'-' if sign < 0 else '+'} top {[(round(a, 2), b) for a, b in top]}"
+    )

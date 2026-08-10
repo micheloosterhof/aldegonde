@@ -90,7 +90,7 @@ def anneal_cycletype(
     rng = random.Random(seed)
     best_rate = 1.0
     best_g = list(range(N))
-    for rs in range(restarts):
+    for _rs in range(restarts):
         layout = list(range(N))
         rng.shuffle(layout)
         cur_rate = diag_rate(m, cycles_to_perm(cyclens, layout))
@@ -146,9 +146,9 @@ def main() -> None:
     print(f"chance doublet rate (1/29):        {chance:.4f}")
     print(f"plaintext doublet rate (trace):    {plain_doublet:.4f}")
     print(f"  -> hold-only prediction /5:      {plain_doublet / 5:.4f}")
-    print(f"LP observed within-word doublet:   0.0063")
+    print("LP observed within-word doublet:   0.0063")
     print()
-    print(f"advance-disk diagonal rate:")
+    print("advance-disk diagonal rate:")
     print(f"  MIN (optimal assignment):        {min_rate:.6f}")
     print(f"  gematria shift-by-1 disk:        {shift_rate:.4f}")
     print(f"  MAX (worst assignment):          {max_rate:.4f}")
@@ -158,11 +158,11 @@ def main() -> None:
           f"{zeros}/{N}")
     print()
     r5, g5 = anneal_cycletype(m, [5, 5, 5, 5, 5], seed=3301)
-    print(f"order-5 advance (five 5-cycles + 4 fixed) -- grid/g^5=id model:")
+    print("order-5 advance (five 5-cycles + 4 fixed) -- grid/g^5=id model:")
     print(f"  annealed MIN diagonal rate:      {r5:.6f}   ({cycle_structure(g5)})")
     r4, g4 = anneal_cycletype(m, [4, 4, 4, 4, 4, 4, 4], seed=3301)
     hold4 = 0.8 * r4 + 0.2 * plain_doublet
-    print(f"order-4 advance (seven 4-cycles + 1 fixed) -- stay-slot/hold model:")
+    print("order-4 advance (seven 4-cycles + 1 fixed) -- stay-slot/hold model:")
     print(f"  annealed MIN diagonal rate:      {r4:.6f}   ({cycle_structure(g4)})")
     print(f"  total with 1-in-5 hold (4/5 adv + 1/5 plain): {hold4:.4f}")
     print()

@@ -21,8 +21,8 @@ Two corrections that matter and were easy to get wrong:
 import math
 
 import numpy as np
-
 from anomaly_scan import parse
+
 from aldegonde import c3301
 
 N = 29
@@ -78,7 +78,7 @@ def main() -> None:
 
     obs = depth_hits(C)
     obs.sort(reverse=True)
-    print(f"\ntop 10 lags by difference nIoC (corrected 1/n z-scaling):")
+    print("\ntop 10 lags by difference nIoC (corrected 1/n z-scaling):")
     for z, d, ln in obs[:10]:
         print(f"  d={d:5d}: nIoC={1 + z * sd_for(ln):.4f} len={ln:5d} z={z:+.2f}")
     n4 = len(obs)
@@ -102,7 +102,7 @@ def main() -> None:
         c4.append(len(h))
         c45.append(sum(1 for z, _, _ in h if z > 4.5))
         mz.append(max((z for z, _, _ in h), default=0.0))
-    print(f"\ndoublet-suppressed surrogate (8 reps, no depth by construction):")
+    print("\ndoublet-suppressed surrogate (8 reps, no depth by construction):")
     print(f"  z>4 lags: mean {np.mean(c4):.1f} range [{min(c4)},{max(c4)}]")
     print(f"  z>4.5 lags: mean {np.mean(c45):.1f}")
     print(f"  max z: mean {np.mean(mz):.2f} range [{min(mz):.2f},{max(mz):.2f}]")

@@ -26,7 +26,6 @@ from __future__ import annotations
 
 import math
 import sys
-import tempfile
 import urllib.request
 from collections import Counter
 from pathlib import Path
@@ -38,10 +37,10 @@ BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS)
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
-from lp_corpus import RUNE, IDX, load_clean
-from solved_plaintext_running_key import (RUNES, R2I, SOLVED_RUNES,
+from d5_partial_leak import to_runeglish  # noqa: E402, I001
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from solved_plaintext_running_key import (RUNES, R2I, SOLVED_RUNES,  # noqa: E402
                                           beam_vigenere)
 
 M = 29
@@ -188,7 +187,7 @@ def main() -> None:
     for name, rates in (("hold model (solved rates)", r_solved),
                         ("hold model (prose rates)", r_prose),
                         ("key event (flat baseline)",
-                         {c: 1.0 for c in CATS})):
+                         dict.fromkeys(CATS, 1.0))):
         pred = {c: lp_opp[c] * rates[c] for c in CATS} \
             if "hold" in name else flat
         n = sum(lp_dbl[c] for c in CATS)

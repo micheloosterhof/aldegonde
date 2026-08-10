@@ -21,8 +21,17 @@ from __future__ import annotations
 import random
 
 from stay_slot_cipher import (
-    M, battery, cut_words, diag_rate, encipher_v1, gen_plaintext,
-    load_trigram, pair_matrices, perm_from_cycles, ppow, tune,
+    M,
+    battery,
+    cut_words,
+    diag_rate,
+    encipher_v1,
+    gen_plaintext,
+    load_trigram,
+    pair_matrices,
+    perm_from_cycles,
+    ppow,
+    tune,
 )
 
 SEED = 3301

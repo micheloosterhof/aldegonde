@@ -35,7 +35,7 @@ TOKENS = ["F", "U", "TH", "O", "R", "C", "G", "W", "H", "N", "I", "J", "EO",
 TOK2I = {t: i for i, t in enumerate(TOKENS)}
 
 
-def pairing(stream: list[int], wid: list[int], within_only: bool) -> Counter:
+def pairing(stream: list[int], wid: list[int], *, within_only: bool) -> Counter:
     """Separation histogram of consecutive lag-5 matches."""
     n = len(stream)
     match = []
@@ -59,7 +59,7 @@ def build_stream(words: list[list[str]]) -> tuple[list[int], list[int]]:
 
 def report(name: str, stream, wid) -> None:
     for within in (True, False):
-        seps = pairing(stream, wid, within)
+        seps = pairing(stream, wid, within_only=within)
         d1, d4 = seps[1], seps[4]
         base = (seps[2] + seps[3] + seps[5]) / 3
         tag = "within-word" if within else "all pairs "

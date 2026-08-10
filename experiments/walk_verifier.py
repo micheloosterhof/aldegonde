@@ -233,6 +233,7 @@ def verify(
     P: np.ndarray,
     quad: tuple[dict, float] | None,
     rng: random.Random,
+    *,
     do_base0: bool = True,
 ) -> dict:
     lengths = [len(w) for w in words]
@@ -286,7 +287,7 @@ def selftest() -> None:
     words = load_words()
     lengths = [len(w) for w in words]
     P = load_bigram_matrix()
-    quad = load_quadgrams()
+    load_quadgrams()
 
     # a true key whose step-product returns to identity over [DJU, BEI):
     # build g, sigma, then verify the interval product is identity by construction

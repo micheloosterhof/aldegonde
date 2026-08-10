@@ -29,7 +29,6 @@ by composition alone.
 
 from __future__ import annotations
 
-import math
 import random
 from collections import Counter
 
@@ -77,8 +76,8 @@ def chi2_uniform(seq):
 
 def coincidence_by_distance(words):
     """Observed within-frame coincidence counts/opportunities per distance."""
-    hit = {d: 0 for d in range(1, 5)}
-    opp = {d: 0 for d in range(1, 5)}
+    hit = dict.fromkeys(range(1, 5), 0)
+    opp = dict.fromkeys(range(1, 5), 0)
     for w in words:
         for a in range(5):
             for b in range(a + 1, 5):
@@ -93,7 +92,7 @@ def perm_null(words):
     dists = range(1, 5)
     samples = {d: [] for d in dists}
     for _ in range(NPERM):
-        h = {d: 0 for d in dists}
+        h = dict.fromkeys(dists, 0)
         for w in words:
             s = w[:]
             RNG.shuffle(s)
@@ -180,7 +179,7 @@ def main():
     print("  d=1 rare -> adjacent doublet suppression present in 5-frames;")
     print("  compare the cipher d=3,4 z-scores against the plaintext control:")
     print("  if plaintext shows the same d=3,4 lean, the cipher elevation is")
-    print("  fixed-point leak of a plaintext positional effect (expected");
+    print("  fixed-point leak of a plaintext positional effect (expected")
     print("  under the walk); if plaintext is flat there, it is anomalous.")
 
 

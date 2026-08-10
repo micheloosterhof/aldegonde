@@ -10,10 +10,9 @@ Also: full autocorrelation (kappa at every shift) with outlier scan.
 """
 
 import math
-from collections import Counter, defaultdict
+from collections import Counter
 
 import numpy as np
-
 from anomaly_scan import parse
 
 N = 29
@@ -51,7 +50,7 @@ def main() -> None:
         # enumerate all pattern classes of length L
         pats = set(obs)
         # also include classes with zero observations
-        def gen(prefix, k):
+        def gen(prefix, k, L=L, pats=pats):
             if len(prefix) == L:
                 pats.add("".join(prefix))
                 return
@@ -95,7 +94,7 @@ def main() -> None:
     print(f"max |z| expected under null for {len(zs)} trials: ~{math.sqrt(2*math.log(len(zs))):.2f}")
     worst.sort(reverse=True)
     print("top 12 shifts by |z|:")
-    for absz, shift, hits, exp, z in worst[:12]:
+    for _absz, shift, hits, exp, z in worst[:12]:
         print(f"  shift {shift:5d}: hits={hits} exp={exp:.1f} z={z:+.2f}")
     neg = (zs < -3).sum()
     pos = (zs > 3).sum()

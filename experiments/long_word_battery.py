@@ -42,8 +42,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 sys.path.insert(0, str(ROOT / "src"))
 
-from aldegonde.stats.nulls import doublet_shuffle
-from lp_corpus import ALPHABET, load_clean
+from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402, I001
+from lp_corpus import load_clean  # noqa: E402
 
 MINLEN = 5
 TRIALS = 400
@@ -111,7 +111,7 @@ def measure(words):
     # shared internal substrings of length 4 and 5 across different words
     for k in (4, 5):
         seen: Counter = Counter()
-        for i, w in enumerate(lw):
+        for _i, w in enumerate(lw):
             for j in range(len(w) - k + 1):
                 seen[w[j:j + k]] += 1
         st[f"sub{k}"] = sum(v * (v - 1) // 2 for v in seen.values())

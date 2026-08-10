@@ -20,25 +20,23 @@ Scores every partition of 29, prints the leaders with per-cell pulls,
 the permutation order (lcm), and where the hand-proposed censuses rank.
 """
 
-from __future__ import annotations
+from __future__ import annotations  # noqa: I001
 
 import math
 import random
 import sys
 import urllib.request
 from collections import Counter
-from functools import lru_cache
 from pathlib import Path
 
-import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
-from lp_corpus import load_clean
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 DS = tuple(range(2, 9))

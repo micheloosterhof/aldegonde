@@ -48,11 +48,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from lp_corpus import load_clean
-from two_rune_gradient import compose, inverse
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from two_rune_gradient import compose, inverse  # noqa: E402
 
 M = 29
 DJU_A, DJU_B = 1477, 2926      # word indices of the two DJU-BEI occurrences
@@ -193,7 +193,7 @@ def fit_base0(cipher2, idx2, Mw, g_phase1, table, floor, rng, restarts=6):
     return best_s, best_b
 
 
-def check_key(K, sched, sigma, ctx, strict=True):
+def check_key(K, sched, sigma, ctx, *, strict=True):
     """Stage 1 for one full key: returns dju fixed-point count, or None."""
     lens = ctx["lens"]
     g_by_phase = letter_steps(K, sched)
@@ -318,9 +318,9 @@ def manufactured_test(ctx, rng):
 
 def verify_candidate_generation(ctx, prose_path):
     """g_candidates over a vocab slice must match the census count."""
-    from quagmire_schedule_census import (lp_words, observed_rates, wilson,
+    from quagmire_schedule_census import (lp_words, observed_rates, wilson,  # noqa: I001
                                           phase_tables, sample_register)
-    from keyword_exhaustion import DICT, alphabets, kw_runes
+    from keyword_exhaustion import DICT
     print("=== candidate-generation cross-check ===")
     lens = ctx["lens"]
     words = lp_words()
@@ -344,8 +344,8 @@ def verify_candidate_generation(ctx, prose_path):
     slice_ = vocab[:500]
     gen = sum(1 for _ in g_candidates(slice_, T1, lo1, hi1, None))
     print(f"  g_candidates over first 500 words: {gen:,} (K, schedule) pairs")
-    print(f"  cross-check: `quagmire_schedule_census.py <prose> 500` reports "
-          f"the same in-band total (1,219 at the seed-3301 register draw)")
+    print("  cross-check: `quagmire_schedule_census.py <prose> 500` reports "
+          "the same in-band total (1,219 at the seed-3301 register draw)")
     return gen
 
 
@@ -442,7 +442,7 @@ def main() -> None:
     plain = []
     for L in lens:
         LL = L
-        while LL not in pools and LL < max(pools):
+        while LL not in pools and max(pools) > LL:
             LL += 1
         plain.append(rng.choice(pools[LL])[:L])
     idx2 = [i for i, w in enumerate(plain) if len(w) == 2]
@@ -532,7 +532,7 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
 
 def build_setup(prose_path, lens):
     """Register tables, sigma candidates, vocab — shared by pilot/workers."""
-    from quagmire_schedule_census import (observed_rates, phase_tables,
+    from quagmire_schedule_census import (observed_rates, phase_tables,  # noqa: I001
                                           sample_register, wilson)
     from keyword_exhaustion import DICT
 
@@ -616,7 +616,7 @@ def pilot(ctx, prose_path, rng, limit):
     print(f"tested {tested:,} full keys in {dt:.1f}s ({rate:,.0f}/s)")
     print(f"  weak DJU-BEI (fp>=6): {weak}; candidates (2-rune LL>-4000): "
           f"{len(cands)}")
-    for K, sched, si, fp, distinct, ll, b0 in sorted(
+    for _K, sched, _si, fp, distinct, ll, _b0 in sorted(
             cands, key=lambda c: -c[5])[:10]:
         tag = "degen" if distinct < 600 else "GENUINE"
         print(f"    LL {ll} fp {fp} bases {distinct} [{tag}] sched {sched}")
@@ -695,34 +695,33 @@ def parallel(ctx, prose_path, nproc):
     nchunks = nproc * 40
     chunks = [vocab[i::nchunks] for i in range(nchunks)]
     out_path = ROOT / "experiments" / "quagmire_candidates.jsonl"
-    fout = open(out_path, "w")
-    print(f"=== parallel sweep (weak-DJU-BEI + 2-rune fit): "
-          f"{len(vocab):,} words, {nproc} workers ===")
-    print(f"candidates (2-rune LL > -4000) -> {out_path}")
-    t0 = time.time()
-    tested = weak = ncand = 0
-    best_ll = -1e18
-    with Pool(nproc, initializer=_init_worker,
-              initargs=(prose_path, lens)) as pool:
-        for tc, wk, cands in pool.imap_unordered(_work, chunks):
-            tested += tc
-            weak += wk
-            for K, sched, si, fp, distinct, ll, b0 in cands:
-                ncand += 1
-                best_ll = max(best_ll, ll)
-                degen = distinct < 600
-                rec = {"sched": sched, "sigma_idx": si, "fp": fp,
-                       "bases": distinct, "two_rune_ll": ll,
-                       "degenerate": degen, "K": K, "base0": b0}
-                fout.write(json.dumps(rec) + "\n")
-                fout.flush()
-                print(f"  *** CANDIDATE #{ncand}: 2-rune LL {ll} fp {fp} "
-                      f"bases {distinct} {'[degen]' if degen else '[GENUINE]'}"
-                      f" sched {sched}", flush=True)
-            print(f"  progress: {tested:,} keys, {weak} weak(fp>=6), "
-                  f"{ncand} cands, best LL {best_ll:.0f}, "
-                  f"{time.time()-t0:.0f}s", flush=True)
-    fout.close()
+    with out_path.open("w") as fout:
+        print(f"=== parallel sweep (weak-DJU-BEI + 2-rune fit): "
+              f"{len(vocab):,} words, {nproc} workers ===")
+        print(f"candidates (2-rune LL > -4000) -> {out_path}")
+        t0 = time.time()
+        tested = weak = ncand = 0
+        best_ll = -1e18
+        with Pool(nproc, initializer=_init_worker,
+                  initargs=(prose_path, lens)) as pool:
+            for tc, wk, cands in pool.imap_unordered(_work, chunks):
+                tested += tc
+                weak += wk
+                for K, sched, si, fp, distinct, ll, b0 in cands:
+                    ncand += 1
+                    best_ll = max(best_ll, ll)
+                    degen = distinct < 600
+                    rec = {"sched": sched, "sigma_idx": si, "fp": fp,
+                           "bases": distinct, "two_rune_ll": ll,
+                           "degenerate": degen, "K": K, "base0": b0}
+                    fout.write(json.dumps(rec) + "\n")
+                    fout.flush()
+                    print(f"  *** CANDIDATE #{ncand}: 2-rune LL {ll} fp {fp} "
+                          f"bases {distinct} {'[degen]' if degen else '[GENUINE]'}"
+                          f" sched {sched}", flush=True)
+                print(f"  progress: {tested:,} keys, {weak} weak(fp>=6), "
+                      f"{ncand} cands, best LL {best_ll:.0f}, "
+                      f"{time.time()-t0:.0f}s", flush=True)
     dt = time.time() - t0
     print(f"\nDONE: {tested:,} keys in {dt/3600:.2f}h "
           f"({tested/dt:,.0f}/s); {weak} weak(fp>=6), {ncand} candidates, "

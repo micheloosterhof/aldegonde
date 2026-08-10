@@ -39,11 +39,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from lp_corpus import load_clean
-from sigma_algebraic_floor import tables
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from sigma_algebraic_floor import tables  # noqa: E402
 
 M = 29
 DICT = Path("/usr/share/dict/web2")
@@ -69,7 +69,7 @@ def alphabets(seq: list[int]):
     yield "R2 reversed", seq + rest[::-1]
     if seq:
         k = seq[-1]
-        cyc = [i for i in list(range(k + 1, M)) + list(range(0, k + 1))
+        cyc = [i for i in list(range(k + 1, M)) + list(range(k + 1))
                if i not in seq]
         yield "R3 cyclic", seq + cyc
     full = seq + rest

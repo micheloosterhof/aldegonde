@@ -100,14 +100,14 @@ def main() -> None:
     # 1. Reproduce both published instruments on this corpus/tokenization
     # ------------------------------------------------------------------
     split = boundary_coincidence(words, LAG)
-    print(f"\n[within-word instrument]  (published: 102/2073 vs 377/10878)")
+    print("\n[within-word instrument]  (published: 102/2073 vs 377/10878)")
     print(f"  within: {split.within_observed}/{split.within_pairs} "
           f"= {split.within_observed / split.within_pairs:.4f}")
     print(f"  across: {split.across_observed}/{split.across_pairs} "
           f"= {split.across_observed / split.across_pairs:.4f}   (1/29 = {1 / 29:.4f})")
 
     joint = joint_coincidence(stream, LAG, PAIR_SEPARATIONS)
-    print(f"\n[paired-match instrument]  (published: d1 29, d4 28, expected ~17.7)")
+    print("\n[paired-match instrument]  (published: d1 29, d4 28, expected ~17.7)")
     for d in PAIR_SEPARATIONS:
         print(f"  pairs at separation {d}: {joint[d].observed} "
               f"(chance {joint[d].expected:.1f})")

@@ -4,8 +4,10 @@
 columns (runes at i mod p). A period-p key spikes this toward plaintext IoC
 (~1.7 normalized); observed stays ~1.0 for all p."""
 from __future__ import annotations
+
 from collections import Counter
-from lp_corpus import load_clean, N
+
+from lp_corpus import N, load_clean
 
 
 def col_ioc(col):

@@ -3,8 +3,10 @@
 """Flat unigram distribution. Significance: chi-square goodness-of-fit vs uniform
 (28 df) and the normalized IoC (1.00 = random)."""
 from __future__ import annotations
+
 from collections import Counter
-from lp_corpus import load_clean, N
+
+from lp_corpus import N, load_clean
 
 
 def main() -> None:

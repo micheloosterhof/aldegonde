@@ -15,8 +15,8 @@ So what places it? Tested here:
 """
 
 import math
-import re
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
 from anomaly_scan import parse
@@ -41,10 +41,7 @@ def at_line_end(text: str, marks: frozenset[str]) -> int:
 def is_prime(x: int) -> bool:
     if x < 2:
         return False
-    for p in range(2, int(x**0.5) + 1):
-        if x % p == 0:
-            return False
-    return True
+    return all(x % p != 0 for p in range(2, int(x ** 0.5) + 1))
 
 
 def main() -> None:
@@ -55,7 +52,7 @@ def main() -> None:
     C = np.array(stream[:-nplain], dtype=np.int64)
     n = len(C)
 
-    u = open("data/page0-58.txt").read()
+    u = Path("data/page0-58.txt").read_text()
     # drop the last two $-sections (solved AN END page + plaintext Parable)
     u_cipher = "$".join(u.split("$")[:-2])
 
@@ -74,7 +71,7 @@ def main() -> None:
     z = (dot_eol - dot_all * p0) / math.sqrt(dot_all * p0 * (1 - p0))
     print(f"  cluster line-end excess vs word-mark baseline: z={z:+.2f}")
     # solved control
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = 0
     for i, ch in enumerate(master):
@@ -95,7 +92,6 @@ def main() -> None:
           f"{100*sh_eol/sh_all:.1f}%  (z={zs:+.2f})")
     # distance of each cluster mark from line end, in runes
     dists = []
-    cur_after = 0
     # walk the raw text per line
     for line in u_cipher.split("/"):
         rpos = [i for i, ch in enumerate(line) if ch in RUNESET]

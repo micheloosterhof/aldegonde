@@ -31,7 +31,6 @@ import random
 import sys
 import urllib.request
 from collections import Counter
-from math import gcd
 from pathlib import Path
 
 import numpy as np
@@ -40,10 +39,10 @@ from scipy.optimize import linear_sum_assignment
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
-from lp_corpus import load_clean
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 INV = {a: pow(a, M - 2, M) for a in range(1, M)}
@@ -57,7 +56,7 @@ def tables(lp_lens, pools, rng, samples=30):
         words = []
         for L in lp_lens:
             LL = L
-            while LL not in pools and LL < max(pools):
+            while LL not in pools and max(pools) > LL:
                 LL += 1
             words.append(rng.choice(pools[LL])[:L])
         for i, w in enumerate(words):
@@ -150,8 +149,9 @@ def main() -> None:
           "differ strongly in English")
     fin = cross.sum(1)
     ini = cross.sum(0)
-    top = lambda v: ", ".join(
-        f"{i}:{v[i]:.3f}" for i in np.argsort(v)[::-1][:5])
+    def top(v):
+        return ", ".join(
+            f"{i}:{v[i]:.3f}" for i in np.argsort(v)[::-1][:5])
     print(f"  most common finals (index:freq):  {top(fin)}")
     print(f"  most common initials(index:freq): {top(ini)}")
 

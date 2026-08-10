@@ -35,12 +35,12 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from census_scan import partitions
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
-from lp_corpus import load_clean
-from sigma_power_kill import compose
+from census_scan import partitions  # noqa: E402
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from sigma_power_kill import compose  # noqa: E402
 
 M = 29
 MAXD = 10
@@ -64,7 +64,7 @@ def sample_corpus(lp_lens, pools, rng):
     maxlen = max(pools)
     for L in lp_lens:
         LL = L
-        while LL not in pools and LL < maxlen:
+        while LL not in pools and maxlen > LL:
             LL += 1
         w = rng.choice(pools[LL])[:L]
         out.append(w)

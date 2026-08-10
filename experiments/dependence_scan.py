@@ -8,13 +8,12 @@
 """
 
 import math
-from collections import Counter
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2 as chi2_dist
 from sympy import isprime
 
-from anomaly_scan import parse
 from aldegonde import c3301
 
 N = 29
@@ -47,7 +46,7 @@ def main() -> None:
     print("top 10 most significant distances (784 dof):")
     for p, d, stat in results[:10]:
         print(f"  d={d:3d}: chi2={stat:.1f} p={p:.5f}")
-    print(f"(Bonferroni threshold for 100 tests at 0.01: p < 1e-4)")
+    print("(Bonferroni threshold for 100 tests at 0.01: p < 1e-4)")
 
     print("\n=== linear functionals (C[i+d] + a*C[i] + b*i) mod 29 ===")
     hits = []

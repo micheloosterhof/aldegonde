@@ -39,8 +39,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301
-from lp_corpus import load_clean
+from aldegonde import c3301  # noqa: E402, I001
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 RUNES = set(c3301.CICADA_ALPHABET)

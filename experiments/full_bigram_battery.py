@@ -32,7 +32,6 @@ from __future__ import annotations
 
 import random
 import sys
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -41,8 +40,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde.stats.nulls import doublet_shuffle
-from lp_corpus import ALPHABET, load_clean
+from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402, I001
+from lp_corpus import ALPHABET, load_clean  # noqa: E402
 
 M = 29
 TRIALS = 400
@@ -83,7 +82,7 @@ def stats(stream: list[int], wid: list[int], pos: list[int]):
                 anti += (mat[a][b] - mat[b][a]) ** 2 / s
     # within vs cross homogeneity (off-diagonal cells with enough mass)
     wsum, csum = within[off].sum(), cross[off].sum()
-    exp_pair = (within + cross) * 0
+    (within + cross) * 0
     hom = 0.0
     for a in range(M):
         for b in range(M):
@@ -165,7 +164,8 @@ def main() -> None:
     off_cells = [(int(mat[a][b]), a, b) for a in range(M) for b in range(M)
                  if a != b]
     off_cells.sort(reverse=True)
-    fmt = lambda c: f"{ALPHABET[c[1]]}{ALPHABET[c[2]]}={c[0]}"
+    def fmt(c):
+        return f"{ALPHABET[c[1]]}{ALPHABET[c[2]]}={c[0]}"
     print(f"\n  top cells: {', '.join(fmt(c) for c in off_cells[:5])} "
           f"(uniform expectation {12955 / 841:.1f})")
     print(f"  bottom cells: {', '.join(fmt(c) for c in off_cells[-5:])}")

@@ -17,12 +17,12 @@ rare letters they are observationally identical to the plain marker class
 unless the ciphertext condition set is small — which this test covers.
 """
 
-import numpy as np
 from collections import Counter
-from scipy.stats import chi2 as chi2_dist, poisson
 
+import numpy as np
 from anomaly_scan import parse
-from aldegonde import c3301
+from scipy.stats import chi2 as chi2_dist
+from scipy.stats import poisson
 
 N = 29
 

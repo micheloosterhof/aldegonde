@@ -15,12 +15,12 @@ This gives us:
 3. A validation criterion: decrypted repeats must be consistent
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-import random
+import random  # noqa: I001
 import multiprocessing as mp
-from collections import defaultdict, Counter
+from collections import defaultdict
 from dataclasses import dataclass
 
 from aldegonde import c3301
@@ -208,6 +208,7 @@ def hill_climb(
     primer_idx: int = 0,
     mode: str = "beaufort",
     restart_threshold: int = 1000,
+    *,
     use_repeat_penalty: bool = True,
 ) -> tuple[list[str], float, str]:
     """Hill climb to find best alphabet, using repeat constraints."""
@@ -217,10 +218,9 @@ def hill_climb(
             return score_with_repeat_penalty(
                 ciphertext, alphabet, primer_idx, repeat_infos, mode
             )
-        else:
-            char_to_pos, pos_to_char = build_lookup_tables(alphabet)
-            pt = quagmire3_decrypt(ciphertext, char_to_pos, pos_to_char, primer_idx, mode)
-            return score_quadgram(pt)
+        char_to_pos, pos_to_char = build_lookup_tables(alphabet)
+        pt = quagmire3_decrypt(ciphertext, char_to_pos, pos_to_char, primer_idx, mode)
+        return score_quadgram(pt)
 
     # Start with random alphabet
     current_alphabet = ALPHABET.copy()
@@ -232,7 +232,7 @@ def hill_climb(
 
     no_improve_count = 0
 
-    for iteration in range(max_iterations):
+    for _iteration in range(max_iterations):
         # Swap two letters
         i, j = random.sample(range(ALPHABET_SIZE), 2)
         new_alphabet = current_alphabet.copy()
@@ -311,7 +311,7 @@ def runes_to_english(text: str) -> str:
     return "".join(result)
 
 
-def load_lp(exclude_last_pages: bool = True) -> str:
+def load_lp(*, exclude_last_pages: bool = True) -> str:
     """Load LP ciphertext.
 
     Args:
@@ -406,7 +406,7 @@ if __name__ == "__main__":
     print(f"Max iterations:     {MAX_ITERATIONS}")
     print(f"Restart threshold:  {RESTART_THRESHOLD}")
     print(f"Workers:            {NUM_WORKERS}")
-    print(f"Repeat penalty:     enabled")
+    print("Repeat penalty:     enabled")
     print("=" * 70)
 
     # Build jobs
@@ -472,11 +472,11 @@ if __name__ == "__main__":
         print(f"\nAlphabet (runes):   {''.join(alphabet)}")
         print(f"Alphabet (english): {runes_to_english(''.join(alphabet))}")
 
-        print(f"\nPlaintext preview (runes):")
+        print("\nPlaintext preview (runes):")
         for i in range(0, min(200, len(plaintext)), 50):
             print(f"  {plaintext[i:i+50]}")
 
-        print(f"\nPlaintext preview (english):")
+        print("\nPlaintext preview (english):")
         english_pt = runes_to_english(plaintext[:200])
         for i in range(0, min(200, len(english_pt)), 50):
             print(f"  {english_pt[i:i+50]}")
@@ -509,7 +509,7 @@ if __name__ == "__main__":
             f.write(f"  Consistent repeats: {consistent}/{total}\n")
             f.write(f"  Alphabet: {''.join(alphabet)}\n")
             f.write(f"  Alphabet (eng): {runes_to_english(''.join(alphabet))}\n")
-            f.write(f"  Plaintext (first 300 chars, english):\n")
+            f.write("  Plaintext (first 300 chars, english):\n")
             eng_pt = runes_to_english(pt[:300])
             for j in range(0, 300, 60):
                 f.write(f"    {eng_pt[j:j+60]}\n")

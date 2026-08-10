@@ -3,6 +3,7 @@
 import random
 import re
 import statistics
+from pathlib import Path
 
 from aldegonde import c3301
 
@@ -51,7 +52,7 @@ def analyze(name, toks):
     print(f"  after-mark:  mean {oa:.2f}  z={za:+.2f}  short {short_a:.1%}")
 
 # unsolved clean corpus: sections 0-9 of page0-58
-text = open('/Users/mich/src/aldegonde/data/page0-58.txt').read()
+text = Path('/Users/mich/src/aldegonde/data/page0-58.txt').read_text()
 secs = [s for s in text.split('$') if RUNE.search(s)][:10]
 toks = []
 for s in secs:
@@ -59,7 +60,7 @@ for s in secs:
 analyze('unsolved (clean 0-9)', toks)
 
 # solved pages: first 2797 runes of the master transcription
-m = open('/Users/mich/src/aldegonde/data/liber-primus__transcription--master.txt').read()
+m = Path('/Users/mich/src/aldegonde/data/liber-primus__transcription--master.txt').read_text()
 count = 0
 cut = 0
 for i, ch in enumerate(m):

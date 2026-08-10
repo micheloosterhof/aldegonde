@@ -22,7 +22,6 @@ d2/d3/d4 must sit at background with no leak.
 
 from __future__ import annotations
 
-import math
 import random
 import sys
 from collections import Counter
@@ -34,12 +33,12 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 sys.path.insert(0, str(ROOT / "src"))
 
-from aldegonde import c3301
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from lp_corpus import load_clean
-from sigma_algebraic_floor import tables
+from aldegonde import c3301  # noqa: E402, I001
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from sigma_algebraic_floor import tables  # noqa: E402
 
 M = 29
 MAXD = 10
@@ -120,7 +119,7 @@ def conjugate(p, a, b):
     return [t[p[t[x]]] for x in range(M)]
 
 
-def anneal_to(p, T, target, rng, iters=4000, order5=True):
+def anneal_to(p, T, target, rng, iters=4000, *, order5=True):
     def obj(q):
         return abs(sum(T[q[y]][y] for y in range(M)) - target)
     cur, best, bp = obj(p), obj(p), p[:]
@@ -189,7 +188,7 @@ def main() -> None:
         out = []
         for L in lens:
             LL = L
-            while LL not in pools and LL < max(pools):
+            while LL not in pools and max(pools) > LL:
                 LL += 1
             out.append(rng.choice(pools[LL])[:L])
         return out
@@ -226,7 +225,7 @@ def main() -> None:
         seams, unis, trips = [], [], []
         for _ in range(RUNS):
             sigma = anneal_to(
-                [x for x in np.random.permutation(M)], cross, TARGET_SEAM,
+                list(np.random.permutation(M)), cross, TARGET_SEAM,
                 rng, order5=False)
             base = list(range(M))
             rng.shuffle(base)

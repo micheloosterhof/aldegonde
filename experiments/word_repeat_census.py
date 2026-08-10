@@ -32,8 +32,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde.stats.nulls import doublet_shuffle
-from lp_corpus import ALPHABET, load_clean
+from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402, I001
+from lp_corpus import ALPHABET, load_clean  # noqa: E402
 
 M = 29
 TRIALS = 400
@@ -72,7 +72,7 @@ def consecutive_runs(words: list[tuple[int, ...]]) -> list[tuple[int, int, int]]
     for wi, w in enumerate(words):
         pos[w].append(wi)
     found = []
-    for w, idxs in pos.items():
+    for _w, idxs in pos.items():
         if len(idxs) < 2:
             continue
         for a in idxs:
@@ -149,7 +149,8 @@ def main() -> None:
         print(f"  {L:>4}{bylen[L]:>8}{o:>7}{mu:>11.2f}{p:>8.3f}{flag}")
 
     print("\nconsecutive-word repeats (the DJU-BEI shape):")
-    txt = lambda t: "".join(ALPHABET[r] for r in t)
+    def txt(t):
+        return "".join(ALPHABET[r] for r in t)
     if not obs_runs:
         print("  none")
     for a, b, r in obs_runs:

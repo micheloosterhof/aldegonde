@@ -14,20 +14,18 @@
 """
 
 import math
-from collections import Counter, defaultdict
+from collections import Counter
 
 import numpy as np
+from anomaly_scan import ioc, parse
 from scipy.stats import chi2 as chi2_dist
 from scipy.stats import chi2_contingency
-
-from anomaly_scan import parse, ioc
 
 N = 29
 
 
 def coincidence_z(pairs):
-    hits = sum(1 for x, y in pairs)
-    return hits
+    return sum(1 for x, y in pairs)
 
 
 def align_test(units, label, max_units=None):
@@ -103,7 +101,7 @@ def main() -> None:
     align_test(pages, "pages aligned at start")
     align_test(lines, "lines aligned at start")
     # words aligned at start, same length only (already done) and all:
-    align_test([w for w in words], "words aligned at start")
+    align_test(list(words), "words aligned at start")
 
     print("\n=== 2. PERIODICITY IN WORD/LINE INDEX SPACE ===")
     # assign each rune its word index; column = word index mod k; IoC per column
@@ -202,7 +200,7 @@ def main() -> None:
     # position within line
     pos_in_line = {}
     k = 0
-    for li, l in enumerate(lines):
+    for _li, l in enumerate(lines):
         for j in range(len(l)):
             pos_in_line[k] = (j, len(l))
             k += 1

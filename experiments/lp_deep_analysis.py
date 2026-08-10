@@ -14,7 +14,7 @@ Investigates:
 9. Transition matrix analysis
 """
 
-import sys
+import sys  # noqa: I001
 import math
 from collections import Counter, defaultdict
 
@@ -51,7 +51,6 @@ def main() -> None:
     print(f"Total runes: {len(runes)}, Total words: {len(words)}")
 
     EA = "ᛠ"  # EA rune, index 28
-    EA_IDX = 28
 
     # ================================================================
     # 1. DOUBLET CONTEXT ANALYSIS
@@ -124,10 +123,10 @@ def main() -> None:
     # Hypothesis: if the cipher produces a doublet exactly when plaintext has EA
     # Then we'd expect #doublets ≈ #EA_in_plaintext
     # EA in English runeglish appears rarely (each, ear, eat, etc.)
-    print(f"\nIf doublets = EA occurrences in plaintext:")
-    print(f"  Expected EA frequency in runeglish: ~1-3%")
+    print("\nIf doublets = EA occurrences in plaintext:")
+    print("  Expected EA frequency in runeglish: ~1-3%")
     print(f"  Observed doublet rate: {len(doublet_positions)/(len(runes)-1)*100:.3f}%")
-    print(f"  This is LOW for EA but could work if EA is very rare in runeglish")
+    print("  This is LOW for EA but could work if EA is very rare in runeglish")
 
     # Check: what rune does EA appear as in the FIRST position of doublets
     # vs what rune appears in position BEFORE a doublet when that rune is EA
@@ -221,7 +220,7 @@ def main() -> None:
 
     avg_asym = sum(s[4] for s in asymmetry_scores) / len(asymmetry_scores)
     print(f"\nAverage asymmetry: {avg_asym:.4f}")
-    print(f"Expected for random text: ~0.15-0.20 (sampling variation)")
+    print("Expected for random text: ~0.15-0.20 (sampling variation)")
 
     # ================================================================
     # 5. WORD LENGTH DISTRIBUTION
@@ -385,7 +384,7 @@ def main() -> None:
         distances_to_ea.append(min_dist)
 
     if distances_to_ea:
-        print(f"\nDistance from doublet to nearest EA:")
+        print("\nDistance from doublet to nearest EA:")
         dist_counter = Counter(distances_to_ea)
         for d in sorted(dist_counter.keys())[:20]:
             print(f"  distance={d}: {dist_counter[d]} doublets")
@@ -399,11 +398,11 @@ def main() -> None:
                 ea_word_pos[i] += 1
                 ea_word_pos_last[i - len(w)] += 1
 
-    print(f"\nEA position in word (from start):")
+    print("\nEA position in word (from start):")
     for pos in sorted(ea_word_pos.keys()):
         print(f"  pos {pos}: {ea_word_pos[pos]}")
 
-    print(f"\nEA position in word (from end):")
+    print("\nEA position in word (from end):")
     for pos in sorted(ea_word_pos_last.keys()):
         print(f"  pos {pos}: {ea_word_pos_last[pos]}")
 
@@ -425,7 +424,7 @@ def main() -> None:
     two_rune_words = [w for w in words if len(w) == 2]
     print(f"\n2-rune words: {len(two_rune_words)}")
     two_dist = Counter(two_rune_words)
-    print(f"Most common 2-rune words (top 15):")
+    print("Most common 2-rune words (top 15):")
     for w, cnt in two_dist.most_common(15):
         eng = "".join(c3301.CICADA_ENGLISH_ALPHABET[c3301.CICADA_ALPHABET.index(c)] for c in w)
         print(f"  {w} ({eng}): {cnt}")
@@ -526,7 +525,7 @@ def main() -> None:
     print(f"Total runs: {runs}")
     print(f"Expected runs (random): ~{2*(len(indices)-1)/3:.0f}")
     run_dist = Counter(run_lengths)
-    print(f"Run length distribution:")
+    print("Run length distribution:")
     for length in sorted(run_dist.keys()):
         print(f"  length {length}: {run_dist[length]}")
 

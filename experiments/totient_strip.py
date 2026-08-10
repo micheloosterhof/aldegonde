@@ -20,7 +20,6 @@ then (J - K) has runeglish-level IoC (~1.7 normalized) — unmissable.
 import math
 
 import numpy as np
-
 from anomaly_scan import parse
 
 N = 29
@@ -108,7 +107,7 @@ def main() -> None:
         scan(Jc, seq % M, M, f"Jcomp {name} mod28 ", results)
         # mod 28 vs gapped alignment (EA consumes key): key index = raw step
         Kfull = seq % M
-        scan_gapped = (Jc - 0)  # values same; key indexed by raw position
+        (Jc - 0)  # values same; key indexed by raw position
         for sign, sname in ((1, "-K"), (-1, "+K")):
             for off in range(OFFMAX):
                 seg = Kfull[off + raw_idx]
@@ -124,7 +123,7 @@ def main() -> None:
     for stream_, mod in ((Jc, M), (Ccomp, N)):
         n_ = len(stream_)
         pairs = n_ * (n_ - 1)
-        sd = mod * math.sqrt((1 / mod) * (1 - 1 / mod) * 2 / pairs) * math.sqrt(n_)
+        mod * math.sqrt((1 / mod) * (1 - 1 / mod) * 2 / pairs) * math.sqrt(n_)
         # empirical instead:
     rng = np.random.default_rng(1)
     null = [ioc_counts(rng.integers(0, M, len(Jc)), M) for _ in range(60)]

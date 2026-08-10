@@ -8,10 +8,10 @@ Goal: Determine the exact doublet rate and identify which rune
 at that frequency could be the "identity character" in an autokey cipher.
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-from collections import Counter
+from collections import Counter  # noqa: I001
 from aldegonde import c3301
 
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     expected_doublet_rate = 1 / 29
     suppression_factor = expected_doublet_rate / doublet_rate if doublet_rate > 0 else float('inf')
 
-    print(f"\n--- Doublet Statistics ---")
+    print("\n--- Doublet Statistics ---")
     print(f"Doublets found: {doublets}")
     print(f"Possible positions: {possible}")
     print(f"Doublet rate: {doublet_rate:.6f} ({doublet_rate * 100:.4f}%)")
@@ -85,11 +85,11 @@ if __name__ == "__main__":
     print(f"Triplet rate: {triplet_rate:.6f}")
 
     # Frequency analysis
-    print(f"\n--- Frequency Analysis (sorted by ascending frequency) ---")
+    print("\n--- Frequency Analysis (sorted by ascending frequency) ---")
     freqs = frequency_analysis(runes)
 
     print("\nRunes sorted by frequency (rarest first):")
-    for i, (rune, count, freq) in enumerate(freqs):
+    for _i, (rune, count, freq) in enumerate(freqs):
         # Mark runes with frequency close to doublet rate
         marker = " <-- MATCHES DOUBLET RATE" if abs(freq - doublet_rate) < 0.003 else ""
         idx = c3301.CICADA_ALPHABET.index(rune) if rune in c3301.CICADA_ALPHABET else -1
@@ -97,17 +97,17 @@ if __name__ == "__main__":
         print(f"  {rune} ({english:2s}) idx={idx:2d}: {count:4d} = {freq*100:5.2f}%{marker}")
 
     # Calculate which frequency matches doublet rate
-    print(f"\n--- Identity Character Candidates ---")
+    print("\n--- Identity Character Candidates ---")
     print(f"Looking for rune with frequency ≈ {doublet_rate*100:.2f}%")
 
-    for rune, count, freq in freqs:
+    for rune, _count, freq in freqs:
         if abs(freq - doublet_rate) < 0.005:  # Within 0.5%
             idx = c3301.CICADA_ALPHABET.index(rune)
             english = c3301.CICADA_ENGLISH_ALPHABET[idx]
             print(f"  CANDIDATE: {rune} ({english}) at {freq*100:.2f}% (diff: {abs(freq-doublet_rate)*100:.3f}%)")
 
     # Show doublet details
-    print(f"\n--- Doublet Locations ---")
+    print("\n--- Doublet Locations ---")
     doublet_chars = Counter()
     for i in range(len(runes) - 1):
         if runes[i] == runes[i + 1]:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         print(f"  {rune} ({english}): {count} doublets")
 
     # Segment analysis
-    print(f"\n--- Per-Segment Doublet Rates ---")
+    print("\n--- Per-Segment Doublet Rates ---")
     segments = lp_text.split("$")
 
     for i, seg in enumerate(segments[:10]):

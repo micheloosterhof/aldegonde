@@ -4,10 +4,14 @@
 arbitrarily, so the first rune of each line is glyph-width-biased. Significance:
 chi-square of first-rune-of-line vs uniform; contrast with line-FINAL (uniform)."""
 from __future__ import annotations
-import math, re
+
+import math
+import re
 from collections import Counter
 from pathlib import Path
+
 from lp_corpus import N
+
 from aldegonde.c3301 import CICADA_ALPHABET as A
 
 ROOT = Path(__file__).resolve().parent.parent

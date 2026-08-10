@@ -13,14 +13,13 @@ Attack approach:
 6. Repeat with random restarts
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-import random
-import copy
+import random  # noqa: I001
 import multiprocessing as mp
 from collections import Counter
-from typing import Callable
+from collections.abc import Callable
 
 from aldegonde import c3301
 from aldegonde.stats.ioc import ioc
@@ -73,10 +72,8 @@ def quagmire3_autokey_decrypt(
         plaintext.append(p)
 
         # Autokey: next key position
-        if autokey == "ciphertext":
-            k_pos = c_pos
-        else:  # plaintext autokey
-            k_pos = p_pos
+        # ciphertext autokey feeds back the cipher position, plaintext the plain
+        k_pos = c_pos if autokey == "ciphertext" else p_pos
 
     return "".join(plaintext)
 
@@ -122,6 +119,7 @@ def hill_climb(
     primer_idx: int = 0,
     mode: str = "beaufort",
     autokey: str = "ciphertext",
+    *,
     verbose: bool = True,
     restart_threshold: int = 500,
     score_fn: Callable[[str], float] = score_quadgram,
@@ -254,7 +252,7 @@ if __name__ == "__main__":
     RESTART_THRESHOLD = 500
     TEST_LENGTH = 729  # First chapter size
     SCORE_FN = score_ioc_fast  # score_quadgram, score_ioc, or score_ioc_fast
-    SCORE_NAME = "IOC-fast" if SCORE_FN == score_ioc_fast else ("IOC" if SCORE_FN == score_ioc else "quadgram")
+    SCORE_NAME = "IOC-fast" if score_ioc_fast == SCORE_FN else ("IOC" if score_ioc == SCORE_FN else "quadgram")
 
     # Load LP
     lp = load_lp()
@@ -283,7 +281,7 @@ if __name__ == "__main__":
     print(f"Max iterations:     {MAX_ITERATIONS}")
     print(f"Restart threshold:  {RESTART_THRESHOLD}")
     print(f"Est. restarts/run:  ~{MAX_ITERATIONS // RESTART_THRESHOLD}")
-    print(f"Autokey:            ciphertext")
+    print("Autokey:            ciphertext")
     print(f"Scoring:            {SCORE_NAME}")
     print(f"Workers:            {NUM_WORKERS}")
     print("=" * 70)
@@ -308,7 +306,7 @@ if __name__ == "__main__":
     with mp.Pool(NUM_WORKERS) as pool:
         results = pool.map(run_single_climb, jobs)
 
-    print(f"All jobs complete.\n")
+    print("All jobs complete.\n")
 
     # Process results
     best_overall = None
@@ -343,13 +341,13 @@ if __name__ == "__main__":
         alphabet, score, plaintext, mode, primer_idx, pt_ioc = best_overall
         primer_name = c3301.CICADA_ENGLISH_ALPHABET[primer_idx]
         print(f"Mode: {mode}")
-        print(f"Autokey: ciphertext")
+        print("Autokey: ciphertext")
         print(f"Primer index: {primer_idx} ({primer_name} = {alphabet[primer_idx]})")
         print(f"Score: {score:.2f}")
         print(f"IoC: {pt_ioc:.3f} (normalized, random=1.0)")
         print(f"\nAlphabet (runes): {''.join(alphabet)}")
         print(f"Alphabet (english): {runes_to_english(''.join(alphabet))}")
-        print(f"\nPlaintext preview (runes):")
+        print("\nPlaintext preview (runes):")
         print(plaintext[:200])
-        print(f"\nPlaintext preview (english):")
+        print("\nPlaintext preview (english):")
         print(runes_to_english(plaintext[:200]))

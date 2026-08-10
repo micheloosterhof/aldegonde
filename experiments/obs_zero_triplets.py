@@ -4,7 +4,9 @@
 expected from the OBSERVED doublet rate (not the uniform rate) -- i.e. even
 granting doublet suppression, are triplets rarer still?"""
 from __future__ import annotations
+
 import math
+
 from lp_corpus import load_clean
 
 

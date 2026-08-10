@@ -4,9 +4,11 @@
 of (C[i], C[i+d]) vs independence, at each lag. Only d=1 (the doublet diagonal)
 departs; every d>=2 is within the 784-df noise band."""
 from __future__ import annotations
+
 import math
 from collections import Counter
-from lp_corpus import load_clean, N
+
+from lp_corpus import N, load_clean
 
 
 def contingency_chi2(stream, d):

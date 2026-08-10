@@ -34,11 +34,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words
-from lp_corpus import load_clean
-from sigma_power_kill import compose
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, PROSE_URL, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from sigma_power_kill import compose  # noqa: E402
 
 M = 29
 MAXD = 10
@@ -77,7 +77,7 @@ def anneal(g, T1, rng, iters=6000):
     cur = diag(g)
     best_g, best = g[:], cur
     temp = 0.004
-    for it in range(iters):
+    for _it in range(iters):
         a, b = rng.sample(range(M), 2)
         g2 = conjugate(g, a, b)
         v = diag(g2)
@@ -164,7 +164,6 @@ def main() -> None:
         order = 1
         for L in set(census):
             order = order * L // math.gcd(order, L)
-        acc = None
         floors = []
         seams, unis, trips, chis = [], [], [], []
         prof_acc: Counter = Counter()

@@ -6,9 +6,6 @@ within word stream, % = page break, . = sentence end, & = paragraph?,
 $ = segment, 0-9 etc = annotations).
 """
 import collections
-import math
-import random
-import sys
 
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 assert len(RUNES) == 29

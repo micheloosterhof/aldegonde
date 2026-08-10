@@ -22,7 +22,7 @@ through filters in increasing cost order:
      scores the decryption (`no-known-plaintext-foothold.md`).
 """
 
-from __future__ import annotations
+from __future__ import annotations  # noqa: I001
 
 import math
 import random
@@ -30,17 +30,16 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from keyword_exhaustion import DICT, alphabets, kw_runes
-from lp_corpus import load_clean
-from sigma_algebraic_floor import tables
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from keyword_exhaustion import DICT, alphabets, kw_runes  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
+from sigma_algebraic_floor import tables  # noqa: E402
 
 M = 29
 OBS_DOUBLETS = 86
@@ -102,9 +101,9 @@ def main() -> None:
         for j in range(1, len(w)):
             ph[j % 5] += 1
     tot = sum(ph.values())
-    W = [ph[p] / tot for p in range(5)]
+    [ph[p] / tot for p in range(5)]
 
-    vocab = [x.strip() for x in open(DICT)
+    vocab = [x.strip() for x in Path(DICT).read_text().splitlines()
              if 4 <= len(x.strip()) <= 12 and x.strip().isalpha()
              and x.strip().isascii()]
     print(f"vocabulary {len(vocab):,} words x 4 rules")
@@ -158,11 +157,11 @@ def main() -> None:
         print(f"  NOTE: sigma list capped at {n_sig:,} of {len(sig):,}")
     pairs = 0
     viable = []
-    for r_s, sw, sr, sdl, sp in sig[:n_sig]:
+    for r_s, sw, sr, sdl, _sp in sig[:n_sig]:
         need = (OBS_DOUBLETS - N_SEAM * r_s) / N_WITHIN
         if need <= 0:
             continue
-        for r_g, gw, gr, K, costs in gcand:
+        for r_g, gw, gr, _K, _costs in gcand:
             pairs += 1
             tot_d = N_WITHIN * r_g + N_SEAM * r_s
             if tot_d <= hi:

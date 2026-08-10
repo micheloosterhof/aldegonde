@@ -178,7 +178,7 @@ def battery(ct_words) -> None:
         wid += [wi] * len(w)
     n = len(stream)
 
-    def rate(d: int, same_word: bool) -> tuple[int, int]:
+    def rate(d: int, *, same_word: bool) -> tuple[int, int]:
         m = e = 0
         for i in range(n - d):
             if (wid[i] == wid[i + d]) == same_word:
@@ -190,7 +190,7 @@ def battery(ct_words) -> None:
     for d, sw, target in ((1, True, 0.0063), (1, False, 0.0079),
                           (2, True, 0.034), (3, True, 0.034), (4, True, 0.034),
                           (5, True, 0.049), (5, False, 0.030)):
-        m, e = rate(d, sw)
+        m, e = rate(d, same_word=sw)
         where = "within" if sw else "cross "
         print(f"  d{d} {where}: {m:4d}/{e:<6d} = {m / e:.4f}   (LP {target})")
     cols = [round(ioc([w[j] for w in ct_words if len(w) > j]), 2) for j in range(3)]

@@ -192,7 +192,7 @@ def battery(label, ct_words):
         wid += [wi] * len(w)
     n = len(stream)
 
-    def rate(d, same):
+    def rate(d, *, same):
         m = e = 0
         for i in range(n - d):
             if (wid[i] == wid[i + d]) == same:
@@ -202,12 +202,12 @@ def battery(label, ct_words):
 
     print(f"--- {label} ---")
     print(f"  uniIoC {ioc(stream):.3f} (1.000)", end="  ")
-    r1w = rate(1, True)[0]
-    r1x = rate(1, False)[0]
+    r1w = rate(1, same=True)[0]
+    r1x = rate(1, same=False)[0]
     print(f"d1w {r1w:.4f} (0.0063)  d1seam {r1x:.4f} (0.0079)")
-    print(f"  d2w {rate(2, True)[0]:.4f}  d3w {rate(3, True)[0]:.4f}  "
-          f"d4w {rate(4, True)[0]:.4f}  (all 0.0345)")
-    print(f"  d5w {rate(5, True)[0]:.4f} (0.049)   d5x {rate(5, False)[0]:.4f} (0.030)")
+    print(f"  d2w {rate(2, same=True)[0]:.4f}  d3w {rate(3, same=True)[0]:.4f}  "
+          f"d4w {rate(4, same=True)[0]:.4f}  (all 0.0345)")
+    print(f"  d5w {rate(5, same=True)[0]:.4f} (0.049)   d5x {rate(5, same=False)[0]:.4f} (0.030)")
     cols = [round(ioc([w[j] for w in ct_words if len(w) > j]), 2) for j in range(3)]
     pioc = [round(sum(ioc(stream[k::p]) for k in range(p)) / p, 2) for p in (2, 5)]
     print(f"  cols {cols} (1.0)   periodicIoC p2,p5 {pioc} (1.0)")

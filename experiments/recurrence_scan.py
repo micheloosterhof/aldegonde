@@ -16,12 +16,13 @@ T. Word (first,last) rune joint; word-initial digraphs vs mid-word
 
 import math
 from collections import Counter, defaultdict
+from pathlib import Path
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2 as chi2_dist
 from scipy.stats import chi2_contingency
 
-from anomaly_scan import parse
 from aldegonde import c3301
 
 N = 29
@@ -151,7 +152,7 @@ def main() -> None:
               f"{hits} exp {exp:.0f} z={z:+.2f}")
 
     print("\n=== R. PAGE-GRID 2D ALIGNMENT ===")
-    data = open("data/page0-58.txt").read().replace("\n", "")
+    data = Path("data/page0-58.txt").read_text().replace("\n", "")
     pages_lines = []
     cur_page = []
     cur_line = []

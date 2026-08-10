@@ -18,8 +18,15 @@ import random
 from collections import Counter
 
 from stay_slot_cipher import (
-    M, cut_words, diag_rate, gen_plaintext, load_trigram,
-    pair_matrices, perm_from_cycles, ppow, tune,
+    M,
+    cut_words,
+    diag_rate,
+    gen_plaintext,
+    load_trigram,
+    pair_matrices,
+    perm_from_cycles,
+    ppow,
+    tune,
 )
 
 SEED = 3301
@@ -83,7 +90,7 @@ def stats(flat, word_of):
     starts: dict[int, list[int]] = {}
     for i, w in enumerate(word_of):
         starts.setdefault(w, []).append(i)
-    for w, idxs in starts.items():
+    for _w, idxs in starts.items():
         for k in range(len(idxs) - 5):
             if idxs[k + 5] - idxs[k] == 5:
                 tot += 1

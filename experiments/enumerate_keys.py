@@ -20,15 +20,23 @@ collision-hunt-single-constraint.md predicts.
 from __future__ import annotations
 
 import random
-import numpy as np
 
+import numpy as np
 from walk_verifier import (
-    M, DJU, BEI, load_words, load_bigram_matrix, load_quadgrams,
-    order, parity, compose, ppow, step_products, djubei_returns,
-    diagonal_rate, djubei_parity_ok, verify,
+    M,
+    diagonal_rate,
+    djubei_parity_ok,
+    djubei_returns,
+    load_bigram_matrix,
+    load_quadgrams,
+    load_words,
+    order,
+    parity,
+    step_products,
+    verify,
 )
 
-from aldegonde.c3301 import CICADA_ALPHABET as A, CICADA_ENGLISH_ALPHABET as E
+from aldegonde.c3301 import CICADA_ENGLISH_ALPHABET as E
 
 ENG2IDX: dict[str, int] = {}
 for i, e in enumerate(E):
@@ -60,11 +68,10 @@ def mixed_alphabet(word: str) -> np.ndarray:
     head = keyword_indices(word)
     rest = [i for i in range(M) if i not in head]
     order_ = head + rest
-    perm = np.array(order_)  # perm[position] = rune index at that slot
-    return perm
+    return np.array(order_)  # perm[position] = rune index at that slot
 
 
-def grid_g(word: str, col_major: bool) -> np.ndarray | None:
+def grid_g(word: str, *, col_major: bool) -> np.ndarray | None:
     """Build order-5 g: place 25 runes in a 5x5 grid (keyword-led), rotate each
     column down by one -> five 5-cycles; the 4 unplaced runes are fixed."""
     head = keyword_indices(word)
@@ -96,7 +103,7 @@ def main() -> None:
     gs = []
     for kw in KEYWORDS:
         for cm in (False, True):
-            g = grid_g(kw, cm)
+            g = grid_g(kw, col_major=cm)
             if g is not None:
                 gs.append((f"{kw}/{'col' if cm else 'row'}", g))
     sigmas = [(kw, mixed_alphabet(kw)) for kw in KEYWORDS]
@@ -130,7 +137,7 @@ def main() -> None:
     best_diag.sort(key=lambda t: abs(t[0] - 0.006))
     print("\nmost doublet-plausible grid-g (target diagonal ~0.0063):")
     seen = set()
-    for gd, sd, gn, sn in best_diag:
+    for gd, _sd, gn, _sn in best_diag:
         if gn in seen:
             continue
         seen.add(gn)

@@ -13,13 +13,13 @@ Attack approach:
 6. Repeat with random restarts
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-import random
+import random  # noqa: I001
 import multiprocessing as mp
 from collections import Counter
-from typing import Callable
+from collections.abc import Callable
 
 from aldegonde.stats.ioc import ioc
 
@@ -116,10 +116,8 @@ def quagmire3_autokey_decrypt(
         plaintext.append(p)
 
         # Autokey: next key position
-        if autokey == "ciphertext":
-            k_pos = c_pos
-        else:  # plaintext autokey
-            k_pos = p_pos
+        # ciphertext autokey feeds back the cipher position, plaintext the plain
+        k_pos = c_pos if autokey == "ciphertext" else p_pos
 
     return "".join(plaintext)
 
@@ -155,6 +153,7 @@ def hill_climb(
     primer_idx: int = 0,
     mode: str = "beaufort",
     autokey: str = "ciphertext",
+    *,
     verbose: bool = True,
     restart_threshold: int = 500,
     score_fn: Callable[[str], float] = score_ioc_fast,
@@ -301,10 +300,7 @@ def quagmire3_autokey_encrypt(
         ciphertext.append(c)
 
         # Autokey: next key position
-        if autokey == "ciphertext":
-            k_pos = c_pos
-        else:
-            k_pos = p_pos
+        k_pos = c_pos if autokey == "ciphertext" else p_pos
 
     return "".join(ciphertext)
 
@@ -375,7 +371,7 @@ if __name__ == "__main__":
     # Save ciphertext for analysis
     with open("experiments/test_ciphertext.txt", "w") as f:
         f.write(ciphertext)
-    print(f"\nCiphertext saved to experiments/test_ciphertext.txt")
+    print("\nCiphertext saved to experiments/test_ciphertext.txt")
 
     # Parallel configuration
     NUM_WORKERS = mp.cpu_count()
@@ -397,8 +393,8 @@ if __name__ == "__main__":
     print(f"Max iterations:     {MAX_ITERATIONS}")
     print(f"Restart threshold:  {RESTART_THRESHOLD}")
     print(f"Est. restarts/run:  ~{MAX_ITERATIONS // RESTART_THRESHOLD}")
-    print(f"Autokey:            ciphertext")
-    print(f"Scoring:            quadgram")
+    print("Autokey:            ciphertext")
+    print("Scoring:            quadgram")
     print(f"Workers:            {NUM_WORKERS}")
     print("=" * 70)
 
@@ -427,7 +423,7 @@ if __name__ == "__main__":
     with mp.Pool(NUM_WORKERS) as pool:
         results = pool.map(run_single_climb, jobs)
 
-    print(f"All jobs complete.\n")
+    print("All jobs complete.\n")
 
     # Process results
     best_overall = None
@@ -460,14 +456,14 @@ if __name__ == "__main__":
     if best_overall:
         alphabet, score, pt, mode, primer_idx, pt_ioc = best_overall
         print(f"Mode: {mode}")
-        print(f"Autokey: ciphertext")
+        print("Autokey: ciphertext")
         print(f"Primer index: {primer_idx} ({ALPHABET[primer_idx]})")
         print(f"Score: {score:.2f}")
         print(f"IoC: {pt_ioc:.3f} (normalized, random=1.0)")
         print(f"\nRecovered alphabet: {''.join(alphabet)}")
         print(f"True alphabet:      {''.join(true_alphabet)}")
         print(f"Match: {alphabet == true_alphabet}")
-        print(f"\nRecovered plaintext preview:")
+        print("\nRecovered plaintext preview:")
         print(pt[:200])
-        print(f"\nTrue plaintext preview:")
+        print("\nTrue plaintext preview:")
         print(plaintext[:200])

@@ -33,8 +33,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde.stats.nulls import doublet_shuffle
-from lp_corpus import load_clean
+from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402, I001
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 MAXPOS = 10

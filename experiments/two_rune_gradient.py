@@ -35,10 +35,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from lp_corpus import load_clean
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 
@@ -136,7 +136,7 @@ def main() -> None:
     plain = []
     for L in lens:
         LL = L
-        while LL not in pools and LL < max(pools):
+        while LL not in pools and max(pools) > LL:
             LL += 1
         plain.append(rng.choice(pools[LL])[:L])
     idx2 = [i for i, w in enumerate(plain) if len(w) == 2]

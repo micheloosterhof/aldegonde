@@ -5,9 +5,11 @@ explained by doublet suppression. Significance: chi-square uniformity of the 812
 OFF-diagonal bigram cells (excludes the 29 diagonal doublet cells), which should
 be flat if the doublet deficit is the only bigram-level structure."""
 from __future__ import annotations
+
 import math
 from collections import Counter
-from lp_corpus import load_clean, N
+
+from lp_corpus import N, load_clean
 
 
 def main() -> None:

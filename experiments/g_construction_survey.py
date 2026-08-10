@@ -35,9 +35,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 sys.path.insert(0, str(ROOT / "src"))
 
-from aldegonde import c3301
-from lp_corpus import load_clean
-from sigma_algebraic_floor import tables
+from aldegonde import c3301  # noqa: E402, I001
+from lp_corpus import load_clean  # noqa: E402
+from sigma_algebraic_floor import tables  # noqa: E402
 
 M = 29
 TARGET = 0.0063

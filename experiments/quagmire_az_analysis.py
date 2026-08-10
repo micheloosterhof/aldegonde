@@ -5,10 +5,10 @@
 Generate Quagmire III autokey ciphertext with A-Z alphabet and analyze it.
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-import random
+import random  # noqa: I001
 
 from aldegonde.stats import dist, entropy, repeats
 from aldegonde.stats.ioc import ioc as ioc_func
@@ -56,10 +56,7 @@ def quagmire3_autokey_encrypt(
         c = pos_to_char[c_pos]
         ciphertext.append(c)
 
-        if autokey == "ciphertext":
-            k_pos = c_pos
-        else:
-            k_pos = p_pos
+        k_pos = c_pos if autokey == "ciphertext" else p_pos
 
     return "".join(ciphertext)
 
@@ -150,7 +147,7 @@ if __name__ == "__main__":
     # Save ciphertext
     with open("experiments/test_ciphertext.txt", "w") as f:
         f.write(ciphertext)
-    print(f"\nCiphertext saved to experiments/test_ciphertext.txt")
+    print("\nCiphertext saved to experiments/test_ciphertext.txt")
 
     # Save key info
     with open("experiments/test_key.txt", "w") as f:
@@ -160,7 +157,7 @@ if __name__ == "__main__":
         f.write(f"primer_idx={primer_idx}\n")
         f.write(f"mixed_alphabet={''.join(mixed_alphabet)}\n")
         f.write(f"plaintext_length={len(plaintext)}\n")
-    print(f"Key info saved to experiments/test_key.txt")
+    print("Key info saved to experiments/test_key.txt")
 
     # Analyze plaintext
     analyze_text(plaintext, ALPHABET, "PLAINTEXT")
@@ -178,8 +175,8 @@ if __name__ == "__main__":
 
     print(f"Plaintext IoC (normalized):  {pt_ioc:.3f}")
     print(f"Ciphertext IoC (normalized): {ct_ioc:.3f}")
-    print(f"Random expectation:          1.000")
-    print(f"English expectation:         ~1.73")
+    print("Random expectation:          1.000")
+    print("English expectation:         ~1.73")
 
     # Check for patterns that might help cryptanalysis
     print("\n--- AUTOKEY CHARACTERISTICS ---")

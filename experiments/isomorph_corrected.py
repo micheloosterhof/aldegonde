@@ -12,11 +12,9 @@ the same symbol if it falls inside the window, else 0. This is a bijection
 with the isomorph class.
 """
 
-import math
 from collections import Counter
 
 import numpy as np
-
 from anomaly_scan import parse
 
 N = 29
@@ -80,7 +78,7 @@ def main() -> None:
     SAMPLES = 60
     rng = np.random.default_rng(42)
     acc = {L: ([], []) for L in LENGTHS}
-    for s in range(SAMPLES):
+    for _s in range(SAMPLES):
         sim = markov_sample(n, p_dd, rng)
         r = stats_for(sim)
         for L in LENGTHS:

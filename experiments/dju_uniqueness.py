@@ -27,7 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402
+from aldegonde.stats.nulls import doublet_shuffle  # noqa: E402, I001
 from lp_corpus import ALPHABET, load_clean  # noqa: E402
 
 
@@ -76,7 +76,8 @@ def main() -> None:
     for i, w in enumerate(wid):
         d.setdefault(w, []).append(stream[i])
     words = [tuple(d[k]) for k in sorted(d)]
-    txt = lambda t: "".join(ALPHABET[r] for r in t)
+    def txt(t):
+        return "".join(ALPHABET[r] for r in t)
     idx = {c: ALPHABET.index(c) for c in "ᛞᛄᚢᛒᛖᛁ"}
     DJU = tuple(idx[c] for c in "ᛞᛄᚢ")
     BEI = tuple(idx[c] for c in "ᛒᛖᛁ")

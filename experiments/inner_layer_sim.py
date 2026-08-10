@@ -21,10 +21,8 @@ Also simulates the memoryless variant M[i] = g(P[i]) as a sanity check
 (should pass, showing the test discriminates).
 """
 
-from collections import defaultdict
 
 import numpy as np
-from scipy.stats import chi2 as chi2_dist
 from scipy.stats import chi2_contingency
 
 from aldegonde import c3301

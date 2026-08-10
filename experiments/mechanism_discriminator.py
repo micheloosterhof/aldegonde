@@ -28,7 +28,11 @@ from collections import defaultdict
 from aldegonde import c3301
 from experiments.d5_partial_leak import to_runeglish
 from experiments.stay_slot_cipher import (
-    diag_rate, pair_matrices, perm_from_cycles, ppow, tune,
+    diag_rate,
+    pair_matrices,
+    perm_from_cycles,
+    ppow,
+    tune,
 )
 
 ALPH = c3301.CICADA_ALPHABET
@@ -148,7 +152,7 @@ def main() -> None:
     print("\nkey cells -- d5 echo and d6:")
     print(f"  plaintext d5 {prof_pt[5]:.4f} (the full-leak ceiling), "
           f"d6 {prof_pt[6]:.4f}")
-    print(f"  LP d5 0.0492, d6 0.0245")
+    print("  LP d5 0.0492, d6 0.0245")
 
 
 if __name__ == "__main__":

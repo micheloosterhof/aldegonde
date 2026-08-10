@@ -36,8 +36,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from lp_corpus import load_clean
-from solved_plaintext_running_key import recover_plaintext, solved_segments
+from lp_corpus import load_clean  # noqa: E402
+from solved_plaintext_running_key import (  # noqa: E402
+    recover_plaintext,
+    solved_segments,
+)
 
 M = 29
 
@@ -64,9 +67,12 @@ def validate(pt: list[int], L: int, n: int) -> None:
     sim = repeated_pairs(ct, n)
     forced = forced_pairs(pt, L, n)
     if sim < forced:
-        raise AssertionError(
+        msg = (
             f"validation failed at L={L}, n={n}: simulated {sim} < "
-            f"forced {forced}")
+            f"forced {forced}"
+        )
+        raise AssertionError(
+            msg)
     print(f"validation OK (L={L}, n={n}): simulated ciphertext repeats "
           f"{sim} >= forced {forced}")
 

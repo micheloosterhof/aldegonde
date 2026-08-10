@@ -11,8 +11,8 @@ Null: Markov runes (doublet-suppressed), real word-length structure.
 from collections import defaultdict
 
 import numpy as np
-
 from anomaly_scan import parse
+
 from aldegonde import c3301
 
 N = 29

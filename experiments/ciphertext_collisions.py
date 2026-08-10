@@ -54,7 +54,6 @@ def maximal_repeats(stream: list[int], kmin: int) -> list[tuple[int, list[int]]]
         # extend the whole group rightward while all agree pairwise-with-first
         L = kmin
         while True:
-            ok = True
             base_ends = [s + L for s in starts]
             if any(e >= n for e in base_ends):
                 break

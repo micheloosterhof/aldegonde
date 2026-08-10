@@ -1,7 +1,7 @@
 # ABOUTME: Compare LP ciphertext bigrams with synthetic Quagmire III ciphertext
 # ABOUTME: Verify LP matches the pattern of autokey-encrypted text
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
 from aldegonde import c3301

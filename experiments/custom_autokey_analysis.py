@@ -10,9 +10,9 @@ Key question: Does a Quagmire-style autokey produce ciphertext with:
 3. Properties matching the Liber Primus?
 """
 
+import random
 from collections import Counter
 from collections.abc import Sequence
-import random
 from typing import TypeVar
 
 T = TypeVar("T")
@@ -51,7 +51,7 @@ def quagmire3_autokey_encrypt(
 
     # Map characters to positions in mixed alphabet
     char_to_pos = {c: i for i, c in enumerate(mixed)}
-    pos_to_char = {i: c for i, c in enumerate(mixed)}
+    pos_to_char = dict(enumerate(mixed))
 
     ciphertext = []
     key_char = primer
@@ -85,7 +85,7 @@ def quagmire3_autokey_decrypt(
     n = len(alphabet)
 
     char_to_pos = {c: i for i, c in enumerate(mixed)}
-    pos_to_char = {i: c for i, c in enumerate(mixed)}
+    pos_to_char = dict(enumerate(mixed))
 
     plaintext = []
     key_char = primer

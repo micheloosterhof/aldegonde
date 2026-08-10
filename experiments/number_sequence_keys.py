@@ -152,7 +152,7 @@ def framings(sections: list[tuple[list[int], list[int]]], seqs: dict[str, list[i
 
     # reset per word (index restarts at 1 each word)
     word_idx: list[int] = []
-    for runes, lengths in sections:
+    for _runes, lengths in sections:
         for length in lengths:
             word_idx += list(range(length))
     word_idx = word_idx[:n] + [0] * (n - len(word_idx))

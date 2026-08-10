@@ -52,7 +52,7 @@ def main() -> None:
                    for j in range(len(words[w]) - 5))]
     print(f"A. hit words: {len(hits)} of {len(wlist)}")
     for window in (5, 10, 25):
-        def close_pairs(hs):
+        def close_pairs(hs, window=window):
             hs = sorted(hs)
             return sum(1 for a in range(len(hs)) for b in range(a + 1, len(hs))
                        if hs[b] - hs[a] <= window)

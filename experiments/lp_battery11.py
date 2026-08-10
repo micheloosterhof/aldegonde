@@ -4,10 +4,12 @@
 Simulate candidate cipher mechanisms on Markov-runeglish plaintext and
 compare their statistical fingerprint against the unsolved LP corpus.
 """
+
 import collections
 import math
 import random
-from lp_structure import parse, flat, nioc, N, R2I
+
+from lp_structure import R2I, N, flat, nioc, parse
 
 random.seed(2026)
 pages = parse("data/page0-58.txt")[:55]
@@ -24,12 +26,14 @@ with open("src/aldegonde/data/ngrams/runeglish/bigrams.txt") as f:
         big[R2I[g[0]]][R2I[g[1]]] += int(c)
         uni[R2I[g[0]]] += int(c)
 
+
 def gen_plain(total):
     out = [random.choices(range(N), weights=[uni[i] for i in range(N)])[0]]
     while len(out) < total:
         ws = [big[out[-1]][j] for j in range(N)]
         out.append(random.choices(range(N), weights=ws)[0])
     return out
+
 
 def fingerprint(c):
     m = len(c)
@@ -51,11 +55,17 @@ def fingerprint(c):
     dig = sum(v * (v - 1) for v in cc.values()) / (len(prs) * (len(prs) - 1)) * N * N
     return nioc(c), chi_u, 100 * d0 / (m - 1), chi_off, dig, z2, mx
 
+
 def row(name, c):
     io, chi_u, dbl, chi_off, dig, z2, mx = fingerprint(c)
-    print(f"{name:34s} {io:6.3f} {chi_u:7.1f} {dbl:6.2f} {chi_off:7.1f} {dig:6.3f} {z2:+5.1f} {mx:6.3f}")
+    print(
+        f"{name:34s} {io:6.3f} {chi_u:7.1f} {dbl:6.2f} {chi_off:7.1f} {dig:6.3f} {z2:+5.1f} {mx:6.3f}"
+    )
 
-print(f"{'mechanism':34s} {'nIoC':>6s} {'uniChi':>7s} {'dbl%':>6s} {'offChi':>7s} {'digIoC':>6s} {'lag2z':>5s} {'maxPer':>6s}")
+
+print(
+    f"{'mechanism':34s} {'nIoC':>6s} {'uniChi':>7s} {'dbl%':>6s} {'offChi':>7s} {'digIoC':>6s} {'lag2z':>5s} {'maxPer':>6s}"
+)
 print("-" * 86)
 row("LP unsolved corpus (target)", LPs)
 print("-" * 86)
@@ -65,8 +75,10 @@ key_text = gen_plain(n)  # for running-key
 row("plaintext itself", plain)
 
 # --- algebraic / classical families ---
-perm1 = list(range(N)); random.shuffle(perm1)
-perm2 = list(range(N)); random.shuffle(perm2)
+perm1 = list(range(N))
+random.shuffle(perm1)
+perm2 = list(range(N))
+random.shuffle(perm2)
 
 row("OTP (control)", [(p + random.randrange(N)) % N for p in plain])
 ks = [random.randrange(N)]
@@ -78,7 +90,10 @@ row("no-repeat key OTP (k[i]!=k[i-1])", [(plain[i] + ks[i]) % N for i in range(n
 
 # running key, plain Vigenere TR and mixed (quagmire) TR
 row("running key Vigenere", [(plain[i] + key_text[i]) % N for i in range(n)])
-row("running key quagmire s(p)+t(k)", [(perm1[plain[i]] + perm2[key_text[i]]) % N for i in range(n)])
+row(
+    "running key quagmire s(p)+t(k)",
+    [(perm1[plain[i]] + perm2[key_text[i]]) % N for i in range(n)],
+)
 row("running key Beaufort", [(key_text[i] - plain[i]) % N for i in range(n)])
 
 # plaintext autokey, primer length L
@@ -90,7 +105,7 @@ for L in (1, 3, 7):
 # key autokey: k[i] = k[i-1] + p[i-1]
 k = random.randrange(N)
 out = []
-for i, p in enumerate(plain):
+for _i, p in enumerate(plain):
     out.append((p + k) % N)
     k = (k + p) % N
 row("key autokey k+=p", out)
@@ -121,7 +136,9 @@ dig5 = [random.randrange(10) for _ in range(5)]
 ks = dig5[:]
 while len(ks) < n:
     ks.append((ks[-5] + ks[-4]) % 10)
-row("Gromark (chain-addition digits)", [(perm1[plain[i]] + ks[i]) % N for i in range(n)])
+row(
+    "Gromark (chain-addition digits)", [(perm1[plain[i]] + ks[i]) % N for i in range(n)]
+)
 
 # Hill 2x2 mod 29
 while True:
@@ -135,10 +152,13 @@ for i in range(0, n - 1, 2):
     out.append((c_ * p1 + d * p2) % N)
 row("Hill 2x2", out)
 
+
 # Chaocipher-29
 def chao_encrypt(plain):
-    left = list(range(N)); random.shuffle(left)   # cipher wheel
-    right = list(range(N)); random.shuffle(right) # plain wheel
+    left = list(range(N))
+    random.shuffle(left)  # cipher wheel
+    right = list(range(N))
+    random.shuffle(right)  # plain wheel
     NAD = 14
     out = []
     for p in plain:
@@ -157,6 +177,8 @@ def chao_encrypt(plain):
         x = right.pop(2)
         right.insert(NAD, x)
     return out
+
+
 row("Chaocipher-29", chao_encrypt(plain))
 
 # --- selection / rejection family ---

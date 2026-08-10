@@ -12,10 +12,10 @@ Looks for structure beyond the known doublet suppression:
 """
 
 import math
-import random
 from collections import Counter, defaultdict
+from pathlib import Path
 
-from scipy.stats import chi2_contingency, chisquare, norm
+from scipy.stats import chi2_contingency, chisquare
 
 from aldegonde import c3301
 
@@ -31,7 +31,7 @@ def parse(path: str = "data/page0-58.txt"):
           '' none (adjacent in word), 'w' word, 's' sentence,
           'p' page, 'S' section, 'x' other (numbers/latin gap)
     """
-    data = open(path).read().replace("\n", "")
+    data = Path(path).read_text().replace("\n", "")
     stream: list[int] = []
     seps: list[str] = []
     pending = ""  # strongest separator seen since last rune
@@ -121,7 +121,7 @@ def ioc(seq) -> float:
 def chisq_uniform(counts, label):
     tot = sum(counts)
     if tot < 50:
-        return
+        return None
     exp = [tot / len(counts)] * len(counts)
     stat, p = chisquare(counts, exp)
     flag = " ***" if p < 0.001 else (" *" if p < 0.01 else "")

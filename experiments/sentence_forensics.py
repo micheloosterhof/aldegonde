@@ -19,6 +19,7 @@
 
 import math
 from collections import Counter, defaultdict
+from pathlib import Path
 
 import numpy as np
 from anomaly_scan import parse
@@ -65,8 +66,6 @@ def main() -> None:
     # sentence lengths in words (unsolved)
     slens = []
     curw = 0
-    widx = 0
-    runes_seen = 0
     wlen_iter = iter(lens)
     cur_rem = next(wlen_iter)
     for i in range(n - 1):
@@ -93,14 +92,10 @@ def main() -> None:
     # sentence-initial / final word lengths
     first_w = []
     last_w = []
-    curw_list = []
-    wi = 0
-    pos = 0
     # rebuild word index per rune
     rune_word = []
     for i, L in enumerate(lens):
         rune_word.extend([i] * L)
-    sent_start_word = 0
     for i in range(n - 1):
         if seps[i] == "s":
             wend = rune_word[i]
@@ -128,7 +123,7 @@ def main() -> None:
     print("  English predicts final >> overall (content words end sentences)")
 
     # solved-pages control
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = 0
     for i, ch in enumerate(master):
@@ -138,9 +133,8 @@ def main() -> None:
                 cut = i + 1
                 break
     solved = master[:cut]
-    sw = []
     cur = 0
-    sfirst, slast = [], []
+    _sfirst, _slast = [], []
     words_s = []
     prev_break = "s"
     for ch in solved:
@@ -154,7 +148,7 @@ def main() -> None:
     if cur:
         words_s.append((cur, prev_break == "s"))
     sol_lens = [L for L, _ in words_s]
-    sol_first = [L for L, isf in words_s if isf]
+    [L for L, isf in words_s if isf]
     # final = word before a '.' : recompute
     sol_final = []
     cur = 0
@@ -187,8 +181,6 @@ def main() -> None:
     def extend_with_mismatches(i, j, k_allowed):
         """Maximal window around seed allowing k mismatches total."""
         # expand greedily left and right
-        left = 0
-        right = 0
         mis = 0
         li, lj = i - 1, j - 1
         ri, rj = i, j

@@ -10,10 +10,9 @@ Markov null anyway for rigor).
 Also: word-suffix + next-word matches (like the IA / MNGYAC case).
 """
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 import numpy as np
-
 from anomaly_scan import parse
 
 N = 29

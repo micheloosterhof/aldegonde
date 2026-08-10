@@ -17,12 +17,10 @@ the J battery; everything here is NOT relabeling-invariant and is new.
 """
 
 import math
-from collections import Counter
 
 import numpy as np
-from scipy.stats import chi2 as chi2_dist
-
 from anomaly_scan import parse
+from scipy.stats import chi2 as chi2_dist
 
 N = 29
 M = 28
@@ -34,7 +32,7 @@ def main() -> None:
     # AN END page and Parable are the trailing 180 runes of page0-58.txt
     nplain = len(stream) - 12956
     cipher = np.array(stream[:-nplain], dtype=np.int64)
-    n = len(cipher)
+    len(cipher)
 
     delta = (cipher[1:] - cipher[:-1]) % N
     d = delta[delta != 0]

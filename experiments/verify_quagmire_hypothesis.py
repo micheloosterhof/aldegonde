@@ -15,12 +15,11 @@ Verification Experiment:
 If these match, the hypothesis is confirmed.
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
 from collections import Counter
-import random
-from typing import Sequence
+from collections.abc import Sequence
 
 from aldegonde import c3301
 
@@ -95,7 +94,7 @@ def quagmire3_autokey_encrypt(
     n = len(alphabet)
 
     char_to_pos = {c: i for i, c in enumerate(mixed)}
-    pos_to_char = {i: c for i, c in enumerate(mixed)}
+    pos_to_char = dict(enumerate(mixed))
 
     ciphertext = []
     key_char = primer
@@ -106,18 +105,14 @@ def quagmire3_autokey_encrypt(
         p_pos = char_to_pos[p]
         k_pos = char_to_pos[key_char]
 
-        if mode == "beaufort":
-            c_pos = (k_pos - p_pos) % n
-        else:  # vigenere
-            c_pos = (k_pos + p_pos) % n
+        # beaufort subtracts the plain position, vigenere adds it
+        c_pos = (k_pos - p_pos) % n if mode == "beaufort" else (k_pos + p_pos) % n
 
         c = pos_to_char[c_pos]
         ciphertext.append(c)
 
-        if autokey == "ciphertext":
-            key_char = c
-        else:  # plaintext
-            key_char = p
+        # ciphertext autokey feeds back the cipher rune, plaintext the plain one
+        key_char = c if autokey == "ciphertext" else p
 
     return "".join(ciphertext)
 
@@ -131,7 +126,7 @@ def simple_autokey_decrypt(
     """Simple autokey decryption (no keyword, standard alphabet)."""
     n = len(alphabet)
     char_to_pos = {c: i for i, c in enumerate(alphabet)}
-    pos_to_char = {i: c for i, c in enumerate(alphabet)}
+    pos_to_char = dict(enumerate(alphabet))
 
     plaintext = []
     key_char = primer
@@ -142,10 +137,7 @@ def simple_autokey_decrypt(
         c_pos = char_to_pos[c]
         k_pos = char_to_pos[key_char]
 
-        if mode == "beaufort":
-            p_pos = (k_pos - c_pos) % n
-        else:
-            p_pos = (c_pos - k_pos) % n
+        p_pos = (k_pos - c_pos) % n if mode == "beaufort" else (c_pos - k_pos) % n
 
         p = pos_to_char[p_pos]
         plaintext.append(p)
@@ -192,7 +184,7 @@ def load_sample_english() -> str:
     try:
         with open("/usr/share/dict/words") as f:
             return f.read()[:100000]  # First 100k chars
-    except:
+    except OSError:
         # Fallback
         return """
         Four score and seven years ago our fathers brought forth on this continent

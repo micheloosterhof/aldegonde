@@ -11,12 +11,9 @@ On division by zero (EA rune, value 0), falls back to EA since it lives
 outside the multiplicative group GF(29)*.
 """
 
+from collections import Counter
+
 from aldegonde import c3301
-from aldegonde.analysis import friedman, krakup
-from aldegonde.grams import bigram_diagram
-from aldegonde.maths import factor
-from aldegonde.maths.primes import primes as generate_primes
-from aldegonde.stats import dist, entropy, print_ioc_statistics, print_kappa, repeats
 
 N = 29  # GF(29)
 EA = 0  # EA rune value (29 % 29 = 0), fallback for div-by-zero
@@ -444,8 +441,6 @@ words = parse_words(full_text)
 raw = "".join([x for x in full_text if x in c3301.CICADA_ALPHABET])
 C = vals(raw)
 
-from collections import Counter
-
 # ========================================================================
 # DOUBLET AND RATIO ANALYSIS
 # ========================================================================
@@ -516,8 +511,8 @@ for v in range(N):
 print(f"\nAdditive delta=0 (doublets): {add_deltas[0]} = {add_deltas[0]/total_add*100:.2f}%")
 print(f"Mult ratio=1 (value 1=F):    {mult_ratios.get(1,0)} = {mult_ratios.get(1,0)/total_mult*100:.2f}%")
 print(f"Expected if random:          {100/N:.2f}%")
-print(f"\nBOTH are suppressed ~5x below expected!")
-print(f"This strongly suggests a cipher with BOTH additive and multiplicative components.")
+print("\nBOTH are suppressed ~5x below expected!")
+print("This strongly suggests a cipher with BOTH additive and multiplicative components.")
 
 # ========================================================================
 # DOUBLET SUPPRESSION: within-word vs cross-boundary
@@ -547,7 +542,7 @@ for i in range(1, len(C)):
 print(f"\nWithin-word:     {within_doublets}/{within_pairs} = {within_doublets/within_pairs*100:.2f}%")
 print(f"Cross-boundary:  {cross_doublets}/{cross_pairs} = {cross_doublets/cross_pairs*100:.2f}%")
 print(f"Expected random: {100/N:.2f}%")
-print(f"\nBoth equally suppressed => cipher chain runs THROUGH word boundaries")
+print("\nBoth equally suppressed => cipher chain runs THROUGH word boundaries")
 
 # ========================================================================
 # 2-RUNE DOUBLET WORDS
@@ -582,7 +577,7 @@ for widx, (w, start) in enumerate(words):
         ea_start_3.append((widx, w, start))
 
 print(f"\nCount: {len(ea_start_3)}")
-print(f"\nEACH = EA(val=0) + C(val=6) + H(val=9)")
+print("\nEACH = EA(val=0) + C(val=6) + H(val=9)")
 print()
 
 for widx, w, start in ea_start_3:
@@ -609,14 +604,8 @@ for widx, w, start in ea_start_3:
     m2_eng = c3301.CICADA_ENGLISH_ALPHABET[(m2 - 1) % N]
 
     # C(i)=C(i-1)*(1+P(i)): P(i) = C(i)/C(i-1) - 1
-    if c0 != 0:
-        h1 = (safe_div(c1, c0) - 1) % N
-    else:
-        h1 = -1
-    if c1 != 0:
-        h2 = (safe_div(c2, c1) - 1) % N
-    else:
-        h2 = -1
+    h1 = (safe_div(c1, c0) - 1) % N if c0 != 0 else -1
+    h2 = (safe_div(c2, c1) - 1) % N if c1 != 0 else -1
 
     print(f"  w{widx:4d} pos={start:5d} cipher='{eng}' vals=[{c0:2d},{c1:2d},{c2:2d}]")
     print(f"         additive:  EA+{d1_eng}+{d2_eng}  [{0},{d1},{d2}]  {'<= EACH!' if d1==6 and d2==9 else ''}")
@@ -668,9 +657,9 @@ print(f"\nBest primer: {best_primer}  full_score: {full_score:.0f}")
 print(f"Preview: {preview}")
 
 dist_p = Counter(P)
-print(f"\nPlaintext dist (top 5 most common):")
+print("\nPlaintext dist (top 5 most common):")
 for v, cnt in dist_p.most_common(5):
     eng = c3301.CICADA_ENGLISH_ALPHABET[(v - 1) % N]
     print(f"  {eng}: {cnt} ({cnt/len(P)*100:.2f}%)")
 print(f"EA count: {dist_p.get(0, 0)} ({dist_p.get(0,0)/len(P)*100:.2f}%)")
-print(f"\nStill flat => model alone is not the full cipher, but dual suppression is real.")
+print("\nStill flat => model alone is not the full cipher, but dual suppression is real.")

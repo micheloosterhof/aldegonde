@@ -3,7 +3,8 @@
 import collections
 import math
 import random
-from lp_structure import parse, flat, nioc, N, RUNES, R2I
+
+from lp_structure import R2I, N, parse
 
 pages = parse("data/page0-58.txt")[:55]
 

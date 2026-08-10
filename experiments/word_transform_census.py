@@ -22,7 +22,6 @@ import math
 from collections import Counter, defaultdict
 
 import numpy as np
-
 from anomaly_scan import parse
 
 N = 29
@@ -32,7 +31,7 @@ def pairs_count(counter: Counter) -> int:
     return sum(v * (v - 1) // 2 for v in counter.values())
 
 
-def cross_count(c1: Counter, c2: Counter, same: bool) -> int:
+def cross_count(c1: Counter, c2: Counter, *, same: bool) -> int:
     """Pairs (x from c1, y from c2) with matching keys; if same=True the
     counters index the same words and unordered pairs are wanted."""
     tot = 0
@@ -89,7 +88,7 @@ def main() -> None:
         obs_beaufort = cross_count(deltas, negdeltas, same=True)
 
         # affine: normalize delta seq by inverse of first nonzero delta
-        def affsig(w):
+        def affsig(w, L=L):
             d = [(w[i + 1] - w[i]) % N for i in range(L - 1)]
             nz = next((x for x in d if x), None)
             if nz is None:
@@ -184,7 +183,7 @@ def main() -> None:
             )
             out["beaufort"] += cross_count(deltas, negd, same=True)
 
-            def affsig(w):
+            def affsig(w, L=L):
                 d = [(w[i + 1] - w[i]) % N for i in range(L - 1)]
                 nz = next((x for x in d if x), None)
                 if nz is None:

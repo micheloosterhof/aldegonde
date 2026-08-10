@@ -12,11 +12,10 @@ If the autokey identity character is one of these, doublet rate
 would match the observed 0.68%.
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-from collections import Counter
-import re
+from collections import Counter  # noqa: I001
 
 
 # Gematria Primus mapping (simplified - digraphs first, then single letters)
@@ -135,7 +134,7 @@ if __name__ == "__main__":
             dictionary = f.read()
         all_text += " " + dictionary
         print("(Including system dictionary for larger sample)")
-    except:
+    except OSError:
         pass
 
     print(f"\nTotal English characters: {len(all_text)}")
@@ -159,7 +158,7 @@ if __name__ == "__main__":
     print("\n--- Candidates for Identity Character ---")
     print("(Runes with frequency close to observed doublet rate of 0.68%)\n")
 
-    for rune, name, count, freq in freqs:
+    for rune, name, _count, freq in freqs:
         if freq < 0.015:  # Under 1.5%
             print(f"  {rune} ({name}): {freq*100:.2f}%")
 

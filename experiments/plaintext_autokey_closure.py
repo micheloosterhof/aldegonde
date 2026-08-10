@@ -26,8 +26,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from lp_corpus import load_clean
-from solved_plaintext_running_key import recover_plaintext, solved_segments
+from lp_corpus import load_clean  # noqa: E402
+from solved_plaintext_running_key import (  # noqa: E402
+    recover_plaintext,
+    solved_segments,
+)
 
 
 def repeated_pairs(stream: list[int], n: int) -> int:

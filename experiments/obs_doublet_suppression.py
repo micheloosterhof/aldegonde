@@ -4,8 +4,10 @@
 binomial expectation at 1/29, and a within-word vs cross-word split showing the
 suppression ignores word boundaries."""
 from __future__ import annotations
+
 import math
-from lp_corpus import load_clean, N
+
+from lp_corpus import N, load_clean
 
 
 def main() -> None:

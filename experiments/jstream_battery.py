@@ -17,13 +17,12 @@ CRT projections (28 = 4 x 7), which no mod-29 test could see.
 """
 
 import math
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 import numpy as np
+from anomaly_scan import ioc, parse
 from scipy.stats import chi2 as chi2_dist
 from scipy.stats import chi2_contingency
-
-from anomaly_scan import parse, ioc
 
 N = 29
 M = 28
@@ -73,7 +72,7 @@ def main() -> None:
         best.append((mean_ioc, k))
     best.sort(reverse=True)
     print(f"  top periods: {[(k, round(v, 4)) for v, k in best[:5]]}")
-    print(f"  (expected 1.0; sd at k=20 roughly 0.01)")
+    print("  (expected 1.0; sd at k=20 roughly 0.01)")
 
     print("\n=== KAPPA ON RAW GAPPED J (EA consumes key) ===")
     Jraw = np.full(n - 1, -1, dtype=np.int64)

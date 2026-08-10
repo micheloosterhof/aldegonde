@@ -20,10 +20,10 @@
 
 import math
 from collections import Counter, defaultdict
+from pathlib import Path
 
 import numpy as np
 from anomaly_scan import parse
-from scipy.stats import chi2_contingency
 
 from aldegonde import c3301
 
@@ -102,7 +102,7 @@ def main() -> None:
 
     print("\n=== 2. BOUNDARY AUTHENTICITY: length-sequence structure ===")
     # solved pages word lengths (merged convention)
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = 0
     for i, ch in enumerate(master):
@@ -126,7 +126,7 @@ def main() -> None:
 
     def perm_test(seq, lag, reps=4000, seed=1):
         s = np.array(seq, float)
-        m = len(s)
+        len(s)
         x = s - s.mean()
         obs = float(np.dot(x[:-lag], x[lag:]) / np.dot(x, x))
         rng = np.random.default_rng(seed)
@@ -151,7 +151,7 @@ def main() -> None:
     import re
     eng = ""
     for f in glob.glob("hypotheses/*.md"):
-        eng += open(f).read()
+        eng += Path(f).read_text()
     eng_lens = [len(t) for t in re.findall(r"[A-Za-z]+", eng)]
 
     lag_stats(lens, "unsolved cipher  ")

@@ -23,8 +23,9 @@ def sections(text: str) -> list[str]:
     return [s for s in text.split("$") if RUNE.search(s)][:10]
 
 
-def stream(section: str, with_marks: bool) -> str:
-    keep = lambda ch: RUNE.match(ch) or (with_marks and ch in c3301.CLUSTER_MARKS)
+def stream(section: str, *, with_marks: bool) -> str:
+    def keep(ch):
+        return RUNE.match(ch) or (with_marks and ch in c3301.CLUSTER_MARKS)
     return "".join(ch for ch in section if keep(ch))
 
 
@@ -50,7 +51,7 @@ def main() -> None:
     secs = sections(DATA.read_text())
     for with_marks, name in ((False, "29-symbol (marks stripped)"),
                              (True, "30-symbol (marks as positions)")):
-        parts = [stream(s, with_marks) for s in secs]
+        parts = [stream(s, with_marks=with_marks) for s in secs]
         full = "".join(parts)
         print(f"=== {name}: {len(full)} symbols ===")
         d = doublets(full)
@@ -77,7 +78,7 @@ def main() -> None:
         print()
 
     # small-gap tail of the mark process (dead-zone check, doublet parallel)
-    full30 = "".join(stream(s, True) for s in secs)
+    full30 = "".join(stream(s, with_marks=True) for s in secs)
     marks = [i for i, ch in enumerate(full30) if ch in c3301.CLUSTER_MARKS]
     gaps = [b - a for a, b in zip(marks, marks[1:])]
     mean_gap = sum(gaps) / len(gaps)
@@ -90,7 +91,7 @@ def main() -> None:
     # DJU-BEI arithmetic under mark-inclusive counting (6-gram, start to start;
     # the 7th matching rune of the second occurrence is the first rune of the
     # solved section 10, outside the clean corpus)
-    full29 = "".join(stream(s, False) for s in secs)
+    full29 = "".join(stream(s, with_marks=False) for s in secs)
     a29 = full29.find(DJU_BEI)
     b29 = full29.find(DJU_BEI, a29 + 1)
     # map rune offsets into the 30-symbol stream

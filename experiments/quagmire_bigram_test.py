@@ -5,10 +5,9 @@
 Generate Quagmire III autokey ciphertext and analyze bigram patterns.
 """
 
-import sys
+import sys  # noqa: I001
 sys.path.insert(0, 'src')
 
-from collections import Counter
 from aldegonde import c3301
 from aldegonde.grams import bigram_diagram
 
@@ -70,7 +69,7 @@ def quagmire3_autokey_encrypt(
     mixed = mixed_alphabet(keyword, alphabet)
     n = len(alphabet)
     char_to_pos = {c: i for i, c in enumerate(mixed)}
-    pos_to_char = {i: c for i, c in enumerate(mixed)}
+    pos_to_char = dict(enumerate(mixed))
 
     ciphertext = []
     key_char = primer
@@ -93,7 +92,7 @@ def load_sample_english() -> str:
     try:
         with open("/usr/share/dict/words") as f:
             return f.read()[:50000]
-    except:
+    except OSError:
         return "the quick brown fox jumps over the lazy dog " * 1000
 
 

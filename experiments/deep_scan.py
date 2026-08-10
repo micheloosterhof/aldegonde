@@ -17,12 +17,13 @@ I. FFT of the word-length sequence (meter/verse check).
 
 import math
 from collections import Counter, defaultdict
+from pathlib import Path
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2 as chi2_dist
 from scipy.stats import chi2_contingency, kstest
 
-from anomaly_scan import parse
 from aldegonde import c3301
 
 N = 29
@@ -95,7 +96,7 @@ def main() -> None:
             print(f"  longest run {t} at word indices {v}")
 
     print("\n=== B. CROSS-CORRELATION VS SOLVED STREAM ===")
-    master = open("data/liber-primus__transcription--master.txt").read()
+    master = Path("data/liber-primus__transcription--master.txt").read_text()
     solved_runes = []
     cnt = 0
     for ch in master:
@@ -205,8 +206,6 @@ def main() -> None:
 
     print("\n=== G. SHORTEST ALL-29 WINDOW ===")
     best = (10**9, -1)
-    last = {}
-    count = 0
     # sliding minimal window containing all 29 symbols
     left = 0
     have = Counter()

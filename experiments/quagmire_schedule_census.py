@@ -44,11 +44,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d5_partial_leak import to_runeglish
-from doublet_position_profile import IDX_ENG
-from ea_direction_test import PROSE_CACHE, prose_words
-from keyword_exhaustion import DICT, alphabets, kw_runes
-from lp_corpus import load_clean
+from d5_partial_leak import to_runeglish  # noqa: E402
+from doublet_position_profile import IDX_ENG  # noqa: E402
+from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
+from keyword_exhaustion import DICT, alphabets, kw_runes  # noqa: E402
+from lp_corpus import load_clean  # noqa: E402
 
 M = 29
 RNG = random.Random(3301)
@@ -92,7 +92,7 @@ def sample_register(lp_lens: list[int],
     words = []
     for L in lp_lens:
         LL = L
-        while LL not in pools and LL < max(pools):
+        while LL not in pools and max(pools) > LL:
             LL += 1
         words.append(RNG.choice(pools[LL])[:L])
     return words
@@ -186,9 +186,12 @@ def self_test(T1, T4, T6, words) -> None:
     sim = simulate(K, sched, words)
     for dist in (1, 4, 6):
         if abs(pred[dist] - sim[dist]) > 1e-9:
-            raise AssertionError(
+            msg = (
                 f"self-test failed at d{dist}: analytic {pred[dist]:.6f} "
-                f"vs simulated {sim[dist]:.6f}")
+                f"vs simulated {sim[dist]:.6f}"
+            )
+            raise AssertionError(
+                msg)
     r = np.arange(M, dtype=np.int64)
     idx0 = (-(r[:, None, None, None] + r[None, :, None, None]
               + r[None, None, :, None] + r[None, None, None, :])) % M
@@ -196,7 +199,8 @@ def self_test(T1, T4, T6, words) -> None:
           + v1[3][None, None, :, None] + v1[4][None, None, None, :])
     grid_min = float((g4 + v1[0][idx0]).min())
     if abs(grid_min - constrained_floor(v1)) > 1e-12:
-        raise AssertionError("DP floor != brute-force grid minimum")
+        msg = "DP floor != brute-force grid minimum"
+        raise AssertionError(msg)
     print(f"self-test OK: analytic == simulated at d1/d4/d6 "
           f"({pred[1]:.4f}/{pred[4]:.4f}/{pred[6]:.4f}); "
           f"DP floor == grid minimum")
@@ -265,7 +269,7 @@ def main() -> None:
     sig_alpha = 0
     min_d6_global = 9.0
 
-    pos_buf = np.empty(M, dtype=np.int64)
+    np.empty(M, dtype=np.int64)
     for word in vocab:
         seq = kw_runes(word)
         if not seq:
@@ -312,7 +316,7 @@ def main() -> None:
         seq = kw_runes(word)
         if not seq:
             continue
-        for rname, K in alphabets(seq):
+        for _rname, K in alphabets(seq):
             posv[np.array(K)] = np.arange(M)
             D = (posv[None, :] - posv[:, None]) % M
             q = np.bincount(D.ravel(), weights=cross.ravel(), minlength=M)
