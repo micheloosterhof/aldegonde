@@ -110,12 +110,40 @@ def quadgrams(runes: Sequence[T], cut: int = 0) -> list[Sequence[T]]:
     return ngrams(runes, length=4, cut=cut)
 
 
+def ngram_counts(
+    text: Sequence[object],
+    length: int = 1,
+    cut: int = 0,
+) -> Counter[object]:
+    """Count ngrams, keyed by whatever is cheapest to hash.
+
+    For a caller that only needs the counts -- an index of coincidence, a repeat
+    census -- the key never has to be readable, so formatting each ngram as a
+    string is pure cost. Use `ngram_distribution` when the keys are displayed or
+    matched against a table of string ngrams.
+
+    Args:
+        text: Sequence to count over
+        length: Size of the ngram
+        cut: 0 for sliding ngrams, otherwise the offset of non-overlapping ones
+
+    Returns:
+        Counts keyed by str slice, tuple, or whatever the sequence yields
+    """
+    if isinstance(text, str):
+        return Counter(iterngrams(text, length=length, cut=cut))
+    if cut == 0:
+        # zip over offset views builds the sliding tuples entirely in C
+        return Counter(zip(*(text[i:] for i in range(length))))
+    return Counter(tuple(gram) for gram in iterngrams(text, length=length, cut=cut))
+
+
 def ngram_distribution(
     text: Sequence[object],
     length: int = 1,
     cut: int = 0,
 ) -> dict[str, int]:
-    """Return ngrams by count."""
+    """Return ngrams by count, keyed by the ngram as a string."""
     return Counter([str(g) for g in iterngrams(text, length=length, cut=cut)])
 
 

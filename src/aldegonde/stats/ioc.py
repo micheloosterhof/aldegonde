@@ -9,7 +9,7 @@ from aldegonde.exceptions import (
     InvalidInputError,
     StatisticalAnalysisError,
 )
-from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.ngrams import ngram_counts
 from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
@@ -52,8 +52,8 @@ def ioc(text: Sequence[object], length: int = 1, cut: int = 0) -> float:
         raise InvalidInputError(msg)
 
     try:
-        freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-        L: int = sum(x for x in freqs.values())
+        freqs = ngram_counts(text, length=length, cut=cut)
+        L: int = sum(freqs.values())
 
         if L < 2:
             msg = f"Insufficient n-grams ({L}) for IOC calculation"
@@ -86,8 +86,8 @@ def nioc(
     normalized to alphabet size, and the signed number of standard
     deviations away from random data.
     """
-    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-    L: int = sum(x for x in freqs.values())
+    freqs = ngram_counts(text, length=length, cut=cut)
+    L: int = sum(freqs.values())
     if L < 2:
         return IocResult(ioc=0.0, nioc=0.0, z_score=0.0)
     freqsum: float = sum(v * (v - 1) for v in freqs.values())
@@ -256,8 +256,8 @@ def renyi(
     order=1 converges to Shannon entropy
     https://www.johndcook.com/blog/2021/08/14/index-of-coincidence
     """
-    freqs: dict[str, int] = ngram_distribution(text, length=length, cut=cut)
-    L: int = sum(x for x in freqs.values())
+    freqs = ngram_counts(text, length=length, cut=cut)
+    L: int = sum(freqs.values())
     H: float
     if order == 1:
         H = -sum(v / L * log(v / L, 2) for v in freqs.values())

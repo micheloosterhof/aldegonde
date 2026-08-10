@@ -7,6 +7,7 @@ to detect repeated digraphs, trigraphs, etc.
 
 from collections.abc import Sequence
 from math import sqrt
+from operator import eq
 from typing import TypeVar
 
 from aldegonde.stats.nulls import NullModel
@@ -102,7 +103,10 @@ def doublet_count(text: Sequence[object], skip: int = 1, length: int = 1) -> int
     if num_comparisons <= 0:
         return 0
     if length == 1:
-        return sum(text[i] == text[i + skip] for i in range(num_comparisons))
+        # map/eq walks both offset views in C; the generator form paid a Python
+        # frame and two index operations for every position, tens of millions of
+        # times across a resampling run
+        return sum(map(eq, text, text[skip:]))
     return sum(
         text[i : i + length] == text[i + skip : i + skip + length]
         for i in range(num_comparisons)

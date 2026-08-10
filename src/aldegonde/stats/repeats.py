@@ -1,11 +1,14 @@
 import math
-from collections import Counter
 from collections.abc import Sequence
 from typing import TypeVar
 
 from scipy.stats import poisson
 
-from aldegonde.stats.ngrams import iterngrams, ngram_distribution, ngram_positions
+from aldegonde.stats.ngrams import (
+    ngram_counts,
+    ngram_distribution,
+    ngram_positions,
+)
 from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
@@ -15,19 +18,7 @@ T = TypeVar("T")
 
 def _repeat_count(text: Sequence[object], length: int, cut: int) -> int:
     """Number of distinct n-grams of a given length that occur more than once."""
-    # The count only needs the ngrams to be distinguishable, not readable, so a
-    # string is unnecessary: a slice of a str is already hashable, and for any
-    # other sequence a tuple is both hashable and far cheaper than formatting.
-    if isinstance(text, str):
-        counts: Counter[object] = Counter(iterngrams(text, length=length, cut=cut))
-    elif cut == 0:
-        # zip over offset views yields the sliding tuples entirely in C, which
-        # matters because every Monte Carlo surrogate arrives here as a list
-        counts = Counter(zip(*(text[i:] for i in range(length))))
-    else:
-        counts = Counter(
-            tuple(gram) for gram in iterngrams(text, length=length, cut=cut)
-        )
+    counts = ngram_counts(text, length=length, cut=cut)
     return sum(1 for occurrences in counts.values() if occurrences > 1)
 
 
