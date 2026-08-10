@@ -21,9 +21,11 @@ import math
 from collections import Counter, defaultdict
 
 import numpy as np
-
 from anomaly_scan import parse
+
 from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
 
 N = 29
 RUNESET = set("".join(c3301.CICADA_ALPHABET))
@@ -144,11 +146,11 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "①-.%&$":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 words_s.append((cur, prev_break == "s"))
                 cur = 0
-            prev_break = "s" if ch == "." else "w"
+            prev_break = "s" if ch in c3301.CLUSTER_MARKS else "w"
     if cur:
         words_s.append((cur, prev_break == "s"))
     sol_lens = [L for L, _ in words_s]
@@ -160,11 +162,11 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "①-.%&$":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 pend = cur
                 cur = 0
-            if ch == "." and pend:
+            if ch in c3301.CLUSTER_MARKS and pend:
                 sol_final.append(pend)
     sa = np.array(sol_lens, float)
     o, z = perm_z(sol_final, sa)

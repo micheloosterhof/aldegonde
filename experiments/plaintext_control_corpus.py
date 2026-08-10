@@ -34,6 +34,8 @@ from __future__ import annotations
 import json
 import math
 
+from aldegonde import c3301
+
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
@@ -45,7 +47,7 @@ MASTER = "data/liber-primus__transcription--master.txt"
 QUADGRAMS = "src/aldegonde/data/ngrams/runeglish/quadgrams.txt"
 OUT_JSON = "experiments/plaintext_control_stats.json"
 
-WORD_END = set("①-.,;:!?&$")
+WORD_END = set(c3301.MARK_CHARS + ",;:!?&$" + c3301.NUMERAL_CHARS)
 
 
 # ----------------------------------------------------------------- scoring

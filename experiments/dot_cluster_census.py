@@ -34,6 +34,7 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
+from aldegonde import c3301
 from experiments.locate_marks import CORPUS, IMAGE_DIR, TEXT_BLOCK
 
 RUNE = re.compile(r"[ᚠ-᛿]")
@@ -95,8 +96,10 @@ def main() -> None:
         print(f"{n:>6}{sizes[n]:>10}{sizes[n] / total:>9.2%}")
 
     txt = CORPUS.read_text()
-    print(f"\ntranscription records {txt.count('-')} '-' and {txt.count('.')} '.' "
-          f"= {txt.count('-') + txt.count('.')} marks")
+    word = sum(1 for ch in txt if ch in c3301.WORD_MARKS)
+    cluster_marks = sum(1 for ch in txt if ch in c3301.CLUSTER_MARKS)
+    print(f"\ntranscription records {word} word marks and {cluster_marks} clusters "
+          f"= {word + cluster_marks} marks")
     print(f"scan finds {total} clusters, of which {sizes[1]} are single dots")
 
     print("\nclusters of 3+ dots, by size")

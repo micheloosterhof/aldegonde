@@ -31,6 +31,10 @@ import urllib.request
 from collections import Counter
 from pathlib import Path
 
+from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS)
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
@@ -84,7 +88,7 @@ def solved_plain_words() -> list[list[int]]:
             segs[-1].append(R2I[ch])
             cur += 1
             count += 1
-        elif ch in "①-.%":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 wlens[-1].append(cur)
                 cur = 0
@@ -197,6 +201,8 @@ def main() -> None:
 
 # rune-name -> index for the prose encoder output; IO is the IA rune
 from aldegonde import c3301  # noqa: E402
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%" + c3301.NUMERAL_CHARS)
 
 IDX_ENG = {name: i for i, name in enumerate(c3301.CICADA_ENGLISH_ALPHABET)}
 IDX_ENG["IO"] = IDX_ENG["IA"]

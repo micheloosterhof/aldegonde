@@ -36,6 +36,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from aldegonde import c3301
 from experiments.locate_marks import CORPUS, IMAGE_DIR
 from experiments.page_reader import read_page, with_ticks
 
@@ -102,7 +103,7 @@ def align(bands: list, lines: list[str]) -> list[tuple]:
     bs = ["".join("R" if g.kind == "R" else "M"
                   for g in with_ticks(b) if g.kind != "t") for b in bands]
     ls = ["".join("R" if RUNE.match(c) or CONTENT.match(c) else "M"
-                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in "①-.")
+                  for c in line if RUNE.match(c) or CONTENT.match(c) or c in c3301.MARK_CHARS)
           for line in lines]
     n, m = len(bs), len(ls)
     inf = float("inf")

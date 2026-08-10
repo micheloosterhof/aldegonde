@@ -24,13 +24,15 @@ from collections import Counter
 
 from scipy.stats import binomtest
 
+from aldegonde import c3301
+
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 R2I["ᛂ"] = R2I["ᛄ"]
 MASTER = "data/liber-primus__transcription--master.txt"
 UNSOLVED = "data/page0-58.txt"
-WORD_END = set("①-.,;:!?&$%")
+WORD_END = set(c3301.MARK_CHARS + ",;:!?&$%" + c3301.NUMERAL_CHARS)
 D = 5
 
 # encrypted solved sections of the master transcription (constant-transform
@@ -80,7 +82,7 @@ def d5_stats(words: list[list[int]], label: str) -> None:
 def main() -> None:
     # master transcription: '%' is a line break here (not a page break),
     # so it must NOT close words; only '-' '.' '&' '$' do.
-    master = parse_sections(MASTER, set("①-.&"))
+    master = parse_sections(MASTER, set(c3301.MARK_CHARS + "&" + c3301.NUMERAL_CHARS))
     print(f"master transcription: {len(master)} sections")
     enc = [w for i, s in enumerate(master) if i in ENCRYPTED_SOLVED for w in s]
     n_runes = sum(len(w) for w in enc)
@@ -91,7 +93,7 @@ def main() -> None:
         d5_stats(master[i], f"  section {i}")
 
     # sanity: the unsolved corpus with the same machinery
-    unsolved = parse_sections(UNSOLVED, set("①-.&%"))[:10]
+    unsolved = parse_sections(UNSOLVED, set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS))[:10]
     uw = [w for s in unsolved for w in s]
     print(f"\nunsolved corpus sanity ({sum(len(w) for w in uw)} runes)")
     d5_stats(uw, "  within-word d=5")

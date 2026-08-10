@@ -1,6 +1,12 @@
 # ABOUTME: Tests text-direction via '.' marks: compares word lengths BEFORE vs
 # ABOUTME: AFTER each mark against a random-word null, unsolved vs solved pages.
-import re, random, statistics
+import random
+import re
+import statistics
+
+from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
 
 RUNE = re.compile(r'[ᚠ-᛿]')
 random.seed(1)
@@ -13,11 +19,11 @@ def tokens(txt):
     for ch in txt:
         if RUNE.match(ch):
             word.append(ch)
-        elif ch in '①-.%&$':
+        elif ch in BOUNDARY_CHARS:
             if word:
-                out.append([''.join(word), ch == '.'])
+                out.append([''.join(word), ch in c3301.CLUSTER_MARKS])
                 word = []
-            elif ch == '.' and out:
+            elif ch in c3301.CLUSTER_MARKS and out:
                 out[-1][1] = True   # mark directly after another delimiter
     if word:
         out.append([''.join(word), False])

@@ -36,12 +36,13 @@ import statistics
 from collections import Counter
 from pathlib import Path
 
+from aldegonde import c3301
 from experiments.d5_partial_leak import to_runeglish
 
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-BOUNDARY = "①-.%&$"
+BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
 N_RUNES = 29
 SHIFTS = 29           # states of the schedule being excluded
 LENGTHS = (2, 3, 4, 5, 6, 7, 8)

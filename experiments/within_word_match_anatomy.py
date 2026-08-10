@@ -31,11 +31,13 @@ from collections import Counter
 import numpy as np
 from scipy.stats import binomtest
 
+from aldegonde import c3301
+
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 DATA = "data/page0-58.txt"
-WORD_BOUNDARIES = set("①-.&%")
+WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
 D = 5
 
 

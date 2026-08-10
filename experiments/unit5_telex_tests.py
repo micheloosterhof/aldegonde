@@ -43,6 +43,8 @@ from math import sqrt
 
 from aldegonde import c3301
 
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "$&" + c3301.NUMERAL_CHARS)
+
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
 DATA = "data/page0-58.txt"
@@ -68,7 +70,7 @@ def load() -> tuple[str, list[int]]:
         for ch in parts[pi]:
             if ch in ALPHABET:
                 cur.append(ch)
-            elif ch in "①-.$&" and cur:
+            elif ch in BOUNDARY_CHARS and cur:
                 flush()
         if cur:
             flush()

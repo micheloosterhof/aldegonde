@@ -11,11 +11,11 @@ Looks for structure beyond the known doublet suppression:
 - isomorph statistics
 """
 
-from collections import Counter, defaultdict
 import math
 import random
+from collections import Counter, defaultdict
 
-from scipy.stats import chisquare, chi2_contingency, norm
+from scipy.stats import chi2_contingency, chisquare, norm
 
 from aldegonde import c3301
 
@@ -85,10 +85,10 @@ def parse(path: str = "data/page0-58.txt"):
             cur_line.append(idx)
             cur_page.append(idx)
             cur_section.append(idx)
-        elif ch in "①-":
+        elif ch in c3301.WORD_MARKS:
             if rank["w"] > rank[pending]:
                 pending = "w"
-        elif ch == ".":
+        elif ch in c3301.CLUSTER_MARKS:
             if rank["s"] > rank[pending]:
                 pending = "s"
         elif ch == "/":

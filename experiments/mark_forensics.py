@@ -19,13 +19,23 @@ import re
 from collections import Counter
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2 as chi2_dist
 
-from anomaly_scan import parse
 from aldegonde import c3301
 
 N = 29
 RUNESET = set("".join(c3301.CICADA_ALPHABET))
+
+
+def count_marks(text: str, marks: frozenset[str]) -> int:
+    return sum(1 for ch in text if ch in marks)
+
+
+def at_line_end(text: str, marks: frozenset[str]) -> int:
+    """How many of these marks sit immediately before a line break."""
+    return sum(1 for i, ch in enumerate(text)
+               if ch in marks and text[i + 1:i + 2] == "/")
 
 
 def is_prime(x: int) -> bool:
@@ -50,18 +60,19 @@ def main() -> None:
     u_cipher = "$".join(u.split("$")[:-2])
 
     print("=== 1. LAYOUT COUPLING ===")
-    # rate of '.' immediately before a line break vs '-' baseline
-    dot_eol = len(re.findall(r"\./", u_cipher))
-    dot_all = u_cipher.count(".")
-    dash_eol = len(re.findall(r"-/", u_cipher))
-    dash_all = u_cipher.count("-")
-    print(f"  unsolved: '.' at line end {dot_eol}/{dot_all} = "
-          f"{100*dot_eol/dot_all:.1f}%   '-' at line end {dash_eol}/{dash_all} = "
+    # rate of a cluster mark immediately before a line break vs the word-mark
+    # baseline
+    dot_eol = at_line_end(u_cipher, c3301.CLUSTER_MARKS)
+    dot_all = count_marks(u_cipher, c3301.CLUSTER_MARKS)
+    dash_eol = at_line_end(u_cipher, c3301.WORD_MARKS)
+    dash_all = count_marks(u_cipher, c3301.WORD_MARKS)
+    print(f"  unsolved: cluster at line end {dot_eol}/{dot_all} = "
+          f"{100*dot_eol/dot_all:.1f}%   word mark at line end {dash_eol}/{dash_all} = "
           f"{100*dash_eol/dash_all:.1f}%")
     # binomial comparison
     p0 = dash_eol / dash_all
     z = (dot_eol - dot_all * p0) / math.sqrt(dot_all * p0 * (1 - p0))
-    print(f"  '.' line-end excess vs '-' baseline: z={z:+.2f}")
+    print(f"  cluster line-end excess vs word-mark baseline: z={z:+.2f}")
     # solved control
     master = open("data/liber-primus__transcription--master.txt").read()
     count = 0
@@ -73,16 +84,16 @@ def main() -> None:
                 cut = i + 1
                 break
     solved = master[:cut]
-    sd_eol = len(re.findall(r"\./", solved))
-    sd_all = solved.count(".")
-    sh_eol = len(re.findall(r"-/", solved))
-    sh_all = solved.count("-")
+    sd_eol = at_line_end(solved, c3301.CLUSTER_MARKS)
+    sd_all = count_marks(solved, c3301.CLUSTER_MARKS)
+    sh_eol = at_line_end(solved, c3301.WORD_MARKS)
+    sh_all = count_marks(solved, c3301.WORD_MARKS)
     p0s = sh_eol / sh_all
     zs = (sd_eol - sd_all * p0s) / math.sqrt(sd_all * p0s * (1 - p0s))
-    print(f"  solved:   '.' at line end {sd_eol}/{sd_all} = "
-          f"{100*sd_eol/sd_all:.1f}%   '-' at line end {sh_eol}/{sh_all} = "
+    print(f"  solved:   cluster at line end {sd_eol}/{sd_all} = "
+          f"{100*sd_eol/sd_all:.1f}%   word mark at line end {sh_eol}/{sh_all} = "
           f"{100*sh_eol/sh_all:.1f}%  (z={zs:+.2f})")
-    # distance of each '.' from line end, in runes
+    # distance of each cluster mark from line end, in runes
     dists = []
     cur_after = 0
     # walk the raw text per line
@@ -93,10 +104,10 @@ def main() -> None:
         for ch in line:
             if ch in RUNESET:
                 seen += 1
-            elif ch == ".":
+            elif ch in c3301.CLUSTER_MARKS:
                 dists.append(runes_total - seen)
     dd = np.array(dists)
-    print(f"  '.' distance from line end (runes): mean={dd.mean():.1f} "
+    print(f"  cluster distance from line end (runes): mean={dd.mean():.1f} "
           f"(uniform on ~22-rune lines would be ~10.5); "
           f"share at 0 = {100*np.mean(dd == 0):.1f}%")
     hist = Counter(int(min(x, 10)) for x in dd)

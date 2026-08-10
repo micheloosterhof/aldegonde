@@ -35,6 +35,7 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage, stats
 
+from aldegonde import c3301
 from experiments.locate_marks import (
     CORPUS,
     IMAGE_DIR,
@@ -136,7 +137,7 @@ def main() -> None:
         for band, text in zip(bands, lines):
             img = line_tokens(band)
             txt = [("R", c) if RUNE.match(c) else ("M", c)
-                   for c in text if RUNE.match(c) or c in "①-."]
+                   for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
             if [t[0] for t in img] != [t[0] for t in txt]:
                 skipped += 1
                 continue
@@ -150,15 +151,16 @@ def main() -> None:
 
     print(f"aligned marks: {len(inventory)}  ({skipped} lines skipped)\n")
     print("what the page shows against what the transcription recorded\n")
-    print(f"{'dots on page':>14}{'as -':>8}{'as .':>8}{'total':>8}")
+    print(f"{'dots on page':>14}{'as word':>9}{'as cluster':>12}{'total':>8}")
     cross: Counter[tuple[int, str]] = Counter((s, c) for s, _, c in inventory)
     for n in sorted({s for s, _, _ in inventory}):
-        dash, dot = cross[(n, "-")], cross[(n, ".")]
-        print(f"{n:>14}{dash:>8}{dot:>8}{dash + dot:>8}")
+        word = sum(cross[(n, c)] for c in c3301.WORD_MARKS)
+        cluster = sum(cross[(n, c)] for c in c3301.CLUSTER_MARKS)
+        print(f"{n:>14}{word:>9}{cluster:>12}{word + cluster:>8}")
 
     # Only marks the transcription calls '.' enter the sentence-final statistic,
     # so split those by the glyph actually on the page.
-    dots_only = [(s, w) for s, w, c in inventory if c == "."]
+    dots_only = [(s, w) for s, w, c in inventory if c in c3301.CLUSTER_MARKS]
     small = [w for s, w in dots_only if s < BIG and w]
     large = [w for s, w in dots_only if s >= BIG and w]
     allw = [w for _, w in dots_only if w]

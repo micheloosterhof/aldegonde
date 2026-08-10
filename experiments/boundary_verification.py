@@ -49,6 +49,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 
+from aldegonde import c3301
 from experiments.locate_marks import bands, glyphs, text_lines, tokens
 
 RUNE = re.compile(r"[ᚠ-᛿]")
@@ -75,20 +76,20 @@ def main() -> None:
             continue
         for idx, (line, text) in enumerate(zip(img_lines, lines)):
             img = [t for t in tokens(line) if t not in "'\""]
-            txt = ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in "①-."]
+            txt = ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
             totals["lines compared"] += 1
             if img == txt:
                 totals["exact match"] += 1
                 continue
             # a trailing separator the transcription omits at a line end is a
             # known convention difference, not a missing word break
-            if img[:len(txt)] == txt and all(t in "①-." for t in img[len(txt):]):
+            if img[:len(txt)] == txt and all(t in c3301.MARK_CHARS for t in img[len(txt):]):
                 totals["extra trailing separator"] += 1
                 continue
             totals["genuine mismatch"] += 1
             ri, rt = img.count("R"), txt.count("R")
-            si = sum(img.count(c) for c in "①-.")
-            st = sum(txt.count(c) for c in "①-.")
+            si = sum(img.count(c) for c in c3301.MARK_CHARS)
+            st = sum(txt.count(c) for c in c3301.MARK_CHARS)
             if ri != rt:
                 # the connected-component reader merges touching runes, so a
                 # rune-count difference is a reader fault, not a transcription

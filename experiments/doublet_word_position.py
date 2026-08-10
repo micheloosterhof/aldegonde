@@ -27,7 +27,7 @@ DATA = "data/page0-58.txt"
 UNIGRAMS = "src/aldegonde/data/ngrams/runeglish/unigrams.txt"
 
 RUNES = set(c3301.CICADA_ALPHABET)
-WORD_BOUNDARIES = set("①-.&$§%")  # delimiters that end a word
+WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS)  # delimiters that end a word
 
 # Runeglish names of the runes that name a digraph, for the identity-rune filter.
 RUNE_NAME = {"ᚠ": "F", "ᛝ": "NG", "ᛡ": "IA/IO", "ᛠ": "EA"}
@@ -147,7 +147,9 @@ def main() -> None:
         b = words[word_id[i + 1]][1] or "(none/adjacent)"
         cross_by_boundary[b] += 1
     for b, c in sorted(cross_by_boundary.items(), key=lambda x: -x[1]):
-        kind = "WORD '-'" if b == "-" else f"stronger/other {b!r}"
+        kind = ("word mark" if b in c3301.WORD_MARKS
+                else "cluster mark" if b in c3301.CLUSTER_MARKS
+                else f"other {b!r}")
         print(f"  {b!r:>16}  x{c}   [{kind}]")
 
     # --- start / middle / end for within-word doublets ---

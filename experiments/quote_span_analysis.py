@@ -25,11 +25,13 @@ import re
 from math import comb
 from pathlib import Path
 
+from aldegonde import c3301
+
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-SEPARATORS = "①-."
-BOUNDARY = "①-.%&$"
+SEPARATORS = c3301.MARK_CHARS
+BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
 
 
 def clean_text() -> str:
@@ -49,9 +51,9 @@ def scan() -> tuple[list[dict], int, int]:
             started = True
             continue
         if char in BOUNDARY:
-            if char == ".":
+            if char in c3301.CLUSTER_MARKS:
                 dots += 1
-            elif char in "①-":
+            elif char in c3301.WORD_MARKS:
                 dashes += 1
             if started:
                 words += 1
@@ -98,7 +100,8 @@ def main() -> None:
         words = len([w for w in re.split(r"[^ᚠ-᛿]", merged) if w])
         lengths.append(words)
         print(
-            f"{n:>2} {words:>6} {b['rune'] - a['rune']:>6} {inner.count('.'):>9}"
+            f"{n:>2} {words:>6} {b['rune'] - a['rune']:>6} "
+            f"{sum(1 for c in inner if c in c3301.CLUSTER_MARKS):>9}"
             f"  {a['sep']:>9} {b['sep']:>10}"
         )
     print(f"\nspan lengths in words: {sorted(lengths)}")
@@ -106,7 +109,8 @@ def main() -> None:
 
     # A span that wraps one '.'-delimited unit should not straddle a '.'.
     inside = sum(
-        re.sub(r"[/\n%&]", "", text[a["at"] + 1:b["at"]]).count(".") for a, b in spans
+        sum(1 for ch in text[a["at"] + 1:b["at"]] if ch in c3301.CLUSTER_MARKS)
+        for a, b in spans
     )
     internal = sum(lengths) - len(spans)          # boundaries strictly inside spans
     exp_inside = internal * base
@@ -117,7 +121,7 @@ def main() -> None:
     print(f"\n'.' marks strictly inside spans: {inside} across {internal} internal boundaries")
     print(f"   expected {exp_inside:.1f};  P(<= {inside}) = {p_inside:.3f}")
 
-    hits = sum(1 for q in quotes if q["sep"] == ".")
+    hits = sum(1 for q in quotes if q["sep"] in c3301.CLUSTER_MARKS)
     print(f"\nspan edges landing on a '.' mark: {hits} of {len(quotes)}")
     print(f"   expected under random word boundaries: {base * len(quotes):.1f}")
     p = sum(
@@ -143,8 +147,10 @@ def main() -> None:
 
     opens = [q for q in quotes if q["kind"] == "open"]
     closes = [q for q in quotes if q["kind"] == "close"]
-    print(f"   opens on '.': {sum(1 for q in opens if q['sep'] == '.')} of {len(opens)}")
-    print(f"   closes on '.': {sum(1 for q in closes if q['sep'] == '.')} of {len(closes)}")
+    n_open = sum(1 for q in opens if q["sep"] in c3301.CLUSTER_MARKS)
+    n_close = sum(1 for q in closes if q["sep"] in c3301.CLUSTER_MARKS)
+    print(f"   opens on a cluster mark: {n_open} of {len(opens)}")
+    print(f"   closes on a cluster mark: {n_close} of {len(closes)}")
 
     at_line_end = sum(1 for q in quotes if q["line_end"])
     print(f"\nlayout confound: {at_line_end} of {len(quotes)} marks sit at a line end")
@@ -162,7 +168,7 @@ def main() -> None:
         if RUNE.match(char):
             length += 1
         elif char in BOUNDARY:
-            if char == "." and length:
+            if char in c3301.CLUSTER_MARKS and length:
                 near = any(abs(i - m) <= 2 for m in marked)
                 (tagged if near else other).append(length)
             if char in BOUNDARY:

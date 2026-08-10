@@ -1,6 +1,10 @@
 # ABOUTME: Characterizes the '.' mark process under the 30th-cipher-symbol reading:
 # ABOUTME: per-section rates, gap structure, adjacency, and rune context at marks.
-import re, math
+import math
+import re
+
+from aldegonde import c3301
+
 RUNE = re.compile(r'[ᚠ-᛿]')
 
 text = open('/Users/mich/src/aldegonde/data/page0-58.txt').read()
@@ -10,7 +14,7 @@ print("per-section mark rates (clean sections 0-9):")
 tot_r = tot_m = 0
 for i, s in enumerate(secs):
     r = len(RUNE.findall(s))
-    m = s.count('.')
+    m = sum(1 for ch in s if ch in c3301.CLUSTER_MARKS)
     tot_r += r; tot_m += m
     exp = r * 168 / 12956
     # Poisson p for observing <= m if very low, or just report
@@ -25,19 +29,21 @@ adj = 0
 ctx_before = {}
 ctx_after = {}
 for s in secs:
-    stream = [ch for ch in s if RUNE.match(ch) or ch == '.']
-    pos = [i for i, ch in enumerate(stream) if ch == '.']
+    stream = [ch for ch in s if RUNE.match(ch) or ch in c3301.CLUSTER_MARKS]
+    pos = [i for i, ch in enumerate(stream) if ch in c3301.CLUSTER_MARKS]
     for a, b in zip(pos, pos[1:]):
         gaps.append(b - a)
         if b - a == 1:
             adj += 1
     for p in pos:
-        if p > 0 and stream[p-1] != '.':
+        if p > 0 and stream[p-1] not in c3301.CLUSTER_MARKS:
             ctx_before[stream[p-1]] = ctx_before.get(stream[p-1], 0) + 1
-        if p + 1 < len(stream) and stream[p+1] != '.':
+        if p + 1 < len(stream) and stream[p+1] not in c3301.CLUSTER_MARKS:
             ctx_after[stream[p+1]] = ctx_after.get(stream[p+1], 0) + 1
 
 import statistics
+
+
 print(f"\n'..' adjacent marks: {adj}")
 if gaps:
     print(f"mark gaps: n={len(gaps)}, mean {statistics.mean(gaps):.1f}, "

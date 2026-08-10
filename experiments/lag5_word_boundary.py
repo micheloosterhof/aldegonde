@@ -43,7 +43,7 @@ SEED = 3301
 
 R2I = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 RUNES = set(R2I)
-WORD_BOUNDARIES = set("①-.&%")
+WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
 
 
 def parse_clean_sections(path: str = "data/page0-58.txt") -> list[list[list[int]]]:

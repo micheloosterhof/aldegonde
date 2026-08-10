@@ -30,6 +30,10 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lp_corpus import ALPHABET, IDX, RUNE
 
+from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&" + c3301.NUMERAL_CHARS)
+
 ROOT = Path(__file__).resolve().parent.parent
 D = 11
 CHANCE = 0.03455  # sum f^2 on the clean corpus
@@ -48,7 +52,7 @@ def load_sections() -> list[list[int]]:
             if RUNE.match(ch):
                 stream.append(IDX[ch])
                 cur += 1
-            elif ch in "①-.%&":
+            elif ch in BOUNDARY_CHARS:
                 if cur:
                     wlens.append(cur)
                     cur = 0

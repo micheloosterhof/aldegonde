@@ -22,6 +22,8 @@ import random
 
 from aldegonde import c3301
 
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
+
 ALPH = c3301.CICADA_ALPHABET
 RUNES = set(ALPH)
 R2I = {r: i for i, r in enumerate(ALPH)}
@@ -46,7 +48,7 @@ def load_lp() -> tuple[list[int], list[int]]:
             stream.append(R2I[ch])
             wid.append(w)
             started = True
-        elif ch in "①-.&%":  # word boundary
+        elif ch in BOUNDARY_CHARS:  # word boundary
             if started:
                 w += 1
                 started = False

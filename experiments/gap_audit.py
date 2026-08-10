@@ -37,6 +37,8 @@ import numpy as np
 
 from aldegonde import c3301
 
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "/" + c3301.NUMERAL_CHARS)
+
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
 DATA = "data/page0-58.txt"
@@ -113,9 +115,9 @@ def main() -> None:
                     if fresh:
                         streams[k].append(ch)
                 flags = dict.fromkeys(streams, False)
-            elif ch in "①-":
+            elif ch in c3301.WORD_MARKS:
                 flags["word"] = True
-            elif ch == ".":
+            elif ch in c3301.CLUSTER_MARKS:
                 flags["sentence"] = flags["word"] = True
             elif ch == "/":
                 flags["line"] = flags["word"] = True
@@ -160,7 +162,7 @@ def main() -> None:
         for ch in parts[pi]:
             if ch in ALPHABET:
                 cur.append(ch)
-            elif ch in "①-./" and cur:
+            elif ch in BOUNDARY_CHARS and cur:
                 words.append("".join(cur))
                 cur = []
         if cur:

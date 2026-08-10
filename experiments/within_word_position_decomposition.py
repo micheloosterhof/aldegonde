@@ -25,6 +25,8 @@ from scipy.stats import chi2_contingency
 
 from aldegonde import c3301
 
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "&%$" + c3301.NUMERAL_CHARS)
+
 ALPH = c3301.CICADA_ALPHABET
 RUNES = set(ALPH)
 R2I = {r: i for i, r in enumerate(ALPH)}
@@ -45,7 +47,7 @@ def load_words() -> list[list[int]]:
         if ch in RUNES:
             cur.append(R2I[ch])
             total += 1
-        elif ch in "①-.&%$":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 words.append(cur)
                 cur = []

@@ -22,10 +22,12 @@ import math
 from collections import Counter, defaultdict
 
 import numpy as np
+from anomaly_scan import parse
 from scipy.stats import chi2_contingency
 
-from anomaly_scan import parse
 from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
 
 N = 29
 RUNESET = set("".join(c3301.CICADA_ALPHABET))
@@ -115,7 +117,7 @@ def main() -> None:
     for ch in solved:
         if ch in RUNESET:
             cur += 1
-        elif ch in "①-.%&$":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 sl.append(cur)
             cur = 0

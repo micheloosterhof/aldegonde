@@ -31,6 +31,8 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
+from aldegonde import c3301
+
 ROOT = Path(__file__).resolve().parent.parent
 IMAGE_DIR = Path("/Users/mich/src/cicada-2014/stage11/ky2khlqdf7qdznac.onion")
 CORPUS = ROOT / "data" / "page0-58.txt"
@@ -124,14 +126,14 @@ def tokens(line: list) -> list[str]:
 
 def text_tokens(text: str) -> list[str]:
     """Transcription line as tokens; existing tick marks are not glyphs here."""
-    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in "①-."]
+    return ["R" if RUNE.match(c) else c for c in text if RUNE.match(c) or c in c3301.MARK_CHARS]
 
 
 def recorded(text: str) -> list[tuple[int, str]]:
     """Marks the transcription line already carries, as (token index, mark)."""
     out, seen = [], 0
     for char in text:
-        if RUNE.match(char) or char in "①-.":
+        if RUNE.match(char) or char in c3301.MARK_CHARS:
             seen += 1
         elif char in "'\"":
             out.append((seen, char))
@@ -142,7 +144,7 @@ def insert(text: str, positions: list[tuple[int, str]]) -> str:
     """Insert marks at the given token indices, keeping marks already present."""
     out, seen, at = [], 0, dict(positions)
     for char in text:
-        if RUNE.match(char) or char in "①-.":
+        if RUNE.match(char) or char in c3301.MARK_CHARS:
             if seen in at:
                 out.append(at.pop(seen))
             seen += 1

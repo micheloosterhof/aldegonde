@@ -24,6 +24,8 @@ import random
 
 from aldegonde import c3301
 
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS)
+
 ALPH = c3301.CICADA_ALPHABET
 RUNES = set(ALPH)
 R2I = {r: i for i, r in enumerate(ALPH)}
@@ -49,7 +51,7 @@ def load_sections() -> list[tuple[list[int], list[int]]]:
             sr.append(R2I[ch])
             cur += 1
             total += 1
-        elif ch in "①-.&%":
+        elif ch in BOUNDARY_CHARS:
             if cur:
                 sl.append(cur)
                 cur = 0

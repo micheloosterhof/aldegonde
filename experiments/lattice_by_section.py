@@ -1,6 +1,14 @@
 # ABOUTME: Per-section word/sentence-length analysis of the unsolved LP lattice
 # ABOUTME: vs the author's solved register: distributions, sentences, ordering.
-import re, random, math, statistics
+import math
+import random
+import re
+import statistics
+
+from aldegonde import c3301
+
+BOUNDARY_CHARS = frozenset(c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS)
+
 RUNE = re.compile(r'[ᚠ-᛿]')
 random.seed(3)
 
@@ -11,10 +19,10 @@ def words_and_marks(txt):
     for ch in txt + '-':
         if RUNE.match(ch):
             w.append(ch)
-        elif ch in '①-.%&$':
+        elif ch in BOUNDARY_CHARS:
             if w:
                 words.append(len(w)); cur += 1; w = []
-            if ch == '.' and cur:
+            if ch in c3301.CLUSTER_MARKS and cur:
                 sent_lens.append(cur); cur = 0
     return words, sent_lens
 

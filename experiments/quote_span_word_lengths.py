@@ -32,10 +32,12 @@ import re
 import statistics
 from pathlib import Path
 
+from aldegonde import c3301
+
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "data" / "page0-58.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
-BOUNDARY = "①-.%&$"
+BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS
 SHORT = 2          # "short word" = 1-2 runes, as in the deficit measurement
 SOLVED_SHORT_RATE = 0.279
 TRIALS = 20000
@@ -84,7 +86,7 @@ def main() -> None:
     rng = random.Random(SEED)
 
     print("word segmentation convention check")
-    for label, bset in (("- . % & $  (lp_corpus)", BOUNDARY), ("- .  (section D)", "①-.")):
+    for label, bset in (("- . % & $  (lp_corpus)", BOUNDARY), ("- .  (section D)", c3301.MARK_CHARS)):
         w = words_with_quote_flag(bset)
         ins = [v for v, q in w if q]
         out = [v for v, q in w if not q]

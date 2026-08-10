@@ -39,6 +39,8 @@ from pathlib import Path
 
 from scipy import stats
 
+from aldegonde import c3301
+
 ROOT = Path(__file__).resolve().parent.parent
 MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
 CORPUS = ROOT / "data" / "page0-58.txt"
@@ -46,12 +48,12 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 SOLVED_LINES = 187
 SHORT = 2
 CONVENTIONS = {
-    "- . % & $ (lp_corpus)": "①-.%&$",
-    "- . (section D)": "①-.",
+    "- . % & $ (lp_corpus)": c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS,
+    "- . (section D)": c3301.MARK_CHARS,
     # The opposite extreme: every line break a word boundary. This OVER-splits,
     # cutting wrapped words into fragments, so it bounds how much the merging
     # convention can possibly be contributing.
-    "+ split at line breaks": "①-.%&$/\n",
+    "+ split at line breaks": c3301.MARK_CHARS + "%&$/\n" + c3301.NUMERAL_CHARS,
 }
 
 

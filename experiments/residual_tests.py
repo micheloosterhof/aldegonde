@@ -7,9 +7,10 @@ import math
 from collections import Counter
 
 import numpy as np
-from scipy.stats import pearsonr, spearmanr, chi2 as chi2_dist, ks_2samp
-
 from anomaly_scan import parse
+from scipy.stats import chi2 as chi2_dist
+from scipy.stats import ks_2samp, pearsonr, spearmanr
+
 from aldegonde import c3301
 
 N = 29
@@ -128,7 +129,7 @@ def main() -> None:
     u_cipher = "$".join(u_raw.split("$")[:-2])
 
     def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
-        seps_ = "①-.%&$" + ("" if merge_lines else "/")
+        seps_ = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + ("" if merge_lines else "/")
         out: list[int] = []
         cur = 0
         for ch in text:
@@ -154,7 +155,7 @@ def main() -> None:
                 if cur:
                     nw += 1
                 cur = 0
-            elif ch == ".":
+            elif ch in c3301.CLUSTER_MARKS:
                 if cur:
                     nw += 1
                 cur = 0

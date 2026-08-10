@@ -12,12 +12,11 @@ outside the multiplicative group GF(29)*.
 """
 
 from aldegonde import c3301
-from aldegonde.stats import print_ioc_statistics, print_kappa
-from aldegonde.stats import repeats, dist, entropy
+from aldegonde.analysis import friedman, krakup
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor
 from aldegonde.maths.primes import primes as generate_primes
-from aldegonde.analysis import friedman, krakup
+from aldegonde.stats import dist, entropy, print_ioc_statistics, print_kappa, repeats
 
 N = 29  # GF(29)
 EA = 0  # EA rune value (29 % 29 = 0), fallback for div-by-zero
@@ -409,7 +408,7 @@ with open("data/page0-58.txt") as f:
 # PARSE WORD STRUCTURE: preserving word boundaries
 # Separators: - (word), . (sentence), / (line), % (page), & (para), $ (section)
 # ============================================================================
-SEPARATORS = set("①-./&%$\n")
+SEPARATORS = set(c3301.MARK_CHARS + "/&%$\n" + c3301.NUMERAL_CHARS)
 
 def parse_words(text: str) -> list[tuple[str, int]]:
     """Parse text into (word_runes, start_position).
