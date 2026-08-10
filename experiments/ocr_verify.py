@@ -109,7 +109,7 @@ def font_templates():
         t = a[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1]
         timg = Image.fromarray((t * 255).astype("uint8"))
         w = max(6, int(round(t.shape[1] * 0.73)))
-        out[r] = (np.asarray(timg.resize((w, t.shape[0]), Image.LANCZOS)) > 100).astype(
+        out[r] = (np.asarray(timg.resize((w, t.shape[0]), Image.LANCZOS)) > 100).astype(  # ty: ignore[unresolved-attribute]  # Pillow exposes these at runtime; the stub omits them
             np.float32
         )
     return out
@@ -133,7 +133,7 @@ def band_resp(band, tmpl):
 def align(line, resp, tmpl):
     k = len(line)
     layers = []
-    fprev = None
+    fprev = np.full(W, -1e18)
     for idx, r in enumerate(line):
         f = resp[r].copy()
         if idx > 0:
@@ -387,6 +387,7 @@ if MODE == "inspect":
     c[: t.shape[0], crop.shape[1] + 20 : crop.shape[1] + 20 + t.shape[1]] = t
     out = f"/tmp/inspect_p{pg}_l{lnq}_g{posq}_{eng}.png"
     Image.fromarray((255 * (1 - c)).astype("uint8")).resize(
-        (Wt * 2, H * 2), Image.NEAREST
+        (Wt * 2, H * 2),
+        Image.NEAREST,  # ty: ignore[unresolved-attribute]  # Pillow exposes these at runtime; the stub omits them
     ).save(out)
     print(out, "claimed", eng, "x", x)

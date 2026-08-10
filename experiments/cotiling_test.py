@@ -88,12 +88,14 @@ print(
     f"{sorted(set(range(1, 20)) - OK)} (10/19 -> chance ~47%)"
 )
 
-tests = [
+# The cross-event row carries no pair of boundary lists: it is computed in the
+# loop below instead, so its slots are None and the row is recognised by that.
+tests: list[tuple[str, list[int] | None, list[int] | None, bool]] = [
     ("doublet vs doublet", B_doublet, B_doublet, True),  # noqa: FBT003
     ("doublet vs d4-grid", B_doublet, B_d4, False),
     ("doublet vs d1-grid(start)", B_doublet, B_d1_start, False),
     ("doublet vs d1-grid(flank)", B_doublet, B_d1_flank, False),
-    ("d4-grid vs d4-grid (cross-event)", None, None, None),  # special below
+    ("d4-grid vs d4-grid (cross-event)", None, None, False),  # special below
     ("d1(start) vs d4", B_d1_start, B_d4, False),
 ]
 
@@ -110,6 +112,7 @@ for name, A, B, ex in tests:
                         cons += 1
         print(f"{name}: {cons}/{inf} consistent")
         continue
+    assert B is not None
     inf, cons = consistency(A, B, exclude_same=ex)
     if name == "doublet vs doublet":
         inf, cons = inf // 2, cons // 2  # symmetric double count

@@ -13,7 +13,7 @@ from aldegonde.c3301 import MARKS as CICADA_MARKS
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "experiments"))
 
-import lp_corpus  # noqa: E402
+import lp_corpus  # noqa: E402  # ty: ignore[unresolved-import]  # resolved by the sys.path bootstrap two lines above
 
 DATA = ROOT / "data"
 

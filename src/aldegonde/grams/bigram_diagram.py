@@ -59,7 +59,7 @@ def value_color(v: int, edges: Sequence[float]) -> str:
     if not edges:
         return color.bg256(_RAMP[-1])
     groups = len(edges) + 1
-    bucket = bisect.bisect_left(edges, v)
+    bucket = bisect.bisect_left(edges, v)  # ty: ignore[invalid-argument-type]  # mypy accepts this; ty rejects Sequence[float] for bisect
     ramp_index = round(bucket * (len(_RAMP) - 1) / (groups - 1))
     return color.bg256(_RAMP[ramp_index])
 

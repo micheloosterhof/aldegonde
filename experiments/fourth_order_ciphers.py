@@ -111,7 +111,7 @@ def enc_homophonic_cycling(pt: str, wl) -> str:
     freq = {}
     for c in pt:
         freq[c] = freq.get(c, 0) + 1
-    ranked = sorted(freq, key=freq.get, reverse=True)
+    ranked = sorted(freq, key=freq.__getitem__, reverse=True)
     cls = {c: min(i, 9) for i, c in enumerate(ranked)}
     p10 = [cls[c] for c in pt]
     # allocate 29 ct symbols proportional to class frequency

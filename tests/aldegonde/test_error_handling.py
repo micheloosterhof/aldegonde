@@ -71,7 +71,7 @@ class TestPascErrorHandling:
         Accepts TypeError because mypyc enforces type annotations at the C level.
         """
         with pytest.raises((InvalidInputError, TypeError)):
-            pasc.reverse_tr("not_a_dict")
+            pasc.reverse_tr("not_a_dict")  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_reverse_tr_ambiguous(self):
         """Test reverse_tr with ambiguous tabula recta."""
@@ -109,7 +109,7 @@ class TestIocErrorHandling:
         Accepts TypeError because mypyc enforces type annotations at the C level.
         """
         with pytest.raises((InvalidInputError, TypeError)):
-            ioc_func("HELLO", length="invalid")
+            ioc_func("HELLO", length="invalid")  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_ioc_negative_length(self):
         """Test IOC with negative n-gram length."""
@@ -144,7 +144,7 @@ class TestFactorErrorHandling:
     def test_prime_factors_invalid_input(self):
         """Test prime factorization with invalid input."""
         with pytest.raises(InvalidInputError, match="number must be an integer"):
-            factor.prime_factors("not_a_number")
+            factor.prime_factors("not_a_number")  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_prime_factors_negative_number(self):
         """Test prime factorization with negative number."""
@@ -164,7 +164,7 @@ class TestFactorErrorHandling:
     def test_factor_pairs_invalid_input(self):
         """Test factor pairs with invalid input."""
         with pytest.raises(InvalidInputError, match="number must be an integer"):
-            factor.factor_pairs(3.14)
+            factor.factor_pairs(3.14)  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_factor_pairs_negative_number(self):
         """Test factor pairs with negative number."""

@@ -99,7 +99,9 @@ def fit_copy(h: np.ndarray) -> tuple[float, np.ndarray, float]:
 
 def fit_mixture(h: np.ndarray, q: np.ndarray) -> tuple[float, np.ndarray, float]:
     """ML fit of p = f*q + (1-f)/29 by grid+refine on f."""
-    best = (0.0, None, -np.inf)
+    # f = 0 is a valid fit (the uniform mixture), so seed with it rather than
+    # None: every grid point can then be compared against a real candidate
+    best = (0.0, np.full(MOD, 1.0 / MOD), -np.inf)
     for f in np.linspace(0, 1, 2001):
         p = f * q + (1 - f) / MOD
         if (p <= 0).any():

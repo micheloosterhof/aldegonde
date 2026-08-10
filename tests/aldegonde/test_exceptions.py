@@ -130,7 +130,7 @@ class TestValidation:
     def test_validate_text_sequence_invalid_type(self):
         """Test text sequence with invalid type."""
         with pytest.raises(InvalidInputError, match="Text must be a sequence"):
-            validate_text_sequence(123)
+            validate_text_sequence(123)  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_validate_key_length_valid(self):
         """Test valid key length validation."""
@@ -171,7 +171,7 @@ class TestValidation:
             InvalidInputError,
             match="Tabula recta must be a dictionary",
         ):
-            validate_tabula_recta("not_a_dict", ["A", "B"])
+            validate_tabula_recta("not_a_dict", ["A", "B"])  # ty: ignore[invalid-argument-type]  # the wrong type is the point of the test
 
     def test_validate_tabula_recta_missing_outer_keys(self):
         """Test tabula recta missing outer keys."""

@@ -45,7 +45,7 @@ def main() -> None:
         stat = ((c - m / N) ** 2 / (m / N)).sum()
         print(
             f"  {name}: chi2={stat:.1f} p={chi2_dist.sf(stat, N - 1):.3f} "
-            f"max count {int(c.max())} (exp {m / N:.1f})"
+            f"max count {int(c.max())} (exp {m / N:.1f})"  # ty: ignore[invalid-argument-type]  # numpy stub overload; ndarray.max is fine here
         )
 
     print("\ncontext PAIR collisions (explode under small pair-trigger sets):")

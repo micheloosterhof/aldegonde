@@ -175,7 +175,7 @@ def main() -> None:
             ph[j % 5] += 1
     tot = sum(ph.values())
     wgt = [ph[p] / tot for p in range(5)]
-    rarest = float(delta.min())
+    rarest = float(delta.min())  # ty: ignore[invalid-argument-type]  # numpy stub overload; ndarray.min is fine here
     best = (9.0, None)
     for combo in itertools.product(range(M), repeat=4):
         ds = combo + ((-sum(combo)) % M,)

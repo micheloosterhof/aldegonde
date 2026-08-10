@@ -213,10 +213,12 @@ def solve_base0(
             )
         return s / (n - 3)
 
-    best_fit, best_b = -1e9, None
+    # start from a concrete arrangement so the return is always an array:
+    # with restarts=0, or if no restart improves, there is still a result
+    best_fit, best_b = -1e9, np.arange(M)
     for _ in range(restarts):
         b = np.arange(M)
-        rng.shuffle(b)
+        rng.shuffle(b)  # ty: ignore[no-matching-overload]  # random.shuffle accepts a numpy array at runtime
         b = np.array(b)
         f = fitness(b)
         for _ in range(iters):
@@ -303,7 +305,7 @@ def selftest() -> None:
     g = perm_from_cycles([5, 5, 5, 5, 5, 1, 1, 1, 1], rng)
     sigma = perm_from_cycles([9, 7, 7, 3, 3], rng)
     base0 = np.arange(M)
-    rng.shuffle(base0)
+    rng.shuffle(base0)  # ty: ignore[no-matching-overload]  # random.shuffle accepts a numpy array at runtime
     base0 = np.array(base0)
 
     Ms = step_products(g, sigma, lengths)

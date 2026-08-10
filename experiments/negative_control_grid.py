@@ -175,7 +175,7 @@ def main() -> None:
         ids = [i for i, k in enumerate(keys) if k.startswith(f"lag{lag} ")]
         agg_real[lag] = float(np.sum(z_real[ids] ** 2))
         agg_draw[lag] = np.sum(z_draws[:, ids] ** 2, axis=1)
-    best = max(agg_real, key=agg_real.get)
+    best = max(agg_real, key=agg_real.__getitem__)
     real_best = agg_real[best]
     surr_best = np.max(np.stack([agg_draw[lag] for lag in LAGS]), axis=0)
     p = (int(np.count_nonzero(surr_best >= real_best)) + 1) / (DRAWS + 1)

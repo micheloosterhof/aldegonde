@@ -80,7 +80,7 @@ WORD_END = set(c3301.MARK_CHARS + ",;:!?&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_
 
 # ----------------------------------------------------------------- scoring
 def load_quadgram_scorer():
-    scores: dict[tuple[int, int, int, int], float] = {}
+    scores: dict[tuple[int, ...], float] = {}
     total = 0
     with open(QUADGRAMS) as f:
         raw = []
@@ -199,7 +199,9 @@ def main() -> None:
     accepted: list[list[list[int]]] = []
     for idx, sec in enumerate(sections):
         flat_len = sum(len(w) for w in sec)
-        best_name, best_words, best_score = None, None, -99.0
+        # seeded with an empty decode so the preview below always has words:
+        # a section where nothing scores better still prints, as a reject
+        best_name, best_words, best_score = "none", [], -99.0
         for name, words in candidate_decodes(sec):
             s = score([c for w in words for c in w])
             if s > best_score:
