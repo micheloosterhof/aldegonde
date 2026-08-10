@@ -5,7 +5,6 @@ import math
 import pytest
 
 from aldegonde.analysis.rune_frequency import (
-    FrequencyProfile,
     find_best_suppression,
     matrix_mapping,
     natural_mapping,
@@ -195,7 +194,7 @@ class TestScanStateSpaces:
         # When remainder=0, no suppression. When remainder=1..28, symbol 28
         # gets base (suppressed) unless remainder > 28 (impossible).
         # So symbol 28 is suppressed whenever remainder is 1..28.
-        for total, remainder, ratio, suppressed in results:
+        for _total, _remainder, ratio, suppressed in results:
             assert 28 in suppressed
             assert ratio < 1.0
 
@@ -206,7 +205,7 @@ class TestFindBestSuppression:
     def test_matches_known_frequency(self) -> None:
         """Should find count that matches a target frequency."""
         # Simulate observed: symbol 0 at 2% (below uniform ~3.45%)
-        observed = {i: 1.0 / 29 for i in range(29)}
+        observed = dict.fromkeys(range(29), 1.0 / 29)
         observed[0] = 0.02
         total = sum(observed.values())
         observed = {k: v / total for k, v in observed.items()}
@@ -216,7 +215,7 @@ class TestFindBestSuppression:
         assert abs(predicted - observed[0]) < 0.01
 
     def test_returns_valid_profile(self) -> None:
-        observed = {i: 1.0 / 29 for i in range(29)}
+        observed = dict.fromkeys(range(29), 1.0 / 29)
         observed[0] = 0.01
         count, profile = find_best_suppression(observed, 13, 29, 0)
         assert sum(profile.mapping.values()) == 169

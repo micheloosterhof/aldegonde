@@ -1,7 +1,7 @@
 """Functions to split a text in various ways."""
 
 from collections import defaultdict, deque
-from collections.abc import Generator, Iterator, Sequence
+from collections.abc import Generator, Iterable, Sequence
 from typing import TypeVar
 
 T = TypeVar("T")
@@ -46,7 +46,7 @@ def split_by_character(inp: Sequence[T], skip: int = 1) -> dict[T, list[T]]:
 
 
 def trim(
-    inp: Iterator[T],
+    inp: Iterable[T],
     whitespace: Sequence[str] = [" ", "\r", "\n", "\t"],
 ) -> Generator[T, None, None]:
     """
