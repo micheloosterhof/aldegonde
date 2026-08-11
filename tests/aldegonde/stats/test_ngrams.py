@@ -1,4 +1,4 @@
-from aldegonde.stats.ngrams import (
+from aldegonde.stats.ngram import (
     iterngram_positions,
     iterngrams,
     ngram_distribution,

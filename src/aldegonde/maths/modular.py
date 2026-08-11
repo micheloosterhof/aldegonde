@@ -2,6 +2,8 @@
 
 import math
 
+from aldegonde.exceptions import MathematicalError
+
 
 def modInverse(b: int, m: int) -> int:
     """Find modulo inverse of b. It returns -1 when inverse doesn't
@@ -22,7 +24,7 @@ def modDivide(a: int, b: int, m: int) -> int:
     inv = modInverse(b, m)
     if inv == -1:
         msg = f"Division not defined {a}/{b}%{m}"
-        raise ValueError(msg)
+        raise MathematicalError(msg)
 
     return (inv * a) % m
 

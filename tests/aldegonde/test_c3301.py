@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from aldegonde import c3301
-from aldegonde.exceptions import AldegondeKeyError
+from aldegonde.exceptions import AldegondeKeyError, AlphabetError
 
 
 def test_welcome() -> None:
@@ -160,3 +160,20 @@ def test_a_quote_ends_a_word() -> None:
 def test_an_apostrophe_does_not_end_a_word() -> None:
     """A contraction is one word: the apostrophe sits inside it."""
     assert _split("ᚠᚢ'ᚦᚩ") == ["ᚠᚢᚦᚩ"]
+
+
+def test_rune_conversions_say_what_was_wrong() -> None:
+    """A bare ValueError names neither the value nor the expectation."""
+    for call in (
+        lambda: c3301.r2i("Z"),
+        lambda: c3301.r2v("Z"),
+        lambda: c3301.v2r(4),
+        lambda: c3301.v2i(4),
+    ):
+        with pytest.raises(AldegondeKeyError, match="Z|4"):
+            call()
+
+
+def test_unknown_tabula_recta_type_is_rejected_by_name() -> None:
+    with pytest.raises(AlphabetError, match="nonsense"):
+        c3301.valueTR("nonsense")

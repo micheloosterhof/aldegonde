@@ -1,5 +1,7 @@
 """Tests for the higher-order coincidence statistic."""
 
+import random
+
 import pytest
 
 from aldegonde.analysis.coincidence import (
@@ -130,7 +132,9 @@ def test_boundary_permutation_detects_word_aware_matches() -> None:
     far above the null.
     """
     section = ["XY123XY45", "678"] * 30
-    result = boundary_permutation_test([section], lag=5, permutations=200, seed=1)
+    result = boundary_permutation_test(
+        [section], lag=5, permutations=200, rng=random.Random(1)
+    )
     assert result.observed == 60
     assert result.observed > result.null_mean + 3 * result.null_sd
     assert result.p_value < 0.01
@@ -146,7 +150,9 @@ def test_boundary_permutation_blind_matches_are_not_flagged() -> None:
     """
     stream = "ABCDE" * 24
     words = recut_words(stream, [7, 3, 5, 9, 6, 4, 8, 2, 11, 5, 60])
-    result = boundary_permutation_test([words], lag=5, permutations=100, seed=2)
+    result = boundary_permutation_test(
+        [words], lag=5, permutations=100, rng=random.Random(2)
+    )
     assert result.null_sd == 0.0
     assert result.observed == result.null_mean
     assert result.p_value == 1.0

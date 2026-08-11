@@ -31,6 +31,7 @@ Corpus and tokenization match experiments/lag5_word_boundary.py.
 
 from __future__ import annotations
 
+import random
 from math import erfc, sqrt
 
 from aldegonde import c3301
@@ -38,7 +39,7 @@ from aldegonde.analysis.coincidence import (
     boundary_coincidence,
     boundary_permutation_test,
 )
-from aldegonde.stats.kappa import doublets
+from aldegonde.stats.kappa_test import doublets
 from aldegonde.stats.nulls import doublet_shuffle
 from aldegonde.stats.resample import monte_carlo_map
 
@@ -199,7 +200,7 @@ def test_d_montecarlo(stream: list[int]) -> None:
         }
 
     results = monte_carlo_map(
-        statistic, null, stream, keys=skips, trials=5000, seed=SEED
+        statistic, null, stream, keys=skips, trials=5000, rng=random.Random(SEED)
     )
     comp = results[FOCUS_LAG]
     p_mc = comp.p_lower
@@ -225,7 +226,9 @@ def test_e_word_boundary(sections: list[list[list[int]]]) -> None:
     across = bc.across_observed / bc.across_pairs if bc.across_pairs else 0.0
     print(f"  within-word: {bc.within_observed}/{bc.within_pairs} = {within:.4f}")
     print(f"  across-word: {bc.across_observed}/{bc.across_pairs} = {across:.4f}")
-    perm = boundary_permutation_test(sections, FOCUS_LAG, permutations=5000, seed=SEED)
+    perm = boundary_permutation_test(
+        sections, FOCUS_LAG, permutations=5000, rng=random.Random(SEED)
+    )
     print(
         f"  within-word matches vs length-shuffle null: obs={perm.observed} "
         f"null={perm.null_mean:.1f}+-{perm.null_sd:.1f} p(>=obs)={perm.p_value:.4f}"

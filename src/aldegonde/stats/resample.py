@@ -9,7 +9,7 @@ distribution. The statistic and the null model are both injected, so the same
 harness serves every test and any null.
 
 Randomness is reproducible and trial-independent by construction: trial i uses
-random.Random(seed + i), so a run is deterministic given the seed and trials
+an injected random.Random, so a run is deterministic given that source
 may be evaluated in any order or in parallel.
 
 Empirical p-values use the (count + 1) / (trials + 1) convention, which is
@@ -35,6 +35,11 @@ if TYPE_CHECKING:
     from aldegonde.stats.nulls import NullModel
 
 T = TypeVar("T")
+
+#: Seed used when a caller injects no random source. Fixed so a resampled
+#: p-value can be reproduced; pass `rng` to vary the draw deliberately.
+DEFAULT_RESAMPLE_SEED = 3301
+
 
 Statistic = Callable[[Sequence[T]], float]
 """A scalar statistic: a pure function from a sequence to a number."""
@@ -143,7 +148,7 @@ def monte_carlo(
     observed: Sequence[T],
     *,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> NullComparison:
     """Compare a scalar statistic against a null model by resampling.
 
@@ -152,7 +157,8 @@ def monte_carlo(
         null_model: The resampler producing surrogate sequences
         observed: The observed sequence
         trials: Number of surrogates to draw
-        seed: Base seed; trial i uses random.Random(seed + i)
+        rng: Injected random source; defaults to one seeded with
+            DEFAULT_RESAMPLE_SEED so a run repeats
 
     Returns:
         A NullComparison locating the observed value in the null distribution
@@ -160,9 +166,9 @@ def monte_carlo(
     _validate_run(observed, trials)
     observed_value = statistic(observed)
     accumulator = _Accumulator()
-    for trial in range(trials):
-        rng = random.Random(seed + trial)
-        accumulator.update(statistic(null_model(observed, rng)), observed_value)
+    source = random.Random(DEFAULT_RESAMPLE_SEED) if rng is None else rng
+    for _trial in range(trials):
+        accumulator.update(statistic(null_model(observed, source)), observed_value)
     return accumulator.finalize(observed_value, trials)
 
 
@@ -173,7 +179,7 @@ def monte_carlo_map(
     *,
     keys: Sequence[int],
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> dict[int, NullComparison]:
     """Compare a keyed statistic against a null model, key by key.
 
@@ -187,7 +193,8 @@ def monte_carlo_map(
         observed: The observed sequence
         keys: The fixed set of keys to compare
         trials: Number of surrogates to draw
-        seed: Base seed; trial i uses random.Random(seed + i)
+        rng: Injected random source; defaults to one seeded with
+            DEFAULT_RESAMPLE_SEED so a run repeats
 
     Returns:
         A NullComparison per key
@@ -195,9 +202,9 @@ def monte_carlo_map(
     _validate_run(observed, trials)
     observed_values = statistic(observed)
     accumulators = {key: _Accumulator() for key in keys}
-    for trial in range(trials):
-        rng = random.Random(seed + trial)
-        surrogate_values = statistic(null_model(observed, rng))
+    source = random.Random(DEFAULT_RESAMPLE_SEED) if rng is None else rng
+    for _trial in range(trials):
+        surrogate_values = statistic(null_model(observed, source))
         for key in keys:
             accumulators[key].update(
                 surrogate_values.get(key, 0.0),
@@ -217,7 +224,7 @@ def family_pvalue(
     keys: Sequence[int],
     reduce: Callable[[Mapping[int, float]], float] = _max_over_keys,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> FamilyResult:
     """Test the strongest peak across a key set with one family-wise p-value.
 
@@ -235,7 +242,8 @@ def family_pvalue(
         reduce: Maps the keyed values to a single statistic; defaults to the
             maximum over keys
         trials: Number of surrogates to draw
-        seed: Base seed; trial i uses random.Random(seed + i)
+        rng: Injected random source; defaults to one seeded with
+            DEFAULT_RESAMPLE_SEED so a run repeats
 
     Returns:
         A FamilyResult with the observed reduction, its key, and the
@@ -251,9 +259,9 @@ def family_pvalue(
         else None
     )
     at_or_above = 0
-    for trial in range(trials):
-        rng = random.Random(seed + trial)
-        surrogate_stat = statistic(null_model(observed, rng))
+    source = random.Random(DEFAULT_RESAMPLE_SEED) if rng is None else rng
+    for _trial in range(trials):
+        surrogate_stat = statistic(null_model(observed, source))
         surrogate_reduced = reduce({k: surrogate_stat.get(k, 0.0) for k in keys})
         if surrogate_reduced >= observed_reduced:
             at_or_above += 1

@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from math import sqrt
 from typing import TypeVar
 
-from aldegonde.stats.ioc import ioc as ioc_func
+from aldegonde.stats.index_of_coincidence import ioc as ioc_func
 
 T = TypeVar("T")
 
@@ -16,7 +16,7 @@ ITALIAN = 0.0738
 RUSSIAN = 0.0529
 
 
-def IocFitness(target_ioc: float) -> Callable[[Sequence[object]], float]:
+def make_ioc_fitness(target_ioc: float) -> Callable[[Sequence[object]], float]:
     """Score a text by evaluating its IOC score.
 
     Example:

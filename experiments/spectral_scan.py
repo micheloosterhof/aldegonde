@@ -163,7 +163,7 @@ def main() -> None:
     print(f"  counts: {counts.tolist()}")
 
     print("\n=== 6. ISOMORPHS ===")
-    from aldegonde.stats.isomorph import print_isomorph_statistics
+    from aldegonde.stats.isomorphs import print_isomorph_statistics
 
     print_isomorph_statistics(list(cipher))
 

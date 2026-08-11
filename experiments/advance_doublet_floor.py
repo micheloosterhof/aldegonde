@@ -18,6 +18,8 @@ grid form?) and how the naive Gematria-order diagonal compares.
 
 from __future__ import annotations
 
+import random
+
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
@@ -88,7 +90,6 @@ def anneal_cycletype(
 ) -> tuple[float, list[int]]:
     """Minimize the advance diagonal over all permutations with the given cycle
     lengths (rest fixed), via simulated annealing with restarts. Deterministic."""
-    import random
 
     rng = random.Random(seed)
     best_rate = 1.0

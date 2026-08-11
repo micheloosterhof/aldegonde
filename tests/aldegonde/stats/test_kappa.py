@@ -1,6 +1,6 @@
 """Tests for kappa analysis including multigraphic kappa."""
 
-from aldegonde.stats.kappa import doublets, kappa, kappa2, kappa3, kappa4, triplets
+from aldegonde.stats.kappa_test import doublets, kappa, kappa2, kappa3, kappa4, triplets
 
 
 def test_kappa() -> None:

@@ -4,7 +4,7 @@
 #
 #
 # from aldegonde.structures.sequence import Sequence
-# from aldegonde.stats.ioc import ioc, nioc
+# from aldegonde.stats.index_of_coincidence import ioc, nioc
 # from aldegonde.analysis.split import split_by_character
 # from aldegonde.algorithm.auto import
 #

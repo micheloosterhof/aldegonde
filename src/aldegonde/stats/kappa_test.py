@@ -5,6 +5,7 @@ which can reveal periodic patterns in ciphertext. Multigraphic kappa extends thi
 to detect repeated digraphs, trigraphs, etc.
 """
 
+import random
 from collections.abc import Sequence
 from math import sqrt
 from operator import eq
@@ -200,7 +201,7 @@ def print_kappa(
     null: NullModel[object] | None = None,
     null_label: str | None = None,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
     trace: bool = False,
 ) -> None:
     """Kappa test for a range of skip values, against a null hypothesis.
@@ -222,7 +223,7 @@ def print_kappa(
         null: Optional resampler; None uses the analytic Poisson null
         null_label: Description of the null printed in the header
         trials: Monte Carlo surrogates when null is given
-        seed: Base seed for the Monte Carlo surrogates
+        rng: Injected random source; defaults to a seeded one so a run repeats
         trace: Print debug information (analytic null only)
     """
     assert maximum >= 0
@@ -283,7 +284,7 @@ def print_kappa(
         }
 
     results = monte_carlo_map(
-        statistic, null, ciphertext, keys=skips, trials=trials, seed=seed
+        statistic, null, ciphertext, keys=skips, trials=trials, rng=rng
     )
     for skip in skips:
         comparison = results[skip]

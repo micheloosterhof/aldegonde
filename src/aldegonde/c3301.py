@@ -5,8 +5,8 @@ from collections import defaultdict
 from collections.abc import Iterator, Sequence
 
 from aldegonde import pasc
-from aldegonde.exceptions import AldegondeKeyError
-from aldegonde.maths.primes import primes
+from aldegonde.exceptions import AldegondeKeyError, AlphabetError
+from aldegonde.maths.prime_numbers import primes
 from aldegonde.stats import compare, nulls
 
 CICADA_ALPHABET = [
@@ -174,7 +174,8 @@ def r2i(rune: str) -> int:
     for i, e in enumerate(CICADA_ALPHABET):
         if rune == e:
             return i
-    raise ValueError
+    msg = f"{rune!r} is not one of the 29 runes"
+    raise AldegondeKeyError(msg)
 
 
 def i2r(rune: int) -> str:
@@ -188,7 +189,8 @@ def r2v(rune: str) -> int:
     for i, e in enumerate(CICADA_ALPHABET):
         if rune == e:
             return primelist[i]
-    raise ValueError
+    msg = f"{rune!r} is not one of the 29 runes"
+    raise AldegondeKeyError(msg)
 
 
 def v2r(value: int) -> str:
@@ -197,7 +199,8 @@ def v2r(value: int) -> str:
     for i, e in enumerate(primelist):
         if value == e:
             return CICADA_ALPHABET[i]
-    raise ValueError
+    msg = f"{value} is not a Gematria Primus prime value"
+    raise AldegondeKeyError(msg)
 
 
 def v2i(value: int) -> int:
@@ -206,7 +209,8 @@ def v2i(value: int) -> int:
     for i, e in enumerate(primelist):
         if value == e:
             return i
-    raise ValueError
+    msg = f"{value} is not a Gematria Primus prime value"
+    raise AldegondeKeyError(msg)
 
 
 def randomrunes(
@@ -356,7 +360,8 @@ def valueTR(t: str = "vigenere") -> pasc.TR[str]:
             elif t == "variantbeaufort":
                 TR[key][plaintext] = i2r((r2i(plaintext) - r2v(key)) % 29)
             else:
-                raise ValueError
+                msg = f"{t!r} is not a known tabula recta type"
+                raise AlphabetError(msg)
     return TR
 
 
@@ -365,6 +370,6 @@ bigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "bigrams.txt")
 trigrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "trigrams.txt")
 quadgrams = compare.loadgrams("aldegonde.data.ngrams.runeglish", "quadgrams.txt")
 
-quadgramscore = compare.NgramScorer(quadgrams)
-trigramscore = compare.NgramScorer(trigrams)
-bigramscore = compare.NgramScorer(bigrams)
+quadgramscore = compare.make_ngram_scorer(quadgrams)
+trigramscore = compare.make_ngram_scorer(trigrams)
+bigramscore = compare.make_ngram_scorer(bigrams)

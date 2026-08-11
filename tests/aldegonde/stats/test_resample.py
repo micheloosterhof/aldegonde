@@ -22,11 +22,17 @@ def _scalar(seq: Sequence[float]) -> float:
 
 
 def _reference_draws(trials: int, seed: int) -> list[float]:
-    return [random.Random(seed + i).random() for i in range(trials)]
+    """Every trial draws from ONE stream, in order.
+
+    Consecutive seeds are not independent streams, so the resampler takes a
+    single source and draws from it sequentially; the reference must match.
+    """
+    source = random.Random(seed)
+    return [source.random() for _ in range(trials)]
 
 
-def test_monte_carlo_uses_seed_per_trial_for_mean_and_sd() -> None:
-    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, seed=0)
+def test_monte_carlo_draws_every_trial_from_one_stream() -> None:
+    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, rng=random.Random(0))
     draws = _reference_draws(200, 0)
     assert res.observed == 0.5
     assert res.null_mean == pytest.approx(statistics.fmean(draws))
@@ -34,7 +40,7 @@ def test_monte_carlo_uses_seed_per_trial_for_mean_and_sd() -> None:
 
 
 def test_monte_carlo_empirical_pvalues() -> None:
-    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, seed=0)
+    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, rng=random.Random(0))
     draws = _reference_draws(200, 0)
     upper = (sum(1 for v in draws if v >= 0.5) + 1) / 201
     lower = (sum(1 for v in draws if v <= 0.5) + 1) / 201
@@ -43,20 +49,20 @@ def test_monte_carlo_empirical_pvalues() -> None:
 
 
 def test_monte_carlo_two_sided_property() -> None:
-    res = monte_carlo(_scalar, _rng_null, [0.99], trials=200, seed=0)
+    res = monte_carlo(_scalar, _rng_null, [0.99], trials=200, rng=random.Random(0))
     assert res.p_two_sided == pytest.approx(
         min(1.0, 2.0 * min(res.p_upper, res.p_lower))
     )
 
 
 def test_monte_carlo_is_deterministic() -> None:
-    a = monte_carlo(_scalar, _rng_null, [0.5], trials=50, seed=3)
-    b = monte_carlo(_scalar, _rng_null, [0.5], trials=50, seed=3)
+    a = monte_carlo(_scalar, _rng_null, [0.5], trials=50, rng=random.Random(3))
+    b = monte_carlo(_scalar, _rng_null, [0.5], trials=50, rng=random.Random(3))
     assert a == b
 
 
 def test_monte_carlo_z_uses_helper_convention() -> None:
-    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, seed=0)
+    res = monte_carlo(_scalar, _rng_null, [0.5], trials=200, rng=random.Random(0))
     expected = (res.observed - res.null_mean) / res.null_sd
     assert res.z == pytest.approx(expected)
 
@@ -67,7 +73,7 @@ def _stat_map(seq: Sequence[float]) -> Mapping[int, float]:
 
 def test_monte_carlo_map_keys_match_scalar() -> None:
     result = monte_carlo_map(
-        _stat_map, _rng_null, [0.5], keys=[1, 2], trials=100, seed=0
+        _stat_map, _rng_null, [0.5], keys=[1, 2], trials=100, rng=random.Random(0)
     )
     draws = _reference_draws(100, 0)
     assert set(result) == {1, 2}
@@ -83,7 +89,9 @@ def test_family_pvalue_max_reduction() -> None:
     def stat(seq: Sequence[float]) -> Mapping[int, float]:
         return {1: float(seq[0]), 2: 0.0}
 
-    fam = family_pvalue(stat, _rng_null, [0.9], keys=[1, 2], trials=200, seed=0)
+    fam = family_pvalue(
+        stat, _rng_null, [0.9], keys=[1, 2], trials=200, rng=random.Random(0)
+    )
     draws = _reference_draws(200, 0)
     null_reduced = [max(v, 0.0) for v in draws]
     expected_p = (sum(1 for v in null_reduced if v >= 0.9) + 1) / 201
@@ -123,6 +131,6 @@ def test_family_pvalue_custom_reduce_has_no_key() -> None:
         keys=[1, 2],
         reduce=lambda values: sum(values.values()),
         trials=50,
-        seed=0,
+        rng=random.Random(0),
     )
     assert fam.key is None

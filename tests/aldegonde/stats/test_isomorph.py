@@ -2,7 +2,7 @@
 
 import random
 
-from aldegonde.stats.isomorph import (
+from aldegonde.stats.isomorphs import (
     isomorph,
     isomorph_distribution,
     random_isomorph_statistics,

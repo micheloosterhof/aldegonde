@@ -23,7 +23,7 @@ from collections import Counter
 from collections.abc import Callable
 
 from aldegonde import c3301
-from aldegonde.stats.ioc import ioc
+from aldegonde.stats.index_of_coincidence import ioc
 
 ALPHABET = c3301.CICADA_ALPHABET.copy()
 

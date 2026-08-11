@@ -13,7 +13,7 @@ from collections import Counter, defaultdict
 from collections.abc import Sequence
 from typing import TypeVar
 
-from aldegonde.stats.ngrams import iterngrams
+from aldegonde.stats.ngram import iterngrams
 from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")

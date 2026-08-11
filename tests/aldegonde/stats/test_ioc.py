@@ -1,4 +1,4 @@
-from aldegonde.stats.ioc import ioc, ioc2, ioc3, ioc4
+from aldegonde.stats.index_of_coincidence import ioc, ioc2, ioc3, ioc4
 
 nils = "A" * 300
 ones = "B" * 300

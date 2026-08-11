@@ -11,7 +11,7 @@ from aldegonde.analysis.coincidence import (
     recut_words,
     word_index_map,
 )
-from aldegonde.analysis.delta import DeltaOp, delta, delta2
+from aldegonde.analysis.delta_stream import DeltaOp, delta, delta2
 from aldegonde.analysis.friedman import friedman_test, friedman_test_with_interrupter
 from aldegonde.analysis.guballa import bigram_break_pasc
 from aldegonde.analysis.indepth import AlignmentResult, alignment_coincidence
@@ -37,7 +37,11 @@ from aldegonde.analysis.split import (
     split_by_whitespace,
     trim,
 )
-from aldegonde.analysis.twist import twist, twist_test, twist_test_with_interrupter
+from aldegonde.analysis.twist_analysis import (
+    twist,
+    twist_test,
+    twist_test_with_interrupter,
+)
 
 __all__ = [
     # coincidence

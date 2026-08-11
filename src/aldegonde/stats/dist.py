@@ -3,7 +3,7 @@ from typing import TypeVar
 
 from scipy.stats import chisquare
 
-from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.ngram import ngram_distribution
 
 T = TypeVar("T")
 

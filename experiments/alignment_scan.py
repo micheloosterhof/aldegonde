@@ -193,7 +193,7 @@ def main() -> None:
     print("\n=== 6. ISOMORPHS ===")
     # NOTE: this baseline is uniform random text; see isomorph_corrected.py
     # for the doublet-corrected null, which removes the apparent anomaly.
-    from aldegonde.stats.isomorph import print_isomorph_statistics
+    from aldegonde.stats.isomorphs import print_isomorph_statistics
 
     print_isomorph_statistics(cipher)
 

@@ -22,7 +22,7 @@ import multiprocessing as mp
 from collections import Counter
 from collections.abc import Callable
 
-from aldegonde.stats.ioc import ioc
+from aldegonde.stats.index_of_coincidence import ioc
 
 ALPHABET = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 

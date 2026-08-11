@@ -12,9 +12,9 @@ sys.path.insert(0, "src")
 import random  # noqa: I001
 
 from aldegonde.stats import dist, entropy, repeats
-from aldegonde.stats.ioc import ioc as ioc_func
-from aldegonde.stats.kappa import print_kappa
-from aldegonde.stats.ioc import print_ioc_statistics
+from aldegonde.stats.index_of_coincidence import ioc as ioc_func
+from aldegonde.stats.kappa_test import print_kappa
+from aldegonde.stats.index_of_coincidence import print_ioc_statistics
 from aldegonde.grams import bigram_diagram
 from aldegonde.maths import factor
 from aldegonde.analysis import friedman

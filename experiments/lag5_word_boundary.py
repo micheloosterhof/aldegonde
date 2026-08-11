@@ -23,6 +23,7 @@ Corpus: sections 0-9 of data/page0-58.txt (12,956 runes). Words tokenized
 with - . & % $ as boundaries; '/' and newlines are line wraps.
 """
 
+import random
 from bisect import bisect_right
 from itertools import accumulate
 from random import Random
@@ -212,7 +213,9 @@ def main() -> None:
         print(f"  {k:<10} {observed[k]:>10} {mean:>8.1f} ± {sd:<4.1f} {p:>9.4f}")
 
     # The published within-word test, via the library, as a cross-check.
-    result = boundary_permutation_test(sections, LAG, permutations=N_PERMS, seed=SEED)
+    result = boundary_permutation_test(
+        sections, LAG, permutations=N_PERMS, rng=random.Random(SEED)
+    )
     print(
         f"  {'all':<10} {result.observed:>10} "
         f"{result.null_mean:>8.1f} ± {result.null_sd:<4.1f} "

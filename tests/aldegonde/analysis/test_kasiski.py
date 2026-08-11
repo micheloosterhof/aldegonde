@@ -12,7 +12,7 @@ from aldegonde.analysis.kasiski import (
     repeat_distances,
 )
 from aldegonde.exceptions import InsufficientDataError, InvalidInputError
-from aldegonde.stats.kappa import doublets
+from aldegonde.stats.kappa_test import doublets
 
 ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 

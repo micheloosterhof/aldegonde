@@ -1,5 +1,6 @@
 """IOC calculation."""
 
+import random
 from collections.abc import Sequence
 from math import log, sqrt
 from typing import NamedTuple
@@ -9,7 +10,7 @@ from aldegonde.exceptions import (
     InvalidInputError,
     StatisticalAnalysisError,
 )
-from aldegonde.stats.ngrams import ngram_counts
+from aldegonde.stats.ngram import ngram_counts
 from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
@@ -105,7 +106,7 @@ def _nioc_grid_against_null(
     cells: list[tuple[int, int]],
     null: NullModel[object],
     trials: int,
-    seed: int,
+    rng: random.Random | None,
 ) -> dict[tuple[int, int], tuple[float, float]]:
     """Score every (length, cut) cell against one shared set of surrogates.
 
@@ -120,7 +121,7 @@ def _nioc_grid_against_null(
         }
 
     results = monte_carlo_map(
-        statistic, null, text, keys=list(range(len(cells))), trials=trials, seed=seed
+        statistic, null, text, keys=list(range(len(cells))), trials=trials, rng=rng
     )
     return {
         cell: (results[index].observed, results[index].z)
@@ -135,7 +136,7 @@ def print_ioc_statistics(
     null: NullModel[object] | None = None,
     null_label: str | None = None,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> None:
     """Print the multigraphic IOC grid with z-scores against a null hypothesis.
 
@@ -167,7 +168,7 @@ def print_ioc_statistics(
             f"null hypothesis: {null_label or 'injected null model'}; "
             f"z = standard deviations from this null"
         )
-        scored = _nioc_grid_against_null(text, alphabetsize, cells, null, trials, seed)
+        scored = _nioc_grid_against_null(text, alphabetsize, cells, null, trials, rng)
     for length in range(1, 6):
         for cut in range(length + 1):
             if length == 1 and cut == 1:

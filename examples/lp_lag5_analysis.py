@@ -34,8 +34,8 @@ from collections import Counter, defaultdict
 from scipy.stats import poisson
 
 from aldegonde import c3301
-from aldegonde.maths.primes import primes
-from aldegonde.stats.kappa import doublets
+from aldegonde.maths.prime_numbers import primes
+from aldegonde.stats.kappa_test import doublets
 
 ENG = c3301.CICADA_ENGLISH_ALPHABET
 ABC = set(c3301.CICADA_ALPHABET)

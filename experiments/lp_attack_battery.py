@@ -31,7 +31,7 @@ import os
 import random
 
 from aldegonde import auto, c3301, pasc
-from aldegonde.maths.primes import gen_primes_opt
+from aldegonde.maths.prime_numbers import gen_primes_opt
 from aldegonde.stats import ioc
 
 # Fixed so every figure this script prints can be reproduced.

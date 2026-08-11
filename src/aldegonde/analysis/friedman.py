@@ -6,8 +6,8 @@ from typing import TypeVar
 
 from aldegonde.analysis.split import split_by_slice_interrupted
 from aldegonde.exceptions import InsufficientDataError
-from aldegonde.stats.ioc import ioc
-from aldegonde.stats.kappa import kappa
+from aldegonde.stats.index_of_coincidence import ioc
+from aldegonde.stats.kappa_test import kappa
 
 T = TypeVar("T")
 

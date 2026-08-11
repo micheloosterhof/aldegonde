@@ -1,10 +1,11 @@
 import math
+import random
 from collections.abc import Sequence
 from typing import TypeVar
 
 from scipy.stats import poisson
 
-from aldegonde.stats.ngrams import (
+from aldegonde.stats.ngram import (
     ngram_counts,
     ngram_distribution,
     ngram_positions,
@@ -32,7 +33,7 @@ def print_repeat_statistics(
     null: NullModel[object] | None = None,
     null_label: str | None = None,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
     trace: bool = False,
 ) -> None:
     """Count repeated n-grams per length with z-scores against a null hypothesis.
@@ -70,7 +71,7 @@ def print_repeat_statistics(
         return {length: float(_repeat_count(sample, length, cut)) for length in lengths}
 
     results = monte_carlo_map(
-        statistic, null, ciphertext, keys=lengths, trials=trials, seed=seed
+        statistic, null, ciphertext, keys=lengths, trials=trials, rng=rng
     )
     for length in lengths:
         comparison = results[length]

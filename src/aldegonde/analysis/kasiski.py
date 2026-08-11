@@ -15,13 +15,14 @@ equals the number of coincidences at shift d.
 All functions work on arbitrary alphabets (runes, integers, letters).
 """
 
+import random
 from collections import Counter, defaultdict
 from collections.abc import Sequence
 from math import sqrt
 from typing import TypeVar
 
 from aldegonde.exceptions import InvalidInputError
-from aldegonde.stats.ngrams import iterngram_positions
+from aldegonde.stats.ngram import iterngram_positions
 from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
@@ -219,7 +220,7 @@ def print_kasiski_statistics(
     null: NullModel[object] | None = None,
     null_label: str | None = None,
     trials: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> None:
     """Print Kasiski examination results for a range of candidate periods.
 
@@ -243,7 +244,7 @@ def print_kasiski_statistics(
         null: Optional resampler; None uses the analytic Poisson null
         null_label: Description of the null printed in the header
         trials: Monte Carlo surrogates when null is given
-        seed: Base seed for the Monte Carlo surrogates
+        rng: Injected random source; defaults to a seeded one so a run repeats
 
     Raises:
         InvalidInputError: If length or period bounds are invalid
@@ -286,7 +287,7 @@ def print_kasiski_statistics(
 
     observed_seq: Sequence[object] = text
     results = monte_carlo_map(
-        statistic, null, observed_seq, keys=periods, trials=trials, seed=seed
+        statistic, null, observed_seq, keys=periods, trials=trials, rng=rng
     )
     for period in periods:
         comparison = results[period]

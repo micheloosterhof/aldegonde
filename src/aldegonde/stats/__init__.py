@@ -1,21 +1,21 @@
 """Statistical analysis tools for cryptanalysis."""
 
 from aldegonde.stats.compare import (
-    NgramScorer,
     bigramscore,
-    chisquarescipy,
+    chi_square,
+    chi_test,
     frequency_to_probability,
     gtest,
     loadgrams,
     logdist,
-    mychisquare,
+    make_ngram_scorer,
     quadgramscore,
     trigramscore,
 )
 from aldegonde.stats.dist import print_dist
 from aldegonde.stats.entropy import shannon2_entropy, shannon_entropy
 from aldegonde.stats.hamming import hamming_distance
-from aldegonde.stats.ioc import (
+from aldegonde.stats.index_of_coincidence import (
     ioc,
     ioc2,
     ioc3,
@@ -25,7 +25,7 @@ from aldegonde.stats.ioc import (
     renyi,
     sliding_window_ioc,
 )
-from aldegonde.stats.isomorph import (
+from aldegonde.stats.isomorphs import (
     isomorph,
     isomorph_distribution,
     isomorph_positions,
@@ -33,9 +33,9 @@ from aldegonde.stats.isomorph import (
     print_isomorph_statistics,
     random_isomorph_statistics,
 )
-from aldegonde.stats.kappa import doublets, kappa, print_kappa, triplets
-from aldegonde.stats.mioc import MiocTuple, mioc, nmioc, print_mioc_statistics
-from aldegonde.stats.ngrams import (
+from aldegonde.stats.kappa_test import doublets, kappa, print_kappa, triplets
+from aldegonde.stats.multigraph_ioc import MiocTuple, mioc, nmioc, print_mioc_statistics
+from aldegonde.stats.ngram import (
     bigrams,
     digraphs,
     iterngram_positions,
@@ -73,14 +73,14 @@ from aldegonde.stats.zscore import z_score
 
 __all__ = [
     # compare
-    "NgramScorer",
+    "make_ngram_scorer",
     "bigramscore",
-    "chisquarescipy",
+    "chi_square",
     "frequency_to_probability",
     "gtest",
     "loadgrams",
     "logdist",
-    "mychisquare",
+    "chi_test",
     "quadgramscore",
     "trigramscore",
     # dist

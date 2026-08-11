@@ -2,7 +2,8 @@
 
 import pytest
 
-from aldegonde.analysis.delta import DeltaOp, delta, delta2
+from aldegonde.analysis.delta_stream import DeltaOp, delta, delta2
+from aldegonde.exceptions import MathematicalError
 
 ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 PRIME = "ABCDE"  # size 5, prime modulus for DIV
@@ -47,13 +48,13 @@ def test_delta_rdiv() -> None:
 
 def test_delta_rdiv_by_zero_raises() -> None:
     # CA -> divisor is c[i+skip] = index 0 ('A'), no inverse
-    with pytest.raises(ValueError):
+    with pytest.raises(MathematicalError):
         delta("CA", PRIME, op=DeltaOp.RDIV)
 
 
 def test_delta_div_by_zero_raises() -> None:
     # AC -> divisor is index 0 ('A'), no inverse
-    with pytest.raises(ValueError):
+    with pytest.raises(MathematicalError):
         delta("AC", PRIME, op=DeltaOp.DIV)
 
 

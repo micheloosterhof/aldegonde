@@ -5,6 +5,8 @@ from collections import Counter
 from collections.abc import Sequence
 from typing import TypeVar
 
+from aldegonde.exceptions import InvalidInputError
+
 T = TypeVar("T")
 
 
@@ -36,7 +38,8 @@ def shannon2_entropy(
         for i in range(cut - 1, N - 1, 2):
             l.append((ciphertext[i], ciphertext[i + 1]))
     else:
-        raise ValueError
+        msg = f"cut must be 0, 1 or 2, not {cut}"
+        raise InvalidInputError(msg)
     f = Counter(l)
     H: float = 0.0
     for v in f.values():

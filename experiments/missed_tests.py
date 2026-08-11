@@ -62,7 +62,7 @@ from aldegonde import c3301
 # Fixed so every figure this script prints can be reproduced.
 random.seed(3301)
 
-isomorph = importlib.import_module("aldegonde.stats.isomorph")
+isomorph = importlib.import_module("aldegonde.stats.isomorphs")
 
 AB = c3301.CICADA_ALPHABET
 N = 29

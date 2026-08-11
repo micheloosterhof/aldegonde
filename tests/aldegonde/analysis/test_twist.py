@@ -1,4 +1,4 @@
-from aldegonde.analysis.twist import twist_test
+from aldegonde.analysis.twist_analysis import twist_test
 
 """
 """

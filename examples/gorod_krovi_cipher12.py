@@ -21,9 +21,9 @@ from aldegonde.maths.factor import factor_pairs, prime_factors
 from aldegonde.stats.compare import quadgramscore
 from aldegonde.stats.dist import print_dist
 from aldegonde.stats.entropy import shannon_entropy
-from aldegonde.stats.ioc import ioc as calc_ioc
-from aldegonde.stats.ioc import print_ioc_statistics
-from aldegonde.stats.kappa import print_kappa
+from aldegonde.stats.index_of_coincidence import ioc as calc_ioc
+from aldegonde.stats.index_of_coincidence import print_ioc_statistics
+from aldegonde.stats.kappa_test import print_kappa
 from aldegonde.stats.repeats import print_repeat_positions, print_repeat_statistics
 
 CIPHERTEXT_RAW = (

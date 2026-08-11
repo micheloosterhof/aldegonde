@@ -20,6 +20,7 @@ from collections.abc import Sequence
 from typing import NamedTuple, TypeVar
 
 from aldegonde.exceptions import InvalidInputError
+from aldegonde.stats.resample import DEFAULT_RESAMPLE_SEED
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
 T = TypeVar("T")
@@ -245,7 +246,7 @@ def boundary_permutation_test(
     sections: Sequence[Sequence[Sequence[T]]],
     lag: int,
     permutations: int = 1000,
-    seed: int = 0,
+    rng: random.Random | None = None,
 ) -> BoundaryPermutation:
     """Test whether word boundaries know where the lag-L matches are.
 
@@ -261,7 +262,7 @@ def boundary_permutation_test(
             shuffled within each section independently
         lag: Distance between the compared symbols
         permutations: Number of shuffles to draw
-        seed: Seed for the shuffle generator, for reproducibility
+        rng: Injected random source; defaults to a seeded one so a run repeats
 
     Returns:
         The observed statistic, the permutation null mean and standard
@@ -279,13 +280,13 @@ def boundary_permutation_test(
         lengths = [len(word) for word in words]
         observed += _within_word_matches(stream, lengths, lag)
         prepared.append((stream, lengths))
-    rng = random.Random(seed)
+    source = random.Random(DEFAULT_RESAMPLE_SEED) if rng is None else rng
     null: list[int] = []
     for _ in range(permutations):
         total = 0
         for stream, lengths in prepared:
             shuffled = list(lengths)
-            rng.shuffle(shuffled)
+            source.shuffle(shuffled)
             total += _within_word_matches(stream, shuffled, lag)
         null.append(total)
     at_least = sum(1 for value in null if value >= observed)

@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from math import sqrt
 from typing import NamedTuple
 
-from aldegonde.stats.ngrams import ngram_distribution
+from aldegonde.stats.ngram import ngram_distribution
 from aldegonde.stats.zscore import z_score
 
 # --- Mutual Index of Coincidence (MIOC) Implementation ---

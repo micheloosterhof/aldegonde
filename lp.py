@@ -152,7 +152,7 @@ for i, s in enumerate(y):
         # Family-wise test of the strongest period, skip>=2.
         skips = list(range(1, 21))
         profile = partial(kappa_profile, skips=skips)
-        fam = family_pvalue(profile, null, runes, keys=skips[1:], trials=300, seed=0)
+        fam = family_pvalue(profile, null, runes, keys=skips[1:], trials=300, rng=random.Random(0))
         print(
             f"  strongest period (skip>=2): skip={fam.key} "
             f"kappa={fam.observed:.4f} family p={fam.p_value:.4f}"
