@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Shows the within-word d5 echo is a PARTIAL same-alphabet leak
 # ABOUTME: (IoC 1.43 vs plaintext ~1.74), so the base drifts sub-word not per-word.
 """Reproduces hypotheses/d5-partial-alphabet-leak.md.

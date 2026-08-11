@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Pairwise dependence scan for the unsolved LP.
 
 1. Full 29x29 contingency chi-square between C[i] and C[i+d], d=1..100.

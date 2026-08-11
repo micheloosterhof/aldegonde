@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Decomposes within-word coincidence by phase, absolute position-in-word,
 # ABOUTME: and word length -- tests whether phase (d mod 5) captures all structure.
 """Under a pure period-5 letter step modulated only at word boundaries, the

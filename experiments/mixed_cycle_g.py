@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests the mixed-cycle-progression reading of the within-word rising
 # ABOUTME: staircase: inverts the d2-d8 rates to a returned-alphabet-fraction
 # ABOUTME: ladder, fits a cycle census for g, and confronts the d6 deficit.

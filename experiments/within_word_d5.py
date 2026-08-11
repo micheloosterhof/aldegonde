@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Verification of the within-word distance-5 coincidence excess.
 
 Reproduces every number in hypotheses/within-word-d5-coincidence.md:

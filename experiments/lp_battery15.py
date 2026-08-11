@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Battery 15: crib drag + key-fragment structure test.
 
 If the cipher is additive (c = p +/- k) with ANY key, then dragging a known

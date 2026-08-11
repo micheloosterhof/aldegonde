@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests page/section-aligned kappa (shared keystream reset at boundaries),
 # ABOUTME: doublet-suppressed null model, and the lag-5 digraphic kappa anomaly.
 """Aligned-kappa and null-model validation for Liber Primus (page0-58).

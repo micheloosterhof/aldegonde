@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: The length-clocked progressive substitution (order-5-g model) with a
 # ABOUTME: matching decryption and a round-trip test. Shared infra for attacks.
 """Model (see hypotheses/length-clocked-walk.md), per word w, position j (0-idx):

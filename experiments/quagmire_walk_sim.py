@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Full-battery simulation of the Quagmire (mixed-alphabet Vigenere)
 # ABOUTME: step inside the length-clocked walk, against LP and the order-5-g
 # ABOUTME: model — including its discriminating no-fixed-point prediction.

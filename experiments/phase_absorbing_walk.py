@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Final LP cipher model: per-word order-5 orbit with a phase-absorbing
 # ABOUTME: free-group walk; every hard statistical observable from one mechanism.
 """Phase-absorbing orbit+walk: the complete model.

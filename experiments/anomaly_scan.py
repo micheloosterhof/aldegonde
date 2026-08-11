@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Broad anomaly scan of the unsolved Liber Primus (data/page0-58.txt).
 
 Looks for structure beyond the known doublet suppression:

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Reconcile the two lag-5 findings: paired matches vs within-word excess.
 
 Two independent analyses characterized the same +32 excess of lag-5

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Totient / math-sequence keystream stripping on the J stream.
 
 Motivation: 3301 used phi(prime_n) as a literal keystream in a solved LP

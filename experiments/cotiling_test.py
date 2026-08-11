@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether doublets (boundaries) and lag-5 events (group edges)
 # ABOUTME: are consistent with a single shared {5,6} group tiling.
 """Do doublets and lag-5 events sit on the SAME {5,6} group grid?

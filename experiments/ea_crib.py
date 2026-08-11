@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Cribs Liber Primus doublet-affected words under the assumption that
 # ABOUTME: the doublet marker rune is EA, matching against a runeglish dictionary.
 """EA-crib analysis for Liber Primus doublets.

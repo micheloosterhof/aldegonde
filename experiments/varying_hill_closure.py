@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Closes the per-word VARYING Hill matrix remainder left open by
 # ABOUTME: hill-cipher-per-word.md: simulated doublet rate under random
 # ABOUTME: per-word invertible matrices vs the observed suppression.

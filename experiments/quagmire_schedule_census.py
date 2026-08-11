@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Counts, per keyword Quagmire alphabet, the 5-offset schedules whose
 # ABOUTME: predicted d1 doublet rate is in the observed band, and scores each
 # ABOUTME: surviving schedule on its exactly-computable d6/d4 predictions.

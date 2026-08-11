@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Asks what the recovered dot-cluster glyphs are: where they sit in a
 # ABOUTME: line, whether they pair, how they space, and whether they nest.
 """What the dot-cluster glyphs do, now that their counts are recorded.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether LP doublets cluster by position (word-phase, absolute,
 # ABOUTME: word index, distance-from-end) -- locating the stay-slot hold, if fixed.
 """In the stay-slot model a within-word doublet can only appear on a HOLD step

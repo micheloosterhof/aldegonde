@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests aperiodic number-theoretic running keys (primes, totient,
 # ABOUTME: Fibonacci...) as Vigenere/Beaufort shifts on the LP ciphertext.
 """The algebra battery killed fixed-period and fixed-shift arithmetic, but not an

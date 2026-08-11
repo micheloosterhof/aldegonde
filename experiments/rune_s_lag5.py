@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: The within-word lag-5 coincidence excess in the clean Liber Primus is
 # ABOUTME: carried disproportionately by one rune, S (Sigel); this reproduces it.
 """Which runes carry the within-word distance-5 coincidence excess?

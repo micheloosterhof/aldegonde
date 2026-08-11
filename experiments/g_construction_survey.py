@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Surveys structured 5x5-grid constructions for the letter step g,
 # ABOUTME: asking whether any small-parameter family reaches the required
 # ABOUTME: within-word diagonal (~0.0063) or whether only annealing does.

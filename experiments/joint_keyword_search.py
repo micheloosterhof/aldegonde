@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Joint enumeration of keyword-derived (g, sigma) candidates for the
 # ABOUTME: Quagmire walk, through the cheap filters and the 2-rune verifier.
 """Enumerate the keyword key space and filter it.

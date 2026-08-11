@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Pattern census of the unsolved LP beyond doublet suppression.
 
 Null model: stationary first-order Markov chain over 29 symbols with

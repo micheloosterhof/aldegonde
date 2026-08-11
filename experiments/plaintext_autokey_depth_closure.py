@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Extends the plaintext-autokey repeat-rate kill from depth 1 to
 # ABOUTME: depths 2-10: predicted forced ciphertext repeats vs the observed
 # ABOUTME: at-chance census, TR-independent, for C[i] = TR[P[i-L]][P[i]].

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Sentence-mark forensics + mismatch-tolerant repeat extension.
 
 1. SENTENCE CHANNEL: '.' density per section; sentence-length shape

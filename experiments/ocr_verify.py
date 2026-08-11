@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Full forced-alignment OCR comparison of the LP page scans against
 # ABOUTME: the transcription, with self-bootstrapped page-native templates.
 """Full OCR comparison of data/page0-58.txt against the page images.

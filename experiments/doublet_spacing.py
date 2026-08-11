@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Characterizes the spacing of Liber Primus doublets as a point process
 # ABOUTME: and tests for any link to mathematical series (primes, totient, lattice).
 """Doublet spacing / point-process analysis for Liber Primus (page0-58).

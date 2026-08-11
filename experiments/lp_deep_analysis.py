@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Deep statistical analysis of Liber Primus ciphertext.
 

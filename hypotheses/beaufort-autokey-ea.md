@@ -52,7 +52,7 @@ English-like IOC. It does not.
 
 ## Scripts
 
-- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+- `experiments/disprove_autokey_split.py` — Definitive disproof.
 
 ## Related
 

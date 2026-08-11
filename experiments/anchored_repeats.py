@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Unified census: word-anchored, boundary-consistent repeated runs.
 
 Statistic: number of pairs of maximal repeated rune runs (length >= 5) whose

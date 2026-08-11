@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Generative test of the per-word period-5 mixed-alphabet hypothesis for
 # ABOUTME: the unsolved Liber Primus: does it reproduce the full d1..d5 fingerprint?
 """Does a per-word period-5 mixed-alphabet cipher reproduce the LP fingerprint?

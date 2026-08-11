@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests the unit-of-5 doublet model (rate = 1/5 x 1/29), reversal
 # ABOUTME: symmetry, positional phase frames, and 5-bit telex-style encodings.
 """Unit-of-5 and telex-style tests for the LP unsolved corpus.

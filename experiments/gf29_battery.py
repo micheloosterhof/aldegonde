@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """GF(29)* battery: the delta stream as the multiplicative group.
 
 The nonzero deltas {1..28} are exactly GF(29)* (cyclic, order 28 = phi(29));

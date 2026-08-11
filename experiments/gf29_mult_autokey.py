@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Liber Primus analysis: GF(29) multiplicative/mixed autokey exploration.
 Uses 1-based indexing where EA rune = 29 % 29 = 0.

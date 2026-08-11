@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Within-word coincidence profile d1-d10 with a word-length permutation
 # ABOUTME: null, showing the period-5 phase structure (echo at d5, suppression at d1/d6).
 """The within-word coincidence profile is organized by phase (d mod 5), not

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: "Test F" for the lag-11 cross-word coincidence deficit: stratify the
 # ABOUTME: d=11 pairs by word-position alignment and scan sections 1/8 for
 # ABOUTME: word-length periodicity (lag11-cross-word-deficit.md).

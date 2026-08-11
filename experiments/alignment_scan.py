@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Structural alignment probes for the unsolved LP.
 
 1. Keystream-restart tests: align sections/pages/lines at their starts and

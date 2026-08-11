@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Three small open follow-ups: d5 hit-word clustering, the close-gap
 # ABOUTME: prediction of the hold model, and the delta-1 nonzero-flatness recheck.
 """Follow-up checks left open in the observation files.

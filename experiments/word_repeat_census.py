@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Censuses whole-word ciphertext repeats in LP 0-9 against a
 # ABOUTME: doublet-preserving null, asking whether any besides DJU-BEI is real.
 """Are there other full-word ciphertext repeats besides DJU-BEI?

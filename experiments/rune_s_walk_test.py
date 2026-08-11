@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Quantifies the rune-S echo under the length-clocked walk: simulated
 # ABOUTME: distribution of the max echoed-rune concentration, plus the unigram
 # ABOUTME: arithmetic that kills fixed-channel escapes (rune-s-lag5-echo.md).

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Exhaustive scan of all cycle censuses (partitions of 29) for the
 # ABOUTME: letter step g, scored with the refined inheritance model against the
 # ABOUTME: within-word distance profile (mixed-cycle-progression.md).

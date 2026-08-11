@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Encrypts Markov-generated runeglish with candidate cipher mechanisms
 # ABOUTME: and compares each output's statistical fingerprint to the LP corpus.
 """Mechanism fingerprint harness for the Liber Primus unsolved corpus.

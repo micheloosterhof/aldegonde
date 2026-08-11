@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Battery 13: deterministic collision-restep decryption.
 
 Model: c[i] = p[i] +/- k[j], j advances 1 per rune, PLUS an extra advance

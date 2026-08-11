@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Discriminates the hold model from a key-event trigger via the
 # ABOUTME: position-in-word profile of doublets: exposed plaintext doubles must
 # ABOUTME: follow the plaintext double-letter profile; a key event is baseline-flat.

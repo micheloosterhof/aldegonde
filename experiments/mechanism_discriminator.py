@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Discriminates order-5-g (advance every letter) from stay-slot (order-4
 # ABOUTME: + 1-in-5 hold) by enciphering real runeglish words and matching d1-d6.
 """Both mechanisms reproduce the d5 echo and pass the coincidence battery, and

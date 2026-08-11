@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Structural analysis of the unsolved Liber Primus (page0-58.txt).
 
 Parses the corpus preserving word boundaries (- = word sep, / = line break

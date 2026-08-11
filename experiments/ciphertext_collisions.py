@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Finds repeated ciphertext substrings in LP 0-9 (state-returns) and
 # ABOUTME: reports them as walk constraints on (g, sigma). The cross-word signal.
 """A long repeated ciphertext substring most likely means the same plaintext

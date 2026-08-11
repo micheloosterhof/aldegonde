@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Simulates product-form/interpolation GF(29) autokeys and runs the joint
 # ABOUTME: two-tap split test that closes the deterministic f(P,C[n-1],C[n-5]) class.
 """Test product-form / interpolation ciphers against the LP fingerprint.

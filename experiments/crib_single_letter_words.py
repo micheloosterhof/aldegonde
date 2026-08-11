@@ -18,7 +18,6 @@ If any group has 3+ distinct values, either:
 
 from __future__ import annotations
 
-import re
 import sys
 from collections import Counter, defaultdict
 
@@ -197,17 +196,20 @@ def main() -> None:
     a_dupes = [v for v, c in Counter(a_values).items() if c > 1]
     i_dupes = [v for v, c in Counter(i_values).items() if c > 1]
 
-    print(f"\nLatin square check:")
-    print(f"  Column 'a': {len(a_values)} cells, "
-          f"{'no' if not a_dupes else len(a_dupes)} duplicate values"
-          f"{'' if not a_dupes else ' -> CONTRADICTION'}")
-    print(f"  Column 'I': {len(i_values)} cells, "
-          f"{'no' if not i_dupes else len(i_dupes)} duplicate values"
-          f"{'' if not i_dupes else ' -> CONTRADICTION'}")
+    print("\nLatin square check:")
+    print(
+        f"  Column 'a': {len(a_values)} cells, "
+        f"{'no' if not a_dupes else len(a_dupes)} duplicate values"
+        f"{'' if not a_dupes else ' -> CONTRADICTION'}"
+    )
+    print(
+        f"  Column 'I': {len(i_values)} cells, "
+        f"{'no' if not i_dupes else len(i_dupes)} duplicate values"
+        f"{'' if not i_dupes else ' -> CONTRADICTION'}"
+    )
 
     if a_dupes:
-        print(f"\n  Duplicate values in 'a' column: "
-              f"{[c3301.i2r(v) for v in a_dupes]}")
+        print(f"\n  Duplicate values in 'a' column: {[c3301.i2r(v) for v in a_dupes]}")
         print("  This means the majority-vote assignment is wrong for some")
         print("  groups, or the model is wrong.")
 
@@ -229,8 +231,10 @@ def main() -> None:
     print(f"Distinct rune values in doublets: {len(doublet_runes)} / 29")
     missing = set(range(29)) - doublet_runes
     if missing:
-        print(f"Runes never appearing as doublets: "
-              f"{[c3301.i2r(v) for v in sorted(missing)]}")
+        print(
+            f"Runes never appearing as doublets: "
+            f"{[c3301.i2r(v) for v in sorted(missing)]}"
+        )
         print("(With only 89 doublets, some runes missing is expected)")
     print("All doublets are trivially consistent with TR[x][28] = x")
 

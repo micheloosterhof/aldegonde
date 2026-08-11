@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Battery of previously-unused statistical tests from and beyond the
 # ABOUTME: aldegonde library, run against the LP unsolved corpus.
 """Missed statistical tests: all negative; the corpus is statistically lean.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Residual probes: line-initial bias correlation (solved vs unsolved),
 doublet value-level context, digraphic kappa at all shifts, sentence stats.
 """

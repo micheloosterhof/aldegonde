@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Closes the open running-key gap in running-key-text.md: recovers the
 # ABOUTME: solved early pages' plaintext (known systems, fitness-verified) and
 # ABOUTME: slides it as a running key against the clean unsolved corpus.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Anatomizes the d4 frame events (lag-5 match pairs at separation 4) as
 # ABOUTME: candidate walk wiring equations: per-leg boundary counts and the
 # ABOUTME: implied sigma-g relations, with consistency and null checks.

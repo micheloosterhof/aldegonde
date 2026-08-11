@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Doublet trigger: ciphertext-conditioned variants test.
 
 Generalizing the marker premise: could the doublet trigger involve a

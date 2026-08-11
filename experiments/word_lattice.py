@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Word-lattice probes.
 
 1. LENGTH-CONTEXT KEYED CIPHER TEST: if the keystream is a function of the

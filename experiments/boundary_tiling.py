@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether group-length tilings ({5,6} etc.) can place every
 # ABOUTME: doublet on a group boundary, incl. strict alternation patterns.
 """Can a {5,6}-style group tiling place all doublets on boundaries?

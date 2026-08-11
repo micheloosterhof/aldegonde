@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Discriminates copy vs additive key-sharing for the within-word d5 excess
 # ABOUTME: via a 1-parameter delta-mixture model, projection test, and power analysis.
 """Discriminate key-sharing vs copy semantics for the within-word d=5 excess.

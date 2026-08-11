@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Simulation test of the surviving inner-layer class.
 
 Model under test (the survivor of autokey-plus-substitution.md after the

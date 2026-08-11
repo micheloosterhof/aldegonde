@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Systematic census of the seam channel — the (last rune of word w,
 # ABOUTME: first rune of word w+1) bigram — against the word-order permutation
 # ABOUTME: null: matrix flatness, repeats, conditional splits, length classes.

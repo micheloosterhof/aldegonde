@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Exhausts the keyword-derived alphabet families for the walk's two
 # ABOUTME: steps, testing whether ANY keyword reaches the required diagonals —
 # ABOUTME: the family test the earlier 12-keyword samples were mistaken for.

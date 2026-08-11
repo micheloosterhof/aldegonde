@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Battery 11: mechanism kill-table.
 
 Simulate candidate cipher mechanisms on Markov-runeglish plaintext and

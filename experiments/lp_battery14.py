@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Battery 14: per-page keystream OFFSET brute force.
 
 For each page and stream family, try all starting offsets 0..NOFF and score

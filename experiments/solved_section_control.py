@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Negative control: within-word d5 rate on the encrypted-but-solved
 # ABOUTME: Vigenere-class master-transcription sections.
 """Negative control: within-word d=5 statistics on solved-section ciphertext.

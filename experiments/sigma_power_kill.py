@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Simulates the length-clocked walk with sigma = g^k versus sigma
 # ABOUTME: outside <g>: the five-alphabet collapse leaves census/unigram/kappa
 # ABOUTME: signatures the LP corpus does not have (sigma-power-step.md).

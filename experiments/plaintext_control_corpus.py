@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Builds runeglish plaintext controls (solved LP sections + frequency-weighted
 # ABOUTME: lexicon) and writes their within-word lag-5 delta stats to a JSON.
 """Build genuine runeglish plaintext controls for the lag-5 statistics.

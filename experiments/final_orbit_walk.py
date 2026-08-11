@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Final orbit+walk cipher model, rate-targeted: g-diagonal tuned to the
 # ABOUTME: observed LP doublet rate and walk seams to the observed seam rate.
 """Orbit+walk, rate-targeted: the minimal model covering all hard observables.

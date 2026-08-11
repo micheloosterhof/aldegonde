@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Broad 4-point statistic dragnet over the LP corpus with a global
 # ABOUTME: Monte Carlo that pays the full look-elsewhere tax.
 """4-point statistic dragnet with global Monte Carlo (look-elsewhere paid).

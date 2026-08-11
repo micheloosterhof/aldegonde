@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Test whether the mono-kappa coincidence deficit at distance 11 in the
 # ABOUTME: clean Liber Primus corpus is real and whether it is a period-5 echo (11 = 2*5+1).
 """Is the lag-11 coincidence deficit real, and is it tied to the lag-5 structure?

@@ -47,7 +47,7 @@ frequency, ~1/29 = 3.45%.
 
 ## Scripts
 
-- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+- `experiments/disprove_autokey_split.py` — Definitive disproof.
 
 ## Related
 

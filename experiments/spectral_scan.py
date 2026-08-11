@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Spectral and residual probes for the unsolved LP.
 
 1. DFT scan: for each multiplier m, FFT of exp(2*pi*i*m*C[k]/29).

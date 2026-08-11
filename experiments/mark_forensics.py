@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Forensics on the '.' mark process in the unsolved LP.
 
 The sentence-final test showed '.' does not mark English sentence ends.

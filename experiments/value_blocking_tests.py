@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether rune VALUES drive block-boundary placement: value
 # ABOUTME: windows around doublets/lag-5 events and capacity-rule scans.
 """Value-driven blocking tests.

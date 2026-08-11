@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Analyzes where ciphertext doublets fall relative to word structure in
 # ABOUTME: Liber Primus (page0-58), respecting that words cross line breaks.
 """Doublet vs word-position analysis for Liber Primus.

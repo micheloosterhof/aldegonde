@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Direct test of second-order-difference.md: recover P from C = delta^2(P)
 # ABOUTME: by double cumulative sum over all 29 ramp slopes; IoC of each candidate.
 """Second-order difference cipher, tested directly.

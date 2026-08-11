@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Two-gear cipher model for the unsolved Liber Primus: one order-5 rune
 # ABOUTME: gear g (doublets + lag-5 echo) and one per-word gear h (word-locality).
 """Two-gear cipher: doublets and the lag-5 echo from one permutation.

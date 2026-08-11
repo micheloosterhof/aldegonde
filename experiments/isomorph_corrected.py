@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Isomorph statistics with a doublet-corrected null model.
 
 The library's random_isomorph_statistics uses uniform random text. The LP's

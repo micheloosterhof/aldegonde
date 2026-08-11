@@ -40,7 +40,7 @@ the autokey primer.
 
 ## Scripts
 
-- `hypotheses/disprove_autokey_split.py` — Definitive disproof.
+- `experiments/disprove_autokey_split.py` — Definitive disproof.
 
 ## Related
 

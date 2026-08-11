@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Simulates the opportunistic back-reference model: lag-5 echoes fire
 # ABOUTME: only where the plaintext itself repeats, resolving the information
 # ABOUTME: problem and matching the full LP fingerprint.

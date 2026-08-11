@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Uniqueness census for the DJU-BEI state return: other occurrences,
 # ABOUTME: near-collisions among adjacent 3+3 word blocks, and the word-initial
 # ABOUTME: digraph distribution behind the DJ-prefix curiosity.

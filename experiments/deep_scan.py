@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Deeper anomaly battery for the unsolved LP.
 
 A. Word-length-sequence repeated runs — a cipher-independent PLAINTEXT

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Can sigma be arithmetic? Minimum achievable seam-doublet rate for
 # ABOUTME: additive / multiplicative / affine / Beaufort / inverse families on
 # ABOUTME: the CROSS-word plaintext bigram table, vs the observed 0.0079.

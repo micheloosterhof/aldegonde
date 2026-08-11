@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Decides the 1st-vs-2nd-rune (keystream direction) question for the
 # ABOUTME: EA-marker hypothesis: EA's word-position profile in real runeglish
 # ABOUTME: prose vs the word-position splits of the LP doublet runes.

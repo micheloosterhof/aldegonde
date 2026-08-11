@@ -24,7 +24,7 @@ from collections import Counter, defaultdict
 sys.path.insert(0, "src")
 
 from aldegonde import c3301
-from aldegonde.stats.ioc import ioc as compute_ioc
+from aldegonde.stats.index_of_coincidence import ioc as compute_ioc
 
 ALPHABET = c3301.CICADA_ALPHABET
 ENG = c3301.CICADA_ENGLISH_ALPHABET
@@ -73,10 +73,7 @@ def search_w2_multiplicative(ct: list[int]) -> None:
         for mult in range(1, N):
             inv_mult = INVERSES[mult]
             pt_vals = [((prev_c - c) * inv_mult) % N for prev_c, c, _ in positions]
-            if len(pt_vals) >= 2:
-                ioc_val = compute_ioc(pt_vals)
-            else:
-                ioc_val = 0.0
+            ioc_val = compute_ioc(pt_vals) if len(pt_vals) >= 2 else 0.0
             if ioc_val > best_ioc:
                 best_ioc = ioc_val
                 best_mult = mult
@@ -86,9 +83,11 @@ def search_w2_multiplicative(ct: list[int]) -> None:
 
         rune = c3301.i2r(ct2_val)
         eng = ENG[ct2_val]
-        print(f"  C[i-2]={ct2_val:2d} ({rune}/{eng:>2}): "
-              f"best mult={best_mult:2d}, IOC={best_ioc:.6f} "
-              f"(n={len(positions)}, random={1/N:.4f})")
+        print(
+            f"  C[i-2]={ct2_val:2d} ({rune}/{eng:>2}): "
+            f"best mult={best_mult:2d}, IOC={best_ioc:.6f} "
+            f"(n={len(positions)}, random={1 / N:.4f})"
+        )
 
     # Compute full plaintext with the optimal table
     print(f"\n{'=' * 70}")
@@ -104,7 +103,7 @@ def search_w2_multiplicative(ct: list[int]) -> None:
     full_ioc = compute_ioc(pt[2:])
     qg = c3301.quadgramscore("".join(c3301.i2r(p) for p in pt[2:]))
 
-    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1/N:.6f})")
+    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1 / N:.6f})")
     print(f"  Quadgram score: {qg:.1f}")
     print(f"  Mean per-group IOC: {sum(best_iocs.values()) / N:.6f}")
 
@@ -114,7 +113,7 @@ def search_w2_multiplicative(ct: list[int]) -> None:
 
     # Letter frequency of full plaintext
     freq = Counter(pt[2:])
-    print(f"\n  Letter frequencies:")
+    print("\n  Letter frequencies:")
     for idx in range(N):
         count = freq.get(idx, 0)
         pct = 100 * count / (n - 2)
@@ -153,10 +152,7 @@ def search_w3_multiplicative(ct: list[int]) -> None:
         for mult in range(1, N):
             inv_mult = INVERSES[mult]
             pt_vals = [((prev_c - c) * inv_mult) % N for prev_c, c, _ in positions]
-            if len(pt_vals) >= 2:
-                ioc_val = compute_ioc(pt_vals)
-            else:
-                ioc_val = 0.0
+            ioc_val = compute_ioc(pt_vals) if len(pt_vals) >= 2 else 0.0
             if ioc_val > best_ioc:
                 best_ioc = ioc_val
                 best_mult = mult
@@ -176,7 +172,7 @@ def search_w3_multiplicative(ct: list[int]) -> None:
     qg = c3301.quadgramscore("".join(c3301.i2r(p) for p in pt[3:]))
     mean_ioc = sum(best_iocs.values()) / N
 
-    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1/N:.6f})")
+    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1 / N:.6f})")
     print(f"  Quadgram score: {qg:.1f}")
     print(f"  Mean per-group IOC: {mean_ioc:.6f}")
 
@@ -213,10 +209,7 @@ def search_additive_table(ct: list[int]) -> None:
 
         for offset in range(N):
             pt_vals = [((prev_c - c + offset) % N) for prev_c, c, _ in positions]
-            if len(pt_vals) >= 2:
-                ioc_val = compute_ioc(pt_vals)
-            else:
-                ioc_val = 0.0
+            ioc_val = compute_ioc(pt_vals) if len(pt_vals) >= 2 else 0.0
             if ioc_val > best_ioc:
                 best_ioc = ioc_val
                 best_offset = offset
@@ -233,7 +226,7 @@ def search_additive_table(ct: list[int]) -> None:
     full_ioc = compute_ioc(pt[2:])
     qg = c3301.quadgramscore("".join(c3301.i2r(p) for p in pt[2:]))
 
-    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1/N:.6f})")
+    print(f"  Full plaintext IOC: {full_ioc:.6f} (random: {1 / N:.6f})")
     print(f"  Quadgram score: {qg:.1f}")
 
     eng_pt = "".join(ENG[p] for p in pt[2:62])

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Covert-channel and residual key-structure probes.
 
 J. Doublet channel: the 88 doubled runes (and their gaps) as a hidden

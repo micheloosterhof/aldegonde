@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """J-stream battery: the 28-symbol step stream as the inner cipher.
 
 Model (EA-as-ditto): plaintext EA encrypts as "repeat previous ciphertext

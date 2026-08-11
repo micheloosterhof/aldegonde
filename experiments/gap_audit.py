@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Audit of previously untested angles: large-lag autocorrelation,
 # ABOUTME: per-section stats, reversed autokey, acrostics, doublet values, etc.
 """Gap audit for the LP unsolved corpus: angles never tested before.

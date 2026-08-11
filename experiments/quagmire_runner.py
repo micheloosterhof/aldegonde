@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Enumerates the Quagmire full-key space (schedule census x sigma
 # ABOUTME: disks), filters on the base-free DJU-BEI state return, and fits
 # ABOUTME: base_0 on the 2-rune likelihood for the survivors.

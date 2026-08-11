@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Full-battery simulation of the length-clocked walk with tuned
 # ABOUTME: mixed-census g (annealed by conjugation, preserving cycle type):
 # ABOUTME: the promotion test for mixed-cycle-progression.md's live subfamily.

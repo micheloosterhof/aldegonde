@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Stream-level value-literal test: repeated NONzero lag-5 deltas at separations
 # ABOUTME: 1/4 vs the elevated zero (equality) value, against doublet-suppressed nulls.
 """Generalize the lag-5 pairing from matches to arbitrary repeated deltas.

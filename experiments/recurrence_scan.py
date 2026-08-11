@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Recurrence-relation and remaining structural probes.
 
 O. Linear recurrence scan: uniformity of a*C[i] + b*C[i+d1] + c*C[i+d2]

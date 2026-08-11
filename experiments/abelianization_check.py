@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether the DJU-BEI abelianization relation and the parity
 # ABOUTME: condition are real filters on candidate (g, sigma) keys. Both are
 # ABOUTME: vacuous on the Quagmire candidate space.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Comprehensive cryptodiagnostics battery for the unsolved Liber Primus pages.
 
 Reads data/page0-58.txt and runs a structured battery of statistical tests:

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Minimum doublet rate of the advance disk via the assignment problem,
 # ABOUTME: testing whether the advance can be built doublet-free (hold-only doublets).
 """If the advance step is a permutation g applied every letter, an advance-step

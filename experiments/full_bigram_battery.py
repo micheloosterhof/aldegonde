@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Complete 29x29 adjacent-bigram battery on the clean corpus against
 # ABOUTME: the doublet-suppression-aware null: matrix flatness, cell extremes,
 # ABOUTME: antisymmetry, within/cross-word homogeneity, splits, phase strata.

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Validates the 2-rune-word log-likelihood objective as a hill-climb
 # ABOUTME: gradient for the walk key, on simulated ciphertext with a known key.
 """Does the 2-rune word class give a usable fitness gradient?

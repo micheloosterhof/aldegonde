@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Per-page attack battery for Liber Primus: affine, autokey, keywords,
 # ABOUTME: and prime-1 keystream with interrupt-tolerant beam search.
 """Systematic cipher-breaking attempts on the Liber Primus unsolved section.

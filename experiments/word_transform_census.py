@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Word-level transform-pair census.
 
 If the cipher operates per word with a varying per-word key, repeated

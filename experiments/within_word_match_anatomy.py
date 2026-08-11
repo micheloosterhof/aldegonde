@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Anatomy of the within-word d5 matches: word-edge alignment and spatial
 # ABOUTME: clustering of the 91 hit words (both null).
 """Anatomy of the within-word distance-5 matches: where do they sit?

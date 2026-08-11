@@ -69,9 +69,9 @@ It does not.
 
 ## Scripts
 
-- `hypotheses/disprove_autokey_split.py` — Splits ciphertext by preceding rune
+- `experiments/disprove_autokey_split.py` — Splits ciphertext by preceding rune
   and computes IOC per group. Definitive disproof.
-- `hypotheses/crib_single_letter_words.py` — Groups single-letter words by
+- `experiments/crib_single_letter_words.py` — Groups single-letter words by
   preceding rune. Shows 6-13 distinct values per group, far exceeding the 2-3
   expected.
 

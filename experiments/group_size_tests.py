@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests group-size mixtures, reset rules, marker-rune boundary
 # ABOUTME: triggers, and Hill-5-with-rejection against the doublet fingerprint.
 """Group-size variants, reset rules, marker runes, and Hill-with-rejection.

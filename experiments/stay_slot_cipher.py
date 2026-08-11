@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Head-to-head test of the two lead cipher designs for the unsolved LP:
 # ABOUTME: V1 order-5 orbit + group walk, V2 stay-slot orbit (order-4 g, 1-in-5 hold).
 """Two candidate mechanisms, one complete battery.

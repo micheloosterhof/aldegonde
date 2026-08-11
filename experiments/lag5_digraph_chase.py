@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Characterizes the lag-5 digraph anomaly: paired lag-5 matches at
 # ABOUTME: separations 1 and 4, with Monte Carlo global significance testing.
 """Full chase of the lag-5 digraph anomaly in the LP unsolved corpus.

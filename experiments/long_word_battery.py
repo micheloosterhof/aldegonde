@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Comprehensive battery on the long words (>= 5 runes) of the clean
 # ABOUTME: corpus — the only words that exercise g^3, g^4 and the g^5=id echo —
 # ABOUTME: scored throughout against doublet-aware surrogates.

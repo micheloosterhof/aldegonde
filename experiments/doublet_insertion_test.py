@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Doublets: insertion (chaff) vs occupying-event (marker-class) test.
 
 If doublets are inserted dittographs (removable chaff over a strictly

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Corrected cycle-census analysis: real-word K_d baselines (not
 # ABOUTME: random stream segments) and diagonal tuning at the LP-implied level
 # ABOUTME: (not the annealing floor). Supersedes the numbers in census_scan /

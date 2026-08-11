@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Family-blind re-assessment of the lag-5 observation: cluster
 # ABOUTME: decomposition, locality, fair 2D (lag x separation) scan, deltas.
 """Fresh look at the lag-5 observation: clusters, locality, fair 2D scan.

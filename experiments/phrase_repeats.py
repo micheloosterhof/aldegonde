@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Census of word-aligned phrase repeats in the unsolved LP.
 
 A phrase repeat = two or more consecutive words whose concatenated ciphertext

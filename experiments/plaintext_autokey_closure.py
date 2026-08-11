@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Quantitative closure of plaintext-autokey.md: predicted repeated
 # ABOUTME: ciphertext n-grams from real LP-register plaintext vs the observed
 # ABOUTME: at-chance repeat census. TR-independent.

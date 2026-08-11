@@ -10,24 +10,27 @@ Models are registered with their parameter spaces. The runner tries all
 parameter combinations, scores the output, and reports the best candidates.
 
 Usage:
-    python hypotheses/model_tester.py                    # run all models
-    python hypotheses/model_tester.py beaufort_ct_autokey # run one model
-    python hypotheses/model_tester.py --list              # list models
+    python experiments/model_tester.py                    # run all models
+    python experiments/model_tester.py beaufort_ct_autokey # run one model
+    python experiments/model_tester.py --list              # list models
 """
 
 from __future__ import annotations
 
 import sys
 import time
-from collections import Counter
-from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from itertools import product
 
 sys.path.insert(0, "src")
 
+from typing import TYPE_CHECKING
+
 from aldegonde import c3301
-from aldegonde.stats.ioc import ioc as compute_ioc
+from aldegonde.stats.index_of_coincidence import ioc as compute_ioc
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
 
 ALPHABET = c3301.CICADA_ALPHABET
 N = len(ALPHABET)  # 29
@@ -101,8 +104,37 @@ for _k in range(N - 1):
     _v = (_v * _G) % N
 
 # GP prime values for each rune (by library index 0-28)
-_GP_PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
-              47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109]
+_GP_PRIMES = [
+    2,
+    3,
+    5,
+    7,
+    11,
+    13,
+    17,
+    19,
+    23,
+    29,
+    31,
+    37,
+    41,
+    43,
+    47,
+    53,
+    59,
+    61,
+    67,
+    71,
+    73,
+    79,
+    83,
+    89,
+    97,
+    101,
+    103,
+    107,
+    109,
+]
 _GP_MOD29 = [p % N for p in _GP_PRIMES]  # GP prime values mod 29
 
 
@@ -157,7 +189,11 @@ def _nonzero_k(state: int, offset: int) -> int:
 
 
 def beaufort_mult_prev_pt(
-    ct: list[int], *, primer_c: int, primer_p: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer_c: int,
+    primer_p: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplicative previous-plaintext factor.
 
@@ -178,7 +214,10 @@ def beaufort_mult_prev_pt(
 
 
 def beaufort_mult_running_ct(
-    ct: list[int], *, primer: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplier from running ciphertext sum.
 
@@ -200,7 +239,11 @@ def beaufort_mult_running_ct(
 
 
 def beaufort_mult_running_pt(
-    ct: list[int], *, primer_c: int, primer_s: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer_c: int,
+    primer_s: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplier from running plaintext sum.
 
@@ -222,7 +265,9 @@ def beaufort_mult_running_pt(
 
 
 def beaufort_two_ct_feedback(
-    ct: list[int], *, primer: int,
+    ct: list[int],
+    *,
+    primer: int,
 ) -> list[int]:
     """Beaufort autokey using two previous ciphertext runes.
 
@@ -232,7 +277,7 @@ def beaufort_two_ct_feedback(
     pt = []
     prev2 = primer
     prev1 = primer
-    for i, c in enumerate(ct):
+    for _i, c in enumerate(ct):
         key = (prev1 + prev2) % N
         pt.append((key - c) % N)
         prev2 = prev1
@@ -241,7 +286,10 @@ def beaufort_two_ct_feedback(
 
 
 def beaufort_mult_ct2(
-    ct: list[int], *, primer: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplicative C[i-2] factor.
 
@@ -263,7 +311,10 @@ def beaufort_mult_ct2(
 
 
 def beaufort_mult_ct2_sum(
-    ct: list[int], *, primer: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplier from C[i-2] + C[i-3].
 
@@ -286,7 +337,10 @@ def beaufort_mult_ct2_sum(
 
 
 def beaufort_mult_ct2_prod(
-    ct: list[int], *, primer: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer: int,
+    offset: int = 0,
 ) -> list[int]:
     """Beaufort autokey with multiplier from C[i-2] * C[i-1].
 
@@ -398,6 +452,7 @@ def power_autokey(ct: list[int], *, primer: int, exponent: int) -> list[int] | N
     Fails if C[i] = 0 (since 0 has no e-th root for e > 1).
     """
     from math import gcd
+
     if gcd(exponent, N - 1) != 1:
         return None
     e_inv = pow(exponent, -1, N - 1)
@@ -405,11 +460,8 @@ def power_autokey(ct: list[int], *, primer: int, exponent: int) -> list[int] | N
     pt = []
     prev_c = primer
     for c in ct:
-        if c == 0:
-            # 0^(e_inv) = 0
-            root = 0
-        else:
-            root = pow(c, e_inv, N)
+        # 0 has no modular root to take: 0^e_inv is 0
+        root = 0 if c == 0 else pow(c, e_inv, N)
         p = (root - prev_c) % N
         pt.append(p)
         prev_c = c
@@ -417,7 +469,11 @@ def power_autokey(ct: list[int], *, primer: int, exponent: int) -> list[int] | N
 
 
 def vigenere_mult_prev_pt(
-    ct: list[int], *, primer_c: int, primer_p: int, offset: int = 0,
+    ct: list[int],
+    *,
+    primer_c: int,
+    primer_p: int,
+    offset: int = 0,
 ) -> list[int]:
     """Vigenere autokey with multiplicative previous-plaintext factor.
 
@@ -441,7 +497,12 @@ def vigenere_mult_prev_pt(
 
 
 def periodic_beaufort(
-    ct: list[int], *, k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+    ct: list[int],
+    *,
+    k0: int,
+    k1: int = 0,
+    k2: int = 0,
+    period: int = 2,
 ) -> list[int]:
     """Periodic Beaufort (non-autokey).
 
@@ -453,7 +514,12 @@ def periodic_beaufort(
 
 
 def periodic_vigenere(
-    ct: list[int], *, k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+    ct: list[int],
+    *,
+    k0: int,
+    k1: int = 0,
+    k2: int = 0,
+    period: int = 2,
 ) -> list[int]:
     """Periodic Vigenere (non-autokey).
 
@@ -464,8 +530,13 @@ def periodic_vigenere(
 
 
 def periodic_mult_autokey(
-    ct: list[int], *, primer: int,
-    k0: int, k1: int = 1, k2: int = 1, period: int = 2,
+    ct: list[int],
+    *,
+    primer: int,
+    k0: int,
+    k1: int = 1,
+    k2: int = 1,
+    period: int = 2,
 ) -> list[int]:
     """Beaufort ciphertext autokey with periodic multiplier.
 
@@ -488,8 +559,13 @@ def periodic_mult_autokey(
 
 
 def periodic_add_autokey(
-    ct: list[int], *, primer: int,
-    k0: int, k1: int = 0, k2: int = 0, period: int = 2,
+    ct: list[int],
+    *,
+    primer: int,
+    k0: int,
+    k1: int = 0,
+    k2: int = 0,
+    period: int = 2,
 ) -> list[int]:
     """Beaufort ciphertext autokey with periodic additive key.
 
@@ -688,7 +764,10 @@ def param_space_size(params: dict[str, list[int]]) -> int:
 
 
 def run_model(
-    model: Model, ct: list[int], top_n: int = 5, quadgram_top: int = 5,
+    model: Model,
+    ct: list[int],
+    top_n: int = 5,
+    quadgram_top: int = 5,
 ) -> None:
     """Try all parameter combinations, report top results by IOC."""
     total = param_space_size(model.params)
@@ -713,8 +792,7 @@ def run_model(
         results.append((score_ioc(pt), params, pt))
     elapsed = time.time() - t0
 
-    print(f"  Completed in {elapsed:.1f}s "
-          f"({len(results)} ok, {failed} inconsistent)")
+    print(f"  Completed in {elapsed:.1f}s ({len(results)} ok, {failed} inconsistent)")
 
     if not results:
         print("  No consistent results.")
@@ -723,8 +801,7 @@ def run_model(
     results.sort(key=lambda x: -x[0])
 
     iocs = [r[0] for r in results]
-    print(f"  IOC range: {min(iocs):.6f} - {max(iocs):.6f} "
-          f"(random: {1/N:.6f})")
+    print(f"  IOC range: {min(iocs):.6f} - {max(iocs):.6f} (random: {1 / N:.6f})")
 
     print(f"\n  Top {top_n} by IOC:")
     header = f"  {'#':>3} {'IOC':>10}"
@@ -743,7 +820,7 @@ def run_model(
             qg_str = f" {'':>10}"
         param_str = ", ".join(f"{k}={v}" for k, v in sorted(params.items()))
         eng = plaintext_summary(pt)
-        print(f"  {i+1:>3} {ioc_val:>10.6f}{qg_str}  {param_str:<30} {eng}")
+        print(f"  {i + 1:>3} {ioc_val:>10.6f}{qg_str}  {param_str:<30} {eng}")
 
 
 def list_models() -> None:
@@ -767,7 +844,7 @@ def main() -> None:
 
     ct = load_ciphertext()
     print(f"Ciphertext: {len(ct)} runes")
-    print(f"Ciphertext IOC: {score_ioc(ct):.6f} (random: {1/N:.6f})")
+    print(f"Ciphertext IOC: {score_ioc(ct):.6f} (random: {1 / N:.6f})")
 
     requested = [a for a in args if not a.startswith("-")]
     top_n = 10
@@ -778,8 +855,10 @@ def main() -> None:
         # Skip very large param spaces unless explicitly requested
         total = param_space_size(model.params)
         if not requested and total > 30000:
-            print(f"\n  Skipping {model.name} ({total} combinations). "
-                  f"Run explicitly: python {sys.argv[0]} {model.name}")
+            print(
+                f"\n  Skipping {model.name} ({total} combinations). "
+                f"Run explicitly: python {sys.argv[0]} {model.name}"
+            )
             continue
         run_model(model, ct, top_n=top_n)
 

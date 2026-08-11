@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Battery 9: prefix attack + drift-tolerant (Viterbi) keystream attack."""
 
 import collections

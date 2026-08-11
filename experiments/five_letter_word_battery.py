@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Test battery on the length-5 words of the clean corpus — the exact
 # ABOUTME: one-period unit of the letter walk — isolating the g^1..g^4 phase
 # ABOUTME: diagonals and the word-bounded (first,last)=g^4 frame pair (d4).

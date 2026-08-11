@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Generative simulator for the five-block boundary hypothesis with a
 # ABOUTME: parameter grid search against the full LP statistical fingerprint.
 """Five-block boundary cipher simulator.

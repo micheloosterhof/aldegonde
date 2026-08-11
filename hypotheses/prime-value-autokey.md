@@ -47,7 +47,7 @@ The codebase includes `valueTR()` which builds this kind of tabula recta.
 
 ## Scripts
 
-- `hypotheses/disprove_autokey_split.py` — Definitive disproof of all
+- `experiments/disprove_autokey_split.py` — Definitive disproof of all
   single-layer ciphertext autokey variants.
 
 ## Related

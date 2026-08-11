@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Running-key DEPTH search: IOC of the difference stream at every lag.
 
 For a running/long-key additive cipher C = P + K mod 29, wherever the key

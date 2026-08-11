@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Analyze repeats in Liber Primus page0-58 data to find key period candidates."""
 
 import math

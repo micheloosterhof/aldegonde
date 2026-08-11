@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Simulates cipher families known or claimed to exhibit 4th-order
 # ABOUTME: statistical structure, profiling each by statistical order.
 """Which cipher families show 4th-order structure with flat lower orders?

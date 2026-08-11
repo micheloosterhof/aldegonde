@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests ciphertext-autokey (alphabet driven by previous ciphertext rune)
 # ABOUTME: by grouping each rune by its predecessor and checking within-group IoC.
 """If the cipher were CIPHERTEXT-autokey -- c[i] = TR[c[i-1]][p[i]], the alphabet

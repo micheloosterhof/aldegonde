@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Generative model of the unsolved Liber Primus as a per-word cipher of
 # ABOUTME: 5 related alphabets, with the doublet suppression inherent to the relation.
 """Per-word related-alphabet cipher: one mechanism for the whole LP fingerprint.

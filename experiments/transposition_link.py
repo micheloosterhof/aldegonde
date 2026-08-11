@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Tests whether any inverse-transposition geometry converts the
 # ABOUTME: lag-5 anomaly and doublet suppression into a simpler pre-stream.
 """Can a transposition geometry make the lag-5 anomaly natural?

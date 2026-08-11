@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # ABOUTME: Full within-word position-pair battery: match rate and conditional
 # ABOUTME: structure for every pair of word positions (first vs second, first
 # ABOUTME: vs third, ...), testing the walk's translation-invariance prediction.

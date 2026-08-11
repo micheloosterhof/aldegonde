@@ -16,22 +16,50 @@ very strong test.
 from __future__ import annotations
 
 import sys
-from collections import Counter
 
 sys.path.insert(0, "src")
 
 from aldegonde import c3301
-from aldegonde.stats.ioc import ioc as compute_ioc
+from aldegonde.stats.index_of_coincidence import ioc as compute_ioc
 
 ALPHABET = c3301.CICADA_ALPHABET
 ENG = c3301.CICADA_ENGLISH_ALPHABET
 N = len(ALPHABET)
 
-GP_PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
-             47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109]
+GP_PRIMES = [
+    2,
+    3,
+    5,
+    7,
+    11,
+    13,
+    17,
+    19,
+    23,
+    29,
+    31,
+    37,
+    41,
+    43,
+    47,
+    53,
+    59,
+    61,
+    67,
+    71,
+    73,
+    79,
+    83,
+    89,
+    97,
+    101,
+    103,
+    107,
+    109,
+]
 
 # Rune index -> GP prime
-IDX_TO_PRIME = {i: p for i, p in enumerate(GP_PRIMES)}
+IDX_TO_PRIME = dict(enumerate(GP_PRIMES))
 # GP prime -> rune index
 PRIME_TO_IDX = {p: i for i, p in enumerate(GP_PRIMES)}
 PRIME_SET = set(GP_PRIMES)
@@ -55,7 +83,7 @@ def test_additive_autokey(ct: list[int], mod: int) -> None:
     a valid GP prime.
     """
     primes = ct_primes(ct)
-    n = len(primes)
+    len(primes)
 
     consistent = 0
     best_ioc = 0.0
@@ -86,11 +114,13 @@ def test_additive_autokey(ct: list[int], mod: int) -> None:
 
     if consistent > 0:
         eng = "".join(ENG[p] for p in best_pt[:50]) if best_pt else ""
-        print(f"    {consistent:3d} consistent primers, "
-              f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})")
+        print(
+            f"    {consistent:3d} consistent primers, "
+            f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})"
+        )
         print(f"        Plaintext: {eng}")
     else:
-        print(f"    No consistent primers")
+        print("    No consistent primers")
 
 
 def test_vigenere_autokey(ct: list[int], mod: int) -> None:
@@ -126,11 +156,13 @@ def test_vigenere_autokey(ct: list[int], mod: int) -> None:
 
     if consistent > 0:
         eng = "".join(ENG[p] for p in best_pt[:50]) if best_pt else ""
-        print(f"    {consistent:3d} consistent primers, "
-              f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})")
+        print(
+            f"    {consistent:3d} consistent primers, "
+            f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})"
+        )
         print(f"        Plaintext: {eng}")
     else:
-        print(f"    No consistent primers")
+        print("    No consistent primers")
 
 
 def test_multiplicative_autokey(ct: list[int], mod: int) -> None:
@@ -172,11 +204,13 @@ def test_multiplicative_autokey(ct: list[int], mod: int) -> None:
 
     if consistent > 0:
         eng = "".join(ENG[p] for p in best_pt[:50]) if best_pt else ""
-        print(f"    {consistent:3d} consistent primers, "
-              f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})")
+        print(
+            f"    {consistent:3d} consistent primers, "
+            f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})"
+        )
         print(f"        Plaintext: {eng}")
     else:
-        print(f"    No consistent primers")
+        print("    No consistent primers")
 
 
 def test_power_map_autokey(ct: list[int], mod: int, exp: int) -> None:
@@ -185,8 +219,9 @@ def test_power_map_autokey(ct: list[int], mod: int, exp: int) -> None:
     Power map. Decrypt: prime(P[i]) = prime(C[i])^(1/exp) - prime(C[i-1]) mod M
     """
     from math import gcd
+
     if gcd(exp, mod - 1) != 1:
-        print(f"    Exponent {exp} not invertible mod {mod-1}")
+        print(f"    Exponent {exp} not invertible mod {mod - 1}")
         return
 
     primes = ct_primes(ct)
@@ -222,11 +257,13 @@ def test_power_map_autokey(ct: list[int], mod: int, exp: int) -> None:
 
     if consistent > 0:
         eng = "".join(ENG[p] for p in best_pt[:50]) if best_pt else ""
-        print(f"    {consistent:3d} consistent primers, "
-              f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})")
+        print(
+            f"    {consistent:3d} consistent primers, "
+            f"best IOC={best_ioc:.6f} (primer={ENG[best_primer]})"
+        )
         print(f"        Plaintext: {eng}")
     else:
-        print(f"    No consistent primers")
+        print("    No consistent primers")
 
 
 def main() -> None:
@@ -240,9 +277,41 @@ def main() -> None:
     # Even for M=113: (29/113)^13136 ≈ 0. Consistency is extremely selective.
 
     # Moduli to try: various primes near and above 109
-    moduli = [29, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
-              173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
-              233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283]
+    moduli = [
+        29,
+        113,
+        127,
+        131,
+        137,
+        139,
+        149,
+        151,
+        157,
+        163,
+        167,
+        173,
+        179,
+        181,
+        191,
+        193,
+        197,
+        199,
+        211,
+        223,
+        227,
+        229,
+        233,
+        239,
+        241,
+        251,
+        257,
+        263,
+        269,
+        271,
+        277,
+        281,
+        283,
+    ]
 
     # Also try composite moduli with special properties
     moduli.extend([110, 116, 120, 210, 290, 29 * 4, 29 * 5])
@@ -263,8 +332,11 @@ def main() -> None:
         test_vigenere_autokey(ct, m)
 
     # Multiplicative: only works for prime moduli
-    prime_moduli = [m for m in sorted(set(moduli))
-                    if m > 1 and all(m % i != 0 for i in range(2, int(m**0.5) + 1))]
+    prime_moduli = [
+        m
+        for m in sorted(set(moduli))
+        if m > 1 and all(m % i != 0 for i in range(2, int(m**0.5) + 1))
+    ]
     print(f"\n{'=' * 70}")
     print("MULTIPLICATIVE: prime(C) = (prime(C_prev) * prime(P)) mod M")
     print(f"{'=' * 70}")
