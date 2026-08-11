@@ -45,6 +45,16 @@ dev = [
 docs = [
   "sphinx>=7.0.0",
 ]
+# What the scripts under experiments/ import. Separate from `dev` so the test
+# matrix stays light: only the typing env needs them, because a type checker
+# cannot resolve an import it has not been given. Lower bounds rather than pins,
+# since that env runs on the oldest supported interpreter.
+experiments = [
+  "matplotlib>=3.8",
+  "pillow>=10.0",
+  "sympy>=1.12",
+  "wordfreq>=3.0",
+]
 
 [build-system]
 requires = ["setuptools>=61.0", "setuptools-scm>=8.0"]
