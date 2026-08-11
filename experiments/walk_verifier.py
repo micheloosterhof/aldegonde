@@ -82,15 +82,22 @@ def load_words() -> list[list[int]]:
     from aldegonde.c3301 import CICADA_ALPHABET as A
 
     idx = {r: i for i, r in enumerate(A)}
+    from aldegonde import c3301
+
     text = (ROOT / "data" / "page0-56.txt").read_text()
-    secs = [s for s in text.split("$") if RUNE.search(s)][:10]
-    words = []
-    for s in secs:
-        s = s.replace("/", "").replace("\n", "")
-        for part in re.split(r"[-.%&]", s):
-            rs = RUNE.findall(part)
-            if rs:
-                words.append([idx[r] for r in rs])
+    # split on the library's boundary set: a literal class of legacy mark
+    # characters stopped matching when the transcription moved to the circled
+    # numerals, and silently returned 60 enormous "words" instead of 2,928
+    words: list[list[int]] = []
+    cur: list[int] = []
+    for ch in text:
+        if ch in idx:
+            cur.append(idx[ch])
+        elif ch in c3301.WORD_BOUNDARY and cur:
+            words.append(cur)
+            cur = []
+    if cur:
+        words.append(cur)
     return words
 
 
