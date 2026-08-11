@@ -47,7 +47,7 @@ import numpy as np
 
 ALPHABET = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 MOD = 29
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 LAG = 5
 SEPARATIONS = range(1, 9)
 

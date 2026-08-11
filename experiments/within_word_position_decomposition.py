@@ -13,7 +13,7 @@ Two sharp discriminators:
     the word-initial pair (i=0, right after the sigma step) special?
 
 We report rates with Wilson 95% CIs and a chi-square homogeneity test across
-position/length buckets. Clean corpus: sections 0-9 of data/page0-58.txt.
+position/length buckets. Clean corpus: sections 0-9 of data/page0-56.txt.
 """
 
 from __future__ import annotations
@@ -37,7 +37,7 @@ CLEAN = 12956  # sections 0-9
 def load_words() -> list[list[int]]:
     """Words as rune-index lists. Words flow across line wraps; split on
     - . & % (word seps) and $ (section); capped at the clean corpus."""
-    with open("data/page0-58.txt") as f:
+    with open("data/page0-56.txt") as f:
         text = f.read()
     words: list[list[int]] = []
     cur: list[int] = []

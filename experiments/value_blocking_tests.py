@@ -38,7 +38,7 @@ from aldegonde import c3301
 random.seed(3301)
 
 ALPHABET = c3301.CICADA_ALPHABET
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 
 
 def load_pages() -> list[str]:

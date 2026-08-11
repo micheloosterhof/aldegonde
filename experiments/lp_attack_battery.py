@@ -3,7 +3,7 @@
 """Systematic cipher-breaking attempts on the Liber Primus unsolved section.
 
 This script runs a battery of cryptanalytic attacks against every page of
-``data/page0-58.txt``:
+``data/page0-56.txt``:
 
 1. Baseline statistics: normalized IoC, doublet rate, columnar IoC by period.
 2. Per-page monoalphabetic attacks: all 29 shifts, atbash, all 812 affine maps.
@@ -215,7 +215,7 @@ def page_attack_battery(
 def main() -> None:
     """Run the full attack battery against every page."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_file = os.path.join(script_dir, "..", "data", "page0-58.txt")
+    data_file = os.path.join(script_dir, "..", "data", "page0-56.txt")
     pages = load_pages(data_file)
 
     parable = pages[-1]  # final page is known plaintext

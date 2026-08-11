@@ -35,6 +35,8 @@ from aldegonde import c3301
 
 ROOT = Path(__file__).resolve().parent.parent
 IMAGE_DIR = Path("/Users/mich/src/cicada-2014/stage11/ky2khlqdf7qdznac.onion")
+# The transcription tools work against the page SCANS, which run to page 57, so
+# they need the full transcription rather than the cipher-only corpus.
 CORPUS = ROOT / "data" / "page0-58.txt"
 TARGETS = [
     ROOT / "data" / "liber-primus__transcription--master.txt",

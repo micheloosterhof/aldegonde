@@ -54,7 +54,7 @@ def chi_sq_uniform(values: list[int], n_symbols: int) -> float:
 
 
 def main() -> None:
-    runes = load_runes("data/page0-58.txt")
+    runes = load_runes("data/page0-56.txt")
     n = len(runes)
 
     print(f"Total runes: {n}")

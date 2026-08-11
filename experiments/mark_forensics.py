@@ -47,14 +47,11 @@ def is_prime(x: int) -> bool:
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
     # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
-    # AN END page and Parable are the trailing 180 runes of page0-58.txt
-    nplain = len(stream) - 12956
-    C = np.array(stream[:-nplain], dtype=np.int64)
+    C = np.array(stream, dtype=np.int64)
     n = len(C)
 
-    u = Path("data/page0-58.txt").read_text()
-    # drop the last two $-sections (solved AN END page + plaintext Parable)
-    u_cipher = "$".join(u.split("$")[:-2])
+    u = Path("data/page0-56.txt").read_text()
+    u_cipher = u
 
     print("=== 1. LAYOUT COUPLING ===")
     # rate of a cluster mark immediately before a line break vs the word-mark

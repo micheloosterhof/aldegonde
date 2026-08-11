@@ -60,8 +60,8 @@ def analyze(name, toks):
     print(f"  after-mark:  mean {oa:.2f}  z={za:+.2f}  short {short_a:.1%}")
 
 
-# unsolved clean corpus: sections 0-9 of page0-58
-text = Path("/Users/mich/src/aldegonde/data/page0-58.txt").read_text()
+# unsolved clean corpus: all of page0-56
+text = Path("/Users/mich/src/aldegonde/data/page0-56.txt").read_text()
 secs = [s for s in text.split("$") if RUNE.search(s)][:10]
 toks = []
 for s in secs:

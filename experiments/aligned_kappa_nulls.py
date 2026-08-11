@@ -1,6 +1,6 @@
 # ABOUTME: Tests page/section-aligned kappa (shared keystream reset at boundaries),
 # ABOUTME: doublet-suppressed null model, and the lag-5 digraphic kappa anomaly.
-"""Aligned-kappa and null-model validation for Liber Primus (page0-58).
+"""Aligned-kappa and null-model validation for Liber Primus (page0-56).
 
 Three experiments on the unsolved corpus (excluding the solved AN END and
 parable pages at the end of the file):
@@ -42,7 +42,7 @@ random.seed(3301)
 
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 
 
 def runes_only(text: str) -> str:

@@ -71,7 +71,7 @@ def extract_words_with_positions(text: str) -> list[tuple[int, list[int]]]:
 
 
 def main() -> None:
-    text = load_ciphertext("data/page0-58.txt")
+    text = load_ciphertext("data/page0-56.txt")
     rune_stream = extract_rune_stream(text)
     words = extract_words_with_positions(text)
 

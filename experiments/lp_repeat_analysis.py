@@ -1,4 +1,4 @@
-"""Analyze repeats in Liber Primus page0-58 data to find key period candidates."""
+"""Analyze repeats in Liber Primus page0-56 data to find key period candidates."""
 
 import math
 from collections import Counter
@@ -7,7 +7,7 @@ from aldegonde.c3301 import CICADA_ALPHABET
 from aldegonde.stats.repeats import repeat_positions
 
 # ── 1. Parse LP data ──────────────────────────────────────────────────────────
-with open("data/page0-58.txt") as f:
+with open("data/page0-56.txt") as f:
     raw = f.read()
 
 # Split by "$" to get segments

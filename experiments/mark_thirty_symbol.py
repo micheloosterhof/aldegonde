@@ -9,7 +9,7 @@ from aldegonde import c3301
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 
-text = Path("/Users/mich/src/aldegonde/data/page0-58.txt").read_text()
+text = Path("/Users/mich/src/aldegonde/data/page0-56.txt").read_text()
 secs = [s for s in text.split("$") if RUNE.search(s)][:10]
 
 print("per-section mark rates (clean sections 0-9):")

@@ -50,16 +50,17 @@ def scan() -> tuple[list[dict], int, int]:
             runes += 1
             started = True
             continue
-        if char in BOUNDARY:
-            if char in c3301.CLUSTER_MARKS:
-                dots += 1
-            elif char in c3301.WORD_MARKS:
-                dashes += 1
-            if started:
-                words += 1
-                started = False
-            continue
+        # A quote is a word boundary AND the thing under study here, so it is
+        # recorded before the boundary accounting rather than consumed by it.
         if char != '"':
+            if char in BOUNDARY:
+                if char in c3301.CLUSTER_MARKS:
+                    dots += 1
+                elif char in c3301.WORD_MARKS:
+                    dashes += 1
+                if started:
+                    words += 1
+                    started = False
             continue
         # the separator this mark attaches to, looking outward
         before = next(

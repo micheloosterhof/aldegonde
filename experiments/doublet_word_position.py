@@ -1,5 +1,5 @@
 # ABOUTME: Analyzes where ciphertext doublets fall relative to word structure in
-# ABOUTME: Liber Primus (page0-58), respecting that words cross line breaks.
+# ABOUTME: Liber Primus (page0-56), respecting that words cross line breaks.
 """Doublet vs word-position analysis for Liber Primus.
 
 A "doublet" is two adjacent identical runes in the continuous cipher stream
@@ -22,7 +22,7 @@ from collections import Counter
 
 from aldegonde import c3301
 
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 UNIGRAMS = "src/aldegonde/data/ngrams/runeglish/unigrams.txt"
 
 RUNES = set(c3301.CICADA_ALPHABET)
@@ -108,7 +108,7 @@ def main() -> None:
     with open(DATA, encoding="utf-8") as f:
         text = f.read()
     # clean corpus = the first 10 rune-bearing $-sections (0-9); the solved
-    # AN END page and Parable are the trailing two sections of page0-58.txt
+    # AN END page and Parable are the trailing two sections of page0-56.txt
     text = "$".join([s for s in text.split("$") if RUNES & set(s)][:10])
     words = parse_words(text)
     stream, word_id, pos1, wlen = build_stream(words)

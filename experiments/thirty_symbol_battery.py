@@ -3,7 +3,7 @@
 """Tests the thirty-symbol-disk hypothesis: if '.' is a real cipher symbol
 occupying a stream position, distance statistics computed on the 30-symbol
 stream (runes + '.') should be at least as sharp as on the mark-stripped
-29-symbol stream. Clean corpus, sections 0-9 of data/page0-58.txt.
+29-symbol stream. Clean corpus, sections 0-9 of data/page0-56.txt.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 
 from aldegonde import c3301
 
-DATA = Path(__file__).resolve().parent.parent / "data" / "page0-58.txt"
+DATA = Path(__file__).resolve().parent.parent / "data" / "page0-56.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 DJU_BEI = "ᛞᛄᚢᛒᛖᛁ"
 

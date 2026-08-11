@@ -30,7 +30,7 @@ MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
 R2I["ᛂ"] = R2I["ᛄ"]
 MASTER = "data/liber-primus__transcription--master.txt"
-UNSOLVED = "data/page0-58.txt"
+UNSOLVED = "data/page0-56.txt"
 WORD_END = set(c3301.MARK_CHARS + ",;:!?&$%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
 D = 5
 

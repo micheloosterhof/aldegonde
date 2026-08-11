@@ -36,6 +36,8 @@ from experiments.page_reader import read_page
 from experiments.transcription_review import align
 
 ROOT = Path(__file__).resolve().parent.parent
+# A transcription tool, not an analysis: it reads and writes the full
+# transcription, so the cipher-only corpus is not its reference.
 PAGES = ROOT / "data" / "page0-58.txt"
 TARGETS = [
     ROOT / "data" / "page0-58.txt",

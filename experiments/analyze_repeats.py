@@ -23,7 +23,7 @@ ENG = c3301.CICADA_ENGLISH_ALPHABET
 N = len(ALPHABET)
 
 
-def load(filepath: str = "data/page0-58.txt") -> tuple[list[int], str]:
+def load(filepath: str = "data/page0-56.txt") -> tuple[list[int], str]:
     """Load as (index_stream, raw_text)."""
     with open(filepath) as f:
         raw = f.read()

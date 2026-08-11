@@ -2,7 +2,7 @@
 
 Reproduces every number in hypotheses/within-word-d5-coincidence.md:
 
-1. Decontaminated counts (clean corpus = sections 0-9 of page0-58.txt)
+1. Decontaminated counts (clean corpus = sections 0-9 of page0-56.txt)
    with exact binomial p-values.
 2. Boundary-permutation null: the rune stream is kept exactly as published
    (preserving ALL stream correlations, including global lag-5 structure and
@@ -34,7 +34,7 @@ WORD_BOUNDARIES = set(
 N_PERMS = 10000
 
 
-def parse_clean_sections(path: str = "data/page0-58.txt"):
+def parse_clean_sections(path: str = "data/page0-56.txt"):
     """Words per $-section, clean cipher corpus only (sections 0-9).
 
     Sections 10 (solved AN END page) and 11 (plaintext Parable) are excluded

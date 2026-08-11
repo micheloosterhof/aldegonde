@@ -36,7 +36,7 @@ EN = c3301.CICADA_ENGLISH_ALPHABET
 S = EN.index("S")
 
 
-def parse_clean_words(path: str = "data/page0-58.txt") -> list[list[int]]:
+def parse_clean_words(path: str = "data/page0-56.txt") -> list[list[int]]:
     """Flat word list (clean sections 0-9), each word a list of rune indices."""
     with open(path) as f:
         text = f.read()

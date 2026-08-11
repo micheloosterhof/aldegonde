@@ -21,9 +21,7 @@ RUNESET = set("".join(ALPH))
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
     # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
-    # AN END page and Parable are the trailing 180 runes of page0-58.txt
-    nplain = len(stream) - 12956
-    cipher = np.array(stream[:-nplain])
+    cipher = np.array(stream)
     n = len(cipher)
 
     print("=== LINE-INITIAL BIAS: unsolved vs solved correlation ===")
@@ -32,7 +30,7 @@ def main() -> None:
     cu = Counter(l[0] for l in lns if l)
     unsolved = np.array([cu[i] for i in range(N)], dtype=float)
     # The solved pages are the FIRST 2797 runes of the master transcription;
-    # page0-58.txt (13,136 runes) is the remainder.
+    # page0-56.txt (13,136 runes) is the remainder.
     master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = 0
@@ -135,9 +133,8 @@ def main() -> None:
     # breaks (bare '/' mid-word). Compare both texts under the SAME
     # convention. merge_lines=True joins line-wrapped words ('/' ignored);
     # False treats '/' as a word boundary.
-    u_raw = Path("data/page0-58.txt").read_text()
-    # drop the last two $-sections (solved AN END page + plaintext Parable)
-    u_cipher = "$".join(u_raw.split("$")[:-2])
+    u_raw = Path("data/page0-56.txt").read_text()
+    u_cipher = u_raw
 
     def word_lengths(text: str, *, merge_lines: bool) -> list[int]:
         seps_ = (

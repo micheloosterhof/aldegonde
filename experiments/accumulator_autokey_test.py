@@ -17,7 +17,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data" / "page0-58.txt"
+DATA = Path(__file__).resolve().parent.parent / "data" / "page0-56.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 
 

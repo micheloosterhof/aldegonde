@@ -55,7 +55,7 @@ def mod_inv(a: int) -> int:
 # ---- Data Loading ----
 
 
-def load_ciphertext(filepath: str = "data/page0-58.txt") -> list[int]:
+def load_ciphertext(filepath: str = "data/page0-56.txt") -> list[int]:
     """Load ciphertext as a list of rune indices (0-28)."""
     with open(filepath) as f:
         raw = f.read()

@@ -11,7 +11,7 @@ import random
 from lp_structure import R2I, N, flat, nioc, parse
 
 random.seed(2026)
-pages = parse("data/page0-58.txt")[:55]
+pages = parse("data/page0-56.txt")[:55]
 LPs = flat(pages)
 n = len(LPs)
 

@@ -32,7 +32,7 @@ def chi2_uniform(counts):
 
 
 def main() -> None:
-    text = (ROOT / "data" / "page0-58.txt").read_text()
+    text = (ROOT / "data" / "page0-56.txt").read_text()
     sections = "".join(s for s in text.split("$") if RUNE.search(s))
     # a "line" ends at / or newline; collect first and last rune of each
     firsts, lasts = Counter(), Counter()

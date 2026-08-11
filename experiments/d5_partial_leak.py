@@ -31,7 +31,7 @@ R2I = {r: i for i, r in enumerate(ALPH)}
 M = 29
 FLAT = 1 / M
 
-CORPUS = "data/page0-58.txt"
+CORPUS = "data/page0-56.txt"
 CLEAN = 12956  # sections 0-9; 10/11 are solved/plaintext
 DICT = "/usr/share/dict/web2"
 

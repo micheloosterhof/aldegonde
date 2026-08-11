@@ -41,7 +41,7 @@ CHANCE = 0.03455  # sum f^2 on the clean corpus
 
 def load_sections() -> list[tuple[list[int], list[int]]]:
     """Per-section word-length sequences AND rune streams for sections 0-9."""
-    text = (ROOT / "data" / "page0-58.txt").read_text()
+    text = (ROOT / "data" / "page0-56.txt").read_text()
     sections = [s for s in text.split("$") if RUNE.search(s)][:10]
     out = []
     for s in sections:

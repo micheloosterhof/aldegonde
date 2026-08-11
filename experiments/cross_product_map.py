@@ -141,7 +141,7 @@ def section_of(starts: np.ndarray, window: int) -> np.ndarray:
     """Section index of each window centre, from the $-split of the corpus."""
     import re
 
-    text = (ROOT.parent / "data" / "page0-58.txt").read_text()
+    text = (ROOT.parent / "data" / "page0-56.txt").read_text()
     rune = re.compile(r"[ᚠ-᛿]")
     bounds, n = [], 0
     for part in text.split("$")[:10]:
@@ -190,7 +190,7 @@ def section_of_positions(stream: np.ndarray) -> np.ndarray:
     """Section index of every rune position."""
     import re
 
-    text = (ROOT.parent / "data" / "page0-58.txt").read_text()
+    text = (ROOT.parent / "data" / "page0-56.txt").read_text()
     rune = re.compile(r"[ᚠ-᛿]")
     bounds, n = [], 0
     for part in text.split("$")[:10]:

@@ -13,7 +13,7 @@ ALPHABET = c3301.CICADA_ALPHABET
 
 def load_lp() -> str:
     """Load LP ciphertext."""
-    with open("data/page0-58.txt") as f:
+    with open("data/page0-56.txt") as f:
         text = f.read()
     return "".join(c for c in text if c in ALPHABET)
 

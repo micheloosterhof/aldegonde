@@ -1,4 +1,4 @@
-"""Structural analysis of the unsolved Liber Primus (page0-58.txt).
+"""Structural analysis of the unsolved Liber Primus (page0-56.txt).
 
 Parses the corpus preserving word boundaries (- = word sep, / = line break
 within word stream, % = page break, . = sentence end, & = paragraph?,
@@ -62,7 +62,7 @@ def nioc(seq):
 
 
 if __name__ == "__main__":
-    pages = parse("data/page0-58.txt")
+    pages = parse("data/page0-56.txt")
     words = [w for p in pages for w in p]
     s = flat(pages)
     print(f"pages: {len(pages)}, words: {len(words)}, runes: {len(s)}")

@@ -9,7 +9,7 @@ of the actual doublets is the placement of the holds:
 
 We compute the doublet RATE (doublets / eligible adjacent pairs) in each bin so
 exposure is accounted for, and chi-square each axis for uniformity. Clean corpus,
-sections 0-9 of data/page0-58.txt.
+sections 0-9 of data/page0-56.txt.
 """
 
 from __future__ import annotations

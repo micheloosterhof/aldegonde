@@ -17,7 +17,7 @@ import math
 import numpy as np
 from lp_structure import R2I, RUNES, N, flat, parse
 
-pages = parse("data/page0-58.txt")[:55]
+pages = parse("data/page0-56.txt")[:55]
 s = np.array(flat(pages))
 n = len(s)
 

@@ -55,7 +55,7 @@ BOUNDARY_CHARS = frozenset(
 
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 r2i = c3301.r2i
 i2r = c3301.i2r
 

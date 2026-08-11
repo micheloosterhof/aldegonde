@@ -12,7 +12,7 @@ import math
 import numpy as np
 from lp_structure import R2I, N, flat, parse
 
-pages = parse("data/page0-58.txt")[:55]
+pages = parse("data/page0-56.txt")[:55]
 s = flat(pages)
 
 

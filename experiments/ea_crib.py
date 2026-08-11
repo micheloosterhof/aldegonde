@@ -20,7 +20,7 @@ from collections import Counter
 
 from aldegonde import c3301
 
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 WORDS = "/usr/share/dict/words"
 EA = "ᛠ"
 RUNES = set(c3301.CICADA_ALPHABET)

@@ -34,7 +34,7 @@ random.seed(3301)
 
 ALPHABET = c3301.CICADA_ALPHABET
 MOD = 29
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 
 
 def runes_only(text: str) -> str:

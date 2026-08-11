@@ -39,7 +39,7 @@ SEED = 3301
 def load_sections() -> list[tuple[list[int], list[int]]]:
     """Per section: (rune stream in order, word-length sequence). Words flow
     across line wraps; sections split on `$`; capped at the clean corpus."""
-    with open("data/page0-58.txt") as f:
+    with open("data/page0-56.txt") as f:
         text = f.read()
     sections: list[tuple[list[int], list[int]]] = []
     sr: list[int] = []

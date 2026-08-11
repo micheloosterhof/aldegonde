@@ -59,7 +59,7 @@ def frequency_analysis(text: str) -> list[tuple[str, int, float]]:
 
 if __name__ == "__main__":
     # Load LP text
-    lp_text = load_lp_text("data/page0-58.txt")
+    lp_text = load_lp_text("data/page0-56.txt")
     runes = clean_runes(lp_text)
 
     print("=" * 70)

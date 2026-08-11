@@ -29,7 +29,7 @@ from aldegonde import c3301
 AB = c3301.CICADA_ALPHABET
 N = 29
 
-with open("data/page0-58.txt") as f:
+with open("data/page0-56.txt") as f:
     raw = f.read()
 parts = raw.split("%")
 keep = [i for i, p in enumerate(parts) if any(c in AB for c in p)][:-2]

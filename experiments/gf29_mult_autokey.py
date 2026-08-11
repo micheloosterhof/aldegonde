@@ -400,7 +400,7 @@ def decrypt_p_times_c(C: list[int], primer_c: int, primer_p: int) -> list[int]:
 # MAIN
 # ============================================================================
 
-with open("data/page0-58.txt") as f:
+with open("data/page0-56.txt") as f:
     lp = f.read()
 
 # ============================================================================

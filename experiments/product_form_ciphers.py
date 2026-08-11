@@ -45,7 +45,7 @@ import numpy as np
 RUNES = "ᚠᚢᚦᚩᚱᚳᚷᚹᚻᚾᛁᛄᛇᛈᛉᛋᛏᛒᛖᛗᛚᛝᛟᛞᚪᚫᚣᛡᛠ"
 MOD = 29
 R2I = {r: i for i, r in enumerate(RUNES)}
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 
 INV = [0] + [pow(x, MOD - 2, MOD) for x in range(1, MOD)]
 

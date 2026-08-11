@@ -83,7 +83,7 @@ for i, ch in enumerate(m):
             break
 solved_w, solved_s = words_and_marks(m[:cut])
 
-text = Path("/Users/mich/src/aldegonde/data/page0-58.txt").read_text()
+text = Path("/Users/mich/src/aldegonde/data/page0-56.txt").read_text()
 secs = [s for s in text.split("$") if RUNE.search(s)][:10]
 uns_w_all = []
 for s in secs:

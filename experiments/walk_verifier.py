@@ -82,7 +82,7 @@ def load_words() -> list[list[int]]:
     from aldegonde.c3301 import CICADA_ALPHABET as A
 
     idx = {r: i for i, r in enumerate(A)}
-    text = (ROOT / "data" / "page0-58.txt").read_text()
+    text = (ROOT / "data" / "page0-56.txt").read_text()
     secs = [s for s in text.split("$") if RUNE.search(s)][:10]
     words = []
     for s in secs:

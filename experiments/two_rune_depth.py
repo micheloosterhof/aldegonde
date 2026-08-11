@@ -44,7 +44,7 @@ from pathlib import Path
 from aldegonde import c3301
 
 ROOT = Path(__file__).resolve().parent.parent
-CORPUS = ROOT / "data" / "page0-58.txt"
+CORPUS = ROOT / "data" / "page0-56.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 BOUNDARY = c3301.MARK_CHARS + "%&$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
 N_RUNES = 29

@@ -31,9 +31,7 @@ RUNESET = set("".join(c3301.CICADA_ALPHABET))
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
     # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
-    # AN END page and Parable are the trailing 180 runes of page0-58.txt
-    nplain = len(stream) - 12956
-    cipher = np.array(stream[:-nplain], dtype=np.int64)
+    cipher = np.array(stream, dtype=np.int64)
     n = len(cipher)
     total = 0
     cw = []
@@ -169,7 +167,7 @@ def main() -> None:
         )
 
     print("\n=== R. PAGE-GRID 2D ALIGNMENT ===")
-    data = Path("data/page0-58.txt").read_text().replace("\n", "")
+    data = Path("data/page0-56.txt").read_text().replace("\n", "")
     pages_lines = []
     cur_page = []
     cur_line = []

@@ -3,7 +3,7 @@
 """Is the lag-11 coincidence deficit real, and is it tied to the lag-5 structure?
 
 A low-doublet-null kappa scan of the clean corpus (sections 0-9 of
-data/page0-58.txt, 12,956 runes) shows one strong outlier: at skip 11 the text
+data/page0-56.txt, 12,956 runes) shows one strong outlier: at skip 11 the text
 has 386 single-rune coincidences against ~447 expected (z ~= -2.9, IoC 0.865).
 Every other skip in 1..20 sits within +-1.6 sigma. The conjecture on the table
 is that 11 = 2*5 + 1, i.e. the deficit is a harmonic/echo of the known lag-5
@@ -51,7 +51,7 @@ MAX_LAG = 80
 SEED = 3301
 
 
-def parse_clean_sections(path: str = "data/page0-58.txt") -> list[list[list[int]]]:
+def parse_clean_sections(path: str = "data/page0-56.txt") -> list[list[list[int]]]:
     """Words per $-section, clean cipher corpus only (sections 0-9)."""
     with open(path) as f:
         text = f.read()

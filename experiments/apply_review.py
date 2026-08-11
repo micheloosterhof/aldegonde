@@ -47,7 +47,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "data" / "page0-58.txt"
+SOURCE = ROOT / "data" / "page0-56.txt"
 TARGET = ROOT / "data" / "page0-58.marks.txt"
 MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
 MASTER_TARGET = ROOT / "data" / "liber-primus__transcription--master.marks.txt"
@@ -127,7 +127,7 @@ def migrate_separators(text: str) -> tuple[str, int, int]:
 def write_master(original_body: str, new_body: str) -> None:
     """Splice the corrected pages into the master, or refuse.
 
-    The master is the solved intro followed by `page0-58.txt` verbatim, so the
+    The master is the solved intro followed by `page0-56.txt` verbatim, so the
     correction is a suffix replacement. Every step is checked because this file
     carries text the review never looked at:
 
@@ -142,7 +142,7 @@ def write_master(original_body: str, new_body: str) -> None:
     """
     master = MASTER.read_text()
     if not master.endswith(original_body):
-        sys.exit("master does not end with page0-58.txt verbatim; refusing to splice")
+        sys.exit("master does not end with page0-56.txt verbatim; refusing to splice")
     head, head_moved, head_skipped = migrate_separators(
         master[: len(master) - len(original_body)]
     )

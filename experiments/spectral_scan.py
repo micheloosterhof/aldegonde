@@ -28,9 +28,7 @@ ALPH = c3301.CICADA_ALPHABET
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
     # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
-    # AN END page and Parable are the trailing 180 runes of page0-58.txt
-    nplain = len(stream) - 12956
-    cipher = np.array(stream[:-nplain])
+    cipher = np.array(stream)
     n = len(cipher)
     print(f"cipher: {n} runes")
 
@@ -71,7 +69,7 @@ def main() -> None:
     print("\n=== 3. VERTICAL GRID ADJACENCY ===")
     # rebuild lines per page (without parable)
     # parse() gives flat lines; we need page->lines. reparse simply:
-    data = Path("data/page0-58.txt").read_text().replace("\n", "")
+    data = Path("data/page0-56.txt").read_text().replace("\n", "")
     pages_lines = []
     cur_page = []
     cur_line = []
@@ -128,8 +126,8 @@ def main() -> None:
 
     print("\n=== 5. CONTROL: SOLVED SECTIONS LINE-INITIAL BIAS ===")
     # The solved pages are the FIRST 2797 runes of the master transcription;
-    # page0-58.txt is the remaining 13,136 runes (verified by substring
-    # match: page0-58 starts at rune offset 2797 of the master).
+    # page0-56.txt is the remaining 13,136 runes (verified by substring
+    # match: page0-56 starts at rune offset 2797 of the master).
     master = Path("data/liber-primus__transcription--master.txt").read_text()
     count = 0
     cut = None

@@ -26,7 +26,7 @@ fragments, which inflates the short-word count — so the convention pushes the
 deficit in a known direction and the size matters.
 
 Solved comparison: the first 187 lines of the master transcription (the solved
-intro pages) plus sections 10-11 of `page0-58.txt` (the AN END page and the
+intro pages) plus sections 10-11 of `page0-56.txt` (the AN END page and the
 Parable).
 """
 
@@ -43,7 +43,7 @@ from aldegonde import c3301
 
 ROOT = Path(__file__).resolve().parent.parent
 MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
-CORPUS = ROOT / "data" / "page0-58.txt"
+CORPUS = ROOT / "data" / "page0-56.txt"
 RUNE = re.compile(r"[ᚠ-᛿]")
 SOLVED_LINES = 187
 SHORT = 2

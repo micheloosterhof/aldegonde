@@ -41,7 +41,7 @@ def get_words(text: str) -> list[str]:
 
 
 def main() -> None:
-    lp_text = load_and_clean("data/page0-58.txt")
+    lp_text = load_and_clean("data/page0-56.txt")
     runes = clean_runes(lp_text)
     words = get_words(lp_text)
 

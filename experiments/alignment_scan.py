@@ -66,35 +66,9 @@ def align_test(units, label, max_units=None):
 
 def main() -> None:
     stream, seps, words, lines, pages, sections = parse()
-    # clean corpus = the first 12,956 runes ($-sections 0-9); the solved
-    # AN END page and Parable are the trailing 180 runes of page0-58.txt
-    nplain = len(stream) - 12956
-    cipher = stream[:-nplain]
-    # rebuild structures without the parable
-    sections = sections[:-1]
-    # words/lines/pages of parable are at the end
-    parable_words = 0
-    acc = 0
-    for w in reversed(words):
-        acc += len(w)
-        parable_words += 1
-        if acc >= nplain:
-            break
-    words = words[:-parable_words]
-
-    # crude trim for lines/pages: drop trailing units summing to ~nplain
-    def trim(units):
-        acc = 0
-        k = 0
-        for u in reversed(units):
-            acc += len(u)
-            k += 1
-            if acc >= nplain:
-                break
-        return units[:-k]
-
-    lines = trim(lines)
-    pages = trim(pages)
+    # the corpus file holds the cipher only, so nothing has to be trimmed off
+    # the end: no solved page, no Parable, no trailing plaintext
+    cipher = stream
     n = len(cipher)
     print(
         f"cipher: {n} runes, {len(words)} words, {len(lines)} lines, "

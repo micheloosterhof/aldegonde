@@ -1,4 +1,4 @@
-# ABOUTME: Shared loader for the clean LP corpus (sections 0-9 of page0-58.txt):
+# ABOUTME: Shared loader for the clean LP corpus (sections 0-9 of page0-56.txt):
 # ABOUTME: rune-index stream + per-rune word ids, used by the obs_*.py scripts.
 """One source of truth for corpus tokenization so every observation script
 measures the same 12,956-rune / 2,928-word clean stream.
@@ -24,7 +24,7 @@ N = 29
 
 def load_clean() -> tuple[list[int], list[int]]:
     """Return (stream, word_id): rune indices and the word each rune belongs to."""
-    text = (ROOT / "data" / "page0-58.txt").read_text()
+    text = (ROOT / "data" / "page0-56.txt").read_text()
     sections = [s for s in text.split("$") if RUNE.search(s)][:10]
     stream: list[int] = []
     word_id: list[int] = []

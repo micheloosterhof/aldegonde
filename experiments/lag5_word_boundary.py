@@ -18,7 +18,7 @@ decomposition — every lag-5 match classified by (paired vs isolated) x
 cell. That decides whether the pairing and the word-boundary alignment are
 one phenomenon or two.
 
-Corpus: sections 0-9 of data/page0-58.txt (12,956 runes). Words tokenized
+Corpus: sections 0-9 of data/page0-56.txt (12,956 runes). Words tokenized
 with - . & % $ as boundaries; '/' and newlines are line wraps.
 """
 
@@ -46,7 +46,7 @@ RUNES = set(R2I)
 WORD_BOUNDARIES = set(c3301.MARK_CHARS + "&%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
 
 
-def parse_clean_sections(path: str = "data/page0-58.txt") -> list[list[list[int]]]:
+def parse_clean_sections(path: str = "data/page0-56.txt") -> list[list[list[int]]]:
     """Words per $-section, clean cipher corpus only (sections 0-9)."""
     with open(path) as f:
         text = f.read()

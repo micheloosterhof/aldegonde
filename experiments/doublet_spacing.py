@@ -1,6 +1,6 @@
 # ABOUTME: Characterizes the spacing of Liber Primus doublets as a point process
 # ABOUTME: and tests for any link to mathematical series (primes, totient, lattice).
-"""Doublet spacing / point-process analysis for Liber Primus (page0-58).
+"""Doublet spacing / point-process analysis for Liber Primus (page0-56).
 
 Tests whether the 89 ciphertext doublets are positioned randomly (Poisson) or by
 some deterministic rule. Reports gap distribution, exponential fit, dispersion
@@ -18,7 +18,7 @@ import numpy as np
 
 from aldegonde import c3301
 
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 RUNES = set(c3301.CICADA_ALPHABET)
 
 

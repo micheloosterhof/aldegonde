@@ -1,6 +1,6 @@
 """Comprehensive cryptodiagnostics battery for the unsolved Liber Primus pages.
 
-Reads data/page0-58.txt and runs a structured battery of statistical tests:
+Reads data/page0-56.txt and runs a structured battery of statistical tests:
 
   A. Corpus parsing and verification (rune/word/section counts)
   B. Baseline global statistics (frequencies, entropy, IOC, kappa, doublets)
@@ -73,7 +73,7 @@ GP_PRIMES = [
     109,
 ]
 
-DATA = "data/page0-58.txt"
+DATA = "data/page0-56.txt"
 
 
 # ---------------------------------------------------------------- parsing

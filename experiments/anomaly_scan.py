@@ -1,4 +1,4 @@
-"""Broad anomaly scan of the unsolved Liber Primus (data/page0-58.txt).
+"""Broad anomaly scan of the unsolved Liber Primus (data/page0-56.txt).
 
 Looks for structure beyond the known doublet suppression:
 - position-in-word effects
@@ -22,7 +22,7 @@ ALPH = c3301.CICADA_ALPHABET
 N = 29
 
 
-def parse(path: str = "data/page0-58.txt"):
+def parse(path: str = "data/page0-56.txt"):
     """Return (stream, seps, words, lines, pages, sections).
 
     stream: list[int] all rune indices in order

@@ -353,7 +353,7 @@ def load_lp(*, exclude_last_pages: bool = True) -> str:
         exclude_last_pages: If True, exclude pages 56-57 (last 180 runes)
                            which are encrypted differently.
     """
-    with open("data/page0-58.txt") as f:
+    with open("data/page0-56.txt") as f:
         text = f.read()
     lp = "".join(c for c in text if c in ALPHABET)
     if exclude_last_pages:

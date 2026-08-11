@@ -66,7 +66,7 @@ PRIME_SET = set(GP_PRIMES)
 
 
 def load() -> list[int]:
-    with open("data/page0-58.txt") as f:
+    with open("data/page0-56.txt") as f:
         text = f.read()
     return [c3301.r2i(c) for c in text if c in ALPHABET]
 
