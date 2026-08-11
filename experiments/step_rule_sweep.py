@@ -37,6 +37,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from typing import TYPE_CHECKING
+
 from construction_search import (  # noqa: E402
     HEAVY_DOUBLERS,
     crib_ok,
@@ -44,7 +46,6 @@ from construction_search import (  # noqa: E402
 )
 from construction_sweep2 import disk, grid, layouts  # noqa: E402
 from walk_verifier import BEI, DJU, compose, inverse, load_words, order  # noqa: E402
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Callable
