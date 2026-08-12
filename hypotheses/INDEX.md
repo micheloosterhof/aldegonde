@@ -23,7 +23,7 @@ proposed mechanisms scored against them.
 | [lag5-digraph-structure.md](lag5-digraph-structure.md) | Lag-5 Paired-Match Structure | confirmed (characterization) |
 | [line-initial-bias.md](line-initial-bias.md) | Line-Initial Rune Bias (layout artifact) | confirmed (characterization) |
 | [long-word-structure.md](long-word-structure.md) | Long Words Carry No Structure Beyond the d5 Echo | confirmed (characterization) |
-| [mark-glyph-inventory.md](mark-glyph-inventory.md) | The Transcription Collapses Four Mark Glyphs into Two Characters | confirmed (characterization); 1/3/4/10/13-dot glyphs map onto '-' and '.', line-initial ones dropped entirely |
+| [mark-glyph-inventory.md](mark-glyph-inventory.md) | The Transcription Collapses Four Mark Glyphs into Two Characters | confirmed (characterization); 1/3/4/10/13-dot glyphs map onto '-' and '.'; the dropped line-initial marks are now RECOVERED (38 in page0-56.txt) |
 | [negative-control-battery.md](negative-control-battery.md) | Negative-Control Battery: Which Measurements Survive a Structureless Corpus | confirmed (characterization); family-blind, only the d5 echo survives (p=0.020); lag-5 pairing, seam diagonal and d6 do not |
 | [no-known-plaintext-foothold.md](no-known-plaintext-foothold.md) | No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section | confirmed (characterization) for the no-known-plaintext claim |
 | [no-periodicity.md](no-periodicity.md) | No Periodic Key (Friedman flat at every period) | confirmed (characterization) |
@@ -42,7 +42,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (44)
+### Hypotheses (45)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -66,6 +66,7 @@ proposed mechanisms scored against them.
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
 | [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
 | [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
+| [magic-square-grid-key.md](magic-square-grid-key.md) | `g` From the Book's Own 5×5 Magic Square (constant 3301) | untested; the square is verified fully magic, its use as key material is not — enumerable at 1.9e5–7.8e8, but σ has no construction |
 | [mixed-alphabet-vigenere.md](mixed-alphabet-vigenere.md) | The Period-5 Step is a Mixed-Alphabet (Quagmire) Vigenere | disproved for the keyword family (register caveat) — the full ~3.1e8-key enumeration ran (DJU-BEI 6-point return + 2-rune verifier) and NO keyword key decrypts; not excluded for freely-designed alphabets or an out-of-band register |
 | [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | unresolved (pure return ladders disproved by monotonicity; census selection below calibration resolution; open cells: d6 suppressed −2.3σ/p=0.016, d4 lean +1.85σ, split ~2.7σ) |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
