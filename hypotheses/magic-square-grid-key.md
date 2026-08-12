@@ -18,33 +18,50 @@ is. The keyword-Quagmire family was exhausted (`mixed-alphabet-vigenere.md`,
 
 ## Status
 
-**Status**: no advantage demonstrated — but the sweep does NOT single this family out
-(August 2026, `experiments/magic_square_sweep.py`, corrected on review)
+**Status**: UNDECIDED — the sweep cannot test it (August 2026,
+`experiments/magic_square_sweep.py`, corrected twice on review)
 
 The sweep ran against seven g-only distance constraints (d1..d7, each testing
-g^(d mod 5) on the distance-d within-word plaintext table) at 2σ. With plaintext
-tables weighted to the LP's own word-length histogram — the correct reference — the
-family yields **0** survivors of 190,008, against **1.4 expected by chance** (3 of
-400,000 random order-5 permutations pass; Poisson p = 0.25). So the family is not
-distinguishable from random, and the sweep says nothing specific about the magic
-square.
+g^(d mod 5) on the distance-d within-word plaintext table, weighted to the LP's own
+word-length histogram). At every threshold the family produces no more survivors than
+chance:
 
-**Why: the filter admits only a TUNED g.** Optimising directly over order-5
-permutations reaches all six tunable constraints to |z| ≤ 0.07, so the set is
-jointly satisfiable and the model is not at fault. What it requires is a `g` designed
-against the digraph tables — exactly the conclusion the repo already reached for
-keyword grids. No unoptimised construction will supply one, so this outcome was
-predictable for ANY construction family and is not evidence against the square in
-particular.
+| cut | a true `g` survives with prob. | family survivors | chance expects | z |
+|---|---|---|---|---|
+| 2.0σ | 0.72 | 0 | 2.9 ± 0.4 | −1.7 |
+| 2.5σ | 0.92 | 7 | 11.2 ± 0.8 | −1.3 |
+| 3.0σ | 0.98 | 24 | 32.2 ± 1.4 | −1.4 |
+| 3.5σ | 1.00 | 46 | 70.7 ± 2.1 | −2.9 |
 
-An earlier version of this status reported "1 survivor against 2.4 expected by
-chance, refuted". Those figures came from plaintext tables that were NOT
-length-matched, which loosens every constraint; the control rate they rested on was
-also 5–6 events, so "2.4" carried a factor-of-two error. Retracted.
+(Chance expectations from 3,000,000 random order-5 permutations — 46/177/509/1117
+hits — not the 3-hit estimate two earlier versions of this file rested on.) The
+family is consistently *below* chance, mildly but at every threshold, so
+grid-derived permutations appear slightly less likely than random ones to land in
+these bands.
 
-Scope: canonical tie-break only; the square's twelve duplicated values admit up to
-2^12 fill orders. Trying them is pointless for a different reason than stated before
-— not absence of enrichment, but that no fill order produces a tuned diagonal.
+**But this cannot decide the hypothesis, and that is the finding.** At 2σ the cuts
+reject a true `g` 28% of the time, so 0 survivors is worth only a Bayes factor of
+~3.6 against — suggestive, not a refutation. Widen to 3σ, where a true `g` is retained
+with probability 0.98, and the false-positive floor rises to ~30, swamping the single
+true hit. There is no threshold at which the g-only filter isolates one candidate.
+
+The reason is a bit count: the seven constraints are worth **16.0 bits** at 2σ
+(46 of 3,000,000 random order-5 permutations pass), falling to 11.4 bits at 3.5σ,
+against `g`'s 79.7. Separating one
+candidate from ~30 false positives needs the 2-rune verifier, which needs the full
+base schedule, which needs σ — and **σ has no construction here**. So the σ gap does
+not merely block the attack; it blocks TESTING any `g` construction at all.
+
+Note also that the family is only 2^17.5 of a 2^79.7 space, so unless the designer
+used this exact construction it contains `g` with probability ~2^-62. A construction
+hypothesis is therefore all-or-nothing: it is a bet on the designer's choice, not a
+statistical narrowing, and it can only be settled by a verifier sharp enough to
+confirm a single key.
+
+Two earlier statuses were wrong and are retracted: "REFUTED, 1 survivor against 2.4
+expected" (from plaintext tables that were not length-matched, and a control resting
+on 5 events), and "no advantage shown" (which framed the result as absence of
+enrichment when enrichment was never the mechanism).
 
 ## The square
 
@@ -137,8 +154,8 @@ are broken canonically by reading order. For scale, the Quagmire sweep drove
 
 - `experiments/magic_square.py` — verifies the square and reports what it can and
   cannot supply.
-- `experiments/magic_square_sweep.py` — the sweep that refuted it, with the
-  random-order-5 control that is the load-bearing part.
+- `experiments/magic_square_sweep.py` — the sweep, with the random-order-5 control
+  that is the load-bearing part.
 
 ## Related
 
@@ -151,24 +168,22 @@ are broken canonically by reading order. For scale, the Quagmire sweep drove
 
 ## Verdict
 
-No advantage shown, and it cost one sweep — which is the best thing about it. The
-family gives 0 survivors of 190,008 against 1.4 expected by chance (Poisson p = 0.25),
-so it carries no enrichment over random order-5 permutations.
+Undecided, and the useful output is *why* — the g-only filter cannot test a `g`
+construction at all. Widen the cuts enough to retain a true `g` (3σ keeps 98%) and
+the false-positive floor reaches ~32; tighten them to 2σ and you reject the target
+28% of the time. The filter is worth 16.0 bits against `g`'s 79.7, and no threshold
+turns that into a single candidate.
 
-**But it is not singled out, and that is the honest reading.** The control passes at
-essentially zero as well, because the seven cuts admit only a `g` TUNED against the
-digraph tables — optimisation over order-5 permutations reaches all six tunable
-constraints to |z| ≤ 0.07, so the set is satisfiable and the model is not at fault.
-Zero survivors was therefore predictable for ANY construction family. The general
-consequence is stronger than the specific one: **no construction-based family can
-work**, because the requirement is design, and design does not compress into an
-enumerable key. That is the same wall keyword grids hit.
+Isolating one needs the 2-rune verifier → the base schedule → σ, which has no
+construction here. **So σ's absence blocks the evaluation, not only the attack.**
+Proposing σ constructions is the prerequisite for this whole route.
 
-What is NOT established: that the family excludes `g`. Seven cuts at 2σ reject a true
-`g` with probability ~28%, and only the canonical tie-break was tested. σ was never
-given a construction here either, so that gap goes untested.
+The family also sits consistently below chance (z = −1.7, −1.3, −1.4, −2.9 across the
+four thresholds), so if anything grid-derived permutations are slightly *less* likely
+than random to land in these bands — a mild effect worth noting but not a refutation.
 
-Byproduct worth more than the hypothesis: the sweep measures the seven g-only
-distance constraints at **17.0 bits** (a 133,000× cut), correcting the 4.0-bit figure
-in `key-local-channel-is-empty.md` by a factor of four. Still ~63 bits short on `g`
-alone, with σ's 97.9 untouched.
+Retracted from earlier versions: "REFUTED, 1 survivor against 2.4 expected"
+(non-length-matched tables, control on 5 events) and "no advantage shown" (framed as
+absence of enrichment, which was never the mechanism). The bit figure has been 4.0,
+16.3, 17.0 and is now **16.0** on a 46-hit estimate; the earlier ones rested on 3-6
+control events.

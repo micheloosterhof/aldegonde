@@ -7,7 +7,7 @@ type: observation
 
 Every statistical attack on this corpus has failed, and it is not luck. The cipher
 has exactly one channel that is **local in the key**, that channel reduces to a
-handful of scalars worth ~17 bits, and everything else about the corpus is **key-global** — reachable
+handful of scalars worth ~16 bits, and everything else about the corpus is **key-global** — reachable
 only by committing to the whole key at once. Key-global means no partial credit, and
 no partial credit is what a delta-function landscape *is*.
 
@@ -63,8 +63,8 @@ to a Poisson precision of 0.00079 — a 15.8× narrowing, **4.0 bits**. But `g` 
 order 5, so distance `d` tests `g^(d mod 5)` on the distance-`d` plaintext table, and
 d1…d7 are therefore **seven** g-only constraints. Measured directly
 (`magic_square_sweep.py`, plaintext tables weighted to the LP's word-length
-histogram): 3 of 400,000 random order-5 permutations pass all seven at 2σ, a
-133,000× cut = **17.0 bits** against `g`'s 79.7. The seam count gives σ 2.2 bits of
+histogram): 46 of 3,000,000 random order-5 permutations pass all seven at 2σ, a
+65,000× cut = **16.0 bits** against `g`'s 79.7. The seam count gives σ 2.2 bits of
 97.9. The constraints are jointly satisfiable — optimisation reaches all six tunable
 cells to |z| ≤ 0.07 — so the tightness reflects a filter admitting only a tuned `g`,
 not a contradiction.
@@ -75,7 +75,7 @@ unsafe — table noise from ~23k drawn words swings survivor counts with the see
 the tables are now weighted deterministically over all 123k prose words.
 
 That is four times what an earlier version of this note claimed, and the correction
-matters for honesty rather than for the verdict: 17.0 bits leaves ~63 bits, about
+matters for honesty rather than for the verdict: 16.0 bits leaves ~64 bits, about
 1e19 candidates for `g` alone, with σ untouched.
 
 ## Five extraction attempts, all consistent with the above
@@ -97,7 +97,7 @@ schedule but not for this one. A gradient exists. It leads onto a plateau.
 ```
 within-word observables = the isomorph pattern        (complete invariant)
 isomorph patterns       = the per-distance rates       (p ≈ 0.36)
-per-distance rates      = ~17 bits about g (d1..d7, measured)
+per-distance rates      = ~16 bits about g (d1..d7, measured)
 ⟹ every informative observable is cross-word, hence key-global
 ⟹ key-global means right key or noise — the delta function
 ```

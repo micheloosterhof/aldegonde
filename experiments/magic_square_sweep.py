@@ -17,17 +17,33 @@ g-only constraint -- not just the doublet:
     3   g^3     3.702%       7   g^2     4.208%
     4   g^4     4.098%
 
-**Result: 0 of 190,008 survive -- and so do 0 of 200,000 random order-5
-permutations.** The family is therefore NOT distinguishable from random, and this
-sweep says nothing specific about the magic square.
+**Result: the sweep CANNOT decide the hypothesis, and that is the finding.** At 2
+sigma the family gives 0 survivors of 190,008 against 2.9 +- 0.4 expected by chance.
+But 2-sigma cuts on seven constraints reject a TRUE g 28% of the time, so 0 survivors
+is worth only a Bayes factor of ~3.6 against -- suggestive, not a refutation. Widen to
+3 sigma, where a true g is retained with probability 0.98, and the false-positive floor
+rises to ~32, swamping the single true hit. No threshold isolates one candidate:
 
-**Why the cuts are that tight.** Optimising directly over order-5 permutations
-reaches all six tunable constraints to |z| <= 0.07, so the set is jointly satisfiable
-and the model is not at fault. What it demands is a `g` DESIGNED against the digraph
-tables. No unoptimised construction supplies one, so 0 survivors was predictable for
-ANY construction family -- the same wall keyword grids hit. The useful consequence is
-general rather than specific: construction-based families cannot work, because the
-requirement is design and design does not compress into an enumerable key.
+    cut    true g kept    family    chance expects      z
+    2.0        0.72          0        2.9 +- 0.4      -1.7
+    2.5        0.92          7       11.2 +- 0.8      -1.3
+    3.0        0.98         24       32.2 +- 1.4      -1.4
+    3.5        1.00         46       70.7 +- 2.1      -2.9
+
+Separating a candidate from that floor needs the 2-rune verifier, hence the base
+schedule, hence sigma -- which has no construction. So sigma's absence blocks the
+EVALUATION of any g construction, not merely the attack.
+
+**The constraints are satisfiable, so the model is not at fault.** Optimising
+directly over order-5 permutations reaches all six tunable constraints to |z| <= 0.07.
+That is unsurprising rather than reassuring -- six scalars in a 2^79.7 space is nearly
+free -- but it rules out a contradictory constraint set.
+
+**And the family is far too small to contain g unless the construction is exactly
+right.** 190,008 is 2^17.5 of a 2^79.7 space, so an unenriched family holds a specific
+target with probability 2^-62. A construction hypothesis is therefore all-or-nothing:
+a bet on the designer's choice, settled only by a verifier sharp enough to confirm a
+single key -- not by statistical narrowing.
 
 **Length-matching the plaintext tables is load-bearing, and must be deterministic.**
 Unmatched tables loosen every constraint. But RESAMPLING prose to the LP histogram is
@@ -39,11 +55,13 @@ which uses all 123k words and is seed-free. An earlier version reported "1 survi
 against 2.4 expected, refuted" from unmatched tables; both figures were artifacts,
 and the 2.4 rested on 5 control events besides.
 
-**Byproduct for `information_budget.py`.** With matched tables 0 of 200,000 random g
-pass, so the seven constraints cut by >200,000x = **>17.6 bits** about g, against the
-4.0 bits the budget credits to the doublet count alone. The conclusion is unchanged:
-even 17.6 bits leaves ~62 of g's 79.7, about 1e19 candidates, with sigma's 97.9
-untouched.
+**Byproduct for `information_budget.py`.** With weighted tables 46 of 3,000,000
+random g pass at 2 sigma, so the seven constraints cut by 65,000x = **16.0 bits**
+about g, against the 4.0 bits the budget credits to the doublet count alone. Four
+times richer, and still nowhere near enough: 16.0 of g's 79.7 leaves ~64 bits, about
+1e19 candidates, with sigma's 97.9 untouched. The figure has been 4.0, 16.3, 17.0 and
+is now 16.0 -- the earlier ones rested on 3-6 control events, which is a factor-two
+error in the rate.
 
 Scope: the canonical tie-break only. The square's twelve duplicated values admit up
 to 2^12 fill orders; trying them is pointless, though not for the reason first given
@@ -74,7 +92,7 @@ IDX = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 PROSE = Path(tempfile.gettempdir()) / "pg1342.txt"
 SIGMA = 2.0
 MIN_PAIRS = 500
-CONTROL = 400000
+CONTROL = 3000000  # 3-6 hits at 200-400k gave a factor-2 unstable rate
 
 
 def observed_rates(words: list[list[int]]) -> dict[int, tuple[float, float]]:
