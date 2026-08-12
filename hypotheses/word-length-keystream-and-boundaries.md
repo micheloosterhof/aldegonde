@@ -228,18 +228,35 @@ takes words of every length in proportion, moving the mean while leaving the
 shape alone. **This matters because random loss is the shape a transcriber's
 oversights would take** — so inattention cannot be the explanation.
 
-**H2 is shape-adequate but NOT a mechanism, and the solved pages are the
-argument.** The base distribution IS the solved pages, so H2 asserts that ~39% of
-short words are absorbed in the unsolved half and none in the solved half — same
-book, same hand. As a scribal habit that is incoherent. Read H2 as "the deficit
-has the shape merging produces", a constraint on explanations, not as evidence
-words were merged. Readings needing no merging, none excluded by these length
-statistics: a different register (fewer articles and prepositions than the solved
-pages' instructional prose); separators marking a non-word unit (verse, breath,
-counting — making the comparison against English WORD lengths a category error);
-or the composer deliberately not leaving 2-rune words exposed, since they are the
-crib surface — the one merging story that fits the solved/unsolved asymmetry,
-because the solved pages were meant to be read.
+**H2 is shape-adequate but the mechanism is NOT IDENTIFIABLE.** Merging must
+create long units (2 + L) where a register that simply uses fewer short words
+cannot, so the tail ought to discriminate. It does — in opposite directions
+depending on which reference supplies the base:
+
+| base | register χ² | merging χ² | winner |
+|---|---|---|---|
+| solved LP (698 words) | 53 | **27** | merging |
+| English (50,000 words) | **21** | 41 | register |
+
+The solved sample sits low at length 5 (7.6% on 53 words, against 11.0% English
+and 10.9% LP), which is enough to hand merging the tail whenever the solved pages
+are the reference. A paired bootstrap over resampled solved bases makes merging
+look robust (48/60, z = +5.3) — **that figure is misleading**, because resampling
+a base captures sampling noise around its shape while preserving the shape's
+systematic quirks. Reference-choice error dominates sampling error here and no
+bootstrap of a single reference can see it.
+
+Also note the solved pages are the control that embarrasses the scribal reading:
+the base IS the solved distribution, so H2 asserts ~39% absorption in the
+unsolved half and none in the solved half, same book, same hand.
+
+So: the deficit is solid (ratio 0.66 vs solved, 0.67 vs English, z ≈ −10 either
+way) and the mechanism is open. Candidates, none excluded by any length statistic:
+a different register; separators marking a non-word unit (verse, breath, counting
+— which makes the comparison against English WORD lengths a category error); or
+deliberate avoidance of exposed 2-rune words, they being the crib surface, the one
+merging story that fits the solved/unsolved asymmetry. **Settling it requires a
+statistic that is not a function of word length.**
 
 **On the numbers, H2 is adequate.** It hits both targets at once, and the residue is base noise:
 resampling the ~700-word solved base from its own words gives chi-square a median

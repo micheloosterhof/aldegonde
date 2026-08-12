@@ -35,15 +35,30 @@ Direction is a weak preference, not a finding: absorbing into the previous word
 scores 26 against 40 for the next, and both sit below the bootstrap median, so
 the histogram alone does not settle which side the short word attaches to.
 
-**What this does NOT establish, and it is the main point.** H2 is a statement
-about SHAPE, not a mechanism. The base distribution here IS the solved pages, so
-the model asserts that ~39% of short words are absorbed in the unsolved half and
-none in the solved half -- same book, same hand. As a scribal habit that is
-incoherent, and the solved pages are the control that says so. Read H2 as "the
-deficit has the shape merging produces", which constrains explanations, and NOT
-as evidence that words were merged.
+**The mechanism is NOT IDENTIFIABLE from the histogram, and that is this file's
+real result.** H2 is a statement about SHAPE. Set against a rival one-parameter
+model -- a register that simply uses fewer short words, writing no extra runes --
+the winner depends entirely on which plaintext reference supplies the base:
 
-Readings that need no merging at all and are not excluded here:
+  base                      register chi2   merging chi2   winner
+  solved LP (698 words)               53             27    merging
+  English (50,000 words)              21             41    register
+
+Merging must create long units (2 + L) while a register shift cannot, so the tail
+should discriminate -- and it does, in opposite directions depending on the base.
+The solved sample sits low at length 5 (7.6% on 53 words, against 11.0% in
+English and 10.9% in the LP), which is enough to hand merging the tail when the
+solved pages are the reference.
+
+A paired bootstrap over resampled solved bases makes merging look robust
+(48/60 wins, z = +5.3). That figure is misleading and worth remembering why:
+resampling a base captures SAMPLING noise around its shape while preserving the
+shape's systematic quirks. Reference-choice error dominates sampling error here,
+and no bootstrap of one reference can see it.
+
+So the honest position: the 2-rune deficit is solid (ratio 0.66 against solved,
+0.67 against English, z about -10 either way), and every mechanism below remains
+open. Do not report merging as established.
 
   - the unsolved plaintext is a different register, with fewer articles and
     prepositions than the instructional prose of the solved pages
@@ -55,11 +70,11 @@ Readings that need no merging at all and are not excluded here:
     surface. This is the one merging story consistent with the solved/unsolved
     asymmetry, since the solved pages were meant to be read
 
-Nothing here separates these from H2. The histogram and the autocorrelation are
-both length statistics, and a register with fewer short words reproduces them as
-readily as merging does. Because the transcription is verified (see below), the
-clock is sound under every one of these readings, so the choice between them
-affects cribbing only.
+The autocorrelation cannot separate them either: merging and simply DROPPING the
+same short words attenuate it identically. Because the transcription is verified
+(see below), the clock is sound under every reading, so the choice between them
+affects cribbing only -- and settling it needs a statistic that is not a function
+of word length.
 
 The separator question itself is CLOSED on the transcription side: the
 re-transcription is complete and every difference against an independent scan
