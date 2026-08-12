@@ -160,9 +160,35 @@ What remains: either the plaintext genuinely uses proportionally fewer 2-rune
 function words than the solved pages — a register claim, and the 2-rune class
 is dominated by THE — or a boundary artifact that is not line-break merging.
 Mid-line omissions are not indicated: across 604 lines the reader never found
-the transcription carrying MORE separators than the page. Note also that the
-solved side is the noisy one at 743 words (24.2% ± 1.6%), so a better register
-reference could move this materially. That is the register-corpus job.
+the transcription carrying MORE separators than the page.
+
+**The noisy-reference caveat is now closed (August 2026,
+`experiments/short_word_reference.py`).** The worry was that the solved side is
+only ~700 words, so a better register reference might dissolve the gap. It does
+not. English carried into runeglish over the 50,000 commonest words, weighted by
+token frequency, is an independent reference that never touches the solved
+sample:
+
+| runes | unsolved | English (50k) | solved |
+|---|---|---|---|
+| 1 | 3.4% | 4.2% | 4.0% |
+| **2** | **15.9%** | **23.7%** | **23.9%** |
+| 3 | 24.8% | 20.2% | 24.1% |
+| 4 | 17.6% | 16.8% | 17.5% |
+
+The transliteration-convention objection — a converter that contracts digraphs
+more eagerly than the scribe would manufacture short words — is testable without
+any decrypted plaintext, because the solved pages are runeglish in the book's own
+convention. The converter's English estimate and the solved rune text agree to
+**0.26 points against a standard error of 1.61**. With the convention calibrated
+the deficit is **z = −9.9** against the large reference, where the solved
+comparison gave +4.9.
+
+Note also what the third column shows: English and the solved pages agree at
+every length, and the unsolved corpus departs from BOTH at exactly one — length
+2. The displaced mass at 3 is not a departure from the solved register (24.8% vs
+24.1%); only the 2-rune bucket is anomalous. So the register-corpus job is done
+for this question, and it did not help: the reference was never the weak link.
 
 **Boundary verification against the scans is inconclusive so far**
 (`experiments/boundary_verification.py`). The merging shape makes a
