@@ -190,6 +190,52 @@ every length, and the unsolved corpus departs from BOTH at exactly one — lengt
 24.1%); only the 2-rune bucket is anomalous. So the register-corpus job is done
 for this question, and it did not help: the reference was never the weak link.
 
+**Which separators are missing: the loss is SELECTIVE (August 2026,
+`experiments/absorption_model.py`).** Two one-parameter models, both fitted
+against the register- and convention-matched solved pages:
+
+| model | q | chi2 (12 df) | mean | 2-rune |
+|---|---|---|---|---|
+| observed (target) | — | — | 4.425 | 15.9% |
+| no loss | — | 207 | 3.983 | 24.0% |
+| H1 loss regardless of length | 0.15 | 106 | 4.611 | 20.5% |
+| H2 2-rune word absorbed into next | 0.36 | 40 | 4.343 | 15.4% |
+| H2 2-rune word absorbed into prev | 0.39 | **26** | **4.416** | **14.9%** |
+
+**H1 is refuted** — not by chi-square, which base noise makes too permissive, but
+because it cannot hit the mean and the 2-rune share together. Tuned to the mean
+(q = 0.09) it leaves 2-rune at 21.8%; tuned to chi-square it overshoots the mean
+to 4.61 and still sits at 20.5%. Removing separators without regard to length
+takes words of every length in proportion, moving the mean while leaving the
+shape alone. **This matters because random loss is the shape a transcriber's
+oversights would take** — so inattention cannot be the explanation.
+
+**H2 is adequate.** It hits both targets at once, and the residue is base noise:
+resampling the ~700-word solved base from its own words gives chi-square a median
+of 70 and a 90% range of 25–120, so **94% of draws that assume the model come out
+worse than the fitted 26**. Implied scale: ~300 separators, ~10% of words.
+Direction is a weak preference only (26 vs 40); the histogram does not settle
+which side the short word attaches to.
+
+Two readings with very different consequences:
+
+- **Absent from the MANUSCRIPT** (a scribal habit of attaching short function
+  words, i.e. enclitic writing). Then the composer clocked the cipher on the text
+  as written, the visible word lengths ARE the right clock, and only cribbing on
+  word identity is damaged.
+- **Absent from the TRANSCRIPTION.** Then the clock every key search has used is
+  wrong. The walk's base is a running product over `(L_w − 1) mod 5`, so ONE
+  missing separator corrupts every base after it; ~300 omissions across 2,928
+  words puts the first within the opening handful, so essentially the whole
+  corpus is mis-clocked and no enumeration could have succeeded whatever the key.
+  That would include the 314M-key Quagmire sweep.
+
+`boundary_verification.py` favours the second: 19 of its 21 clean scan
+disagreements have the IMAGE carrying MORE separators and none the transcription,
+and 113 of 604 lines do not verify. This is the highest-value open task in the
+project — a targeted re-read of the scans for omitted separators, prioritised by
+2-rune context, would settle whether the clock is sound.
+
 **Boundary verification against the scans is inconclusive so far**
 (`experiments/boundary_verification.py`). The merging shape makes a
 transcription artifact worth testing directly, and the scans allow it: 491 of
