@@ -1,6 +1,24 @@
 # ABOUTME: Searches g by the doublet count it predicts, the one strong filter
 # ABOUTME: that needs neither base_0 nor sigma, then scores survivors properly.
-"""Search g by what it predicts about doublets, not by enumerating layouts.
+"""Search g by what it predicts about doublets. RETRACTED -- kept as the worked
+negative; the filter below does not select for the key.
+
+The premise fails on boundary-blindness. Within a word the doublet condition is
+p_k = g(p_k+1), but across a word boundary it is p_j = sigma(p_j+1) -- the g^e
+and base_w factors cancel, so g is absent from the algebra entirely (both forms
+verified exactly against a planted key, 10028/10028 and 2927/2927). The two
+rates nevertheless agree, 0.628% within against 0.786% across, z = -0.92 of one
+uniform rate. A constraint that really pinned g would not hold equally where g
+does not appear.
+
+So the statistic is a property of the whole stream, shared by g and sigma alike.
+Annealing g toward it and scoring by the base_0 quadgram fit does lift the score
+over random keys (+0.031, z = +5.34 against a matched control), and that lift is
+reproducible -- it is simply not evidence about the key. See
+`hypotheses/doublet-suppression.md`.
+
+The original reasoning follows, since the machinery (order-preserving annealing
+by conjugation, crib-honouring 29-cycle sigma) is reusable.
 
 Within a word base_w is a single bijection, so a ciphertext doublet means
 

@@ -108,9 +108,24 @@ than dead. See `sigma-power-step.md`.
 
 The `g^((L−1) mod 5)` factor in the transition completes the period-5 cycle at
 the boundary, so the letter-clock effectively runs continuously across the
-space; that is why doublet suppression is boundary-blind. Note the
-period-5-vs-continuous framing is a **reparametrization** (fold `g^(word_start
-mod 5)` into the base), so "does the phase reset per word?" is not observable.
+space. Note the period-5-vs-continuous framing is a **reparametrization** (fold
+`g^(word_start mod 5)` into the base), so "does the phase reset per word?" is
+not observable.
+
+**Phase continuity is NOT why doublet suppression is boundary-blind** (August
+2026). That explanation was stated here and is wrong on the model's own algebra:
+the seam doublet condition is `p_last = σ(p_first)` with **no `g` in it at all**
+(the `g^e` and `base_w` factors cancel — see the σ bullet above, verified
+exactly against a planted key, 2927/2927, alongside the within-word form
+10028/10028). So the two rates are diagonals of *different permutations* on
+*different plaintext tables*: `g` on the within-word adjacent table, σ on the
+(final × initial) table. The model does not force them to agree, and their
+agreement to z = −0.92 is a consequence of both steps having been tuned
+rare-diagonal, not of the letter-clock running through the space. This does not
+damage the model — both diagonals sit well above their floors (0.0063 vs 0.0000
+for `g`; 0.0079 vs 0.0048 for σ), so "both mildly rare" is an unremarkable
+design choice — but boundary-blindness should be read as *compatible with* the
+walk rather than as *evidence for* it, since the walk makes no prediction here.
 
 ## Evidence for
 
@@ -119,11 +134,13 @@ newlines are line wraps (words flow across them).
 
 - **Flat unigrams (IoC 1.00).** The non-abelian walk ⟨g,σ⟩ visits many
   alphabets → uniform marginal.
-- **Doublet suppression, boundary-blind.** Within-word 0.0063, seam 0.0079 (not
-  significantly different, z=+0.87). Plaintext d1 is itself flat (real prose
+- **Doublet suppression** (but NOT its boundary-blindness — see Mechanism).
+  Within-word 0.0063, seam 0.0079. Plaintext d1 is itself flat (real prose
   IoC ~1.0), so the ~5× suppression is entirely cipher-induced — the g/σ
   rare-diagonals. It is sub-maximal (an order-5 g could reach ~0), i.e. a
-  "mildly rare" wiring.
+  "mildly rare" wiring. That the two rates *match* (z = −0.92) is not predicted
+  by the model and is not evidence for it: they are diagonals of two unrelated
+  permutations on two different tables.
 - **Period-5 confirmed twice.** d5 echo (elevated coincidence, IoC 1.43,
   +3.7σ above flat) AND d6 suppression (the phase-1 image of d1: `g⁶ = g¹`
   under period 5; permutation null p=0.016). d6 pins the period at exactly 5,
