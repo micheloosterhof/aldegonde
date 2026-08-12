@@ -35,19 +35,37 @@ Direction is a weak preference, not a finding: absorbing into the previous word
 scores 26 against 40 for the next, and both sit below the bootstrap median, so
 the histogram alone does not settle which side the short word attaches to.
 
-Two readings, and they differ in consequence. If the separators are absent from
-the MANUSCRIPT (a scribal habit of attaching short function words), the composer
-clocked the cipher on the text as written, the visible word lengths are the right
-clock, and only cribbing on word identity suffers. If they are absent from the
-TRANSCRIPTION, the clock every key search has used is wrong: the walk's base is
-a running product over (L_w - 1) mod 5, so one missing separator corrupts every
-base after it. ~300 omissions spread through 2,928 words puts the first one
-within the opening handful, i.e. essentially the whole corpus is mis-clocked, and
-no enumeration could have succeeded whatever the key.
+**What this does NOT establish, and it is the main point.** H2 is a statement
+about SHAPE, not a mechanism. The base distribution here IS the solved pages, so
+the model asserts that ~39% of short words are absorbed in the unsolved half and
+none in the solved half -- same book, same hand. As a scribal habit that is
+incoherent, and the solved pages are the control that says so. Read H2 as "the
+deficit has the shape merging produces", which constrains explanations, and NOT
+as evidence that words were merged.
 
-`boundary_verification.py` favours the second reading, which is the actionable
-one: of its 21 clean transcription/scan disagreements, 19 have the IMAGE carrying
-MORE separators and none the transcription, and 113 of 604 lines do not verify.
+Readings that need no merging at all and are not excluded here:
+
+  - the unsolved plaintext is a different register, with fewer articles and
+    prepositions than the instructional prose of the solved pages
+  - the separators mark a unit that is not an English word -- verse, breath,
+    counting group -- making a comparison against English WORD lengths a category
+    error. The quotation-mark spans do align with the '.' marks (p = 1.5e-7), so
+    the marks respect something, but not necessarily word division
+  - the composer avoided leaving short units exposed, 2-rune words being the crib
+    surface. This is the one merging story consistent with the solved/unsolved
+    asymmetry, since the solved pages were meant to be read
+
+Nothing here separates these from H2. The histogram and the autocorrelation are
+both length statistics, and a register with fewer short words reproduces them as
+readily as merging does. Because the transcription is verified (see below), the
+clock is sound under every one of these readings, so the choice between them
+affects cribbing only.
+
+The separator question itself is CLOSED on the transcription side: the
+re-transcription is complete and every difference against an independent scan
+read was visually inspected (August 2026). The separators are not missing from
+the transcription, so the visible word lengths are the composer's own clock and
+the walk's clock is sound whatever explains the deficit.
 """
 
 from __future__ import annotations
@@ -291,9 +309,12 @@ def autocorrelation_check(
         f"solved SE about {1 / len(solved) ** 0.5:.3f}"
     )
     print("Absorption carries the solved signature onto the unsolved values at all")
-    print("three lags, lag 1 almost exactly. Caveat: the signature being explained")
-    print("is itself only ~2 sigma in a 698-word sample, so this is a consistent")
-    print("prediction, not a strong confirmation.")
+    print("three lags. It is NOT evidence for merging, though: simply DROPPING the")
+    print("same short words attenuates identically (lag 1 -0.015+-0.025 against")
+    print("merging's -0.005+-0.032), so the statistic cannot tell the two apart.")
+    print("What it does establish is a simplification -- the two boundary anomalies")
+    print("are ONE anomaly. A shortage of 2-rune words accounts for the flat")
+    print("autocorrelation automatically, so only the shortage needs explaining.")
 
 
 if __name__ == "__main__":

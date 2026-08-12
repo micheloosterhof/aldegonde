@@ -76,25 +76,25 @@ prove synthetic boundaries. The register-matched joint comparison (solved
 vs unsolved LP, same author/work, lags 1+2) reaches p ~ 0.036 —
 suggestive, not conclusive.
 
-**Absorption accounts for this too (August 2026, `absorption_model.py`).** The
-2-rune absorption fitted to the HISTOGRAM in the anatomy section below, q = 0.39,
-was never tuned against autocorrelation — yet applying it to the solved sequence
-carries that sequence onto the unsolved values at every lag:
+**This is not a second anomaly — it follows from the 2-rune shortage (August
+2026, `absorption_model.py`).** Take the solved sequence and reduce its 2-rune
+population by the fitted 39%, and its −/+ signature lands on the unsolved values
+at every lag:
 
-| lag | solved | after absorption | unsolved |
-|---|---|---|---|
-| 1 | −0.086 | **−0.001 ± 0.029** | **−0.008** |
-| 2 | +0.092 | +0.049 ± 0.025 | +0.017 |
-| 3 | +0.015 | −0.011 ± 0.032 | −0.018 |
+| lag | solved | merge 39% | drop 39% | unsolved |
+|---|---|---|---|---|
+| 1 | −0.086 | −0.005 ± 0.032 | −0.015 ± 0.025 | −0.008 |
+| 2 | +0.092 | +0.051 ± 0.025 | +0.055 ± 0.021 | +0.017 |
+| 3 | +0.015 | −0.010 ± 0.031 | −0.008 ± 0.030 | −0.018 |
 
-Merging short words into neighbours scrambles the length sequence, so ONE
-orthographic habit explains both the 2-rune deficit and the flatness. That is an
-out-of-sample prediction succeeding, which is worth more than the histogram fit
-itself. Caveat kept: the signature being explained is only ~2σ in a 698-word
-sample, so this is a consistent prediction rather than a confirmation, and it
-does not distinguish absorption from a genuinely flatter plaintext.
+Note the two middle columns: **merging short words and simply having fewer of
+them attenuate the autocorrelation identically**, so this statistic cannot
+distinguish a merging mechanism from a register that uses fewer function words.
+The useful consequence is a simplification rather than a mechanism — the flat
+autocorrelation and the 2-rune deficit are ONE anomaly, not two, since the
+shortage produces the flatness automatically. Only the shortage needs explaining.
 
-**Status: explained-if-absorption, otherwise unresolved.** The sequence is flatter than
+**Status: reduced to the 2-rune deficit.** The sequence is flatter than
 both the solved pages and generic English at every lag through 6, which
 would be expected if the boundaries were placed to match a length
 histogram without copying English word *order* — but the register-matched
@@ -228,7 +228,20 @@ takes words of every length in proportion, moving the mean while leaving the
 shape alone. **This matters because random loss is the shape a transcriber's
 oversights would take** — so inattention cannot be the explanation.
 
-**H2 is adequate.** It hits both targets at once, and the residue is base noise:
+**H2 is shape-adequate but NOT a mechanism, and the solved pages are the
+argument.** The base distribution IS the solved pages, so H2 asserts that ~39% of
+short words are absorbed in the unsolved half and none in the solved half — same
+book, same hand. As a scribal habit that is incoherent. Read H2 as "the deficit
+has the shape merging produces", a constraint on explanations, not as evidence
+words were merged. Readings needing no merging, none excluded by these length
+statistics: a different register (fewer articles and prepositions than the solved
+pages' instructional prose); separators marking a non-word unit (verse, breath,
+counting — making the comparison against English WORD lengths a category error);
+or the composer deliberately not leaving 2-rune words exposed, since they are the
+crib surface — the one merging story that fits the solved/unsolved asymmetry,
+because the solved pages were meant to be read.
+
+**On the numbers, H2 is adequate.** It hits both targets at once, and the residue is base noise:
 resampling the ~700-word solved base from its own words gives chi-square a median
 of 70 and a 90% range of 25–120, so **94% of draws that assume the model come out
 worse than the fitted 26**. Implied scale: ~300 separators, ~10% of words.
