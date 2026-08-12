@@ -297,7 +297,8 @@ newlines are line wraps (words flow across them).
   while d3 and d4 sit at CHANCE (3.70% and 4.10% against plaintext 5.30% and 5.38%,
   z = −5.9 and −3.7). That is the `g⁵ = id` signature: only distance 5 leaks
   directly. **One-alphabet-per-word is REFUTED** — it predicts plaintext-level
-  coincidence at d3/d4 as well — so the order-5 step is measured, not merely
+  coincidence at d3/d4 as well, and φ3 = 0.13 ± 0.14 sits 6.4σ below full leak
+  (φ4 = 0.37 ± 0.20 is 1.9σ above chance, the known d4 lean, not clean) — so the order-5 step is measured, not merely
   plausible. The d3/d4 cells work as an internal reference for "scrambled", which is
   why this succeeds where the echo's magnitude alone is underpowered.
   **φ5 itself is NOT resolved**: the point estimate is 0.64–0.71 depending on the

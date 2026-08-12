@@ -32,15 +32,18 @@ underpowered statistic; the PROFILE across distances is not. Against real
 consecutive prose carried into runeglish and resampled to the LP's own word-length
 histogram:
 
-| d | LP | plaintext | chance | verdict |
-|---|---|---|---|---|
-| 3 | 3.70% | 5.30% | 3.45% | **chance** (z vs plaintext −5.9) |
-| 4 | 4.10% | 5.38% | 3.45% | **chance** (z vs plaintext −3.7) |
-| 5 | 4.92% | 5.51% | 3.45% | **plaintext** (z −1.2, z vs chance +3.1) |
+| d | LP | plaintext | chance | φ (leak fraction) | reading |
+|---|---|---|---|---|---|
+| 3 | 3.70% | 5.30% | 3.45% | 0.13 ± 0.14 | at chance; **6.4σ below full leak** |
+| 4 | 4.10% | 5.38% | 3.45% | 0.37 ± 0.20 | 1.9σ *above* chance — the d4 lean |
+| 5 | 4.92% | 5.51% | 3.45% | 0.71 ± 0.23 | 3.1σ above chance, 1.3σ below full |
 
 **What this settles: one-alphabet-per-word is REFUTED.** It predicts
-plaintext-level coincidence at d3 and d4 as well, and the corpus sits at chance
-there — 5.9σ and 3.7σ below plaintext. So `g` exists and has order exactly 5; the
+plaintext-level coincidence at d3 and d4 as well, and the corpus falls far short
+there — 5.9σ and 3.7σ below plaintext. In leak-fraction terms φ3 = 0.13 ± 0.14
+(genuinely at chance, and **6.4σ below full leak** — the load-bearing number) and
+φ4 = 0.37 ± 0.20, which is 1.9σ ABOVE chance rather than at it: the known d4 lean,
+so do not describe d4 as clean. So `g` exists and has order exactly 5; the
 period-5 architecture is measured, not merely plausible. The d3/d4 cells supply an
 internal reference for "scrambled", which is why this works where the IoC bootstrap
 could not: it tests the SHAPE of the profile, not the magnitude of one cell.
