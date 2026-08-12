@@ -68,11 +68,45 @@ information gained, and the doublet POSITIONS add nothing on top: phase mod 5 is
 flat (chi2 2.59 on 4 df) and so is the start/middle/end profile, so the pattern
 carries only its count.
 
-The budget is brutal and it explains every failure in this project without
-appealing to bad luck: the ciphertext-statistical channel is worth of order ten
-bits against a key of order 180. That is why no filter discriminates, why the
-landscape is a delta function, and why enumeration is forced. It also sizes the
-alternative: a contiguous crib must be long enough to cover the gap.
+**JOINT vs MARGINAL identifiability -- the distinction that matters.** The scalar
+budget above is NOT the channel capacity, and reading it as such is a mistake worth
+naming, because it gives the wrong diagnosis.
+
+Unicity distance settles the joint question. With runeglish redundancy
+D = log2(29) - H_lang and a key of ~178 bits, the key becomes unique after
+H_key/D = 53-75 runes depending on the language entropy assumed. The corpus is
+12,956 runes, about **209x the unicity distance**, so the true (g, sigma,
+plaintext) is uniquely determined many times over. The Liber Primus is NOT
+information-starved.
+
+The isomorph channel shows where that information lives. For within-word positions
+j < k,
+
+    c_j == c_k   <=>   p_j == g^((k-j) mod 5)(p_k)
+
+which involves g and the plaintext ONLY -- no base_w, no sigma, no global
+schedule. Across 30,013 within-word position pairs with 804 matches (2.68%) that
+is 0.178 bits per pair, **5,343 bits** in total, and it is LOCAL: given g, each
+word constrains its own plaintext independently.
+
+But that information is about (g, plaintext) JOINTLY. Marginalise the unknown
+plaintext away and almost nothing about g survives, because each word admits many
+plaintexts. Measured: for the 23 doublet-bearing words of length <= 4, each admits
+roughly 420 of the 841 possible g-edges once the rare-bigram budget is applied --
+half the edge space. Since g supplies 29 edges, every candidate g satisfies every
+word, so a per-word constraint-satisfaction attack has no pruning power at all.
+What is left after marginalisation is the handful of scalar bits tabulated above.
+
+That is the precise diagnosis, and it explains every failure here without
+appealing to bad luck:
+
+  - jointly identifiable, 209x over -> a correct key is verifiable instantly
+  - marginally unidentifiable in g alone (~4 bits) -> no filter or gradient exists
+  - therefore only joint search works, and that is ~10^53 keys
+
+So the two escape routes are exactly: shrink the key space by structure until it
+can be enumerated, or import external information. This file sizes the second --
+a contiguous crib long enough to cover the gap.
 """
 
 from __future__ import annotations
@@ -123,8 +157,22 @@ def main() -> None:
     print(
         f"  supplied / needed = {supplied:.1f} / {need:.1f} = {100 * supplied / need:.1f}%"
     )
-    print("  So the ciphertext-statistical channel cannot identify the key. Every")
-    print("  filter being weak is a consequence of this, not a run of bad luck.\n")
+    print("  This is the MARGINAL information about the key, after averaging the")
+    print("  unknown plaintext away. It is why no filter and no gradient exists.\n")
+
+    print("JOINT IDENTIFIABILITY -- the other half, and the one that matters")
+    for h_lang, label in ((1.5, "English-like"), (2.0, "conservative")):
+        d = log2(M) - h_lang
+        print(
+            f"  redundancy {d:.2f} b/rune ({label}) -> unicity distance "
+            f"{need / d:.0f} runes"
+        )
+    print(f"  the corpus is 12,956 runes, about {12956 / (need / 2.86):.0f}x that")
+    print("  so the key is UNIQUELY DETERMINED many times over: not information-")
+    print("  starved, only computationally hard. A correct key verifies instantly.")
+    print("  The isomorph channel holds 5,343 bits of that, and is LOCAL in g --")
+    print("  but marginalising the plaintext leaves the scalars above, and each")
+    print("  short doublet word admits ~420 of 841 g-edges, so no CSP prunes.\n")
 
     print("HOW LONG A CRIB WOULD HAVE TO BE")
     per_rune = log2(M)
