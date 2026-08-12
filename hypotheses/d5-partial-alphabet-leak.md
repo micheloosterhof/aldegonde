@@ -22,16 +22,36 @@ Against the length-matched full-leak expectation (113.5 matches, IoC 1.59) the
 observed 102 is only z = -1.1 — not significant. So a **clean word-locked,
 exact-order-5 base (full leak, q=1) is entirely consistent** with 1.43.
 
-Resolving partial-vs-full would need to separate 102 matches from 114 against
-Poisson noise ~10 — roughly **4x more within-word d5 pairs than the corpus
-contains**. With sections 0-9 fixed, this fork is effectively **undecidable**:
-the base may be word-locked or may drift within the word; the echo statistic
-cannot tell.
+Resolving partial-vs-full **by the size of the echo alone** would need to separate
+102 matches from 114 against Poisson noise ~10 — roughly 4x more within-word d5
+pairs than the corpus contains. That is why this fork stood as undecidable.
+
+**RESOLVED (August 2026) by using d3 and d4 as controls instead**
+(`experiments/period5_confirmation.py`). The absolute size of the d5 echo is the
+underpowered statistic; the PROFILE across distances is not. Against real
+consecutive prose carried into runeglish and resampled to the LP's own word-length
+histogram:
+
+| d | LP | plaintext | chance | verdict |
+|---|---|---|---|---|
+| 3 | 3.70% | 5.30% | 3.45% | **chance** (z vs plaintext −5.9) |
+| 4 | 4.10% | 5.38% | 3.45% | **chance** (z vs plaintext −3.7) |
+| 5 | 4.92% | 5.51% | 3.45% | **plaintext** (z −1.2, z vs chance +3.1) |
+
+Two things follow. **φ5 ≈ 1: the leak at distance 5 is FULL** — 4.92% against a
+plaintext 5.51%, within 1.2σ — so the base is word-locked and does not drift, and
+the "partial leak" reading is retired. And **one-alphabet-per-word is refuted**: it
+predicts plaintext-level coincidence at d3 and d4 too, and the corpus sits at
+chance there, 5.9σ and 3.7σ away. So `g` exists and has order exactly 5.
+
+The reason this works where the IoC bootstrap could not: d3 and d4 supply an
+internal reference for "scrambled", so the test asks about the SHAPE of the profile
+rather than the magnitude of one cell.
 
 ## Status
 
-**Status**: partial (echo real and word-anchored; partial-vs-full leak
-underpowered, likely undecidable on this corpus)
+**Status**: resolved (echo real and word-anchored; φ5 ≈ 1, full leak, base
+word-locked; one-alphabet-per-word refuted at d3/d4)
 
 The echo measurement is solid. The *partial*-leak reading — and with it the
 "base drifts within the word" interpretation — is a point estimate that does

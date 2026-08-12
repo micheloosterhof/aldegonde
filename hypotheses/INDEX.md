@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (33)
+### Observations (34)
 
 | File | Feature | Status |
 |---|---|---|
@@ -13,12 +13,13 @@ proposed mechanisms scored against them.
 | [collision-hunt-single-constraint.md](collision-hunt-single-constraint.md) | The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved | confirmed (characterization) for the repeat census itself |
 | [cross-product-sum-flat.md](cross-product-sum-flat.md) | Bauer's Cross-Product Sum Finds Nothing (Flat Unigrams Make It Blind) | confirmed (characterization), negative at every window 29-2000; sections homogeneous (chi2 p=0.90) |
 | [cryptodiagnostics-page0-58.md](cryptodiagnostics-page0-58.md) | Full Cryptodiagnostic Battery on page0-58.txt (2026-06) | confirmed (characterization) |
-| [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (partial-vs-full is underpowered) | partial (echo real and word-anchored; partial-vs-full leak underpowered, likely undecidable) |
+| [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (phi5 RESOLVED at ~1) | resolved (Aug 2026): using d3/d4 as controls, d5 matches PLAINTEXT (z −1.2) while d3/d4 sit at chance (z vs plaintext −5.9, −3.7). Full leak, base word-locked; one-alphabet-per-word refuted, so g exists with order exactly 5 |
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
 | [doublet-suppression.md](doublet-suppression.md) | Doublet Suppression (5.2x, boundary-blind) | confirmed (characterization) |
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
 | [flat-ioc.md](flat-ioc.md) | Flat Unigram Distribution (IoC = 1/29) | confirmed (characterization) |
 | [kappa-spectrum.md](kappa-spectrum.md) | Kappa Anomalous Only at Skip 1 | confirmed (characterization) |
+| [key-local-channel-is-empty.md](key-local-channel-is-empty.md) | The Only Key-Local Channel is Empty (why no filter or gradient exists) | confirmed (characterization); isomorph patterns reduce to six per-distance scalars (p=0.36) worth ~4 bits about g, so all information is key-global -- four extraction attempts measured, all consistent |
 | [lag11-cross-word-deficit.md](lag11-cross-word-deficit.md) | Distance-11 Coincidence Deficit (Cross-Word, mod-5 Phase) | retired (scan noise; word-length-periodicity mechanism refuted by test F) |
 | [lag5-digraph-structure.md](lag5-digraph-structure.md) | Lag-5 Paired-Match Structure | confirmed (characterization) |
 | [line-initial-bias.md](line-initial-bias.md) | Line-Initial Rune Bias (layout artifact) | confirmed (characterization) |

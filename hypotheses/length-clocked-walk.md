@@ -291,7 +291,17 @@ newlines are line wraps (words flow across them).
 
 ## Evidence against / open
 
-- **Partial-vs-full d5 leak is underpowered.** IoC 1.43 vs full-leak ~1.60;
+- **Partial-vs-full d5 leak: RESOLVED, and period-5 is now CONFIRMED (August
+  2026, `experiments/period5_confirmation.py`).** Against real prose resampled to
+  the LP's word-length histogram, d5 matches PLAINTEXT (4.92% vs 5.51%, z = −1.2)
+  while d3 and d4 sit at CHANCE (3.70% and 4.10% against plaintext 5.30% and 5.38%,
+  z = −5.9 and −3.7). That is the `g⁵ = id` signature: only distance 5 leaks
+  directly. **φ5 ≈ 1 — the leak is full and the base is word-locked**, retiring the
+  partial-leak reading below. And **one-alphabet-per-word is refuted**: it predicts
+  plaintext-level coincidence at d3/d4 as well. So the order-5 step is measured, not
+  merely plausible. The paragraph below records why the older IoC-based estimate
+  could not settle this — the echo's magnitude is underpowered; the profile is not.
+- **Superseded — the underpowered version.** IoC 1.43 vs full-leak ~1.60;
   point estimate 72% same-alphabet, but the bootstrap CI [1.15,1.72] contains
   full leak. Position decomposition (`within_word_position_decomposition.py`)
   shows the echo is **flat over absolute position** (no intra-word drift), so
@@ -512,3 +522,17 @@ per key (the keyword Quagmire family of `mixed-alphabet-vigenere.md`
 is the one enumerable set) or a contiguous crib; a short guessed
 phrase alone cannot verify. Everything here is statistical
 shape, not a confirmed decryption.
+
+**Two August 2026 updates.** The period-5 architecture is now CONFIRMED rather than
+plausible: d5 leaks plaintext while d3/d4 sit at chance, which refutes
+one-alphabet-per-word and fixes φ5 at ~1 (see Evidence against, first bullet). And
+the "no hillclimb can work" claim is true in substance but wrong in letter — it
+holds for objectives needing the coupled base schedule, not for the isomorph channel,
+which is local in `g` and does yield a gradient. That gradient plateaus at chance
+agreement, for a reason now measured rather than guessed:
+`key-local-channel-is-empty.md` shows the isomorph pattern is the COMPLETE
+within-word invariant, reduces to six per-distance scalars (p ≈ 0.36), and is worth
+~4 bits about `g`. So every informative observable is cross-word and hence
+key-global, which is where the delta function comes from. The two surviving routes
+are unchanged, and now bounded: enumerate a structured family
+(`magic-square-grid-key.md`), or supply ~63 contiguous crib runes.
