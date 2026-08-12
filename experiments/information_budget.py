@@ -97,12 +97,40 @@ half the edge space. Since g supplies 29 edges, every candidate g satisfies ever
 word, so a per-word constraint-satisfaction attack has no pruning power at all.
 What is left after marginalisation is the handful of scalar bits tabulated above.
 
+**A rigorous version, which is stronger than the empirical one.** Within a word
+`base_w` is ONE unknown bijection applied elementwise, and the complete invariant
+of a sequence under an unknown elementwise bijection is its EQUALITY PATTERN. So
+the isomorph pattern is not merely one within-word observable, it is the ONLY one.
+Anything else requires comparing across words, where `base_w` and `base_w'` differ
+by the step product over the intervening lengths -- i.e. it is key-GLOBAL.
+
+And the isomorph constraint turns out to be satisfiable for essentially every
+candidate: over 3,000 consecutive real prose words the MEDIAN random order-5 g
+makes ZERO words impossible, and only 32% are refuted at all. A constraint
+satisfiable by almost every g carries almost no information about g. That closes
+the local channel by argument rather than by exhaustion:
+
+  - within-word observables = isomorph only, and isomorph is nearly vacuous in g
+  - therefore every informative observable is cross-word, hence key-global
+  - key-global means no partial credit: right key or noise, which IS the delta
+    function
+
+Four measured attempts agree with it: the doublet count yields 4.0 bits; the
+isomorph bag score gives a real gradient but hillclimbs plateau at chance
+agreement (0-3 of 29); adding a quadgram sequence model gives no measurable
+improvement, because ~20 plausible candidates per word let a wrong g be assembled
+into fluent text; and the hard-rejection filter cuts only 1.5x.
+
 That is the precise diagnosis, and it explains every failure here without
 appealing to bad luck:
 
   - jointly identifiable, 209x over -> a correct key is verifiable instantly
-  - marginally unidentifiable in g alone (~4 bits) -> no filter or gradient exists
+  - the local channel is nearly vacuous -> no filter or gradient can exist
   - therefore only joint search works, and that is ~10^53 keys
+
+Falsifiable, and this is where to push: the argument assumes `base_w` changes at
+every word and is otherwise free. If it does not change per word, within-word
+invariants extend across words and the isomorph channel stops being vacuous.
 
 So the two escape routes are exactly: shrink the key space by structure until it
 can be enumerated, or import external information. This file sizes the second --
