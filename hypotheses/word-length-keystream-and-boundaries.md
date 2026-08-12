@@ -123,6 +123,12 @@ This is the one assumption-questioning lead worth revisiting with a
 register-matched runeglish corpus (philosophical/koan prose with word
 boundaries), which the repo does not currently contain.
 
+**This deficit now has its own file: `two-rune-deficit.md`**, which carries the
+current state — both references with the transliteration convention calibrated,
+what is excluded (transcription omission, transcriber inattention, line-break
+merging, a noisy reference), and why the mechanism is not identifiable from word
+lengths. The material below is the anatomy that established it.
+
 **Anatomy (August 2026, `experiments/short_word_deficit.py`).** Three facts
 narrow what kind of deficit it is.
 
