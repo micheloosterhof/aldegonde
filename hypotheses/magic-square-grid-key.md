@@ -18,7 +18,20 @@ is. The keyword-Quagmire family was exhausted (`mixed-alphabet-vigenere.md`,
 
 ## Status
 
-**Status**: untested (the square is verified; its use as key material is not)
+**Status**: REFUTED (August 2026, `experiments/magic_square_sweep.py`)
+
+The sweep ran. Requiring all seven g-only distance constraints (d1..d7, each testing
+g^(d mod 5) on the distance-d plaintext table) within 2σ leaves exactly ONE of the
+190,008 candidates: fixed = (1, 8, 10, 24), rotation 4, column-wise. But 400,000
+random order-5 permutations pass the same cuts at 0.00125%, which predicts **2.4**
+survivors in a family that size. One is slightly FEWER than chance, so there is no
+enrichment at all: the magic-square-ordered family behaves exactly like random
+order-5 permutations and supplies no search advantage — which was its entire purpose.
+Same verdict the repo reached for keyword grids.
+
+Scope: this tests the canonical tie-break. The square has twelve duplicated values so
+up to 2^12 fill orders exist, but given the complete absence of enrichment there is
+little reason to try others.
 
 ## The square
 
@@ -109,9 +122,10 @@ are broken canonically by reading order. For scale, the Quagmire sweep drove
 
 ## Scripts
 
-- Not yet written. The sweep would reuse `experiments/quagmire_runner.py`'s
-  structure (diagonal prefilter → DJU-BEI fp≥6 → 2-rune fit) with a
-  magic-square grid generator in place of the keyword alphabet generator.
+- `experiments/magic_square.py` — verifies the square and reports what it can and
+  cannot supply.
+- `experiments/magic_square_sweep.py` — the sweep that refuted it, with the
+  random-order-5 control that is the load-bearing part.
 
 ## Related
 
@@ -124,8 +138,15 @@ are broken canonically by reading order. For scale, the Quagmire sweep drove
 
 ## Verdict
 
-The most concrete enumerable proposal currently available, and cheap to falsify:
-one sweep decides it. Its weakness is honest and specific — the square fixes an
-ordering at best, and σ has no construction here, so a negative result would
-exclude only the magic-square-ordered grid family and not grid-derived `g` in
-general.
+Refuted, and it cost one sweep — which is the best thing about it. The proposal was
+cheap to falsify and was falsified: 1 survivor against 2.4 expected by chance, so the
+family carries no enrichment over random order-5 permutations.
+
+What it excludes is narrow and should be stated as such: the magic-square-ORDERED
+grid family under the canonical tie-break. It does not exclude grid-derived `g` in
+general, and σ was never given a construction here, so that gap goes untested.
+
+Byproduct worth more than the hypothesis: the sweep measured the seven g-only
+distance constraints at 16.3 bits (a 80,000× cut), which corrects the 4.0-bit figure
+in `key-local-channel-is-empty.md` by a factor of four. Still 63 bits short of `g`
+alone.
