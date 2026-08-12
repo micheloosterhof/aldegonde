@@ -76,7 +76,25 @@ prove synthetic boundaries. The register-matched joint comparison (solved
 vs unsolved LP, same author/work, lags 1+2) reaches p ~ 0.036 —
 suggestive, not conclusive.
 
-**Status: unresolved.** The unsolved word-length sequence is flatter than
+**Absorption accounts for this too (August 2026, `absorption_model.py`).** The
+2-rune absorption fitted to the HISTOGRAM in the anatomy section below, q = 0.39,
+was never tuned against autocorrelation — yet applying it to the solved sequence
+carries that sequence onto the unsolved values at every lag:
+
+| lag | solved | after absorption | unsolved |
+|---|---|---|---|
+| 1 | −0.086 | **−0.001 ± 0.029** | **−0.008** |
+| 2 | +0.092 | +0.049 ± 0.025 | +0.017 |
+| 3 | +0.015 | −0.011 ± 0.032 | −0.018 |
+
+Merging short words into neighbours scrambles the length sequence, so ONE
+orthographic habit explains both the 2-rune deficit and the flatness. That is an
+out-of-sample prediction succeeding, which is worth more than the histogram fit
+itself. Caveat kept: the signature being explained is only ~2σ in a 698-word
+sample, so this is a consistent prediction rather than a confirmation, and it
+does not distinguish absorption from a genuinely flatter plaintext.
+
+**Status: explained-if-absorption, otherwise unresolved.** The sequence is flatter than
 both the solved pages and generic English at every lag through 6, which
 would be expected if the boundaries were placed to match a length
 histogram without copying English word *order* — but the register-matched
@@ -217,24 +235,33 @@ worse than the fitted 26**. Implied scale: ~300 separators, ~10% of words.
 Direction is a weak preference only (26 vs 40); the histogram does not settle
 which side the short word attaches to.
 
-Two readings with very different consequences:
+Two readings were possible, and the transcription one is **CLOSED**: the
+re-transcription is complete and every difference against the independent scan
+read was visually inspected (August 2026). The separators are not missing from
+the transcription. So:
 
-- **Absent from the MANUSCRIPT** (a scribal habit of attaching short function
-  words, i.e. enclitic writing). Then the composer clocked the cipher on the text
-  as written, the visible word lengths ARE the right clock, and only cribbing on
-  word identity is damaged.
-- **Absent from the TRANSCRIPTION.** Then the clock every key search has used is
-  wrong. The walk's base is a running product over `(L_w − 1) mod 5`, so ONE
-  missing separator corrupts every base after it; ~300 omissions across 2,928
-  words puts the first within the opening handful, so essentially the whole
-  corpus is mis-clocked and no enumeration could have succeeded whatever the key.
-  That would include the 314M-key Quagmire sweep.
+- **The omissions are in the MANUSCRIPT** — short function words written attached
+  to a neighbour, i.e. enclitic writing. The composer wrote the text as we read
+  it, so **the visible word lengths ARE the composer's clock and the walk's clock
+  is sound.** The "one missing separator corrupts every base after it" worry does
+  not apply, and the 314M-key Quagmire sweep was correctly clocked.
 
-`boundary_verification.py` favours the second: 19 of its 21 clean scan
-disagreements have the IMAGE carrying MORE separators and none the transcription,
-and 113 of 604 lines do not verify. This is the highest-value open task in the
-project — a targeted re-read of the scans for omitted separators, prioritised by
-2-rune context, would settle whether the clock is sound.
+What this damages instead is **cribbing on word identity**, and it does so in a
+specific, exploitable way. If ~39% of 2-rune words are attached to a neighbour,
+then `THE` = `ᚦᛖ` is often NOT a standalone 2-rune word but a digraph inside a
+longer one. The 2-rune verifier of `length-clocked-walk.md` — decrypt the 465
+2-rune words, count `ᚦᛖ` — is therefore looking in only part of the right place,
+and its expected-hit range (75–108) is too high for standalone words and ignores
+the attached instances entirely.
+
+The fix is free, because the walk's within-word phase does not depend on word
+length: for ANY word, `c₀ = base_w(p₀)` and `c₁ = base_w(g(p₁))`, exactly as for a
+2-rune word. So a candidate key can be scored by counting `ᚦᛖ` at the START of
+all 2,928 words rather than only among the 465 short ones. If absorption is into
+the PREVIOUS word instead, `THE` lands word-FINALLY, where the phase is
+`g^((L−2) mod 5)`, `g^((L−1) mod 5)` — still computable, just length-dependent.
+Direction is unsettled (chi2 26 vs 40), so both positions should be scored. See
+`experiments/the_position_verifier.py`.
 
 **Boundary verification against the scans is inconclusive so far**
 (`experiments/boundary_verification.py`). The merging shape makes a

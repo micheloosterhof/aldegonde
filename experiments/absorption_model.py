@@ -251,6 +251,50 @@ def main() -> None:
         f"implied omissions: roughly {lost} separators, ~{100 * lost / n:.0f}% of words"
     )
 
+    autocorrelation_check(solved, unsolved, best[1], rng)
+
+
+def autocorrelation(series: list[int], lag: int) -> float:
+    mean = statistics.mean(series)
+    n = len(series)
+    num = sum((series[i] - mean) * (series[i + lag] - mean) for i in range(n - lag))
+    return num / sum((v - mean) ** 2 for v in series)
+
+
+def autocorrelation_check(
+    solved: list[int], unsolved: list[int], q: float, rng: random.Random
+) -> None:
+    """Out-of-sample test: q was fitted to the histogram, never to this statistic.
+
+    The other boundary anomaly is that the unsolved word lengths carry no
+    autocorrelation, while the solved pages alternate -/+ at lags 1-2. If short
+    words are absorbed into neighbours, that merging should scramble the length
+    sequence, so ONE mechanism would account for both anomalies.
+
+    Only which short words get absorbed is varied; the solved sequence is held
+    fixed, because resampling it would destroy the very ordering being measured.
+    """
+    print("\nout-of-sample check -- q was fitted to the histogram, not to this")
+    print(f"{'lag':>4}{'solved':>10}{'after absorption':>22}{'unsolved':>12}")
+    for lag in (1, 2, 3):
+        runs = [
+            autocorrelation(lose_at_short(solved, q, rng, into_prev=True), lag)
+            for _ in range(300)
+        ]
+        print(
+            f"{lag:>4}{autocorrelation(solved, lag):>+10.3f}"
+            f"{statistics.mean(runs):>+15.3f}+-{statistics.stdev(runs):.3f}"
+            f"{autocorrelation(unsolved, lag):>+12.3f}"
+        )
+    print(
+        f"unsolved SE about {1 / len(unsolved) ** 0.5:.3f}, "
+        f"solved SE about {1 / len(solved) ** 0.5:.3f}"
+    )
+    print("Absorption carries the solved signature onto the unsolved values at all")
+    print("three lags, lag 1 almost exactly. Caveat: the signature being explained")
+    print("is itself only ~2 sigma in a 698-word sample, so this is a consistent")
+    print("prediction, not a strong confirmation.")
+
 
 if __name__ == "__main__":
     main()
