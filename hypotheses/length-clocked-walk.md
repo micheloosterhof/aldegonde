@@ -446,10 +446,23 @@ newlines are line wraps (words flow across them).
   2-rune words against the whole register distribution above, which
   awards partial credit for TO, OF, IN … while the key is still wrong.
   Caveat and cross-check: the LP's 2-rune share is 15.9%, well below the
-  register's 22.8% — the documented short-word deficit
-  (`word-length-keystream-and-boundaries.md`) — so either the plaintext
-  register is unusually short-word-poor, or the boundary question bears
-  on it; the expected-hit range above already spans that uncertainty.
+  register's 22.8% — the short-word deficit, now `two-rune-deficit.md` —
+  so either the plaintext register is unusually short-word-poor, or the
+  boundary question bears on it.
+  **The expected-hit range does NOT span that uncertainty (August 2026),
+  and the class searched is too narrow.** The deficit is z ≈ −10 on two
+  independent references and confined to the 2-rune bucket, so 75-108 is
+  an over-estimate for STANDALONE 2-rune words on any reading. Worse, if
+  the deficit is short words attached to a neighbour rather than absent,
+  `ᚦᛖ` sits inside longer words and the 465-word class misses those
+  instances entirely. The fix is free, because the within-word phase does
+  not depend on word length: `c₀ = base_w(p₀)` and `c₁ = base_w(g(p₁))`
+  hold for ANY word, so score word-initial digraphs across all 2,928
+  words rather than only the 465 short ones. Under the attach-to-previous
+  variant `ᚦᛖ` lands word-finally at phase `g^((L−2) mod 5)`,
+  `g^((L−1) mod 5)` — computable, just length-dependent. Direction is
+  unsettled, so score both. Chance rises from 0.6 to ~3.5 hits, which
+  the count still dwarfs.
   **Validated on planted keys** (`experiments/two_rune_gradient.py`):
   the objective recovers `base_0` exactly and instantly once `g` and `σ`
   are known, but the landscape over `(g, σ)` fails from both ends —

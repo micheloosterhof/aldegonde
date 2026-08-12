@@ -59,6 +59,16 @@ runeglish-is-rougher-than-English fact and better than dictionary/prose proxies.
   statistical crib rather than a known-plaintext foothold — it assumes
   only that the plaintext is ordinary English, not that any particular
   word sits at any particular place.
+  **Both the 75-108 figure and the 465-word class need revising (August
+  2026, `two-rune-deficit.md`).** The 2-rune deficit is z ≈ −10 on two
+  independent references, so 75-108 over-estimates the STANDALONE count;
+  and if the missing short words are attached to neighbours rather than
+  absent, `ᚦᛖ` sits inside longer words that this class never inspects.
+  Since the within-word phase is length-independent — `c₀ = base_w(p₀)`,
+  `c₁ = base_w(g(p₁))` for any word — the class should be all 2,928
+  word-initial digraphs, and word-final ones too if the attachment is to
+  the previous word. That raises chance from 0.6 to ~3.5, which the
+  correct-key count still dwarfs, and it cannot lose instances.
 - **Tested on planted keys — the objective is a superb VERIFIER and a
   useless SEARCH GRADIENT** (July 2026,
   `experiments/two_rune_gradient.py`; simulated walk ciphertext over

@@ -38,7 +38,17 @@ length — changes key at every word and is invisible to this bucketing, so
 it is NOT excluded here. (Consistent with the word-transform census and
 the J battery: the key varies at rune granularity.)
 
-## B. Boundary authenticity — unresolved (a real but inconclusive tension)
+## B. Boundary authenticity — transcription branch CLOSED, plaintext branch open
+
+**The transcription is not the explanation (August 2026).** The re-transcription
+is complete and every difference against an independent scan read was visually
+inspected; the previously-dropped line-initial marks are recovered (38 in
+`page0-56.txt`, see `mark-glyph-inventory.md`). So the separators are not missing
+from the transcription, **the visible word lengths are the composer's own clock,
+the walk's clock is sound, and the 314M-key Quagmire sweep was correctly
+clocked.** What remains open is whether the plaintext's own word structure is
+English-like — see `two-rune-deficit.md`. The measurements below stand as
+recorded; only their transcription-artifact reading is withdrawn.
 
 **Question**: are the word boundaries plaintext-faithful, or synthetic? A
 synthetic length sequence (placed to mimic an English length *distribution*
@@ -186,136 +196,14 @@ is dominated by THE — or a boundary artifact that is not line-break merging.
 Mid-line omissions are not indicated: across 604 lines the reader never found
 the transcription carrying MORE separators than the page.
 
-**The noisy-reference caveat is now closed (August 2026,
-`experiments/short_word_reference.py`).** The worry was that the solved side is
-only ~700 words, so a better register reference might dissolve the gap. It does
-not. English carried into runeglish over the 50,000 commonest words, weighted by
-token frequency, is an independent reference that never touches the solved
-sample:
-
-| runes | unsolved | English (50k) | solved |
-|---|---|---|---|
-| 1 | 3.4% | 4.2% | 4.0% |
-| **2** | **15.9%** | **23.7%** | **23.9%** |
-| 3 | 24.8% | 20.2% | 24.1% |
-| 4 | 17.6% | 16.8% | 17.5% |
-
-The transliteration-convention objection — a converter that contracts digraphs
-more eagerly than the scribe would manufacture short words — is testable without
-any decrypted plaintext, because the solved pages are runeglish in the book's own
-convention. The converter's English estimate and the solved rune text agree to
-**0.26 points against a standard error of 1.61**. With the convention calibrated
-the deficit is **z = −9.9** against the large reference, where the solved
-comparison gave +4.9.
-
-Note also what the third column shows: English and the solved pages agree at
-every length, and the unsolved corpus departs from BOTH at exactly one — length
-2. The displaced mass at 3 is not a departure from the solved register (24.8% vs
-24.1%); only the 2-rune bucket is anomalous. So the register-corpus job is done
-for this question, and it did not help: the reference was never the weak link.
-
-**Which separators are missing: the loss is SELECTIVE (August 2026,
-`experiments/absorption_model.py`).** Two one-parameter models, both fitted
-against the register- and convention-matched solved pages:
-
-| model | q | chi2 (12 df) | mean | 2-rune |
-|---|---|---|---|---|
-| observed (target) | — | — | 4.425 | 15.9% |
-| no loss | — | 207 | 3.983 | 24.0% |
-| H1 loss regardless of length | 0.15 | 106 | 4.611 | 20.5% |
-| H2 2-rune word absorbed into next | 0.36 | 40 | 4.343 | 15.4% |
-| H2 2-rune word absorbed into prev | 0.39 | **26** | **4.416** | **14.9%** |
-
-**H1 is refuted** — not by chi-square, which base noise makes too permissive, but
-because it cannot hit the mean and the 2-rune share together. Tuned to the mean
-(q = 0.09) it leaves 2-rune at 21.8%; tuned to chi-square it overshoots the mean
-to 4.61 and still sits at 20.5%. Removing separators without regard to length
-takes words of every length in proportion, moving the mean while leaving the
-shape alone. **This matters because random loss is the shape a transcriber's
-oversights would take** — so inattention cannot be the explanation.
-
-**H2 is shape-adequate but the mechanism is NOT IDENTIFIABLE.** Merging must
-create long units (2 + L) where a register that simply uses fewer short words
-cannot, so the tail ought to discriminate. It does — in opposite directions
-depending on which reference supplies the base:
-
-| base | register χ² | merging χ² | winner |
-|---|---|---|---|
-| solved LP (698 words) | 53 | **27** | merging |
-| English (50,000 words) | **21** | 41 | register |
-
-The solved sample sits low at length 5 (7.6% on 53 words, against 11.0% English
-and 10.9% LP), which is enough to hand merging the tail whenever the solved pages
-are the reference. A paired bootstrap over resampled solved bases makes merging
-look robust (48/60, z = +5.3) — **that figure is misleading**, because resampling
-a base captures sampling noise around its shape while preserving the shape's
-systematic quirks. Reference-choice error dominates sampling error here and no
-bootstrap of a single reference can see it.
-
-Also note the solved pages are the control that embarrasses the scribal reading:
-the base IS the solved distribution, so H2 asserts ~39% absorption in the
-unsolved half and none in the solved half, same book, same hand.
-
-So: the deficit is solid (ratio 0.66 vs solved, 0.67 vs English, z ≈ −10 either
-way) and the mechanism is open. Candidates, none excluded by any length statistic:
-a different register; separators marking a non-word unit (verse, breath, counting
-— which makes the comparison against English WORD lengths a category error); or
-deliberate avoidance of exposed 2-rune words, they being the crib surface, the one
-merging story that fits the solved/unsolved asymmetry. **Settling it requires a
-statistic that is not a function of word length.**
-
-**On the numbers, H2 is adequate.** It hits both targets at once, and the residue is base noise:
-resampling the ~700-word solved base from its own words gives chi-square a median
-of 70 and a 90% range of 25–120, so **94% of draws that assume the model come out
-worse than the fitted 26**. Implied scale: ~300 separators, ~10% of words.
-Direction is a weak preference only (26 vs 40); the histogram does not settle
-which side the short word attaches to.
-
-Two readings were possible, and the transcription one is **CLOSED**: the
-re-transcription is complete and every difference against the independent scan
-read was visually inspected (August 2026). The separators are not missing from
-the transcription. So:
-
-- **The omissions are in the MANUSCRIPT** — short function words written attached
-  to a neighbour, i.e. enclitic writing. The composer wrote the text as we read
-  it, so **the visible word lengths ARE the composer's clock and the walk's clock
-  is sound.** The "one missing separator corrupts every base after it" worry does
-  not apply, and the 314M-key Quagmire sweep was correctly clocked.
-
-What this damages instead is **cribbing on word identity**, and it does so in a
-specific, exploitable way. If ~39% of 2-rune words are attached to a neighbour,
-then `THE` = `ᚦᛖ` is often NOT a standalone 2-rune word but a digraph inside a
-longer one. The 2-rune verifier of `length-clocked-walk.md` — decrypt the 465
-2-rune words, count `ᚦᛖ` — is therefore looking in only part of the right place,
-and its expected-hit range (75–108) is too high for standalone words and ignores
-the attached instances entirely.
-
-The fix is free, because the walk's within-word phase does not depend on word
-length: for ANY word, `c₀ = base_w(p₀)` and `c₁ = base_w(g(p₁))`, exactly as for a
-2-rune word. So a candidate key can be scored by counting `ᚦᛖ` at the START of
-all 2,928 words rather than only among the 465 short ones. If absorption is into
-the PREVIOUS word instead, `THE` lands word-FINALLY, where the phase is
-`g^((L−2) mod 5)`, `g^((L−1) mod 5)` — still computable, just length-dependent.
-Direction is unsettled (chi2 26 vs 40), so both positions should be scored. See
-`experiments/the_position_verifier.py`.
-
-**Boundary verification against the scans is inconclusive so far**
-(`experiments/boundary_verification.py`). The merging shape makes a
-transcription artifact worth testing directly, and the scans allow it: 491 of
-604 lines (81.3%) carry exactly the transcribed separators. But 92 of the 113
-mismatches are the reader merging touching runes, and of the 21 clean
-disagreements — all at line edges, 19 with the image carrying MORE separators
-and 0 the transcription — spot-checking two found one real omission and one
-piece of marginal artwork misread as a dot. The caveat above ("cannot be fully
-excluded without the page scans") is now half-answered: most lines verify, and
-settling the rest needs a tighter per-page text block and a rune segmenter that
-does not merge glyphs.
-
-**If confirmed**, it would matter a lot: it would mean the boundaries are a
-separate synthetic layer, the "English-like word lengths" are a histogram
-match rather than real word structure, and cribbing on word identity is
-futile. **If refuted**, boundaries are real and the lattice remains the
-best crib surface.
+**Both of those questions are now settled and live in `two-rune-deficit.md`.** In brief: the noisy-reference worry is closed (a
+50,000-word English reference, independent of the solved sample and with the
+transliteration convention calibrated to 0.26 points, gives the same 0.66-0.67
+ratio and z ~ -10); transcriber inattention is excluded (loss that ignores word
+length cannot hit the observed mean and 2-rune share together); and the
+mechanism -- register, a non-word unit, or deliberate suppression of the crib
+surface -- is NOT identifiable from word lengths, the register/merging
+head-to-head reversing with the choice of reference base.
 
 ## C. Sentence-mark channel fails English semantics — confirmed (~5.9 sigma)
 

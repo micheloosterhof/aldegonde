@@ -100,11 +100,16 @@ Two failure modes, and they are different:
 
 - **Line-END marks are recorded but sometimes mistyped** — a 3-dot glyph comes
   through as an ordinary word separator, a 13-dot as a plain `.`.
-- **Line-START marks are dropped entirely** — every confirmed line-initial
-  glyph, at three different sizes, is simply absent. This also explains the
-  "leading separator" cases in `boundary_verification.py`: 19 of 21 clean
-  disagreements had the image carrying a mark the transcription lacked, all at
-  line edges. Those are not reader noise after all.
+- **Line-START marks were dropped entirely, and are now RECOVERED (August
+  2026).** Every confirmed line-initial glyph, at three different sizes, was
+  absent. This also explained the "leading separator" cases in
+  `boundary_verification.py`: 19 of 21 clean disagreements had the image carrying
+  a mark the transcription lacked, all at line edges — not reader noise after
+  all. The re-transcription has since restored them: `page0-56.txt` now has **38
+  lines beginning with a mark** (44 in the master, 0 lines end with one, the
+  convention placing a line-spanning boundary at the start of the following
+  line). The `boundary_verification.py` leading-separator disagreements are
+  therefore resolved rather than open.
 
 The dropped line-initial marks are the same failure mode as the apostrophes and
 quotation marks (`contraction-cribs.md`): the glyph inventory was assumed rather
