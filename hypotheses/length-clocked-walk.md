@@ -296,11 +296,15 @@ newlines are line wraps (words flow across them).
   the LP's word-length histogram, d5 matches PLAINTEXT (4.92% vs 5.51%, z = −1.2)
   while d3 and d4 sit at CHANCE (3.70% and 4.10% against plaintext 5.30% and 5.38%,
   z = −5.9 and −3.7). That is the `g⁵ = id` signature: only distance 5 leaks
-  directly. **φ5 ≈ 1 — the leak is full and the base is word-locked**, retiring the
-  partial-leak reading below. And **one-alphabet-per-word is refuted**: it predicts
-  plaintext-level coincidence at d3/d4 as well. So the order-5 step is measured, not
-  merely plausible. The paragraph below records why the older IoC-based estimate
-  could not settle this — the echo's magnitude is underpowered; the profile is not.
+  directly. **One-alphabet-per-word is REFUTED** — it predicts plaintext-level
+  coincidence at d3/d4 as well — so the order-5 step is measured, not merely
+  plausible. The d3/d4 cells work as an internal reference for "scrambled", which is
+  why this succeeds where the echo's magnitude alone is underpowered.
+  **φ5 itself is NOT resolved**: the point estimate is 0.64–0.71 depending on the
+  runeglish convention for the Ing rune (valued NG or ING, both legitimate),
+  consistent with full leak at z = −1.2 to −1.8 but below it — the same standing as
+  the 0.85 ± 0.26 below. An earlier version of this bullet claimed φ5 ≈ 1 by reading
+  "within 1.2σ of plaintext" as an estimate rather than a consistency check.
 - **Superseded — the underpowered version.** IoC 1.43 vs full-leak ~1.60;
   point estimate 72% same-alphabet, but the bootstrap CI [1.15,1.72] contains
   full leak. Position decomposition (`within_word_position_decomposition.py`)
@@ -525,7 +529,8 @@ shape, not a confirmed decryption.
 
 **Two August 2026 updates.** The period-5 architecture is now CONFIRMED rather than
 plausible: d5 leaks plaintext while d3/d4 sit at chance, which refutes
-one-alphabet-per-word and fixes φ5 at ~1 (see Evidence against, first bullet). And
+one-alphabet-per-word (see Evidence against, first bullet). φ5 itself stays open at
+0.64–0.71. And
 the "no hillclimb can work" claim is true in substance but wrong in letter — it
 holds for objectives needing the coupled base schedule, not for the isomorph channel,
 which is local in `g` and does yield a gradient. That gradient plateaus at chance

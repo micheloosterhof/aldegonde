@@ -38,20 +38,34 @@ histogram:
 | 4 | 4.10% | 5.38% | 3.45% | **chance** (z vs plaintext −3.7) |
 | 5 | 4.92% | 5.51% | 3.45% | **plaintext** (z −1.2, z vs chance +3.1) |
 
-Two things follow. **φ5 ≈ 1: the leak at distance 5 is FULL** — 4.92% against a
-plaintext 5.51%, within 1.2σ — so the base is word-locked and does not drift, and
-the "partial leak" reading is retired. And **one-alphabet-per-word is refuted**: it
-predicts plaintext-level coincidence at d3 and d4 too, and the corpus sits at
-chance there, 5.9σ and 3.7σ away. So `g` exists and has order exactly 5.
+**What this settles: one-alphabet-per-word is REFUTED.** It predicts
+plaintext-level coincidence at d3 and d4 as well, and the corpus sits at chance
+there — 5.9σ and 3.7σ below plaintext. So `g` exists and has order exactly 5; the
+period-5 architecture is measured, not merely plausible. The d3/d4 cells supply an
+internal reference for "scrambled", which is why this works where the IoC bootstrap
+could not: it tests the SHAPE of the profile, not the magnitude of one cell.
 
-The reason this works where the IoC bootstrap could not: d3 and d4 supply an
-internal reference for "scrambled", so the test asks about the SHAPE of the profile
-rather than the magnitude of one cell.
+**What it does NOT settle: φ5 is still open.** An earlier version of this note
+claimed φ5 ≈ 1 on the grounds that d5 is within 1.2σ of plaintext. That is a
+consistency statement, not an estimate. The point estimate is
+`(LP − chance)/(plaintext − chance)`:
+
+| runeglish convention | prose d5 | φ5 | z from full leak |
+|---|---|---|---|
+| `ing` → ᛝ (one rune) | 5.51% | 0.71 | −1.2 |
+| `ing` → ᛁᛝ (two runes) | 5.75% | 0.64 | −1.8 |
+
+Both readings are legitimate — the Ing rune is valued NG **or** ING in the Gematria
+Primus — so the convention is a genuine ambiguity and φ5 lands at 0.64–0.71 either
+way, consistent with full leak but below it. That is the same standing as the
+0.85 ± 0.26 recorded below, so the partial-vs-full fork remains underpowered and
+the "base may drift within the word" reading is NOT retired.
 
 ## Status
 
-**Status**: resolved (echo real and word-anchored; φ5 ≈ 1, full leak, base
-word-locked; one-alphabet-per-word refuted at d3/d4)
+**Status**: partial — one-alphabet-per-word REFUTED and order-5 `g` confirmed via
+the d3/d4 controls; φ5 itself still underpowered (0.64–0.71, consistent with full
+leak, convention-dependent)
 
 The echo measurement is solid. The *partial*-leak reading — and with it the
 "base drifts within the word" interpretation — is a point estimate that does
