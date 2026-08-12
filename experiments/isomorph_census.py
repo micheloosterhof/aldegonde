@@ -161,3 +161,32 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def same_plaintext_candidates() -> None:
+    """Michel's test: same plaintext + same length forces the same pattern.
+
+    Two words with identical plaintext and length MUST share an isomorph pattern,
+    because c_j = base_w(g^(j mod 5)(p_j)) and base_w is a bijection, so the
+    pattern depends only on the plaintext and the length. Different bases cannot
+    change it. Pattern-sharing is therefore a NECESSARY condition for a repeated
+    plaintext word -- and since the pattern is the complete within-word invariant,
+    it is also the ONLY ciphertext-only condition available.
+
+    It is not sufficient, and measurement says it is not even suggestive: after
+    excluding the all-distinct class and conditioning on the number of non-trivial
+    words, pattern-sharing pairs match length-matched prose at every length
+    (z = +1.0, -0.1, -1.1, -1.4 for L = 5, 6, 7, 8). There is no excess, so nothing
+    separates a genuine repeated word from a coincidence.
+
+    A trap worth recording: WITHOUT excluding the all-distinct class the same test
+    reads z = +3.0, +6.1, +12.7, +11.5. That is pure artifact -- the LP has more
+    all-distinct words (55.1% at L=7 against prose 28.8%, the d1 suppression), so
+    one giant class inflates the pair count mechanically.
+
+    What remains usable is the key-free half: for the 806 words of length >= 6 the
+    d=5 pairs read plaintext equality DIRECTLY, c_j == c_{j+5} <=> p_j == p_{j+5},
+    giving 102 known equalities and 1,971 known inequalities over 2,073 pairs. Those
+    are facts about the plaintext that need no key, and they prune crib candidates --
+    which is the one route the information budget leaves open.
+    """
