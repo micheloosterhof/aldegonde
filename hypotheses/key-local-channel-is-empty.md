@@ -7,7 +7,7 @@ type: observation
 
 Every statistical attack on this corpus has failed, and it is not luck. The cipher
 has exactly one channel that is **local in the key**, that channel reduces to a
-handful of scalars worth ~16 bits, and everything else about the corpus is **key-global** — reachable
+handful of scalars worth ~17 bits, and everything else about the corpus is **key-global** — reachable
 only by committing to the whole key at once. Key-global means no partial credit, and
 no partial credit is what a delta-function landscape *is*.
 
@@ -62,12 +62,20 @@ The doublet count alone pins `theta = Σ_b P(g(b), b)` from a prior spread of 0.
 to a Poisson precision of 0.00079 — a 15.8× narrowing, **4.0 bits**. But `g` has
 order 5, so distance `d` tests `g^(d mod 5)` on the distance-`d` plaintext table, and
 d1…d7 are therefore **seven** g-only constraints. Measured directly
-(`magic_square_sweep.py`): 400,000 random order-5 permutations pass all seven at 2σ
-at a rate of 0.00125%, an 80,000× cut = **16.3 bits** against `g`'s 79.7. The seam
-count gives σ 2.2 bits of 97.9.
+(`magic_square_sweep.py`, plaintext tables weighted to the LP's word-length
+histogram): 3 of 400,000 random order-5 permutations pass all seven at 2σ, a
+133,000× cut = **17.0 bits** against `g`'s 79.7. The seam count gives σ 2.2 bits of
+97.9. The constraints are jointly satisfiable — optimisation reaches all six tunable
+cells to |z| ≤ 0.07 — so the tightness reflects a filter admitting only a tuned `g`,
+not a contradiction.
+
+Two figures were wrong before: 4.0 bits counted the doublet alone, and a later 16.3
+came from tables that were not length-matched. Length-matching by RESAMPLING is also
+unsafe — table noise from ~23k drawn words swings survivor counts with the seed — so
+the tables are now weighted deterministically over all 123k prose words.
 
 That is four times what an earlier version of this note claimed, and the correction
-matters for honesty rather than for the verdict: 16.3 bits leaves ~63 bits, about
+matters for honesty rather than for the verdict: 17.0 bits leaves ~63 bits, about
 1e19 candidates for `g` alone, with σ untouched.
 
 ## Five extraction attempts, all consistent with the above
@@ -78,7 +86,7 @@ matters for honesty rather than for the verdict: 16.3 bits leaves ~63 bits, abou
 | isomorph score over `g` | `isomorph_g_score.py` | real gradient (true −3.71, 1 transposition −3.75, random −3.93) but hillclimbs plateau at **chance agreement, 0–3 of 29** |
 | + quadgram sequence model | same | no measurable improvement — with ~20 candidates per word a wrong `g` still assembles into fluent text |
 | hard rejection (impossible words) | same | median random `g` makes **zero** words impossible; 32% refuted at 3,000 words, a 1.5× cut |
-| magic-square grid family | `magic_square_sweep.py` | 190,008 candidates → **1** survivor of all 7 distance cuts, against **2.4 expected by chance** — no enrichment, family refuted |
+| magic-square grid family | `magic_square_sweep.py` | 0 of 190,008 survive the 7 distance cuts against 1.4 expected by chance (p = 0.25) — no enrichment, and the filter admits only a tuned `g`, so any construction would fail |
 
 The second deserves emphasis: it refutes the *letter* of "no hillclimb can work"
 (`length-clocked-walk.md`), which holds for objectives needing the coupled base
@@ -89,7 +97,7 @@ schedule but not for this one. A gradient exists. It leads onto a plateau.
 ```
 within-word observables = the isomorph pattern        (complete invariant)
 isomorph patterns       = the per-distance rates       (p ≈ 0.36)
-per-distance rates      = ~16 bits about g (d1..d7, measured)
+per-distance rates      = ~17 bits about g (d1..d7, measured)
 ⟹ every informative observable is cross-word, hence key-global
 ⟹ key-global means right key or noise — the delta function
 ```
@@ -104,7 +112,7 @@ Exactly two routes remain:
 
 1. **Shrink the key space until it is enumerable.** `magic-square-grid-key.md` was
    the last live candidate and is now **REFUTED** (`magic_square_sweep.py`): its
-   190,008 candidates yield 1 survivor of the seven distance cuts against 2.4
+   190,008 candidates yield 0 survivors of the seven distance cuts against 1.4
    expected by chance, so the family behaves exactly like random order-5
    permutations and supplies no advantage — the same verdict the repo already
    reached for keyword grids. **No structured family remains proposed.**

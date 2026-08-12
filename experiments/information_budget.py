@@ -117,11 +117,13 @@ the local channel by argument rather than by exhaustion:
 
 CORRECTION (August 2026, `magic_square_sweep.py`): the 4.0-bit figure below is the
 DOUBLET COUNT alone. Since g has order 5, every distance d tests g^(d mod 5) on the
-distance-d plaintext table, so d1..d7 give SEVEN g-only constraints. Together they
-cut the space by 80,000x = **16.3 bits**, four times what the budget credited. The
-conclusion is unchanged -- 16.3 against g's 79.7 leaves ~63 bits, about 1e19
-candidates, and sigma's 97.9 are untouched -- but the local channel is four times
-richer than stated.
+distance-d plaintext table, so d1..d7 give SEVEN g-only constraints. With plaintext
+tables weighted to the LP's word-length histogram they cut the space by 133,000x =
+**17.0 bits**, four times what the budget credited. The conclusion is unchanged --
+17.0 against g's 79.7 leaves ~63 bits, about 1e19 candidates, and sigma's 97.9 are
+untouched -- but the local channel is four times richer than stated. Note the
+reference tables must be weighted, not resampled: resampling ~23k words leaves enough
+noise to swing a 2-sigma pass/fail with the seed.
 
 Four measured attempts agree with it: the doublet count yields 4.0 bits; the
 isomorph bag score gives a real gradient but hillclimbs plateau at chance

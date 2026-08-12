@@ -17,28 +17,37 @@ g-only constraint -- not just the doublet:
     3   g^3     3.702%       7   g^2     4.208%
     4   g^4     4.098%
 
-**Result.** Requiring all seven within 2 sigma leaves exactly ONE candidate:
-fixed = (1, 8, 10, 24), rotation 4, column-wise. The cascade is 190,008 -> 74 -> 33
--> 30 -> 5 -> 5 -> 5 -> 1.
+**Result: 0 of 190,008 survive -- and so do 0 of 200,000 random order-5
+permutations.** The family is therefore NOT distinguishable from random, and this
+sweep says nothing specific about the magic square.
 
-**But the control kills it.** 400,000 RANDOM order-5 permutations pass the same
-seven cuts at 0.00125%, which over a family of 190,008 predicts **2.4** survivors.
-Finding 1 is not enrichment -- it is slightly fewer than chance. The
-magic-square-ordered family behaves exactly like random order-5 permutations, so it
-supplies no search advantage, which was the whole point of using a structured
-family. Same conclusion the repo already reached for keyword grids: structure
-supplies no low diagonal.
+**Why the cuts are that tight.** Optimising directly over order-5 permutations
+reaches all six tunable constraints to |z| <= 0.07, so the set is jointly satisfiable
+and the model is not at fault. What it demands is a `g` DESIGNED against the digraph
+tables. No unoptimised construction supplies one, so 0 survivors was predictable for
+ANY construction family -- the same wall keyword grids hit. The useful consequence is
+general rather than specific: construction-based families cannot work, because the
+requirement is design and design does not compress into an enumerable key.
 
-**Byproduct, and it corrects `information_budget.py`.** The seven distance
-constraints together cut the space by 1/0.00125% = 80,000x, i.e. **16.3 bits** about
-g -- not the 4.0 bits the doublet count alone gives. The budget understated the
-key-local channel by a factor of four. It does not change the conclusion: 16.3 bits
-against g's 79.7 leaves 63 bits, about 1e19 candidates, still far beyond
-enumeration, and sigma's 97.9 bits are untouched. But the figure should be 16, not 4.
+**Length-matching the plaintext tables is load-bearing, and must be deterministic.**
+Unmatched tables loosen every constraint. But RESAMPLING prose to the LP histogram is
+also wrong: with ~23k sampled words the table noise is enough to move candidates
+across a 2-sigma window, so survivor counts swing with the seed (one draw gave 0
+family / 0 of 200,000 control, another 1 family / 5 of 400,000). This file therefore
+WEIGHTS every prose word by how over- or under-represented its length is in the LP,
+which uses all 123k words and is seed-free. An earlier version reported "1 survivor
+against 2.4 expected, refuted" from unmatched tables; both figures were artifacts,
+and the 2.4 rested on 5 control events besides.
 
-Scope: this tests the canonical tie-break only. The square has twelve duplicated
-values, so up to 2^12 fill orders exist; a different tie-break is a different family.
-Given the complete absence of enrichment there is little reason to try them.
+**Byproduct for `information_budget.py`.** With matched tables 0 of 200,000 random g
+pass, so the seven constraints cut by >200,000x = **>17.6 bits** about g, against the
+4.0 bits the budget credits to the doublet count alone. The conclusion is unchanged:
+even 17.6 bits leaves ~62 of g's 79.7, about 1e19 candidates, with sigma's 97.9
+untouched.
+
+Scope: the canonical tie-break only. The square's twelve duplicated values admit up
+to 2^12 fill orders; trying them is pointless, though not for the reason first given
+-- no fill order produces a tuned diagonal.
 """
 
 from __future__ import annotations
@@ -82,7 +91,7 @@ def observed_rates(words: list[list[int]]) -> dict[int, tuple[float, float]]:
     return out
 
 
-def plaintext_tables(distances) -> dict[int, np.ndarray]:
+def plaintext_tables(distances, lp: list[list[int]]) -> dict[int, np.ndarray]:
     if not PROSE.exists():
         import urllib.request
 
@@ -96,12 +105,27 @@ def plaintext_tables(distances) -> dict[int, np.ndarray]:
         r = [IDX[c] for c in english_to_runeglish(w.upper()) if c in IDX]
         if r:
             words.append(r)
+    # Weight each prose word by how over- or under-represented its length is in
+    # the LP. Deterministic: resampling instead makes every constraint's pass/fail
+    # depend on the draw, which is enough to move candidates across a 2-sigma window.
+    from collections import Counter
+
+    lp_hist = Counter(len(w) for w in lp)
+    prose_hist = Counter(len(w) for w in words)
+    weight = {
+        length: lp_hist[length] / prose_hist[length]
+        for length in prose_hist
+        if length in lp_hist
+    }
     out = {}
     for d in distances:
         T = np.zeros((M, M))
         for w in words:
+            f = weight.get(len(w), 0.0)
+            if not f:
+                continue
             for j in range(len(w) - d):
-                T[w[j]][w[j + d]] += 1
+                T[w[j]][w[j + d]] += f
         out[d] = T / T.sum()
     return out
 
@@ -125,7 +149,7 @@ def fits(g: np.ndarray, obs, tables) -> bool:
 def main() -> None:
     lp = load_words()
     obs = observed_rates(lp)
-    tables = plaintext_tables(obs)
+    tables = plaintext_tables(obs, lp)
     square = extract()
     ranked = [
         i

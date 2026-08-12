@@ -18,20 +18,33 @@ is. The keyword-Quagmire family was exhausted (`mixed-alphabet-vigenere.md`,
 
 ## Status
 
-**Status**: REFUTED (August 2026, `experiments/magic_square_sweep.py`)
+**Status**: no advantage demonstrated — but the sweep does NOT single this family out
+(August 2026, `experiments/magic_square_sweep.py`, corrected on review)
 
-The sweep ran. Requiring all seven g-only distance constraints (d1..d7, each testing
-g^(d mod 5) on the distance-d plaintext table) within 2σ leaves exactly ONE of the
-190,008 candidates: fixed = (1, 8, 10, 24), rotation 4, column-wise. But 400,000
-random order-5 permutations pass the same cuts at 0.00125%, which predicts **2.4**
-survivors in a family that size. One is slightly FEWER than chance, so there is no
-enrichment at all: the magic-square-ordered family behaves exactly like random
-order-5 permutations and supplies no search advantage — which was its entire purpose.
-Same verdict the repo reached for keyword grids.
+The sweep ran against seven g-only distance constraints (d1..d7, each testing
+g^(d mod 5) on the distance-d within-word plaintext table) at 2σ. With plaintext
+tables weighted to the LP's own word-length histogram — the correct reference — the
+family yields **0** survivors of 190,008, against **1.4 expected by chance** (3 of
+400,000 random order-5 permutations pass; Poisson p = 0.25). So the family is not
+distinguishable from random, and the sweep says nothing specific about the magic
+square.
 
-Scope: this tests the canonical tie-break. The square has twelve duplicated values so
-up to 2^12 fill orders exist, but given the complete absence of enrichment there is
-little reason to try others.
+**Why: the filter admits only a TUNED g.** Optimising directly over order-5
+permutations reaches all six tunable constraints to |z| ≤ 0.07, so the set is
+jointly satisfiable and the model is not at fault. What it requires is a `g` designed
+against the digraph tables — exactly the conclusion the repo already reached for
+keyword grids. No unoptimised construction will supply one, so this outcome was
+predictable for ANY construction family and is not evidence against the square in
+particular.
+
+An earlier version of this status reported "1 survivor against 2.4 expected by
+chance, refuted". Those figures came from plaintext tables that were NOT
+length-matched, which loosens every constraint; the control rate they rested on was
+also 5–6 events, so "2.4" carried a factor-of-two error. Retracted.
+
+Scope: canonical tie-break only; the square's twelve duplicated values admit up to
+2^12 fill orders. Trying them is pointless for a different reason than stated before
+— not absence of enrichment, but that no fill order produces a tuned diagonal.
 
 ## The square
 
@@ -138,15 +151,24 @@ are broken canonically by reading order. For scale, the Quagmire sweep drove
 
 ## Verdict
 
-Refuted, and it cost one sweep — which is the best thing about it. The proposal was
-cheap to falsify and was falsified: 1 survivor against 2.4 expected by chance, so the
-family carries no enrichment over random order-5 permutations.
+No advantage shown, and it cost one sweep — which is the best thing about it. The
+family gives 0 survivors of 190,008 against 1.4 expected by chance (Poisson p = 0.25),
+so it carries no enrichment over random order-5 permutations.
 
-What it excludes is narrow and should be stated as such: the magic-square-ORDERED
-grid family under the canonical tie-break. It does not exclude grid-derived `g` in
-general, and σ was never given a construction here, so that gap goes untested.
+**But it is not singled out, and that is the honest reading.** The control passes at
+essentially zero as well, because the seven cuts admit only a `g` TUNED against the
+digraph tables — optimisation over order-5 permutations reaches all six tunable
+constraints to |z| ≤ 0.07, so the set is satisfiable and the model is not at fault.
+Zero survivors was therefore predictable for ANY construction family. The general
+consequence is stronger than the specific one: **no construction-based family can
+work**, because the requirement is design, and design does not compress into an
+enumerable key. That is the same wall keyword grids hit.
 
-Byproduct worth more than the hypothesis: the sweep measured the seven g-only
-distance constraints at 16.3 bits (a 80,000× cut), which corrects the 4.0-bit figure
-in `key-local-channel-is-empty.md` by a factor of four. Still 63 bits short of `g`
-alone.
+What is NOT established: that the family excludes `g`. Seven cuts at 2σ reject a true
+`g` with probability ~28%, and only the canonical tie-break was tested. σ was never
+given a construction here either, so that gap goes untested.
+
+Byproduct worth more than the hypothesis: the sweep measures the seven g-only
+distance constraints at **17.0 bits** (a 133,000× cut), correcting the 4.0-bit figure
+in `key-local-channel-is-empty.md` by a factor of four. Still ~63 bits short on `g`
+alone, with σ's 97.9 untouched.
