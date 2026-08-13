@@ -241,6 +241,22 @@ newlines are line wraps (words flow across them).
   multi-step schedule can. This generalises the repo's use of mod-5 uniformity,
   which previously excluded only schedules containing an identity step
   (`stay-slot-hold.md`); the argument covers any schedule whose relations differ.
+- **A 5-ring cylinder explains `g`'s ORDER, and cannot supply σ (August 2026,
+  Michel's proposal).** Read a Jefferson-style cylinder at a FIXED offset of one row,
+  with consecutive rings related by `ρ_{j+1} = ρ_j g`. Then
+  `c_j = ρ_j(p_j) = ρ_0 g^j(p_j)` — exactly the walk's form with `base = ρ_0` — and a
+  doublet is exactly `p_j = g(p_{j+1})`. Crucially, if the cylinder closes after five
+  rings then `ρ_5 = ρ_0` forces **`g⁵ = id`**: the order-5 property becomes a
+  consequence of having five rings rather than an unexplained design choice, which is
+  the best mechanical account of the period on offer. Three things it cannot do.
+  Identical rings are impossible (every power of a 29-cycle has order 29, since 29 is
+  prime). A VARYING offset breaks it: `R_j(k) = ρ_j^{-k}ρ_{j+1}^{k}` equals `g` only
+  at k = 1 (checked: k = 2 gives order 105, k = 3 gives 26), so the five relations
+  would differ and one phase would carry an untuned diagonal — excluded at z = −4.3 to
+  −9.2 by the phase-flatness above. And cyclically shifting the ring order preserves
+  all five relations but yields only 5 distinct bases against the ≥300 required. So
+  the cylinder accounts for the letter step and stalls at σ, which is the same place
+  every mechanical story stops (`key-local-channel-is-empty.md` §5).
 - **Why no construction for `g` can help (August 2026).** Order 5 on 29 points
   forces cycle type 5⁵1⁴, and all such permutations are **conjugate**: `g = K σ₀ K⁻¹`
   for a canonical σ₀ and arbitrary `K`. So there is no algebraic subfamily to

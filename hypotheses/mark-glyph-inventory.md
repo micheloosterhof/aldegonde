@@ -79,6 +79,16 @@ delimiter on the strength of exactly those two lines; that was generalising
 from the first two examples reviewed, and the census contradicts it. It behaves
 like a heavier stop than the 4-dot glyph — and both are recorded as `.`.
 
+**Sharpened (August 2026): it is specifically a SECTION-boundary stop.** Of the 29
+thirteen-dot marks, **22 sit within one word of a section marker** (`&`, `$`, `%`)
+against 1.8 ± 1.3 expected from random placement — **z = +15.5**. That also disposes
+of a clustering effect found and then withdrawn in the same session: the marks appear
+to pair up in word index (14 gaps of ≤6 words, against 7.2 ± 2.0 uniform), which
+looks bracket-like, but **13 of those 14 pairs straddle a section marker**. A section
+ends with one and the next begins with one, so the pairing is section structure, not a
+delimiter class. The bracket reading stays retracted, now for a measured reason rather
+than a census of two lines.
+
 Manually confirmed cases (Michel, from the review sheet), which is how the
 class was found:
 

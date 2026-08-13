@@ -245,3 +245,28 @@ ciphertext for identical plaintext impossible (position-unique running
 keys) are disfavored; hypotheses where state is derived from bounded local
 context (plaintext-driven state machines, word-keyed schemes with a finite
 state pool) are favored.
+
+## Does 1449's factorisation help? (August 2026 — no, and here is the scope)
+
+1449 = 3² · 7 · 23, and unlike 31 (a candidate raised and dropped the same day, prime
+and > 29 so unachievable) both 7 and 23 ARE achievable permutation orders on 29
+points. So `ord(σ) | 1449`, which would make `σ^1449 = id`, is not absurd.
+
+It buys nothing, for two reasons of different strength.
+
+**Outside the normaliser branch it is simply irrelevant.** The 1449 steps are
+`g^{e_i} σ` and do not commute, so they never collect into `g^k σ^1449`; the
+divisibility of the step count says nothing about the product.
+
+**Inside the normaliser branch it is refuted.** If `σ g σ⁻¹ = g^r`, the product does
+collect and the constraint becomes `g^k σ^1449` with `k = Σ aᵢ rⁱ mod 5`. But σ's
+image in Aut(Z/5) ≅ Z/4 has order dividing both ord(σ) and 4, and every divisor of
+1449 is ODD — so gcd(ord(σ), 4) = 1, the image is trivial, and **r = 1 is forced**.
+The commuting case gives k = Σ aᵢ = 4946 ≡ 1 mod 5, so the residue is `g¹`, which
+fixes exactly 4 points (cycle type 5⁵1⁴) — fewer than the **6** this repeat requires.
+
+Note the constraint being tested is the PARTIAL one (agreement on 6 plaintext image
+points), not a full return; the full-return reading was the 10²²-too-strict filter
+retracted elsewhere in this file. A first pass at this compared against the full
+return and then argued from a register-dependent base count, both of which the
+group-theoretic argument supersedes.
