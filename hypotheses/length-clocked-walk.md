@@ -228,6 +228,29 @@ newlines are line wraps (words flow across them).
 - **Single permutation refuted.** Doublet suppression needs a *rich* order-5
   `g` (~25 runes moving); flatness needs a *large-order* generator; one
   permutation on 29 runes can't be both. Forces two independent generators.
+- **The five adjacent relations must be IDENTICAL — a positive argument for one
+  `g` over any schedule (August 2026, `experiments/five_relation_test.py`).** Any
+  five-alphabet rotation has five adjacent relations `R_j = A_j⁻¹A_{j+1}`, and
+  closure forces `R_0R_1R_2R_3R_4 = id`, leaving four tunable and the fifth forced
+  as the inverse of the others' product — hence untuned, diagonal ≈ 1/29. That
+  phase would carry a ~5× higher doublet rate. Measured by phase (position mod 5),
+  the rates are 0.528 / 0.812 / 0.494 / 0.651 / 0.698%, equal at χ² = 2.59 on 4 df
+  (p ≈ 0.63), and every placement of an untuned step is excluded — 30–118 doublets
+  predicted against 6–22 observed, **z = −4.3 to −9.2**. So all five relations share
+  one low diagonal, which is exactly what `A_j = base ∘ g^j` gives and what no
+  multi-step schedule can. This generalises the repo's use of mod-5 uniformity,
+  which previously excluded only schedules containing an identity step
+  (`stay-slot-hold.md`); the argument covers any schedule whose relations differ.
+- **Why no construction for `g` can help (August 2026).** Order 5 on 29 points
+  forces cycle type 5⁵1⁴, and all such permutations are **conjugate**: `g = K σ₀ K⁻¹`
+  for a canonical σ₀ and arbitrary `K`. So there is no algebraic subfamily to
+  enumerate — every "construction" is a parameterisation of `K`, which is why
+  keyword grids (`g-from-5x5-grid.md`) and the magic square
+  (`magic-square-grid-key.md`) buy nothing. And no affine map qualifies at all,
+  since 5 ∤ |AGL(1,29)| = 812. Five *does* divide |GF(29²)*| = 840, so an order-5
+  multiplier exists on a DIGRAPH unit — disfavoured by flat parity at periods 2–6 —
+  and |Z/31*| = 30 and |Z/11*| = 10, which need 31 symbols and a many-to-one map
+  respectively.
 - **Base re-key is thorough.** No cross-word d5 echo at any (first-word-length,
   distance) cell; first letters of adjacent words are independent; the word
   boundary is a hard cut of the alphabet.
