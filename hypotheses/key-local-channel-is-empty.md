@@ -78,6 +78,45 @@ That is four times what an earlier version of this note claimed, and the correct
 matters for honesty rather than for the verdict: 16.0 bits leaves ~64 bits, about
 1e19 candidates for `g` alone, with σ untouched.
 
+### 5. σ has ~ZERO local constraint, and that is the real wall
+
+At a seam the base cancels, so a whole family of cross-boundary comparisons is local
+in the key: comparing the a-th-from-last rune of word `w` with the b-th of `w+1` is
+an equality exactly when `p_{last−a} = g^a σ g^b (p_{first+b})`. Each `(a, b)` is
+therefore a diagonal constraint on a different group element. All 16 with a, b ≤ 3
+measured (`experiments/sigma_local_budget.py`):
+
+| relation | rate | z vs chance |
+|---|---|---|
+| σ (the seam doublet) | 0.786% | −7.9 |
+| the other 15 (σg, gσ, gσg, g²σ, …) | 2.8–3.9% | **−1.5 to +0.9** |
+
+Only `(0,0)` departs — and `negative-control-battery.md` already retired it: its
+apparent significance came from a word-order null that destroys the doublet
+suppression, and against a doublet-PRESERVING surrogate it reads 23 against
+19.7 ± 4.6, **z = +0.72**.
+
+So the budget is starkly asymmetric:
+
+| | entropy | local constraint |
+|---|---|---|
+| `g` | 79.7 bits | **16.0 bits** |
+| σ | 97.9 bits | **~0 bits** |
+
+**σ is the harder half — more entropy and less constraint.** Even a known `g` leaves
+σ's 98 bits untouched by any local statistic; σ can only be constrained key-globally,
+through the base schedule, which presupposes the whole key. Three consequences:
+
+- **No σ construction can be TESTED**, because no local observable exists to score a
+  proposal against. That is why every mechanical account — the two-wheel device, a
+  5-ring cylinder — explains `g` and stalls at σ, and why
+  `magic-square-grid-key.md` ended UNDECIDED rather than decided.
+- Effort spent on `g` constructions is spent on the easier 45% of the problem.
+- It independently reproduces the crib size: σ's 98 bits at log2(29) = 4.86 bits per
+  rune needs ~20 runes of over-determination, `g`'s remaining ~64 bits ~13 more, and
+  `base_0` absorbs the first 29 — about 62 contiguous runes, matching the estimate in
+  `information_budget.py`.
+
 ## Five extraction attempts, all consistent with the above
 
 | attempt | script | result |

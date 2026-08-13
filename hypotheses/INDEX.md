@@ -19,7 +19,7 @@ proposed mechanisms scored against them.
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
 | [flat-ioc.md](flat-ioc.md) | Flat Unigram Distribution (IoC = 1/29) | confirmed (characterization) |
 | [kappa-spectrum.md](kappa-spectrum.md) | Kappa Anomalous Only at Skip 1 | confirmed (characterization) |
-| [key-local-channel-is-empty.md](key-local-channel-is-empty.md) | The Only Key-Local Channel is Empty (why no filter or gradient exists) | confirmed (characterization); isomorph patterns reduce to six per-distance scalars (p=0.36) worth ~4 bits about g, so all information is key-global -- four extraction attempts measured, all consistent |
+| [key-local-channel-is-empty.md](key-local-channel-is-empty.md) | The Only Key-Local Channel is Empty (why no filter or gradient exists) | confirmed (characterization); g gets 16.0 bits of local constraint from d1..d7 but SIGMA GETS ~0 (all 16 cross-boundary relations at chance; the seam diagonal retired at z=+0.72), so sigma is the harder half -- more entropy, no constraint, and no local observable to test a construction against |
 | [lag11-cross-word-deficit.md](lag11-cross-word-deficit.md) | Distance-11 Coincidence Deficit (Cross-Word, mod-5 Phase) | retired (scan noise; word-length-periodicity mechanism refuted by test F) |
 | [lag5-digraph-structure.md](lag5-digraph-structure.md) | Lag-5 Paired-Match Structure | confirmed (characterization) |
 | [line-initial-bias.md](line-initial-bias.md) | Line-Initial Rune Bias (layout artifact) | confirmed (characterization) |
