@@ -175,6 +175,16 @@ proposed, not a proof of exhaustiveness.)
    and the crib is weaker per rune — but with `base_0` eliminated they still give
    injectivity constraints on `(g, σ)` alone.
 
+   **The enumeration should admit two-word concatenations, not only dictionary
+   words.** If scribal merging is real at the rate the 2-rune share fixes
+   (`d5-partial-alphabet-leak.md`, CLOCK section), 18% of LP units of length ≥ 6 are
+   two true words joined, rising to 27–39% at lengths 10–13. Every XY···XY target
+   sits at length ≥ 7, the contaminated end, so a candidate list drawn from single
+   dictionary words silently excludes the true answer for roughly a sixth to a third
+   of them. Scribal merging is undecided, so this is a hedge rather than a
+   correction — but the hedge is cheap and the crib route is the only one that does
+   not pass through σ.
+
 ## Falsifiable
 
 The argument assumes `base_w` changes at every word and is otherwise free. If it
