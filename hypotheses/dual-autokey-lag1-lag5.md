@@ -10,14 +10,20 @@ c_j = α·p_j + β·c_{j−1} + γ·p_{j−5}   (mod 29)
 ```
 
 Michel's proposal (August 2026). Two feedback taps at once: a lag-1 **ciphertext**
-autokey and a lag-5 **plaintext** autokey. It is the first non-permutation mechanism
-to reproduce the doublet suppression *and* the boundary-blindness from structure
-alone, with no tuned alphabet relation anywhere.
+autokey and a lag-5 **plaintext** autokey. It was first recorded here as reproducing the doublet suppression and the
+boundary-blindness *from structure alone*. **That was wrong.** Over 200 random
+rune→value labellings the mechanism gives d1 = 3.41% ± 0.76 — chance. The 2.28%
+originally reported came from the rune-index labelling, sitting at z = −1.48: one
+arbitrary choice's fluctuation, reported as a property of the mechanism.
+
+The suppression in every variant of this family comes from **tuning the labelling**,
+and a labelling is a 29-permutation. So this does not escape
+`doublet-suppression-requires-design.md`; that note's conclusion stands.
 
 ## Status
 
-**Status**: partial — reproduces four of six signatures; falls ~1.4× short on the
-doublet depth against the reference available, and does not produce the d5 echo
+**Status**: partial, and WEAKER than first recorded — the doublet suppression is
+NOT structural. Corrected August 2026 after a labelling control.
 
 ## Why it is not covered by the existing autokey disproofs
 
@@ -41,6 +47,10 @@ strength of that test. That row covered *ciphertext* feedback only and has been
 corrected.
 
 ## Mechanism
+
+What survives, and it is narrower: the family needs **one** tuned permutation (the
+labelling, ~104 bits) where the walk needs **two** (`g` and σ, ~178 bits). If it fit,
+it would be the simpler key. It does not fit — see the held-out test below.
 
 **β = 1 is forced.** The doublet condition is
 `c_j(1−β) = α·p_{j+1} + γ·p_{j−4}`. If β ≠ 1 the left side is a flat ciphertext
@@ -69,6 +79,27 @@ invertible.
 | seam d1 vs within d1 | 0.79 / 0.63 | 1.91 / 2.28 | ✓ boundary-blind for free |
 | within-word d1 | **0.63%** | **2.28%** | short |
 | within-word d5 | **4.92%** | **2.99%** | ✗ no echo |
+
+## Held-out test — the fitted match is not evidence
+
+Fitting the labelling against four targets (d1, seam, d5, grouped IoC) reaches them
+almost exactly. That is expected and means nothing: ~104 bits of freedom against four
+scalars. The test is what happens on distances NOT in the objective:
+
+| | fitted? | model | LP | diff |
+|---|---|---|---|---|
+| d1 | yes | 0.65 | 0.63 | +0.02 |
+| d5 | yes | 4.92 | 4.92 | 0.00 |
+| seam | yes | 0.55 | 0.79 | −0.24 |
+| grouped IoC | yes | 1.104 | 1.026 | +0.078 |
+| **d2** | **no** | 3.10 | 3.47 | −0.38 |
+| **d3** | **no** | 3.47 | 3.70 | −0.23 |
+| **d4** | **no** | 3.28 | 4.10 | **−0.81** |
+| **d6** | **no** | 3.24 | 2.45 | **+0.79** |
+
+The model returns ~chance at every held-out distance while the LP carries real
+structure — d4 high, d6 low. Errors of 1–2σ each. So the mechanism reproduces what it
+is fitted to and nothing else.
 
 ## Evidence against / open
 

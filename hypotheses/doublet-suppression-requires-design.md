@@ -42,18 +42,20 @@ Per-position bijectivity. The known ways, and their status:
 |---|---|---|
 | **Fractionation** (bifid etc.) | `c_j` mixes coordinates from several `p` | **excluded structurally** — an output doublet needs both coordinates to collide, and balanced marginals floor the product near 1/(rows×cols) ≈ chance. Annealed 5×6 grids reach 0.0237–0.0246 against 0.0063 (`bifid-fractionation.md`) |
 | **Ciphertext feedback** (`f_{j+1}` depends on `c_j` alone) | adjacent positions coupled by construction | **excluded empirically** — each group sharing a previous rune would be enciphered by one fixed map, so grouped IoC must read ~1.78; measured within words 1.0227 / 0.9979 / 1.0060 at lags 1/2/5 |
-| **Mixed feedback** (ciphertext *and* plaintext taps) | same, but a plaintext tap convolves the grouped distribution flat again | **NOT excluded** — `dual-autokey-lag1-lag5.md` reaches grouped IoC 1.046 where the pure form gives 1.756, and suppresses doublets from structure with no tuned permutation. It falls ~1.4× short on depth (floor 0.86% vs 0.63%) and yields no d5 echo, but the grouped-IoC test does not touch it |
+| **Mixed feedback** (ciphertext *and* plaintext taps) | a plaintext tap convolves the grouped distribution flat again | **not excluded by the grouped-IoC test** (`dual-autokey-lag1-lag5.md` reaches 1.046 where the pure form gives 1.756) — but it does NOT escape this note: its doublet suppression requires a tuned labelling, which is a permutation, and over random labellings it sits at chance |
 | **Homophonic** (one plaintext letter, several runes) | the encoder simply declines to repeat, so suppression is free | **excluded by alphabet size** — 29 runes in, 29 out leaves no spare symbols (`homophonic-substitution.md`) |
 | **Digraphic** (unit is a rune pair) | doublets constrained inside a pair | **disfavoured** — flat parity at periods 2–6 |
 
 ## The one structural gap
 
-Two classes now escape the "must be designed" conclusion, not one. **Mixed feedback**
-(`dual-autokey-lag1-lag5.md`) gets the suppression from a plaintext relation
-`p_{j+1} = λ·p_{j−4}` that carries no key material at all — the encoder designs
-nothing — though it floors ~1.4× above the observed depth and produces no d5 echo.
-And **homophonic** is the other class where suppression costs nothing, failing *only*
-on alphabet size. It would revive if the ciphertext
+**Homophonic remains the only class** where the suppression would cost nothing rather
+than being designed, and it fails only on alphabet size.
+
+A mixed-feedback candidate (`dual-autokey-lag1-lag5.md`) appeared to escape this
+conclusion and does not. Its apparent structural suppression — 2.28% against a 3.45%
+chance — was one labelling's fluctuation: over 200 random labellings the mechanism
+gives 3.41% ± 0.76, i.e. chance. Its suppression comes from tuning the labelling, and
+a labelling is a 29-permutation. The conclusion of this note is unaffected. It would revive if the ciphertext
 alphabet were larger than the plaintext alphabet — which is what
 `thirty-symbol-disk.md` (unresolved) posits, treating the `.` mark as a 30th symbol.
 
