@@ -59,7 +59,7 @@ cipher untouched — so it is a property of the plaintext or of the separator la
   (August 2026). The separators are not missing from the transcription.
   **Consequence: the visible word lengths are the composer's own clock, so the
   walk's clock is sound and the 314M-key Quagmire sweep was correctly clocked.**
-- **Transcriber inattention / random separator loss.** Loss that ignores word
+- **Transcriber inattention / RANDOM separator loss.** Loss that ignores word
   length cannot hit the observed mean and the observed 2-rune share together: at
   q = 0.09 it reproduces the mean (4.381 vs 4.425) but leaves 2-rune at 21.8%; at
   q = 0.15 it overshoots the mean to 4.611 and still sits at 20.5%. Removing
@@ -72,7 +72,26 @@ cipher untouched — so it is a property of the plaintext or of the separator la
   ~700-word solved sample and lands within 0.26 points of it. Better register data
   will not dissolve this.
 
-## Mechanism: open; the two models tried are not separable by these statistics
+## A fourth candidate, and the only one that breaks the key search
+
+**Scribal merging** — the scribe writing two words joined, AFTER encipherment — is
+distinct from the three below and is not excluded by anything above. Random loss is
+excluded and the transcription is verified, but a transcription can faithfully
+record a join the scribe made, and selective joining at short words is exactly the
+shape the deficit has.
+
+It matters more than the other three because it is the only one that puts the walk
+on a **wrong clock**: two base steps happened where every search models one.
+Candidates 1 and 3 below leave the clock intact (under 3 the composer enciphered
+the merged unit as one word, so one base covers it).
+
+The test is phi5, the within-word d5 leak fraction, which counts the fraction of
+distance-5 pairs lying inside a single true word — see the CLOCK section of
+`d5-partial-alphabet-leak.md`. It bounds scribal merging very loosely: every
+absorption rate from 0% to 100% of short words sits within 1.6σ of the observed
+d5. So the threat is live and unmeasured, not refuted.
+
+## Mechanism: open; the models tried are not separable by these statistics
 
 Three candidates. The two that were modelled (register vs merging) reverse
 with the choice of reference base, so THOSE TWO are not separable by the
@@ -128,7 +147,16 @@ vary the corpus, not the draw.
   across all 2,928 words instead of 465. Under the attach-to-previous variant
   `THE` lands word-finally at phase `g^((L−2) mod 5)`, `g^((L−1) mod 5)` — still
   computable, just length-dependent. Direction is unsettled, so score both.
-- **The statistics tried so far are all functions of word length, and none
+- **d5 was tried as a non-length discriminator and fails, twice** (August 2026,
+  `d5_unit_model.py`, `d5_clock_check.py`). Both failures are structural rather
+  than statistical. On the level: merging raises the plaintext repeat rate (frequent
+  letters meet across boundaries) while the straddling pairs go flat, and the two
+  effects cancel to 0.0538 vs 0.0540 against an LP error of 0.0048. On the shape: a
+  merged unit's straddle fraction FALLS with length, cancelling the rising chance a
+  long unit contains a join, so both models predict phi5 flat in length (measured
+  slope +0.011 ± 0.137). This extends the file's finding beyond length statistics —
+  the first non-length statistic tried also fails to separate them.
+- **The other statistics tried are all functions of word length, and none
   separates the candidates.** That is not the same as the length family being
   exhausted — only that the histogram, the tail, and the autocorrelation do not
   discriminate. The most promising untried direction is the mark geometry:
@@ -143,6 +171,10 @@ vary the corpus, not the draw.
   transliteration-convention calibration.
 - `experiments/absorption_model.py` — random vs selective loss, the register/merging
   head-to-head on both bases, the bootstrap caveat, and the autocorrelation check.
+- `experiments/d5_unit_model.py` — register vs merging vs blind cutting, on d5.
+- `experiments/d5_straddle_prediction.py` — phi5 predicted from the straddle
+  fraction with no free parameter.
+- `experiments/d5_clock_check.py` — phi5 as a clock test, resolved by unit length.
 - `experiments/short_word_deficit.py` — the original anatomy: per-section
   homogeneity, drift, and the segmentation-convention bounds.
 

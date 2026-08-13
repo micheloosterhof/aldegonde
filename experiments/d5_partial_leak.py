@@ -1,14 +1,21 @@
-# ABOUTME: Shows the within-word d5 echo is a PARTIAL same-alphabet leak
-# ABOUTME: (IoC 1.43 vs plaintext ~1.74), so the base drifts sub-word not per-word.
+# ABOUTME: Measures the within-word d5 echo as a same-alphabet leak (IoC 1.43 vs
+# ABOUTME: plaintext 1.60) and shows partial-vs-full leak is underpowered at 102 events.
 """Reproduces hypotheses/d5-partial-alphabet-leak.md.
 
 Reads every within-word coincidence as a coincidence IoC (rate * 29):
   flat cipher baseline           = 1.00
-  natural runeglish plaintext    ~ 1.74  (unigram roughness)
+  natural runeglish plaintext    ~ 1.60  (measured within-word d5 on real prose;
+                                    the 1.74 unigram roughness is NOT the right
+                                    reference -- distance 5 is odd, so vowel and
+                                    consonant positions anti-align and the
+                                    within-word rate sits below the marginal one)
 A same-alphabet 5-gap leaks the plaintext value; a different-alphabet gap
-flattens to 1.00. The LP within-word d5 sits at 1.43 -> only ~58% of within-
-word 5-gaps share the alphabet -> the base alphabet is not constant across a
-word.
+flattens to 1.00. The LP within-word d5 sits at 1.43, giving a point estimate of ~72% of
+within-word 5-gaps sharing the alphabet -- but the bootstrap CI contains the
+full-leak value, so full leak (one base per word) is consistent and this script
+does NOT establish a base that varies inside a word. See the Consequences of
+`d5-partial-alphabet-leak.md`, and `d5_clock_check.py` for what the number does
+constrain.
 
 The plaintext reference is a proxy: real English (/usr/share/dict/web2)
 converted to runeglish with the gematria digraph rules.
