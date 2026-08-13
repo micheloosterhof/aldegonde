@@ -78,13 +78,15 @@ That is four times what an earlier version of this note claimed, and the correct
 matters for honesty rather than for the verdict: 16.0 bits leaves ~64 bits, about
 1e19 candidates for `g` alone, with σ untouched.
 
-### 5. σ has ~ZERO local constraint, and that is the real wall
+### 5. No local constraint on σ is KNOWN, across the reach-≤3 family
 
 At a seam the base cancels, so a whole family of cross-boundary comparisons is local
 in the key: comparing the a-th-from-last rune of word `w` with the b-th of `w+1` is
 an equality exactly when `p_{last−a} = g^a σ g^b (p_{first+b})`. Each `(a, b)` is
-therefore a diagonal constraint on a different group element. All 16 with a, b ≤ 3
-measured (`experiments/sigma_local_budget.py`):
+therefore a diagonal constraint on a different group element. The 16 with a, b ≤ 3
+measured (`experiments/sigma_local_budget.py`) — **this is a family, not an
+exhaustive account of local σ observables**: larger reaches exist up to the word
+length, and non-diagonal local statistics are not covered:
 
 | relation | rate | z vs chance |
 |---|---|---|
@@ -98,19 +100,22 @@ suppression, and against a doublet-PRESERVING surrogate it reads 23 against
 
 So the budget is starkly asymmetric:
 
-| | entropy | local constraint |
+| | entropy | local constraint measured |
 |---|---|---|
-| `g` | 79.7 bits | **16.0 bits** |
-| σ | 97.9 bits | **~0 bits** |
+| `g` | 79.7 bits | **16.0 bits** (d1–d7) |
+| σ | 97.9 bits | **none found** (reach ≤ 3) |
 
-**σ is the harder half — more entropy and less constraint.** Even a known `g` leaves
-σ's 98 bits untouched by any local statistic; σ can only be constrained key-globally,
-through the base schedule, which presupposes the whole key. Three consequences:
+**On the evidence available σ is the harder half — more entropy, and no local
+constraint yet identified.** Stated at proper scope: the reach-≤3 diagonals are all
+at chance and the seam diagonal is retired, so *no known* local statistic constrains
+σ. That is weaker than "σ has zero local constraint", which the measurement does not
+establish — an untested statistic could exist. Three consequences, correspondingly
+hedged:
 
-- **No σ construction can be TESTED**, because no local observable exists to score a
-  proposal against. That is why every mechanical account — the two-wheel device, a
-  5-ring cylinder — explains `g` and stalls at σ, and why
-  `magic-square-grid-key.md` ended UNDECIDED rather than decided.
+- **No σ construction can be scored against any statistic we have.** That is why
+  every mechanical account — the two-wheel device, a 5-ring cylinder — explains `g`
+  and stalls at σ, and why `magic-square-grid-key.md` ended UNDECIDED. Finding a
+  local σ observable would reopen the route, and none of the 16 tested is one.
 - Effort spent on `g` constructions is spent on the easier 45% of the problem.
 - It independently reproduces the crib size: σ's 98 bits at log2(29) = 4.86 bits per
   rune needs ~20 runes of over-determination, `g`'s remaining ~64 bits ~13 more, and
@@ -147,14 +152,19 @@ will fail.
 
 ## Consequences
 
-Exactly two routes remain:
+Two routes are known. (Two, not "exactly two" — this is a list of what has been
+proposed, not a proof of exhaustiveness.)
 
-1. **Shrink the key space until it is enumerable.** `magic-square-grid-key.md` was
-   the last live candidate and is now **REFUTED** (`magic_square_sweep.py`): its
-   190,008 candidates yield 0 survivors of the seven distance cuts against 1.4
-   expected by chance, so the family behaves exactly like random order-5
-   permutations and supplies no advantage — the same verdict the repo already
-   reached for keyword grids. **No structured family remains proposed.**
+1. **Shrink the key space until it is enumerable.** `magic-square-grid-key.md` is
+   **UNDECIDED**, not refuted (`magic_square_sweep.py`): its 190,008 candidates give
+   0 survivors of the seven distance cuts, but so does a random control at any
+   threshold retaining a true `g`, because the cuts admit only a `g` tuned against
+   the digraph tables. Separating a candidate from the ~32 false positives at 3σ
+   needs the 2-rune verifier → the base schedule → σ, which has no construction. So
+   **σ's absence blocks the evaluation, not only the attack**, and no construction
+   family currently has a decidable test. Two families have been tried (keyword
+   grids, the magic square) and neither shows enrichment; that is two negatives, not
+   a general impossibility.
 2. **Import external information.** About **63 contiguous crib runes, roughly 15
    consecutive words**, closes the gap. DIVINITY WITHIN is 13 runes and ~14 bits,
    consistent with its recorded 16,000× reduction and about a fifth of the way.

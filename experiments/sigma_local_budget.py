@@ -1,6 +1,6 @@
 # ABOUTME: Enumerates every cross-boundary relation local in the key and shows sigma
 # ABOUTME: has ~0 bits of local constraint, against g's 16 -- the real asymmetry.
-"""sigma has no local footprint at all. That is the wall.
+"""No local constraint on sigma is KNOWN, across the reach-<=3 family.
 
 At a word seam the base cancels, so a whole family of cross-boundary comparisons is
 LOCAL in the key. Comparing the a-th-from-last rune of word w with the b-th rune of
@@ -28,20 +28,22 @@ Measured over all 16 combinations with a, b <= 3:
 from a word-order null that destroys the doublet suppression; against a
 doublet-PRESERVING surrogate the seam reads 23 against 19.7 +- 4.6, z = +0.72.
 
-So the budget is starkly asymmetric:
+So on the evidence available the budget is asymmetric:
 
     g      79.7 bits of entropy, 16.0 bits of local constraint (d1..d7)
-    sigma  97.9 bits of entropy, ~0 bits of local constraint
+    sigma  97.9 bits of entropy, NO local constraint found at reach <= 3
 
-Even a KNOWN g leaves sigma's ~98 bits untouched by any local statistic. sigma can
-only be constrained key-globally, through the base schedule, which presupposes the
-whole key.
+Scope matters here. This tests one FAMILY -- diagonals at reach a, b <= 3. Larger
+reaches exist up to the word length, and non-diagonal local statistics are not
+covered. So the supported claim is "no KNOWN local statistic constrains sigma", not
+"sigma has zero local constraint", which the measurement does not establish.
 
-Three consequences worth keeping:
+Three consequences, correspondingly hedged:
 
-  - No sigma construction can be TESTED. There is no local observable to score a
-    proposal against, which is why every mechanical story (two-wheel device,
-    5-ring cylinder) accounts for g and stalls at sigma.
+  - No sigma construction can be scored against any statistic we currently have,
+    which is why every mechanical story (two-wheel device, 5-ring cylinder) accounts
+    for g and stalls at sigma. Finding a local sigma observable would reopen the
+    route; none of the 16 tested is one.
   - sigma, not g, is the harder half: more entropy AND less constraint. Effort spent
     on g constructions is spent on the easier 45% of the problem.
   - It sizes the crib route precisely. sigma's 98 bits at log2(29) = 4.86 bits per
