@@ -96,13 +96,48 @@ against each other**, and something else must carry the period-5 that the feedba
 does not reach through — a per-word reset, or a period-5 component the recursion does
 not touch.
 
+## The per-word reset does not rescue it — and why is the general lesson
+
+The obvious repair is to reset the recursion per word: the LP's d5 echo is
+word-anchored (within-word 4.92%, cross-word 1.01), so something must reset. Michel
+asked the right question about it — *then how do we get low doublets between the
+resets?* Measured:
+
+| variant | d1 within | d1 seam | d5 within |
+|---|---|---|---|
+| LP target | 0.63 | **0.79** | 4.92 |
+| continuous | 2.28 | **1.91** | 2.99 |
+| ciphertext tap resets per word | 2.28 | **3.18** | 2.99 |
+| plaintext tap resets per word | 2.11 | **3.83** | 3.14 |
+| continuous + per-word offset | 3.58 | 3.21 | 3.14 |
+
+**Every reset that would word-anchor the echo also randomises the seam.** The reason
+is structural: the suppression is carried by the ACCUMULATED STATE — the doublet
+condition reduces to a plaintext relation only because the state cancels between
+adjacent positions. A reset breaks that cancellation, so the seam condition involves
+the fresh state, which is flat, and the rate reverts to chance. A per-word additive
+offset is worse: it destroys the within-word suppression as well.
+
+So the corpus demands two opposite scopes — a word-anchored d5 echo and a
+boundary-blind suppression — and in this family a single accumulated state cannot
+supply both.
+
+**That is exactly why the walk carries two objects.** It buys the seam suppression
+with a SECOND tuned permutation, σ, whose diagonal is designed separately from `g`'s.
+It also explains an observation from `key-local-channel-is-empty.md` §5: σ has no
+local footprint beyond the seam rate because the seam diagonal is the whole of its
+observable job.
+
 ## Predictions, if it can be rescued
 
 - Any rescue must keep β = 1 (else no suppression at all).
-- It must restore a distance-5 relation the ciphertext recursion cannot destroy —
-  e.g. resetting the recursion per word, which is testable directly.
+- It must carry the suppression in something that survives a per-word reset, or
+  supply the echo without one. A single accumulated state does neither.
 - ord(λ) | 28 means λ cannot supply the period-5 itself; that has to come from
   elsewhere in the design.
+- A recurrence search over plaintext taps at lags 1–6 and ciphertext taps at lags
+  1, 2, 5 (coefficients in {0, ±1}, ≤4 terms) found nothing better: the closest was
+  `c_j = p + p[-3] + c[-1]` at d1 = 2.13%, d5 = 4.05%, still 3× short on depth.
 
 ## Scripts
 
