@@ -38,20 +38,25 @@ adjacent runes regardless of whether a space intervenes. Zero triplets
   `stream-cipher-no-repeat.md`, `length-clocked-walk.md`.
 - Boundary-blindness rules out per-word-reset mechanisms as the *source* of the
   suppression: see `word-boundary-reset-autokey.md`.
-- **The doublet count cannot be used to filter or rank candidate keys** (August
-  2026). Under the walk the within-word rate is `g`'s diagonal and the seam rate
-  is σ's, on different plaintext tables — both verified exactly against a
-  planted key (10028/10028 and 2927/2927). Annealing `g` toward the observed
-  count and scoring survivors by the base_0 quadgram fit produced a real-looking
-  lift over random keys (+0.031, z = +5.34, `doublet_targeted_search.py`), but
-  it is an artifact: the statistic being fitted is a property of the whole
-  stream, shared by g and σ alike, so the filter selects for the suppression
-  rather than for the key. Boundary-blindness is the tell — a genuine constraint
-  on `g` would not apply equally where `g` is absent from the algebra.
-- Generalising to within-word distance d gives `p_j = g^d(p_k)`, but only d=1
-  departs from chance: d=2 and d=3 sit on the random-g mean to within z = 0.1
-  (`skip_repeat_constraints.py`), so they cannot rank candidates either. d=5 is
-  `g⁰` = identity, i.e. the known same-alphabet echo.
+- **The doublet count is a valid constraint on `g`; one pipeline built on it was
+  artifactual.** (August 2026, wording corrected — an earlier version of this bullet
+  said the count "cannot be used to filter or rank candidate keys", which
+  contradicted `key-local-channel-is-empty.md`, where d1 is one of the seven distance
+  constraints worth 16.0 bits together.) The within-word rate IS exactly
+  `Σ_b P(g(b), b)`, so requiring a candidate to reproduce it is legitimate, and it is
+  used as a filter. What failed was a specific pipeline: annealing `g` toward the
+  observed count and then scoring survivors by the base_0 quadgram fit produced an
+  apparent lift over random keys (+0.031, z = +5.34, `doublet_targeted_search.py`)
+  that does not survive scrutiny — the boundary-blindness is the tell, since the
+  within-word rate is `g`'s diagonal and the seam rate is σ's on a different table
+  (both verified exactly against a planted key, 10028/10028 and 2927/2927), yet the
+  two agree, so the annealed statistic tracks something both share rather than `g`.
+- Generalising to within-word distance d gives `p_j = g^d(p_k)`. As a RANKING
+  signal d=2 and d=3 are useless — they sit on the random-`g` mean to within z = 0.1
+  (`skip_repeat_constraints.py`). But as CONSTRAINTS the whole set d1…d7 is used and
+  is worth 16.0 bits jointly (`key-local-channel-is-empty.md`); a cell being at the
+  random mean still excludes candidates that miss it. d=5 is `g⁰` = identity, i.e.
+  the known same-alphabet echo, and cannot be tuned at all.
 - Placement is Poisson/content-driven, not positional: see
   `doublet-spacing-poisson.md`.
 

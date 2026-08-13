@@ -72,9 +72,13 @@ cipher untouched — so it is a property of the plaintext or of the separator la
   ~700-word solved sample and lands within 0.26 points of it. Better register data
   will not dissolve this.
 
-## Mechanism: open, and NOT identifiable from word lengths
+## Mechanism: open; the two models tried are not separable by these statistics
 
-Three candidates. No length statistic separates them.
+Three candidates. The two that were modelled (register vs merging) reverse
+with the choice of reference base, so THOSE TWO are not separable by the
+histogram or the autocorrelation. That is weaker than "no length statistic
+can separate them", which was not tested — a different statistic, or a
+better-motivated register model, might.
 
 1. **Different register.** The unsolved plaintext uses proportionally fewer
    articles and prepositions than the instructional prose of the solved pages.
@@ -124,8 +128,10 @@ vary the corpus, not the draw.
   across all 2,928 words instead of 465. Under the attach-to-previous variant
   `THE` lands word-finally at phase `g^((L−2) mod 5)`, `g^((L−1) mod 5)` — still
   computable, just length-dependent. Direction is unsettled, so score both.
-- **Settling the mechanism requires a statistic that is not a function of word
-  length.** The length family is exhausted. The live lead is the mark geometry:
+- **The statistics tried so far are all functions of word length, and none
+  separates the candidates.** That is not the same as the length family being
+  exhausted — only that the histogram, the tail, and the autocorrelation do not
+  discriminate. The most promising untried direction is the mark geometry:
   the `.` marks align with quoted spans (p = 1.5e-7) while failing English
   sentence semantics (z = +5.86, `word-length-keystream-and-boundaries.md`
   section C), which constrains what unit they delimit without reference to any

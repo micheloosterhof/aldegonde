@@ -8,10 +8,15 @@ means
     p_k == g(p_{k+1})
 
 and that plaintext bigram `(p_k, p_{k+1})` is one of the 29 terms of g's
-diagonal, `sum_b P(g(b), b)`, measured at **0.0063** (`doublet-suppression.md`).
-Every term is non-negative, so each individual term obeys
+diagonal, `sum_b P(g(b), b)`, measured at **0.00628 +- 0.00079** (63 doublets in
+10,028 pairs). Every term is non-negative, so each individual term obeys
 
-    P(p_k, p_{k+1}) <= 0.0063
+    P(p_k, p_{k+1}) <= 0.00786          (the point estimate plus 2 sigma)
+
+An earlier version used the point estimate 0.0063 as a hard bound, which is too
+tight: the diagonal is a MEASUREMENT, and words sitting between 0.0063 and 0.0079
+cannot be excluded. Carrying the error returns IT, HE and AS to the candidate list
+and drops the excluded register share from 65% to 51%.
 
 That inverts the usual crib logic. A doublet does not mark a common word; it
 marks a place where the plaintext bigram is RARE, because a frequent bigram
@@ -20,8 +25,8 @@ would exhaust the whole diagonal budget by itself.
 The corpus has exactly one 2-rune doublet word, and it is the sharpest single
 constraint available: the whole word is two runes, so the plaintext is one of a
 few dozen 2-letter English words, and the budget excludes twelve of them --
-including THE, TO, OF, IN, IT, HE and AS, i.e. seven of the eight words that
-make up 69% of the 2-rune class. Only BE survives from that group.
+including THE, TO, OF and IN -- four of the eight words that make up 69% of the
+2-rune class, and 51% of its register share. BE, IT, HE and AS survive.
 
 The bound is rigorous but loose. A tighter one follows from g's four fixed
 points, which contribute plaintext-doublet mass P(b, b) apiece and so consume
@@ -46,7 +51,7 @@ from aldegonde.stats.compare import loadgrams  # noqa: E402
 
 IDX = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
 ALPHA = c3301.CICADA_ALPHABET
-DIAGONAL = 0.0063  # the measured within-word doublet rate
+DIAGONAL = 0.00786  # measured 0.00628 + 2 sigma (63 doublets in 10,028)
 MAX_LEN = 4  # beyond this the candidate word list stops pruning usefully
 
 # The 2-rune class, register-weighted; share of 2-rune tokens where known.

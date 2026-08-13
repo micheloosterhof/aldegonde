@@ -228,7 +228,13 @@ def main() -> None:
     )
     print("\n  For scale: DIVINITY WITHIN is 13 runes and yields ~14 bits (the")
     print("  recorded 16,000x reduction), consistent with this accounting and far")
-    print("  short of sufficient. A crib of ~15 words would close it outright.")
+    print("  short of sufficient.")
+    print("\n  Read ~63 as a LOWER BOUND, not a target. It assumes each crib rune")
+    print("  contributes log2(29) independent bits, which requires the crib's images")
+    print("  under M_w to be distinct points of base_0; collisions reduce the yield,")
+    print("  so a real crib may need more. The figure is an order of magnitude, and")
+    print("  its agreement with the sigma-side estimate is a consistency check on the")
+    print("  accounting rather than a second measurement.")
 
 
 if __name__ == "__main__":
