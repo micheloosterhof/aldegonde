@@ -26,8 +26,9 @@ Resolving partial-vs-full **by the size of the echo alone** would need to separa
 102 matches from 114 against Poisson noise ~10 — roughly 4x more within-word d5
 pairs than the corpus contains. That is why this fork stood as undecidable.
 
-**RESOLVED (August 2026) by using d3 and d4 as controls instead**
-(`experiments/period5_confirmation.py`). The absolute size of the d5 echo is the
+**The one-alphabet-per-word fork IS settled (August 2026) by using d3 and d4 as
+controls** (`experiments/period5_confirmation.py`) — though φ5 itself is not; see
+below. The absolute size of the d5 echo is the
 underpowered statistic; the PROFILE across distances is not. Against real
 consecutive prose carried into runeglish and resampled to the LP's own word-length
 histogram:
@@ -106,10 +107,20 @@ rate(d5,within) = q * 0.0550 + (1 - q) * 0.0345 = 0.0492  ->  q = 0.72
 
 A word-locked base with exact order-5 g forces `q = 1`. The point estimate
 `q = 0.72` would mean the alphabet changes across ~28% of within-word 5-gaps
-(slow intra-word drift, or g⁵≠id) — **but `q = 1` is inside the bootstrap CI**
-(the 102 observed matches vs 113.5 expected under full leak is only z = -1.1),
-so this q is a suggestive point estimate, not a measurement. See "Evidence
-against".
+(slow intra-word drift, or g⁵≠id).
+
+**UNIFORM drift is REFUTED (August 2026).** If a fraction `1−q` of within-word pairs
+used independent alphabets at EVERY distance, the rate at any distance could not fall
+below `(1−q)·chance`. At q = 0.68 that floor is **1.096%**, and the observed d1 rate is
+**0.628%** — below it. So the dilution cannot be uniform: it must be negligible at
+distance 1 (d1 forces `q₁ ≥ 0.82`) and grow to ~0.32 by distance 5. Drift that
+ACCUMULATES with distance fits that, drift applied at a constant per-pair rate does
+not. This also means constraint sets built on a single uniform q are unsatisfiable and
+should not be used (see `magic-square-grid-key.md`).
+
+And `q = 1` remains inside the bootstrap CI regardless (the 102 observed matches
+against 113.5 expected under full leak is only z = −1.1), so this q is a suggestive
+point estimate rather than a measurement. See "Evidence against".
 
 ## Second period-5 signature: d6 mirrors d1
 

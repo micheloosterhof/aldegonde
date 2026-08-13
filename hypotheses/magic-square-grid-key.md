@@ -45,7 +45,14 @@ reject a true `g` 28% of the time, so 0 survivors is worth only a Bayes factor o
 with probability 0.98, and the false-positive floor rises to ~30, swamping the single
 true hit. There is no threshold at which the g-only filter isolates one candidate.
 
-The reason is a bit count: the seven constraints are worth **16.0 bits** at 2σ
+One specification worry, checked and dismissed: the constraints assume full leak
+(φ = 1). A uniform partial-leak alternative is **refuted** — at φ = 0.68 the dilution
+floor `(1−φ)·chance` is 1.096% and the observed d1 is 0.628%, below it — so full leak
+is the best-specified option available and the sweep's equations stand. What remains
+is that the g-free d5 cell sits 1.4σ low under full leak, unexplained, which consumes
+tolerance and makes the 72% power estimate optimistic.
+
+The reason the sweep cannot decide is a bit count: the seven constraints are worth **16.0 bits** at 2σ
 (46 of 3,000,000 random order-5 permutations pass), falling to 11.4 bits at 3.5σ,
 against `g`'s 79.7. Separating one
 candidate from ~30 false positives needs the 2-rune verifier, which needs the full
