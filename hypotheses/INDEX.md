@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (34)
+### Observations (35)
 
 | File | Feature | Status |
 |---|---|---|
@@ -15,6 +15,7 @@ proposed mechanisms scored against them.
 | [cryptodiagnostics-page0-58.md](cryptodiagnostics-page0-58.md) | Full Cryptodiagnostic Battery on page0-58.txt (2026-06) | confirmed (characterization) |
 | [d5-partial-alphabet-leak.md](d5-partial-alphabet-leak.md) | The d5 Echo is a Same-Alphabet Leak (order-5 g confirmed; phi5 still open) | partial (Aug 2026): d3/d4 controls fall far short of plaintext (z −5.9, −3.7; phi3 = 0.13 +- 0.14 is 6.4 sigma below full leak, phi4 = 0.37 +- 0.20 is marginally above chance) while d5 reads plaintext, so one-alphabet-per-word is REFUTED and g has order exactly 5; phi5 itself remains underpowered at 0.64–0.71, convention-dependent |
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
+| [doublet-suppression-requires-design.md](doublet-suppression-requires-design.md) | Sub-Chance Doublets Force a Tuned Permutation Relation | confirmed (argument) for per-position-bijective ciphers: doublet rate == a permutation diagonal, so 'no permutations' is incompatible with sub-chance doublets; the four known escapes (fractionation, feedback, homophonic, digraphic) are excluded or disfavoured |
 | [doublet-suppression.md](doublet-suppression.md) | Doublet Suppression (5.2x, boundary-blind) | confirmed (characterization) |
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
 | [flat-ioc.md](flat-ioc.md) | Flat Unigram Distribution (IoC = 1/29) | confirmed (characterization) |
