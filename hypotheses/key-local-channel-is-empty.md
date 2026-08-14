@@ -236,11 +236,21 @@ d4 **0.019 (low)**, d6 **0.038 (chance)** — the LP has d4 **0.041 (lean)** and
 d6 **0.025 (low)**, i.e. the *opposite* at d4 and d6. (Also: minimizing d1
 leaves diag(g)=0.0001 AND diag(g⁻¹)=0.0107, both low, so d4=g⁻¹ inherits low,
 not a lean — an earlier "reverse-bigram inflation" story for the d4 lean was
-wrong.) So the **d4 lean and d6 depth are the known d4–d6 split** — a ~2.7σ
-open puzzle (`mixed-cycle-progression.md`: pure order-5 predicts d4 ≈ d6),
-extra structure in the LP's g beyond d1, designed or unexplained. What the map
-DOES nail: d2,d3 at chance (g²,g³ generic on their tables), the period-5, the
-echo, and the seam. There is no fourth clean window — everything else is a long
+wrong.) But my d1-only tuning is itself the wrong objective, and it does not
+prove the d4/d6 rates are unexplained. The resolved statement
+(`length-clocked-walk.md`, `mixed-cycle-progression.md`, August 2026): **all
+six rates are the six diagonals of one order-5 g.** Fitted jointly to
+d1,d2,d3,d4 and d6, a single g reaches every cell (0.0064 / 0.0345 / 0.0369 /
+0.0408 / 0.0247 against the observed 0.0064 / 0.0347 / 0.0370 / 0.0410 /
+0.0245). The apparent **d4–d6 split was retracted** — it assumed a g fitted to
+d1..d4 predicts d4 ≈ d6, but the rate is the g^d diagonal on the *distance-d*
+pair table and P₄ ≠ P₆, so the model predicts d4/d6 = 1.25, against which the
+LP sits at z = +1.12. No anomaly. My d1-minimising test gives d4 low / d6
+chance precisely because minimising d1 is not what the LP's g does; matching
+all cells, not minimising one, is the right objective. So the map nails the
+STRUCTURE (which g-power each cell is) and the rates are the diagonals of that
+one g — d2,d3 land at chance (g²,g³ generic on their tables), d1/d6 low, d4 a
+mild lean, d5 the echo, the seam σ. There is no fourth clean window — everything else is a long
 ⟨g,σ⟩ product, generic by measurement (σ² and the bridge relations `σ·g^b·σ`
 sit at chance, see route 2's seam-doublet note).
 
