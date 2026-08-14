@@ -272,10 +272,11 @@ def main() -> None:
         for pw, cw in zip(words, ct)
         for i in range(len(pw) - d)
     )
-    print(
-        f"reference replicate: round-trip OK, seam algebra {seam_ok}, "
-        f"within algebra {within_ok}"
-    )
+    # halt before writing the artifact if the algebra the crib validation
+    # relies on does not hold -- these must be exact, not advisory
+    assert seam_ok, "seam algebra violated"
+    assert within_ok, "within-word algebra violated"
+    print("reference replicate: round-trip OK, seam + within algebra exact")
 
     print("cell   LP        sim mean +- sd     z(combined)")
     for k, (r, _m, e) in lp.items():
