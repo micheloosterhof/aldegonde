@@ -105,8 +105,8 @@ ruff check src/ --fix
 ### Type Checking
 
 ```bash
-# Run mypy (strict mode configured in pyproject.toml)
-mypy src/
+# Run ty
+ty check src/
 ```
 
 ### Code Formatting
@@ -120,7 +120,7 @@ ruff format src/ tests/
 
 ### Type Annotations
 
-The project uses **strict mypy configuration** and is a PEP 561 typed package (`py.typed`). All functions require:
+The project is type checked with **ty** and is a PEP 561 typed package (`py.typed`). All functions require:
 - Full type annotations for parameters and return types
 - Generic type parameters using `TypeVar`
 - Use `Sequence[T]` for read-only sequences, `list[T]` for mutable
@@ -283,7 +283,7 @@ def test_caesar_roundtrip(plaintext: str) -> None:
 GitHub Actions workflow (`.github/workflows/tox.yml`) runs on push/PR:
 - Tests against Python 3.10, 3.11, 3.12, 3.13
 - Linting with ruff (Python 3.10)
-- Type checking with mypy (Python 3.10)
+- Type checking with ty (Python 3.10)
 
 ## Common Commands Quick Reference
 
@@ -299,7 +299,7 @@ tox                                # Full test matrix
 # Code quality
 ruff check src/                    # Lint
 ruff check src/ --fix              # Lint + autofix
-mypy src/                          # Type check
+ty check src/                      # Type check
 ruff format src/ tests/             # Format
 
 # Examples
@@ -312,7 +312,7 @@ python examples/lp_analysis.py     # Run Liber Primus analysis
 
 2. **Generator Usage**: Many functions return generators, not lists. Convert with `list()` or `"".join()` when needed.
 
-3. **Type Safety**: Maintain strict type annotations. The mypy config is strict. The package is PEP 561 typed.
+3. **Type Safety**: Maintain full type annotations, checked with ty. The package is PEP 561 typed.
 
 4. **Exception Handling**: Use the custom exception hierarchy. Don't use bare `ValueError` or `KeyError`.
 

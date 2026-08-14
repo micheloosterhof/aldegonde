@@ -32,8 +32,6 @@ dev = [
   "build==1.5.0",
   "coverage==7.13.1",
   "hypothesis>=6.100.0",
-  "mypy-extensions==1.1.0",
-  "mypy==2.2.0",
   "pipdeptree==2.30.0",
   "pytest==9.0.2",
   "pytest-cov==7.1.0",
@@ -67,41 +65,6 @@ homepage = "https://github.com/micheloosterhof/aldegonde"
 documentation = "https://readthedocs.org"
 repository = "https://github.com/micheloosterhof/aldegonde"
 changelog = "https://github.com/micheloosterhof/aldegonde/blob/master/CHANGELOG.md"
-
-[tool.mypy]
-ignore_missing_imports      = true
-warn_unused_configs         = true
-no_implicit_optional        = true
-show_column_numbers         = true
-show_error_codes            = true
-strict_optional             = true
-warn_no_return              = true
-warn_redundant_casts        = true
-warn_return_any             = true
-warn_unreachable            = true
-disallow_incomplete_defs    = true
-disallow_any_unimported     = true
-strict_equality             = true
-disallow_untyped_decorators = true
-disallow_subclassing_any    = true
-check_untyped_defs          = true
-disallow_any_generics       = true
-disallow_untyped_calls      = true
-disallow_untyped_defs       = true
-
-# These are too strict for us at the moment
-
-disallow_any_decorated      = false
-disallow_any_explicit       = false
-disallow_any_expr           = false
-warn_unused_ignores         = false
-
-
-[[tool.mypy.overrides]]
-module = [
-    "scipy"
-]
-ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 88
