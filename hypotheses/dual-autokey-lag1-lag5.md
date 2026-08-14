@@ -101,6 +101,49 @@ The model returns ~chance at every held-out distance while the LP carries real
 structure — d4 high, d6 low. Errors of 1–2σ each. So the mechanism reproduces what it
 is fitted to and nothing else.
 
+## The lag structure is the obstruction, and it is a theorem
+
+(August 2026, `experiments/autokey_lag_family.py`.) The held-out failure above is
+not a tuning shortfall. Writing `D_j = c_j - c_{j-1}`, lag-1 feedback makes `D_j` a
+function of the plaintext taps alone, so for any distance
+
+    c_j - c_{j-d} = D_{j-d+1} + ... + D_j        (d consecutive terms)
+
+At d = 1 that is ONE plaintext term — structured, and tunable to any rate at all.
+At d >= 2 it is a sum of two or more near-independent values mod 29, and summing
+mod 29 convolves toward uniform. **Every cell past d1 is pinned at chance by the
+architecture.**
+
+Sweeping the family `c_j = v(p_j) + a1·c_{j-1} + a5·c_{j-5} + b1·v(p_{j-1}) +
+b5·v(p_{j-5})` over 48 random labellings each gives the reachable ranges:
+
+| feedback | d1 reachable | d5 reachable |
+|---|---|---|
+| `c(n-1)` alone | **[0.001, 0.105]** — brackets 0.0063 | 0.0347 (chance) |
+| `c(n-5)` alone | 0.0346 (chance) | **[0.000, 0.134]** — brackets 0.0492 |
+| **both** | 0.0346 (chance) | 0.0344 (chance) |
+
+Each feedback lag alone gives exactly one clean relation, `c_j - c_{j-k} = v(p_j)`,
+firing when `p_j` is the letter labelled 0 — so that cell equals one letter's
+frequency and tunes anywhere. **Adding the second feedback destroys both**, because
+`c_j - c_{j-1}` then contains `c_{j-5}` and vice versa.
+
+So: with linear feedback, **at most one distance can carry a clean plaintext
+relation — the one equal to the single feedback lag.** The LP needs four cells off
+chance (d1 0.0063, d4 0.0410, d5 0.0492, d6 0.0245). No member of the family fits,
+and no labelling can rescue one. Coefficients in Z/29* do not help: any `alpha` on
+`c_{j-5}` still leaves `c_j - c_{j-1}` ciphertext-dependent.
+
+The walk delivers all four with one object. Distances 1 and 6 differ by 5, so an
+order-5 `g` suppresses both with the SAME relation on two different tables, and d4
+is `g^4`, d5 is `g^0`. That coupling is the LP's signature and the autokey family
+has no analogue for it.
+
+**Status: closed as a mechanism for this corpus.** What remains useful is the
+negative — mixed feedback was the last candidate in
+`doublet-suppression-requires-design.md` that looked like it might escape the
+designed-permutation conclusion, and it does not.
+
 ## Evidence against / open
 
 **The doublet floor.** With a bijective value map `v`, the relation
