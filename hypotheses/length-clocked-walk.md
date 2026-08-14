@@ -31,7 +31,10 @@ decryption)
 
 The model reproduces the base fingerprint (flat unigrams, doublet
 suppression, no periodicity) and the d1/d5/d6 profile, and survives the null
-battery (below). Two measured anomalies remain **unexplained by the walk**:
+battery (below). As of 2026-08-14 one fitted key reproduces the ENTIRE hard
+profile in corpus-sized simulation — every cell within noise
+(`experiments/walk_full_profile.py`, "Full-profile simulation" under
+Evidence for). Two measured anomalies remain **unexplained by the walk**:
 the cross-word d4 frame face and the rune-S concentration of the echo (see
 "Evidence against / open"). It has **not** been verified by producing
 plaintext — the two mixed permutations have not been recovered. Confidence
@@ -132,6 +135,30 @@ walk rather than as *evidence for* it, since the walk makes no prediction here.
 Clean corpus: sections 0-9, 12,956 runes, words tokenized on `- . & %`; `/` and
 newlines are line wraps (words flow across them).
 
+- **Full-profile corpus-sized simulation (2026-08-14,
+  `experiments/walk_full_profile.py`).** One (g, σ₁, σ₂) fitted at
+  table level — g to the observed d1-d4+d6 on consecutive-prose pair
+  tables (inverse-variance weighted), σ to the seam 0.0079 on the
+  cross-word table — then run through `encipher()` over 100 corpora of
+  2,928 consecutive prose words. Every hard cell lands within noise of
+  the LP (LP error carried): d1w −0.06, seam −0.00, d2w +0.00, d3w
+  −0.04, d4w −0.17, d5x −0.13, d6w +0.06; d5w −0.82 is the known
+  untuned register residual (g⁵=id fixes that cell at the plaintext's
+  own lag-5 rate, 0.0569 sim vs 0.0492 LP). This upgrades
+  `d4_d6_prediction.py`'s table-level reachability to a full generative
+  run. The REGISTER is load-bearing in both directions: a Markov-2
+  trigram generator cannot reach d4/d6 (fit floors 0.0368/0.0319 vs
+  0.0410/0.0245), and independently-drawn dictionary words cannot reach
+  the seam (product cross table, σ floor ~0.0154 vs 0.0079) — only
+  running text supplies both. Soft observables stay untargeted as
+  documented (sim min doublet gap 4 vs LP 6; delta chi2 30.4 vs 41.4).
+  Same caveat as the table-level result: reachability is weak evidence
+  FOR; the force is that no profile cell is evidence against. The run
+  is self-validating (round-trip decipher; within/seam match ⟺
+  plaintext algebra checked exactly) and writes
+  `experiments/walk_reference.json` — key + plaintext/ciphertext pair,
+  the standing validation target for crib propagation and key-search
+  machinery.
 - **Flat unigrams (IoC 1.00).** The non-abelian walk ⟨g,σ⟩ visits many
   alphabets → uniform marginal.
 - **Doublet suppression** (but NOT its boundary-blindness — see Mechanism).
@@ -529,6 +556,9 @@ newlines are line wraps (words flow across them).
 
 - `experiments/phase_absorbing_walk.py` — the model: `base_{w+1} = base_w ∘
   g^((len−1) mod5) ∘ σ`, hits the full battery.
+- `experiments/walk_full_profile.py` — the full-profile corpus-sized
+  simulation (joint-fit key, replicate bands, register comparison);
+  writes `walk_reference.json`, the known-key validation corpus.
 - `experiments/final_orbit_walk.py` — rate-targeted variant.
 - `experiments/within_word_phase_profile.py` — d1-d10 permutation null (d5
   echo p=0.001, d6 suppression p=0.016).
