@@ -159,6 +159,30 @@ The second deserves emphasis: it refutes the *letter* of "no hillclimb can work"
 (`length-clocked-walk.md`), which holds for objectives needing the coupled base
 schedule but not for this one. A gradient exists. It leads onto a plateau.
 
+**Direct confirmation that the BASE, not `g`, is the obstruction (Aug 2026,
+`experiments/hillclimb_single_g.py`).** Strip the base schedule entirely and
+encipher with a single stepped permutation `c[i] = g^i(p[i])`, `g` tuned to a
+low doublet diagonal (the "single permutation with low doublet diagonal"
+model). This IS hillclimbable: a plain conjugation-swap hillclimb on the
+decryption's trigram score **recovers `g` exactly, 29/29**, at orders 5, 28,
+and a full 29-cycle (the last needs ~24 restarts), under both a
+register-matched and a *generic* trigram model, true `g` the global maximum.
+So a single `g` with no base falls out immediately. **Run on the REAL LP, the
+same attack fails at every period:** hillclimbing a stepped `g` on the LP
+ciphertext for periods `m = 2..50` gives a best decryption IoC of **≤ 1.003
+(random ~1.0, English ~1.7) at every single period** — no `m` produces
+readable plaintext. So the LP is not a single stepped `g` of any period ≤ 50,
+and the delta-function landscape is bought entirely by the per-word base
+(each word a fresh bijection, so even the correct `g` yields no readable
+consecutive text until the base is also known). CONTROL: a monoalphabetic
+`c[i]=g(p[i])` recovers the key too (27/29, the two holdouts the rarest,
+weakly-constrained runes) but cannot suppress a doublet (a bijection
+preserves the plaintext doublet rate), so the low diagonal *requires* the
+stepping, and the stepping does not break the climb. (A first pass reported
+the stepped cipher un-climbable; it was a decrypt bug — `gg.index(x) for x in
+gg^k` computes `gg^(k-1)`, not `(gg^k)^{-1}` — caught by a
+`dec(c,g)==plaintext` round-trip assertion.)
+
 ## Significance
 
 ```
