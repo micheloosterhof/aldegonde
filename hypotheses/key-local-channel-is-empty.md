@@ -191,6 +191,25 @@ proposed, not a proof of exhaustiveness.)
 2. **Import external information.** About **63 contiguous crib runes, roughly 15
    consecutive words**, closes the gap. DIVINITY WITHIN is 13 runes and ~14 bits,
    consistent with its recorded 16,000× reduction and about a fifth of the way.
+
+   **The crib route is now validated end-to-end on a known key** (2026-08-14,
+   `experiments/crib_propagation.py` against `walk_reference.json`). Every crib
+   rune is one `(input, output)` constraint on `base_0` under a candidate
+   `(g, σ)`, because `base_w = base_0 ∘ prefix_w` with prefix clocked by the
+   public word lengths. Measured over 400 trials: the true key never
+   contradicts and pins `base_0` in a **median 80 contiguous runes** (min 47,
+   max 182) — the empirical unicity length, ~27% above the 63-rune analytic
+   lower bound, which is exactly the image-collision penalty `information_budget.py`
+   flags but never measured. Wrong keys reject fast: random `(g, σ)` in a
+   median 6 runes, cycle-type-preserving nearest neighbours in 13–14. Two
+   caveats a real verifier must honour, both surfaced here: reject on the
+   bijection **contradiction**, not on `base_0` fill (a wrong key can fill it
+   first); and a **~0.5% tail of nearest neighbours survives a 250-rune crib
+   at a fixed window** (1/400 σ, 2/400 g), so verify at more than one crib
+   position. This confirms the "a correct key verifies instantly" claim and
+   turns ~63 into a measured ~80; it does not lift the ENUMERATION burden of
+   route 1 — the crib is a verifier, not a search.
+
    `experiments/d5_crib_targets.py` supplies key-free plaintext constraints toward
    this: since d5 reads plaintext equality directly, 8 words carrying XY···XY are
    pruned to 4–152 dictionary candidates (word 1987 to **4**, word 2751 to **14**).
@@ -220,6 +239,8 @@ known, and §2 argues none exists.
 ## Scripts
 
 - `experiments/information_budget.py` — the budget, unicity distance, crib sizing.
+- `experiments/crib_propagation.py` — the crib verifier run on the known-key
+  reference corpus: measured unicity ~80 runes, wrong-key rejection speeds.
 - `experiments/isomorph_census.py` — the pattern-to-rates reduction.
 - `experiments/isomorph_g_score.py` — the gradient that plateaus (worked negative).
 
