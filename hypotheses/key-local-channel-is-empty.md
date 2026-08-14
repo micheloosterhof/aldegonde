@@ -168,13 +168,20 @@ decryption's trigram score **recovers `g` exactly, 29/29**, at orders 5, 28,
 and a full 29-cycle (the last needs ~24 restarts), under both a
 register-matched and a *generic* trigram model, true `g` the global maximum.
 So a single `g` with no base falls out immediately. **Run on the REAL LP, the
-same attack fails at every period:** hillclimbing a stepped `g` on the LP
-ciphertext for periods `m = 2..50` gives a best decryption IoC of **≤ 1.003
-(random ~1.0, English ~1.7) at every single period** — no `m` produces
-readable plaintext. So the LP is not a single stepped `g` of any period ≤ 50,
-and the delta-function landscape is bought entirely by the per-word base
-(each word a fresh bijection, so even the correct `g` yields no readable
-consecutive text until the base is also known). CONTROL: a monoalphabetic
+same attack fails at every period** (`experiments/hillclimb_lp_sweep.py`,
+full 8×4000 budget, FREE-choice `g` — random permutation starts, plain-swap
+moves over all of S₂₉, no cycle constraint): hillclimbing a stepped `g` on
+the LP ciphertext for periods `m = 2..50` gives a best decryption IoC of
+**≤ 1.002 (random ~1.0, English ~1.7) at every single period** — no `m`
+produces readable plaintext. The negative is real, not search weakness: a
+built-in self-check shows the metric is *sensitive* — on a planted free `g`
+the true key is the global maximum and even a PARTIAL recovery (~22/29)
+yields a decryption IoC ~1.6, far above 1.0. A stepped-`g` LP would therefore
+light up even under an incomplete search; the flat ~1.0 everywhere means no
+solution. So the LP is not a single stepped `g` of any period ≤ 50, and the
+delta-function landscape is bought entirely by the per-word base (each word a
+fresh bijection, so even the correct `g` yields no readable consecutive text
+until the base is also known). CONTROL: a monoalphabetic
 `c[i]=g(p[i])` recovers the key too (27/29, the two holdouts the rarest,
 weakly-constrained runes) but cannot suppress a doublet (a bijection
 preserves the plaintext doublet rate), so the low diagonal *requires* the
@@ -269,6 +276,10 @@ known, and §2 argues none exists.
   reference corpus: measured unicity ~80 runes, wrong-key rejection speeds.
 - `experiments/isomorph_census.py` — the pattern-to-rates reduction.
 - `experiments/isomorph_g_score.py` — the gradient that plateaus (worked negative).
+- `experiments/hillclimb_single_g.py` — a single stepped `g` (no base) IS
+  hillclimbable; establishes the method and the synthetic recovery.
+- `experiments/hillclimb_lp_sweep.py` — the full-budget free-`g` attack on the
+  LP at every period 2..50 (all IoC ~1.0), with the sensitivity self-check.
 
 ## Related
 
