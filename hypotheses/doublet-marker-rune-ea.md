@@ -194,7 +194,23 @@ What survives is exactly the class with NO small ciphertext-visible
 condition: a rare plaintext event (rune or bigram), a context-dependent
 marker g(C) whose range is rare letters with a LARGE ciphertext domain
 (observationally identical to the plain marker), or a rare key event.
-From the ciphertext alone these remain indistinguishable.
+From the ciphertext alone these remain indistinguishable. **(The
+single-RUNE branch here is then removed by the July positional-profile
+test below; what survives it is the rare BIGRAM class or the key event.)**
+
+**Methodological guard — discriminate on plaintext POSITION, not
+ciphertext VALUE (Aug 2026).** It is tempting to test the single-rune
+hypothesis by the ciphertext values of the doublets: if one plaintext
+rune triggered them, surely the ciphertext values cluster? They do not —
+and that is *not* evidence against a rune, because the per-word base is a
+fresh bijection each word, so a fixed plaintext trigger lands on a
+different ciphertext value in every word and the values come out uniform
+regardless. Ciphertext-value uniformity, ciphertext-value/frequency
+correlation, and adjacent-ciphertext context are all consistent with a
+scrambled single-rune trigger and cannot refute it. The discriminator is
+plaintext POSITION (the base preserves within-word position), which the
+next section uses: every rare rune is position-skewed, the doublets are
+position-flat, so the single rune dies there — not on value.
 
 ## Verdict
 
