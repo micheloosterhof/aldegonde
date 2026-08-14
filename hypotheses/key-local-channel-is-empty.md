@@ -260,6 +260,30 @@ proposed, not a proof of exhaustiveness.)
    correction — but the hedge is cheap and the crib route is the only one that does
    not pass through σ.
 
+   **Seam doublets are base-free σ-readings, but under-determine σ and don't
+   touch g (2026-08-15).** At a seam doublet `c_last(w)=c_first(w+1)`, the shared
+   `base_w∘g^a` prefix cancels, leaving `p_last = σ(p_first)` — one point of σ,
+   **g-free** (the phase absorber makes every seam a constant σ). So a crib on the
+   two runes of each of the 23 seam doublets reads σ directly: 23 doublets →
+   ~13–16 *distinct* `p_first` values (birthday over word-initials; the ciphertext
+   count is NOT a proxy — different bases scramble it) → σ pinned to (29−k)! ≈
+   13!–16! ≈ 6e9–2e13 (33–44 bits), down from 29! ≈ 1e30. A large cut, but NOT a
+   solve, and it leaves **g entirely** — the seam is g-free, so g stays at its
+   ~64 key-global bits (the 16-bit local channel is the only handle). So cribbing
+   all 23 seam doublets gives σ to ~33–44 bits AND g to ~64 bits ≈ ~97 bits
+   residual: partial σ, not a key. It also needs a *scattered* crib on 23 specific
+   boundaries (~46 runes), harder to obtain than a contiguous phrase and strictly
+   worse than the ~80-rune contiguous propagation, which yields the whole key at
+   once. The BRIDGE extension (the base also cancels across a g-cancelling word,
+   exposing σ² or σ·g^b·σ) adds nothing: those relations measure at chance —
+   σ² is not low-diagonal — so there is no second suppressed diagonal beyond the
+   seam. The g-identity / 5-rune-word structure that motivated this is real
+   algebraically (a 5- or 10-rune word cancels g), but every ciphertext view of
+   it — the g-identity bigram, seam-rate-by-length, W² across the bridge — comes
+   back flat, because the per-word base scrambles each before it reaches the
+   ciphertext. Net: elegant confirmation that the seam IS σ, but doublet-limited
+   (23) and g-blind, so no shortcut past route 1.
+
 ## Falsifiable
 
 The argument assumes `base_w` changes at every word and is otherwise free. If it
