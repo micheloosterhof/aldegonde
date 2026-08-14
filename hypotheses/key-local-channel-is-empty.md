@@ -225,14 +225,24 @@ permutation or a long scrambled ⟨g,σ⟩ product:
 | **base return** (S = id over k words) | id | **identity**, cross-word | DJU-BEI repeat |
 | any other pair | long word in ⟨g,σ⟩ | scrambled | chance |
 
-This reproduces the entire measured profile from one line: **d1 and d6 both
-suppressed** because g¹ = g⁶ (same permutation, but the diagonal is read on
-different distance-tables, so 0.0063 vs 0.0245 — both below chance, not equal);
-**d5 the echo** because g⁵ = id; the **d4 lean** because g⁴ = g⁻¹ is an untuned
-diagonal; the **seam** because the last-rune phase exactly cancels the step's
-g^a; **DJU-BEI** because the walk returned. There is no fourth clean window —
-everything else is a long ⟨g,σ⟩ product, generic by measurement (σ² and the
-bridge relations `σ·g^b·σ` sit at chance, see route 2's seam-doublet note).
+This explains the STRUCTURE of the profile — *which* g-power each cell is: the
+period-5 (d1,d6 both g; d5,d10 the echo via g⁵=id); the seam being σ (the
+last-rune phase cancels the step's g^a); DJU-BEI being a base return. **It does
+NOT explain the rates**, and that boundary matters. The rate in each cell is
+the diagonal of g^(d mod 5) on the *distance-d* plaintext pair table — six
+separate numbers = the ~16-bit local channel — and they are NOT cascaded from
+the d1 tuning. Verified (2026-08-15): a g tuned on d1 alone gives d1 0.0001,
+d4 **0.019 (low)**, d6 **0.038 (chance)** — the LP has d4 **0.041 (lean)** and
+d6 **0.025 (low)**, i.e. the *opposite* at d4 and d6. (Also: minimizing d1
+leaves diag(g)=0.0001 AND diag(g⁻¹)=0.0107, both low, so d4=g⁻¹ inherits low,
+not a lean — an earlier "reverse-bigram inflation" story for the d4 lean was
+wrong.) So the **d4 lean and d6 depth are the known d4–d6 split** — a ~2.7σ
+open puzzle (`mixed-cycle-progression.md`: pure order-5 predicts d4 ≈ d6),
+extra structure in the LP's g beyond d1, designed or unexplained. What the map
+DOES nail: d2,d3 at chance (g²,g³ generic on their tables), the period-5, the
+echo, and the seam. There is no fourth clean window — everything else is a long
+⟨g,σ⟩ product, generic by measurement (σ² and the bridge relations `σ·g^b·σ`
+sit at chance, see route 2's seam-doublet note).
 
 Two conclusions:
 
