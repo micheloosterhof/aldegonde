@@ -21,8 +21,9 @@ word-boundary-aware.
 **Status**: plausible (verified anomaly; mechanism unknown)
 
 The observation itself is verified at p ≈ 0.001 under a permutation null
-(≈ 0.006 after correcting for the distance scan that found it). It is an
-anomaly characterization, not a cipher mechanism. The length-clocked-walk
+(≈ 0.006 after correcting for the distance scan that found it, and 0.020
+family-blind over the full 124-cell battery — see "Does it pass muster").
+It is an anomaly characterization, not a cipher mechanism. The length-clocked-walk
 family (`length-clocked-walk.md`, `d5-partial-alphabet-leak.md`) now
 reproduces it together with the doublet suppression as a period-5
 same-alphabet leak — plausible, not confirmed by decryption.
@@ -291,12 +292,62 @@ here.
   d1 and 18 of 28 d4 events have neither match within a word; a d4 event
   spans 10 positions and cannot usually fit inside a word).
 
+## Does it pass muster — the honest calibration (Aug 2026)
+
+Yes, but as a **~2–3σ effect, not a high-sigma certainty**, and the exact
+significance depends on how wide the multiple-testing net is cast:
+
+- the d5 cell alone, word-length permutation null: **p = 0.0014**
+- corrected for the 7 distances scanned: **~0.006**
+- family-blind over the full 124-cell negative-control battery
+  (`negative-control-battery.md`): **p = 0.020** — d5 is the *one* cell
+  that survives everything asked of it
+
+So the load-bearing significance is ~2.3–3σ. Three things raise it above
+"marginal":
+
+1. **Word-anchored via an internal control that needs no external
+   reference:** within-word d5 = 0.0492 vs cross-word d5 = 0.0347 (exactly
+   chance), a **+2.87σ** gap at the *same distance*. The cross-word cell is
+   the cleanest control there is.
+2. **The profile shape carries it, not the d5 magnitude.** Against flat
+   chance d5 is only +3.1σ. What discriminates is the plaintext (prose)
+   reference: d3 and d4 sit **5.5σ and 3.5σ below plaintext** (scrambled,
+   not leaking) while d5 is only 1.4σ below (leaks) — d3/d4 are internal
+   "scrambled" controls (`d5-partial-alphabet-leak.md`).
+3. **Not a few freak words:** 102 matches in 91 distinct words, max 3/word.
+
+The caveats that keep it from being a slam dunk:
+
+- **Magnitude-limited.** Separating 102 from ~114 (plaintext) against ~71
+  (chance) needs ~4× the corpus. "Period-5 confirmed" overstates it; "the
+  best-supported structure in the corpus, surviving every test at 2–3σ" is
+  the accurate calibration.
+- **Reference-dependent.** The profile discrimination leans on the prose
+  reference; d3/d4 being far below plaintext is register-robust, but the
+  exact d5 reading is not reference-free.
+- **Contingent on word-boundary authenticity.** The within/cross split is
+  *defined* by boundaries, so synthetic boundaries could engineer the
+  within-word concentration. Boundary authenticity is separately supported
+  (`quote-span-boundaries.md`) but is the standing open question.
+
+**Null-choice trap (a fifth face of the doublet-suppression trap,
+`bigram-ioc.md`).** Do NOT test this with a within-word rune *shuffle*. That
+preserves each ciphertext word's composition, which is *sub-random* (the
+doublet suppression flattens repeats), so the shuffle baseline sits at
+0.026–0.029 and makes d2/d3/d4/d5 read +4 to +5.6σ *all at once* — a
+manufactured "leak at every distance." The valid nulls keep the rune stream
+intact and shuffle word LENGTHS (the permutation test above), or use the
+plaintext reference; both isolate the boundary/period question without the
+composition confound.
+
 ## Verdict
 
-Verified anomaly. The unsolved Liber Primus ciphertext is not
-boundary-blind: distance-5 coincidences — and specifically repeated
-bigrams/trigrams at distance 5 — cluster inside words at p ~ 1e-3 under a
-null that preserves the entire rune stream. Together with the word-aligned
+Verified anomaly, at a calibrated ~2–3σ (see the calibration section:
+p = 0.0014 for the cell, 0.020 family-blind over 124 cells). The unsolved
+Liber Primus ciphertext is not boundary-blind: distance-5 coincidences —
+and specifically repeated bigrams/trigrams at distance 5 — cluster inside
+words under a null that preserves the entire rune stream. Together with the word-aligned
 repeated phrase, this is direct statistical evidence that the cipher carries
 **word-scoped key state with a distance-5 (or 5-periodic) regularity**. The
 next steps are the d6 suppression (the echo's period-5 partner, see
