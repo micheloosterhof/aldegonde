@@ -201,10 +201,11 @@ proposed, not a proof of exhaustiveness.)
    max 182) — the empirical unicity length, ~27% above the 63-rune analytic
    lower bound, which is exactly the image-collision penalty `information_budget.py`
    flags but never measured. Wrong keys reject fast: random `(g, σ)` in a
-   median 6 runes, cycle-type-preserving nearest neighbours in 13–14, the
-   slowest (nearest σ) rejecting by ~190 — which sets the crib length a
-   verifier needs. **Every distinct wrong key is rejected by one contiguous
-   crib; no genuine near-neighbour degeneracy exists.** One caveat a real
+   median 6 runes, cycle-type-preserving nearest neighbours in 13–14
+   median. The nearest-σ rejection tail is HEAVY (max ~280 over thousands
+   of trials), so a verifier crib should be a few hundred runes to guarantee
+   the slowest neighbours reject. **Every distinct wrong key is rejected by
+   one contiguous crib; no genuine near-neighbour degeneracy exists.** One caveat a real
    verifier must honour: reject on the bijection **contradiction**, not on
    `base_0` fill — a wrong key can fill `base_0` consistently before its
    error is exercised. This confirms the "a correct key verifies instantly"

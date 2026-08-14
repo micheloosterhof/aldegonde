@@ -156,8 +156,10 @@ def main() -> None:
     nwords = len(words)
     # only start words with at least CAP runes of corpus remaining, so
     # "survived-to-cap" means genuinely consistent, never "crib ran out".
-    # CAP is set safely above the slowest genuine rejection (sigma ~190).
-    CAP = 400
+    # The nearest-sigma rejection tail is heavy (median ~15 but max ~280 over
+    # thousands of trials); CAP is set well above it so no genuine wrong key
+    # slips through unrejected.
+    CAP = 600
     suffix = 0
     starts = []
     for wi in range(nwords - 1, -1, -1):
@@ -234,11 +236,12 @@ def main() -> None:
 
     print("VERDICT: the crib channel behaves as the model requires -- the true")
     print("key pins base_0 in ~80 runes and EVERY distinct wrong key is rejected")
-    print("by one contiguous crib (random in ~6, nearest g in ~14, nearest sigma")
-    print("by ~190 -- the slowest, which sets the crib length). No genuine")
-    print("near-neighbour degeneracy exists. One caveat a real verifier must")
-    print("honour: reject on the bijection CONTRADICTION, not on base_0 fill --")
-    print("a wrong key can fill base_0 consistently before its error is exercised.")
+    print("by one contiguous crib. Typical rejection is fast (random ~6, nearest")
+    print("g ~13, nearest sigma ~15 median) but the nearest-sigma tail is heavy")
+    print("(max ~280), so a verifier crib should be a few hundred runes to")
+    print("guarantee the slowest neighbours reject. No genuine near-neighbour")
+    print("degeneracy exists. One caveat: reject on the bijection CONTRADICTION,")
+    print("not on base_0 fill -- a wrong key can fill base_0 before its error shows.")
 
 
 if __name__ == "__main__":

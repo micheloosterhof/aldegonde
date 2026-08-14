@@ -136,29 +136,44 @@ Clean corpus: sections 0-9, 12,956 runes, words tokenized on `- . & %`; `/` and
 newlines are line wraps (words flow across them).
 
 - **Full-profile corpus-sized simulation (2026-08-14,
-  `experiments/walk_full_profile.py`).** One (g, σ₁, σ₂) fitted at
+  `experiments/walk_full_profile.py`).** One minimal key (g, one σ,
+  free base₀, schedule clocked by the public word lengths) fitted at
   table level — g to the observed d1-d4+d6 on consecutive-prose pair
   tables (inverse-variance weighted), σ to the seam 0.0079 on the
   cross-word table — then run through `encipher()` over 100 corpora of
   2,928 consecutive prose words. Every hard cell lands within noise of
-  the LP (LP error carried): d1w −0.06, seam −0.00, d2w +0.00, d3w
-  −0.04, d4w −0.17, d5x −0.13, d6w +0.06; d5w −0.82 is the known
-  untuned register residual (g⁵=id fixes that cell at the plaintext's
-  own lag-5 rate, 0.0569 sim vs 0.0492 LP). This upgrades
-  `d4_d6_prediction.py`'s table-level reachability to a full generative
-  run. The REGISTER is load-bearing in both directions: a Markov-2
-  trigram generator cannot reach d4/d6 (fit floors 0.0368/0.0319 vs
-  0.0410/0.0245), and independently-drawn dictionary words cannot reach
-  the seam (product cross table, σ floor ~0.0154 vs 0.0079) — only
-  running text supplies both. Soft observables stay untargeted as
-  documented (sim min doublet gap 4 vs LP 6; delta chi2 30.4 vs 41.4).
-  Same caveat as the table-level result: reachability is weak evidence
-  FOR; the force is that no profile cell is evidence against. The run
-  is self-validating (round-trip decipher; within/seam match ⟺
-  plaintext algebra checked exactly) and writes
-  `experiments/walk_reference.json` — key + plaintext/ciphertext pair,
-  the standing validation target for crib propagation and key-search
+  the LP (LP error carried): d1w +0.12, seam −0.10, d2w −0.16, d3w
+  +0.18, d4w −0.14, d5x +0.05, d6w +0.18; d5w −0.68 (0.0560 sim vs
+  0.0492 LP).
+
+  **What this does and does not show.** Most cells are near-tautological
+  confirmations: the fitted g's within-word rate at distance d IS
+  `diag_rate(P_d, gᵈ)`, so on prose windows drawn from the fit corpus
+  the measured rate returns the fitted value by construction — these
+  cells test that `encipher()` realises the algebra at corpus scale and
+  that window-to-window variance is small, NOT that the model is right.
+  Only two cells are genuine untuned predictions: d5x (cross-word,
+  chance under any independent-base model, matches trivially) and d5w
+  (g⁵=id fixes it at the plaintext's own lag-5 rate). d5w is the one
+  falsifiable cell and it MISSES by the register — 0.056 predicted vs
+  0.049 observed, −0.68σ here but a persistent ~+15% over-prediction
+  also seen in the prose reference. So the honest reading: the run
+  proves the machinery and quantifies the register, and leaves d5's
+  known residual exactly where it was.
+
+  **The load-bearing results are the register lesson and the artifact,
+  not the profile match.** The REGISTER is required in both directions:
+  a Markov-2 trigram generator cannot reach d4/d6 (fit floors
+  0.0368/0.0319 vs 0.0410/0.0245), and independently-drawn dictionary
+  words cannot reach the seam (product cross table, σ floor ~0.0154 vs
+  0.0079) — only running text supplies both. The run is self-validating
+  (round-trip decipher; within/seam match ⟺ plaintext algebra checked
+  exactly) and writes `experiments/walk_reference.json` — a known-key
+  plaintext/ciphertext pair, the standing validation target for crib
+  propagation (`key-local-channel-is-empty.md` route 2) and key-search
   machinery.
+  Soft observables stay untargeted (sim min doublet gap 4 vs LP 6;
+  delta chi2 ~30 vs 41.4).
 - **Flat unigrams (IoC 1.00).** The non-abelian walk ⟨g,σ⟩ visits many
   alphabets → uniform marginal.
 - **Doublet suppression** (but NOT its boundary-blindness — see Mechanism).
