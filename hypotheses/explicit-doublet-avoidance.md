@@ -45,7 +45,10 @@ underlying cipher.
   would lift the battery's off-diagonal chi2 by ~+8 sigma (observed +0.7,
   `bigram-ioc.md`) — also excluded. Watch-item, not signal: the 28-class
   chi2 is mildly overdispersed (41.4 on 27 df, p ~ 0.035 uncorrected,
-  identical under all three nulls, no responsible class).
+  identical under all three nulls, no responsible class). This is the same
+  number `per-word-related-alphabets.md` already carries as its "d1-delta
+  residual" soft observable; what this experiment adds is the per-class
+  bands and the planted power curve, not the residual itself.
 - **A stochastic partial fix is not excluded — it is a reformulation**: a
   post-processor that re-draws ~80% of doublets is a memoryless thinning of
   doublet events, observationally near-identical to avoiding them at
