@@ -204,6 +204,46 @@ This is a property of the cipher, not of any search. It explains every failure
 without appealing to bad luck, and it predicts that further objective-engineering
 will fail.
 
+## The base-free channel, mapped completely (2026-08-15)
+
+The "within-word observable is the isomorph pattern" argument above extends to
+the **whole** ciphertext, and closes it. Every coincidence cancels the base:
+for two runes at (word w, phase j) and (word w′, phase j′),
+`base_{w′} = base_w ∘ S` with S the step-product between them, so the shared
+`base_w` cancels and
+
+    p[i] = g^(−j) · S · g^(j′) · p[i′]   — base-free, whatever S is.
+
+The seam is **not** special in cancelling the base — *every* coincidence does.
+What varies is whether the exposed relation `g^(−j)·S·g^(j′)` is a clean
+permutation or a long scrambled ⟨g,σ⟩ product:
+
+| pair | S | exposed relation | corpus cell |
+|---|---|---|---|
+| same word, phase gap d | id | **g^d** | d1,d6 → g (low); d5,d10 → id (echo); d2,3,4 → g²,³,⁴ |
+| adjacent words, **last→first** | g^a·σ | **σ** (last phase cancels the step's g^a) | the 23 seam doublets |
+| **base return** (S = id over k words) | id | **identity**, cross-word | DJU-BEI repeat |
+| any other pair | long word in ⟨g,σ⟩ | scrambled | chance |
+
+This reproduces the entire measured profile from one line: **d1 and d6 both
+suppressed** because g¹ = g⁶ (same permutation, but the diagonal is read on
+different distance-tables, so 0.0063 vs 0.0245 — both below chance, not equal);
+**d5 the echo** because g⁵ = id; the **d4 lean** because g⁴ = g⁻¹ is an untuned
+diagonal; the **seam** because the last-rune phase exactly cancels the step's
+g^a; **DJU-BEI** because the walk returned. There is no fourth clean window —
+everything else is a long ⟨g,σ⟩ product, generic by measurement (σ² and the
+bridge relations `σ·g^b·σ` sit at chance, see route 2's seam-doublet note).
+
+Two conclusions:
+
+- **The base-free channel is complete and fully measured.** The delta-function
+  landscape is not a search-engineering failure; it is what "the base-free
+  channel is exhausted" *looks like*. Any further information is necessarily
+  key-global (the base schedule) — a crib or a structured (g, σ) enumeration.
+- **⟨g,σ⟩ has no short relations.** Because no step-product beyond length 1 is
+  clean, σ is not low-order, not an involution, not near a power of g — the walk
+  is free. (Consistent with `sigma-power-step.md` and the ≥300-base depth.)
+
 ## Consequences
 
 Two routes are known. (Two, not "exactly two" — this is a list of what has been
