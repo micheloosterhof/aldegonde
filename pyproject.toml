@@ -30,7 +30,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "build==1.5.0",
-  "coverage==7.13.1",
+  "coverage==7.15.2",
   "hypothesis>=6.100.0",
   "pipdeptree==2.30.0",
   "pytest==9.0.2",
