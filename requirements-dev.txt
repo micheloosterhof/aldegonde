@@ -1,6 +1,6 @@
 build==1.5.0
 coverage==7.13.1
-pipdeptree==2.30.0
+pipdeptree==4.1.0
 pytest==9.0.2
 pytest-cov==7.1.0
 ruff==0.15.2
