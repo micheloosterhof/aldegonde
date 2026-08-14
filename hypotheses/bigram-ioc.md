@@ -83,3 +83,7 @@ mechanism to leave.
 ## Related
 
 - `doublet-suppression.md` — the diagonal deficit that lifts the raw IoC.
+- `explicit-doublet-avoidance.md` — the difference-class marginal
+  (`experiments/obs_delta_offset_marginal.py`), the class-pooled projection
+  of this matrix; flat too, closing spread deterministic repair rules the
+  per-cell chi-square is underpowered for.
