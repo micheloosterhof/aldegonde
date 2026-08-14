@@ -31,7 +31,7 @@ proposed mechanisms scored against them.
 | [no-periodicity.md](no-periodicity.md) | No Periodic Key (Friedman flat at every period) | confirmed (characterization) |
 | [quote-span-boundaries.md](quote-span-boundaries.md) | Quoted Spans Align to the '.' Marks (the Marks Are Not Inert) | confirmed (characterization) for the alignment (p=1.5e-7, layout-robust); what the marks delimit stays open |
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
-| [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization) |
+| [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization); extended Aug 2026 to JOINT 2nd-order (bigram->next): conditional MI at the exact-bigram null (z=-0.48), and the pooled test rejects 2-back autokeys (planted additive/Quagmire z~+40) -- consistent with the walk, not running feedback |
 | [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) |
 | [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [seam-channel-clean.md](seam-channel-clean.md) | The Seam Channel is Clean (Suppressed Diagonal Only) | confirmed (characterization) |
