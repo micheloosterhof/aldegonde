@@ -168,10 +168,17 @@ newlines are line wraps (words flow across them).
   words cannot reach the seam (product cross table, σ floor ~0.0154 vs
   0.0079) — only running text supplies both. The run is self-validating
   (round-trip decipher; within/seam match ⟺ plaintext algebra checked
-  exactly) and writes `experiments/walk_reference.json` — a known-key
-  plaintext/ciphertext pair, the standing validation target for crib
-  propagation (`key-local-channel-is-empty.md` route 2) and key-search
-  machinery.
+  exactly, both now asserted) and writes `experiments/walk_reference.json`
+  — a known-key plaintext/ciphertext pair. **Scope of the artifact:** its
+  `g`/`σ` are freely-designed (random permutations annealed to the diagonal
+  targets), NOT drawn from any structured family. So it validates the crib
+  VERIFIER for arbitrary full `(g, σ)` candidates and end-to-end crib
+  propagation (`key-local-channel-is-empty.md` route 2) — but it CANNOT
+  validate a structured-family ENUMERATION's ability to *find* the key
+  (route 1: magic square, keyword grids), because the planted key is
+  out-of-family and such a search would correctly reject everything,
+  falsely reading as either success or an empty family. To test route 1,
+  plant a key drawn from the family being enumerated.
   Soft observables stay untargeted (sim min doublet gap 4 vs LP 6;
   delta chi2 ~30 vs 41.4).
 - **Flat unigrams (IoC 1.00).** The non-abelian walk ⟨g,σ⟩ visits many
