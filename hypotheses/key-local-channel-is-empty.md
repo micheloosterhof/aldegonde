@@ -201,14 +201,15 @@ proposed, not a proof of exhaustiveness.)
    max 182) — the empirical unicity length, ~27% above the 63-rune analytic
    lower bound, which is exactly the image-collision penalty `information_budget.py`
    flags but never measured. Wrong keys reject fast: random `(g, σ)` in a
-   median 6 runes, cycle-type-preserving nearest neighbours in 13–14. Two
-   caveats a real verifier must honour, both surfaced here: reject on the
-   bijection **contradiction**, not on `base_0` fill (a wrong key can fill it
-   first); and a **~0.5% tail of nearest neighbours survives a 250-rune crib
-   at a fixed window** (1/400 σ, 2/400 g), so verify at more than one crib
-   position. This confirms the "a correct key verifies instantly" claim and
-   turns ~63 into a measured ~80; it does not lift the ENUMERATION burden of
-   route 1 — the crib is a verifier, not a search.
+   median 6 runes, cycle-type-preserving nearest neighbours in 13–14, the
+   slowest (nearest σ) rejecting by ~190 — which sets the crib length a
+   verifier needs. **Every distinct wrong key is rejected by one contiguous
+   crib; no genuine near-neighbour degeneracy exists.** One caveat a real
+   verifier must honour: reject on the bijection **contradiction**, not on
+   `base_0` fill — a wrong key can fill `base_0` consistently before its
+   error is exercised. This confirms the "a correct key verifies instantly"
+   claim and turns ~63 into a measured ~80; it does not lift the ENUMERATION
+   burden of route 1 — the crib is a verifier, not a search.
 
    `experiments/d5_crib_targets.py` supplies key-free plaintext constraints toward
    this: since d5 reads plaintext equality directly, 8 words carrying XY···XY are

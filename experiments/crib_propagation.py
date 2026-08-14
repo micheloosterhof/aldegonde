@@ -57,12 +57,19 @@ def ppow(p: list[int], k: int) -> list[int]:
 def transpose(p: list[int], rng: random.Random) -> list[int]:
     """p conjugated by a random transposition: the nearest distinct key that
     PRESERVES cycle type, so a conjugated order-5 g stays order 5 (a raw
-    output-swap would not). Changes p at up to ~4 points -- a hard wrong key."""
-    q = p[:]
-    x, y = rng.sample(range(M), 2)
-    t = list(range(M))
-    t[x], t[y] = y, x
-    return [t[q[t[i]]] for i in range(M)]
+    output-swap would not). Changes p at up to ~4 points -- a hard wrong key.
+
+    A transposition of two points p fixes (e.g. two of g's fixed points)
+    commutes with p and returns p UNCHANGED; that would smuggle the true key
+    into a wrong-key class. Redraw until the conjugate genuinely differs.
+    """
+    while True:
+        x, y = rng.sample(range(M), 2)
+        t = list(range(M))
+        t[x], t[y] = y, x
+        out = [t[p[t[i]]] for i in range(M)]
+        if out != p:
+            return out
 
 
 def random_order5(rng: random.Random) -> list[int]:
@@ -148,8 +155,9 @@ def main() -> None:
 
     nwords = len(words)
     # only start words with at least CAP runes of corpus remaining, so
-    # "survived-to-cap" means genuinely consistent, never "crib ran out"
-    CAP = 250
+    # "survived-to-cap" means genuinely consistent, never "crib ran out".
+    # CAP is set safely above the slowest genuine rejection (sigma ~190).
+    CAP = 400
     suffix = 0
     starts = []
     for wi in range(nwords - 1, -1, -1):
@@ -225,11 +233,12 @@ def main() -> None:
         print()
 
     print("VERDICT: the crib channel behaves as the model requires -- the true")
-    print("key is uniquely pinned by a contiguous crib (~80 runes) and wrong keys")
-    print("are rejected fast (random in ~6, nearest neighbours in ~14). Two caveats")
-    print("for a real verifier: reject on contradiction, not base_0 fill (a wrong")
-    print("key can fill base_0 first); and a ~0.5% tail of nearest neighbours")
-    print("survives 250 runes at a fixed window, so verify at more than one crib.")
+    print("key pins base_0 in ~80 runes and EVERY distinct wrong key is rejected")
+    print("by one contiguous crib (random in ~6, nearest g in ~14, nearest sigma")
+    print("by ~190 -- the slowest, which sets the crib length). No genuine")
+    print("near-neighbour degeneracy exists. One caveat a real verifier must")
+    print("honour: reject on the bijection CONTRADICTION, not on base_0 fill --")
+    print("a wrong key can fill base_0 consistently before its error is exercised.")
 
 
 if __name__ == "__main__":
