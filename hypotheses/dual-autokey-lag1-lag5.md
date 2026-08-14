@@ -22,8 +22,13 @@ and a labelling is a 29-permutation. So this does not escape
 
 ## Status
 
-**Status**: partial, and WEAKER than first recorded — the doublet suppression is
-NOT structural. Corrected August 2026 after a labelling control.
+**Status**: closed as a mechanism for this corpus (August 2026), reached in two
+corrections from the original "live partial": the doublet suppression is NOT
+structural (a labelling control), and the lag structure is a theorem-level
+obstruction — linear feedback lets at most one distance carry a clean relation,
+but the LP needs four (d1, d4, d5, d6). It still floors ~1.4× short on depth and
+produces no d5 echo. What survives is the negative (see the closing Status and
+`doublet-suppression-requires-design.md`).
 
 ## Why it is not covered by the existing autokey disproofs
 
