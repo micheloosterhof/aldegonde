@@ -222,6 +222,10 @@ def main() -> None:
     def s_obj(s):
         return (diag_rate(xmat, s) - seam_target) ** 2
 
+    # ONE sigma: the standing model's key is small and fixed (g, sigma, base0)
+    # with the schedule clocked by the public word lengths -- no per-word
+    # key freedom. sigmas/stepkey retain their plural shape for the
+    # artifact format, but stepkey is constant zero.
     sigmas = [
         min(
             (
@@ -230,11 +234,10 @@ def main() -> None:
             ),
             key=s_obj,
         )
-        for _ in range(2)
     ]
     print(
-        f"sigma diagonals on cross table: "
-        f"{[f'{diag_rate(xmat, s):.4f}' for s in sigmas]} (LP {seam_target:.4f})"
+        f"sigma diagonal on cross table: "
+        f"{diag_rate(xmat, sigmas[0]):.4f} (LP {seam_target:.4f})"
     )
 
     # replicate corpora: key fixed, plaintext / base0 / stepkey resampled
@@ -245,7 +248,7 @@ def main() -> None:
         words = prose[start : start + len(lengths)]
         base0 = list(range(M))
         rng.shuffle(base0)
-        stepkey = [rng.randrange(2) for _ in range(len(words))]
+        stepkey = [0] * len(words)
         ct = encipher(words, g, base0, sigmas, stepkey)
         for k, (m, e) in measure(ct).items():
             sums[k].append(m / e)
