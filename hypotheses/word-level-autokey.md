@@ -149,11 +149,14 @@ Possible forms:
   are 0, null ~0). The recurring long-word bigrams are ordinary same-author
   prose — THE MASTER, BE RIGHT, YOUR TRUTH, THE LOSS, OF DIVINITY, BE STRONG,
   WE HAVE — not one header artifact; discarding the instructional refrain
-  entirely still leaves ~650 predicted against 0. The kill is register-shape
-  independent: any multi-page prose recurs word-bigrams ending in long words.
-  Extends to a base keyed on the previous *k* words (forces repeats on
-  word-(k+1)-gram recurrence — rarer, but the refrain's trigrams still recur,
-  so still killed at length ≥ 4).
+  entirely still leaves ~650 predicted against 0. The margin is large enough
+  that it does not hinge on the exact register: the prediction only needs the
+  unsolved plaintext to recur *some* word-bigrams ending in long words, which any
+  multi-page prose does — though the register is a proxy, not the unsolved text
+  itself. The same argument *should* extend to a base keyed on the previous *k*
+  words (which would force repeats on word-(k+1)-gram recurrence — rarer, but the
+  refrain's trigrams do recur); that extension is argued, not separately
+  measured.
 
 ## Predictions
 

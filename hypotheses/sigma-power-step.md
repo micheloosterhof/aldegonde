@@ -137,7 +137,7 @@ polyalphabetic.
   normalising σ needs the base count to sit near the bottom of its
   plausible range.
 
-  **Now excluded, not just disfavoured (August 2026,
+  **Sharpened toward exclusion (August 2026,
   `experiments/base_count_floor.py`).** The census pools all word lengths, so
   the high-chance short-word cells dilute its excess-pair bound. The
   discriminating cells are length ≥ 4, where the observed ciphertext word-repeat
@@ -149,18 +149,28 @@ polyalphabetic.
   plaintext repeat pressure is `Σ C(m_L,2)·κ_L`, with κ_L estimated on a large
   generic-English register (Gutenberg #1342): **2,839 pairs**. So a commuting σ
   (N = 500) forces ~5.7 length-≥4 ciphertext word-repeats and a twisted σ
-  (N = 300) ~9.5, against **0 observed** — Poisson **p = 0.0034** (commuting)
-  and **p = 8×10⁻⁵** (twisted). The exclusion is conservative: generic prose is
-  less repetitive than the LP's header-heavy register, on which the pressure is
-  ~7,900 and the commuting-σ p falls to ~1×10⁻⁷ (twisted ~4×10⁻¹²). Both
-  registers are computed in the same script as a collision rate κ, so the small
-  same-author sample is unbiased, not inflated. It is also adversary-proof:
-  even choosing ord σ = 100 to maximise the base count and dodge the repeat gaps,
-  the 1/5 phase condition is fixed by the public word lengths and cannot be
-  dodged. The twisted p ≈ 8×10⁻⁵ reproduces the census's "comfortably excluded,"
-  confirming the method where the census was confident. **σ does not normalise
-  ⟨g⟩ in any case — the header claim above now holds without the commuting
-  caveat, and the base schedule has no closed form.**
+  (N = 300) ~9.5, against **0 observed** — Poisson **p = 0.0034** (commuting,
+  ≈2.9σ) and **p = 8×10⁻⁵** (twisted). On the same-author register the pressure
+  is ~7,900 and the commuting p falls to ~1×10⁻⁷; both are computed as a
+  collision rate κ, so the small same-author sample is unbiased. The honest
+  strength is therefore ~2.9σ on the conservative register, stronger on the
+  same-author one — enough to call the commuting case **excluded**, but not with
+  the same margin as the twisted cases.
+
+  Three caveats bound this. (1) **It rests on the pressure estimate.** Both
+  registers are proxies for the unsolved plaintext; if its long-word repeat rate
+  were well below generic English the commuting exclusion would weaken (halving
+  the pressure lifts the commuting p to ~0.06). Both proxies point the same way
+  (same-author higher than generic), so this is a real but not airtight bound.
+  (2) The ~1/5 phase weight is an *average* over gaps, not exact per pair, and
+  the ~1/N equidistribution is a good approximation, not an identity — so an
+  adversary choosing ord σ = 100 is *disfavoured*, not provably defeated. (3) The
+  twisted p ≈ 8×10⁻⁵ reproduces the census's "comfortably excluded," a check that
+  the method behaves where the census was confident. Read together with the
+  census (N ≳ 600) and two-rune depth (≥ 300), the normaliser σ — commuting and
+  twisted — is now disfavoured strongly enough to set aside, so the base schedule
+  is treated as having no closed form. This is a conclusion about likelihood, not
+  a proof.
 
   This still supersedes the earlier note here that commuting σ was
   unconstrained: the centralizer is large (~9×10⁶ elements) but its
