@@ -514,6 +514,14 @@ newlines are line wraps (words flow across them).
   product with an untuned diagonal (~0.013 in the run) that drags the
   doublet rate up. Fixed `g` tunes one diagonal once and uses it five
   times. So `g` is fixed by parsimony and tuning economy, not by proof.
+  The one handle that could have distinguished a free per-word `g_w` — the
+  d4 lean / d6 dip, since d1-only-tuned `g_w` averaged over words would wash
+  those cells to chance — was tested (`experiments/per_word_g_test.py`) and
+  is **underpowered**: words are too short (<1 within-word d4 pair per word),
+  so the per-word average never concentrates. A fixed `g` and an independent
+  per-word `g_w` give the *same* d4/d6 distribution (d4 0.0285 ± 0.0094 vs
+  0.0287 ± 0.0075), and the LP sits ~1.7σ / −0.3σ from both. So the d4/d6
+  cells cannot decide it either; per-word `g_w` remains invisible.
 - **`σ`: one or a small keyed set?** Seam suppression proves the space step is
   a rare-diagonal permutation (not a random re-key) but does not prove there is
   only *one* `σ`. A small keyed family fits equally; the fully-deterministic
