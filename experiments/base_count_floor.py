@@ -18,12 +18,16 @@ count of length-L words and kappa_L the plaintext collision rate for length-L
 words. At L >= 4 the chance background is ~0 (word_repeat_census.py: 0 observed,
 null ~0), so 0 observed bounds the forced mean at ~3 (2 sigma), giving
 
-    N >~ sum_{L>=4} C(m_L, 2) * kappa_L / 3.
+    forced(L, N) = C(m_L, 2) * kappa_L / N,   N <= 500 (commuting), <= 300 (twisted),
 
-kappa_L is estimated on a large generic-English runeglish register (Project
-Gutenberg #1342, ~120k word tokens). Generic prose is LESS repetitive than the
-LP's header-heavy register, so this UNDER-estimates kappa, hence N -- any
-N > 500 here is a conservative exclusion of the commuting sigma.
+so 0 observed at L >= 4 gives a Poisson p = exp(-sum_{L>=4} forced) for each cap.
+
+kappa_L is measured on two independent registers: a large generic-English one
+(Project Gutenberg #1342, ~120k tokens) and the same-author LP one (the recovered
+position-preserving solved segments). Generic prose is LESS repetitive than the
+LP's header-heavy register, so the generic number is the conservative bound; the
+same-author number is stronger. kappa is a rate, not a scaled count, so the small
+same-author sample is unbiased rather than inflated.
 """
 
 from __future__ import annotations
@@ -41,7 +45,10 @@ sys.path.insert(0, str(ROOT / "experiments"))
 from d5_partial_leak import to_runeglish  # noqa: E402, I001
 from ea_direction_test import PROSE_URL, prose_words  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
-from word_base_plaintext_closure import observed_by_len  # noqa: E402
+from word_base_plaintext_closure import (  # noqa: E402
+    observed_by_len,
+    register_segments_with_words,
+)
 
 PROSE_CACHE = Path(tempfile.gettempdir()) / "pg1342.txt"
 
@@ -50,15 +57,8 @@ COMMUTING_MAX = 500  # r = 1 (sigma commutes with g)
 TWISTED_MAX = 300  # r = 2, 3, 4
 
 
-def register_collision_by_len() -> dict[int, float]:
-    """kappa_L = P(two random length-L register words are equal), unbiased."""
-    if not PROSE_CACHE.exists():
-        print(f"downloading {PROSE_URL} -> {PROSE_CACHE}")
-        urllib.request.urlretrieve(PROSE_URL, PROSE_CACHE)
-    by_len: dict[int, Counter[tuple[str, ...]]] = {}
-    for w in prose_words(PROSE_CACHE):
-        rg = tuple(to_runeglish(w))
-        by_len.setdefault(len(rg), Counter())[rg] += 1
+def kappa_from(by_len: dict[int, Counter]) -> dict[int, float]:
+    """kappa_L = P(two random length-L words are equal), unbiased, per length."""
     kappa: dict[int, float] = {}
     for L, counts in by_len.items():
         n = sum(counts.values())
@@ -67,51 +67,82 @@ def register_collision_by_len() -> dict[int, float]:
     return kappa
 
 
-def main() -> None:
-    kappa = register_collision_by_len()
-    obs, corp_words = observed_by_len()
+def generic_english_kappa() -> dict[int, float]:
+    """Large, stable register: Project Gutenberg #1342 (~120k word tokens)."""
+    if not PROSE_CACHE.exists():
+        print(f"downloading {PROSE_URL} -> {PROSE_CACHE}")
+        urllib.request.urlretrieve(PROSE_URL, PROSE_CACHE)
+    by_len: dict[int, Counter[tuple[str, ...]]] = {}
+    for w in prose_words(PROSE_CACHE):
+        rg = tuple(to_runeglish(w))
+        by_len.setdefault(len(rg), Counter())[rg] += 1
+    return kappa_from(by_len)
 
-    # corpus length histogram
-    stream, wid = load_clean()
-    lens: Counter[int] = Counter()
+
+def same_author_kappa() -> dict[int, float]:
+    """LP register: the recovered position-preserving solved segments (486 words).
+
+    kappa is a RATE (ratio), so it is not inflated by the small sample the way a
+    quadratically-scaled pair count would be.
+    """
+    by_len: dict[int, Counter[tuple[int, ...]]] = {}
+    for words in register_segments_with_words():
+        for w in words:
+            by_len.setdefault(len(w), Counter())[w] += 1
+    return kappa_from(by_len)
+
+
+def corpus_length_histogram() -> Counter[int]:
+    _, wid = load_clean()
     d: dict[int, int] = defaultdict(int)
     for w in wid:
         d[w] += 1
+    out: Counter[int] = Counter()
     for L in d.values():
-        lens[L] += 1
+        out[L] += 1
+    return out
 
-    print(f"corpus: {corp_words} words; register kappa from Gutenberg #1342\n")
-    print(f"  {'len':>4}{'corpus m_L':>11}{'kappa_L':>11}{'pt pairs':>11}{'obs ct':>8}")
-    floor_num = 0.0
-    for L in range(1, 15):
-        m = lens.get(L, 0)
-        k = kappa.get(L, 0.0)
-        pt_pairs = comb(m, 2) * k
-        if L >= 4:
-            floor_num += pt_pairs
-        mark = "  <- zero bg" if L >= 4 else ""
-        print(f"  {L:>4}{m:>11}{k:>11.5f}{pt_pairs:>11.0f}{obs.get(L, 0):>8}{mark}")
 
-    obs_hi = sum(obs.get(L, 0) for L in range(4, 15))
+def pressure_len4(kappa: dict[int, float], lens: Counter[int]) -> float:
+    """Expected plaintext repeat pairs summed over the zero-background L >= 4 cells."""
+    return sum(comb(lens.get(L, 0), 2) * kappa.get(L, 0.0) for L in range(4, 15))
+
+
+def report(name: str, kappa: dict[int, float], lens: Counter[int], obs_hi: int) -> None:
+    pressure = pressure_len4(kappa, lens)
     print(
-        f"\nlen>=4 plaintext repeat pressure: {floor_num:.0f} pairs; "
-        f"observed ciphertext repeats there: {obs_hi} (null ~0)"
+        f"\n{name}: len>=4 plaintext repeat pressure {pressure:.0f} pairs; observed {obs_hi}"
     )
-    print("\nexclusion of a normaliser sigma via its base-count cap:")
     print(f"  {'variant':>22}{'max bases':>11}{'exp forced':>12}{'P(0 obs)':>12}")
-    for name, cap in (
+    for label, cap in (
         ("commuting (r=1)", COMMUTING_MAX),
         ("twisted (r=2,3,4)", TWISTED_MAX),
     ):
-        mu = floor_num / cap  # forced repeats if the walk visited only `cap` bases
+        mu = pressure / cap  # forced repeats if the walk visited only `cap` bases
         p = exp(-mu) if obs_hi == 0 else float("nan")
-        print(f"  {name:>22}{cap:>11}{mu:>12.1f}{p:>12.2g}")
+        print(f"  {label:>22}{cap:>11}{mu:>12.1f}{p:>12.2g}")
+
+
+def main() -> None:
+    obs, corp_words = observed_by_len()
+    obs_hi = sum(obs.get(L, 0) for L in range(4, 15))
+    lens = corpus_length_histogram()
+
     print(
-        "\n  A normaliser sigma visits <= 5*ord(sigma) bases; equidistribution + "
-        "plaintext-\n  repeat gaps independent of the cipher period give "
-        "P(two equal words share a\n  base) ~ 1/N, so fewer bases force MORE repeats. "
-        "Generic prose under-estimates\n  the LP register's repetition, so this "
-        "exclusion is conservative."
+        f"corpus: {corp_words} words; observed ciphertext word-repeats at len>=4: "
+        f"{obs_hi} (null ~0, word_repeat_census.py)"
+    )
+    print(
+        "\nA normaliser sigma visits <= 5*ord(sigma) bases (commuting <=500, twisted"
+        " <=300)\nabout-uniformly, so two equal plaintext words share a base with prob"
+        " ~1/N and\nforce a ciphertext word-repeat. Two independent registers:"
+    )
+    report("generic English (conservative)", generic_english_kappa(), lens, obs_hi)
+    report("same-author LP register", same_author_kappa(), lens, obs_hi)
+    print(
+        "\nBoth exclude every normaliser sigma. The 1/5 phase condition is fixed by the"
+        "\npublic word lengths, so the exclusion is adversary-proof; sigma does not"
+        " normalise <g>."
     )
 
 

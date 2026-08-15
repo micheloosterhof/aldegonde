@@ -151,8 +151,10 @@ polyalphabetic.
   (N = 500) forces ~5.7 length-≥4 ciphertext word-repeats and a twisted σ
   (N = 300) ~9.5, against **0 observed** — Poisson **p = 0.0034** (commuting)
   and **p = 8×10⁻⁵** (twisted). The exclusion is conservative: generic prose is
-  less repetitive than the LP's header-heavy register, on which the same pressure
-  is ~6,200 and the commuting-σ p falls to ~4×10⁻⁶. It is also adversary-proof:
+  less repetitive than the LP's header-heavy register, on which the pressure is
+  ~7,900 and the commuting-σ p falls to ~1×10⁻⁷ (twisted ~4×10⁻¹²). Both
+  registers are computed in the same script as a collision rate κ, so the small
+  same-author sample is unbiased, not inflated. It is also adversary-proof:
   even choosing ord σ = 100 to maximise the base count and dodge the repeat gaps,
   the 1/5 phase condition is fixed by the public word lengths and cannot be
   dodged. The twisted p ≈ 8×10⁻⁵ reproduces the census's "comfortably excluded,"
