@@ -137,6 +137,29 @@ polyalphabetic.
   normalising σ needs the base count to sit near the bottom of its
   plausible range.
 
+  **Now excluded, not just disfavoured (August 2026,
+  `experiments/base_count_floor.py`).** The census pools all word lengths, so
+  the high-chance short-word cells dilute its excess-pair bound. The
+  discriminating cells are length ≥ 4, where the observed ciphertext word-repeat
+  count is 0 against a ~0 null (`word_repeat_census.py`). A normaliser σ visits
+  at most `5·ord σ` bases (≤ 500 commuting, ≤ 300 twisted) about-uniformly —
+  `(e mod 5, w mod ord σ)` equidistributes, and plaintext-repeat gaps are
+  independent of the cipher period, so two equal plaintext words share a base
+  with probability ~1/N and force a ciphertext word-repeat. The length-≥4
+  plaintext repeat pressure is `Σ C(m_L,2)·κ_L`, with κ_L estimated on a large
+  generic-English register (Gutenberg #1342): **2,839 pairs**. So a commuting σ
+  (N = 500) forces ~5.7 length-≥4 ciphertext word-repeats and a twisted σ
+  (N = 300) ~9.5, against **0 observed** — Poisson **p = 0.0034** (commuting)
+  and **p = 8×10⁻⁵** (twisted). The exclusion is conservative: generic prose is
+  less repetitive than the LP's header-heavy register, on which the same pressure
+  is ~6,200 and the commuting-σ p falls to ~4×10⁻⁶. It is also adversary-proof:
+  even choosing ord σ = 100 to maximise the base count and dodge the repeat gaps,
+  the 1/5 phase condition is fixed by the public word lengths and cannot be
+  dodged. The twisted p ≈ 8×10⁻⁵ reproduces the census's "comfortably excluded,"
+  confirming the method where the census was confident. **σ does not normalise
+  ⟨g⟩ in any case — the header claim above now holds without the commuting
+  caveat, and the base schedule has no closed form.**
+
   This still supersedes the earlier note here that commuting σ was
   unconstrained: the centralizer is large (~9×10⁶ elements) but its
   *element orders* are not, and the base count depends on the order.
