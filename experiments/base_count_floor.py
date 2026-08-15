@@ -137,13 +137,26 @@ def main() -> None:
         " <=300)\nabout-uniformly, so two equal plaintext words share a base with prob"
         " ~1/N and\nforce a ciphertext word-repeat. Two independent registers:"
     )
-    report("generic English (conservative)", generic_english_kappa(), lens, obs_hi)
+    gen = generic_english_kappa()
+    report("generic English (conservative)", gen, lens, obs_hi)
     report("same-author LP register", same_author_kappa(), lens, obs_hi)
     print(
-        "\nBoth exclude every normaliser sigma. The 1/5 phase condition is fixed by the"
-        "\npublic word lengths, so the exclusion is adversary-proof; sigma does not"
-        " normalise <g>."
+        "\nBoth registers disfavour every normaliser sigma (commuting ~2.9sigma on the"
+        "\nconservative register, stronger on the same-author one) -- a likelihood, not"
+        "\na proof, and contingent on the plaintext repeat-rate estimate."
     )
+
+    # Adjacent corroboration: a strictly periodic base (period P words) makes two
+    # words at a gap divisible by P share a base, so equal-word pairs there force
+    # repeats at rate ~pressure/P. 0 observed at len>=4 excludes small P. This only
+    # RE-confirms running-key-text.md / running-key-math-sequence.md (both already
+    # disproved); a non-repeating running key has no period and is out separately.
+    if obs_hi == 0:
+        p0 = pressure_len4(gen, lens) / 3.0  # p<0.05 <=> forced>3
+        print(
+            f"\nadjacent (corroboration, not a new result): a strictly PERIODIC base is"
+            f"\nexcluded for every period below ~{p0:.0f} words (conservative register)."
+        )
 
 
 if __name__ == "__main__":
