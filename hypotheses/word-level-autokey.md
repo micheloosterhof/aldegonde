@@ -124,8 +124,36 @@ Possible forms:
   This is a much more direct measurement than the arguments above — it uses
   every word pair rather than repeated words only, and conditioning on the tap
   concentrates the signal 29-fold. It does not test taps that depend on the
-  *plaintext* of the previous word, which is unobservable; those are covered
-  separately by `plaintext-autokey.md`.
+  *plaintext* of the previous word, which is unobservable — those are the base
+  keyed on the previous word's plaintext identity, closed directly below.
+
+- **The base keyed on the previous word's PLAINTEXT is now closed directly
+  (August 2026, `experiments/word_base_plaintext_closure.py`).** This is the
+  one variant neither the tap battery (observable taps only) nor
+  `plaintext-autokey.md`'s fixed-lag rune-stream closure reaches: a per-word
+  base `base_w = f(previous plaintext word)` for an injective `f`. It has a
+  direct signature. With `c = base_w(g^j(p))`, two occurrences of the same
+  current plaintext word `Q` that share the same previous plaintext word `P`
+  get the same base and the same within-word phases, so `Q` enciphers
+  identically — a forced repeated ciphertext WORD. So the forced repeats are
+  exactly the recurrences of the plaintext adjacent word-bigram `(P, Q)`,
+  independent of `g` and `f`; a non-injective `f` only adds collisions, so the
+  injective case is the hardest to kill.
+
+  Measured on the same-author register (recovered solved sections,
+  position-preserving systems only so word boundaries are exact: 486 words) and
+  scaled to the corpus as pair counts scale — quadratically, the
+  `plaintext-autokey.md` convention, here ×36.3 — the recurring plaintext
+  word-bigrams predict **~2,500 forced ciphertext word-repeats at current-word
+  length ≥ 4, against 0 observed** (`word_repeat_census.py`: length ≥ 4 repeats
+  are 0, null ~0). The recurring long-word bigrams are ordinary same-author
+  prose — THE MASTER, BE RIGHT, YOUR TRUTH, THE LOSS, OF DIVINITY, BE STRONG,
+  WE HAVE — not one header artifact; discarding the instructional refrain
+  entirely still leaves ~650 predicted against 0. The kill is register-shape
+  independent: any multi-page prose recurs word-bigrams ending in long words.
+  Extends to a base keyed on the previous *k* words (forces repeats on
+  word-(k+1)-gram recurrence — rarer, but the refrain's trigrams still recur,
+  so still killed at length ≥ 4).
 
 ## Predictions
 
