@@ -34,6 +34,23 @@ producing a tuned permutation whether or not it is described as one.
 Note this also explains the boundary-blindness cheaply: the argument never mentions
 word boundaries, so it applies identically at a seam with `R = σ`.
 
+## It also fixes the operation order: g-inner, not g-outer
+
+The `R_j` must be rare-diagonal *and the same across words*, which decides where
+the letter-walk sits relative to the per-word base — the order is observable, not
+a convention (`experiments/operation_order.py`). With the walk INSIDE the base,
+`c = base_w(g^j(p))`, the base cancels in a coincidence and `R = g` is fixed, so
+a designer tunes g's diagonal as low as wanted. With the walk OUTSIDE,
+`c = g^j(base_w(p))`, the relation is `base_w(p_i) = g(base_w(p_{i+1}))`, i.e.
+`R_w = base_w⁻¹ g base_w` — a conjugate of g that changes every word. Conjugating
+by the fresh per-word base randomises the diagonal, so the doublet rate floors at
+`P(pt doublet)·4/29 + P(non)·25/812 ≈ 0.033` regardless of g — five times the
+observed 0.0063, and simulation confirms 0.0330 (theory 0.0331) against g-inner's
+tunable-to-zero rate. The one escape, choosing every base to centralise g so the
+conjugate stays low, collapses the base count into g's ~9×10⁶-element centralizer
+and is excluded by `base-count-floor` / `sigma-power-step.md`. So the LP is
+g-inner: the walk acts on the plaintext, then the per-word alphabet substitutes.
+
 ## What a genuinely new mechanism would have to break
 
 Per-position bijectivity. The known ways, and their status:
