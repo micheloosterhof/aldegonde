@@ -65,6 +65,35 @@ def load_register() -> dict[int, list[tuple[tuple[int, ...], str]]]:
     return out
 
 
+VOWELS = set("AEIOU")
+
+
+def plausible(word: str) -> bool:
+    """Reject obvious junk (hash / base64 / .onion fragments) while keeping real
+    words and runeglish spellings: needs a vowel and any Q must be QU. The heavy
+    lifting is done by stripping PGP armour and hash lines in words_from_prose;
+    this is only a backstop (a strict consonant-run rule wrongly drops INSTRUCTION,
+    CRYPT, etc.)."""
+    w = word.upper()
+    if not (set(w) & VOWELS):
+        return False
+    return not ("Q" in w and "QU" not in w)
+
+
+def words_from_prose(path: Path) -> list[str]:
+    """English words from a solved-text file, skipping PGP armour and hash lines."""
+    out: list[str] = []
+    for line in path.read_text().splitlines():
+        if "BEGIN PGP SIGNATURE" in line:
+            break
+        if line.startswith(("-----", "Hash:", "Version:")) or ".onion" in line:
+            continue
+        if re.search(r"[0-9a-fA-F]{8,}", line):  # a hash line
+            continue
+        out += [t for t in WORD.findall(line) if plausible(t)]
+    return out
+
+
 def runeglish(word_english: str) -> str:
     return "".join(c for c in english_to_runeglish(word_english.upper()) if c in IDX)
 
@@ -81,7 +110,10 @@ def main() -> None:
         runes = "".join(r for r in runes if r in IDX)
         if len(runes) < 2:
             return
-        eng, srcs = vocab.get(runes, (english_of(runes), set()))
+        eng = english_of(runes)
+        if not plausible(eng):
+            return
+        _eng, srcs = vocab.get(runes, (eng, set()))
         srcs.add(source)
         vocab[runes] = (eng, srcs)
 
@@ -102,16 +134,16 @@ def main() -> None:
         for w in words:
             add_runes("".join(ALPHA[i] for i in w), "lp-solved")
 
-    # cicada-2014 solved English prose
+    # cicada-2014 solved English prose (PGP armour and hash lines stripped)
     for name in ("56.decoded", "57.decoded", "message.txt.asc"):
         p = CICADA2014 / name
         if p.exists():
-            for tok in WORD.findall(p.read_text()):
-                if len(tok) >= 2 and not re.fullmatch(r"[A-Fa-f]{6,}", tok):
-                    add_english(tok, "cicada2014")
+            for tok in words_from_prose(p):
+                add_english(tok, "cicada2014")
 
     for tok in WORD.findall(CICADA_MESSAGES):
-        add_english(tok, "cicada2012-13")
+        if plausible(tok):
+            add_english(tok, "cicada2012-13")
 
     for term in LORE:
         add_english(term, "lore")
