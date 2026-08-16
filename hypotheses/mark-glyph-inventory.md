@@ -29,7 +29,7 @@ block of all 58 pages and groups them by proximity:
 | 3 | 24 | a distinct symbol |
 | 4 | 145 | sentence mark |
 | 5 | 9 | — |
-| 10 | 8 | a distinct symbol |
+| 10 | 8 | **colon (:)** — read visually (Michel, Aug 2026) |
 | 13 | 31 | a distinct symbol |
 | 18, 23, 26, 51, 76, 86, 428 | 1 each | marginal artwork |
 
