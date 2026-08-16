@@ -89,6 +89,20 @@ ends with one and the next begins with one, so the pairing is section structure,
 delimiter class. The bracket reading stays retracted, now for a measured reason rather
 than a census of two lines.
 
+**The section structure is [rubricated title][13-dot][body] (August 2026).** Each
+rubricated rune-span (`rubrication_spans.py`) sits immediately before a 13-dot
+mark: 15 of the 15 detected enciphered titles do (page 0 = DIVINITY WITHIN ⑬
+body). And the 13-dot count matches the transcription's own section structure by
+COUNT: 31 thirteen-dot marks against `$` (major section) = 11 plus `&` (segment)
+= 19, i.e. 30 — so the 13-dot marks the section+segment breaks, finer than the 11
+`$` majors alone. The physical alignment is looser than the count (18 of 31 sit
+within a few characters of a `$`/`&`/`%` annotation), because the transcriber's
+structural markers are placed at page/section starts rather than exactly on the
+glyph. Consequence for cribs: there are ~31 section titles, one before each
+13-dot; rubrication has pinned 15, so ~16 more titles sit before the remaining
+13-dot marks and are candidate cribs the red-detection has not yet localized
+(`rubrication_cribs.py`).
+
 Manually confirmed cases (Michel, from the review sheet), which is how the
 class was found:
 
