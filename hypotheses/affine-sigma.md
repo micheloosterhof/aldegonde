@@ -15,9 +15,11 @@ the design would be grid-built g + arithmetic σ.
 
 ## Status
 
-**Status**: unresolved (state-return filter run, Aug 2026: no enrichment, no
-full return; 28 chance-level candidates await the base₀ verifier). One prior
-strike stands against the family.
+**Status**: disproved for the magic-square g pool (Aug 2026) — the 6-point
+state-return filter left 28 chance-level candidates and the base₀ verifier
+killed all 28 with full demonstrated power. Not excluded for g outside that
+pool; the register-dependent seam-floor strike disfavors the family
+generally.
 
 ## Prior strike (register-dependent)
 
@@ -47,10 +49,25 @@ g with probability 1.00) × all 812 affine σ = 37,352 pairs.
 
 Since fix ≥ 6 is a *necessary* condition for a true key, those 28 pairs are
 the complete surviving candidate set for this (g-pool × σ-family) universe.
-They are individually indistinguishable from chance and need the decisive
-stage: the base₀ quadgram solve of `walk_verifier.py` (the walk makes base₀
-an outer monoalphabetic once (g, σ) is fixed — a correct pair must yield
-readable runeglish).
+
+## The base₀ verifier (`--verify`, Aug 2026): all 28 killed
+
+With (g, σ) fixed the walk makes base₀ an outer monoalphabetic, so each pair
+is decided by hill-climbing base₀ on quadgram fitness of the full decryption
+(vectorized re-implementation of `walk_verifier.solve_base0`, value-identical
+by self-test).
+
+- **Power demonstrated, not assumed**: on the known-key reference corpus
+  (`walk_reference.json`) the true key round-trips exactly, and the solve
+  with the true (g, σ) recovers the true-base₀ fitness to three decimals
+  (−4.312) from random restarts. A wrong σ on the same corpus lands at
+  −8.951.
+- **LP null band** (6 random order-5 g × random affine σ): −8.980..−8.971.
+- **All 28 survivors: −8.981..−8.908** — inside the null band, 4.6 log₁₀
+  units below the readable level, previews quadgram-flavored gibberish.
+
+A correct pair would have surfaced at ~−4.3. The 28 were accidents of the
+Poisson tail, as their count (28 vs 37.6 expected) already suggested.
 
 ## Scope
 
@@ -75,7 +92,11 @@ any future (g-pool, σ-family) pairing.
 
 ## Verdict
 
-Open. The register-free filter shows no enrichment and no full return —
-affine σ gets no positive support — but 28 necessary-condition survivors
-remain unkilled. Next step: base₀ quadgram solve on the 28; all-flat would
-close the family within this g pool, any hit reads plaintext.
+Disproved within the swept universe: no (magic-square-pool g, affine σ) pair
+decrypts the corpus, established with a verifier whose power was demonstrated
+on a planted key at full corpus size. The affine σ idea itself survives only
+outside this g pool, where it remains disfavored by the seam floor. The
+reusable yield: the two-stage machinery (6-point state-return filter → base₀
+solve) now closes any enumerable (g-pool × σ-family) pairing in minutes, so
+future construction proposals for either permutation are cheap to test
+jointly.

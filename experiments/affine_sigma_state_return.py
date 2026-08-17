@@ -48,6 +48,9 @@ from walk_verifier import (  # noqa: E402
     BEI,
     DJU,
     M,
+    dewalk_perms,
+    inverse,
+    load_quadgrams,
     load_words,
     order,
     perm_from_cycles,
@@ -87,6 +90,56 @@ def interval_fixed_counts(
     return (cur == np.arange(M)).sum(axis=1)
 
 
+def quad_table() -> np.ndarray:
+    """walk_verifier's quadgram log-probs as a dense (29,29,29,29) array; every
+    absent quadgram holds the same floor, so values match the dict exactly."""
+    logp, floor = load_quadgrams()
+    t = np.full((M, M, M, M), floor)
+    for k, v in logp.items():
+        t[k] = v
+    return t
+
+
+def quad_fitness(p: np.ndarray, qt: np.ndarray) -> float:
+    """Mean log10 quadgram probability of a decrypted rune stream."""
+    return float(qt[p[:-3], p[1:-2], p[2:-1], p[3:]].mean())
+
+
+def solve_base0_fast(
+    cipher: np.ndarray,
+    D: np.ndarray,
+    qt: np.ndarray,
+    rng: random.Random,
+    restarts: int = 8,
+    iters: int = 20000,
+) -> tuple[float, np.ndarray]:
+    """walk_verifier.solve_base0 with the vectorized fitness: hill-climb the
+    outer monoalphabetic base0inv on quadgram fitness of the full decryption."""
+    n = len(cipher)
+    pos = np.arange(n)
+
+    def fitness(b: np.ndarray) -> float:
+        return quad_fitness(D[pos, b[cipher]], qt)
+
+    best_fit, best_b = -1e9, np.arange(M)
+    for _ in range(restarts):
+        b = np.array(rng.sample(range(M), M))
+        f = fitness(b)
+        for _ in range(iters):
+            x, y = rng.randrange(M), rng.randrange(M)
+            if x == y:
+                continue
+            b[[x, y]] = b[[y, x]]
+            nf = fitness(b)
+            if nf >= f:
+                f = nf
+            else:
+                b[[x, y]] = b[[y, x]]
+        if f > best_fit:
+            best_fit, best_b = f, b.copy()
+    return best_fit, best_b
+
+
 def selftest() -> None:
     rng = random.Random(20260817)
     lengths = [len(w) for w in load_words()]
@@ -101,7 +154,19 @@ def selftest() -> None:
         ref = int((Ms[DJU] == Ms[BEI]).sum())
         ok &= int(counts[0]) == ref
     print(f"self-test: vectorized fold matches step_products agreement? {ok}")
-    if not ok:
+
+    logp, floor = load_quadgrams()
+    qt = quad_table()
+    fit_ok = True
+    for _ in range(5):
+        p = np.array([rng.randrange(M) for _ in range(500)])
+        ref_fit = sum(
+            logp.get((int(p[i]), int(p[i + 1]), int(p[i + 2]), int(p[i + 3])), floor)
+            for i in range(len(p) - 3)
+        ) / (len(p) - 3)
+        fit_ok &= abs(quad_fitness(p, qt) - ref_fit) < 1e-12
+    print(f"self-test: dense quadgram fitness matches walk_verifier's dict? {fit_ok}")
+    if not (ok and fit_ok):
         msg = "self-test FAILED"
         raise SystemExit(msg)
 
@@ -164,11 +229,109 @@ def main() -> None:
         print(f"  best pair reached fix={top}: g={info[:3]} sigma=(ax+b)={info[3]}")
 
 
+def preview(p: np.ndarray, n: int = 90) -> str:
+    from aldegonde import c3301
+
+    return "".join(c3301.CICADA_ENGLISH_ALPHABET[i] for i in p[:n])
+
+
+def solve_pair(
+    g: np.ndarray,
+    sigma: np.ndarray,
+    words: list[list[int]],
+    qt: np.ndarray,
+    rng: random.Random,
+) -> tuple[float, np.ndarray]:
+    lengths = [len(w) for w in words]
+    Ms = step_products(g, sigma, lengths)
+    cipher = np.array([r for w in words for r in w])
+    D = dewalk_perms(g, Ms, words)
+    fit, b = solve_base0_fast(cipher, D, qt, rng)
+    p = D[np.arange(len(cipher)), b[cipher]]
+    return fit, p
+
+
+def verify() -> None:
+    import json
+
+    rng = random.Random(20260817)
+    qt = quad_table()
+
+    # positive + negative control on the known-key reference corpus
+    ref = json.loads((Path(__file__).parent / "walk_reference.json").read_text())
+    ref_words = ref["ciphertext_words"]
+    ref_plain = np.array([r for w in ref["plaintext_words"] for r in w])
+    g_true = np.array(ref["g"])
+    sigma_true = np.array(ref["sigmas"][0])
+    base0inv_true = inverse(np.array(ref["base0"]))
+
+    lengths = [len(w) for w in ref_words]
+    Ms = step_products(g_true, sigma_true, lengths)
+    cipher = np.array([r for w in ref_words for r in w])
+    D = dewalk_perms(g_true, Ms, ref_words)
+    decrypt_true = D[np.arange(len(cipher)), base0inv_true[cipher]]
+    print(
+        f"reference round-trip with true key exact? "
+        f"{np.array_equal(decrypt_true, ref_plain)}"
+    )
+    true_fit = quad_fitness(decrypt_true, qt)
+    solved_fit, _p = solve_pair(g_true, sigma_true, ref_words, qt, rng)
+    sigmas, _ab = affine_sigmas()
+    wrong_fit, _p = solve_pair(
+        g_true, sigmas[rng.randrange(len(sigmas))], ref_words, qt, rng
+    )
+    print(
+        f"reference: true-base0 fitness {true_fit:.3f}, "
+        f"solved-with-true-(g,sigma) {solved_fit:.3f}, "
+        f"solved-with-wrong-sigma {wrong_fit:.3f}"
+    )
+
+    # the LP survivors
+    words = load_words()
+    lp_lengths = [len(w) for w in words]
+    print(f"\nmagic-square g pool at {POOL_SIGMA} sigma ...")
+    pool = survivor_pool(POOL_SIGMA)
+    survivors = []
+    for g, fixed, rot, by_col in pool:
+        counts = interval_fixed_counts(g, sigmas, lp_lengths)
+        for i in np.flatnonzero(counts >= MIN_FIX):
+            survivors.append((g, sigmas[int(i)], fixed, rot, by_col, _ab[int(i)]))
+    print(f"{len(survivors)} survivors to solve; null band from 6 random controls")
+
+    null_fits = []
+    for _ in range(6):
+        g = np.array(perm_from_cycles([5] * 5 + [1] * 4, rng))
+        f, _p = solve_pair(g, sigmas[rng.randrange(len(sigmas))], words, qt, rng)
+        null_fits.append(f)
+    print(
+        f"LP null band: {min(null_fits):.3f} .. {max(null_fits):.3f} "
+        f"(mean {sum(null_fits) / len(null_fits):.3f})"
+    )
+
+    results = []
+    for g, sigma, fixed, rot, by_col, (a, b) in survivors:
+        f, p = solve_pair(g, sigma, words, qt, rng)
+        results.append((f, fixed, rot, by_col, a, b, p))
+    results.sort(reverse=True, key=lambda r: r[0])
+    print("\nsurvivors by solved base0 fitness:")
+    for f, fixed, rot, by_col, a, b, _p in results:
+        print(
+            f"  {f:.3f}  sigma=({a}x+{b})  g: fixed={fixed} rot={rot} "
+            f"{'col' if by_col else 'row'}"
+        )
+    print("\ntop-3 decryption previews (transliterated):")
+    for f, _fixed, _rot, _by_col, a, b, p in results[:3]:
+        print(f"  [{f:.3f} ({a}x+{b})] {preview(p)}")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--verify", action="store_true")
     args = ap.parse_args()
     if args.selftest:
         selftest()
+    elif args.verify:
+        verify()
     else:
         main()

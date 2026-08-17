@@ -50,7 +50,7 @@ proposed mechanisms scored against them.
 |---|---|---|
 | [accumulator-autokey.md](accumulator-autokey.md) | Accumulator Autokey (Running Ciphertext Sum) | disproved |
 | [affine-autokey.md](affine-autokey.md) | Affine Autokey | disproved |
-| [affine-sigma.md](affine-sigma.md) | The Space Step σ is Affine (a·x + b mod 29) | unresolved (no enrichment, no full return in the 6-point state-return sweep over the magic-square g pool; 28 chance-level candidates await the base₀ verifier; seam-floor strike stands) |
+| [affine-sigma.md](affine-sigma.md) | The Space Step σ is Affine (a·x + b mod 29) | disproved for the magic-square g pool — 6-point state-return filter left 28 chance-level pairs, base₀ verifier (power demonstrated on a planted key) killed all 28; open only for g outside the pool, where the seam floor disfavors the family |
 | [autokey-plus-substitution.md](autokey-plus-substitution.md) | Autokey Outer Layer + Unknown Inner Layer | unresolved |
 | [autokey-with-keyword.md](autokey-with-keyword.md) | Autokey with Keyword Interleaving | disproved |
 | [beaufort-autokey-ea.md](beaufort-autokey-ea.md) | Beaufort Ciphertext Autokey with 1-Based Indexing (EA Identity) | disproved |
