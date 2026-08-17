@@ -44,12 +44,13 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (46)
+### Hypotheses (47)
 
 | File | Mechanism | Status |
 |---|---|---|
 | [accumulator-autokey.md](accumulator-autokey.md) | Accumulator Autokey (Running Ciphertext Sum) | disproved |
 | [affine-autokey.md](affine-autokey.md) | Affine Autokey | disproved |
+| [affine-sigma.md](affine-sigma.md) | The Space Step σ is Affine (a·x + b mod 29) | unresolved (no enrichment, no full return in the 6-point state-return sweep over the magic-square g pool; 28 chance-level candidates await the base₀ verifier; seam-floor strike stands) |
 | [autokey-plus-substitution.md](autokey-plus-substitution.md) | Autokey Outer Layer + Unknown Inner Layer | unresolved |
 | [autokey-with-keyword.md](autokey-with-keyword.md) | Autokey with Keyword Interleaving | disproved |
 | [beaufort-autokey-ea.md](beaufort-autokey-ea.md) | Beaufort Ciphertext Autokey with 1-Based Indexing (EA Identity) | disproved |
