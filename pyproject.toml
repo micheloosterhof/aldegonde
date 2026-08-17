@@ -33,7 +33,7 @@ dev = [
   "coverage==7.13.1",
   "hypothesis>=6.100.0",
   "pipdeptree==2.30.0",
-  "pytest==9.0.2",
+  "pytest==9.1.1",
   "pytest-cov==7.1.0",
   "ruff==0.15.2",
   "tox==4.56.4",
