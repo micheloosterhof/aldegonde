@@ -70,6 +70,7 @@ to 2^12 fill orders; trying them is pointless, though not for the reason first g
 
 from __future__ import annotations
 
+import functools
 import itertools
 import random
 import re
@@ -155,40 +156,66 @@ def powers(g: np.ndarray) -> list[np.ndarray]:
     return ps
 
 
-def fits(g: np.ndarray, obs, tables) -> bool:
+def fits(g: np.ndarray, obs, tables, sigma: float = SIGMA) -> bool:
     ps = powers(g)
     for d, (r, se) in obs.items():
         pred = float(sum(tables[d][ps[d % 5][b]][b] for b in range(M)))
-        if abs(pred - r) > SIGMA * se:
+        if abs(pred - r) > sigma * se:
             return False
     return True
+
+
+@functools.cache
+def _ranked() -> tuple[int, ...]:
+    """Grid slots of the magic square ordered by cell value (the fill order)."""
+    square = extract()
+    return tuple(
+        i
+        for _v, i in sorted((v, i) for i, v in enumerate(v for r in square for v in r))
+    )
+
+
+def build_family_g(fixed: set[int], rot: int, *, by_col: bool) -> np.ndarray:
+    """One magic-square family member: fill the 5x5 grid in the square's value
+    order with the 25 movers, read 5-cycles by row or column, rotate by rot."""
+    ranked = _ranked()
+    movers = [r for r in range(M) if r not in fixed]
+    cells = [0] * 25
+    for slot, rune in zip(ranked, movers):
+        cells[slot] = rune
+    perm = np.arange(M)
+    for a in range(5):
+        cyc = (
+            [cells[r * 5 + a] for r in range(5)]
+            if by_col
+            else [cells[a * 5 + c] for c in range(5)]
+        )
+        for i, x in enumerate(cyc):
+            perm[x] = cyc[(i + rot) % 5]
+    return perm
+
+
+def survivor_pool(sigma: float) -> list[tuple[np.ndarray, tuple, int, bool]]:
+    """All family members of order 5 passing every distance constraint at the
+    given sigma, as (g, fixed, rot, by_col) tuples."""
+    lp = load_words()
+    obs = observed_rates(lp)
+    tables = plaintext_tables(obs, lp)
+    pool = []
+    for fixed in itertools.combinations(range(M), 4):
+        fs = set(fixed)
+        for rot in (1, 2, 3, 4):
+            for by_col in (True, False):
+                g = build_family_g(fs, rot, by_col=by_col)
+                if order(g) == 5 and fits(g, obs, tables, sigma):
+                    pool.append((g, fixed, rot, by_col))
+    return pool
 
 
 def main() -> None:
     lp = load_words()
     obs = observed_rates(lp)
     tables = plaintext_tables(obs, lp)
-    square = extract()
-    ranked = [
-        i
-        for _v, i in sorted((v, i) for i, v in enumerate(v for r in square for v in r))
-    ]
-
-    def build(fixed: set[int], rot: int, *, by_col: bool) -> np.ndarray:
-        movers = [r for r in range(M) if r not in fixed]
-        cells = [0] * 25
-        for slot, rune in zip(ranked, movers):
-            cells[slot] = rune
-        perm = np.arange(M)
-        for a in range(5):
-            cyc = (
-                [cells[r * 5 + a] for r in range(5)]
-                if by_col
-                else [cells[a * 5 + c] for c in range(5)]
-            )
-            for i, x in enumerate(cyc):
-                perm[x] = cyc[(i + rot) % 5]
-        return perm
 
     print(
         f"{len(obs)} g-only distance constraints at {SIGMA} sigma: "
@@ -200,7 +227,7 @@ def main() -> None:
         fs = set(fixed)
         for rot in (1, 2, 3, 4):
             for by_col in (True, False):
-                g = build(fs, rot, by_col=by_col)
+                g = build_family_g(fs, rot, by_col=by_col)
                 tested += 1
                 if order(g) == 5 and fits(g, obs, tables):
                     survivors.append((fixed, rot, by_col))
