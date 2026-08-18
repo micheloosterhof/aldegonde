@@ -214,8 +214,63 @@ testable content of this repeat is the **state return** `base_1477 =
 base_2926`, which requires the full 1,449-step composition. See
 `mixed-alphabet-vigenere.md` for the measurements.
 
+## What is upstream of each occurrence? (August 2026, Michel's question)
+
+`experiments/djubei_context.py`. The "preceding words differ" note above was
+ambiguous under the line wrap; asked properly, on the channel that drives the
+walk, the answer is clean.
+
+**Nothing is shared right before.** The walk is clocked by word lengths, so a
+matching recent `(L−1) mod 5` run would mean the state agreement was inherited
+rather than coincidental. It is not:
+
+| channel | occ1 | occ2 | shared suffix |
+|---|---|---|---|
+| preceding word length | 2 | 6 | 0 words |
+| preceding `(L−1) mod 5` | 1 | 0 | 0 words |
+| preceding last rune | ᚠ | ᛉ | 0 words |
+
+The running exponent sum mod 5 disagrees at every depth tested (1, 2, 3, 5, 10,
+20 words back). So the two states arrived at the same value along genuinely
+different clocks — the return is a true collision of the walk, not a locally
+inherited agreement. This is the word-level confirmation of the "differing
+recent history" row in the table above.
+
+**But both occurrences are 13-dot adjacent, in complementary positions.**
+Under the `[rubricated title][13-dot][body]` section model:
+
+- **occ1 opens a section body** — 2 words after the 13-dot that closes a title
+  (`… ᛚᛋᚳᛈ ⑬ ᚾᚻᚷᚢᛡᚻᚢ ᛒᚠ ᛞᛄᚢ ᛒᛖᛁ …`), itself 5 words after the `&$%` break.
+- **occ2 closes a section body** — ᛒᛖᛁ is immediately followed by a 13-dot and
+  the `&$%` break, then the next title (`… ᚳᛉ ᛞᛄᚢ ᛒᛖᛁ ⑬ &$% ᚫᛄ ᛟᛋᚱ ⑬ …`).
+
+Calibration against the corpus's other repeats: 4.7% of words sit within 3 of a
+body start or end, so a random pair is doubly-adjacent 0.2% of the time. Of the
+13 other repeated-word classes (length ≥ 3), **zero** have all occurrences
+boundary-adjacent, at every window from 0 to 6 — DJU-BEI is the only one, and
+its adjacency is stable across that whole window range.
+
+**Post-hoc caveat**: the boundary definition and window were chosen after
+reading the two contexts, so the ~p = 0.03 this implies is optimistic. The 13
+other classes are calibration, not pre-registration.
+
+Two consequences:
+
+1. **It sharpens the anti-per-section-reset argument.** occ1's base sits ~2
+   word-steps from a section start and occ2's ~300 steps into its section; a
+   per-section reset would have to make those coincide by accident. The
+   "differing structural coordinates" row said this loosely — the section-model
+   reading makes it specific.
+2. **It is crib-shaped.** A 3+3 refrain that opens one section body and closes
+   another is formulaic placement, which is exactly the register the ~31 title
+   slots draw on (`rubrication-crib-candidates.md`). DJU-BEI was previously
+   unguessable because a short phrase cannot be verified
+   (`length-clocked-walk.md`); a *positional* constraint on what kind of phrase
+   it is narrows the candidate list independently of the cipher.
+
 ## Scripts
 
+- `experiments/djubei_context.py` — the upstream/boundary comparison above.
 - `experiments/anchored_repeats.py` — boundary-consistent anchored repeat
   census + Monte Carlo null (the headline p-value).
 - `experiments/phrase_repeats.py` — adjacent-word-pair repeat census.
