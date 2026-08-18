@@ -268,8 +268,66 @@ Two consequences:
    (`length-clocked-walk.md`); a *positional* constraint on what kind of phrase
    it is narrows the candidate list independently of the cipher.
 
+## Index manipulations of the preceding runes, and why they must fail
+
+`experiments/djubei_delta_context.py` (August 2026, Michel's question). The
+looser question: are the two preceding rune streams related by *some*
+transformation of the indices, even though they are not equal?
+
+Battery over the 25 runes before each occurrence, each statistic being the
+longest suffix on which the relation holds, calibrated against the same
+statistic over 40,000 random word-start pairs:
+
+| relation | observed | null mean | P(≥obs) |
+|---|---|---|---|
+| identity | 0 | 0.03 | 1.000 |
+| constant offset (= delta-stream match) | 1 | 1.04 | 1.000 |
+| constant sum (Beaufort) | 1 | 1.04 | 1.000 |
+| affine `a·x+b` (all 812) | 2 | 2.02 | 0.987 |
+| reversed | 0 | 0.03 | 1.000 |
+
+**Family-blind P = 0.987.** Every cell sits at or below its null mean — the
+preceding streams are not related by any of these. Gematria-style summaries
+(sum and product of the last 3/5/10/20 runes mod 29) likewise disagree in
+every cell. Note delta-stream agreement over a window *is* constant-offset
+over that window, so those are one test; the global version of this search is
+already in `alignment_scan.py`.
+
+**And the model explains why, exactly.** From `base_{w+1} = base_w ∘ g^{a_w} ∘
+σ` we get `base_w = base_{w+1} ∘ σ^{-1} ∘ g^{-a_w}` (verified numerically for
+arbitrary keys against `step_products`). Stepping back k words from each
+occurrence multiplies by `σ^{-1}g^{-a}` down the two `a = (L−1) mod 5`
+sequences. These agree up to a power of `g` only while the sequences agree,
+except in the oldest term — a mismatch earlier leaves a `g`-power sandwiched
+between `σ`'s, which generically does not simplify.
+
+The two sequences are `[1,1,3,1,2,…]` and `[0,1,1,1,1,…]`: **they differ
+immediately**, so the state return reaches exactly **one word** backward, as
+
+```
+base_1476 = base_2925 ∘ g^(-1)
+```
+
+which yields precisely three key-free comparisons — `c1[j]` vs `c2[j']` with
+`(j−1) mod 5 = j' mod 5` is an equality iff the plaintext letters are equal:
+ᛒ vs ᚳ, ᚠ vs ᚳ, ᚠ vs ᛉ, all three saying only *"these plaintext letters
+differ"*.
+
+So the preceding ciphertext carries three bits of weak plaintext information
+and nothing else, and no index arithmetic could have related the streams: the
+walk's bases are mixed permutations, so a constant-offset or affine relation
+would have required an additive cipher, which the algebra battery already
+excludes globally (`length-clocked-walk.md`, "No algebraic structure
+anywhere"). The negative is a prediction of the model, not a surprise.
+
+(The forward direction is where the retracted 7-gram framing lives — occ2's
+continuation crosses a section break into differently-enciphered material —
+so it is deliberately not analysed here. See the Claim.)
+
 ## Scripts
 
+- `experiments/djubei_delta_context.py` — the index battery and the
+  backward-reach derivation.
 - `experiments/djubei_context.py` — the upstream/boundary comparison above.
 - `experiments/anchored_repeats.py` — boundary-consistent anchored repeat
   census + Monte Carlo null (the headline p-value).
