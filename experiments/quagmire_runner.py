@@ -569,8 +569,11 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
                     return
 
 
-def build_setup(prose_path, lens):
-    """Register tables, sigma candidates, vocab — shared by pilot/workers."""
+def build_setup(prose_path, lens, vocab=None):
+    """Register tables, sigma candidates, vocab — shared by pilot/workers.
+
+    `vocab` replaces the default keyword list (dictionary words of 4-12 letters).
+    """
     from keyword_exhaustion import DICT
     from quagmire_schedule_census import (
         lp_words,
@@ -592,12 +595,13 @@ def build_setup(prose_path, lens):
     for _ in range(30):
         reg.extend(sample_register(lens, pools))
     T1, _T4, _T6, cross = phase_tables(reg)
-    vocab = []
-    with open(DICT) as fh:
-        for line in fh:
-            x = line.strip()
-            if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
-                vocab.append(x)
+    if vocab is None:
+        vocab = []
+        with open(DICT) as fh:
+            for line in fh:
+                x = line.strip()
+                if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
+                    vocab.append(x)
     sigmas = sigma_candidates(vocab, cross, 0.0050, 0.0118)
     return words, vocab, T1, lo1, hi1, sigmas
 

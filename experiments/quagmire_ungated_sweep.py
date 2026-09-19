@@ -20,7 +20,11 @@ sections, where a wrong key floors near 0.2 nats/rune and a true key sits near 1
 
 Run with no arguments for the positive control (a planted family key must be
 found on prose enciphered with the real length sequence). `--run N` streams the
-full candidate space over N workers.
+full candidate space over N workers. `--extra N` streams the keys the original
+keyword list left out: it kept dictionary words of 4-12 letters, which drops
+CIRCUMFERENCE (13 letters) and 3301's own vocabulary (PRIMES, KOAN). Every extra
+keyword is tried on the letter wheel against all disks, and every extra disk
+against the original letter wheels.
 """
 
 from __future__ import annotations
@@ -63,29 +67,36 @@ def windows_of(words: list[list[int]]) -> Windows:
     return Windows([words[a : a + WINDOW_WORDS] for a in WINDOW_STARTS])
 
 
-def _init_worker(prose_path: Path, lens: list[int]) -> None:
-    words, _vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
+def _init_worker(prose_path: Path, lens: list[int], extra: list[str] | None) -> None:
+    words, vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
     _W.update(
-        T1=T1,
-        lo1=lo1,
-        hi1=hi1,
-        sigmas=np.array(sigmas, dtype=np.int8),
-        windows=windows_of(words),
-        logf=log_frequencies(),
+        T1=T1, lo1=lo1, hi1=hi1, windows=windows_of(words), logf=log_frequencies()
     )
+    _W["sigmas"] = {"main": np.array(sigmas, dtype=np.int8)}
+    if extra:
+        known = {tuple(x) for x in sigmas}
+        every = build_setup(prose_path, lens, vocab + extra)[5]
+        fresh = [x for x in every if tuple(x) not in known]
+        _W["sigmas"]["all"] = np.array(every, dtype=np.int8)
+        _W["sigmas"]["extra"] = np.array(fresh, dtype=np.int8).reshape(-1, M)
 
 
-def _work(chunk: list[str]):
-    """Score every (K, schedule) x sigma key drawn from a vocabulary slice."""
-    best: list[tuple[float, list[int], list[int], int]] = []
+def _work(task: tuple[str, list[str]]):
+    """Score every (K, schedule) x sigma key for one slice of keywords.
+
+    The task names which disks the slice's letter wheels are tried against.
+    """
+    disks, chunk = task
+    sigmas = _W["sigmas"][disks]
+    best: list[tuple[float, list[int], list[int], list[int]]] = []
     tested = 0
+    if not len(sigmas):
+        return tested, best
     for K, sched in g_candidates(chunk, _W["T1"], _W["lo1"], _W["hi1"], None):
-        scores = score_sigmas(
-            letter_steps(K, sched), _W["sigmas"], _W["windows"], _W["logf"]
-        )
+        scores = score_sigmas(letter_steps(K, sched), sigmas, _W["windows"], _W["logf"])
         tested += len(scores)
         top = int(scores.argmax())
-        item = (float(scores[top]), K, sched, top)
+        item = (float(scores[top]), K, sched, [int(x) for x in sigmas[top]])
         if len(best) < KEEP:
             heapq.heappush(best, item)
         elif item[0] > best[0][0]:
@@ -138,18 +149,54 @@ def rescore_on_sections(words, K, sched, sigma, logf) -> list[float]:
     ]
 
 
-def run(nproc: int, prose_path: Path, lens: list[int]) -> None:
+def extra_vocabulary(main: list[str]) -> list[str]:
+    """Keywords the 4-12 letter dictionary list leaves out."""
+    from keyword_exhaustion import DICT  # noqa: PLC0415
+
+    seen = {w.upper() for w in main}
+    found = [w for w in DICT.read_text().split() if len(w) == 3 or 13 <= len(w) <= 20]
+    for line in (ROOT / "data" / "register_vocab.txt").read_text().splitlines():
+        if line and not line.startswith("#"):
+            found.append(line.split("\t")[1])
+    found += [
+        "PRIMES",
+        "KOAN",
+        "KOANS",
+        "CICADA",
+        "LIBER",
+        "PRIMUS",
+        "TOTIENT",
+        "DIUINITY",
+    ]
+    out = []
+    for word in found:
+        if word.isalpha() and word.isascii() and word.upper() not in seen:
+            seen.add(word.upper())
+            out.append(word)
+    return out
+
+
+def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> None:
     words, vocab, _T1, _lo1, _hi1, sigmas = build_setup(prose_path, lens)
     logf = log_frequencies()
-    chunks = [vocab[i :: nproc * 40] for i in range(nproc * 40)]
-    print(
-        f"{len(vocab):,} keywords, {len(sigmas)} sigma disks, {nproc} workers",
-        flush=True,
-    )
+    extra = extra_vocabulary(vocab) if extra_only else None
+    if extra:
+        tasks = [("all", extra[i :: nproc * 8]) for i in range(nproc * 8)]
+        tasks += [("extra", vocab[i :: nproc * 40]) for i in range(nproc * 40)]
+        print(f"{len(extra):,} extra keywords, {nproc} workers", flush=True)
+    else:
+        tasks = [("main", vocab[i :: nproc * 40]) for i in range(nproc * 40)]
+        print(
+            f"{len(vocab):,} keywords, {len(sigmas)} sigma disks, {nproc} workers",
+            flush=True,
+        )
+    chunks = tasks
     start = time.time()
     tested = 0
-    best: list[tuple[float, list[int], list[int], int]] = []
-    with Pool(nproc, initializer=_init_worker, initargs=(prose_path, lens)) as pool:
+    best: list[tuple[float, list[int], list[int], list[int]]] = []
+    with Pool(
+        nproc, initializer=_init_worker, initargs=(prose_path, lens, extra)
+    ) as pool:
         for done, (count, top) in enumerate(pool.imap_unordered(_work, chunks), 1):
             tested += count
             best = heapq.nlargest(KEEP, best + top, key=lambda t: t[0])
@@ -161,9 +208,10 @@ def run(nproc: int, prose_path: Path, lens: list[int]) -> None:
                 )
     print(f"\nDONE: {tested:,} keys in {(time.time() - start) / 60:.1f} min")
     print("best keys re-scored on whole sections (wrong ~0.2, true ~1.2):")
-    with OUT.open("w") as fout:
-        for score, K, sched, si in best:
-            full = rescore_on_sections(words, K, sched, sigmas[si], logf)
+    out_path = OUT.with_name("quagmire_ungated_extra.jsonl") if extra else OUT
+    with out_path.open("w") as fout:
+        for score, K, sched, sigma in best:
+            full = rescore_on_sections(words, K, sched, sigma, logf)
             print(
                 f"  window {score:.3f}  sections {' '.join(f'{x:.2f}' for x in full)}  sched {sched}"
             )
@@ -172,10 +220,10 @@ def run(nproc: int, prose_path: Path, lens: list[int]) -> None:
                 "sections": full,
                 "K": K,
                 "sched": sched,
-                "sigma": sigmas[si],
+                "sigma": sigma,
             }
             fout.write(json.dumps(record) + "\n")
-    print(f"written to {OUT}")
+    print(f"written to {out_path}")
 
 
 def main() -> None:
@@ -187,7 +235,19 @@ def main() -> None:
         lens[w] += 1
     assert len(stream) == sum(lens)
     if "--run" in sys.argv:
-        run(int(sys.argv[sys.argv.index("--run") + 1]), PROSE_CACHE, lens)
+        run(
+            int(sys.argv[sys.argv.index("--run") + 1]),
+            PROSE_CACHE,
+            lens,
+            extra_only=False,
+        )
+    elif "--extra" in sys.argv:
+        run(
+            int(sys.argv[sys.argv.index("--extra") + 1]),
+            PROSE_CACHE,
+            lens,
+            extra_only=True,
+        )
     else:
         positive_control(lens, PROSE_CACHE)
 

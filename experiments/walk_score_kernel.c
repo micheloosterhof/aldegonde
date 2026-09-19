@@ -19,8 +19,8 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                   const int32_t *window_words, // words per window
                   int n_windows,
                   const float *logf,          // M log-frequencies
-                  int sum_windows,
-                  float *out)                 // n_sigma scores
+                  float *out,                 // n_sigma scores
+                  int sum_windows)
 {
     float by_phase[5][M];
     float flat = 0.0f;

@@ -99,8 +99,8 @@ def score_sigmas(
         ptr(windows.window_words),
         ctypes.c_int(len(windows.window_words)),
         ptr(lf),
-        ctypes.c_int(int(sum_windows)),
         ptr(out),
+        ctypes.c_int(int(sum_windows)),
     )
     return out
 
