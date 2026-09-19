@@ -53,6 +53,28 @@ that returns by construction. No test showed that a generic true key passes the 
 Neither family was excluded. Statements elsewhere that "the keyword family has been
 enumerated in full and is negative" rest on the gate.
 
+## Does it matter that the second occurrence ends the encrypted text?
+
+Michel's point (2026-09-19): ᛞᛄᚢ-ᛒᛖᛁ at words 2926–2927 is the last two words of
+the unsolved corpus, and the first occurrence opens a section body two words after
+a 13-dot (`repeated-phrase-dju-bei.md`). That looks like a refrain, not an accident.
+
+Priced: the corpus has 183 adjacent (3,3) word windows, and a chance repeat of this
+size is (3,3)-shaped about three times in four, so a chance repeat includes the
+final window with probability ≈ 0.75 · 2/183 = 0.8%, and "a chance repeat that ends
+the text" is a ≈ 8×10⁻⁵ event. But a genuine return is no more likely to land there
+than a chance one: a typical window holds the same 2/183 share of the repeated
+(3,3) phrases as it does of the (3,3) window pairs. The position favours the genuine
+reading only by the factor k by which the closing words of a text are more likely to
+be a recurring formula than an average phrase. That is a prior about how 3301
+writes, plausibly 3 to 10, not the factor of ~100 the raw rarity suggests.
+
+What the position cannot do is rescue a genuine return UNDER THE WALK. With a group
+of order ~4×10³⁰ a genuine return on six points stays a 3×10⁻⁹ event wherever it
+sits. So "DJU-BEI is not a coincidence" and "the base walks in a generic ⟨g, σ⟩"
+cannot both hold. Taking the refrain seriously means giving up the generic walk,
+which is the reading below.
+
 ## The other reading: a genuine return means a small state space
 
 DJU-BEI is genuine only if bases recur often enough. With N effective bases visited
