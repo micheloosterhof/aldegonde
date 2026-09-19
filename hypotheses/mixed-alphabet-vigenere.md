@@ -15,11 +15,14 @@ enumerate.
 
 ## Status
 
-**Status**: disproved for the keyword family (enumeration run, negative
-— see "The enumeration, run"), with a register caveat. Not disproved for
-freely-designed (non-keyword) mixed alphabets. An earlier "disproved"
-verdict rested on a 12-keyword sample and was withdrawn; this one rests
-on the full ~3.1×10⁸-key enumeration.
+**Status**: negative inside the register bands only (September 2026). The
+July enumeration verified 186,465 of its 3.1×10⁸ keys — those passing the
+DJU-BEI gate, which a true key passes only at the chance rate
+(`dju-bei-gate-validity.md`). Re-run ungated, 7.0×10⁸ keys including long
+keywords and 3301's vocabulary: no key decrypts. The bands rest on one
+stand-in register and keep a true key about a quarter of the time, so the
+keyword family is NOT excluded. Not disproved for freely-designed
+(non-keyword) mixed alphabets either.
 
 ## Mechanism
 
@@ -504,3 +507,26 @@ walk), or a keyword key whose diagonals sit outside the bands under the
 LP's true register. The next reducible question is therefore the
 register — whether the candidate bands, computed on prose, are
 representative — not another pass over the same keyword family.
+
+
+## Correction (September 2026): the gate, the re-run, and the bands
+
+`dju-bei-gate-validity.md`. Two things in "The enumeration, run" above do not hold.
+
+1. **The DJU-BEI gate is not a necessary condition.** It is one only if DJU-BEI is
+   a genuine state return, and under this model (group ~4×10³⁰) a genuine six-point
+   return is a ~1×10⁻⁶ event against ~1×10⁻² for a chance repeat. A true key
+   therefore passes the gate at the chance rate, 5.9×10⁻⁴, and the run verified
+   186,465 keys, not 3.1×10⁸.
+2. **The candidate bands lose about three quarters of the family.** A relation in
+   the d1 band under Pride and Prejudice is still in it under another book only
+   24–60% of the time (`experiments/register_band_sensitivity.py`), and the seam
+   band loses again.
+
+The ungated re-run (`experiments/quagmire_ungated_sweep.py`, base₀-free verifier,
+no gate) scored 365,526,436 keys from the original keyword list and 334,988,084
+from the keywords and disks it left out (3 and 13–20 letters, the register
+vocabulary, PRIMES, KOAN, …). No key reached the candidate floor; the best
+whole-section scores are 0.44 and 0.49 against ~1.2 for a true key. So: negative
+inside the bands, open outside them. The widened-band sweep (~2×10¹⁰ keys) is the
+run that would close the family.

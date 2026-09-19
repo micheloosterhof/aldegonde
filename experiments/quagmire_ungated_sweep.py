@@ -16,7 +16,15 @@ Here every key is scored by `walk_score_kernel.score_sigmas`: no gate, no
 hill-climb, base_0 free. Three windows of 200 words, each opening a long section,
 are scored independently, so a section-level restart or a single wrong word length
 costs one window rather than the corpus. The best keys are re-scored on whole
-sections, where a wrong key floors near 0.2 nats/rune and a true key sits near 1.2.
+sections, where a wrong key scores 0.2-0.45 nats/rune and a true key sits near 1.2.
+
+**Result (2026-09-19): negative inside the bands.** `--run`: 365,526,436 keys,
+none at or above the candidate floor of 0.85; the best keys score at most 0.44 on a
+whole section. `--extra`: 38,672 left-out keywords and 214 left-out disks,
+334,988,084 keys, none at the floor, best section score 0.49. A true key scores
+~1.2. The candidate bands rest on one stand-in register and keep a true key about
+a quarter of the time (`register_band_sensitivity.py`), so this does not exclude
+the family; the widened-band sweep would.
 
 Run with no arguments for the positive control (a planted family key must be
 found on prose enciphered with the real length sequence). `--run N` streams the
@@ -162,7 +170,7 @@ def positive_control(lens: list[int], prose_path: Path) -> None:
 
 
 def rescore_on_sections(words, K, sched, sigma, logf) -> list[float]:
-    """Whole-section scores of one key: ~0.2 for a wrong key, ~1.2 for a true one."""
+    """Whole-section scores of one key: 0.2-0.45 for a wrong key, ~1.2 for a true one."""
     perms = letter_steps(K, sched)
     sig = np.array([sigma], dtype=np.int8)
     return [
@@ -254,7 +262,7 @@ def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> N
                     flush=True,
                 )
     print(f"\nDONE: {tested:,} keys; this run {(time.time() - start) / 60:.1f} min")
-    print("best keys re-scored on whole sections (wrong ~0.2, true ~1.2):")
+    print("best keys re-scored on whole sections (wrong 0.2-0.45, true ~1.2):")
     with out_path.open("w") as fout:
         for score, K, sched, sigma in best:
             full = rescore_on_sections(words, K, sched, sigma, logf)

@@ -12,6 +12,12 @@ Here all 190,008 g x 812 sigma = 1.5e8 complete keys are scored by
 `walk_score_kernel.score_sigmas`, base_0 free, on three 200-word section openings.
 A wrong key floors near 0.5 nats/rune on a window; a true key sits near 1.2.
 
+**Result (2026-09-19): negative.** 154,096,488 keys, none at or above the candidate
+floor of 0.85 nats/rune; the best keys score at most 0.45 on a whole section, the
+wrong-key level. No band filter was applied, so the family is excluded under the
+walk's conventions. (Many keys reach 0.85 on the kernel's cheap upper bound, because
+an affine sigma and a grid g often share a fixed point; their exact scores are low.)
+
 Run with no arguments for the positive control (a planted family key enciphered on
 the real length sequence must be found). `--run N` sweeps the family over N workers.
 """
@@ -128,7 +134,7 @@ def run(nproc: int) -> None:
                     flush=True,
                 )
     print(f"\nDONE: {tested:,} keys in {(time.time() - start) / 60:.1f} min")
-    print("best keys re-scored on whole sections (wrong ~0.2, true ~1.2):")
+    print("best keys re-scored on whole sections (wrong 0.2-0.45, true ~1.2):")
     with OUT.open("w") as fout:
         for score, (fixed, rot, by_col, si) in sorted(results, key=lambda r: -r[0])[
             :20

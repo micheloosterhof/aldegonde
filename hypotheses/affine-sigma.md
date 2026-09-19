@@ -90,6 +90,20 @@ any future (g-pool, σ-family) pairing.
 - `magic-square-grid-key.md` — the g pool and why σ's absence blocked it.
 - `repeated-phrase-dju-bei.md` — the 6-point return condition.
 
+## Correction and re-run (September 2026)
+
+`dju-bei-gate-validity.md`. The state-return filter above is a necessary condition
+only if DJU-BEI is a genuine state return, which the walk model makes a ~1×10⁻⁶
+event; a true key passes it at the chance rate, so the 28 survivors were never the
+complete candidate set. The g pool was also cut to 46 of 190,008 by register-derived
+bands that keep a true g about half the time.
+
+`experiments/grid_affine_ungated.py` scored the whole family directly — all 190,008
+magic-square g × all 812 affine σ = 154,096,488 keys, no gate, no g pool, base₀
+free. No key reached the candidate floor (0.85 nats/rune on a 200-word window; a
+true key scores ~1.2) and the best whole-section score is 0.45. The family is
+excluded, now without either cut.
+
 ## Verdict
 
 Disproved within the swept universe: no (magic-square-pool g, affine σ) pair
