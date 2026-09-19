@@ -14,6 +14,7 @@ on the planted-key corpus and to print its throughput.
 from __future__ import annotations
 
 import ctypes
+import hashlib
 import json
 import random
 import subprocess
@@ -40,11 +41,16 @@ _LIB: ctypes.CDLL | None = None
 
 
 def _library() -> ctypes.CDLL:
-    """The shared library, rebuilt when the C source is newer."""
+    """The shared library, built once per version of the C source.
+
+    The file name carries the source hash, so a rebuild never overwrites a library
+    that a running sweep has loaded.
+    """
     global _LIB  # noqa: PLW0603
     if _LIB is None:
-        target = Path(tempfile.gettempdir()) / "walk_score_kernel.so"
-        if not target.exists() or target.stat().st_mtime < SOURCE.stat().st_mtime:
+        digest = hashlib.sha256(SOURCE.read_bytes()).hexdigest()[:12]
+        target = Path(tempfile.gettempdir()) / f"walk_score_kernel_{digest}.so"
+        if not target.exists():
             subprocess.run(  # noqa: S603
                 ["cc", "-O3", "-shared", "-fPIC", "-o", str(target), str(SOURCE)],  # noqa: S607
                 check=True,

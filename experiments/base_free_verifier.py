@@ -14,8 +14,9 @@ distribution; for a wrong key, or a wrong u, they are flat. So
 
     S[c][u] = sum over positions i with ciphertext c of  log f( g_j^-1 M_w^-1 (u) )
 
-and the key's score is sum_c max_u S[c][u], reported as nats per rune above the
-flat baseline. The argmax over u is base_0^-1 itself, read off for free.
+and the key's score is the best one-to-one assignment of u to c (base_0 is a
+bijection), reported as nats per rune above the flat baseline. That assignment is
+base_0^-1 itself, read off for free.
 
 Cost is 29 table lookups per rune and no hill-climb, so a key is verified on a
 few hundred words in well under a millisecond of compiled code. The score needs
@@ -92,12 +93,31 @@ def score_table(ct_words, letter_perms, sigma, logf, n_words=None) -> np.ndarray
     return table
 
 
+def assign(table: np.ndarray) -> tuple[float, np.ndarray]:
+    """Greedy one-to-one choice of u per ciphertext rune: (total, u of each c).
+
+    base_0 is a bijection, so no two runes may claim the same u. Without this a
+    wrong key whose g and sigma share a fixed point x scores like plaintext: every
+    rune claims u = x and decrypts to the constant text x x x ...
+    """
+    left = table.copy()
+    total = 0.0
+    u_of = np.empty(M, dtype=np.int64)
+    for _ in range(M):
+        c, u = divmod(int(left.argmax()), M)
+        total += left[c, u]
+        u_of[c] = u
+        left[c, :] = -np.inf
+        left[:, u] = -np.inf
+    return total, u_of
+
+
 def score_key(ct_words, letter_perms, sigma, logf, n_words=None):
     """(nats per rune above the flat baseline, recovered base_0^-1)."""
     table = score_table(ct_words, letter_perms, sigma, logf, n_words)
     runes = sum(len(w) for w in ct_words[:n_words])
-    best_u = table.argmax(axis=1)
-    return (table.max(axis=1).sum() - runes * logf.mean()) / runes, best_u
+    total, u_of = assign(table)
+    return (total - runes * logf.mean()) / runes, u_of
 
 
 def swap_two(p: list[int], rng: random.Random) -> list[int]:
@@ -155,6 +175,24 @@ def self_test() -> None:
             agree = int((recovered == np.asarray(base0)).sum())
             print(f"\nbase_0 recovered by argmax alone: {agree}/29 images correct")
             assert agree >= 27, "base_0 not recovered"
+    # a sigma sharing a fixed point x with g lets EVERY rune claim u = x and decrypt
+    # to the constant text x x x ...; base_0 is a bijection, so that must not pay
+    shared = int(logf.argmax())
+    rest = [x for x in range(M) if x != shared]
+    fixing_g, fixing_sigma = list(range(M)), list(range(M))
+    for cycle in (rest[k : k + 5] for k in range(0, 25, 5)):
+        for a, b in zip(cycle, cycle[1:] + cycle[:1]):
+            fixing_g[a] = b
+    for x, y in zip(rest, rng.sample(rest, len(rest))):
+        fixing_sigma[x] = y
+    true_score = score_key(ct, powers(g), sigma, logf, 250)[0]
+    deg_score = score_key(ct, powers(fixing_g), fixing_sigma, logf, 250)[0]
+    print(
+        f"\nwrong key whose g and sigma both fix E: {deg_score:.3f} (true key {true_score:.3f})"
+    )
+    assert deg_score < true_score - 0.3, (
+        "constant-plaintext degeneracy outscores the key"
+    )
     print("self-test passed")
 
 

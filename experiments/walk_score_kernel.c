@@ -7,7 +7,8 @@
 #define M 29
 
 // Writes, for each sigma, the best window score in nats per rune above the flat
-// baseline. A window's score is sum_c max_u S[c][u], where S[c][u] accumulates
+// baseline. A window's score is the greedy one-to-one assignment of u to c on
+// the table S[c][u], which accumulates
 // log f( g_j^-1 M_w^-1 (u) ) over the positions carrying ciphertext rune c.
 void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j % 5
                   const int8_t *sigmas,       // n_sigma x M
@@ -58,12 +59,23 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                 const int8_t *si = step_inv[(L - 1) % 5];
                 for (int u = 0; u < M; u++) m_inv[u] = si[m_inv[u]];
             }
+            // greedy one-to-one assignment of u to c: base_0 is a bijection
             float total = 0.0f;
-            for (int c = 0; c < M; c++) {
-                float top = table[c][0];
-                for (int u = 1; u < M; u++)
-                    if (table[c][u] > top) top = table[c][u];
+            int c_used[M] = {0}, u_used[M] = {0};
+            for (int k = 0; k < M; k++) {
+                float top = -1e30f;
+                int top_c = 0, top_u = 0;
+                for (int c = 0; c < M; c++) {
+                    if (c_used[c]) continue;
+                    for (int u = 0; u < M; u++)
+                        if (!u_used[u] && table[c][u] > top) {
+                            top = table[c][u];
+                            top_c = c;
+                            top_u = u;
+                        }
+                }
                 total += top;
+                c_used[top_c] = u_used[top_u] = 1;
             }
             float score = (total - n_runes * flat) / n_runes;
             if (score > best) best = score;
