@@ -12,14 +12,14 @@ a necessary condition for a true key **only if DJU-BEI is a genuine state return
 with a large group ⟨g, σ⟩ that reading is about 7,000 times less likely than a
 chance ciphertext repeat. If the repeat is chance, a true key passes the gate at
 the same rate as any wrong key (5.9×10⁻⁴), so each gated sweep discarded a true key
-with probability 0.9994 and excluded nothing.
+with probability 0.9994. Neither sweep excluded its family.
 
 ## Status
 
 **Status**: confirmed (argument); both affected sweeps re-run ungated, both negative
 (the keyword family only inside its register bands).
 
-## The two readings, priced
+## The probability of each reading
 
 `experiments/base_free_verifier.py` header and the count below.
 
@@ -38,42 +38,43 @@ So under the walk the odds are about 7,000 to 1 that DJU-BEI is a coincidence. T
 planted corpus agrees: enciphered under a generic key it contains zero repeated
 two-word ciphertext phrases.
 
-`quagmire_runner.py` states the consequence itself: "A random key almost never
+A comment in `quagmire_runner.py` says the same: "A random key almost never
 satisfies a state return, so to exercise the positive path we plant sigma inside
-the conjugated-shift group". Its positive control therefore used a degenerate key
-that returns by construction. No test showed that a generic true key passes the gate.
+the conjugated-shift group". Its positive control used a degenerate key that
+returns by construction. No test showed that a generic true key passes the gate.
 
-## What this voids
+## Which exclusions this affects
 
 | exclusion | keys verified | keys in the family |
 |---|---|---|
 | keyword Quagmire (`mixed-alphabet-vigenere.md`) | 186,465 | 313,972,400 |
 | affine σ × magic-square g (`affine-sigma.md`) | 28 | 37,352 (and only 46 of 190,008 g) |
 
-Neither family was excluded. Statements elsewhere that "the keyword family has been
-enumerated in full and is negative" rest on the gate.
+Neither family was excluded. Statements in other files that "the keyword family has
+been enumerated in full and is negative" depend on the gate.
 
-## Does it matter that the second occurrence ends the encrypted text?
+## The second occurrence ends the encrypted text
 
 Michel's point (2026-09-19): ᛞᛄᚢ-ᛒᛖᛁ at words 2926–2927 is the last two words of
 the unsolved corpus, and the first occurrence opens a section body two words after
-a 13-dot (`repeated-phrase-dju-bei.md`). That looks like a refrain, not an accident.
+a 13-dot (`repeated-phrase-dju-bei.md`). He reads this as a deliberate repeat.
 
-Priced: the corpus has 183 adjacent (3,3) word windows, and a chance repeat of this
+The corpus has 183 adjacent (3,3) word windows, and a chance repeat of this
 size is (3,3)-shaped about three times in four, so a chance repeat includes the
 final window with probability ≈ 0.75 · 2/183 = 0.8%, and "a chance repeat that ends
 the text" is a ≈ 8×10⁻⁵ event. But a genuine return is no more likely to land there
 than a chance one: a typical window holds the same 2/183 share of the repeated
 (3,3) phrases as it does of the (3,3) window pairs. The position favours the genuine
 reading only by the factor k by which the closing words of a text are more likely to
-be a recurring formula than an average phrase. That is a prior about how 3301
-writes, plausibly 3 to 10, not the factor of ~100 the raw rarity suggests.
+be a recurring formula than an average phrase. k is a prior about how 3301 writes.
+A value of 3 to 10 is plausible. It is not the factor of about 100 that the 0.8%
+figure alone implies.
 
-What the position cannot do is rescue a genuine return UNDER THE WALK. With a group
-of order ~4×10³⁰ a genuine return on six points stays a 3×10⁻⁹ event wherever it
-sits. So "DJU-BEI is not a coincidence" and "the base walks in a generic ⟨g, σ⟩"
-cannot both hold. Taking the refrain seriously means giving up the generic walk,
-which is the reading below.
+The position does not make a genuine return more likely under the walk. With a group
+of order ~4×10³⁰ a genuine return on six points has probability 3×10⁻⁹ at any
+position. So "DJU-BEI is a deliberate repeat" and "the base walks in a generic
+⟨g, σ⟩" cannot both be true. If the repeat is deliberate, the generic walk is wrong.
+The next section covers that case.
 
 ## The other reading: a genuine return means a small state space
 
@@ -92,8 +93,8 @@ The observed excess of identical words is 6.3 ± 3.3 (17 against 10.7,
 recur", N ≈ 2,000 is favoured about 5 to 1 by the identical-word count and about 24
 to 1 by the return (0.24 against 0.01), roughly 100 to 1 together. N was fitted
 after the fact, which costs a factor of a few, and the 10.7 baseline is itself a
-null that could be off. So this is a lean toward a state space of a few thousand
-bases, not a finding. N = 812 (the affine group) is disfavoured the other way: it
+null that could be off. The counts favour a state space of a few thousand bases.
+They do not establish it. N = 812 (the affine group) is disfavoured the other way: it
 predicts 16.6 excess identical words and 3.5 repeated words of length ≥ 4, against
 6.3 and 0 (joint p ≈ 10⁻³). The window that fits is roughly 2,000 to 5,000; 5·29·29
 = 4,205 sits inside it.
@@ -105,10 +106,10 @@ PUBLIC clock is already excluded (`word_state_sweep.py`: 13 state variables, the
 841-state two-disk included, all under 4.5% of a full effect). What is left for a
 compact state is a clock the solver cannot compute: one driven by the plaintext or
 by key material. On 30 points there is also a mid-sized group: PGL(2,29), order
-24,360, which contains elements of order 5. These are leads, not results.
+24,360, which contains elements of order 5. None of this has been tested.
 
-**The public-clock exclusion has a blind spot, and one weak cell sits in it**
-(`experiments/word_state_local_sweep.py`). The global bucket test assumes the solver
+**The public-clock exclusion misses a clock that slips. A local test finds one
+weak cell** (`experiments/word_state_local_sweep.py`). The global bucket test assumes the solver
 computes the state exactly. A clock that slips now and then, as 3301's F-interrupts
 make their solved key streams slip, leaves distant bucket-mates unaligned: a planted
 disk slipping once per ~40 words reads 0.0350 globally (chance 0.0345) and 0.068
@@ -122,8 +123,8 @@ predicts about +6σ, so it is at most a 6–10% partial effect. Status: weak
 watch-item. The broader key (A − w + j) mod 29, a 29-step progressive alphabet,
 shows nothing.
 
-One model would give numbers of this size, and is stated here so it can be tested,
-not because the data establish it. Let the alphabet be set by the public clock
+One model gives numbers of this size. It is recorded so that it can be tested. The
+data do not establish it. Let the alphabet be set by the public clock
 (A − w) mod 29, a SECRET second coordinate with 29 values, and the within-word phase:
 29 · 29 · 5 = 4,205 alphabets. Two words with equal public clock then share an
 alphabet one time in 29, which predicts a global bucket reading of
@@ -162,7 +163,7 @@ lets every rune claim u = x and decrypt to the constant text x x x …; scored w
 an independent maximum per rune, such a key beat the true key (1.54 against 1.22).
 The grid × affine positive control found this.
 
-## Short windows: partial credit near the key, none far from it
+## Short windows: a near-miss key scores above random only within a few transpositions
 
 `experiments/windowed_gradient.py`. Cutting the corpus into disjoint k-word windows,
 each with its own free base, limits how far one wrong σ image propagates. Planted
@@ -177,11 +178,11 @@ corpus, mean window score:
 
 At k = 80 a key one transposition from the truth stands about 8 typical standard
 deviations above random keys, so an enumeration scored this way also flags near
-misses. The credit is gone by 4 swaps: the landscape is smooth only within a few
-transpositions of the key. This does not rescue blind search
-(`no-known-plaintext-foothold.md` stands); it widens what an enumeration can catch.
+misses. At 4 swaps the score equals that of a random key. Blind search still does
+not work (`no-known-plaintext-foothold.md` stands). An enumeration scored this way
+detects keys within one transposition of the true key.
 
-## A second loss in the same sweeps: the candidate bands rest on one register
+## The candidate bands depend on the stand-in register
 
 `experiments/register_band_sensitivity.py`. The keyword sweeps keep a letter wheel
 only if its predicted within-word doublet rate, computed on a stand-in prose table
@@ -203,8 +204,8 @@ the stand-in, the share still inside it under another book is:
 So a band built on one register keeps a true letter wheel about half the time, and
 the seam band on the σ side loses again. A negative sweep inside these bands covers
 roughly a quarter of the family. Widening d1 to about [0.004, 0.014] restores the
-coverage at roughly ten times the candidates per side; with the compiled verifier
-that is a day of compute, not a redesign.
+coverage at roughly ten times the candidates per side. With the compiled verifier
+that is about a day of compute.
 
 ## Results of the ungated re-runs
 
@@ -241,8 +242,8 @@ rose above that.
   200-word windows a one-swap neighbour scores like a random key. Catching near
   misses needs the 80-word summed objective above, at about five times the cost.
 
-The first attempt at the keyword sweep died twice for lack of memory (each spawned
-worker re-imports `aldegonde.c3301`, which builds ~330 MB of n-gram tables). The
+The keyword sweep was killed twice for lack of memory (each spawned worker
+re-imports `aldegonde.c3301`, which builds ~330 MB of n-gram tables). The
 sweep now logs every finished task, resumes from that log, and forks its workers.
 
 ## Scripts

@@ -1,13 +1,13 @@
 # ABOUTME: Measures whether a walk-key objective summed over short windows, each with
 # ABOUTME: its own free base, gives partial credit to near-miss keys (a search gradient).
-"""Does cutting the chain into short windows turn the delta function into a slope?
+"""Scores near-miss walk keys on many short windows, each with its own free base.
 
 `no-known-plaintext-foothold.md` found the landscape over (g, sigma) is a delta
 function: one wrong image in sigma is applied ~2,900 times down the base chain, so
 a one-swap neighbour scores like a random key. That was measured with ONE base_0
 for the whole corpus. A short PREFIX keeps the signal but cannot pin the key.
 
-This measures the third option: cut the corpus into many disjoint windows of k
+This measures a third option: cut the corpus into many disjoint windows of k
 words, give each window its own free base (the base_0-free assignment of
 `base_free_verifier.py`), and average the window scores. A wrong image in sigma
 then damages a window only as far as the chain runs inside it, while the evidence

@@ -1,13 +1,13 @@
 # ABOUTME: Slides public-domain texts against the unsolved corpus by word-length
 # ABOUTME: sequence, to find a quoted passage without any key or cipher model.
-"""Is any stretch of the unsolved text a quotation from a known book?
+"""Searches known books for a passage whose word lengths match the unsolved text.
 
 Word lengths survive encipherment, so a quoted passage shows as a run of matching
 word lengths whatever the cipher is. `crib_phrase_search.py` does this for phrases
 3301 has already published; this does it for whole books 3301 is known to have
 drawn on, and for books a text addressed to "pilgrims" might quote. A hit of a few
-dozen words would be a contiguous known-plaintext crib -- the one thing that
-settles the cipher under any model.
+dozen words would be a contiguous known-plaintext crib, which identifies the cipher
+under any model.
 
 Each book is carried into runeglish (word lengths counted in runes) and slid along
 the 2,928 unsolved words. For every alignment the matches in a 30-word window are

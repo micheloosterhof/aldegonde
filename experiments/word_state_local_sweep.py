@@ -1,6 +1,6 @@
 # ABOUTME: Tests word-level base-indexing schemes on NEARBY word pairs only, so that a
 # ABOUTME: compact clock disturbed by occasional interrupts is not averaged away.
-"""A compact state with interrupts survives a global bucket test. Does it survive a local one?
+"""Bucket test for word-level states, restricted to pairs of nearby words.
 
 `word_state_sweep.py` buckets every rune by a visible state S (word index,
 cumulative length, ...) modulo m and pools ALL pairs in a bucket. If the alphabet is
@@ -29,8 +29,8 @@ rate 0.0385 against 0.0345, z = +3.52. It holds in both halves of the corpus
 (max +2.55), and does not come from page layout. As the largest of 58 family cells
 (two phase conventions) it is p ~ 0.013. The digraph check does not confirm it: 28
 double matches against 20.1 +- 4.8, z = +1.6, where full alphabet sharing at the
-monograph rate would give about 49. Read: a weak watch-item. If real it is a
-partial effect of about 6-10%, not a clock that indexes the alphabet.
+monograph rate would give about 49. Status: weak. If the effect is real it is
+partial, about 6-10%. This clock does not determine the alphabet.
 """
 
 from __future__ import annotations

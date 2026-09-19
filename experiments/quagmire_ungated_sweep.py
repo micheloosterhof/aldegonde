@@ -10,7 +10,7 @@ model it almost never is: the walk group is ~4e30, an LP-sized prose corpus hold
 with probability 1/(29*28*27*26*25*24) = 2.9e-9 -- about 1e-6 expected returns,
 against ~1e-2 for a chance ciphertext repeat. If the repeat is chance, the true
 key passes the gate at the same 5.9e-4 rate as any other key, so the gated sweep
-discarded it with probability 0.9994 and excluded nothing.
+discarded it with probability 0.9994 and did not exclude the family.
 
 Here every key is scored by `walk_score_kernel.score_sigmas`: no gate, no
 hill-climb, base_0 free. Three windows of 200 words, each opening a long section,
