@@ -35,7 +35,7 @@ import random
 import sys
 import tempfile
 import time
-from multiprocessing import Pool
+from multiprocessing import get_context
 from pathlib import Path
 
 import numpy as np
@@ -74,18 +74,26 @@ def windows_of(words: list[list[int]]) -> Windows:
     return Windows([words[a : a + WINDOW_WORDS] for a in WINDOW_STARTS])
 
 
-def _init_worker(prose_path: Path, lens: list[int], extra: list[str] | None) -> None:
+def _prepare(prose_path: Path, lens: list[int], *, want_extra: bool):
+    """Fill the tables the workers read; return (words, vocab, extra keywords).
+
+    Runs once in the parent. The pool forks, so the workers share these tables and
+    the ~330 MB of n-gram data that importing aldegonde.c3301 loads, instead of each
+    building its own copy.
+    """
     words, vocab, T1, lo1, hi1, sigmas = build_setup(prose_path, lens)
     _W.update(
         T1=T1, lo1=lo1, hi1=hi1, windows=windows_of(words), logf=log_frequencies()
     )
     _W["sigmas"] = {"main": np.array(sigmas, dtype=np.int8)}
+    extra = extra_vocabulary(vocab) if want_extra else []
     if extra:
         known = {tuple(x) for x in sigmas}
         every = build_setup(prose_path, lens, vocab + extra)[5]
         fresh = [x for x in every if tuple(x) not in known]
         _W["sigmas"]["all"] = np.array(every, dtype=np.int8)
         _W["sigmas"]["extra"] = np.array(fresh, dtype=np.int8).reshape(-1, M)
+    return words, vocab, extra
 
 
 def _work(task: tuple[str, str, list[str]]):
@@ -196,9 +204,8 @@ def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> N
     The progress log makes the sweep resumable: a task already in it is skipped,
     so a killed run loses only the tasks in flight.
     """
-    words, vocab, _T1, _lo1, _hi1, sigmas = build_setup(prose_path, lens)
-    logf = log_frequencies()
-    extra = extra_vocabulary(vocab) if extra_only else None
+    words, vocab, extra = _prepare(prose_path, lens, want_extra=extra_only)
+    logf = _W["logf"]
     if extra:
         tasks = [
             (f"extra-g-{i}", "all", extra[i::EXTRA_TASKS]) for i in range(EXTRA_TASKS)
@@ -206,11 +213,16 @@ def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> N
         tasks += [
             (f"extra-s-{i}", "extra", vocab[i::MAIN_TASKS]) for i in range(MAIN_TASKS)
         ]
-        print(f"{len(extra):,} extra keywords, {nproc} workers", flush=True)
+        print(
+            f"{len(extra):,} extra keywords, {len(_W['sigmas']['extra'])} extra disks, "
+            f"{nproc} workers",
+            flush=True,
+        )
     else:
         tasks = [(f"main-{i}", "main", vocab[i::MAIN_TASKS]) for i in range(MAIN_TASKS)]
         print(
-            f"{len(vocab):,} keywords, {len(sigmas)} sigma disks, {nproc} workers",
+            f"{len(vocab):,} keywords, {len(_W['sigmas']['main'])} sigma disks, "
+            f"{nproc} workers",
             flush=True,
         )
     out_path = OUT.with_name("quagmire_ungated_extra.jsonl") if extra else OUT
@@ -227,12 +239,7 @@ def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> N
         print(f"resuming: {len(finished)} tasks already in {progress}", flush=True)
     todo = [t for t in tasks if t[0] not in finished]
     start = time.time()
-    with (
-        progress.open("a") as log,
-        Pool(
-            nproc, initializer=_init_worker, initargs=(prose_path, lens, extra)
-        ) as pool,
-    ):
+    with progress.open("a") as log, get_context("fork").Pool(nproc) as pool:
         for done, (name, count, top) in enumerate(pool.imap_unordered(_work, todo), 1):
             tested += count
             best = heapq.nlargest(

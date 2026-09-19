@@ -23,7 +23,7 @@ import json
 import random
 import sys
 import time
-from multiprocessing import Pool
+from multiprocessing import get_context
 from pathlib import Path
 
 import numpy as np
@@ -62,7 +62,8 @@ def lp_words() -> list[list[int]]:
     return words
 
 
-def _init_worker() -> None:
+def _prepare() -> None:
+    """Fill the tables the forked workers read."""
     _W.update(windows=windows_of(lp_words()), logf=log_frequencies())
 
 
@@ -114,7 +115,8 @@ def run(nproc: int) -> None:
     start = time.time()
     tested = 0
     results = []
-    with Pool(nproc, initializer=_init_worker) as pool:
+    _prepare()
+    with get_context("fork").Pool(nproc) as pool:
         for done, (count, best) in enumerate(pool.imap_unordered(_work, chunks), 1):
             tested += count
             results.append(best)
