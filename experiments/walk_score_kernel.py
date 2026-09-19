@@ -74,9 +74,17 @@ class Windows:
 
 
 def score_sigmas(
-    letter_perms, sigmas: np.ndarray, windows: Windows, logf: np.ndarray
+    letter_perms,
+    sigmas: np.ndarray,
+    windows: Windows,
+    logf: np.ndarray,
+    *,
+    sum_windows: bool = False,
 ) -> np.ndarray:
-    """Best window score of each sigma (rows of `sigmas`) under `letter_perms`."""
+    """Score of each sigma (rows of `sigmas`) under `letter_perms`.
+
+    The best window score, or with `sum_windows` the rune-weighted mean over windows.
+    """
     perms = np.ascontiguousarray(np.asarray(letter_perms), dtype=np.int8)
     sig = np.ascontiguousarray(sigmas, dtype=np.int8)
     lf = np.ascontiguousarray(logf, dtype=np.float32)
@@ -91,6 +99,7 @@ def score_sigmas(
         ptr(windows.window_words),
         ctypes.c_int(len(windows.window_words)),
         ptr(lf),
+        ctypes.c_int(int(sum_windows)),
         ptr(out),
     )
     return out
@@ -113,6 +122,12 @@ def self_test() -> None:
         )
         assert abs(got[k] - want) < 1e-3, f"kernel {got[k]} != reference {want}"
     assert got[0] > got[1:].max() + 0.3, "true sigma does not stand out"
+    summed = score_sigmas(powers(g), sigmas[:3], windows, logf, sum_windows=True)
+    for k in range(3):
+        parts = [score_key(ct[a:b], powers(g), list(sigmas[k]), logf) for a, b in spans]
+        runes = [sum(len(w) for w in ct[a:b]) for a, b in spans]
+        want = sum(p[0] * n for p, n in zip(parts, runes)) / sum(runes)
+        assert abs(summed[k] - want) < 1e-3, f"summed {summed[k]} != reference {want}"
     print(
         f"kernel matches the Python reference; true {got[0]:.3f}, best wrong {got[1:].max():.3f}"
     )

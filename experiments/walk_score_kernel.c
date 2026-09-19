@@ -6,10 +6,11 @@
 
 #define M 29
 
-// Writes, for each sigma, the best window score in nats per rune above the flat
-// baseline. A window's score is the greedy one-to-one assignment of u to c on
-// the table S[c][u], which accumulates
-// log f( g_j^-1 M_w^-1 (u) ) over the positions carrying ciphertext rune c.
+// Writes one score per sigma, in nats per rune above the flat baseline. A window's
+// score is the greedy one-to-one assignment of u to c on the table S[c][u], which
+// accumulates log f( g_j^-1 M_w^-1 (u) ) over the positions carrying ciphertext
+// rune c. Windows combine as their maximum, or (sum_windows) as their rune-weighted
+// mean, which credits a key for every window it gets right.
 void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j % 5
                   const int8_t *sigmas,       // n_sigma x M
                   int n_sigma,
@@ -18,6 +19,7 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                   const int32_t *window_words, // words per window
                   int n_windows,
                   const float *logf,          // M log-frequencies
+                  int sum_windows,
                   float *out)                 // n_sigma scores
 {
     float by_phase[5][M];
@@ -35,6 +37,8 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                 step_inv[a][letter_perms[a * M + sigma[x]]] = (int8_t)x;
 
         float best = -1e30f;
+        float gained = 0.0f;
+        int all_runes = 0;
         const int8_t *rune = runes;
         const int32_t *len = word_lens;
         for (int w = 0; w < n_windows; w++) {
@@ -79,7 +83,9 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
             }
             float score = (total - n_runes * flat) / n_runes;
             if (score > best) best = score;
+            gained += total - n_runes * flat;
+            all_runes += n_runes;
         }
-        out[s] = best;
+        out[s] = sum_windows ? gained / all_runes : best;
     }
 }
