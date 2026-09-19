@@ -11,6 +11,10 @@
 // accumulates log f( g_j^-1 M_w^-1 (u) ) over the positions carrying ciphertext
 // rune c. Windows combine as their maximum, or (sum_windows) as their rune-weighted
 // mean, which credits a key for every window it gets right.
+//
+// The sum of row maxima bounds the assignment from above and costs nothing extra.
+// A window whose bound is below skip_below is reported by that bound and the
+// assignment is skipped, so every score at or above skip_below stays exact.
 void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j % 5
                   const int8_t *sigmas,       // n_sigma x M
                   int n_sigma,
@@ -20,7 +24,8 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                   int n_windows,
                   const float *logf,          // M log-frequencies
                   float *out,                 // n_sigma scores
-                  int sum_windows)
+                  int sum_windows,
+                  float skip_below)
 {
     float by_phase[5][M];
     float flat = 0.0f;
@@ -63,10 +68,18 @@ void score_sigmas(const int8_t *letter_perms, // 5 x M, position j uses perm j %
                 const int8_t *si = step_inv[(L - 1) % 5];
                 for (int u = 0; u < M; u++) m_inv[u] = si[m_inv[u]];
             }
-            // greedy one-to-one assignment of u to c: base_0 is a bijection
             float total = 0.0f;
+            for (int c = 0; c < M; c++) {
+                float top = table[c][0];
+                for (int u = 1; u < M; u++)
+                    if (table[c][u] > top) top = table[c][u];
+                total += top;
+            }
+            int exact = (total - n_runes * flat) / n_runes >= skip_below;
+            // greedy one-to-one assignment of u to c: base_0 is a bijection
+            if (exact) total = 0.0f;
             int c_used[M] = {0}, u_used[M] = {0};
-            for (int k = 0; k < M; k++) {
+            for (int k = 0; exact && k < M; k++) {
                 float top = -1e30f;
                 int top_c = 0, top_u = 0;
                 for (int c = 0; c < M; c++) {

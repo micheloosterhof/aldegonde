@@ -13,8 +13,8 @@ key passes the gate at the same 5.9e-4 rate as any other key, so the gated sweep
 discarded it with probability 0.9994 and excluded nothing.
 
 Here every key is scored by `walk_score_kernel.score_sigmas`: no gate, no
-hill-climb, base_0 free. Five windows of 250 words, each opening a section, are
-scored independently, so a section-level restart or a single wrong word length
+hill-climb, base_0 free. Three windows of 200 words, each opening a long section,
+are scored independently, so a section-level restart or a single wrong word length
 costs one window rather than the corpus. The best keys are re-scored on whole
 sections, where a wrong key floors near 0.2 nats/rune and a true key sits near 1.2.
 
@@ -33,6 +33,7 @@ import heapq
 import json
 import random
 import sys
+import tempfile
 import time
 from multiprocessing import Pool
 from pathlib import Path
@@ -55,10 +56,16 @@ from quagmire_runner import (  # noqa: E402
 from walk_score_kernel import Windows, score_sigmas  # noqa: E402
 
 M = 29
-WINDOW_WORDS = 250
-WINDOW_STARTS = (160, 419, 806, 1472, 2181)  # first words of sections 1, 2, 4, 6, 8
+WINDOW_WORDS = 200
+WINDOW_STARTS = (419, 806, 2181)  # first words of sections 2, 4, 8
 SECTIONS = ((160, 419), (419, 804), (806, 1245), (1472, 1824), (2181, 2861))
-KEEP = 40  # best keys kept per worker chunk
+KEEP = 40  # best keys re-scored at the end
+KEEP_PER_TASK = 5
+# window scores under this are reported as upper bounds (the kernel's cheap path);
+# wrong keys sit near 0.5 on a 200-word window and a true key near 1.2
+CANDIDATE_FROM = 0.85
+MAIN_TASKS = 360
+EXTRA_TASKS = 72
 OUT = ROOT / "experiments" / "quagmire_ungated_candidates.jsonl"
 _W: dict = {}
 
@@ -81,27 +88,34 @@ def _init_worker(prose_path: Path, lens: list[int], extra: list[str] | None) -> 
         _W["sigmas"]["extra"] = np.array(fresh, dtype=np.int8).reshape(-1, M)
 
 
-def _work(task: tuple[str, list[str]]):
+def _work(task: tuple[str, str, list[str]]):
     """Score every (K, schedule) x sigma key for one slice of keywords.
 
-    The task names which disks the slice's letter wheels are tried against.
+    The task carries its name and which disks the slice's letter wheels are tried
+    against. Returns (name, keys tested, best keys as [score, K, schedule, sigma]).
     """
-    disks, chunk = task
+    name, disks, chunk = task
     sigmas = _W["sigmas"][disks]
     best: list[tuple[float, list[int], list[int], list[int]]] = []
     tested = 0
     if not len(sigmas):
-        return tested, best
+        return name, tested, best
     for K, sched in g_candidates(chunk, _W["T1"], _W["lo1"], _W["hi1"], None):
-        scores = score_sigmas(letter_steps(K, sched), sigmas, _W["windows"], _W["logf"])
+        scores = score_sigmas(
+            letter_steps(K, sched),
+            sigmas,
+            _W["windows"],
+            _W["logf"],
+            skip_below=CANDIDATE_FROM,
+        )
         tested += len(scores)
         top = int(scores.argmax())
         item = (float(scores[top]), K, sched, [int(x) for x in sigmas[top]])
-        if len(best) < KEEP:
+        if len(best) < KEEP_PER_TASK:
             heapq.heappush(best, item)
         elif item[0] > best[0][0]:
             heapq.heapreplace(best, item)
-    return tested, best
+    return name, tested, best
 
 
 def positive_control(lens: list[int], prose_path: Path) -> None:
@@ -177,38 +191,63 @@ def extra_vocabulary(main: list[str]) -> list[str]:
 
 
 def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> None:
+    """Stream the tasks over nproc workers, logging each finished task.
+
+    The progress log makes the sweep resumable: a task already in it is skipped,
+    so a killed run loses only the tasks in flight.
+    """
     words, vocab, _T1, _lo1, _hi1, sigmas = build_setup(prose_path, lens)
     logf = log_frequencies()
     extra = extra_vocabulary(vocab) if extra_only else None
     if extra:
-        tasks = [("all", extra[i :: nproc * 8]) for i in range(nproc * 8)]
-        tasks += [("extra", vocab[i :: nproc * 40]) for i in range(nproc * 40)]
+        tasks = [
+            (f"extra-g-{i}", "all", extra[i::EXTRA_TASKS]) for i in range(EXTRA_TASKS)
+        ]
+        tasks += [
+            (f"extra-s-{i}", "extra", vocab[i::MAIN_TASKS]) for i in range(MAIN_TASKS)
+        ]
         print(f"{len(extra):,} extra keywords, {nproc} workers", flush=True)
     else:
-        tasks = [("main", vocab[i :: nproc * 40]) for i in range(nproc * 40)]
+        tasks = [(f"main-{i}", "main", vocab[i::MAIN_TASKS]) for i in range(MAIN_TASKS)]
         print(
             f"{len(vocab):,} keywords, {len(sigmas)} sigma disks, {nproc} workers",
             flush=True,
         )
-    chunks = tasks
-    start = time.time()
+    out_path = OUT.with_name("quagmire_ungated_extra.jsonl") if extra else OUT
+    progress = Path(tempfile.gettempdir()) / f"{out_path.stem}_progress.jsonl"
     tested = 0
-    best: list[tuple[float, list[int], list[int], list[int]]] = []
-    with Pool(
-        nproc, initializer=_init_worker, initargs=(prose_path, lens, extra)
-    ) as pool:
-        for done, (count, top) in enumerate(pool.imap_unordered(_work, chunks), 1):
+    best: list[list] = []
+    finished = set()
+    if progress.exists():
+        for line in progress.read_text().splitlines():
+            record = json.loads(line)
+            finished.add(record["task"])
+            tested += record["tested"]
+            best += record["best"]
+        print(f"resuming: {len(finished)} tasks already in {progress}", flush=True)
+    todo = [t for t in tasks if t[0] not in finished]
+    start = time.time()
+    with (
+        progress.open("a") as log,
+        Pool(
+            nproc, initializer=_init_worker, initargs=(prose_path, lens, extra)
+        ) as pool,
+    ):
+        for done, (name, count, top) in enumerate(pool.imap_unordered(_work, todo), 1):
             tested += count
-            best = heapq.nlargest(KEEP, best + top, key=lambda t: t[0])
-            if done % 20 == 0 or done == len(chunks):
+            best = heapq.nlargest(
+                KEEP, best + [list(t) for t in top], key=lambda t: t[0]
+            )
+            log.write(json.dumps({"task": name, "tested": count, "best": top}) + "\n")
+            log.flush()
+            if done % 20 == 0 or done == len(todo):
                 print(
-                    f"  {done}/{len(chunks)} chunks, {tested:,} keys, "
+                    f"  {done}/{len(todo)} tasks, {tested:,} keys, "
                     f"best window score {best[0][0]:.3f}, {time.time() - start:.0f}s",
                     flush=True,
                 )
-    print(f"\nDONE: {tested:,} keys in {(time.time() - start) / 60:.1f} min")
+    print(f"\nDONE: {tested:,} keys; this run {(time.time() - start) / 60:.1f} min")
     print("best keys re-scored on whole sections (wrong ~0.2, true ~1.2):")
-    out_path = OUT.with_name("quagmire_ungated_extra.jsonl") if extra else OUT
     with out_path.open("w") as fout:
         for score, K, sched, sigma in best:
             full = rescore_on_sections(words, K, sched, sigma, logf)

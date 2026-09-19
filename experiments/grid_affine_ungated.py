@@ -9,8 +9,8 @@ necessary condition only if DJU-BEI is a genuine state return, which the walk mo
 makes a ~1e-6 event (`quagmire_ungated_sweep.py`).
 
 Here all 190,008 g x 812 sigma = 1.5e8 complete keys are scored by
-`walk_score_kernel.score_sigmas`, base_0 free, on five 250-word section openings.
-A wrong key floors near 0.6 nats/rune on a window; a true key sits near 1.2.
+`walk_score_kernel.score_sigmas`, base_0 free, on three 200-word section openings.
+A wrong key floors near 0.5 nats/rune on a window; a true key sits near 1.2.
 
 Run with no arguments for the positive control (a planted family key enciphered on
 the real length sequence must be found). `--run N` sweeps the family over N workers.
@@ -36,7 +36,7 @@ from ea_direction_test import PROSE_CACHE  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
 from magic_square_sweep import build_family_g  # noqa: E402
 from quagmire_runner import load_register  # noqa: E402
-from quagmire_ungated_sweep import SECTIONS, windows_of  # noqa: E402
+from quagmire_ungated_sweep import CANDIDATE_FROM, SECTIONS, windows_of  # noqa: E402
 from walk_full_profile import encipher  # noqa: E402
 from walk_score_kernel import Windows, score_sigmas  # noqa: E402
 
@@ -75,7 +75,11 @@ def _work(fixed_sets: list[tuple[int, ...]]):
             for by_col in (True, False):
                 g = build_family_g(set(fixed), rot, by_col=by_col)
                 scores = score_sigmas(
-                    powers(list(g)), AFFINE, _W["windows"], _W["logf"]
+                    powers(list(g)),
+                    AFFINE,
+                    _W["windows"],
+                    _W["logf"],
+                    skip_below=CANDIDATE_FROM,
                 )
                 tested += len(scores)
                 top = int(scores.argmax())

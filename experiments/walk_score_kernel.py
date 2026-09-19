@@ -80,10 +80,13 @@ def score_sigmas(
     logf: np.ndarray,
     *,
     sum_windows: bool = False,
+    skip_below: float = -np.inf,
 ) -> np.ndarray:
     """Score of each sigma (rows of `sigmas`) under `letter_perms`.
 
     The best window score, or with `sum_windows` the rune-weighted mean over windows.
+    A window whose cheap upper bound is under `skip_below` is reported by that bound,
+    which skips its assignment; scores at or above `skip_below` are always exact.
     """
     perms = np.ascontiguousarray(np.asarray(letter_perms), dtype=np.int8)
     sig = np.ascontiguousarray(sigmas, dtype=np.int8)
@@ -101,6 +104,7 @@ def score_sigmas(
         ptr(lf),
         ptr(out),
         ctypes.c_int(int(sum_windows)),
+        ctypes.c_float(max(skip_below, -1e30)),
     )
     return out
 
@@ -131,6 +135,14 @@ def self_test() -> None:
     print(
         f"kernel matches the Python reference; true {got[0]:.3f}, best wrong {got[1:].max():.3f}"
     )
+
+    floor = 0.9
+    bounded = score_sigmas(powers(g), sigmas, windows, logf, skip_below=floor)
+    assert (bounded >= got - 1e-6).all(), "a skipped window must report an upper bound"
+    assert abs(bounded[0] - got[0]) < 1e-6, (
+        "a key above the floor must be scored exactly"
+    )
+    assert (bounded[1:] < floor).all(), "no wrong key may cross the floor"
 
     big = np.array([rng.sample(range(M), M) for _ in range(20000)])
     start = time.perf_counter()
