@@ -135,6 +135,52 @@ identical words (6.3 ± 3.3 seen), but also 3.4 repeated words of length ≥ 4 w
 none is seen (p ≈ 0.03). It does not explain why the local rate is higher than the
 global one.
 
+## The compact-state reading, tested (2026-09-19)
+
+`experiments/compact_state_models.py`. Each model sets the base of word w from a
+state; English prose is enciphered under it and measured with the same functions as
+the corpus. The LP reads 1 return, 17 identical cipher words of 3 runes or more, 0
+of 4 or more, and 1.007 on the (A − w mod 29, phase) clock statistic.
+
+**The transition rule matters more than the state count.** If the state is drawn
+independently per word, a two-word return needs two coincidences and is about N
+times rarer; the simulations give 0 returns at every N. If the state advances
+deterministically from the plaintext, two occurrences of one phrase in the same
+state stay in step across it, so a repeated word carries the next word with it. Only
+the deterministic form can produce DJU-BEI at all.
+
+**A state built only from public data is refuted again**, and by a wider margin than
+in `word_state_sweep.py`: the public clock alone reads 2.196 on the clock statistic
+against the LP's 1.007, because every word in a bucket then shares an alphabet.
+
+**The word counts bound the state space from below.** 260 prose corpora over 10
+registers, deterministic plaintext-driven state, N states:
+
+| N | P(word counts fit) | P(return) | P(return \| word counts fit) |
+|---|---|---|---|
+| generic walk | 0.742 | ~1.4×10⁻⁶ | ~1.4×10⁻⁶ |
+| 850 | 0.008 | 0.365 | 0.000 |
+| 1,200 | 0.015 | 0.335 | 0.000 |
+| 2,000 | 0.123 | 0.242 | 0.031 |
+| 4,205 | 0.342 | 0.096 | 0.011 |
+| 20,000 | 0.619 | 0.031 | 0.006 |
+
+N below about 1,200 is refuted by the LP's own counts: it leaks 27 to 73 identical
+cipher words where the LP has 17. This corrects the estimate earlier in this file,
+which put N at 600 to 5,000 from the excess of identical words alone; the proper
+null for that count is a generic walk on real prose, which already gives 11.0, so
+the LP's excess is +1.3σ rather than +1.9σ and the lower bound moves up.
+
+Among the state counts that do fit the word counts, the return occurs in 0.6% to 3%
+of corpora against 1.4×10⁻⁶ under a generic walk. So the three counts together
+favour a compact state of a few thousand over the generic walk by about 10⁴, which
+supports Michel's reading. Neither model makes the return probable, so the evidence
+is a ratio between two unlikely explanations, not a fit.
+
+**What is not yet tested.** Whether such a model also reproduces the doublet
+suppression, the d5 echo and the flat unigrams, which the walk does reproduce. The
+model class was chosen for the recurrence statistics alone.
+
 ## The replacement: a verifier that needs neither base₀ nor DJU-BEI
 
 `experiments/base_free_verifier.py`, `experiments/walk_score_kernel.c`.
