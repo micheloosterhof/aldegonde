@@ -173,10 +173,29 @@ null for that count is a generic walk on real prose, which already gives 11.0, s
 the LP's excess is +1.3σ rather than +1.9σ and the lower bound moves up.
 
 Among the state counts that do fit the word counts, the return occurs in 0.6% to 3%
-of corpora against 1.4×10⁻⁶ under a generic walk. So the three counts together
-favour a compact state of a few thousand over the generic walk by about 10⁴, which
-supports Michel's reading. Neither model makes the return probable, so the evidence
-is a ratio between two unlikely explanations, not a fit.
+of corpora, against 1.4×10⁻⁶ for a genuine base return under a generic walk.
+
+**That comparison is wrong, and the correction costs two orders of magnitude
+(2026-09-20).** 1.4×10⁻⁶ is the probability the walk produces a GENUINE return. It is
+not the probability the walk produces the observed data, because a walk also produces
+chance collisions: two different plaintext phrases enciphering to the same runes. The
+repo already measures that — a word-anchored, boundary-consistent repeat of 6 runes or
+more appears in **1.0%** of doublet-corrected surrogate corpora
+(`repeated-phrase-dju-bei.md`). Under the walk the data is 7,000 times more likely to
+be a collision than a return, so P(data | walk) = 0.010, not 1.4×10⁻⁶.
+
+| N | P(genuine return) | P(data \| compact) | P(data \| walk) | likelihood ratio |
+|---|---|---|---|---|
+| 2,000 | 0.265 | 0.275 | 0.010 | 27.5 |
+| 2,500 | 0.212 | 0.222 | 0.010 | 22.2 |
+| 4,205 | 0.126 | 0.136 | 0.010 | 13.6 |
+| 20,000 | 0.026 | 0.036 | 0.010 | 3.6 |
+
+So the repeat favours a compact state by a factor of **4 to 28**, not 10⁴. The
+end-of-text position adds its own factor of 3 to 10 (see above), giving perhaps 10 to
+300 in all — against which the architecture needed spends 88 of the 103 bits in a
+base. The honest reading is that DJU-BEI is weak-to-moderate evidence for recurrence,
+not strong, and that it does not by itself carry an architecture.
 
 **The seam constrains it, but does not close it (corrected 2026-09-20).** None of the
 models above suppresses the cross-word doublet: an unrelated base per state gives
@@ -255,7 +274,16 @@ near-independent permutations, with tuned transitions and a branching factor of 
 two — a one-bit plaintext feature per word, spending 88 of the 103 bits in a base.
 Nothing tested here is that, and no construction for it is known: the only cheap way to
 tune every edge at once is a single generator, which is exactly what the correlation
-result above rules out. The position argument at the top of this
+result above rules out.
+
+**Three corrections in three days, all in the same direction.** The gate itself
+inherited the walk's assumption about DJU-BEI; the closure above inherited the walk's
+assumption that steps compose into a group; the 10⁴ figure compared a genuine return
+against a genuine return instead of against the data. Each time the error was
+comparing the challenger with the wrong alternative, and each time it favoured
+whatever I had just built. The standing check before any verdict here: name the
+alternative explicitly, and ask which of the incumbent's assumptions the test
+inherited. The position argument at the top of this
 file still applies to it, and so does the word-count evidence, which favours such a
 state over the generic walk by about 10⁴.
 
