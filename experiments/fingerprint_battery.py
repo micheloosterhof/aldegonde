@@ -17,8 +17,25 @@ a generator on the same 18 statistics and tags each cell:
 
 A model is worth attacking with only if the free cells land.
 
-**Result (2026-09-20): the length-clocked walk passes 12 of its 13 free cells.** Key
-fitted to d1-d4, d6 and the seam only, then scored on 60 prose corpora:
+**Result (2026-09-20): a length-clocked walk CAN pass 12 of its 13 free cells, but
+the fitted diagonals do not pin such a key.** Across five independently fitted keys,
+all non-degenerate (2,928 distinct bases each), the number of failing free cells runs
+from 1 to 6, and only the DJU-BEI repeat fails for every key:
+
+    cell             tail across 5 keys        verdict
+    d5w, d5x, triplets, long   0.13 - 0.73     passes for every key
+    returns                    0.033           FAILS for every key
+    ioc, entropy, bigram_chi2, kappa_max_z,
+    doublet_pos, doublet_gap_min, identical, clock
+                               0.000 - 0.97    borderline: flips with the key
+
+That is a real constraint rather than a defect. The six fitted diagonals leave `g` and
+sigma far from determined, and the free cells move with whatever else the fitting did
+not touch -- so they carry additional key information, and a key search could use them
+as filters. It also means no single fitted key settles the model: the honest claim is
+that the walk FAMILY contains keys reproducing everything except the repeat.
+
+One such key, fitted to d1-d4, d6 and the seam and scored on 60 prose corpora:
 
     cell              LP      model   two-sided tail
     d5w           0.0492     0.0562   0.367    the one cell g^5 = id forces
@@ -35,8 +52,9 @@ fitted to d1-d4, d6 and the seam only, then scored on 60 prose corpora:
     long                0       0.18  0.367
     clock          1.0071     1.0020  0.400
 
-So the walk is a validated generator for everything the corpus shows EXCEPT the
-DJU-BEI repeat, which it never produces in 60 draws. Flat unigrams, maximal entropy,
+So this key is a validated generator for everything the corpus shows EXCEPT the
+DJU-BEI repeat, which it never produces in 60 draws. Another fitted key may miss
+several of the borderline cells above; the repeat is the only universal miss. Flat unigrams, maximal entropy,
 the absence of triplets, off-diagonal bigram uniformity and the absence of periodicity
 all come out free — none of them was fitted.
 
