@@ -173,6 +173,18 @@ featureless placement, and 63 doublets carry no handle. Placement is exhausted.
 - `explicit-doublet-avoidance.md`, `doublet-spacing-poisson.md` — earlier
   doublet notes; this is the "inherent, not bolted-on" resolution.
 
+## A second mechanism reaches the same prediction, and dies the same way (Sept 2026)
+
+`doublet-dodge-walk.md` arrives at "ciphertext doublets ARE plaintext doubles" from a
+different direction — a clock that skips when the emission would repeat, rather than a
+held slot — and the positional test kills it for the same reason. Measured against this
+file's statistic, that mechanism puts the mean doublet position at **0.833** where the
+corpus reads **0.553**, z = −5.2.
+
+Worth recording alongside: a plain tuned-diagonal walk reads **0.40** on the same
+statistic. The corpus sits between the two, so neither pure mechanism matches, and the
+positional profile is a live constraint rather than a settled exclusion of one family.
+
 ## Verdict
 
 Disproved. The hold formulation's defining consequence — within-word
