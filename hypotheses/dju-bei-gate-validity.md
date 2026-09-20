@@ -18,7 +18,7 @@ with probability 0.9994. Neither sweep excluded its family.
 
 **Status**: confirmed (argument); both affected sweeps re-run ungated, both negative
 (the keyword family only inside its register bands). The compact-state reading the
-argument opens was tested and is closed: see "The compact-state reading, tested".
+argument opens is constrained but NOT closed: see "The compact-state reading, tested".
 
 ## The probability of each reading
 
@@ -178,50 +178,60 @@ favour a compact state of a few thousand over the generic walk by about 10⁴, w
 supports Michel's reading. Neither model makes the return probable, so the evidence
 is a ratio between two unlikely explanations, not a fit.
 
-**The seam then closes it, through the group.** None of these models suppresses the
-cross-word doublet: an unrelated base per state gives 0.0355, the chance rate, against
-the LP's 0.0079 — 101 predicted against 23 observed, z = −7.8. Suppressing it means the
-step between consecutive bases is a tuned permutation, so the set of bases is `base₀`
-composed with the group the steps generate, and the number of states is that group's
-order.
+**The seam constrains it, but does not close it (corrected 2026-09-20).** None of the
+models above suppresses the cross-word doublet: an unrelated base per state gives
+0.0355, the chance rate, against the LP's 0.0079 — 101 predicted against 23 observed,
+z = −7.8. So consecutive bases cannot be independent; the difference
+`base_w⁻¹ ∘ base_{w+1}` must be a rare-diagonal permutation at most boundaries.
 
-At degree 29 those orders are not free. By Burnside a transitive group of prime degree
-is 2-transitive or lies inside AGL(1,29), whose transitive subgroups have orders 29,
-58, 116, 203, 406 and 812 — and **5 does not divide 812**, so none of them holds an
-element of order 5. The 2-transitive groups of degree 29 are A₂₉ and S₂₉ alone, of
-order at least 4.4×10³⁰. A transitive step group carrying an order-5 letter step
-therefore has astronomically many states, and the few thousand the word repeats allow
-is unreachable. (`rotor-machine-compact-state.md` proves the same fact for a
-wheel-indexed state; it applies to the base count directly.)
+An earlier version of this section went on to argue that this makes the set of bases a
+group, so the state count is a group order, so Burnside's theorem on transitive groups
+of prime degree closes the reading. **Michel pushed back and he is right: that step is
+wrong.** A tuned difference on every transition does not make the bases a group. It
+makes them a set of N permutations whose pairwise differences along the transition
+edges are tuned — a constraint satisfaction problem, not closure under composition.
+Group structure follows only if the step is drawn from one fixed set and composed
+along the walk, which is the walk's own architecture and exactly the assumption a
+compact-state alternative is entitled to drop. With state-dependent steps there is no
+group, Burnside does not apply, and the orbit test below tests a case that never had
+to arise.
 
-So the compact-state reading survives only with an **intransitive** step group: the
-schedule must preserve a partition of the 29 runes into orbits, each a union of `g`'s
-five 5-cycles and four fixed points.
+What survives is weaker and quantitative.
 
-**And that is excluded too.** If every base maps an orbit to itself, then a ciphertext
-rune always sits in its plaintext rune's orbit, so the orbit label passes through the
-cipher unchanged. Adjacent ciphertext runes then carry the plaintext's orbit
-correlation exactly. Measured as the chi-square of the 2×2 within-word adjacency table
-of a rune subset, over 1,500 random partitions (sizes 4, 5, 9, 10 and 14):
+**A counting bound on the branching factor.** A random permutation's seam diagonal
+lands in the observed interval [0.0050, 0.0118] with probability 1.14×10⁻³, so each
+tuned edge costs 9.8 bits, while one base carries log₂(29!) = 102.8 bits of freedom.
+That affords about **10 tuned edges per state**. The seam rate is an average, so not
+every edge need be tuned — but at 80% tuned the rate is already 0.0117, above the
+observation, so roughly 90% must be. A compact-state cipher is therefore possible only
+if its transition has a branching factor of about ten or less, meaning the plaintext
+feature driving the state carries at most ~3.3 bits per word. The gematria-sum
+automaton tested above branches 29 ways and is excluded by this counting; a state
+driven by a coarser feature is not.
 
-| | max chi-square, 1 df |
-|---|---|
-| real prose, where orbit labels would show | 1443.4 |
-| LP ciphertext | 43.3 |
-| doublet-preserving surrogates of the LP | 38.2 ± 4.0 (max 44.8) |
+**The cyclic sub-case is closed.** If the base advances by powers of a single σ, the
+bases are ⟨σ⟩ and N = ord(σ). The letter step must then lie in ⟨σ⟩ as well, so
+`g = σ^(N/5)`, and the walk needs `g` rich — cycle type 5⁵1⁴, since a `g` with many
+fixed points passes plaintext doublets straight through. Over every cycle type of 29
+points, 35 qualify and the largest state count is **N = 100** (σ of type (25,4)),
+with 75 and 60 next. That is far below the 2,000–4,205 the word repeats allow, and
+N = 100 would leak roughly 150 excess identical words against the 6.3 observed. So a
+schedule that is powers of one permutation cannot be compact enough.
 
-The LP sits at z = +1.28 against its own null — nothing — while the same statistic on
-plaintext reaches 33× higher. The doublet-preserving surrogate is essential here: a
-plain uniform null puts the LP near 38 on the suppressed diagonal alone, which is the
-trap `README.md` records. The conclusion also follows from the corpus's known flat
-off-diagonal bigram matrix (chi-square p = 0.23), since any orbit partition is a
-coarsening of it.
+**The orbit test, for the sub-case it covers.** Where the schedule *is* a group and
+that group is intransitive, orbit labels pass through the cipher unchanged and adjacent
+ciphertext runes carry the plaintext's orbit correlation. Over 1,500 random partitions
+the 2×2 within-word adjacency chi-square reaches 1443.4 on real prose, 43.3 on the LP,
+and 38.2 ± 4.0 on doublet-preserving surrogates — z = +1.28, nothing. (The surrogate
+is essential: a uniform null puts the LP near 38 on the suppressed diagonal alone.)
+This closes intransitive group schedules. It says nothing about non-group ones.
 
-**The reading is therefore closed.** The seam forces a tuned step, a tuned step makes
-the bases a group, a transitive group with an order-5 element has at least 4.4×10³⁰
-elements, and an intransitive one leaves an orbit signature the corpus does not carry.
-DJU-BEI is a chance repeat after all, which is where the top of this file started, and
-the two arguments are independent.
+**So DJU-BEI as a genuine state return is open, not refuted.** It requires a cipher
+whose per-word base is drawn from a designed set of a few thousand, with tuned
+transitions and a branching factor around ten — an architecture outside the walk
+family and outside everything tested here. The position argument at the top of this
+file still applies to it, and so does the word-count evidence, which favours such a
+state over the generic walk by about 10⁴.
 
 **Also not yet tested.** Whether such a model reproduces the d5 echo and the doublet
 suppression. Both are properties of `g` and the within-word base, so they should carry
