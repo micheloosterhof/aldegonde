@@ -13,7 +13,10 @@ The base advances per word, which is the word-delimited part.
 
 ## Status
 
-**Status**: unresolved. It derives the factor 1/5 in the observed doublet rate from
+**Status**: unresolved, and now the best-fitting mechanism in this directory. With one
+alphabet and one schedule fitted to the distance profile it matches every measured cell
+except the DJU-BEI repeat, across independent fits, with the seam landing unfitted. It
+derives the factor 1/5 in the observed doublet rate from
 the schedule length, where other files here record that factor without a mechanism. It
 also identifies a class of key that every sweep in this directory excluded by
 construction. Against it: `d6w` misses for every key tried, `d1w` misses for four keys
@@ -110,13 +113,43 @@ plaintexts collide. This is the substantive objection to the whole dodge family.
 
 ## What to do next
 
-1. **Search the zero-offset schedules.** This is concrete, was never done, and the
-   machinery exists: drop the `nz` mask in `g_candidates`, require exactly one zero,
-   and run `quagmire_ungated_sweep.py`. The band filters must also go, since this
-   model's d1 is not a tuned diagonal.
-2. **Find whether any Quagmire can suppress d6.** If no shift schedule reaches 0.0245,
-   the family is dead regardless and the search in (1) is wasted — so do this first.
+**Step 2 below is now answered, and the answer is yes.** Under a period-5 schedule
+6 ≡ 1 mod 5, so the distance-6 relation is the same shift as the distance-1 relation
+evaluated on the distance-6 plaintext table. The zero offset makes one of the five
+phases the identity, so that phase reads the plaintext distance-6 rate of 0.0672; for
+the mean to reach the corpus's 0.0245 the other four shift diagonals must average
+0.0138 against chance 0.0345. Hill-climbing the alphabet reaches **0.0083**, so d6 is
+reachable with room to spare.
+
+Fitting one alphabet and one schedule jointly to d1, d2, d3, d4 and d6 lands all five
+within 2%, and simulation confirms the analytic prediction. Across five independent
+joint fits, scored on 60 prose corpora with σ drawn at random:
+
+| fit | free cells missing of 14 |
+|---|---|
+| 0 | 2 — `returns`, `identical` |
+| 1 | 2 — `returns`, `identical` |
+| 2 | 1 — `returns` |
+
+So the earlier "median 4 misses" figure was a property of the unfitted model, not of
+the family. With the schedule and alphabet fitted to the distance profile the model
+matches everything except the DJU-BEI repeat, and `identical` in two fits of three.
+The seam is NOT fitted here — σ was random — and it lands anyway.
+
+That makes this comparable to the length-clocked walk, which fits six cells and leaves
+13 free with one miss, while this fits five and leaves 14 with one or two. The
+difference is that d1 comes from the schedule's zero offset rather than from a tuned
+29-permutation diagonal.
+
+## What to do next
+
+1. **Search the zero-offset schedules.** Concrete, never done, and the machinery
+   exists: drop the `nz` mask in `g_candidates`, require exactly one zero, and run
+   `quagmire_ungated_sweep.py`. The band filters must also go, since this model's d1 is
+   not a tuned diagonal.
+2. ~~Find whether any Quagmire can suppress d6.~~ Answered above: yes.
 3. **Find a decodable trigger**, or accept the family is a generative account only.
+   This is the remaining substantive objection.
 
 ## Scripts
 
