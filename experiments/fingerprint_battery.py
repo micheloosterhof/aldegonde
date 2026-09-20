@@ -72,6 +72,16 @@ independent base per word, which fails the seam at 0.0343 against 0.0079. That l
 one passes if scored with the WALK's fitted set, which is the trap the constant above
 now documents.
 
+**Known confound: word shape.** The simulated corpora are consecutive prose, whose
+word-length profile is NOT the corpus's — 28.6% two-rune words against the LP's 15.9%,
+the deficit `two-rune-deficit.md` records at z = -10. Cells that depend on word shape
+are therefore mildly biased: `doublet_pos` is normalised by word length, and the
+within-word distance rates weight long words more. Measured on `doublet_pos`, forcing
+the LP's own length sequence moves the model by about 0.01, far under the 0.2-0.3
+spread the KEY induces, so it changes no conclusion here. It is not corrected because
+the repeat statistics need consecutive text, which resampling to a length histogram
+destroys; state it whenever a shape-dependent cell is close.
+
 Run with no arguments for the self-test, `--walk` to score the length-clocked walk.
 """
 
