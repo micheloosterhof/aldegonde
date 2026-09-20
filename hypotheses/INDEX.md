@@ -47,7 +47,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (50)
+### Hypotheses (51)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -71,6 +71,7 @@ proposed mechanisms scored against them.
 | [gematria-primus-arithmetic.md](gematria-primus-arithmetic.md) | Autokey with Gematria Primus Arithmetic | disproved |
 | [hill-cipher-per-word.md](hill-cipher-per-word.md) | Hill Cipher per Word | disproved (fixed matrices by census; varying matrices by the doublet hyperplane argument) |
 | [homophonic-substitution.md](homophonic-substitution.md) | Homophonic Substitution | disproved |
+| [interrupted-walk.md](interrupted-walk.md) | The Walk with 3301's Own Interrupter | disproved — decodable and in the author's idiom, but g⁵ = id makes the relation cycle so d5 falls only ~5% where ~30% is needed, and the interrupt injects the g² relation into adjacent positions, lifting the doublet rate to 0.0137 against 0.0063; leaves a general bound of ~10-15% on ANY occasional-perturbation mechanism |
 | [lag5-back-reference.md](lag5-back-reference.md) | Lag-5 Events are Opportunistic Plaintext Back-References | unresolved (unfalsifiable from ciphertext statistics alone) |
 | [length-clocked-walk.md](length-clocked-walk.md) | The Cipher: A Length-Clocked Progressive Substitution (g per letter, σ per space) | plausible (comprehensive statistical fit; NOT confirmed by decryption) |
 | [magic-square-grid-key.md](magic-square-grid-key.md) | `g` From the Book's Own 5×5 Magic Square (constant 3301) | UNDECIDED (Aug 2026, corrected twice): family survivors match chance at every cut from 2 to 3.5 sigma, but the 7 g-only cuts are worth only 16.0 bits, so at any threshold retaining a true g the false-positive floor is ~30 -- isolating one needs the 2-rune verifier, hence sigma, which has no construction. The sweep cannot decide the hypothesis |
