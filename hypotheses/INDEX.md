@@ -18,7 +18,7 @@ proposed mechanisms scored against them.
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
 | [doublet-suppression-requires-design.md](doublet-suppression-requires-design.md) | Sub-Chance Doublets Force a Tuned Permutation Relation | confirmed (argument) for per-position-bijective ciphers: doublet rate == a permutation diagonal, so 'no permutations' is incompatible with sub-chance doublets; the four known escapes (fractionation, feedback, homophonic, digraphic) are excluded or disfavoured |
 | [doublet-suppression.md](doublet-suppression.md) | Doublet Suppression (5.2x, boundary-blind) | confirmed (characterization) |
-| [dju-bei-gate-validity.md](dju-bei-gate-validity.md) | Under the Walk, DJU-BEI is a Chance Repeat, so the State-Return Gate Rejects a True Key | confirmed (argument); both gated sweeps re-run ungated over 855M keys, both negative (the keyword family only inside its register bands, which keep a true key ~1/4 of the time); the compact-state reading it opens is tested in `compact_state_models.py` |
+| [dju-bei-gate-validity.md](dju-bei-gate-validity.md) | The DJU-BEI State-Return Gate Rejects a True Key | confirmed (argument); both gated sweeps re-run ungated over 855M keys, both negative (the keyword family only inside its register bands, which keep a true key ~1/4 of the time); the compact-state reading it opens is tested in `compact_state_models.py` |
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
 | [flat-ioc.md](flat-ioc.md) | Flat Unigram Distribution (IoC = 1/29) | confirmed (characterization) |
 | [kappa-spectrum.md](kappa-spectrum.md) | Kappa Anomalous Only at Skip 1 | confirmed (characterization) |
@@ -34,7 +34,7 @@ proposed mechanisms scored against them.
 | [quote-span-boundaries.md](quote-span-boundaries.md) | Quoted Spans Align to the '.' Marks (the Marks Are Not Inert) | confirmed (characterization) for the alignment (p=1.5e-7, layout-robust); what the marks delimit stays open |
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
 | [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization); extended Aug 2026 to JOINT 2nd-order (bigram->next): conditional MI at the exact-bigram null (z=-0.48), and the pooled test rejects 2-back autokeys (planted additive/Quagmire z~+40) -- consistent with the walk, not running feedback |
-| [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) |
+| [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) for the repeat; the RECURRENCE reading is weak-to-moderate — chance explains it in 1.0% of surrogates, so the likelihood ratio is 4-28, not the 10⁴ once claimed |
 | [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [seam-channel-clean.md](seam-channel-clean.md) | The Seam Channel is Clean (Suppressed Diagonal Only) | confirmed (characterization) |
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |

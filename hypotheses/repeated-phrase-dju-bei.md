@@ -22,10 +22,14 @@ length-5 classes vs ~4.1 expected by chance
 configuration is suggestive (count-level P = 0.058, clean re-run); treat it
 as a candidate, not an established second state-return.
 
-This proves the cipher's **key state recurs exactly**, and that the
-recurrence is **word-aligned**. The encryption is a deterministic function
-of plaintext and a state that can return to a previous value — it is not a
-position-unique running key.
+The repeat is **weak-to-moderate evidence** that the cipher's key state recurs,
+and that the recurrence is word-aligned. It is not proof. See "How much does
+this repeat actually weigh" below: the likelihood ratio against a plain walk is
+4 to 28, because a walk produces such a repeat by chance collision in 1.0% of
+surrogate corpora — the figure this file already reports under Significance.
+
+An earlier version of this paragraph said the repeat "proves the key state
+recurs exactly". That does not follow from a 1-in-100 event.
 
 ## Status
 
@@ -103,13 +107,55 @@ batteries under "Additional negative space" were re-run on the clean
 | global identical-word pairs | 289 observed vs 317 expected from chance — word repetition is otherwise at the random rate, so this is NOT a codebook |
 | keystream-restart alignment of sections/pages/lines/words | no coincidence excess (the small line-aligned excess is the layout artifact, column 0 only) |
 
+## How much does this repeat actually weigh? (September 2026)
+
+The two readings must be priced against the DATA, not against each other's
+mechanisms. Under a plain walk the observed repeat is far more likely to be a
+chance collision of two DIFFERENT plaintext phrases than a genuine base return:
+the Monte Carlo above gives 1.0% for the collision, while a genuine six-point
+return in a walk group of ~4×10³⁰ runs at 1.4×10⁻⁶. So P(data | walk) = 0.010.
+Under a cipher whose base takes N values, genuine returns add ≈ 529/N, the
+repeated-two-word-phrase pressure of an LP-sized prose corpus:
+
+| N | P(genuine return) | P(data \| compact) | P(data \| walk) | likelihood ratio |
+|---|---|---|---|---|
+| 2,000 | 0.265 | 0.275 | 0.010 | 27.5 |
+| 4,205 | 0.126 | 0.136 | 0.010 | 13.6 |
+| 20,000 | 0.026 | 0.036 | 0.010 | 3.6 |
+
+**4 to 28, not the 10⁴ once claimed** (`dju-bei-gate-validity.md`, which made and
+then corrected that error). The end-of-text position of the second occurrence
+adds 3 to 10 more — a prior about whether closing words are formulaic, not the
+~100 its raw rarity suggests. Against that, the architecture a recurring state
+would need spends 88 of the 103 bits available in a base (below). The event is
+suggestive and does not settle anything.
+
+## What a recurring state would have to look like
+
+`dju-bei-gate-validity.md`, `experiments/compact_base_cycle.py`. If the state does
+recur, the base takes a few thousand values, and three constraints bite at once:
+
+- **Consecutive bases cannot be independent.** An unrelated base per state puts the
+  cross-word doublet at 0.0355, the chance rate, against the observed 0.0079 —
+  101 predicted, 23 observed, z = −7.8. The difference between consecutive bases
+  must be a rare-diagonal permutation.
+- **The branching factor is about two.** A random permutation's seam diagonal lands
+  in the observed interval with probability 1.14×10⁻³, so a tuned relation costs 9.8
+  bits against the 102.8 in one base. The transition must depend on the word's length
+  class to keep the base well defined, giving 5d relations per state, so d ≤ 2: the
+  plaintext feature driving the state carries about one bit per word.
+- **The bases cannot be powers of one permutation.** That is the only cheap way to
+  tune every edge at once, and it fails: `π^h` and `π^h'` agree wherever `h − h'` is
+  divisible by a cycle length, so two states share ~4 of 29 images where independent
+  permutations share 1. Measured — identical cipher words 144 against 17, long
+  repeats 34 against 0, unigram IoC 1.033 against 1.000.
+
 ## Implications
 
-1. **The keystream is not position-unique.** A true running key / OTP over
-   the whole book would leave this event a ~1% accident (the clean-corpus
-   Monte Carlo rate for a word-anchored, boundary-consistent repeat of
-   this length). Any viable
-   hypothesis must let the internal state return to an earlier value.
+1. **A position-unique keystream is disfavoured, at 4-28 to 1.** A true running key
+   or OTP over the whole book leaves this event the ~1% accident measured above.
+   That is evidence against, not a refutation, and the earlier wording here
+   ("any viable hypothesis must let the internal state return") was too strong.
 2. **Recurrence is word-aligned.** Both anchored repeats begin at word
    starts and their divergence points sit at plausible plaintext word
    divergences. This favors mechanisms where state interacts with word
@@ -349,15 +395,17 @@ so it is deliberately not analysed here. See the Claim.)
 
 ## Verdict
 
-Confirmed characterization. The ciphertext contains one word-aligned exact
-repeat that random chance cannot reasonably explain (plus a second,
-boundary-consistent candidate that does not clear chance on its own).
-The cipher's key state recurs, recurrences are word-aligned, and the depth
-dies within one rune of the phrase end. Hypotheses that make identical
-ciphertext for identical plaintext impossible (position-unique running
-keys) are disfavored; hypotheses where state is derived from bounded local
-context (plaintext-driven state machines, word-keyed schemes with a finite
-state pool) are favored.
+Confirmed characterization of the repeat itself: the ciphertext contains one
+word-aligned exact repeat of 6 runes, in boundary-consistent positions, plus a
+second candidate that does not clear chance on its own. The depth dies within one
+rune of the phrase end and the two occurrences arrive along different clocks.
+
+**What it implies is weaker than this file used to say.** Chance explains it in 1.0%
+of surrogate corpora, so a recurring key state is favoured by 4 to 28, and the
+end-of-text position by 3 to 10 more. Position-unique keystreams are disfavoured at
+those odds rather than excluded; plaintext-driven state machines with a finite state
+pool are favoured at them, and must additionally branch about two ways with
+near-independent bases, which no known construction supplies.
 
 ## Does 1449's factorisation help? (August 2026 — no, and here is the scope)
 
