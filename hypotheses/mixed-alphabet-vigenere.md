@@ -553,6 +553,17 @@ another 25. The keyword Quagmire is **not** the enumerable formulation this proj
 has treated it as: it is enumerable only against a band fitted to one stand-in
 register, which is exactly the assumption that can discard the true key.
 
+**The enumeration is verified end to end (September 2026).** Every sweep here plants
+a key to check its scorer, which validates the VERIFIER and not the ENUMERATION — the
+trap `length-clocked-walk.md` records, where a search over a family that does not
+contain the planted key "would correctly reject everything, falsely reading as either
+success or an empty family". `experiments/sweep_recovery_test.py` closes it: it draws
+a key from `g_candidates` and `sigma_candidates` themselves, enciphers prose with it,
+and runs the production scoring loop over the stream those generators emit. The
+planted key comes out top of 895 letter wheels × 446 disks at **1.210**, clearing the
+0.85 candidate floor. The negative results below are therefore meaningful rather than
+vacuous.
+
 **The affordable slice was run and is negative.** The same register-robust band over
 3301's OWN vocabulary — the 316 words of `data/register_vocab.txt` plus the puzzle's
 named terms (DIVINITY, INSTAR, CIRCUMFERENCE, TOTIENT, KOAN, MOBIUS, PILGRIM …),

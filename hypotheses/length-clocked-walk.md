@@ -397,6 +397,38 @@ newlines are line wraps (words flow across them).
   echo only by the 27.5% of words with length ≥ 6 (806 words, 2,073
   pairs) — the higher powers rest on progressively less data.
 
+## Held-out validation, and what it does and does not establish (September 2026)
+
+`experiments/fingerprint_battery.py`. The full-profile simulation above is honest that
+most of its cells are near-tautological. This battery makes the split explicit: it
+measures 19 statistics on the corpus and on a generator and tags each cell **fitted**
+(the key was chosen against it) or **free**. `g` is fitted to d1–d4 and d6, σ to the
+seam; the other 13 cells are predictions. Measured against the LP's own published
+numbers first, so the measurement code is calibrated: d1w 0.0063, seam 0.0079,
+d5w 0.0492, d6w 0.0245, entropy 4.8565, identical 17 — all match this directory.
+
+**A fitted key can pass 12 of the 13 free cells.** Flat unigrams (p = 0.97), maximal
+entropy (0.90), zero triplets (0.77), off-diagonal bigram uniformity (0.40), no
+periodicity over skips 2–40 (0.23), cross-word d5 (0.07), the clock statistic (0.40),
+long repeats (0.37) and d5w itself (0.37). None was fitted. The single miss is the
+DJU-BEI repeat, which the model never produces in 60 draws.
+
+**But the fitted diagonals do not pin such a key, and that is the load-bearing
+caveat.** Across five independently fitted keys, every one non-degenerate at 2,928
+distinct bases, the number of failing free cells runs from **1 to 6**. Only the repeat
+fails for all five. Eight cells — unigram IoC, entropy, off-diagonal bigram χ², the
+kappa maximum, the doublet position profile, the doublet minimum gap, identical words
+and the clock — flip depending on which key the fitter lands on.
+
+So the correct claim is that the walk **family contains** keys reproducing everything
+but the repeat, not that the walk does. This is the same caution the d4/d6 section
+below states for a different reason: a 29-permutation against a handful of scalar
+cells has ample freedom.
+
+The constructive reading: those eight cells move with key parameters the six fitted
+diagonals never touch, so they carry key information beyond the 16 bits
+`key-local-channel-is-empty.md` budgets, and a search could use them as filters.
+
 ## Evidence against / open
 
 - **Partial-vs-full d5 leak: RESOLVED, and period-5 is now CONFIRMED (August
