@@ -175,8 +175,12 @@ def main() -> None:
     bands = ((lo1, hi1), diluted_band(*raw4, 4), diluted_band(*raw6, 6))
     print(f"chance is {1 / M:.5f}; bands on the corpus, then on the schedule itself")
     print(f"   d1 {lo1:.5f} - {hi1:.5f}")
-    print(f"   d4 {raw4[0]:.5f} - {raw4[1]:.5f}   ->  {bands[1][0]:.5f} - {bands[1][1]:.5f}")
-    print(f"   d6 {raw6[0]:.5f} - {raw6[1]:.5f}   ->  {bands[2][0]:.5f} - {bands[2][1]:.5f}")
+    print(
+        f"   d4 {raw4[0]:.5f} - {raw4[1]:.5f}   ->  {bands[1][0]:.5f} - {bands[1][1]:.5f}"
+    )
+    print(
+        f"   d6 {raw6[0]:.5f} - {raw6[1]:.5f}   ->  {bands[2][0]:.5f} - {bands[2][1]:.5f}"
+    )
 
     from keyword_exhaustion import DICT, alphabets, kw_runes
 
@@ -221,7 +225,9 @@ def main() -> None:
             f"{label:<40}{accepted.mean():>14,.1f}{pairs:>15,.0f}"
             f"{full:>13.2e}{full / rate / 3600:>10,.0f}"
         )
-    print(f"\nkeys are pairs x {disks} sigma disks from the seam band, at {rate:,}/s/core.")
+    print(
+        f"\nkeys are pairs x {disks} sigma disks from the seam band, at {rate:,}/s/core."
+    )
     del vocab
 
 

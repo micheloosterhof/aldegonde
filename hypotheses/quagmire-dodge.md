@@ -16,11 +16,17 @@ The base advances per word, which is the word-delimited part.
 **Status**: unresolved, and now the best-fitting mechanism in this directory. With one
 alphabet and one schedule fitted to the distance profile it matches every measured cell
 except the DJU-BEI repeat, across independent fits, with the seam landing unfitted. It
-derives the factor 1/5 in the observed doublet rate from
-the schedule length, where other files here record that factor without a mechanism. It
-also identifies a class of key that every sweep in this directory excluded by
-construction. Against it: `d6w` misses for every key tried, `d1w` misses for four keys
-in ten, and it inherits the decodability problem of `doublet-dodge-walk.md`.
+derives the factor 1/5 in the observed doublet rate from the schedule length, where
+other files here record that factor without a mechanism. It also identifies a class of
+key that every sweep in this directory excluded by construction.
+
+The decodability objection it inherited from `doublet-dodge-walk.md` is now measured
+and withdrawn as a blocker: the collision costs 0-6 runes in 12,388.
+
+What blocks it instead is that the sweep's scorer cannot see the model at all. A
+planted key of this family scores BELOW two thousand random wrong sigmas under
+`walk_score_kernel`, so the search recorded below as "never done" cannot be done until
+that is fixed. `d6w` and `d1w` also miss for unfitted keys.
 
 ## Mechanism
 
@@ -107,13 +113,17 @@ performance. Two cells miss systematically:
 **`d1w` misses for four keys in ten**, because the second factor in the rate is a
 key-dependent shift diagonal rather than a constant.
 
-**Not uniquely decodable.** Inherited from `doublet-dodge-walk.md`: an output-conditioned
-skip emits exactly what the unskipped clock emits for a repeated plaintext rune, so two
-plaintexts collide. This is the substantive objection to the whole dodge family.
+**Not uniquely decodable, at a price of 0–6 runes.** Inherited from
+`doublet-dodge-walk.md`: an output-conditioned skip emits exactly what the unskipped
+clock emits for a repeated plaintext rune, so two plaintexts collide. Measured in
+`experiments/quagmire_dodge_decode.py`, the collision lands on 4.5–6.5% of positions,
+nine rivals in ten strand themselves on a permanent clock offset, and a beam search
+holding the key recovers 12,382–12,388 of 12,388 runes — exactly, for two keys of four.
+It is a real defect of the cipher and not a reason to drop the family.
 
-## What to do next
+## Can the schedule reach d6?
 
-**Step 2 below is now answered, and the answer is yes.** Under a period-5 schedule
+Yes. Under a period-5 schedule
 6 ≡ 1 mod 5, so the distance-6 relation is the same shift as the distance-1 relation
 evaluated on the distance-6 plaintext table. The zero offset makes one of the five
 phases the identity, so that phase reads the plaintext distance-6 rate of 0.0672; for
@@ -141,20 +151,128 @@ That makes this comparable to the length-clocked walk, which fits six cells and 
 difference is that d1 comes from the schedule's zero offset rather than from a tuned
 29-permutation diagonal.
 
+## The d5 leak, predicted rather than fitted
+
+Michel's original question was whether the doublet rule is what breaks the distance-5
+repeat. It is, in the right direction and by the right amount, though not by enough to
+decide anything.
+
+Under the walk `g⁵ = id`, so two positions five apart inside a word share the alphabet
+and the base and coincide exactly when the plaintext does. `period5-is-confirmed.md`
+records the observed leak as PARTIAL and the full-versus-partial question as undecided.
+The dodge supplies the attenuation and fixes its size from the doublet rate alone:
+
+```
+q  = 5 x d1 = 0.0314            the skip fires at q, fails only at the zero phase
+d5 = (1-q)^5 x plaintext_d5 + (1-(1-q)^5)/29        a skip in between kills the echo
+```
+
+| | predicted d5 | observed − predicted |
+|---|---|---|
+| length-clocked walk (`g⁵ = id`) | 0.05205 | −0.41 SE |
+| the same with the dodge | 0.04946 | **−0.04 SE** |
+
+The predictions sit 0.37 SE apart, so d5 does not separate the two models — the same
+verdict `period5-is-confirmed.md` reached by another route. What is new is that the
+dodge DERIVES the partial leak where the walk has to accept it.
+
+The register decides these numbers. On raw prose the plaintext lag-5 rate reads 0.0596
+and both models look badly off (−2.2 and −1.4 SE); length-matched to the LP it reads
+0.0521 and both are fine. d5 pairs come only from words of six runes or more, and prose
+has more of those than the LP, so the unmatched figure measures the wrong words.
+
+## What the zero-offset sweep would cost
+
+Priced before running, in `experiments/zero_offset_census.py`.
+
+The old d1 band constrains the SUM of five phase contributions, and that is what cut
+the schedule space to about one per alphabet. Under this model the doublet rate comes
+from one phase, so d1 pins a single offset and the cut collapses:
+
+```
+d1 = (1/5) x diagonal(-offsets[(z-1) % 5]),  offsets[z] = 0
+```
+
+d4 and d6 restore joint constraints of the old shape. Because the five offsets sum to
+zero the distance-4 shift at phase k is `+offsets[k]`, and because 6 = 1 mod 5 the
+distance-6 shift is `offsets[k+1]` — different functions of the same five offsets, so
+they constrain independently. Both bands must be widened first: over d steps the dodge
+inserts an extra step with probability q each time, and any insertion sends the relation
+to a different shift, which reads as chance.
+
+| filter | pairs | keys | core-hours |
+|---|---|---|---|
+| existing sweep: no zero, five-phase d1 | 8.4e5 | 3.10e8 | 2 |
+| dodge: one zero, d1 pins one offset | 3.9e10 | 1.44e13 | 88,781 |
+| dodge, plus the d4 and d6 sums | 8.1e9 | 2.99e12 | 18,454 |
+| the same on 3301's own vocabulary | 1.3e7 | 4.92e9 | **30** |
+
+Keys are (alphabet, schedule) pairs times the 369 sigma disks in the seam band, at the
+45,000 keys/s/core of `walk_score_kernel.c`. The first row reproduces the 3.1e8 of the
+recorded enumeration, which is the calibration check on the filter model.
+
+So the sweep is not affordable over the dictionary and is cheap over the priority
+vocabulary — 316 words from the register, the solved pages and the puzzle. That is the
+version to run, and it is a narrower bet: it assumes the designer used one of their own
+words.
+
+## The sweep cannot be run with the scorer it has
+
+Pricing the sweep assumed its scorer would recognise the key. It does not, and
+`experiments/dodge_scorer_check.py` shows so with the sweep's own positive control.
+
+`walk_score_kernel.score_sigmas` undoes the letter step at position j with the alphabet
+for clock `j`, because in every model it was written for the clock IS the position. A
+skip inserts a step, so from the first skip onward every remaining rune is decoded
+through the wrong alphabet, and the base step compounds the error at the next word
+boundary. Skips land on 4-6% of positions, about forty per 200-word window.
+
+One planted key — DIUINITY wheel, PILGRIM disk, schedule [3, 7, 0, 11, 8], dodge
+doublet rate 0.00648 against the corpus's 0.0063 — enciphered both ways:
+
+| ciphertext | planted key | best of 2000 wrong | gap |
+|---|---|---|---|
+| no dodge (the sweep's own control) | 1.217 | 0.582 | +0.635 |
+| with the dodge | 0.493 | 0.619 | **−0.126** |
+
+The true key scores below two thousand random wrong sigmas.
+
+So no sweep in this project could have found a key of this family, for two independent
+reasons: `g_candidates`'s `nz` mask excludes the schedule, and the scorer cannot see the
+model. The first was already recorded here; the second was not, and it is the one that
+matters, because it would have turned a 30-core-hour run into a false negative of the
+same shape as the DJU-BEI gate.
+
 ## What to do next
 
-1. **Search the zero-offset schedules.** Concrete, never done, and the machinery
-   exists: drop the `nz` mask in `g_candidates`, require exactly one zero, and run
-   `quagmire_ungated_sweep.py`. The band filters must also go, since this model's d1 is
-   not a tuned diagonal.
-2. ~~Find whether any Quagmire can suppress d6.~~ Answered above: yes.
-3. **Find a decodable trigger**, or accept the family is a generative account only.
-   This is the remaining substantive objection.
+1. **Write a dodge-aware scorer.** This now gates everything else. The decoder in
+   `quagmire_dodge_decode.py` tracks the clock correctly, but it needs base₀ and runs at
+   Python speed. The sweep's kernel needs the same branch test with base₀ left free,
+   which means an assignment problem per surviving clock path rather than one per key.
+   A beam of 2–4 would hold the true path at 95% of positions; the cost is unestimated
+   and is the real work.
+2. **Then run the zero-offset sweep on the priority vocabulary.** 4.9e9 keys, 30
+   core-hours with the scorer above, using the census's one-zero generator and its
+   d1/d4/d6 bands in place of the `nz` mask and the five-phase band.
+3. ~~Find whether any Quagmire can suppress d6.~~ Answered above: yes.
+4. ~~Find a decodable trigger, or accept the family is a generative account only.~~
+   Answered in `doublet-dodge-walk.md`: the family decodes with the key plus context,
+   at a cost of 0–6 runes in 12,388. What remains is that the decode is not
+   deterministic, which is a property of the cipher and not an obstacle to testing it.
 
 ## Scripts
 
 - `experiments/quagmire_dodge.py` — the cipher, the zero-offset self-test, the
   zero-doublet control and the battery score.
+- `experiments/quagmire_dodge_decode.py` — the decoder, the ambiguity rate, whether a
+  rival reading rejoins the true path, and the beam-search recovery. Runs on both this
+  model and the walk of `doublet-dodge-walk.md`, which is the same code with
+  `alpha[k] = g^k`.
+- `experiments/zero_offset_census.py` — what the zero-offset sweep would cost, over the
+  dictionary and over 3301's own vocabulary.
+- `experiments/dodge_scorer_check.py` — the sweep's own positive control run against
+  dodge ciphertext, which is where the planted key scores below random.
+- `experiments/dodge_d5_attenuation.py` — the no-free-parameter d5 prediction below.
 
 ## Related
 
@@ -169,6 +287,18 @@ difference is that d1 comes from the schedule's zero offset rather than from a t
 
 Unresolved. It is the first mechanism here to derive the 1/5 in the doublet rate rather
 than fit it, and it shows that every keyword sweep in this project searched half the
-schedule space. Its systematic failure is `d6w`, which should be checked analytically
-before any new sweep. Its standing objection is decodability, shared with the rest of
-the dodge family.
+schedule space.
+
+Two of the three things recorded against it are now settled. `d6w` is reachable:
+hill-climbing the alphabet gets 0.0083 where 0.0138 is required. Decodability costs 0-6
+runes in 12,388 and no longer blocks the family.
+
+The third is new and is now the binding constraint. The sweep's scorer assumes the
+clock is the position, which the dodge violates, so a planted key of this family scores
+below random. The search this file has been pointing at for two revisions cannot be run
+until the scorer tracks the skips.
+
+It also answers the question Michel asked first — whether the doublet rule is what
+breaks the distance-5 repeat. It is: the attenuation (1-q)^5 = 0.8525 follows from the
+doublet rate alone and lands d5 at -0.04 SE where the unattenuated walk gives -0.41.
+The two are 0.37 SE apart, so this is a lean and not a discriminator.

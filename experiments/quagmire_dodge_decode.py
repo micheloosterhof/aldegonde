@@ -216,7 +216,7 @@ def walk_to_merge(cipher: Cipher, states, start, limit) -> int:
 def decode(cipher: Cipher, score, beam=BEAM):
     """Beam search over the skip/no-skip branches, scored by plaintext trigrams."""
     live = [(0.0, cipher.start, SEP, SEP, ())]
-    for j in range(len(cipher.flat)):
+    for _j in range(len(cipher.flat)):
         nxt: dict[tuple, tuple] = {}
         for total, state, a, b, text in live:
             for p, clock in cipher.moves(state):

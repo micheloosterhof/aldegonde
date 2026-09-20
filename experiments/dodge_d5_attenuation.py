@@ -118,7 +118,9 @@ def main() -> None:
         "mechanism does not help at all"
     )
     if abs(walk - dodge) / spread < 2:
-        print("under 2 SE apart: d5 does not decide between them, as recorded elsewhere")
+        print(
+            "under 2 SE apart: d5 does not decide between them, as recorded elsewhere"
+        )
 
 
 if __name__ == "__main__":

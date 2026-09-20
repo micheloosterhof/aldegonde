@@ -18,11 +18,13 @@ k_(j+1) = k_j + 1, and one step more whenever the emission would have repeated
 
 ## Status
 
-**Status**: unresolved, and the most economical proposal this directory has had. A
-first pass here called it disproved on the doublet POSITION profile; **that verdict is
-retracted** — it rested on one arbitrarily drawn key, and the statistic is strongly
-key-dependent for both this model and the walk. What stands against it is unique
-decodability, and three cells it has not yet been shown to reach.
+**Status**: unresolved, and the most economical proposal this directory has had. Two
+verdicts recorded here have since been retracted. The doublet POSITION disproof rested
+on one arbitrarily drawn key and the statistic is strongly key-dependent for both this
+model and the walk. The decodability objection was never measured: the collision is
+real but costs 0-6 runes in 12,388, and a beam search holding the key recovers the
+corpus exactly for half the keys tried. What stands against it is three cells it has
+not yet been shown to reach.
 
 ## Mechanism, and what falls out of it
 
@@ -55,13 +57,44 @@ corpus is a plaintext double on a fixed point of `g`, zero exceptions.
 
 ## Evidence against
 
-**1. It is not uniquely decodable.** A skip emits `base(g^(k+1)(p_(j−1)))`, which is
-exactly what the unskipped clock emits for a repeated plaintext rune. So `x x` and
-`x g⁻¹(x)` produce identical ciphertext, and a decoder holding the whole key cannot
-separate them — `experiments/doublet_dodge_walk.py` exhibits a concrete collision. The
-condition is on the OUTPUT, and an output-conditioned skip cannot be undone; 3301's own
-interrupter avoids this by conditioning on an already-decoded plaintext rune. This is
-the substantive objection.
+**1. It is not uniquely decodable — but the collision costs a few runes, not the
+message.** A skip emits `base(g^(k+1)(p_(j−1)))`, which is exactly what the unskipped
+clock emits for a repeated plaintext rune. So `x x` and `x g⁻¹(x)` produce identical
+ciphertext and a decoder holding the whole key cannot separate them;
+`experiments/doublet_dodge_walk.py` exhibits a concrete collision. That much stands.
+
+What was never measured is how often it happens or what it costs, and
+`experiments/quagmire_dodge_decode.py` now measures both. The decoder knows `c_(j−1)`
+from the ciphertext, so it can test both hypotheses:
+
+```
+N (no skip):  p = A_k^-1(base^-1(c_j)),     consistent iff c_j != c_(j-1)
+D (skip):     p = A_(k+1)^-1(base^-1(c_j)), consistent iff base(A_k(p)) == c_(j-1)
+```
+
+Three things follow, measured over four keys on a 12,388-rune corpus.
+
+- **An observed doublet is never ambiguous.** N requires `c_j != c_(j−1)`, so a doublet
+  in the ciphertext forces D. Doublets announce themselves.
+- **Ambiguity is one shift diagonal**, 4.5%–6.5% of positions against 3.4% for a flat
+  one, since D needs `u_j = u_(j−1) + s_(k+1)` in K coordinates.
+- **Nine rivals in ten strand themselves.** A skip only ever ADDS a step, so a wrong
+  branch holds a permanent clock offset and reads every later rune through the wrong
+  alphabet. 524–738 rivals per key never rejoin the true path; 33–63 do, by deferring
+  the skip to the next position instead of dropping it, and those cost a few runes.
+
+A beam search over the branches, scored by a plaintext rune trigram model, recovers
+12,382–12,388 of 12,388 runes, **exactly for two keys of the four**. Widening the beam
+eightfold changes the output not at all, and the trigram model scores the wrong reading
+HIGHER than the truth, so the residual is the language model rather than the cipher:
+FORGOTTEN decodes as FORGBTTEN.
+
+So unique decodability fails and practical decodability holds. The reader needs the key
+and the context, which is one more than a deterministic cipher asks and far less than
+"cannot be undone". 3301's own interrupter conditions on an already-decoded plaintext
+rune and so avoids the ambiguity entirely; this family pays a handful of runes instead.
+That is a weaker objection than this file previously recorded, and it no longer blocks
+the family.
 
 **2. Three cells are not yet reached.** With `g`'s fixed points chosen on the doublet
 rate and position together, and the rest of `g` and σ drawn at random, the held-out
@@ -107,11 +140,10 @@ as for the walk. So it does not rescue that cell either.
 
 ## What to do next
 
-- **Decodability is the real obstacle.** A decodable variant must condition the skip on
-  something already decoded. Conditioning on `p_(j−1)` alone is `interrupted-walk.md`,
-  which is disproved. Conditioning on the previous CIPHERTEXT pair — "skip if the last
-  two emissions were equal" — is decodable and reacts to doublets instead of preventing
-  them, so it would need the suppression from somewhere else; untested.
+- ~~Decodability is the real obstacle.~~ Measured above: the family decodes with the key
+  plus context, at a cost of 0–6 runes in 12,388. It is no longer the blocking
+  objection, and the search for a decodable trigger is no longer needed to keep the
+  family alive.
 - **Fit the rest of `g`.** Only the four fixed points are used; the five 5-cycles and
   all of σ are free, which is about the key material the walk spends on its diagonals.
   Fitting them to d3w, d6w and the seam is a small search and would settle whether the
@@ -143,7 +175,11 @@ diagonal, where the walk spends ~100 bits fitting them. The positional disproof 
 withdrawn: both models bracket the corpus on that statistic and 10% of this model's
 fixed-point choices hit the rate and the position at once.
 
-What actually stands against it is unique decodability — an output-conditioned skip
-cannot be undone — and three cells (d3w, d6w, seam) not yet shown to be reachable with
-the key material it leaves free. Both are concrete and testable, and neither has been
-tried.
+The decodability objection is now withdrawn as a blocker too. It is true that distinct
+plaintexts share a ciphertext, and false that this prevents reading the message: a beam
+search holding the key recovers 12,382–12,388 runes of 12,388, exactly for half the
+keys tried. The cipher costs its reader a handful of letters and the need to read in
+context.
+
+What stands against it is three cells (d3w, d6w, seam) not yet shown to be reachable
+with the key material it leaves free. That is concrete, testable and untried.

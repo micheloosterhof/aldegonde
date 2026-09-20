@@ -93,13 +93,15 @@ def main() -> None:
 
     plainly = encrypt_walk(plain, base0, perms, sigma)
     dodged = encipher(plain, base0, alphabets(K, sched), sigma)
-    doublets = sum(
-        w[j] == w[j - 1] for w in dodged for j in range(1, len(w))
-    ) / sum(max(0, len(w) - 1) for w in dodged)
+    doublets = sum(w[j] == w[j - 1] for w in dodged for j in range(1, len(w))) / sum(
+        max(0, len(w) - 1) for w in dodged
+    )
     print(f"schedule {sched}, one zero offset; dodge doublet rate {doublets:.5f}")
     assert len({tuple(w) for w in dodged}) > 2000, "planted key is degenerate"
 
-    print(f"\n{'ciphertext':<28}{'planted key':>13}{'best of 2000 wrong':>21}{'gap':>9}")
+    print(
+        f"\n{'ciphertext':<28}{'planted key':>13}{'best of 2000 wrong':>21}{'gap':>9}"
+    )
     verdicts = []
     for label, cipher in (
         ("no dodge (the sweep's own)", plainly),
