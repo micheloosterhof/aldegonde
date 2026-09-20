@@ -20,8 +20,8 @@ uniform alphabet.
 **Result (2026-09-20): no pattern, at any modulus from 2 to 80.**
 
     1st rune   plain nIoC 0.9985   even/odd z -0.71   threes +0.08   fives +1.94
-    2nd rune              0.9994              -0.08           -0.91         +0.86
-    3rd rune              1.0021              -0.70           -0.65         -1.56
+    2nd rune              0.9975              -0.08           -0.91         +0.86
+    3rd rune              0.9962              -0.70           -0.65         -1.56
 
 The largest |z| across all 79 moduli is 2.48, 2.72 and 2.36 for the three positions,
 where chance over that many tests gives about 2.96. Every value is inside the noise.
