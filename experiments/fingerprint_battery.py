@@ -208,6 +208,11 @@ def compare(generator, draws: int, fitted: set[str], label: str) -> None:
         # and a z on them overstates the departure
         below = float((values <= lp[key]).mean())
         tail = 2 * min(below, 1 - below + 1.0 / len(values))
+        if sd < 1e-12 and abs(mean - lp[key]) < 1e-9:
+            # a cell where the model matches the corpus exactly every time (zero
+            # triplets, say) has no spread, and the tail formula above would call
+            # that a miss. It is a perfect match.
+            tail = 1.0
         tag = "fitted" if key in fitted else "FREE"
         flag = ""
         if tag == "FREE" and tail <= 0.05:

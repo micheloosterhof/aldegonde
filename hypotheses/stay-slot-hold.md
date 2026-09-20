@@ -181,9 +181,12 @@ held slot — and the positional test kills it for the same reason. Measured aga
 file's statistic, that mechanism puts the mean doublet position at **0.833** where the
 corpus reads **0.553**, z = −5.2.
 
-Worth recording alongside: a plain tuned-diagonal walk reads **0.40** on the same
-statistic. The corpus sits between the two, so neither pure mechanism matches, and the
-positional profile is a live constraint rather than a settled exclusion of one family.
+**Corrected the same day**: that reading came from one drawn key, and the statistic is
+strongly key-dependent. Over ten keys per model the walk spans 0.368–0.600 and the
+dodge 0.295–0.780, both bracketing the corpus's 0.553. So the positional profile does
+NOT separate a plaintext-double mechanism from a tuned-diagonal one, and any exclusion
+resting on it — including this file's — needs re-checking across keys rather than on a
+single fit.
 
 ## Verdict
 

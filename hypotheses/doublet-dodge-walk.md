@@ -18,10 +18,11 @@ k_(j+1) = k_j + 1, and one step more whenever the emission would have repeated
 
 ## Status
 
-**Status**: disproved (September 2026), on the doublet POSITION profile and on unique
-decodability. It is nonetheless the most economical proposal this directory has had —
-it gets six cells for free that the walk has to fit — and the two failures are sharp
-and specific.
+**Status**: unresolved, and the most economical proposal this directory has had. A
+first pass here called it disproved on the doublet POSITION profile; **that verdict is
+retracted** — it rested on one arbitrarily drawn key, and the statistic is strongly
+key-dependent for both this model and the walk. What stands against it is unique
+decodability, and three cells it has not yet been shown to reach.
 
 ## Mechanism, and what falls out of it
 
@@ -52,28 +53,50 @@ corpus is a plaintext double on a fixed point of `g`, zero exceptions.
 
 ## Evidence against
 
-**1. The doublet position profile, at z = −5.2.** If the survivors are plaintext
-doubles then they inherit English's positional habit, which is strongly end-heavy. The
-model puts the mean doublet position at **0.833**; the corpus reads **0.553**. This is
-the same measurement that disproved `stay-slot-hold.md`, for the same reason: any
-mechanism making ciphertext doublets *be* plaintext doubles predicts a positional
-signature the corpus does not carry. Note the corpus sits between this model's 0.833
-and the plain walk's 0.40, so neither pure mechanism matches.
-
-**2. It is not uniquely decodable.** A skip emits `base(g^(k+1)(p_(j−1)))`, which is
+**1. It is not uniquely decodable.** A skip emits `base(g^(k+1)(p_(j−1)))`, which is
 exactly what the unskipped clock emits for a repeated plaintext rune. So `x x` and
 `x g⁻¹(x)` produce identical ciphertext, and a decoder holding the whole key cannot
-separate them — the script exhibits a concrete collision. The condition is on the
-OUTPUT, and an output-conditioned skip cannot be undone; 3301's own interrupter avoids
-this by conditioning on an already-decoded plaintext rune.
+separate them — `experiments/doublet_dodge_walk.py` exhibits a concrete collision. The
+condition is on the OUTPUT, and an output-conditioned skip cannot be undone; 3301's own
+interrupter avoids this by conditioning on an already-decoded plaintext rune. This is
+the substantive objection.
 
-**3. d6 still needs a tuned `g`.** With `g` untuned, d6w comes out at chance, 0.0444
-against the corpus's 0.0245 (p = 0.000). The d6 suppression is `diag(g)` on the
-distance-6 table and this mechanism does not touch it, so the economy is smaller than
-it first looks: one tuned relation is still required, just not for d1.
+**2. Three cells are not yet reached.** With `g`'s fixed points chosen on the doublet
+rate and position together, and the rest of `g` and σ drawn at random, the held-out
+battery leaves d3w at 0.0595 against 0.0370 (p = 0.000), d6w at 0.0420 against 0.0245,
+and the seam at 0.0030 against 0.0079 — over-suppressed with this key, where a different
+key over-shoots it. Twelve free cells do land, including flat unigrams, entropy,
+off-diagonal bigram uniformity, the kappa maximum, the clock, d2w, d4w, d5w, d5x and
+the doublet minimum gap.
 
-**4. The seam is suppressed but not enough**, 0.0142 against 0.0079 (p = 0.000).
+Whether the three can be reached is open and cheap to test: the mechanism fixes only
+which four runes `g` holds still, leaving its five 5-cycles and the whole of σ free —
+roughly the same key material the walk spends — so there is ample freedom left to fit
+d3, d6 and the seam. Nobody has tried.
 
+## The retracted disproof, and why it was wrong
+
+The first pass reported the doublet position at 0.833 against the corpus's 0.553,
+z = −5.2, and called the hypothesis dead by the same test that disproved
+`stay-slot-hold.md`. Re-measured across ten keys per model:
+
+| model | doublet position over 10 keys |
+|---|---|
+| length-clocked walk | 0.368 – 0.600, median 0.470 |
+| this model | 0.295 – 0.780, median 0.612 |
+| **corpus** | **0.553** |
+
+**Both models bracket the corpus.** The statistic is set by WHICH runes take part in
+doublets — for this model, exactly the four `g` holds still — so it is a free parameter
+of the same 14-bit choice that sets the rate, not an independent prediction. Searching
+220 random choices of those four runes, **21 (10%) land the doublet rate and the
+position together**; the best, fixing runes {4, 8, 18, 19}, gives 0.0053 and 0.570
+against the corpus's 0.0063 and 0.553.
+
+The error was reporting a single fitted key as if it were the model, the same mistake
+recorded for the walk's own held-out run in `length-clocked-walk.md`.
+
+## What it does get that the walk does not
 ## What it does get that the walk does not
 
 It produces the DJU-BEI-style repeat in a first version with a small base set — but
@@ -107,11 +130,13 @@ as for the walk. So it does not rescue that cell either.
 
 ## Verdict
 
-Disproved, and the best-value idea in this directory. It buys the doublet suppression,
-the seam equality and the whole d2–d5 profile with ~14 bits and no tuned diagonal,
-where the walk spends ~100 bits fitting them. It dies on the doublet position profile
-at z = −5.2 and on unique decodability, and it still needs a tuned `g` for d6.
+Unresolved, and the best-value proposal here. It buys the doublet suppression, the
+seam/within-word equality and much of the distance profile with ~14 bits and no tuned
+diagonal, where the walk spends ~100 bits fitting them. The positional disproof is
+withdrawn: both models bracket the corpus on that statistic and 10% of this model's
+fixed-point choices hit the rate and the position at once.
 
-The positional result is the durable one: the corpus's doublets sit at 0.553, between
-a tuned-diagonal mechanism (0.40) and a plaintext-double mechanism (0.833), and no pure
-version of either reaches it.
+What actually stands against it is unique decodability — an output-conditioned skip
+cannot be undone — and three cells (d3w, d6w, seam) not yet shown to be reachable with
+the key material it leaves free. Both are concrete and testable, and neither has been
+tried.
