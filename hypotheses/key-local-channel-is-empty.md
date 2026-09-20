@@ -190,6 +190,25 @@ the stepped cipher un-climbable; it was a decrypt bug — `gg.index(x) for x in
 gg^k` computes `gg^(k-1)`, not `(gg^k)^{-1}` — caught by a
 `dec(c,g)==plaintext` round-trip assertion.)
 
+## The held-out cells are not a new channel either (September 2026)
+
+`experiments/fingerprint_battery.py`. Scoring a walk on statistics it was NOT fitted
+to — unigram IoC, entropy, off-diagonal bigram chi-square, the kappa maximum over
+skips 2-40, the doublet position profile and minimum gap, identical-word counts, the
+clock reading — those cells do move with the key, which looks at first like a channel
+this file missed.
+
+Measured, they are not. Over 30 keys fitted to the six diagonals and scored on 40
+prose corpora each, the number of free cells failing at p <= 0.10 has median 2 against
+1.2 expected by chance on 12 cells, and keys with at most one failure are 43% where
+chance gives 66%. The whole set is worth **0.6 to 1.2 bits**, against `g`'s 64-bit
+residual and sigma's 98.
+
+The reason fits this file's thesis rather than denting it: those statistics are global
+mixing properties, which any key visiting enough bases reproduces. They discriminate
+between a walk and a non-walk, which is what `fingerprint_battery.py` is for, and
+barely at all between two walks.
+
 ## Significance
 
 ```

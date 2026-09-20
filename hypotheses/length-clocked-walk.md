@@ -425,9 +425,20 @@ but the repeat, not that the walk does. This is the same caution the d4/d6 secti
 below states for a different reason: a 29-permutation against a handful of scalar
 cells has ample freedom.
 
-The constructive reading: those eight cells move with key parameters the six fitted
-diagonals never touch, so they carry key information beyond the 16 bits
-`key-local-channel-is-empty.md` budgets, and a search could use them as filters.
+**The cells move with the key, but they carry almost no key information — measured,
+not assumed.** The obvious hope is that cells varying with the key are extra filters.
+Over 30 independently fitted keys, scored on 40 corpora each, the number of free cells
+failing at p ≤ 0.10 runs 0 to 7 with a median of 2, against 1.2 expected by chance on
+12 cells. Keys with at most one failure are 43% where pure chance gives 66%, so the
+whole set is worth about **0.6 to 1.2 bits** — negligible beside the 16 bits the
+diagonals give and worthless against the ~160-bit residual.
+
+That is the expected answer, not a surprise: most of these cells (IoC, entropy,
+off-diagonal bigram uniformity, the kappa maximum) are global mixing statistics that
+any well-mixing key reproduces. It is `key-local-channel-is-empty.md`'s thesis showing
+up again from a new direction. An earlier version of this paragraph claimed the cells
+"carry key information beyond the 16 bits… a search could use them as filters"; that
+was written before the measurement and is withdrawn.
 
 ## Evidence against / open
 
