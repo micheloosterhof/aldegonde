@@ -576,24 +576,13 @@ D1_BAND: tuple[float, float] | None = None
 SEAM_BAND = (0.0050, 0.0118)
 
 
-def build_setup(prose_path, lens, vocab=None):
-    """Register tables, sigma candidates, vocab — shared by pilot/workers.
+def build_register(prose_path, lens):
+    """Per-phase joint tables from a prose register matched to the LP's word lengths.
 
-    `vocab` replaces the default keyword list (dictionary words of 4-12 letters).
-    The module-level D1_BAND and SEAM_BAND override the candidate bands.
+    Returns (T1, T4, T6, cross) for distances 1, 4 and 6 and the word seam.
     """
-    from keyword_exhaustion import DICT
-    from quagmire_schedule_census import (
-        lp_words,
-        observed_rates,
-        phase_tables,  # noqa: I001
-        sample_register,
-        wilson,
-    )
+    from quagmire_schedule_census import phase_tables, sample_register
 
-    words = lp_words()
-    obs = observed_rates(words)
-    lo1, hi1 = D1_BAND if D1_BAND else wilson(*obs[1])
     pools: dict[int, list[list[int]]] = {}
     for w in prose_words(prose_path):
         r = [IDX_ENG[t] for t in to_runeglish(w)]
@@ -602,7 +591,22 @@ def build_setup(prose_path, lens, vocab=None):
     reg = []
     for _ in range(30):
         reg.extend(sample_register(lens, pools))
-    T1, _T4, _T6, cross = phase_tables(reg)
+    return phase_tables(reg)
+
+
+def build_setup(prose_path, lens, vocab=None):
+    """Register tables, sigma candidates, vocab — shared by pilot/workers.
+
+    `vocab` replaces the default keyword list (dictionary words of 4-12 letters).
+    The module-level D1_BAND and SEAM_BAND override the candidate bands.
+    """
+    from keyword_exhaustion import DICT
+    from quagmire_schedule_census import lp_words, observed_rates, wilson
+
+    words = lp_words()
+    obs = observed_rates(words)
+    lo1, hi1 = D1_BAND if D1_BAND else wilson(*obs[1])
+    T1, _T4, _T6, cross = build_register(prose_path, lens)
     if vocab is None:
         vocab = []
         with open(DICT) as fh:
