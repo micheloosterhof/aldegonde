@@ -23,16 +23,19 @@ and a labelling is a 29-permutation. So this does not escape
 ## Status
 
 **Status**: closed as a mechanism for this corpus, on the lag theorem alone
-(September 2026). The two supporting objections are retracted — the doublet floor
-was an artifact of the linear parametrisation, and a constant delimiter step (not a
-reset) holds the within-word rate and the seam at their observed values together.
-What closes the family is that d4, d5 and d6 stay at chance under every setting. The
-August wording, which reached the same verdict through the floor and the seam: the doublet suppression is NOT
-structural (a labelling control), and the lag structure is a theorem-level
-obstruction — linear feedback lets at most one distance carry a clean relation,
-but the LP needs four (d1, d4, d5, d6). It still floors ~1.4× short on depth and
-produces no d5 echo. What survives is the negative (see the closing Status and
-`doublet-suppression-requires-design.md`).
+(September 2026).
+
+Two supporting objections recorded in August are retracted. The 0.86% doublet floor
+was an artifact of the linear parametrisation, and a constant delimiter step — which
+is not a reset — holds the within-word rate and the seam at their observed values
+together. What closes the family is that d4, d5 and d6 stay at chance under every
+setting: linear feedback lets at most one distance carry a clean relation, and the LP
+needs four. See "Two of the three objections fall" below.
+
+Also retracted from the original "live partial" reading: the doublet suppression is
+not structural. Over 200 random rune-to-value labellings the linear mechanism gives
+d1 = 3.41% ± 0.76, which is chance; the 2.28% first reported was one labelling's
+fluctuation at z = −1.48.
 
 ## Why it is not covered by the existing autokey disproofs
 
@@ -148,8 +151,7 @@ order-5 `g` suppresses both with the SAME relation on two different tables, and 
 is `g^4`, d5 is `g^0`. That coupling is the LP's signature and the autokey family
 has no analogue for it.
 
-**Status: closed as a mechanism for this corpus.** What remains useful is the
-negative — mixed feedback was the last candidate in
+What remains useful is the negative — mixed feedback was the last candidate in
 `doublet-suppression-requires-design.md` that looked like it might escape the
 designed-permutation conclusion, and it does not.
 
@@ -292,6 +294,13 @@ observable job.
 - `d5-partial-alphabet-leak.md` — the echo this fails to produce.
 
 ## Verdict
+
+Closed. The September 2026 section supersedes the reading below: the family reaches
+the within-word doublet rate and the seam rate together, so it is not short on depth
+and not dependent on a designed labelling in the way first recorded, but it produces
+no period-5 structure at any setting and that is decisive.
+
+The August reading, kept for the record:
 
 The best non-permutation candidate produced so far, and the only one that gets the
 doublet suppression and the boundary-blindness without designing an alphabet
