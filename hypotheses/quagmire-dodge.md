@@ -13,15 +13,15 @@ The base advances per word, which is the word-delimited part.
 
 ## Status
 
-**Status**: unresolved. It explains the observed doublet rate's factor of **1/5**
-structurally, which nothing in this directory has done, and it identifies a class of
-key every sweep here has excluded by construction. Against it: `d6w` misses for every
-key tried, `d1w` misses for four keys in ten, and it inherits the decodability problem
-of `doublet-dodge-walk.md`.
+**Status**: unresolved. It derives the factor 1/5 in the observed doublet rate from
+the schedule length, where other files here record that factor without a mechanism. It
+also identifies a class of key that every sweep in this directory excluded by
+construction. Against it: `d6w` misses for every key tried, `d1w` misses for four keys
+in ten, and it inherits the decodability problem of `doublet-dodge-walk.md`.
 
-## The mechanism, and the one thing it forces
+## Mechanism
 
-The dodge re-emits with `A_(k+1)` in place of `A_k`, so it **fails precisely when**
+The dodge re-emits with `A_(k+1)` in place of `A_k`, so it fails exactly when
 
 ```
 A_(k+1)(p) = A_k(p)   ⟺   s_(k+1) = 0
@@ -41,13 +41,13 @@ would-be doublets survive (24%, predicted 20%); with **no** zero offset the doub
 rate is **0.00000 over eight keys** — the dodge then never fails, and the corpus's
 doublets could not exist at all.
 
-**This is why the (1/5) matters.** `README.md` records that the observed rate "fits
-(1/5)×(1/29) with no free parameters (z = −0.36)" and nothing has explained the 1/5.
-Here it is forced by the schedule length. The second factor is a shift diagonal, which
-is **not** parameter-free — it varies with the key, averaging about 1/29 — so the right
-statement is that the mechanism forces the 1/5 and leaves the rest to the key.
+`README.md` records that the observed rate fits (1/5)×(1/29) with no free parameters
+(z = −0.36), and no file here supplies a mechanism for the 1/5. It follows from the
+schedule length. The second factor is a shift diagonal, which is not parameter-free: it
+varies with the key and averages about 1/29. So the mechanism determines the 1/5 and
+leaves the second factor to the key.
 
-## What every sweep in this project got wrong
+## The schedule space these sweeps searched
 
 `quagmire_runner.g_candidates` masks its candidate schedules with
 
@@ -56,13 +56,13 @@ nz = r != 0
 NZ = nz[:, None, None, None] & nz[None, :, None, None] & ... & (IDX0 != 0)
 ```
 
-requiring **all five offsets to be non-zero** — because under a no-dodge model a zero
-offset means two identical adjacent alphabets and a doublet rate at the plaintext
-level. That is correct for the walk and exactly backwards for this model.
+requiring all five offsets to be non-zero. Under a no-dodge model a zero offset means
+two identical adjacent alphabets and a doublet rate at the plaintext level, so the mask
+is correct for the walk. This model requires the opposite: exactly one zero offset.
 
-So the 3.1×10⁸-key enumeration (`mixed-alphabet-vigenere.md`), the ungated 7.0×10⁸
-re-run and the 4.2×10⁸ priority sweep **could none of them have found this key**. The
-zero-offset half of the keyword schedule space has never been searched.
+The 3.1×10⁸-key enumeration (`mixed-alphabet-vigenere.md`), the ungated 7.0×10⁸ re-run
+and the 4.2×10⁸ priority sweep therefore all searched only the zero-free half of the
+schedule space. None of them could have returned a key of this form.
 
 ## Evidence for
 
@@ -83,8 +83,7 @@ seam); the alphabets and the schedule are drawn at random. Best key of 60 draws:
 
 ## Evidence against
 
-**Robustness, measured over ten independently drawn keys** — the check that caught two
-earlier overclaims in this session:
+**Robustness, measured over ten independently drawn keys:**
 
 | misses of 18 free cells | keys |
 |---|---|
@@ -93,13 +92,13 @@ earlier overclaims in this session:
 | 4 | 3 |
 | 5 | 3 |
 
-Median 4. The single-key table above is the best of the draws and should not be read
-as the model's performance. Two cells miss systematically:
+Median 4. The single-key table above is the best of the draws, not the model's typical
+performance. Two cells miss systematically:
 
 - **`d6w` misses for all ten keys.** The corpus reads 0.0245, below chance; a Quagmire
-  shift relation at distance 6 gives chance. Suppressing it needs a tuned relation the
-  shift structure may not be able to supply — this is the same wall `sigma_algebraic_floor.py`
-  found for arithmetic families.
+  shift relation at distance 6 gives chance. Suppressing it needs a tuned relation that the
+  shift structure may not supply, which is the limit `sigma_algebraic_floor.py` found
+  for arithmetic families.
 - **`returns`** — the DJU-BEI repeat, which no model here produces.
 
 **`d1w` misses for four keys in ten**, because the second factor in the rate is a
@@ -135,8 +134,8 @@ plaintexts collide. This is the substantive objection to the whole dodge family.
 
 ## Verdict
 
-Unresolved and worth pursuing. It is the first mechanism here to explain the 1/5 in the
-doublet rate rather than fit it, and it shows that every keyword sweep this project has
-run searched only half the schedule space. Its systematic failure is `d6w`, which
-should be checked analytically before any new sweep, and its standing objection is
-decodability, which it shares with the whole dodge family.
+Unresolved. It is the first mechanism here to derive the 1/5 in the doublet rate rather
+than fit it, and it shows that every keyword sweep in this project searched half the
+schedule space. Its systematic failure is `d6w`, which should be checked analytically
+before any new sweep. Its standing objection is decodability, shared with the rest of
+the dodge family.
