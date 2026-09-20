@@ -22,8 +22,12 @@ and a labelling is a 29-permutation. So this does not escape
 
 ## Status
 
-**Status**: closed as a mechanism for this corpus (August 2026), reached in two
-corrections from the original "live partial": the doublet suppression is NOT
+**Status**: closed as a mechanism for this corpus, on the lag theorem alone
+(September 2026). The two supporting objections are retracted — the doublet floor
+was an artifact of the linear parametrisation, and a constant delimiter step (not a
+reset) holds the within-word rate and the seam at their observed values together.
+What closes the family is that d4, d5 and d6 stay at chance under every setting. The
+August wording, which reached the same verdict through the floor and the seam: the doublet suppression is NOT
 structural (a labelling control), and the lag structure is a theorem-level
 obstruction — linear feedback lets at most one distance carry a clean relation,
 but the LP needs four (d1, d4, d5, d6). It still floors ~1.4× short on depth and
@@ -149,6 +153,61 @@ negative — mixed feedback was the last candidate in
 `doublet-suppression-requires-design.md` that looked like it might escape the
 designed-permutation conclusion, and it does not.
 
+## Two of the three objections fall; the third is the whole story (September 2026)
+
+Michel returned to this family with the suggestion of "extra word delimiter action".
+`experiments/dual_autokey_delimiter.py` tests it. Two of the objections below were
+artifacts of how the family was parametrised, and the closure now rests on one thing.
+
+**1. The 0.86% doublet floor does not apply to the family, only to its linear form.**
+The floor was computed for `c_j = α·p_j + c_{j−1} + γ·p_{j−5}` under a rune-to-value
+labelling `v`, where the induced plaintext relation is `π = v⁻¹∘(×λ)∘v`, conjugate to
+multiplication, so its cycle type is fixed by ord(λ) | 28. Written with arbitrary
+permutation taps,
+
+    c_j = a(p_j) + c_{j−1} + b(p_{j−5})   (mod 29)
+
+the doublet condition is `a(p_j) + b(p_{j−5}) = 0`, i.e. `p_j = π(p_{j−5})` with
+`π = a⁻¹(−b(·))` an ARBITRARY permutation. The assignment-problem optimum on the
+plaintext distance-5 table reaches **0.0051**, below the LP's 0.0063. The floor
+argument is retracted; it constrained the parametrisation, not the mechanism.
+
+**2. A delimiter step is not a reset, and it fixes the seam.** "Every reset that
+would word-anchor the echo also randomises the seam" is confirmed: a per-word reset
+measures a seam of 0.0348 against chance 0.0345. But a separator that ADVANCES the
+state by a constant δ is not a reset. The state still cancels, so the seam condition
+stays a single plaintext term, `a(p_first) + b(tap) + δ = 0`. Because the seam reads
+a different plaintext table from the within-word rate, δ is a free knob on one and
+not the other. Over its 29 values the seam runs from 0.0475 down to **0.0106** while
+the within-word rate stays fixed at 0.0045. Tuned together the pair reaches
+**d1 = 0.0051, seam = 0.0072** against the LP's 0.0063 and 0.0079.
+
+That answers a question this file left open — it is the first mechanism here to hold
+the within-word and seam rates at their observed values at once, and it does so with
+one permutation and one constant rather than the walk's two permutations.
+
+**3. The period-5 cells are absent, at every setting.** Sweeping π from the tuned
+assignment to the identity, under both tap clocks (stream and per-word) and all 29
+delimiter values:
+
+| π fixed points | d1 | seam | d2 | d4 | d5 | d6 |
+|---|---|---|---|---|---|---|
+| 0 (tuned) | 0.0051 | 0.0072 | 0.0355 | 0.0367 | 0.0329 | 0.0343 |
+| 10 | 0.0600 | 0.0210 | 0.0361 | 0.0348 | 0.0352 | 0.0334 |
+| 29 (identity) | 0.0650 | 0.0222 | 0.0371 | 0.0317 | 0.0320 | 0.0353 |
+| **LP** | **0.0063** | **0.0079** | 0.0347 | **0.0410** | **0.0492** | **0.0245** |
+
+d4, d5 and d6 sit at chance everywhere. Note the identity end does not produce an
+echo either, which corrects a natural guess: `π = id` makes the DOUBLET condition
+"the plaintext repeats at distance 5" (hence d1 = 0.065, the plaintext rate), but the
+distance-5 CIPHERTEXT relation is still a sum of ten plaintext terms.
+
+So the closure stands for exactly the reason the lag theorem gives: with lag-1
+feedback `c_j − c_{j−d}` is a sum of d plaintext terms, and a sum of two or more mod
+29 convolves to uniform. Permutation taps and a delimiter step do not touch that,
+because the combination is still addition. **The family now reproduces every cell of
+the LP profile except the three that carry the period-5 structure.**
+
 ## Evidence against / open
 
 **The doublet floor.** With a bijective value map `v`, the relation
@@ -221,7 +280,9 @@ observable job.
 ## Scripts
 
 - `experiments/dual_autokey.py` — the simulation, the grouped-IoC comparison and the
-  floor computation.
+  floor computation (whose floor the September 2026 section retracts).
+- `experiments/dual_autokey_delimiter.py` — permutation taps, the delimiter step, and
+  the profile sweep; self-tests round-trip decryption and the seam behaviour.
 
 ## Related
 
