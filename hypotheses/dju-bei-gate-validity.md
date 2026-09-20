@@ -200,16 +200,28 @@ What survives is weaker and quantitative.
 
 **A counting bound on the branching factor.** A random permutation's seam diagonal
 lands in the observed interval [0.0050, 0.0118] with probability 1.14×10⁻³, so each
-tuned edge costs 9.8 bits, while one base carries log₂(29!) = 102.8 bits of freedom.
-That affords about **10 tuned edges per state**. The seam rate is an average, so not
-every edge need be tuned — but at 80% tuned the rate is already 0.0117, above the
-observation, so roughly 90% must be. A compact-state cipher is therefore possible only
-if its transition has a branching factor of about ten or less, meaning the plaintext
-feature driving the state carries at most ~3.3 bits per word. The gematria-sum
-automaton tested above branches 29 ways and is excluded by this counting; a state
-driven by a coarser feature is not.
+tuned relation costs 9.8 bits, while one base carries log₂(29!) = 102.8 bits of
+freedom. The seam rate is an average, so not every relation need be tuned — but at 80%
+tuned it is already 0.0117, above the observation, so roughly 90% must be.
 
-**The cyclic sub-case is closed.** If the base advances by powers of a single σ, the
+The seam relation is `g^(−a) ∘ D` with `a` the last word's final phase, so **one
+transition edge carries five constraints, not one** (corrected 2026-09-20,
+`experiments/compact_base_cycle.py`; a first version of this paragraph counted one and
+concluded ten):
+
+| branching d | tuned relations per state | bits needed | against 102.8 |
+|---|---|---|---|
+| 1 | 4.5 | 44 | yes |
+| 2 | 9.0 | 88 | yes, marginally |
+| 3 | 13.5 | 132 | no |
+| 10 | 45.0 | 440 | no |
+
+So the transition may branch about **two** ways: the plaintext feature driving the
+state carries roughly one bit per word, and even then the design spends 88 of the 103
+bits available in a base. The gematria-sum automaton tested above branches 29 ways and
+is excluded outright; a one-bit feature is at the edge of possible.
+
+**The cyclic sub-case is closed twice over.** First on the state count.  If the base advances by powers of a single σ, the
 bases are ⟨σ⟩ and N = ord(σ). The letter step must then lie in ⟨σ⟩ as well, so
 `g = σ^(N/5)`, and the walk needs `g` rich — cycle type 5⁵1⁴, since a `g` with many
 fixed points passes plaintext doublets straight through. Over every cycle type of 29
@@ -217,6 +229,17 @@ points, 35 qualify and the largest state count is **N = 100** (σ of type (25,4)
 with 75 and 60 next. That is far below the 2,000–4,205 the word repeats allow, and
 N = 100 would leak roughly 150 excess identical words against the 6.3 observed. So a
 schedule that is powers of one permutation cannot be compact enough.
+
+Second, and independently of the state count, powers of one permutation are far too
+correlated to serve as bases at all. Dropping the walk's `g` factor from the base step
+frees `g` from ⟨π⟩ and lets π reach order 2520 (cycle type (9,8,7,5)), which is inside
+the window the word repeats allow — but `π^h` and `π^h'` agree on every cycle whose
+length divides `h − h'`, so two states share about 4 of 29 images where two independent
+permutations share 1. Measured against the LP: identical cipher words 144 against 17,
+long repeats 34 against 0, unigram IoC 1.033 against 1.000, and the clock statistic
+1.21 against 1.007. A permutation with short cycles is worse still — cycle type
+(2,3,5,7,11,1) pins one ciphertext rune for every state, IoC 1.056. **The bases must be
+close to independent, which no single-generator schedule gives.**
 
 **The orbit test, for the sub-case it covers.** Where the schedule *is* a group and
 that group is intransitive, orbit labels pass through the cipher unchanged and adjacent
@@ -226,10 +249,13 @@ and 38.2 ± 4.0 on doublet-preserving surrogates — z = +1.28, nothing. (The su
 is essential: a uniform null puts the LP near 38 on the suppressed diagonal alone.)
 This closes intransitive group schedules. It says nothing about non-group ones.
 
-**So DJU-BEI as a genuine state return is open, not refuted.** It requires a cipher
-whose per-word base is drawn from a designed set of a few thousand, with tuned
-transitions and a branching factor around ten — an architecture outside the walk
-family and outside everything tested here. The position argument at the top of this
+**So DJU-BEI as a genuine state return is open, and the room left is narrow.** It
+requires a cipher whose per-word base is drawn from a designed set of a few thousand
+near-independent permutations, with tuned transitions and a branching factor of about
+two — a one-bit plaintext feature per word, spending 88 of the 103 bits in a base.
+Nothing tested here is that, and no construction for it is known: the only cheap way to
+tune every edge at once is a single generator, which is exactly what the correlation
+result above rules out. The position argument at the top of this
 file still applies to it, and so does the word-count evidence, which favours such a
 state over the generic walk by about 10⁴.
 
