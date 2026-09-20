@@ -15,7 +15,9 @@ enumerate.
 
 ## Status
 
-**Status**: negative inside the register bands only (September 2026). The
+**Status**: negative inside the register bands only, and NOT enumerable outside them
+(September 2026) — the register-robust band needs 4.8×10¹¹ keys, 594 core-hours, so
+everything swept so far is under 0.15% of the family. The
 July enumeration verified 186,465 of its 3.1×10⁸ keys — those passing the
 DJU-BEI gate, which a true key passes only at the chance rate
 (`dju-bei-gate-validity.md`). Re-run ungated, 7.0×10⁸ keys including long
@@ -528,5 +530,25 @@ no gate) scored 365,526,436 keys from the original keyword list and 334,988,084
 from the keywords and disks it left out (3 and 13–20 letters, the register
 vocabulary, PRIMES, KOAN, …). No key reached the candidate floor; the best
 whole-section scores are 0.44 and 0.49 against ~1.2 for a true key. So: negative
-inside the bands, open outside them. The widened-band sweep (~2×10¹⁰ keys) is the
-run that would close the family.
+inside the bands, open outside them.
+
+**And the family is not enumerable outside them (September 2026).** The true key's
+diagonal on the stand-in register is its LP diagonal times a register ratio measured
+at 0.78–1.29 (`register_band_sensitivity.py`), so the band that cannot lose it is the
+Wilson interval times that ratio: d1 [0.0038, 0.0103] against the [0.0049, 0.0080]
+used, seam [0.0039, 0.0156] against [0.0050, 0.0118]. The candidate count does not
+scale with the width — the schedule enumeration's rate distribution rises steeply
+just above the narrow band:
+
+| band | letter wheels | σ disks | complete keys | at 225,000 keys/s |
+|---|---|---|---|---|
+| one register | 949,680 | 446 | 4.2×10⁸ | 0.5 h |
+| Wilson × register ratio | 16,796,160 | 28,643 | **4.8×10¹¹** | **594 h** |
+
+So the sweeps run so far, this file's 3.1×10⁸ and the ungated 7.0×10⁸, cover under
+**0.15%** of the family that register uncertainty allows. A widened sweep was
+recommended in an earlier version of `dju-bei-gate-validity.md` at "about a day";
+that estimate was wrong by a factor of 25, and the earlier "~2×10¹⁰ keys" here by
+another 25. The keyword Quagmire is **not** the enumerable formulation this project
+has treated it as: it is enumerable only against a band fitted to one stand-in
+register, which is exactly the assumption that can discard the true key.

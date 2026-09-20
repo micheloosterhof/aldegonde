@@ -360,8 +360,13 @@ the stand-in, the share still inside it under another book is:
 So a band built on one register keeps a true letter wheel about half the time, and
 the seam band on the σ side loses again. A negative sweep inside these bands covers
 roughly a quarter of the family. Widening d1 to about [0.004, 0.014] restores the
-coverage at roughly ten times the candidates per side. With the compiled verifier
-that is about a day of compute.
+coverage. **That estimate was wrong by a factor of 25** (corrected 2026-09-20). The
+register-robust band is the Wilson interval times the ratio, d1 [0.0038, 0.0103] and
+seam [0.0039, 0.0156], and the keyword schedule enumeration's rate distribution rises
+steeply just above the narrow band: the candidate count goes from 4.2×10⁸ complete
+keys to **4.8×10¹¹**, or 594 core-hours. The keyword family is enumerable only against
+a band fitted to one stand-in register, which is the assumption that can discard the
+true key. See `mixed-alphabet-vigenere.md`.
 
 ## Results of the ungated re-runs
 
