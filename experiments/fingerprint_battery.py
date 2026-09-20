@@ -47,6 +47,13 @@ not failures. A first version of this table reported doublet_gap_min at z = 4.09
 minimum is far from normal and its real tail is 0.100, which is why this battery
 reports empirical tails.
 
+**Verified 2026-09-20.** The battery accepts the walk (one free cell failing, the
+DJU-BEI repeat) and rejects three mutants once each is scored against the set IT was
+fitted on: sigma = g^2, seven free cells; a base that never advances, eight; an
+independent base per word, which fails the seam at 0.0343 against 0.0079. That last
+one passes if scored with the WALK's fitted set, which is the trap the constant above
+now documents.
+
 Run with no arguments for the self-test, `--walk` to score the length-clocked walk.
 """
 
@@ -74,7 +81,14 @@ CHANCE = 1.0 / M
 
 # Which cells a length-clocked walk is fitted on: g is chosen against the within-word
 # distances and sigma against the seam. Everything else is a prediction.
+#
+# The fitted set belongs to the MODEL, not to this file, and the battery is only as
+# honest as that declaration. Scoring a model that tunes no sigma with WALK_FITTED
+# hides its seam failure: an independent base per word gives a seam of 0.0343 against
+# the LP's 0.0079, which is fatal, and invisible if the seam is marked fitted. Always
+# pass the set the model being scored was actually fitted on.
 WALK_FITTED = {"d1w", "d2w", "d3w", "d4w", "d6w", "seam"}
+G_ONLY_FITTED = {"d1w", "d2w", "d3w", "d4w", "d6w"}  # a model with no tuned sigma
 
 
 def within_word(words, d: int) -> float:
