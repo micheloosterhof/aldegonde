@@ -460,6 +460,21 @@ keywords must disrupt the canonical order substantially, so they are
 long and specific rather than memorable; and the σ half rests on the
 register-sensitive cross-word table.
 
+## A half of the schedule space was never searched (September 2026)
+
+`quagmire-dodge.md`. Every sweep below masks its candidate schedules with
+`nz = r != 0`, requiring all five offsets non-zero — correct under a no-dodge model,
+where a zero offset means two identical adjacent alphabets and doublets at the
+plaintext rate. But if the doublet suppression comes from a dodge rule rather than a
+tuned diagonal, a zero offset is exactly what the corpus's doublets REQUIRE: the dodge
+fails precisely when the next offset is zero, which forces the factor 1/5 in the
+observed rate.
+
+So the 3.1×10⁸-key enumeration below, the ungated 7.0×10⁸ re-run and the 4.2×10⁸
+priority sweep all searched only the zero-free half of the schedule space. None of
+them could have found such a key. Whether it is worth searching the other half turns
+on whether any Quagmire schedule can suppress d6, which is untested.
+
 ## The enumeration, run (July 2026) — negative for the keyword family
 
 `experiments/quagmire_runner.py` streamed the full candidate space —

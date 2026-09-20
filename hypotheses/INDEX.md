@@ -47,7 +47,7 @@ proposed mechanisms scored against them.
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (52)
+### Hypotheses (53)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -91,6 +91,7 @@ proposed mechanisms scored against them.
 | [prime-value-autokey.md](prime-value-autokey.md) | Prime-Value Tabula Recta Autokey | disproved |
 | [product-form-autokey.md](product-form-autokey.md) | Product-Form / Interpolation Autokey over GF(29) | disproved |
 | [rotor-machine-compact-state.md](rotor-machine-compact-state.md) | The Cipher is a Rotor Machine (a Compact-State Device) | disproved for autonomous machines (single rotor = 29 alphabets; no autonomous period ≤6478; ~10,000 word-level indexing schemes all under ~4.5% of a real effect). The WHEEL-INDEXABLE form additionally fails via Burnside — but only for transitive groups and only given period-5 + the walk frame; intransitive block structures are excluded at ≥6 blocks and UNTESTABLE at ≤4. Does NOT show the cipher has no hand procedure: a Solitaire-style permutation-carrying scheme is untested |
+| [quagmire-dodge.md](quagmire-dodge.md) | A Word-Delimited Quagmire with a Doublet-Dodge Rule | unresolved — the dodge fails exactly when a schedule offset is ZERO, which forces the 1/5 in the observed doublet rate that nothing else here explains (control: no zero offset gives 0.00000 doublets over 8 keys); and every sweep this project ran masked out zero offsets, so none could have found it. Systematic failures: d6w for all 10 keys tried, plus the repeat; not uniquely decodable |
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |
