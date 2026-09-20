@@ -209,6 +209,18 @@ newlines are line wraps (words flow across them).
 - **No periodicity.** No Kasiski, no periodic-IoC (periods ≤600), no period in
   absolute rune position (k≤40) or word index (k≤49, incl divisors of 1449).
   Consistent: the walk is clocked by aperiodic word lengths.
+- **Sharpened, and its scope corrected (Aug 2026,
+  `rotor-machine-compact-state.md`).** A single stepping rotor has *at most 29
+  alphabets* for every wiring and every stepping schedule — algebra, not
+  simulation — against the ≥300 bases required. Separately, given period-5 and
+  a transitive ⟨g,σ⟩, Burnside on 29 points leaves no middle-sized group
+  (≤812, which holds no order-5 element, or ≥4.4×10³⁰), so no small wheel
+  indexes the base. **But that is narrower than "the walk must be a table":**
+  a large state space can still be hand-operable — an LFSR, or a
+  permutation-carrying scheme in the style of Solitaire, which the walk
+  arguably is. The "is this how anyone would run an algorithm?" objection is
+  therefore not settled by that result.
+
 - **Not a rotor machine.** A physical wheel stepping 1/letter reuses its
   alphabet at the wheel period, but absolute-position coincidence at d=29 is
   flat (IoC 1.01) and d=20–45 averages 1.00 — no wheel-period echo. And period-5
@@ -306,6 +318,14 @@ newlines are line wraps (words flow across them).
   all five relations but yields only 5 distinct bases against the ≥300 required. So
   the cylinder accounts for the letter step and stalls at σ, which is the same place
   every mechanical story stops (`key-local-channel-is-empty.md` §5).
+- **Exponentiation does not help either, and 30 points is where the algebra lives
+  (September 2026, `mobius-order5-thirty-points.md`).** Power maps `x^k` act on GF(29)*
+  as multiplication by k in Z/28, so their orders divide 12 — measured {1, 2, 3, 6}.
+  With affine at {1, 2, 4, 7, 14, 28, 29}, no operation on 29 symbols reaches order 5.
+  The fractional-linear maps on the 30-point projective line do (5 divides q+1 = 30):
+  1,624 of them, all cycle type 5⁶, none fixing the extra point. That family reaches
+  both observed diagonals, which no arithmetic family on 29 symbols managed, but it is
+  disproved on the extra point, which it must emit 135-359 times.
 - **Why no construction for `g` can help (August 2026).** Order 5 on 29 points
   forces cycle type 5⁵1⁴, and all such permutations are **conjugate**: `g = K σ₀ K⁻¹`
   for a canonical σ₀ and arbitrary `K`. So there is no algebraic subfamily to

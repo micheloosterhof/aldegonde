@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (36)
+### Observations (38)
 
 | File | Feature | Status |
 |---|---|---|
@@ -18,6 +18,7 @@ proposed mechanisms scored against them.
 | [doublet-spacing-poisson.md](doublet-spacing-poisson.md) | Doublet Spacing is Poisson, Not Mathematical | confirmed (characterization) |
 | [doublet-suppression-requires-design.md](doublet-suppression-requires-design.md) | Sub-Chance Doublets Force a Tuned Permutation Relation | confirmed (argument) for per-position-bijective ciphers: doublet rate == a permutation diagonal, so 'no permutations' is incompatible with sub-chance doublets; the four known escapes (fractionation, feedback, homophonic, digraphic) are excluded or disfavoured |
 | [doublet-suppression.md](doublet-suppression.md) | Doublet Suppression (5.2x, boundary-blind) | confirmed (characterization) |
+| [dju-bei-gate-validity.md](dju-bei-gate-validity.md) | Under the Walk, DJU-BEI is a Chance Repeat, so the State-Return Gate Rejects a True Key | confirmed (argument); both gated sweeps re-run ungated over 855M keys, both negative (the keyword family only inside its register bands, which keep a true key ~1/4 of the time); the compact-state reading it opens is tested in `compact_state_models.py` |
 | [entropy-incompressible.md](entropy-incompressible.md) | Near-Maximal Entropy, Zero Compressible Redundancy | confirmed (characterization) |
 | [flat-ioc.md](flat-ioc.md) | Flat Unigram Distribution (IoC = 1/29) | confirmed (characterization) |
 | [kappa-spectrum.md](kappa-spectrum.md) | Kappa Anomalous Only at Skip 1 | confirmed (characterization) |
@@ -40,12 +41,13 @@ proposed mechanisms scored against them.
 | [two-rune-deficit.md](two-rune-deficit.md) | The 2-Rune Word Deficit (one bucket, z ≈ −10) | confirmed (characterization) for the deficit, on two independent references with the transliteration convention calibrated; MECHANISM OPEN and not identifiable from word lengths |
 | [two-rune-depth-no-base-reuse.md](two-rune-depth-no-base-reuse.md) | Short Words Show No Depth: the Base Essentially Never Repeats | confirmed (characterization); a 29-state schedule excluded at 10^-124 on 3-rune words, enumeration-free and g-free |
 | [within-word-d5-coincidence.md](within-word-d5-coincidence.md) | Within-Word Distance-5 Coincidence Excess | plausible (verified anomaly; mechanism unknown) |
+| [within-word-repeated-rune-structure.md](within-word-repeated-rune-structure.md) | Within-Word Repeated-Rune Structure (doublet avoidance + period-5 leak; per-section; Sigel/s8 block echo) | confirmed (characterization); s8 trigram crib is a lead (w599 spans a line wrap but is one word under standard tokenisation) |
 | [word-length-keystream-and-boundaries.md](word-length-keystream-and-boundaries.md) | Word-Length Keystream & Boundary Authenticity | confirmed (characterization) for the keystream disproof and the '.'-semantics; transcription omission now CLOSED so the clock is sound; the short-word deficit is split out to two-rune-deficit.md |
 | [word-position-pairs.md](word-position-pairs.md) | Within-Word Position Pairs Carry Distance-Only Structure | confirmed (characterization) |
 | [word-transform-census.md](word-transform-census.md) | Word-Level Transform Census (Per-Word Keyed Ciphers Excluded) | confirmed (characterization) |
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 
-### Hypotheses (47)
+### Hypotheses (50)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -74,16 +76,19 @@ proposed mechanisms scored against them.
 | [magic-square-grid-key.md](magic-square-grid-key.md) | `g` From the Book's Own 5×5 Magic Square (constant 3301) | UNDECIDED (Aug 2026, corrected twice): family survivors match chance at every cut from 2 to 3.5 sigma, but the 7 g-only cuts are worth only 16.0 bits, so at any threshold retaining a true g the false-positive floor is ~30 -- isolating one needs the 2-rune verifier, hence sigma, which has no construction. The sweep cannot decide the hypothesis |
 | [mixed-alphabet-vigenere.md](mixed-alphabet-vigenere.md) | The Period-5 Step is a Mixed-Alphabet (Quagmire) Vigenere | disproved for the keyword family (register caveat) — the full ~3.1e8-key enumeration ran (DJU-BEI 6-point return + 2-rune verifier) and NO keyword key decrypts; not excluded for freely-designed alphabets or an out-of-band register |
 | [mixed-cycle-progression.md](mixed-cycle-progression.md) | The Letter Step g Has Mixed Cycle Lengths | unresolved (pure return ladders disproved by monotonicity; census selection below calibration resolution; the d4−d6 split is RETRACTED — one order-5 g fitted to d1..d4,d6 reaches every cell, so d6 depth and the d4 lean are diagonals of that g, not anomalies) |
+| [mobius-order5-thirty-points.md](mobius-order5-thirty-points.md) | The Order-5 Step is a Fractional-Linear Map on 30 Points | disproved — no operation on 29 symbols has order 5 (powers give 1,2,3,6), only PGL(2,29) does (1,624 maps, all cycle type 5⁶, none fixing the extra point) and both diagonals are reachable there, but the extra point must be emitted 135-359 times and every way of writing it contradicts the transcription |
 | [monoalphabetic-substitution.md](monoalphabetic-substitution.md) | Monoalphabetic Substitution | disproved |
 | [multi-layer-autokey.md](multi-layer-autokey.md) | Multi-Layer Autokey | disproved |
 | [page-reset-keystream.md](page-reset-keystream.md) | Shared Positional Keystream Resetting at Page/Section Boundaries | disproved |
 | [per-word-related-alphabets.md](per-word-related-alphabets.md) | Per-Word Related-Alphabet Cipher (5 Alphabets, Bigram-Dodging Step) | plausible — superseded by `length-clocked-walk.md` |
+| [period5-doublet-linkage.md](period5-doublet-linkage.md) | The Doublet Suppression and the d5 Leak Are One Order-5 Walk | unresolved (phase-gating mechanism refuted; walk family still fits) |
 | [periodic-polyalphabetic.md](periodic-polyalphabetic.md) | Periodic Polyalphabetic Cipher (Vigenere with Fixed Key) | disproved |
 | [plaintext-autokey.md](plaintext-autokey.md) | Plaintext Autokey Cipher | disproved |
 | [playfair-variant.md](playfair-variant.md) | Playfair / Seriated Playfair Variant | disproved |
 | [position-within-word.md](position-within-word.md) | Position-Within-Word Dependent Cipher | disproved (additive variants; the mixed-alphabet member is the live walk model) |
 | [prime-value-autokey.md](prime-value-autokey.md) | Prime-Value Tabula Recta Autokey | disproved |
 | [product-form-autokey.md](product-form-autokey.md) | Product-Form / Interpolation Autokey over GF(29) | disproved |
+| [rotor-machine-compact-state.md](rotor-machine-compact-state.md) | The Cipher is a Rotor Machine (a Compact-State Device) | disproved for autonomous machines (single rotor = 29 alphabets; no autonomous period ≤6478; ~10,000 word-level indexing schemes all under ~4.5% of a real effect). The WHEEL-INDEXABLE form additionally fails via Burnside — but only for transitive groups and only given period-5 + the walk frame; intransitive block structures are excluded at ≥6 blocks and UNTESTABLE at ≤4. Does NOT show the cipher has no hand procedure: a Solitaire-style permutation-carrying scheme is untested |
 | [running-key-math-sequence.md](running-key-math-sequence.md) | Running Key from Mathematical Sequence | disproved |
 | [running-key-text.md](running-key-text.md) | Running Key from Another Text | disproved |
 | [second-order-difference.md](second-order-difference.md) | Second-Order Difference Cipher | disproved |

@@ -15,6 +15,20 @@ July 2026.
 
 **Status**: unresolved
 
+## A second route to 30 symbols, and it is disproved (September 2026)
+
+`mobius-order5-thirty-points.md` arrives at a 30-symbol alphabet from the group rather
+than from the marks: 5 divides 29+1, so the fractional-linear maps on the projective
+line are the only algebraic family with order-5 elements. That gives this hypothesis
+an independent motivation — and then refutes the version of it in which the 30th
+symbol is cipher output. Such a map must emit the extra point 135-359 times, which
+would leave 26-70 empty words where the clean corpus has none, and a map quiet enough
+to hide carries a doublet diagonal of 0.0250 against the observed 0.0063 (z = -11.9).
+
+That constrains this file rather than closing it: what is excluded is the extra symbol
+being an OUTPUT of an algebraic order-5 step. The boundary-synchronised reading below,
+where the mark is a state-dependent variant of the word separator, is untouched.
+
 ## Mechanism
 
 A 30-cell ring rotating against a 29-cell ring never aligns the same way

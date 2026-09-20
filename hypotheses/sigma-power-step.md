@@ -216,6 +216,18 @@ polyalphabetic.
 - **Not excluded**: σ of order 5, σ a conjugate h∘g∘h⁻¹, larger
   compositions g^k∘τ with τ moving enough points to break the small
   orbit.
+- **The disk does not make the state wheel-indexable, and no 29-word disk is
+  detectable (Aug 2026, `rotor-machine-compact-state.md`).** Two additions to
+  the bullet below. (a) Combined with an order-5 `g`, a 29-cycle disk generates
+  a group measured at 4.4×10³⁰ — so "σ is a disk" simplifies σ's *description*
+  but leaves the operator's state space astronomical; there is still no wheel
+  with a small number of settings. (b) Tested directly: words 29 apart do not
+  share an alphabet, under the phase-resets convention (z = −7.9 against the
+  corpus's own echo), the continuous-phase convention (nIoC 1.008 on 576k
+  pairs), or any `(a·A_w + b·w) mod 5` phase-offset rule. A disk turned by the
+  word LENGTH rather than once per word is equally flat. Scope: all of that
+  assumes period-5 and the walk frame.
+
 - **σ can be a physical rotating disk** (July 2026). A mixed-alphabet
   29-position disk turned a fixed amount per word — i.e. σ as a
   conjugated shift `K_σ ∘ (add δ) ∘ K_σ⁻¹` — satisfies every constraint
