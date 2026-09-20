@@ -335,7 +335,7 @@ def verify_candidate_generation(ctx, prose_path):
     lens = ctx["lens"]
     words = lp_words()
     obs = observed_rates(words)
-    lo1, hi1 = wilson(*obs[1])
+    lo1, hi1 = D1_BAND if D1_BAND else wilson(*obs[1])
     pools: dict[int, list[list[int]]] = {}
     for w in prose_words(prose_path):
         r = [IDX_ENG[t] for t in to_runeglish(w)]
@@ -569,10 +569,18 @@ def g_candidates(vocab, T1, lo1, hi1, limit):
                     return
 
 
+# Candidate bands. The defaults are the Wilson interval of the observed counts on one
+# stand-in register; `register_band_sensitivity.py` shows a relation's diagonal moves by
+# 0.78-1.29 between registers, so a sweep meant to EXCLUDE a family must widen them.
+D1_BAND: tuple[float, float] | None = None
+SEAM_BAND = (0.0050, 0.0118)
+
+
 def build_setup(prose_path, lens, vocab=None):
     """Register tables, sigma candidates, vocab — shared by pilot/workers.
 
     `vocab` replaces the default keyword list (dictionary words of 4-12 letters).
+    The module-level D1_BAND and SEAM_BAND override the candidate bands.
     """
     from keyword_exhaustion import DICT
     from quagmire_schedule_census import (
@@ -585,7 +593,7 @@ def build_setup(prose_path, lens, vocab=None):
 
     words = lp_words()
     obs = observed_rates(words)
-    lo1, hi1 = wilson(*obs[1])
+    lo1, hi1 = D1_BAND if D1_BAND else wilson(*obs[1])
     pools: dict[int, list[list[int]]] = {}
     for w in prose_words(prose_path):
         r = [IDX_ENG[t] for t in to_runeglish(w)]
@@ -602,7 +610,7 @@ def build_setup(prose_path, lens, vocab=None):
                 x = line.strip()
                 if 4 <= len(x) <= 12 and x.isalpha() and x.isascii():
                     vocab.append(x)
-    sigmas = sigma_candidates(vocab, cross, 0.0050, 0.0118)
+    sigmas = sigma_candidates(vocab, cross, *SEAM_BAND)
     return words, vocab, T1, lo1, hi1, sigmas
 
 

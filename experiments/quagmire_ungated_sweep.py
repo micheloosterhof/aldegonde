@@ -51,6 +51,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
+import quagmire_runner  # noqa: E402
 from base_free_verifier import log_frequencies  # noqa: E402
 from ea_direction_test import PROSE_CACHE  # noqa: E402
 from quagmire_runner import (  # noqa: E402
@@ -72,10 +73,20 @@ KEEP_PER_TASK = 5
 # window scores under this are reported as upper bounds (the kernel's cheap path);
 # wrong keys sit near 0.5 on a 200-word window and a true key near 1.2
 CANDIDATE_FROM = 0.85
+# bands covering every prose register measured, not one: a relation's diagonal moves by
+# 0.78-1.29 between registers (`register_band_sensitivity.py`), so the one-register band
+# keeps a true key only about a quarter of the time. 26x the candidates.
+# The true key's diagonal on the stand-in register is its LP diagonal times a register
+# ratio measured at 0.78-1.29, so the band that cannot lose it is the Wilson interval
+# times that ratio. The whole family is then 4.8e11 keys (594 core-hours), so the
+# priority mode runs this band over 3301's OWN vocabulary instead of the dictionary.
+WIDE_D1 = (0.0038, 0.0103)
+WIDE_SEAM = (0.0039, 0.0156)
 MAIN_TASKS = 360
 EXTRA_TASKS = 72
 OUT = ROOT / "experiments" / "quagmire_ungated_candidates.jsonl"
 _W: dict = {}
+PRIORITY: list[str] | None = None
 
 
 def windows_of(words: list[list[int]]) -> Windows:
@@ -179,6 +190,67 @@ def rescore_on_sections(words, K, sched, sigma, logf) -> list[float]:
     ]
 
 
+def priority_vocabulary() -> list[str]:
+    """3301's own words: the register vocabulary plus the puzzle's named terms.
+
+    A keyword key is a bet on the designer having used a word. These are the words
+    the corpus itself, the solved pages and the puzzle supply, so they carry the
+    highest prior per key of anything in the dictionary.
+    """
+    words = []
+    for line in (ROOT / "data" / "register_vocab.txt").read_text().splitlines():
+        if line and not line.startswith("#"):
+            parts = line.split("\t")
+            if len(parts) > 1 and parts[1].isalpha():
+                words.append(parts[1])
+    words += [
+        "DIVINITY",
+        "WITHIN",
+        "INSTAR",
+        "TUNNELING",
+        "SURFACE",
+        "CIRCUMFERENCE",
+        "PARABLE",
+        "EMERGE",
+        "WISDOM",
+        "PILGRIM",
+        "PRIMES",
+        "PRIME",
+        "TOTIENT",
+        "CICADA",
+        "LIBER",
+        "PRIMUS",
+        "KOAN",
+        "MOBIUS",
+        "SHADOW",
+        "ENLIGHTENMENT",
+        "CONSCIOUSNESS",
+        "INSTRUCTION",
+        "WELCOME",
+        "PATIENCE",
+        "DECEPTION",
+        "PRESERVATION",
+        "ADHERENCE",
+        "SACRED",
+        "TRUTH",
+        "SELF",
+        "REALITY",
+        "DIUINITY",
+        "CIRCUMFERENCES",
+        "AMASS",
+        "ANALOG",
+        "VOID",
+        "BUFFERS",
+    ]
+    seen, out = set(), []
+    for w in words:
+        u = w.upper()
+        if u not in seen and u.isascii() and 3 <= len(u) <= 20:
+            seen.add(u)
+            out.append(u)
+    return out
+
+
 def extra_vocabulary(main: list[str]) -> list[str]:
     """Keywords the 4-12 letter dictionary list leaves out."""
     from keyword_exhaustion import DICT  # noqa: PLC0415
@@ -227,6 +299,8 @@ def run(nproc: int, prose_path: Path, lens: list[int], *, extra_only: bool) -> N
             flush=True,
         )
     else:
+        if PRIORITY is not None:
+            vocab = PRIORITY
         tasks = [(f"main-{i}", "main", vocab[i::MAIN_TASKS]) for i in range(MAIN_TASKS)]
         print(
             f"{len(vocab):,} keywords, {len(_W['sigmas']['main'])} sigma disks, "
@@ -288,7 +362,28 @@ def main() -> None:
     for w in wid:
         lens[w] += 1
     assert len(stream) == sum(lens)
-    if "--run" in sys.argv:
+    if "--priority" in sys.argv:
+        quagmire_runner.D1_BAND = WIDE_D1
+        quagmire_runner.SEAM_BAND = WIDE_SEAM
+        globals()["OUT"] = OUT.with_name("quagmire_priority_candidates.jsonl")
+        globals()["PRIORITY"] = priority_vocabulary()
+        run(
+            int(sys.argv[sys.argv.index("--priority") + 1]),
+            PROSE_CACHE,
+            lens,
+            extra_only=False,
+        )
+    elif "--wide" in sys.argv:
+        quagmire_runner.D1_BAND = WIDE_D1
+        quagmire_runner.SEAM_BAND = WIDE_SEAM
+        globals()["OUT"] = OUT.with_name("quagmire_wideband_candidates.jsonl")
+        run(
+            int(sys.argv[sys.argv.index("--wide") + 1]),
+            PROSE_CACHE,
+            lens,
+            extra_only=False,
+        )
+    elif "--run" in sys.argv:
         run(
             int(sys.argv[sys.argv.index("--run") + 1]),
             PROSE_CACHE,
