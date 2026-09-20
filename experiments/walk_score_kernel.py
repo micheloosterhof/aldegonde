@@ -37,27 +37,37 @@ from base_free_verifier import (  # noqa: E402
 
 M = 29
 SOURCE = ROOT / "experiments" / "walk_score_kernel.c"
-_LIB: ctypes.CDLL | None = None
+_LIB: dict[int, ctypes.CDLL] = {}
 
 
-def _library() -> ctypes.CDLL:
-    """The shared library, built once per version of the C source.
+def _library(points: int = M) -> ctypes.CDLL:
+    """The shared library for an alphabet of `points` symbols.
 
-    The file name carries the source hash, so a rebuild never overwrites a library
-    that a running sweep has loaded.
+    The file name carries the source hash and the alphabet size, so a rebuild never
+    overwrites a library a running sweep has loaded, and the 29- and 30-symbol
+    builds coexist. 30 points is the projective line of `order5_algebraic_routes.py`.
     """
-    global _LIB  # noqa: PLW0603
-    if _LIB is None:
+    if points not in _LIB:
         digest = hashlib.sha256(SOURCE.read_bytes()).hexdigest()[:12]
-        target = Path(tempfile.gettempdir()) / f"walk_score_kernel_{digest}.so"
+        target = Path(tempfile.gettempdir()) / f"walk_score_kernel_{digest}_{points}.so"
         if not target.exists():
             subprocess.run(  # noqa: S603
-                ["cc", "-O3", "-shared", "-fPIC", "-o", str(target), str(SOURCE)],  # noqa: S607
+                [
+                    "cc",
+                    "-O3",
+                    "-shared",
+                    "-fPIC",
+                    f"-DM={points}",
+                    "-o",
+                    str(target),
+                    str(SOURCE),
+                ],  # noqa: S607
                 check=True,
             )
-        _LIB = ctypes.CDLL(str(target))
-        _LIB.score_sigmas.restype = None
-    return _LIB
+        lib = ctypes.CDLL(str(target))
+        lib.score_sigmas.restype = None
+        _LIB[points] = lib
+    return _LIB[points]
 
 
 class Windows:
@@ -81,6 +91,7 @@ def score_sigmas(
     *,
     sum_windows: bool = False,
     skip_below: float = -np.inf,
+    points: int = M,
 ) -> np.ndarray:
     """Score of each sigma (rows of `sigmas`) under `letter_perms`.
 
@@ -93,7 +104,7 @@ def score_sigmas(
     lf = np.ascontiguousarray(logf, dtype=np.float32)
     out = np.empty(len(sig), dtype=np.float32)
     ptr = lambda a: a.ctypes.data_as(ctypes.c_void_p)  # noqa: E731
-    _library().score_sigmas(
+    _library(points).score_sigmas(
         ptr(perms),
         ptr(sig),
         ctypes.c_int(len(sig)),

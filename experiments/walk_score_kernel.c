@@ -4,7 +4,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifndef M
 #define M 29
+#endif
 
 // Writes one score per sigma, in nats per rune above the flat baseline. A window's
 // score is the greedy one-to-one assignment of u to c on the table S[c][u], which

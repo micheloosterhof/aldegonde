@@ -151,3 +151,55 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def cycle_of(perm: list[int], start: int) -> list[int]:
+    cycle, x = [], start
+    while True:
+        cycle.append(x)
+        x = perm[x]
+        if x == start:
+            return cycle
+
+
+def leak_rates(order5: list[list[int]], frequencies) -> list[float]:
+    """Share of positions whose ciphertext is the 30th point, base chosen to minimise it.
+
+    The output is the extra point exactly when the plaintext rune is g^-j(u), with
+    u = base^-1(infinity). base is free, so the designer picks the g-cycle of lowest
+    total plaintext frequency; the cycle holding infinity carries one free zero term.
+    """
+    return [
+        min(sum(frequencies[x] for x in cycle_of(g, s)) / 5 for s in range(30))
+        for g in order5
+    ]
+
+
+def skip_rule_collision(g: list[int], base: list[int]) -> tuple[int, int, int] | None:
+    """Two plaintext runes that a skip-on-infinity encoder sends to the same rune.
+
+    The gap reading says the encoder, finding the output is the extra point, advances
+    the phase instead of writing. Then the forbidden rune at phase j is emitted under
+    phase j+1 -- which is exactly what g(p) would have produced at phase j. The two
+    are indistinguishable to a decoder that has only the ciphertext.
+    """
+    inverse = [0] * 30
+    for x, y in enumerate(base):
+        inverse[y] = x
+    for j in range(5):
+        powers = list(range(30))
+        for _ in range(j):
+            powers = [g[x] for x in powers]
+        forbidden = next(
+            (p for p in range(M) if base[powers[p]] == INFINITY), None
+        )
+        if forbidden is None:
+            continue
+        stepped = [g[x] for x in powers]
+        rival = next(
+            (q for q in range(M) if q != forbidden and base[powers[q]] == base[stepped[forbidden]]),
+            None,
+        )
+        if rival is not None:
+            return j, forbidden, rival
+    return None
