@@ -4,8 +4,8 @@
 
 A Quagmire letter schedule uses alphabets `A_k = K . (add S_k)`, so the relation
 between adjacent positions is a pure SHIFT, `add(s_(k+1))`, in K coordinates. Put the
-dodge rule of `doublet-dodge-walk.md` on top -- when the emission would repeat, advance
-the clock one step and re-emit -- and something exact falls out.
+dodge rule of `doublet-dodge-walk.md` on top: when the emission would repeat, advance
+the clock one step and re-emit.
 
 The dodge re-emits with `A_(k+1)` in place of `A_k`, so it FAILS precisely when
 
@@ -24,13 +24,13 @@ directory has explained. Here it is forced.
 
 Two further consequences:
 
-  * the survivors are SHIFT coincidences, not plaintext doubles, so they carry none of
-    the end-heavy positional signature that sank `stay-slot-hold.md`;
-  * **every keyword sweep this project has run excluded this key by construction.**
-    `quagmire_runner.g_candidates` masks the candidate schedules with `nz = r != 0`,
-    requiring all five offsets non-zero, which is exactly the opposite of what this
-    model needs. The 3.1e8-key enumeration, the ungated 7.0e8 re-run and the priority
-    sweep could none of them have found it.
+  * the survivors are shift coincidences rather than plaintext doubles, so they carry
+    none of the end-heavy positional signature that disproved `stay-slot-hold.md`;
+  * every keyword sweep in this project excluded this key by construction.
+    `quagmire_runner.g_candidates` masks its candidate schedules with `nz = r != 0`,
+    requiring all five offsets non-zero, while this model requires one to be zero. The
+    3.1e8-key enumeration, the ungated 7.0e8 re-run and the priority sweep all searched
+    only the zero-free half of the schedule space.
 
 Run with no arguments for the self-test, `--fit` to score it on the held-out battery.
 """
@@ -65,9 +65,9 @@ FITTED = {"seam"}
 def schedule(rng, *, zeros: int) -> list[int]:
     """Five offsets summing to 0 mod 29, with exactly `zeros` of them zero.
 
-    A zero offset means two adjacent alphabets coincide, which is what lets a dodge
-    fail. `quagmire_runner.g_candidates` forbids zeros outright, so every sweep this
-    project has run searched only the `zeros = 0` half.
+    A zero offset makes two adjacent alphabets coincide, which is the condition under
+    which a dodge fails. `quagmire_runner.g_candidates` forbids zeros, so every sweep
+    in this project searched only the `zeros = 0` half.
     """
     while True:
         free = [rng.randrange(1, M) for _ in range(4 - zeros)]

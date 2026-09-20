@@ -6,12 +6,11 @@ Michel's question (September 2026): take the first rune of every word and measur
 index of coincidence, then split by even and odd words, then by words 1, 2, 3 in
 threes, and so on.
 
-It is the right place to look. Under the length-clocked walk the first rune of a word
-is `c = base_w(p_0)` with the letter step at phase zero, so word-initial runes are
-enciphered by the base ALONE. Any periodicity in the base schedule shows there
-undiluted, where the full stream mixes it with five letter-step phases. If the base
-repeated with period k, the words in one residue class mod k would share an alphabet
-and their initial runes would read as a monoalphabet, nIoC about 1.7 rather than 1.0.
+Under the length-clocked walk the first rune of a word is `c = base_w(p_0)`, with the
+letter step at phase zero. Word-initial runes are therefore enciphered by the base
+alone, while the full stream mixes the base with five letter-step phases. If the base
+repeated with period k, words in one residue class mod k would share an alphabet, and
+their initial runes would read as a monoalphabet: nIoC about 1.7 rather than 1.0.
 
 The null is a shuffle of the word ORDER, keeping the same multiset of runes, so the
 comparison is against "these runes in no particular order" rather than against a
@@ -26,28 +25,33 @@ uniform alphabet.
 The largest |z| across all 79 moduli is 2.48, 2.72 and 2.36 for the three positions,
 where chance over that many tests gives about 2.96. Every value is inside the noise.
 
-One near-miss is worth recording because it looked like something. Multiples of 5
-leaned positive for the first rune (mean z +0.65) and the second (+0.92), which is
-tempting given period 5 is the corpus's known structure. It does not survive: for the
-THIRD rune the same set leans NEGATIVE (-0.70). A real period-5 base schedule would
-push every within-word position the same way, so a lean that flips sign with position
-is noise.
+One result needs recording because it initially looked like a signal. Multiples of 5
+leaned positive for the first rune (mean z +0.65) and the second (+0.92). Period 5 is
+the corpus's known structure, so this was worth checking further. It does not hold: for
+the third rune the same set leans negative (-0.70). A period-5 base schedule would shift
+every within-word position in the same direction, so a lean that changes sign with
+position is noise.
 
-**Reviewed with a stronger test (same day).** Bucketing 2,928 word-initial runes is
-weak. Comparing words `k` apart at every matched within-word position gives ~9,300
-pairs per gap, a third of the standard error, and settles it:
+That pooled statistic was also not a valid test. Bucketing by k = 5, 10, 15 and so on
+gives nested partitions, so a signal at k = 5 appears again at every multiple. The
+sixteen values were treated as sixteen tests and are closer to one.
+
+**Reviewed with a higher-powered test (same day).** Bucketing 2,928 word-initial runes
+has low power. Comparing words `k` apart at every matched within-word position gives
+about 9,300 pairs per gap, roughly a third of the standard error:
 
   * gap 5 reads 0.0353 against chance 0.0345, z = +0.45. A strict period-5 base would
     read the plaintext rate, about 0.060; the observation bounds base-sharing at gap 5
     below **16%**, against the 100% a period requires.
   * multiples of 5 average z -0.143, slightly BELOW chance, against +0.005 elsewhere.
-  * gap 15 is the one cell that surfaced in both tests (z = +2.61 bucketed, +2.70 here)
-    and is positive in both halves of the corpus. It is still not a period: gaps 30, 45
-    and 60 read z = +0.05, +1.03 and -3.07. A real period returns at its multiples.
+  * gap 15 appeared in both tests (z = +2.61 bucketed, +2.70 here) and is positive in
+    both halves of the corpus. It is not a period: gaps 30, 45 and 60 read z = +0.05,
+    +1.03 and -3.07. A base with period 15 also repeats at 30 and 45, so those gaps
+    would show the same coincidence.
 
-So the fives are nothing, and the moral stands -- a pattern noticed in a scan has to be
-re-tested on a channel that was not used to notice it, and preferably with a test that
-has the power to see it.
+The word index carries no periodicity at any modulus from 2 to 80. This also bounds any
+model whose per-word base returns on a fixed cycle of 60 words or fewer, without
+assuming a cipher model.
 
 Run with no arguments.
 """
@@ -123,7 +127,7 @@ def gap_scan() -> None:
     print(
         f"mean z at multiples of 5: {z[by5].mean():+.3f}   elsewhere {z[~by5].mean():+.3f}"
     )
-    print("\na real period lights up its multiples too:")
+    print("\na base with period p also repeats at 2p and 3p:")
     for p in (5, 15):
         cells = "   ".join(
             f"gap {p * m}: z {rows[p * m - 1][2]:+.2f}"
