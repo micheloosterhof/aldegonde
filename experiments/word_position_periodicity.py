@@ -31,8 +31,23 @@ leaned positive for the first rune (mean z +0.65) and the second (+0.92), which 
 tempting given period 5 is the corpus's known structure. It does not survive: for the
 THIRD rune the same set leans NEGATIVE (-0.70). A real period-5 base schedule would
 push every within-word position the same way, so a lean that flips sign with position
-is noise. The moral is the session's standing one -- a pattern noticed in a scan has to
-be re-tested on a channel that was not used to notice it.
+is noise.
+
+**Reviewed with a stronger test (same day).** Bucketing 2,928 word-initial runes is
+weak. Comparing words `k` apart at every matched within-word position gives ~9,300
+pairs per gap, a third of the standard error, and settles it:
+
+  * gap 5 reads 0.0353 against chance 0.0345, z = +0.45. A strict period-5 base would
+    read the plaintext rate, about 0.060; the observation bounds base-sharing at gap 5
+    below **16%**, against the 100% a period requires.
+  * multiples of 5 average z -0.143, slightly BELOW chance, against +0.005 elsewhere.
+  * gap 15 is the one cell that surfaced in both tests (z = +2.61 bucketed, +2.70 here)
+    and is positive in both halves of the corpus. It is still not a period: gaps 30, 45
+    and 60 read z = +0.05, +1.03 and -3.07. A real period returns at its multiples.
+
+So the fives are nothing, and the moral stands -- a pattern noticed in a scan has to be
+re-tested on a channel that was not used to notice it, and preferably with a test that
+has the power to see it.
 
 Run with no arguments.
 """
@@ -64,6 +79,58 @@ def nioc(runes: np.ndarray) -> float:
 def bucketed(stream: np.ndarray, k: int) -> float:
     """Mean nIoC inside residue classes of the word index mod k."""
     return float(np.nanmean([nioc(stream[i::k]) for i in range(k)]))
+
+
+def gap_coincidence(words, gap: int) -> tuple[float, float, int]:
+    """Coincidence of words `gap` apart at matched within-word positions.
+
+    Far more powerful than bucketing the word-initial stream: it pools every position,
+    giving about 9,300 pairs per gap against 2,928 word-initial runes, so the standard
+    error is roughly a third. If words `gap` apart shared a base their runes at a
+    common position would coincide at the plaintext rate, about 0.060, not at 1/29.
+    """
+    hits = total = 0
+    for w in range(len(words) - gap):
+        a, b = words[w], words[w + gap]
+        for j in range(min(len(a), len(b))):
+            total += 1
+            hits += a[j] == b[j]
+    rate = hits / total
+    z = (rate - 1.0 / M) / np.sqrt(rate * (1 - rate) / total)
+    return rate, z, total
+
+
+def gap_scan() -> None:
+    """The direct test, and whether any flagged gap behaves like a real period."""
+    words = lp_words()
+    rows = [(k, *gap_coincidence(words, k)) for k in range(1, 61)]
+    z = np.array([r[2] for r in rows])
+    print(f"\ndirect word-gap test, ~{rows[0][3]:,} matched-position pairs per gap")
+    print(f"chance {1 / M:.4f}; a shared base would read about 0.060\n")
+    print(f"{'gap':>5}{'rate':>9}{'z':>7}      {'gap':>5}{'rate':>9}{'z':>7}")
+    for k, rate, zz, _ in rows[:8]:
+        other = rows[k + 7]
+        print(
+            f"{k:>5}{rate:>9.4f}{zz:>7.2f}      "
+            f"{other[0]:>5}{other[1]:>9.4f}{other[2]:>7.2f}"
+        )
+    peak = int(np.abs(z).argmax())
+    print(
+        f"\nlargest |z| over 60 gaps: {np.abs(z).max():.2f} at gap {rows[peak][0]} "
+        f"(chance expects ~{np.sqrt(2 * np.log(60)):.2f})"
+    )
+    by5 = np.array([r[0] % 5 == 0 for r in rows])
+    print(
+        f"mean z at multiples of 5: {z[by5].mean():+.3f}   elsewhere {z[~by5].mean():+.3f}"
+    )
+    print("\na real period lights up its multiples too:")
+    for p in (5, 15):
+        cells = "   ".join(
+            f"gap {p * m}: z {rows[p * m - 1][2]:+.2f}"
+            for m in (1, 2, 3)
+            if p * m <= 60
+        )
+        print(f"   period {p:>2} -> {cells}")
 
 
 def main() -> None:
@@ -101,6 +168,7 @@ def main() -> None:
         f"\nexpected largest |z| over {len(MODULI)} moduli by chance: "
         f"{np.sqrt(2 * np.log(len(MODULI))):.2f}"
     )
+    gap_scan()
 
 
 if __name__ == "__main__":
