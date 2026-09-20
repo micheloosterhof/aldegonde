@@ -44,9 +44,11 @@ a plaintext double sitting on a fixed point of `g`. Three consequences, none tun
 - **The seam comes along.** The same rule fires across a word boundary, so the seam
   rate tracks the within-word rate by construction. `length-clocked-walk.md` states
   that the walk does *not* predict their observed equality (z = −0.92); this does.
-- **The distance profile comes free.** Scored on the held-out battery with only the
-  four fixed points chosen, **d2w, d3w, d4w and d5w all land** (tails 0.20, 0.13, 0.93,
-  0.57) — cells the walk has to fit.
+- **Much of the distance profile comes free.** Scored on the held-out battery with only
+  the four fixed points chosen, d2w, d4w, d5w and the cross-word d5x land — cells the
+  walk has to fit. d3w lands for some fixed-point choices and not others (0.0595 against
+  0.0370 for the key that best fits the doublet rate and position), so it belongs with
+  the open cells below rather than here.
 
 Verified in `experiments/doublet_dodge_walk.py`: every surviving doublet in a simulated
 corpus is a plaintext double on a fixed point of `g`, zero exceptions.
@@ -96,21 +98,24 @@ against the corpus's 0.0063 and 0.553.
 The error was reporting a single fitted key as if it were the model, the same mistake
 recorded for the walk's own held-out run in `length-clocked-walk.md`.
 
-## What it does get that the walk does not
-## What it does get that the walk does not
+## What it does not get either
 
 It produces the DJU-BEI-style repeat in a first version with a small base set — but
 that version failed IoC and identical-word counts outright, and once the base steps
 properly (`g^a ∘ σ`, giving full base diversity) the repeat disappears again, exactly
 as for the walk. So it does not rescue that cell either.
 
-## Predictions, if it is to be rescued
+## What to do next
 
-- A decodable variant must condition the skip on something already decoded. Conditioning
-  on `p_(j−1)` alone is `interrupted-walk.md`, which is disproved.
-- A mixture — some doublets from a tuned diagonal, some surviving plaintext doubles —
-  would sit between 0.40 and 0.833 on the position profile and could reach the observed
-  0.553. That is a free parameter and it is untested.
+- **Decodability is the real obstacle.** A decodable variant must condition the skip on
+  something already decoded. Conditioning on `p_(j−1)` alone is `interrupted-walk.md`,
+  which is disproved. Conditioning on the previous CIPHERTEXT pair — "skip if the last
+  two emissions were equal" — is decodable and reacts to doublets instead of preventing
+  them, so it would need the suppression from somewhere else; untested.
+- **Fit the rest of `g`.** Only the four fixed points are used; the five 5-cycles and
+  all of σ are free, which is about the key material the walk spends on its diagonals.
+  Fitting them to d3w, d6w and the seam is a small search and would settle whether the
+  model reaches the whole profile.
 
 ## Scripts
 
@@ -120,8 +125,10 @@ as for the walk. So it does not rescue that cell either.
 
 ## Related
 
-- `stay-slot-hold.md` — disproved by the same positional test; this is a different
-  route to the same prediction.
+- `stay-slot-hold.md` — reaches the same "doublets are plaintext doubles" prediction by
+  a different route. Its positional disproof and the one retracted here rest on the same
+  statistic, which this file shows to be key-dependent, so that file is flagged for
+  re-checking across keys.
 - `interrupted-walk.md` — the decodable but disproved sibling, where the skip is
   triggered by a marked plaintext rune instead.
 - `length-clocked-walk.md` — the model this replaces the tuning of; its seam/within-word
