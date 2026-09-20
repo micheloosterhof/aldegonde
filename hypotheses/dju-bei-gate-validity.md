@@ -17,7 +17,8 @@ with probability 0.9994. Neither sweep excluded its family.
 ## Status
 
 **Status**: confirmed (argument); both affected sweeps re-run ungated, both negative
-(the keyword family only inside its register bands).
+(the keyword family only inside its register bands). The compact-state reading the
+argument opens was tested and is closed: see "The compact-state reading, tested".
 
 ## The probability of each reading
 
@@ -195,11 +196,32 @@ wheel-indexed state; it applies to the base count directly.)
 
 So the compact-state reading survives only with an **intransitive** step group: the
 schedule must preserve a partition of the 29 runes into orbits, each a union of `g`'s
-five 5-cycles and four fixed points. That has a signature of its own. Every base maps
-an orbit to itself, so each orbit's ciphertext frequency mass equals its plaintext
-mass, and the LP's flat unigrams force every orbit's runeglish mass to equal its share
-of the alphabet — a constraint on nine blocks at once, satisfiable by design but not
-free. Testing it is the open step.
+five 5-cycles and four fixed points.
+
+**And that is excluded too.** If every base maps an orbit to itself, then a ciphertext
+rune always sits in its plaintext rune's orbit, so the orbit label passes through the
+cipher unchanged. Adjacent ciphertext runes then carry the plaintext's orbit
+correlation exactly. Measured as the chi-square of the 2×2 within-word adjacency table
+of a rune subset, over 1,500 random partitions (sizes 4, 5, 9, 10 and 14):
+
+| | max chi-square, 1 df |
+|---|---|
+| real prose, where orbit labels would show | 1443.4 |
+| LP ciphertext | 43.3 |
+| doublet-preserving surrogates of the LP | 38.2 ± 4.0 (max 44.8) |
+
+The LP sits at z = +1.28 against its own null — nothing — while the same statistic on
+plaintext reaches 33× higher. The doublet-preserving surrogate is essential here: a
+plain uniform null puts the LP near 38 on the suppressed diagonal alone, which is the
+trap `README.md` records. The conclusion also follows from the corpus's known flat
+off-diagonal bigram matrix (chi-square p = 0.23), since any orbit partition is a
+coarsening of it.
+
+**The reading is therefore closed.** The seam forces a tuned step, a tuned step makes
+the bases a group, a transitive group with an order-5 element has at least 4.4×10³⁰
+elements, and an intransitive one leaves an orbit signature the corpus does not carry.
+DJU-BEI is a chance repeat after all, which is where the top of this file started, and
+the two arguments are independent.
 
 **Also not yet tested.** Whether such a model reproduces the d5 echo and the doublet
 suppression. Both are properties of `g` and the within-word base, so they should carry
