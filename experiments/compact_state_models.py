@@ -43,6 +43,28 @@ A state built only from public data is refuted again here, and by a wider margin
 than in `word_state_sweep.py`: the public clock alone reads 2.196 on the clock
 statistic where the LP reads 1.007.
 
+**The seam closes the reading, through the group (2026-09-20).** None of these models
+suppresses the cross-word doublet: an unrelated base per state gives 0.0355, the
+chance rate, where the LP gives 0.0079 -- 101 seam doublets predicted against 23
+observed, z = -7.8. Suppressing it means the step between consecutive bases is a tuned
+permutation, so the bases are base_0 composed with the group the steps generate, and
+the number of states IS that group's order.
+
+At degree 29 those orders are not free. By Burnside a transitive group of prime degree
+is 2-transitive or sits inside AGL(1,29), whose transitive subgroups have orders
+29, 58, 116, 203, 406, 812 -- and 5 does not divide 812, so none holds an element of
+order 5. The 2-transitive groups of degree 29 are only A29 and S29, of order at least
+4.4e30. So a transitive step group with an order-5 letter step has astronomically many
+states, and the few thousand the word repeats allow is unreachable.
+
+Michel's reading therefore needs an INTRANSITIVE step group: the schedule must
+preserve a partition of the 29 runes, orbits being unions of g's five 5-cycles and
+four fixed points. That carries its own signature. Every base maps an orbit to itself,
+so each orbit's ciphertext frequency mass equals its plaintext mass, and the LP's flat
+unigrams then force every orbit's runeglish mass to equal its share of the alphabet.
+That is a design constraint on nine blocks, satisfiable but not free, and it is the
+next thing to test.
+
 Run with no arguments for the self-test of the measuring functions, `--run` for the
 model table, `--fit` for the state-count comparison.
 """

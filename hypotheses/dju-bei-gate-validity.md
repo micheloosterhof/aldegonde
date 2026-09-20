@@ -177,9 +177,33 @@ favour a compact state of a few thousand over the generic walk by about 10⁴, w
 supports Michel's reading. Neither model makes the return probable, so the evidence
 is a ratio between two unlikely explanations, not a fit.
 
-**What is not yet tested.** Whether such a model also reproduces the doublet
-suppression, the d5 echo and the flat unigrams, which the walk does reproduce. The
-model class was chosen for the recurrence statistics alone.
+**The seam then closes it, through the group.** None of these models suppresses the
+cross-word doublet: an unrelated base per state gives 0.0355, the chance rate, against
+the LP's 0.0079 — 101 predicted against 23 observed, z = −7.8. Suppressing it means the
+step between consecutive bases is a tuned permutation, so the set of bases is `base₀`
+composed with the group the steps generate, and the number of states is that group's
+order.
+
+At degree 29 those orders are not free. By Burnside a transitive group of prime degree
+is 2-transitive or lies inside AGL(1,29), whose transitive subgroups have orders 29,
+58, 116, 203, 406 and 812 — and **5 does not divide 812**, so none of them holds an
+element of order 5. The 2-transitive groups of degree 29 are A₂₉ and S₂₉ alone, of
+order at least 4.4×10³⁰. A transitive step group carrying an order-5 letter step
+therefore has astronomically many states, and the few thousand the word repeats allow
+is unreachable. (`rotor-machine-compact-state.md` proves the same fact for a
+wheel-indexed state; it applies to the base count directly.)
+
+So the compact-state reading survives only with an **intransitive** step group: the
+schedule must preserve a partition of the 29 runes into orbits, each a union of `g`'s
+five 5-cycles and four fixed points. That has a signature of its own. Every base maps
+an orbit to itself, so each orbit's ciphertext frequency mass equals its plaintext
+mass, and the LP's flat unigrams force every orbit's runeglish mass to equal its share
+of the alphabet — a constraint on nine blocks at once, satisfiable by design but not
+free. Testing it is the open step.
+
+**Also not yet tested.** Whether such a model reproduces the d5 echo and the doublet
+suppression. Both are properties of `g` and the within-word base, so they should carry
+over unchanged, but that has not been measured.
 
 ## The replacement: a verifier that needs neither base₀ nor DJU-BEI
 
