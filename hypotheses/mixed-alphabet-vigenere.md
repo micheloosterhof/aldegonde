@@ -552,3 +552,13 @@ that estimate was wrong by a factor of 25, and the earlier "~2×10¹⁰ keys" he
 another 25. The keyword Quagmire is **not** the enumerable formulation this project
 has treated it as: it is enumerable only against a band fitted to one stand-in
 register, which is exactly the assumption that can discard the true key.
+
+**The affordable slice was run and is negative.** The same register-robust band over
+3301's OWN vocabulary — the 316 words of `data/register_vocab.txt` plus the puzzle's
+named terms (DIVINITY, INSTAR, CIRCUMFERENCE, TOTIENT, KOAN, MOBIUS, PILGRIM …),
+which carry the highest prior per key of anything in the dictionary — gives 417,281,088
+complete keys against 30,912 σ disks. Nothing reached the candidate floor; the best
+whole-section scores are 0.33–0.45 against the ~1.2 a true key gives
+(`experiments/quagmire_ungated_sweep.py --priority`, 36 minutes). So the keyword family
+is now negative on its most plausible slice as well as inside the narrow bands, and
+still unenumerable in general.
