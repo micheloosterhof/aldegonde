@@ -107,7 +107,40 @@ the doublet minimum gap.
 Whether the three can be reached is open and cheap to test: the mechanism fixes only
 which four runes `g` holds still, leaving its five 5-cycles and the whole of σ free —
 roughly the same key material the walk spends — so there is ample freedom left to fit
-d3, d6 and the seam. Nobody has tried.
+d3, d6 and the seam.
+
+**Tried, September 2026** (`experiments/dodge_three_cells.py`). Holding the fixed points
+at this file's own best choice {4, 8, 18, 19} and redrawing the five 5-cycles, σ and the
+initial base 150 times:
+
+| cell | corpus | model median | min | max | within 2 SE |
+|---|---|---|---|---|---|
+| d1w | 0.0063 | 0.0051 | — | — | **150/150** |
+| d3w | 0.0370 | 0.0565 | **0.0428** | 0.0722 | **0/150** |
+| d6w | 0.0245 | 0.0403 | 0.0292 | 0.0680 | 24/150 |
+| seam | 0.0079 | 0.0038 | 0.0000 | 0.0188 | 128/150 |
+| doublet_pos | 0.5532 | 0.5638 | — | — | **150/150** |
+
+**d3w never lands.** Its minimum over 150 draws is 0.0428, above the corpus's own 2 SE
+ceiling of 0.0422 — the model systematically over-produces distance-3 coincidence, and no
+choice of the free parameters brings it down. The seam lands easily and d6w lands 16% of
+the time; all three together, **0 of 150**.
+
+d1w and the doublet position are constant across every draw, exactly as the mechanism
+requires: they are set by the fixed points alone. So the freedom this file counted on is
+real but is the wrong freedom — it moves d3w over a range that does not include the
+target.
+
+What remains open is narrower: whether one of the *other* admissible fixed-point choices
+— the file counts 21 of 220 that land the doublet rate and position together — shifts
+d3w's whole range downward. That is the test to run next, and it is no longer the
+open-ended one this paragraph used to describe.
+
+**A harness trap worth recording.** The first run of this test fed `lp_words()` in as
+plaintext. That function returns the LP **ciphertext**; the plaintext surrogate is
+`prose_corpora()`, and neither name says so. With the ciphertext as input the doublets are
+already suppressed to 0.0063, the model cannot produce them at all — d1w reads 0.0008 —
+and the three cells appear to land 54% of the time. Every figure above uses prose.
 
 ## The retracted disproof, and why it was wrong
 
