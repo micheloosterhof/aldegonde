@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (38)
+### Observations (39)
 
 | File | Feature | Status |
 |---|---|---|
@@ -35,6 +35,7 @@ proposed mechanisms scored against them.
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
 | [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization); extended Aug 2026 to JOINT 2nd-order (bigram->next): conditional MI at the exact-bigram null (z=-0.48), and the pooled test rejects 2-back autokeys (planted additive/Quagmire z~+40) -- consistent with the walk, not running feedback |
 | [repeated-phrase-dju-bei.md](repeated-phrase-dju-bei.md) | The Repeated Phrase ᛞᛄᚢ-ᛒᛖᛁ (Key-State Recurrence) | confirmed (characterization) for the repeat; the RECURRENCE reading is weak-to-moderate — chance explains it in 1.0% of surrogates, so the likelihood ratio is 4-28, not the 10⁴ once claimed |
+| [schedule-band-retention.md](schedule-band-retention.md) | The Dodge Sweep's Rate Bands Are Cost-Neutral, and the d6 Band Rejects Seven True Keys in Ten | confirmed (measurement, n=2,000 planted keys): all three bands keep a true schedule 9.0% of the time, d6 alone 27.7% because its upper edge sits at chance; every band cuts the work and the retention by the same factor, so expected core-hours per key found is flat (216/215/217/235) and the unbanded sweep is the only one that covers the family by construction. Third search in this project that could not have found its target, after the DJU-BEI gate and the clock-blind scorer |
 | [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [seam-channel-clean.md](seam-channel-clean.md) | The Seam Channel is Clean (Suppressed Diagonal Only) | confirmed (characterization) |
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |

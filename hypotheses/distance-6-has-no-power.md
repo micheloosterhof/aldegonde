@@ -88,7 +88,10 @@ both are overwhelming. No action at distance 6 or 11 is established. Distance 6 
 words, and the cross-word distance-11 dip is at the multiple-testing floor with no test
 available to settle it.
 
-Any model rejected on `d6w` alone has been rejected on 31 coincidences.
+Any model rejected on `d6w` alone has been rejected on 31 coincidences. So has any
+KEY: `schedule-band-retention.md` measures the dodge sweep's d6 band, which is a Wilson
+interval on this same count, discarding 72% of true schedules because its upper edge
+falls at chance. A deficit this small cannot carry a hard constraint in a search.
 
 ## Scripts
 
@@ -102,3 +105,4 @@ Any model rejected on `d6w` alone has been rejected on 31 coincidences.
 - `quagmire-odometer.md` — the model whose one recorded failure this weakens.
 - `quagmire-dodge.md` — records d6 as reachable by tuning, which now matters less.
 - `length-clocked-walk.md` — fits d6w as one of its six cells.
+- `schedule-band-retention.md` — where a band built on this count rejects true keys.

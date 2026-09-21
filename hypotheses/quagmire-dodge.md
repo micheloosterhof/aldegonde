@@ -255,9 +255,14 @@ same shape as the DJU-BEI gate.
    ones by z = 12 to 20, in every category and for both preventer directions. Cost at a
    C port: 21 core-hours for the priority sweep, against the old kernel's 30,
    which buys nothing because it cannot see the family.
-2. **Then run the zero-offset sweep on the priority vocabulary.** 4.9e9 keys, 30
-   core-hours with the scorer above, using the census's one-zero generator and its
-   d1/d4/d6 bands in place of the `nz` mask and the five-phase band.
+2. **Then run the zero-offset sweep on the priority vocabulary.** 3.9e9 keys, 216
+   core-hours, using the census's one-zero generator in place of the `nz` mask and the
+   five-phase band -- and with NO rate bands. `schedule-band-retention.md` measures
+   that the d1/d4/d6 bands this step used to specify keep a true key only 9% of the
+   time, and that every band cuts the work and the retention by the same factor, so
+   they are cost-neutral at best. The unbanded sweep is 10x the keys of the banded one
+   and is the only version that contains the key by construction.
+   `experiments/dodge_priority_sweep.py`.
 3. ~~Find whether any Quagmire can suppress d6.~~ Answered above: yes.
 4. ~~Find a decodable trigger, or accept the family is a generative account only.~~
    Answered in `doublet-dodge-walk.md`: the family decodes with the key plus context,
@@ -298,10 +303,17 @@ Two of the three things recorded against it are now settled. `d6w` is reachable:
 hill-climbing the alphabet gets 0.0083 where 0.0138 is required. Decodability costs 0-6
 runes in 12,388 and no longer blocks the family.
 
-The third is new and is now the binding constraint. The sweep's scorer assumes the
-clock is the position, which the dodge violates, so a planted key of this family scores
-below random. The search this file has been pointing at for two revisions cannot be run
-until the scorer tracks the skips.
+The third is settled too. The sweep's scorer assumed the clock is the position, which
+the dodge violates, so a planted key of this family scored below random; the
+dodge-aware scorer fixes it and its C port runs at 5,000 keys/s/core.
+
+What replaced it was a fourth obstacle in the same place, found by checking the
+generator rather than the scorer: the d1/d4/d6 rate bands keep a true key only 9% of
+the time, and the d6 band -- whose evidence is 31 coincidences -- rejects 72% of true
+schedules on its own. `schedule-band-retention.md` has the measurement and the cost
+table showing the bands are cost-neutral. With them dropped the sweep is 216
+core-hours and covers the family by construction, so it is now runnable and nothing
+known blocks it.
 
 It also answers the question Michel asked first — whether the doublet rule is what
 breaks the distance-5 repeat. It is: the attenuation (1-q)^5 = 0.8525 follows from the
