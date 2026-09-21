@@ -1,0 +1,387 @@
+[
+ {
+  "page": 0,
+  "greyscale": false,
+  "red_runes": 12,
+  "spans": [
+   12
+  ]
+ },
+ {
+  "page": 1,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 2,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 3,
+  "greyscale": false,
+  "red_runes": 17,
+  "spans": [
+   15,
+   2
+  ]
+ },
+ {
+  "page": 4,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 5,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 6,
+  "greyscale": false,
+  "red_runes": 10,
+  "spans": [
+   10
+  ]
+ },
+ {
+  "page": 7,
+  "greyscale": false,
+  "red_runes": 14,
+  "spans": [
+   13,
+   1
+  ]
+ },
+ {
+  "page": 8,
+  "greyscale": false,
+  "red_runes": 11,
+  "spans": [
+   11
+  ]
+ },
+ {
+  "page": 9,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 10,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 11,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 12,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 13,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 14,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 15,
+  "greyscale": false,
+  "red_runes": 19,
+  "spans": [
+   9,
+   10
+  ]
+ },
+ {
+  "page": 16,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 17,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 18,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 19,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 20,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 21,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 22,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 23,
+  "greyscale": false,
+  "red_runes": 15,
+  "spans": [
+   15
+  ]
+ },
+ {
+  "page": 24,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 25,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 26,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 27,
+  "greyscale": false,
+  "red_runes": 18,
+  "spans": [
+   18
+  ]
+ },
+ {
+  "page": 28,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 29,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 30,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 31,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 32,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 33,
+  "greyscale": false,
+  "red_runes": 15,
+  "spans": [
+   9,
+   6
+  ]
+ },
+ {
+  "page": 34,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 35,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 36,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 37,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 38,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 39,
+  "greyscale": false,
+  "red_runes": 2,
+  "spans": [
+   2
+  ]
+ },
+ {
+  "page": 40,
+  "greyscale": false,
+  "red_runes": 7,
+  "spans": [
+   7
+  ]
+ },
+ {
+  "page": 41,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 42,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 43,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 44,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 45,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 46,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 47,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 48,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 49,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 50,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 51,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 52,
+  "greyscale": true,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 53,
+  "greyscale": false,
+  "red_runes": 51,
+  "spans": [
+   1,
+   24,
+   22,
+   4
+  ]
+ },
+ {
+  "page": 54,
+  "greyscale": false,
+  "red_runes": 8,
+  "spans": [
+   8
+  ]
+ },
+ {
+  "page": 55,
+  "greyscale": false,
+  "red_runes": 0,
+  "spans": []
+ },
+ {
+  "page": 56,
+  "greyscale": false,
+  "red_runes": 4,
+  "spans": [
+   4
+  ]
+ },
+ {
+  "page": 57,
+  "greyscale": false,
+  "red_runes": 6,
+  "spans": [
+   6
+  ]
+ }
+]
