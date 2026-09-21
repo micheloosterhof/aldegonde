@@ -229,6 +229,15 @@ and is consistent with:
      per-page route transposition of blocks is what happened. A key-driven permutation
      survives, at the cost of the hand-runnability that motivated the reading.
 
+     **Narrowed again**: a columnar transposition is normally KEYED — the columns are
+     read out in an order a keyword sets, not left to right — so inverting with the
+     identity order, as the route search did, is wrong for every keyed variant and the
+     family was not covered. Enumerating it: for c columns there are c! read-out orders,
+     and c = 2 to 8 gives **46,232 rules**. The body's best reaches **0.0156**, against a
+     structureless null whose search maximum is **0.0140** and a language level of 0.0397.
+     The search finds a planted keyed columnar (6 columns, order (3,0,5,1,4,2)) at rank 1
+     of 5,912. So keyed columnar transposition is excluded too.
+
    The list reading is now the simpler of the two.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
    correct decryption would produce unbroken runeglish. Any solution that recovers
