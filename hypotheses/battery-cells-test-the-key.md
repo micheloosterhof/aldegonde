@@ -137,6 +137,17 @@ Uniform rune placement in the LP's own word shapes gives 0.5010 ± 0.0210, so th
 normalisation is unbiased and the corpus's late doublets are a real but modest
 departure (z = +2.48). It constrains the key, not the shape.
 
+## Correction to the `returns` row (same day)
+
+`returns` is listed above as a mechanism cell that every shape fails identically. That
+is true of its marginal value and false of its conditional one.
+`the-chain-shows-only-in-extension.md` shows the cell is the base chain's only
+observable once it is read as a rate per identical pair: a chained base extends one
+repeat in 79, independent per-word draws one in 2,390. The corpus's single return is
+about 30 times more likely under a chain.
+
+So the cell carries information, but not in the form the battery reports it.
+
 ## Consequences
 
 - No "model lands N cells" statement in this directory is evidence about a mechanism
