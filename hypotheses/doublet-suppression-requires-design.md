@@ -141,3 +141,40 @@ control behind it.
 row) and their register is didactic where the body's is not. The comparison is
 directional and 3.5 sigma, not decisive on its own; its value is that every step is
 measured on real material from the same source.
+
+## How much design, in bits (September 2026)
+
+The argument above says a tuned permutation relation is required. With the author's own
+plaintext available the requirement can be priced.
+
+Under the walk the alphabet at within-word position j is `base_w ∘ g^j`, so the
+relation between adjacent positions is `A_(j+1)⁻¹ ∘ A_j = g⁻¹`, constant in both the
+word and the position. A ciphertext doublet means `p_(j+1) = g⁻¹(p_j)`: the plaintext
+pair lies on the **graph** of `g⁻¹`. So the within-word doublet rate is exactly
+
+    Σ_x P(p_j = x, p_(j+1) = g⁻¹(x))
+
+the plaintext bigram mass `g⁻¹` selects. `experiments/doublet_constrains_g.py`
+validates this on planted walks before using it — predicted and observed agree to five
+decimals on every trial — because an earlier attempt at this argument used *fixed
+points* rather than the graph and was wrong (`key-local-channel-is-empty.md`).
+
+Against the author's own within-word bigrams, over 200,000 random order-5 permutations:
+
+| | |
+|---|---|
+| body's within-word doublet rate | 0.00628 (0.182× chance) |
+| mean mass selected by a random order-5 g | 0.0331 (= 1/29) |
+| standard deviation | 0.0143 |
+| **fraction of g selecting ≤ the body's rate** | **0.0046, or 1 in 215** |
+
+**So the doublet suppression alone constrains g by about 7.8 bits.** That is real
+design — 99.5% of order-5 steps are excluded — but it is modest, not the astronomical
+tuning the phrase "requires design" might suggest. It is also consistent with
+`key-local-channel-is-empty.md`'s independent figure of 16.0 bits of local constraint
+on g from distances 1 through 7, of which this is the d1 share.
+
+**Direction of the caveat matters.** The bigram table is 1,477 pairs over 841 cells, so
+it is sparse and a random g often selects empty cells. That makes low sums *easier* to
+reach by chance, so 1-in-215 is an upper bound on the fraction and 7.8 bits is a lower
+bound on the constraint.
