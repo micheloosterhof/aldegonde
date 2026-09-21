@@ -171,3 +171,39 @@ Open: the seven quoted spans are a much larger sample of preserved plaintext
 metadata than the four apostrophes, and nothing has been measured on them yet.
 Span lengths, and whether span boundaries align with anything in the cipher
 stream, are the obvious next probes.
+
+## Reproduced from the transcription alone (September 2026)
+
+The census above rests on a connected-component sweep of 58 page scans. That evidence is
+sound but nobody without the images can check it, and four known-plaintext sites in the
+body are load-bearing enough to deserve a second route. The transcription now encodes the
+ticks, so `experiments/apostrophe_from_text.py` reads the whole census out of the text
+file:
+
+| host block start | apostrophe at | shape | ciphertext |
+|---|---|---|---|
+| 1107 | 1110 | 3+1 | MXIW |
+| 5136 | 5138 | 2+1 | AEOY |
+| 8513 | 8515 | 2+1 | PET |
+| 10086 | 10089 | 3+1 | XLJC |
+
+Four apostrophes, four host blocks, every tail exactly one rune, p = 0.0278 under a
+uniform internal slot. Every number above is confirmed, from a different source.
+
+**A convention worth stating.** The stream offsets this file quotes are **host block
+starts**, not apostrophe positions; the apostrophes themselves sit three runes later at
+1110, 5138, 8515 and 10089. Anyone indexing the ciphertext from these offsets needs to
+know which.
+
+**The premise is now independently supported.** The reading assumes the apostrophe sits
+inside a *word* and that the word ends one rune later. `blocks-are-still-words.md` tests
+that premise on the whole corpus rather than assuming it: the d5 coincidence's
+correlation with segment length is +0.0369 in the body against +0.0360 for real words and
++0.0029 for arbitrary cuts of a stream. Had the blocks been arbitrary cuts, "the word
+ends there" would have been void and these four cribs with it.
+
+**A null recorded so it is not retried.** The 14 quotation marks enclose 81 blocks. Those
+blocks have mean length 4.57 against 4.34 outside and a two-rune share of 0.136 against
+0.177 — z = −0.97, nothing — and their length-transition excess is −0.0291 ± 0.0710.
+Eighty-one blocks cannot support either test. Quoted spans are not measurably a different
+register, and cannot be shown to be one with this much text.
