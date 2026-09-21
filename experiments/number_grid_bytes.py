@@ -21,7 +21,7 @@ kind.
 Two follow-up questions get answered here too, because both are cheap and both are the
 obvious Cicada guesses: are the grids large primes, and are they the body's keystream.
 
-    python number_grid_bytes.py [--primes] [--keystream]
+    python number_grid_bytes.py [--primes] [--keystream] [--unpack] [--xor]
 """
 
 from __future__ import annotations
@@ -182,10 +182,80 @@ def keystream() -> None:
     print("(the benchmark is prime(n)-1 on the AN END page, running-key-math-sequence.md)")
 
 
+def unpack() -> None:
+    """Are the grids a page of runes packed densely? 1,408 bits is about 290 runes."""
+    import numpy as np  # noqa: PLC0415
+
+    from lp_plaintext_register import corpus  # noqa: PLC0415
+    from sequence_key_sweep import trigram_table  # noqa: PLC0415
+
+    t = trigram_table()
+
+    def score(seq: list[int]) -> float:
+        a = np.array(seq, dtype=np.int64)
+        if a.size < 20:
+            return -9.0
+        return float(t[a[:-2] * 841 + a[1:-1] * 29 + a[2:]].mean())
+
+    ref = score([r for w in corpus() for r in w])
+    rnd = score(list(np.random.default_rng(1).integers(0, 29, 3000)))
+    print(f"reference: LP plaintext {ref:+.3f}, uniform random {rnd:+.3f}\n")
+    rows = []
+    for name, v in as_integers(grid_bytes()).items():
+        x, digits = v, []
+        while x:
+            digits.append(x % 29)
+            x //= 29
+        for lbl, seq in (("lsb-first", digits), ("msb-first", digits[::-1])):
+            rows.append((score(seq), f"{name} {lbl}", len(seq)))
+    rows.sort(reverse=True)
+    for sc, name, length in rows[:6]:
+        print(f"  {sc:+.3f}  {name:<34} {length} runes")
+    print("\nEvery unpacking sits near the random reference, not the plaintext one.")
+
+
+def xor_search() -> None:
+    """A repeating-XOR key, the standard thing to try on a short byte blob."""
+    from grid_hash_search import readings  # noqa: PLC0415
+
+    def english(b: bytes) -> float:
+        s = 0
+        for c in b:
+            ch = chr(c)
+            if ch.isalpha():
+                s += 3 if ch.lower() in "etaoinshr" else 1
+            elif ch == " ":
+                s += 4
+            elif not 32 <= c < 127:
+                s -= 3
+        return s / len(b)
+
+    data = readings()["65+66 row-major"]
+    print(f"{'keylen':>7}{'best score':>12}   key bytes")
+    for k in range(1, 9):
+        key, total = [], 0.0
+        for r in range(k):
+            cls = data[r::k]
+            b, bs = max(
+                ((x, english(bytes(c ^ x for c in cls))) for x in range(256)),
+                key=lambda t: t[1],
+            )
+            key.append(b)
+            total += bs * len(cls)
+        print(f"{k:>7}{total / len(data):>12.2f}   {' '.join(f'{b:02x}' for b in key)}")
+    print("\nEnglish prose scores about 2.46 here and random bytes about -0.84. The")
+    print("rise with key length is the free parameters, not a signal: eight key bytes")
+    print("fitted to 176 is 22 bytes per parameter.")
+
+
 if __name__ == "__main__":
     import sys  # noqa: PLC0415
 
-    if "--primes" in sys.argv:
+    if "--unpack" in sys.argv:
+        unpack()
+    elif "--xor" in sys.argv:
+        xor_search()
+    elif "--primes" in sys.argv:
         primality()
     elif "--keystream" in sys.argv:
         keystream()

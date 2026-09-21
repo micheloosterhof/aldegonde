@@ -72,11 +72,58 @@ runes and not the rune cipher's keystream.
 The block sizes are 104 and 72 bytes. Neither is a standard hash or key length, and the
 two do not divide evenly into one.
 
+## Three more readings tested, all negative
+
+**Not a digest of anything in the book.** The AN END page states that *a page of this
+book hashes to something*, which makes the self-referential reading the one to try
+first. Every window of every digest length (16, 20, 32, 64 bytes) was indexed under four
+grid orders — row-major and column-major, each forwards and reversed, for both
+concatenation orders — giving 3,712 distinct windows. Against that: MD5, SHA-1, SHA-256
+and SHA-512 of 261 strings, being every master chunk's runes as Unicode text, as UTF-8
+and as raw indices, every solved page's plaintext in English and in rune indices, the
+whole body, the master file, and the named strings the book uses as keys. **1,044
+digests, no hit.**
+
+That rules out the self-referential reading. It cannot rule out a digest of a string
+this project does not hold, and nothing can.
+
+**Not a page packed in base 29.** 1,408 bits is about 290 runes, so the grids are the
+right size to be a densely packed page — a Cicada-idiomatic construction. Unpacking each
+of the 24 big-integer readings into base-29 digits, both digit orders, and scoring with
+runeglish trigrams:
+
+| | mean log-trigram |
+|---|---|
+| LP's own plaintext | **+14.280** |
+| best of 48 unpackings | +7.267 |
+| uniform random runes | +5.662 |
+
+Every unpacking sits by the random reference. (The plaintext reference +14.28 matches the
++14.25 a true key scores on the AN END page in `running-key-math-sequence.md`, which is a
+useful cross-check on the scorer.)
+
+**Not a repeating XOR.** Key lengths 1 to 8, each residue class fitted to the
+best single XOR byte by English-likeness: the best score is 0.52 at key length 8, against
+2.46 for English prose and −0.84 for random bytes. The score rises monotonically with key
+length, which is the free parameters rather than a signal — eight key bytes fitted to 176
+is 22 bytes per parameter.
+
+## What cannot be tested, and why it is not worth pretending otherwise
+
+The natural next guess is an RSA modulus: 128 of the 176 bytes would be 1,024 bits. The
+only cheap test is that a modulus has no small factors, and a random integer avoids every
+factor below 10⁴ about 6% of the time. Over the 49 possible 128-byte windows, roughly
+three would pass by chance. A pass would therefore prove nothing and a fail would exclude
+nothing, so the test is not run. Confirming a modulus needs factoring it.
+
+This is what uniformity means in general: the tests above work because each proposes a
+*specific* structure, and once those are exhausted a uniform blob offers no purchase.
+
 ## Falsifiable next steps
 
-- If the bytes are a hash, they are 176 bytes, not 64 — so either two or more digests
-  concatenated, or a digest plus something else. A 64-byte window that is a SHA-512 of a
-  known Cicada string would show up in a direct search over window offsets.
+- The window search above covers strings the repo holds. A digest of an external Cicada
+  artifact — an onion address, a published message, a key fingerprint — would need that
+  artifact in hand, and is the one live extension.
 - If they are ciphertext, they carry no structure to attack without the key, which is
   what uniformity means.
 - Both grids read left-to-right, top-to-bottom here. Column-major or boustrophedon
@@ -86,8 +133,9 @@ two do not divide evenly into one.
 ## Status
 
 **Status**: confirmed (measurement), 176 tokens, complete — 13×8 and 9×8 exactly, no
-token dropped at a line wrap. `experiments/number_grid_bytes.py`, `--primes`,
-`--keystream`.
+token dropped at a line wrap. `experiments/number_grid_bytes.py` with `--primes`,
+`--keystream`, `--unpack`, `--xor`; `experiments/grid_hash_search.py` for the digest
+windows.
 
 ## Related
 
