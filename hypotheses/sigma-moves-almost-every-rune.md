@@ -60,17 +60,42 @@ almost everything, drawn from a family with no algebraic structure.**
 
 ## Scope
 
-- The reset convention is the one that shows anything; the continuous reading gives 0.9914
-  at gap 1. That is a mild preference for a per-block phase reset, at z = +1.48 — far too
-  weak to settle the convention question that `key-local-channel-is-empty.md` leaves open.
+- **The two readings do not identify the clock, and an earlier draft of this file said
+  they did.** Correction below.
 - Assumes `base_{w+1} = base_w ∘ σ`. The other composition order gives the same test with
   σ conjugated, and the same fixed-point count.
 - Ten planted draws per cell. The exclusions at f ≥ 10 are p ≤ 0.10 by count, but the
   body sits below every draw and well below the 10th percentile.
 
+## Correction: this channel says nothing about the clock convention
+
+The first version of this file noted that the effect appears under the per-block phase
+reset and not under a continuous clock, and called it a mild preference for the reset.
+**That was wrong**, and the right test is to plant each clock and read it both ways
+against its own shuffled null:
+
+| planted clock | z as reset | z as continuous |
+|---|---|---|
+| reset | +2.86 | −1.12 |
+| **continuous** | **+2.54** | +0.51 |
+| **body** | **+1.54** | **−0.33** |
+
+A planted **continuous** clock reads +2.54 under the **reset** reading — almost as high as
+a planted reset clock. The reset reading fires whatever the truth, because a σ fixed point
+makes `base_{w+1}(x) = base_w(x)` and some share of the pairs line up in phase either way.
+So the body's pattern is what *both* clocks produce, and it distinguishes neither.
+
+The clock convention that `key-local-channel-is-empty.md` leaves open — worth a factor of
+five on the σ order bound — stays open. What this channel measures is f_σ, and only that.
+
+Incidentally the body's +1.54 sits *below* both plants at f_σ = 5, which is independent
+support for the fixed-point bound above.
+
 ## Status
 
-**Status**: confirmed (measurement with planted controls at six fixed-point counts).
+**Status**: confirmed (measurement with planted controls at six fixed-point counts) for
+the fixed-point bound. The clock-convention remark in the first draft is **retracted**;
+planted controls show both clocks produce the body's pattern.
 `experiments/sigma_fixed_points.py`.
 
 ## Related

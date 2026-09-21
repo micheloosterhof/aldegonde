@@ -11,8 +11,10 @@ plaintext rune p with `sigma(p) = p`, block w+1 enciphers p exactly as block w d
 runes at the same letter PHASE in ADJACENT blocks coincide above chance in proportion to
 sigma's fixed-point count -- and at chance if sigma moves everything.
 
-The phase convention matters and both are run: the letter phase either resets at each
-block or runs continuously across the corpus.
+Both phase conventions are run, but NOT as a test of the clock: planted controls show a
+continuous clock reads +2.54 under the reset convention against a planted reset clock's
++2.86, so that reading fires either way. The conventions are printed for completeness and
+the fixed-point bound uses the reset one.
 
     python sigma_fixed_points.py [--draws 10]
 """
