@@ -178,3 +178,32 @@ on g from distances 1 through 7, of which this is the d1 share.
 it is sparse and a random g often selects empty cells. That makes low sums *easier* to
 reach by chance, so 1-in-215 is an upper bound on the fraction and 7.8 bits is a lower
 bound on the constraint.
+
+## A discriminator that does not exist, and why (September 2026)
+
+Two mechanisms are on the books for the suppression: an explicit rule that fires on
+equality, and a tuned letter step whose graph sits on low-mass plaintext pairs. They look
+as though they should differ **per rune** — a rule that fires on equality is
+value-independent and should suppress every rune equally, while a tuned diagonal has 29
+different entries and should not.
+
+Measured, the body's suppression is uniform: pooled factor 0.1925, homogeneity χ² **27.8
+on 28 df** against a 5% critical value of 41.3. That looks like evidence for the rule.
+
+**It is not, and the reason is structural.** Under the walk, adjacent positions carry
+`base ∘ g^j` and `base ∘ g^(j+1)`, so a ciphertext doublet at value x requires
+`g^j(p_i) = g^(j+1)(p_{i+1})`, i.e. `p_i = g(p_{i+1})`. The plaintext condition is about
+g — but the ciphertext *value* it lands on is `base(g^j(p_i))`, and base changes every
+block while j runs over five phases. The value is randomised before anyone sees it.
+
+Planted walks confirm it. Four walks with **no doublet rule at all** give homogeneity χ²
+of 23.1, 11.8, 28.8 and 28.9 — the body's 27.8 sits in the middle of them. The statistic
+has no power, and the apparent evidence for the rule is nothing.
+
+Recorded so it is not tried again. Any per-rune statistic of the ciphertext is blind to g
+for the same reason: the base absorbs the value.
+
+**The control does reproduce this file's own result from a new direction.** Those same
+four walks, carrying a per-block base and a letter step of order 5 and nothing else, give
+suppression factors of **0.74 to 1.40** where the body gives **0.19**. A walk does not
+suppress doublets. Something in the mechanism does.
