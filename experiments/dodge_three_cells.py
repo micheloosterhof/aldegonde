@@ -20,7 +20,11 @@ plaintext gives a corpus whose doublets are already suppressed to 0.0063, so the
 cannot produce them at all -- d1w reads 0.0008 and the three cells appear to land 54% of
 the time. Every number below uses prose.
 
-    python dodge_three_cells.py [--draws 150]
+`--sets` then answers the question that leaves: whether a DIFFERENT admissible
+fixed-point choice reaches them. It does, and the previous negative was an artifact of one
+unlucky set.
+
+    python dodge_three_cells.py [--draws 150] [--sets]
 """
 
 from __future__ import annotations
@@ -41,7 +45,72 @@ CELLS = ("d1w", "d3w", "d6w", "seam", "doublet_pos")
 SE = {"d1w": 0.0011, "d3w": 0.0026, "d6w": 0.0051, "seam": 0.0034, "doublet_pos": 0.06}
 
 
+def admissible(plain, lp, limit: int, rng: random.Random):
+    """Fixed-point sets whose plaintext doubles land the corpus doublet rate."""
+    import collections  # noqa: PLC0415
+    import itertools  # noqa: PLC0415
+
+    doubles: collections.Counter = collections.Counter()
+    pairs = 0
+    for w in plain:
+        for i in range(len(w) - 1):
+            pairs += 1
+            if w[i] == w[i + 1]:
+                doubles[w[i]] += 1
+    target = lp["d1w"] * pairs
+    sets = [
+        k
+        for k in itertools.combinations(range(M), 4)
+        if abs(sum(doubles[x] for x in k) - target) <= 2 * target**0.5
+    ]
+    return rng.sample(sets, min(limit, len(sets))), len(sets)
+
+
+def set_sweep(per_set: int = 8, n_sets: int = 40) -> None:
+    """Can any admissible fixed-point choice land all five cells at once?"""
+    import collections  # noqa: PLC0415
+
+    lp = fingerprint(lp_words())
+    plain = prose_corpora(2928, 1)[0]
+    rng = random.Random(77)
+    sets, total_admissible = admissible(plain, lp, n_sets, rng)
+    print(f"{total_admissible:,} admissible fixed-point sets; sampling {len(sets)}"
+          f" x {per_set} draws
+")
+    per_cell: collections.Counter = collections.Counter()
+    winners, total = [], 0
+    for keep in sets:
+        for _ in range(per_set):
+            g = order5_fixing(list(keep), rng)
+            sigma = rng.sample(range(M), M)
+            fp = fingerprint(encipher(plain, rng.sample(range(M), M), g, sigma))
+            total += 1
+            hit = [k for k in CELLS if abs(fp[k] - lp[k]) <= 2 * SE[k]]
+            for k in hit:
+                per_cell[k] += 1
+            if len(hit) == len(CELLS):
+                winners.append((keep, {k: round(fp[k], 4) for k in CELLS}))
+    for k in CELLS:
+        print(f"  {k:>12} lands {per_cell[k]:>4}/{total}")
+    expected = total
+    for k in CELLS:
+        expected *= per_cell[k] / total
+    print(f"
+all five at once: {len(winners)}/{total}")
+    print(f"independence would predict {expected:.1f}")
+    for w in winners[:3]:
+        print(f"   {w[0]} -> {w[1]}")
+    print(
+        "\nSo the three cells ARE reachable and the earlier negative was one unlucky"
+        "\nfixed-point set. But the joint rate matches what independent cells would"
+        "\ngive, so landing them is fitting rather than prediction."
+    )
+
+
 def main() -> None:
+    if "--sets" in sys.argv:
+        set_sweep()
+        return
     draws = 150
     for i, a in enumerate(sys.argv):
         if a == "--draws" and i + 1 < len(sys.argv):

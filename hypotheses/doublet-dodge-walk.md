@@ -131,10 +131,29 @@ requires: they are set by the fixed points alone. So the freedom this file count
 real but is the wrong freedom — it moves d3w over a range that does not include the
 target.
 
-What remains open is narrower: whether one of the *other* admissible fixed-point choices
-— the file counts 21 of 220 that land the doublet rate and position together — shifts
-d3w's whole range downward. That is the test to run next, and it is no longer the
-open-ended one this paragraph used to describe.
+**And a different fixed-point set does reach them.** Sampling 40 of the 5,799 admissible
+sets — those whose plaintext doubles land the corpus doublet rate — and drawing eight keys
+each:
+
+| cell | lands |
+|---|---|
+| d1w | 320/320 |
+| d3w | 102/320 |
+| d6w | 134/320 |
+| seam | 191/320 |
+| doublet_pos | 168/320 |
+| **all five at once** | **11/320** |
+
+So **all three formerly unreached cells are reachable**, and the negative above was an
+artifact of one unlucky choice: {4, 8, 18, 19} happens to put d3w's whole range above the
+target, while {3, 16, 21, 26} lands all five repeatedly.
+
+**What the fit is worth, though, is less than it looks.** Independence over the five
+per-cell rates predicts 13.4 joint successes in 320 draws; **11 were observed**. The cells
+land together at exactly the rate uncorrelated variation would give, so reaching them is
+*fitting* — the mechanism does not forbid them, and it does not predict them either. The
+same caution applies to the twelve cells this file counts as landing: a count of cells hit
+is evidence only against the rate a free parameter would hit them anyway.
 
 **A harness trap worth recording.** The first run of this test fed `lp_words()` in as
 plaintext. That function returns the LP **ciphertext**; the plaintext surrogate is
