@@ -3,6 +3,45 @@ type: observation
 ---
 # Observation: The Unsolved Pages' Marks Do Not Space Like the Solved Pages' Clause Punctuation, and the Glyphs Are Not One Thing
 
+## Correction (2026-09-21, same day): the control was mislabelled and one result does not survive it
+
+This file originally called pages 0-14 "the solved section". That was wrong. The `.`
+convention marks pages **transcribed with ASCII delimiters**, which is not the same as
+pages that are solved. Scoring each of those 15 pages as runeglish shows only **six**
+(3, 8, 9, 10, 11, 14) are plaintext in the transcription -- they read directly as
+English, e.g. page 8 "THE LOSS OF DIUINITY THE CIRCUMFERENCE PRACTICES THREE
+BEHAUIARS..." -- while nine (0, 1, 2, 4, 5, 6, 7, 12, 13) are still enciphered.
+`experiments/solved_page_testbed.py` classifies them.
+
+Re-running the two headline statistics on the pure plaintext set:
+
+| group | marks | cv | p(cv) | ≤2 wd | word before | z |
+|---|---|---|---|---|---|---|
+| plaintext pages only | 34 | 0.85 | **0.32** | 29.4% | 5.29 | **+3.49** |
+| ASCII-convention, still enciphered | 53 | 0.66 | **0.0024** | 15.1% | 4.73 | **+4.74** |
+| unsolved, 4-dot | 141 | 0.79 | 0.12 | 5.7% | 4.06 | +1.04 |
+
+**The spacing result does not survive.** The p = 0.0026 reported below as the positive
+control came from the pooled ASCII-convention pages, and splitting them shows it is
+carried by the *enciphered* subset; the genuine plaintext pages give cv 0.85, p = 0.32.
+A control that fails on the one group where the plaintext is readable is not a control.
+The spacing argument is withdrawn, and with it the claim that the test had demonstrated
+power — `mark_clause_power.py` planted the pooled template's shape, which is now known
+to be a mixture.
+
+**The word-length signature survives and is strengthened.** Both ASCII-convention
+groups carry it -- plaintext z = +3.49 and enciphered z = +4.74 -- which is what a
+length-preserving cipher predicts, since plaintext word lengths pass through
+encipherment untouched. The unsolved 4-dot mark does not, at z = +1.04 on the largest
+sample of the three. That contrast is now the load-bearing evidence in this file, and
+it no longer depends on knowing which pages are solved: it only needs the two
+transcription conventions, both of which carry the signature on one side and not the
+other.
+
+Everything below is left as written except where it is marked. The 13-dot
+identification and the glyph-splitting results are unaffected -- they never used the
+control.
+
 ## Feature
 
 Measured in **words between marks**, against the LP's own solved pages as the
@@ -72,7 +111,7 @@ glyph-pooling defect found above is not the reason the pooled test came back nul
 
 ## Status
 
-**Status**: confirmed (measurement) for all three, with the power check run before
+**Status**: result 1 (spacing) WITHDRAWN by the correction above; results 2 and 3 stand, and the word-length signature stands. Originally recorded as confirmed (measurement) for all three, with the power check run before
 the negative was accepted, and and consistent with the
 established word-length-signature result, which is re-run per glyph here rather than
 reproduced as new evidence. `experiments/mark_clause_lengths.py`,
