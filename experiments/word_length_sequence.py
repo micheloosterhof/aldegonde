@@ -83,12 +83,30 @@ def g2(seqs: list[list[int]]) -> tuple[float, int]:
     return out, n
 
 
-def excess_per_pair(seqs: list[list[int]], rng: random.Random, draws: int = 200):
-    """(excess G^2 per pair, its standard error) against a length-shuffling surrogate."""
+def excess_per_pair(
+    seqs: list[list[int]], rng: random.Random, draws: int = 200, within: bool = False
+):
+    """(excess G^2 per pair, its standard error) against a length-shuffling surrogate.
+
+    The default surrogate pools the lengths and redeals them into the same sequence
+    shapes, which does NOT preserve each sequence's own marginal -- so heterogeneity
+    between pages could masquerade as transition structure. `within` shuffles inside
+    each sequence instead, which preserves it. The two agree here (0.0395 against
+    0.0382 for the plaintext reference, 0.0037 either way for the body), so the
+    default is kept for its larger surrogate sample.
+    """
     obs, n = g2(seqs)
     flat = [x for s in seqs for x in s]
     sur = []
     for _ in range(draws):
+        if within:
+            resh = []
+            for s in seqs:
+                t = s[:]
+                rng.shuffle(t)
+                resh.append(t)
+            sur.append(g2(resh)[0])
+            continue
         t = flat[:]
         rng.shuffle(t)
         it = iter(t)

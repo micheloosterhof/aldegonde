@@ -70,6 +70,30 @@ sequence needs q = 0.9, which drops the 2-rune share to 0.024 and the mean to 5.
 No rule in the family fits both. This is the quantitative version of the refutation:
 the length histogram and the length order cannot be produced by one merge process.
 
+## Two ways the comparison could have been an artifact, both checked
+
+**The surrogate could have been too weak.** The default null pools all lengths and redeals
+them into the same sequence shapes, which does *not* preserve each page's own marginal —
+so heterogeneity between pages (a title page against a prose page) could masquerade as
+transition structure, and the reference is pooled from 16 short pages while the body is
+10 long sections. Shuffling *within* each sequence instead, which preserves every
+marginal:
+
+| | across-sequence shuffle | within-sequence shuffle |
+|---|---|---|
+| LP solved plaintext | 0.0395 ± 0.0108 | **0.0382 ± 0.0107** |
+| unsolved body | 0.0037 ± 0.0027 | **0.0037 ± 0.0025** |
+
+Three percent of the reference's excess was heterogeneity; none of the body's. The
+comparison is unchanged.
+
+**The prose reference could have been Gutenberg boilerplate.** Each book's first words are
+repetitive legal text, and repetition is exactly what this statistic measures — a 720-word
+sample of pure boilerplate reads 0.1928, four times any real book. Skipping the first
+3,000 words of all six books moves the reference from 0.0484 ± 0.0160 to **0.0493 ±
+0.0164**. The contamination is confined to a fraction of a percent of a 20,000-word
+sample.
+
 ## It is not a segmentation artifact
 
 The obvious alternative is that the tokenizer is wrong — that the structure is there and
