@@ -58,6 +58,23 @@ was the one measurement of σ that did not assume the chain
 step is on the left, every statement about σ in this directory is conditional on a model
 and none of them is testable at a seam.
 
+## Where that leaves the three readings
+
+One is now closed outright and one is answered elsewhere, which leaves the left action as
+the reading that fits everything:
+
+- **the base changes at a larger unit** — closed below, at 8.5 sigma;
+- **there is no chain at a seam** — `word-repeat-accounting.md` argues there is, on two
+  counts that must give one pool: the chain's interval [153, 22,369] contains the 2,752
+  that `identical` implies and the chainless 53 [28, 334] misses it by eight times, and
+  holding the corpus's 17 repeats fixed while shuffling only word order puts two of them
+  adjacent once in 20,000 draws;
+- **a left action** — nothing contradicts it.
+
+Each leg is worth about p = 0.04 on its own except the first, which is decisive. The
+synthesis is the most consistent reading of three independent measurements, not a proof
+of any one of them.
+
 ## Three readings that survive this
 
 Stated so the lean is not over-read.
@@ -66,10 +83,29 @@ Stated so the lean is not over-read.
    per sentence, most "seams" are not base changes and the cross-seam pairs are ordinary
    within-base pairs, which would also flatten the table.
 
-   *Tested, same tick.* Running the identical statistic with the base changing at line
-   boundaries instead gives **−0.23** on 594 lines of 21.8 runes, against the block-level
-   −0.05 and a right-acting walk's +1.84 ± 0.92. Lines are not it either. Pages cannot be
-   tested: 55 units leave too few pairs to fill the cells.
+   *Tested twice, and closed.* Running the identical statistic with the base changing at
+   line boundaries gives **−0.23** on 594 lines of 21.8 runes, against the block-level
+   −0.05 and a right-acting walk's +1.84 ± 0.92.
+
+   The direct test is better. `g` has order 5, so two runes five apart share a power of
+   `g`; if they also share a base they coincide at the plaintext rate and otherwise at
+   chance. The cross-block lag-5 rate therefore reads out how often the base survives an
+   edge, with no key at all:
+
+   | corpus | across a block edge |
+   |---|---|
+   | planted walk, base steps every block | 0.0363 ± 0.0018 |
+   | planted walk, base never steps | **0.0595 ± 0.0023** |
+   | **the body** | **0.0347 ± 0.0018** |
+
+   The body sits on the stepping walk (z = −0.64) and **8.5 sigma** from the fixed one.
+   A surviving base leaks 0.0232 of coincidence, so the fraction of edges carrying an
+   unchanged base is −0.07 ± 0.11, with a 95% upper bound of **0.15**. A rule stepping
+   the base every second block would leave half the edges unchanged and is excluded many
+   times over.
+
+   **The base changes at essentially every block edge.** Any unit larger than the block —
+   a phrase ending in a heavier mark, a line, a page — is out.
 2. **There may be no chain at a seam at all** — bases drawn independently per block. The
    chain evidence is `word-repeat-accounting.md`'s consistency argument, which rests on
    one repeated phrase.
