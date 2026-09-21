@@ -193,6 +193,24 @@ swept across its parameter range, and none reaching the body's order level while
 its histogram. **Every mechanism that preserves word identity leaves most of the order
 intact.** The order is destroyed, not diluted.
 
+## Interleaving is the right shape and is not what happened
+
+Of everything tried, interleaving fits the anomaly best on paper. Take k texts and write
+one word from each in turn: adjacent blocks come from different sources so the serial
+correlation vanishes, while the multiset of lengths is untouched so the marginal stays
+token-weighted. Both halves of the anomaly from one hand-runnable rule — which is what a
+scribe needs and what "a permutation with no compact description" conspicuously lacks. It
+is also outside the route-transposition searches, which permute blocks *within* a page.
+
+And it makes a prediction the other candidates do not: blocks **k apart** come from the
+same text and sit adjacent in it, so the language-like correlation should reappear exactly
+at lag k. Prose carries 0.0555 excess per pair at lag 1 and falls to a tenth of that by
+lag 3, so an interleaved corpus shows that peak **displaced, not destroyed**.
+
+Scanning every lag from 1 to 30, the body's maximum is **0.0055 ± 0.0022** at lag 18 —
+noise, an order of magnitude below prose's lag-1 peak, with no lag standing out from its
+neighbours. Interleaving at any depth up to 30 is excluded.
+
 ## Sorting creates order rather than destroying it
 
 The most natural compact permutation is a sort. It fails in the opposite direction from
