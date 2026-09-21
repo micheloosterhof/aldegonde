@@ -56,12 +56,19 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 | E3 | Not produced by **merging, nulls or padding** — whatever matches the histogram keeps five times too much order | same | Three families, each swept |
 | E4 | Not restored by any **per-page route transposition** — 17 rules, on a search that recovers a planted columnar-7 exactly | `block_transposition_search.py` | Per-page, whole blocks |
 
-## F. The information ceiling
+## F. Uniformity
+
+| # | Constraint | Source | Scope |
+|---|---|---|---|
+| F1 | The body is **one cipher**: doublets, d5 and IoC are homogeneous across 9 sections and 55 pages | `the-body-is-one-cipher.md` | Control finds the Parable, a plaintext page, at +7 sd |
+| F2 | **No window** from 100 runes up reads as plaintext or monoalphabetic — the body's best window is below a shuffled corpus's | `no-plaintext-window.md` | Coincidence only; a differently-keyed polyalphabetic stretch would not show |
+
+## G. The information ceiling
 
 | # | Constraint | Source |
 |---|---|---|
-| F1 | The local channel is worth **13 bits on g and 0 on σ**, against an 80- and 103-bit search | `why-the-body-resists.md` |
-| F2 | The key is nonetheless **over-determined 69×** by the ciphertext, so a unique answer exists | `unicity-distance.md` |
+| G1 | The local channel is worth **13 bits on g and 0 on σ**, against an 80- and 103-bit search | `why-the-body-resists.md` |
+| G2 | The key is nonetheless **over-determined 69×** by the ciphertext, so a unique answer exists | `unicity-distance.md` |
 
 ## What that leaves
 
