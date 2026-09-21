@@ -93,6 +93,44 @@ drives the order *further* to zero (−0.0006). It also makes the histogram fit 
 known to be wrong from the solved pages, where words demonstrably flow across wraps. So
 the one convention that improves the mean improves nothing else.
 
+## The reference holds under a jackknife
+
+The comparison's load-bearing half is the 723-word plaintext reference, pooled from 16
+pages, one of which (`WELCOME WELCOME PILGRIM…`) is conspicuously repetitive. Dropping
+one page at a time:
+
+| | excess per pair |
+|---|---|
+| all 16 pages | 0.0388 ± 0.0103 |
+| leave-one-out range | 0.0291 to 0.0609 |
+| jackknife sd | 0.0072 |
+
+No page drives it. Every leave-one-out estimate stays far above the body's 0.0039, and
+the jackknife spread is *smaller* than the surrogate-based standard error, so the quoted
+±0.0103 is conservative.
+
+## Three perturbation families, all failing the same way
+
+Merging is not the only way to lengthen words without reordering them. Nulls and padding
+are the classical alternatives, and they behave identically:
+
+| model | mean | 2-rune | excess per pair | histogram vs body |
+|---|---|---|---|---|
+| prose, untouched | 4.11 | 0.227 | 0.0342 | 0.0448 |
+| nulls at rate 0.05 | 4.32 | 0.208 | 0.0287 | 0.0272 |
+| **nulls at rate 0.10** | 4.52 | 0.187 | **0.0237** | **0.0240** |
+| nulls at rate 0.15 | 4.73 | 0.169 | 0.0230 | 0.0388 |
+| pad 0.5 runes per word | 4.61 | 0.132 | 0.0221 | 0.0334 |
+| **body** | **4.42** | **0.159** | **0.0039** | — |
+
+The rate that best matches the histogram leaves **0.0237** of order where the body has
+0.0039 — the same five-fold failure as the merge family.
+
+That is now three independent families — merge, selective merge, nulls and padding — each
+swept across its parameter range, and none reaching the body's order level while keeping
+its histogram. **Every mechanism that preserves word identity leaves most of the order
+intact.** The order is destroyed, not diluted.
+
 ## But the blocks are not memoryless either
 
 A block process that starts a new block with fixed probability per rune would give

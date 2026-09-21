@@ -32,7 +32,13 @@ Segmentation is the obvious alternative explanation, so it is swept rather than 
 sixteen tokenization conventions, crossing line wraps, multi-dot marks, page marks and
 quotes. Every one gives essentially zero.
 
-    python word_length_sequence.py [--merge] [--shape] [--tokenize]
+`--perturb` sweeps the other length-perturbation families -- nulls inserted at a rate,
+and a fixed pad per word -- for the same reason the merge family was swept. They fail the
+same way: whatever matches the histogram leaves five times too much order.
+
+`--jackknife` checks the reference, which is the load-bearing half of the comparison.
+
+    python word_length_sequence.py [--merge] [--shape] [--tokenize] [--perturb] [--jackknife]
 """
 
 from __future__ import annotations
@@ -193,6 +199,64 @@ def tokenize_sweep(rng: random.Random) -> None:
     )
 
 
+def perturb_control(rng: random.Random) -> None:
+    """Nulls and padding, the other ways to lengthen words without reordering them."""
+    prose = prose_sequences(40000)[1][1]
+    body = [x for s in body_sequences() for x in s]
+
+    def hist(ls: list[int], cap: int = 12) -> tuple[list[float], int]:
+        c = collections.Counter(min(x, cap) for x in ls)
+        return [c[k] / len(ls) for k in range(1, cap + 1)], len(ls)
+
+    hb, _nb = hist(body)
+
+    def fit(h: list[float], n: int, m: list[float]) -> float:
+        return sum(2 * n * o * math.log(o / e) for o, e in zip(h, m) if o > 0 < e) / n
+
+    print(
+        f"body: mean {sum(body) / len(body):.2f} "
+        f"2-rune {sum(1 for x in body if x == 2) / len(body):.3f} excess/pair 0.0039\n"
+    )
+    print(f"{'model':<32}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}{'hist vs body':>14}")
+
+    def show(ls: list[int], label: str) -> None:
+        e = excess_per_pair([ls], rng, draws=30)[0]
+        h, n = hist(ls)
+        print(
+            f"{label:<32}{sum(ls) / len(ls):>7.2f}"
+            f"{sum(1 for x in ls if x == 2) / len(ls):>9.3f}{e:>13.4f}{fit(h, n, hb):>14.4f}"
+        )
+
+    show(prose, "prose, untouched")
+    for r in (0.05, 0.10, 0.15, 0.25):
+        show([L + sum(rng.random() < r for _ in range(L)) for L in prose],
+             f"nulls inserted at rate {r}")
+    for r in (0.5, 1.0):
+        show([L + (rng.random() < r) + (r > 1) for L in prose], f"pad {r} runes per word")
+    print(
+        "\nThe rate that best matches the histogram, 0.10, still leaves 0.0237 of order"
+        "\nwhere the body has 0.0039. Same failure as the merge family."
+    )
+
+
+def jackknife(rng: random.Random) -> None:
+    """Is the plaintext reference driven by one page? No."""
+    seqs = plaintext_sequences()
+    full = excess_per_pair(seqs, rng, draws=300)
+    print(f"all {len(seqs)} pages, {sum(len(s) for s in seqs)} words: "
+          f"{full[0]:.4f} +- {full[1]:.4f}\n")
+    vals = []
+    for i in range(len(seqs)):
+        e = excess_per_pair([s for j, s in enumerate(seqs) if j != i], rng, draws=150)[0]
+        vals.append(e)
+        print(f"  drop page {i:>2} ({len(seqs[i]):>3} words): {e:.4f}")
+    m = sum(vals) / len(vals)
+    sd = (sum((x - m) ** 2 for x in vals) / len(vals)) ** 0.5
+    print(f"\njackknife: min {min(vals):.4f} max {max(vals):.4f} sd {sd:.4f}")
+    print("No page drives the reference; every leave-one-out estimate stays far above")
+    print("the body's 0.0039, and the jackknife spread is smaller than the quoted SE.")
+
+
 def shape_control(rng: random.Random) -> None:
     """Is the block-length histogram memoryless, and how far is it from language?"""
     body = [x for s in body_sequences() for x in s]
@@ -293,6 +357,12 @@ def main() -> None:
         return
     if "--tokenize" in sys.argv:
         tokenize_sweep(rng)
+        return
+    if "--perturb" in sys.argv:
+        perturb_control(rng)
+        return
+    if "--jackknife" in sys.argv:
+        jackknife(rng)
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")
