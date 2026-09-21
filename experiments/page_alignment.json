@@ -1,0 +1,349 @@
+[
+ {
+  "page": 0,
+  "chunk": 15,
+  "score": 0.983,
+  "runner_up": 0.778
+ },
+ {
+  "page": 1,
+  "chunk": null,
+  "score": 0.937,
+  "runner_up": 0.889
+ },
+ {
+  "page": 2,
+  "chunk": 17,
+  "score": 0.947,
+  "runner_up": 0.647
+ },
+ {
+  "page": 3,
+  "chunk": 18,
+  "score": 0.932,
+  "runner_up": 0.833
+ },
+ {
+  "page": 4,
+  "chunk": 19,
+  "score": 0.984,
+  "runner_up": 0.889
+ },
+ {
+  "page": 5,
+  "chunk": 20,
+  "score": 0.966,
+  "runner_up": 0.889
+ },
+ {
+  "page": 6,
+  "chunk": 21,
+  "score": 0.956,
+  "runner_up": 0.778
+ },
+ {
+  "page": 7,
+  "chunk": 22,
+  "score": 0.98,
+  "runner_up": 0.778
+ },
+ {
+  "page": 8,
+  "chunk": 23,
+  "score": 0.961,
+  "runner_up": 0.778
+ },
+ {
+  "page": 9,
+  "chunk": 24,
+  "score": 1.0,
+  "runner_up": 0.8
+ },
+ {
+  "page": 10,
+  "chunk": 25,
+  "score": 1.0,
+  "runner_up": 0.85
+ },
+ {
+  "page": 11,
+  "chunk": 26,
+  "score": 0.909,
+  "runner_up": 0.76
+ },
+ {
+  "page": 12,
+  "chunk": 27,
+  "score": 0.969,
+  "runner_up": 0.778
+ },
+ {
+  "page": 13,
+  "chunk": 28,
+  "score": 0.984,
+  "runner_up": 0.833
+ },
+ {
+  "page": 14,
+  "chunk": 29,
+  "score": 0.968,
+  "runner_up": 0.742
+ },
+ {
+  "page": 15,
+  "chunk": 30,
+  "score": 0.973,
+  "runner_up": 0.722
+ },
+ {
+  "page": 16,
+  "chunk": 31,
+  "score": 0.967,
+  "runner_up": 0.833
+ },
+ {
+  "page": 17,
+  "chunk": null,
+  "score": 0.942,
+  "runner_up": 0.9
+ },
+ {
+  "page": 18,
+  "chunk": 33,
+  "score": 0.967,
+  "runner_up": 0.8
+ },
+ {
+  "page": 19,
+  "chunk": 34,
+  "score": 0.985,
+  "runner_up": 0.833
+ },
+ {
+  "page": 20,
+  "chunk": 35,
+  "score": 0.969,
+  "runner_up": 0.882
+ },
+ {
+  "page": 21,
+  "chunk": 36,
+  "score": 0.945,
+  "runner_up": 0.778
+ },
+ {
+  "page": 22,
+  "chunk": 37,
+  "score": 1.0,
+  "runner_up": 0.786
+ },
+ {
+  "page": 23,
+  "chunk": 38,
+  "score": 0.978,
+  "runner_up": 0.722
+ },
+ {
+  "page": 24,
+  "chunk": 39,
+  "score": 0.969,
+  "runner_up": 0.8
+ },
+ {
+  "page": 25,
+  "chunk": 40,
+  "score": 0.966,
+  "runner_up": 0.778
+ },
+ {
+  "page": 26,
+  "chunk": null,
+  "score": 0.949,
+  "runner_up": 0.941
+ },
+ {
+  "page": 27,
+  "chunk": 42,
+  "score": 0.923,
+  "runner_up": 0.778
+ },
+ {
+  "page": 28,
+  "chunk": 43,
+  "score": 0.983,
+  "runner_up": 0.778
+ },
+ {
+  "page": 29,
+  "chunk": 44,
+  "score": 0.958,
+  "runner_up": 0.889
+ },
+ {
+  "page": 30,
+  "chunk": 45,
+  "score": 0.967,
+  "runner_up": 0.882
+ },
+ {
+  "page": 31,
+  "chunk": 46,
+  "score": 0.953,
+  "runner_up": 0.85
+ },
+ {
+  "page": 32,
+  "chunk": 47,
+  "score": 1.0,
+  "runner_up": 0.739
+ },
+ {
+  "page": 33,
+  "chunk": 48,
+  "score": 0.925,
+  "runner_up": 0.8
+ },
+ {
+  "page": 34,
+  "chunk": 49,
+  "score": 0.967,
+  "runner_up": 0.8
+ },
+ {
+  "page": 35,
+  "chunk": 50,
+  "score": 0.934,
+  "runner_up": 0.8
+ },
+ {
+  "page": 36,
+  "chunk": 51,
+  "score": 0.98,
+  "runner_up": 0.75
+ },
+ {
+  "page": 37,
+  "chunk": 52,
+  "score": 0.923,
+  "runner_up": 0.8
+ },
+ {
+  "page": 38,
+  "chunk": 53,
+  "score": 0.936,
+  "runner_up": 0.667
+ },
+ {
+  "page": 39,
+  "chunk": 54,
+  "score": 0.945,
+  "runner_up": 0.824
+ },
+ {
+  "page": 40,
+  "chunk": 55,
+  "score": 0.945,
+  "runner_up": 0.88
+ },
+ {
+  "page": 41,
+  "chunk": 56,
+  "score": 0.935,
+  "runner_up": 0.778
+ },
+ {
+  "page": 42,
+  "chunk": 57,
+  "score": 1.0,
+  "runner_up": 0.833
+ },
+ {
+  "page": 43,
+  "chunk": 58,
+  "score": 1.0,
+  "runner_up": 0.722
+ },
+ {
+  "page": 44,
+  "chunk": 59,
+  "score": 0.982,
+  "runner_up": 0.85
+ },
+ {
+  "page": 45,
+  "chunk": 60,
+  "score": 0.984,
+  "runner_up": 0.889
+ },
+ {
+  "page": 46,
+  "chunk": 61,
+  "score": 0.984,
+  "runner_up": 0.8
+ },
+ {
+  "page": 47,
+  "chunk": 62,
+  "score": 0.966,
+  "runner_up": 0.889
+ },
+ {
+  "page": 48,
+  "chunk": 63,
+  "score": 0.97,
+  "runner_up": 0.85
+ },
+ {
+  "page": 49,
+  "chunk": 64,
+  "score": 1.0,
+  "runner_up": 0.889
+ },
+ {
+  "page": 50,
+  "chunk": null,
+  "why": "too few words"
+ },
+ {
+  "page": 51,
+  "chunk": 65,
+  "score": 0.95,
+  "runner_up": 0.85
+ },
+ {
+  "page": 52,
+  "chunk": 66,
+  "score": 0.967,
+  "runner_up": 0.84
+ },
+ {
+  "page": 53,
+  "chunk": 67,
+  "score": 1.0,
+  "runner_up": 0.722
+ },
+ {
+  "page": 54,
+  "chunk": 68,
+  "score": 1.0,
+  "runner_up": 0.8
+ },
+ {
+  "page": 55,
+  "chunk": 69,
+  "score": 1.0,
+  "runner_up": 0.842
+ },
+ {
+  "page": 56,
+  "chunk": 70,
+  "score": 0.96,
+  "runner_up": 0.84
+ },
+ {
+  "page": 57,
+  "chunk": 44,
+  "score": 0.9,
+  "runner_up": 0.85
+ }
+]
