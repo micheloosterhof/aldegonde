@@ -1,7 +1,7 @@
 ---
 type: observation
 ---
-# Observation: The Seam-to-Within-Word Doublet Ratio Is a Constraint the Whole Dodge Family Fails
+# Observation: The Seam-to-Within-Word Doublet Ratio Measures g's Graph Mass
 
 ## The repair that works, and the one that does not
 
@@ -25,7 +25,36 @@ That helps. At φ ≈ 0.8 the model reaches **3 of 5**, the best score in this d
 by a factor of two; fitting the seam at φ ≈ 0.8 undershoots d1w by the same. The ratio
 never falls below **1.91**, against the corpus's **1.25 ± 0.30**.
 
-## Why, and why it is not a tuning problem
+## Corrected the next day: it is a readout of g, not a family constraint
+
+The sweep above varies φ with **g held fixed**, and the conclusion drawn from it — that
+the family cannot reach the corpus's ratio — does not survive varying g.
+
+Substituting on collision instead of skipping (`substitution_preventer.py`) keeps the seam
+rate constant while d1w tracks **g's graph mass on the plaintext bigram table**,
+Σₓ P(prev = g(x), cur = x). Over three order-5 permutations drawn from the extremes of
+4,000:
+
+| g's graph mass | d1w | seam | ratio |
+|---|---|---|---|
+| 0.0047 | 0.0014 | 0.0135 | **9.77** |
+| 0.0317 | 0.0093 | 0.0136 | **1.46** |
+| 0.0959 | 0.0259 | 0.0135 | **0.52** |
+
+The seam does not move — it is context-free, as the mechanism says. **d1w scales with the
+mass, and the ratio spans 0.52 to 9.77.** The corpus's 1.25 sits inside that range, at a
+mass close to the median of random order-5 permutations (0.0317 over 4,000 draws).
+
+So the ratio is not a barrier the dodge family fails. It is a **one-parameter readout of
+g**, and the corpus's value corresponds to an ordinary g rather than a tuned one. The
+1.91 floor reported below is the floor *for the single g those runs happened to use*.
+
+**What survives.** The ratio is still worth having, as a measurement rather than an
+exclusion: it pins Σₓ P(prev = g(x), cur = x) to roughly the middle of its range, which is
+real information about g that no other statistic here supplies. A precise calibration —
+the model's ratio is about 1.4× the naive (1/29)/mass — is the obvious next step.
+
+## Why the two contexts differ at all
 
 The two contexts are not alike from the mechanism's point of view.
 
@@ -34,8 +63,8 @@ The two contexts are not alike from the mechanism's point of view.
 - **Across a seam** the base has just changed, so a would-be repeat is a chance event at
   roughly 1/29, and the rule's failures are unstructured.
 
-A rule that perturbs the schedule therefore cannot equalise the two rates, whatever φ is.
-The corpus does equalise them.
+A rule cannot change *which* of the two is which, but the size of the gap is set by g's
+graph mass, and that is free.
 
 This is the same conclusion `separators-are-the-cipher-unit.md` reaches from the other
 direction: sliding every block boundary by a fixed number of runes leaves the doublet rate
@@ -45,23 +74,23 @@ one conclusion: whatever suppresses repeats does not know where the blocks are.
 
 ## Strength
 
-About **two sigma**, and it should be quoted that way. The corpus's ratio rests on 63
-within-word doublets and 23 at the seam, giving 1.25 ± 0.30; the family's floor of 1.91 is
-2.2 standard errors above it. That is a constraint worth designing against, not a
-disproof.
+The corpus's ratio rests on 63 within-word doublets and 23 at the seam: **1.25 ± 0.30**.
+Read as a measurement of g's graph mass that is a wide interval, but it is the only handle
+on that quantity in the directory.
 
-## What it asks of a mechanism
+## The substitution preventer, which came out of this
 
-A rule producing the corpus's near-equal rates must inspect **the emitted stream alone**
-and act the same way at a seam as inside a word — which the dodge's *trigger* does and its
-*failure mode* does not. The direction to look is a rule whose failures are also
-context-free: re-emission from a fresh alphabet, a fixed substitution applied on collision,
-anything whose residual collision probability is 1/29 in both contexts.
+Substituting on collision — emit `tau(c)` for a fixed permutation tau instead of re-running
+the clock — reaches **4 of 5** informative cells with tau fixing 8 points, the best score
+in this directory. Its rate is set by how many points tau holds still, one integer of key,
+and its seam rate is context-free by construction.
 
 ## Status
 
-**Status**: confirmed (measurement, 60 prose corpora per φ). The exclusion is ~2σ and the
-structural argument is exact. `experiments/probabilistic_preventer.py`.
+**Status**: the exclusion claimed in the first version is **retracted** — it held g fixed.
+What is confirmed is that the ratio is a monotone readout of g's graph mass, spanning 0.52
+to 9.77 over random order-5 permutations, with the corpus at 1.25 ± 0.30.
+`experiments/probabilistic_preventer.py`, `experiments/substitution_preventer.py`.
 
 ## Related
 
