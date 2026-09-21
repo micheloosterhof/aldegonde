@@ -98,6 +98,44 @@ This also corrects the standing shorthand that merging is "refuted by the length
 sequence". It is not refuted — it removes three quarters of the serial excess, which is
 far more than anything else tried. It is insufficient.
 
+## No English register reaches the body's rate
+
+The standing objection is that the body is 58 pages of unknown content while the solved
+pages are front matter, so the two could simply be different kinds of writing. That is
+testable, because the 2-rune class in runeglish is exactly the top function words — THE
+is one rune plus E — and its frequency is what varies between registers.
+
+`experiments/register_range.py` measures it across every English text in the cache:
+scripture, verse, philosophy, mysticism and novels.
+
+| register | words | fraction at 2 | mean | χ² vs body |
+|---|---|---|---|---|
+| Paradise Lost | 66,368 | **0.1840** | 4.22 | 163.3 |
+| The Divine Comedy | 89,225 | 0.2145 | 4.04 | 268.7 |
+| Zarathustra | 90,942 | 0.2249 | 4.16 | 118.9 |
+| **the author's solved pages** | **723** | **0.2420** | **3.98** | — |
+| Dhammapada | 11,806 | 0.2408 | 4.11 | 171.6 |
+| Meditations | 59,731 | 0.2437 | 4.03 | 206.2 |
+| Beowulf | 32,271 | 0.2510 | **4.40** | 215.6 |
+| King James Bible | 634,721 | 0.2549 | 3.81 | 407.7 |
+| Tao Teh King | 10,705 | 0.2746 | 4.11 | 264.7 |
+| The Kybalion | 29,473 | **0.2950** | 4.40 | 442.3 |
+| **the body** | **2,928** | **0.1588** | **4.42** | — |
+
+Twenty-two registers, range 0.1840 to 0.2950, median 0.2422.
+
+- **The author's own pages sit at the 50th percentile.** The front matter is ordinary
+  English, so it is not a strange baseline.
+- **Not one register reaches the body's 0.1588.** The lowest is Paradise Lost, blank
+  verse — the register most likely to shed function words — and it is still 0.184 with a
+  residual of −3.2 at length 2.
+- The best-fitting register of all twenty-two gives χ² 105.2 on 11 df. Every one fails.
+
+**And matching the mean does not match the shape.** Beowulf has mean word length 4.40
+against the body's 4.42 — the same to two decimals — and a 2-rune fraction of 0.2510
+against 0.1588. So the body is not simply a wordier register; a register can have
+exactly the body's mean and none of its hole.
+
 ## The hole is a process, not a register
 
 Content varies between sections of a 58-page book. A scribal or cipher rule does not.
@@ -161,9 +199,9 @@ book and it would still leave a −3.8 residual.
 - The eleven mechanisms measured against E1 were all tested against the serial statistic
   alone. The marginal is a second, independent handle, and it is the sharper of the two
   because it needs no surrogate — it is a distribution comparison.
-- Because the hole is uniform across the body and the author's spelling is consistent,
-  the two ordinary explanations — different content, different orthography — are both
-  out. What remains is a rule applied uniformly to the body and not to the front matter.
+- Because the hole is uniform across the body, the author's spelling is consistent, and
+  no English register of twenty-two reaches the rate, the ordinary explanations are out.
+  What remains is a rule applied uniformly to the body and not to the front matter.
 
 ## What the d5 leak cannot settle
 
@@ -215,6 +253,10 @@ a simple generated law, which they are not.
   direct prediction on the next page solved.
 - If the body's plaintext spells TH apart, a solved body page will show it. The front
   matter's 125-for-125 consistency predicts it will not.
+- The register range is 22 texts, all literary or scriptural. If some English register
+  genuinely sits at 0.159 — a technical manual, a word list, heavily nominal prose — the
+  objection revives. The prediction is that it will also have a mean far from 4.42,
+  since the hole is a shape and not a shift.
 - If the deficit is a transcription effect — 2-rune blocks lost to unrecorded separators
   — then the pages with the most separators should show the largest deficit. The body is
   uniform (`section-homogeneity.md`), so this predicts no page-to-page gradient.
