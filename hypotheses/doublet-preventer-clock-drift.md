@@ -18,6 +18,7 @@ Four combinations, all of which suppress doublets by the same mechanism:
 | re-emit | `A(k+1)` | `k + 1` | `offsets[k+1] = 0` | 0 |
 | **hold** (Michel's negative) | `A(k−1)` | `k` | `offsets[k] = 0` | −0.034 |
 | back | `A(k−1)` | `k + 1` | `offsets[k] = 0` | 0 |
+| alternate | the two in turn | `k + 2`, then `k` | either | 0.0001 |
 
 The failure condition is one zero offset in every case, so the doublet rate is
 (1/5) × a diagonal throughout. Only which offset carries the zero changes, and that is
@@ -25,7 +26,7 @@ a relabelling.
 
 ## Status
 
-**The two drift-free variants are disproved. The two drifting ones survive**, and they
+**Three of five variants are disproved. The two purely drifting ones survive**, and they
 survive precisely because their drift makes them untestable by this route.
 
 ## The measurement
@@ -39,6 +40,7 @@ the closest of the four.
 | re-emit | 94 | 0.00758 | 0.0000 | [0, 0, 0, 0, 94] concentrated |
 | hold | 85 | **0.00588** | −0.0341 | [10, 23, 17, 17, 18] smeared |
 | back | 96 | 0.00758 | 0.0000 | [96, 0, 0, 0, 0] concentrated |
+| alternate | 100 | 0.00768 | 0.0001 | [0, 0, 0, 0, 100] concentrated |
 
 The corpus reads 0.00628.
 
@@ -98,12 +100,24 @@ index — so that row is immune, and it is flat (χ² 3.7). The disproof of the 
 family with no space skip therefore stands regardless of separator loss; the `k ≠ 0`
 rows depend on the transcription being complete.
 
-## What to do next
+## The alternating preventer, and why it does not escape either
 
-1. **A bounded-drift preventer.** The forward and backward drifts are +0.032 and −0.034,
-   nearly equal and opposite. A rule that alternates direction strictly — first fire
-   forward, second back — keeps total drift bounded by one step and leaves the phase
-   readable, which would bring it back inside this test. Nobody has tried it.
+Recorded here as untried: the forward and backward drifts are +0.032 and −0.034, so a
+rule that alternates direction strictly should keep the running drift bounded by one
+step and leave the phase readable. Tried now, and it is better than bounded — it
+concentrates **completely**, [0, 0, 0, 0, 100], not into the two classes a ±1 drift
+would give.
+
+The two failure conditions coincide in position coordinates. A forward fire happens
+while the running drift is 0, so its clock is `j` and it fails when
+`offsets[(j+1) mod 5] = 0`. A backward fire happens while the drift is 1, so its clock
+is `j+1` and it fails when `offsets[(j+1) mod 5] = 0` as well. Every failure lands on the
+same phase of the POSITION, which is what the test reads.
+
+So alternation makes the preventer fully testable, and the corpus's flat doublet phases
+disprove it along with the drift-free pair.
+
+## What to do next
 2. **The drifting pair stays only testable by fitting**, not by a phase count. That is
    no longer a dead end: `experiments/dodge_aware_scorer.py` scores both drifting
    variants, separating a planted key by z = 16.4 (advance) and z = 18.6 (hold) from
@@ -128,7 +142,9 @@ Michel's negative skip works as a doublet mechanism and lands the rate closer th
 forward version, 0.00588 against the corpus's 0.00628. It is not distinguishable from
 the forward dodge by any phase measurement, because both drift.
 
-What the measurement does settle is the drift-free half of the family. If the preventer
-leaves the clock alone, every surviving doublet must share a clock phase, and the
-corpus's 86 doublets are flat at every space convention with ample power to see
-otherwise. That half is out.
+What the measurement settles is every variant whose clock stays readable — the two
+drift-free ones and the alternating one, which turns out to concentrate completely
+rather than into two classes. If the preventer's clock can be computed from the
+position, every surviving doublet must share a phase, and the corpus's 86 doublets are
+flat at every space convention with ample power to see otherwise. Three of the five are
+out; what survives is exactly the pair whose drift hides them.

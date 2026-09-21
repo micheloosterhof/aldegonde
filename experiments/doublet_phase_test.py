@@ -63,17 +63,26 @@ SKIPS = (-4, -3, -2, -1, 0, 1, 2, 3, 4)  # negatives included to show they dupli
 #   re-emit     A_(k+1)       k + 1             offsets[k+1] = 0   0
 #   hold        A_(k-1)       k                 offsets[k]   = 0  -q
 #   back        A_(k-1)       k + 1             offsets[k]   = 0   0
+#   alternate   A(k+1)/A(k-1) in turn, clock k+2 then k     either offset      bounded
 VARIANTS = {
     "advance": (+1, 2),
     "re-emit": (+1, 1),
     "hold": (-1, 0),
     "back": (-1, 1),
+    # Strict alternation: a forward fire drifts +1, a backward one -1, so the running
+    # drift only ever sits at 0 or 1. Better than bounded -- the two failure conditions
+    # COINCIDE in position coordinates. A forward fire happens at drift 0 and fails when
+    # offsets[(j+1) % 5] = 0; a backward fire happens at drift 1, so its clock is j+1,
+    # and fails when offsets[(j+1) % 5] = 0 as well. Every failure lands on one phase of
+    # the position, exactly as the drift-free variants do.
+    "alternate": None,
 }
 
 
 def encipher(plain, K, offsets, start, space_skip=0, variant="re-emit"):
-    """The odometer Quagmire with one of the four preventer variants."""
-    direction, advance = VARIANTS[variant]
+    """The odometer Quagmire with one of the five preventer variants."""
+    alternating = VARIANTS[variant] is None
+    direction, advance = (+1, 2) if alternating else VARIANTS[variant]
     pos = [0] * M
     for i, r in enumerate(K):
         pos[r] = i
@@ -88,6 +97,8 @@ def encipher(plain, K, offsets, start, space_skip=0, variant="re-emit"):
             if c == previous:
                 c = (K[(pos[p] + a + S[(clock + direction) % 5]) % M] + b) % M
                 step = advance
+                if alternating:  # next fire goes the other way, so the drift cancels
+                    direction, advance = -direction, 2 - advance
             cipher_word.append(c)
             previous = c
             clock += step
@@ -101,7 +112,8 @@ def encipher(plain, K, offsets, start, space_skip=0, variant="re-emit"):
 
 def clock_drift(plain, K, offsets, start, variant) -> float:
     """Clock steps per rune minus one: zero means the phase stays readable."""
-    direction, advance = VARIANTS[variant]
+    alternating = VARIANTS[variant] is None
+    direction, advance = (+1, 2) if alternating else VARIANTS[variant]
     pos = [0] * M
     for i, r in enumerate(K):
         pos[r] = i
@@ -115,6 +127,8 @@ def clock_drift(plain, K, offsets, start, variant) -> float:
             if c == previous:
                 c = (K[(pos[p] + a + S[(clock + direction) % 5]) % M] + b) % M
                 step = advance
+                if alternating:
+                    direction, advance = -direction, 2 - advance
             previous = c
             clock += step
             runes += 1
@@ -209,20 +223,36 @@ def variant_table(plain, K, offsets, start, lp) -> None:
         f"\n{'variant':<10}{'escape':>10}{'fires':>9}{'d1w':>9}"
         f"{'drift/rune':>12}{'phase spread on its own output':>34}"
     )
-    for name, (direction, _advance) in VARIANTS.items():
+    for name, spec in VARIANTS.items():
         cipher = encipher(plain, K, offsets, start, space_skip=2, variant=name)
         cells = fingerprint(cipher)
         drift = clock_drift(plain, K, offsets, start, name)
         counts = concentration(doublet_phases(cipher, 2))[2]
-        readable = "concentrated" if counts.count(0) == 4 else "smeared"
+        empty = counts.count(0)
+        readable = (
+            "concentrated" if empty == 4 else "two classes" if empty == 3 else "smeared"
+        )
+        escape = "A(k+1)/A(k-1)" if spec is None else f"A(k{spec[0]:+d})"
         print(
-            f"{name:<10}{f'A(k{direction:+d})':>10}{sum(counts):>9}"
+            f"{name:<10}{escape:>14}{sum(counts):>9}"
             f"{cells['d1w']:>9.5f}{drift:>12.4f}   {str(counts):<22}{readable}"
         )
     print(
         f"\nthe corpus reads d1w {lp['d1w']:.5f}. Drift-free variants put every"
-        "\nsurviving doublet at one phase; drifting ones scramble it, which is exactly"
-        "\nwhy only the drift-free pair can be tested against the LP."
+        "\nsurviving doublet at one phase; drifting ones scramble it. `alternate` was"
+        "\nrecorded as untried. It concentrates COMPLETELY, not into two classes: a"
+        "\nforward fire fires at drift 0 and fails at j = z-1, a backward one at drift 1"
+        "\nso its clock is j+1 and it fails at j = z-1 too. One phase, fully readable,"
+        "\nand so disproved by the same flat corpus as the drift-free pair."
+    )
+    spread = concentration(
+        doublet_phases(
+            encipher(plain, K, offsets, start, space_skip=2, variant="alternate"), 2
+        )
+    )[2]
+    assert spread.count(0) == 4, (
+        "alternation must land every failure on one phase, since the forward and "
+        "backward failure conditions coincide in position coordinates"
     )
 
 
