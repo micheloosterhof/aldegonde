@@ -159,6 +159,34 @@ at length 2 **0.1774 ± 0.0077** against the author's 0.2420 ± 0.0159, z = −3
 subset over-samples short blocks, which is why its rate sits above the body's own
 0.1588.)
 
+## Nor is it justification
+
+The remaining scribal story is that the scribe joined a short word to its neighbour to
+make a 21.8-rune line come out even. That would leave a positional signature, and
+assigning each block to the line its first rune falls in, the signature looks
+overwhelming: blocks last to start in a line are a rune and a half longer than the rest
+and have half the 2-rune fraction, at **z = −8.07**.
+
+It is an artifact. The block last to *start* in a line is the block that *spans* the
+break — 454 of the 590 — and long blocks span more often, which
+`line_layout_and_the_hole.py` already measured against a length-bias null (454 observed,
+459.1 ± 9.8 predicted).
+
+Conditioning on it removes the effect entirely:
+
+| group | blocks | mean | fraction at 2 | z vs rest |
+|---|---|---|---|---|
+| first in line | 592 | 4.380 | 0.1689 | −0.63 |
+| middle | 1,746 | 4.093 | 0.1844 | +1.44 |
+| last in line | 136 | 4.449 | 0.1250 | −1.88 |
+
+Among blocks no break touches, no position differs from the rest by two sigma. **The hole
+is not positional within the line.**
+
+This is the third length-bias trap in the same statistic. Any subset defined by where a
+block sits relative to a break over-samples long blocks by construction, and the
+uncorrected number is always dramatic.
+
 ## A test that looks decisive and is not
 
 Recorded so it is not repeated. If separators were placed by the line rather than by the
