@@ -186,3 +186,45 @@ vary the corpus, not the draw.
 - `length-clocked-walk.md` — the clock this does not damage, and the 2-rune
   verifier it does.
 - `contraction-cribs.md` — runeglish contraction conventions.
+
+## The deficit fits SELECTIVE separator loss, and rules out the uniform kind (September 2026)
+
+If the deficit is transcriptional — separators dropped so that two plaintext words were
+read as one — the loss can be modelled with a single parameter. Take the LP's own
+plaintext length distribution (`lp-plaintext-register.md`, 486 words of the author's
+English), draw a sequence long enough to hold the body's 12,956 runes, merge `m`
+adjacent pairs, and compare the result to the body's 2,928 words.
+
+The arithmetic fixes `m` before any fitting: the body's plaintext at the LP's own mean
+of 4.04 runes would hold 3,208 words, and it presents 2,928, so **m = 280**.
+
+| model | merges | chi2 (10 df) |
+|---|---|---|
+| no loss | 0 | 149 |
+| uniform loss | 280 | 94 |
+| **selective loss, a 2-rune word involved** | **280** | **21** |
+| selective loss | 360 | 48 |
+| selective loss | 440 | 137 |
+
+**Uniform separator loss does not work.** Merging random adjacent pairs removes words
+of every length in proportion and cannot deplete the 2-bucket enough; it leaves the
+distribution at chi2 94. Restricting merges to pairs where one member is a 2-rune word
+drops that to 21, a 7x improvement on no-loss and 4.5x on uniform loss, and the fitted
+`m` lands on the 280 the mean already implied rather than being tuned to it. The
+independent estimate of "~300 missing separators" recorded elsewhere agrees.
+
+**What this is not.** chi2 21 on 10 df is p = 0.02, so even the best model is not a
+good fit, and more importantly a fit is not a discriminator. Exactly the same
+distribution would arise if the body's prose simply uses fewer short words than the
+front matter's — which is a live possibility, since the front matter is didactic and
+aphoristic and the body is not. This measurement constrains the *shape* any
+separator-loss account must have; it does not establish that separators were lost.
+
+**What would discriminate.** Under the walk family the base changes at every word
+boundary, so a merged "word" carries an internal base change and a within-word pair
+spanning it sees two different alphabets. Merged words are precisely the longer ones,
+which are where the d5 echo's pairs live. So separator loss predicts the d5 echo is
+diluted in long words in a specific, quantifiable way, where a register explanation
+predicts nothing of the kind. `long-word-structure.md` already reports that long words
+carry no structure beyond the d5 echo; measuring that echo's strength against word
+length is the test, and it has not been run.
