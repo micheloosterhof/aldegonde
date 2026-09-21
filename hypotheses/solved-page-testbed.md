@@ -73,6 +73,48 @@ below the plaintext range but well above the unsolved corpus's 1.000. That is th
 signature of a polyalphabetic cipher with a short period, and it is the obvious next
 target: a period estimate on those four is cheap and has not been run.
 
+## The remaining four: few alphabets, but not cycled
+
+Pages 1, 2, 12 and 13 are the only material in the book at an intermediate index of
+coincidence — above the unsolved corpus's 1.000, below the 1.52-2.06 of plaintext and
+monoalphabetic ciphertext. That makes them the closest thing to a bridge between the
+solved front matter and the unsolved body, so what kind of cipher they carry is worth
+more than four pages of plaintext would be.
+
+**The elevation is real.** Against a simulated flat null at each page's own length:
+
+| page | runes | IoC | z vs flat | p | k (Friedman) |
+|---|---|---|---|---|---|
+| 1 | 251 | 1.227 | +7.72 | 0.0002 | 3.2 |
+| 2 | 264 | 1.117 | +4.13 | 0.0012 | 6.2 |
+| 12 | 226 | 1.071 | +2.18 | 0.028 | 10.3 |
+| 13 | 93 | 1.281 | +3.45 | 0.0045 | 2.6 |
+
+The alphabet count `k` uses the LP's **own** plaintext pages to fix the plaintext
+level at 1.729, rather than importing a figure from English prose. So the elevation
+implies only a handful of alphabets — roughly 3, 6, 10 and 3.
+
+**But they are not cycled.** Nothing finds a period:
+
+- Coset IoC at every period from 1 to 12 stays in 0.94-1.49 on all four pages. A real
+  period-`k` cipher would put its cosets at the plaintext level of 1.73; none comes
+  near. Period 8 looked briefly promising on pages 1 and 12 from autocorrelation, and
+  its cosets sit at 1.22 and 1.12 — so it is not a period.
+- Kappa autocorrelation to shift 25 gives a best of z = +3.1 to +3.7 per page. Across
+  four pages and 25 shifts that is 100 tests, where the largest of 100 draws sits near
+  +2.6 by chance, so nothing here survives its own multiple testing.
+
+**And the elevation is not a plaintext region.** Windowed IoC (window 60, step 20)
+stays in 0.90-1.44 across all four pages, never touching the 1.5-2.0 that a plaintext
+or monoalphabetic window shows on pages 8 and 0. There is no readable patch raising a
+flat average.
+
+So these four pages use few alphabets, applied **aperiodically** — which is the shape
+of the unsolved corpus's own family, only weaker. That is what makes them worth
+attacking: the unsolved body is at IoC 1.000 and gives a search nothing to climb,
+while these four leak 2 to 8 sigma of the same structure and are 93-264 runes long
+instead of 12,956.
+
 ## Status
 
 **Status**: confirmed (measurement). `experiments/solved_page_testbed.py` classifies
@@ -129,10 +171,10 @@ Four pages are still enciphered: 1, 2, 12 and 13. Their IoC of 1.07–1.28 sits 
 the plaintext range and well above the unsolved corpus's 1.000, which is the signature
 of a polyalphabetic cipher with a short period. The cheapest next steps, in order:
 
-- a period estimate on those four (Friedman, or IoC by decimation), which is minutes
-  of work and tells the search what it is aiming at;
-- if a period falls out, solve each coset as a monoalphabetic with the climber that
-  already works here;
+- ~~a period estimate on those four~~ **done, and negative**: few alphabets (k ≈ 3-10)
+  but no period, so a coset attack has nothing to split on;
+- an aperiodic few-alphabet attack, which is the same problem the unsolved corpus
+  poses but at 1/50th the length and with 2-8 sigma of leak instead of none;
 - fixing the ᚠ-interrupt round trip, which is the one family whose control is weak.
 
 Each of the four would add another genuine triple.
@@ -146,6 +188,8 @@ Each of the four would add another genuine triple.
 - `experiments/solved_page_masc.py` — the IoC split and the substitution hill climber,
   with its own planted-key control.
 - `experiments/solved_page_triples.json` — the five recovered triples.
+- `experiments/poly_page_profile.py` — the elevation, diversity, period and locality
+  tests on the four remaining pages.
 
 ## Related
 
