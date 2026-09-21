@@ -137,6 +137,38 @@ clause boundaries. One statistic — the quote-edge alignment at p = 1.5e-7 — 
 says the plaintext respects them. The alignment is now the single anomaly, and it
 cannot be dismissed as a glyph-pooling artifact.
 
+## The other two pooled statistics, split
+
+`thirty-symbol-disk.md` rests its machinery reading partly on two pooled
+measurements. Splitting them by glyph changes one of the two.
+
+**Rune context: unchanged.** The runes immediately before and after a mark are
+uniform for every glyph, not just pooled (4-dot n = 139, chi2 28.9 before and 30.6
+after on 28 df; 13-dot n = 28). Nothing was hidden by pooling here. With 139 marks
+over 29 bins this is underpowered against small deviations and is reported as "no
+effect found", not "no effect".
+
+**Per-section rate homogeneity: the pooled result is a mixture.** Pooled, the ten
+clean sections are consistent with one Poisson rate (chi2 6.5 on 8 df, p = 0.59),
+reproducing the figure that file cites. Split:
+
+| glyph | marks | chi2 | df | p |
+|---|---|---|---|---|
+| pooled | 168 | 6.5 | 8 | 0.594 |
+| 4-dot | 139 | 11.7 | 8 | 0.164 |
+| 13-dot | 26 | 24.7 | 8 | **0.002** |
+
+The 4-dot mark is homogeneous; the 13-dot mark is **not**, varying from 0.3 to 7.0
+per thousand runes across sections. So "a content-independent process fits cipher
+machinery better than authorial punctuation habits" is argued from a statistic that
+averages a homogeneous glyph against a section-varying one. The conclusion may still
+hold for 4-dot alone — that row is the one to cite — but the pooled version does not
+support it.
+
+(Both tests exclude the 9-rune section 3. Including it puts two marks on nine runes
+and sends every chi2 to p = 0.000; the published 8 df shows that section was already
+being dropped.)
+
 ## Readings tested and excluded
 
 **A verse, breath or metrical unit.** If the 4-dot mark closed a metrical unit rather
