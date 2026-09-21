@@ -3,6 +3,18 @@ type: observation
 ---
 # Observation: The Seam-to-Within-Word Doublet Ratio Measures g's Graph Mass
 
+
+## The shape this file points to is now closed (September 2026)
+
+The argument here names a rule whose residual collision probability is the same inside a
+word and at a seam, and `substitution_preventer.py` builds one: emit `τ(c)` on a
+collision. `survivors-use-every-rune.md` closes it without a key. A doublet survives that
+rule exactly when τ fixes the emitted rune, so the body's 86 survivors — which use 28 of
+the 29 runes — force `|fix(τ)| ≥ 28`, while 81% suppression forces `|fix(τ)| ≈ 5.6`.
+
+The seam-ratio reasoning in this file is unaffected and still needs a candidate. What it
+now also needs is one whose failures are rune-blind.
+
 ## The repair that works, and the one that does not
 
 `models-on-the-informative-cells.md` scores the deterministic dodge at 2 of the 5
