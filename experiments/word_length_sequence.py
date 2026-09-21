@@ -40,9 +40,11 @@ same way: whatever matches the histogram leaves five times too much order.
 `--types` tests the list reading in its natural form: a list of distinct vocabulary items
 is TYPE-weighted, not token-weighted, and looks nothing like the body. `--sort` tests the
 most natural compact permutation, which turns out to CREATE order rather than destroy it.
+`--floor` asks how low real English can go at the body's size, over sixty matched windows,
+and `--intrapage` asks whether the anomaly survives dropping every cross-page transition.
 
     python word_length_sequence.py [--merge] [--shape] [--tokenize] [--perturb]
-                                   [--jackknife] [--types] [--sort]
+                                   [--jackknife] [--types] [--sort] [--floor] [--intrapage]
 """
 
 from __future__ import annotations
@@ -218,6 +220,62 @@ def tokenize_sweep(rng: random.Random) -> None:
         "\nlanguage, 4.07 against 3.99, and drives the order further to zero -- and that"
         "\nconvention is known to be wrong from the solved pages, where words demonstrably"
         "\nflow across wraps."
+    )
+
+
+def floor_probe(rng: random.Random) -> None:
+    """The register objection, measured instead of asserted."""
+    import statistics  # noqa: PLC0415
+
+    print("excess/pair over 2,900-word windows, the body's own size")
+    print(f"{'book':<14}{'windows':>9}{'min':>9}{'median':>9}{'max':>9}")
+    lowest = []
+    for name, lens in prose_sequences(30000):
+        vals = [
+            excess_per_pair([lens[i : i + 2900]], rng, draws=20)[0]
+            for i in range(0, len(lens) - 2900, 2900)
+        ]
+        if not vals:
+            continue
+        lowest.append(min(vals))
+        print(f"{name:<14}{len(vals):>9}{min(vals):>9.4f}"
+              f"{statistics.median(vals):>9.4f}{max(vals):>9.4f}")
+    print(f"\nlowest of all windows: {min(lowest):.4f}")
+    print("body, matched size: 0.0037 +- 0.0022 -- six times below the floor.")
+
+
+def intrapage(rng: random.Random) -> None:
+    """Is the anomaly between pages or inside them?"""
+    import re  # noqa: PLC0415
+
+    from aldegonde import c3301  # noqa: PLC0415
+
+    master = (ROOT / "data" / "liber-primus__transcription--master.txt").read_text().split("%")
+    pages = []
+    for n in range(15, 71):
+        if n >= len(master) or not RUNE.search(master[n]):
+            continue
+        seq, cur = [], 0
+        for c in master[n]:
+            if RUNE.match(c):
+                cur += 1
+            elif c in "/\n":
+                continue
+            elif cur and c in c3301.WORD_BOUNDARY:
+                seq.append(cur)
+                cur = 0
+        if cur:
+            seq.append(cur)
+        if len(seq) >= 10:
+            pages.append(seq)
+    e, se, _o, _m, n = excess_per_pair(pages, rng, draws=300)
+    flat = [[x for s in pages for x in s]]
+    e2, se2, _o, _m, n2 = excess_per_pair(flat, rng, draws=200)
+    print(f"within a page only : {e:+.4f} +- {se:.4f} on {n:,} pairs, {len(pages)} pages")
+    print(f"all transitions    : {e2:+.4f} +- {se2:.4f} on {n2:,} pairs")
+    print(
+        "\nDropping every cross-page transition does not recover the order, so the"
+        "\nblocks are scrambled INSIDE pages and no page-level reordering explains it."
     )
 
 
@@ -469,6 +527,12 @@ def main() -> None:
         return
     if "--sort" in sys.argv:
         sort_control(rng)
+        return
+    if "--floor" in sys.argv:
+        floor_probe(rng)
+        return
+    if "--intrapage" in sys.argv:
+        intrapage(rng)
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")

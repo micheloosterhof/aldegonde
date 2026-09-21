@@ -346,11 +346,28 @@ lean toward words, and 2,073 pairs is the whole channel.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
    correct decryption would produce unbroken runeglish. Any solution that recovers
    space-delimited words at these separators refutes this outright.
-4. **Register.** The prose reference is novels and the LP reference is didactic front
-   matter. A register whose word lengths are genuinely serially independent would
-   explain the measurement without any of this — but no natural language register is,
-   and the two references here bracket the question from both sides.
-5. **Segmentation.** Tested and survived: all sixteen tokenization conventions give
+4. **~~Register.~~** Tested rather than asserted. Over **sixty windows of 2,900 words**
+   — the body's own size — cut from six books spanning scripture, philosophy and
+   novels, the *lowest* excess per pair is **0.0231**, with medians from 0.037 to 0.077:
+
+   | book | windows | min | median | max |
+   |---|---|---|---|---|
+   | King James Bible | 10 | 0.0352 | 0.0742 | 0.0946 |
+   | pg1033 | 10 | 0.0253 | 0.0375 | 0.0469 |
+   | pg131 | 10 | 0.0231 | 0.0371 | 0.0505 |
+   | pg14209 | 10 | 0.0423 | 0.0629 | 0.0876 |
+   | pg1497 | 10 | 0.0639 | 0.0773 | 0.0865 |
+   | pg16328 | 10 | 0.0249 | 0.0387 | 0.0621 |
+
+   The body reads 0.0037 — **six times below the lowest window of any of them**. No
+   register in this sample comes near, and the earlier claim that "no natural language
+   register is serially independent" is now a measurement rather than an assertion.
+5. **Page order.** If the pages were bound or scanned out of sequence, cross-page
+   transitions would be spurious. Dropping every one of them gives **+0.0026 ± 0.0025**
+   against **+0.0049 ± 0.0023** with them included — no recovery, and if anything lower.
+   The blocks are scrambled *inside* pages, which is also where the route-transposition
+   search looked and found nothing.
+6. **Segmentation.** Tested and survived: all sixteen tokenization conventions give
    essentially zero, so a wrong tokenizer is not the explanation.
 
 ## The separators are still the cipher's units
