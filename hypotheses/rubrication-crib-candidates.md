@@ -150,3 +150,48 @@ That yields **17 contiguous title spans, 217 runes, 52 words**
   The title predicted from red word-shape alone is the title the key produces.
 
 AN END is added to `experiments/solved_page_triples.json` as a tenth triple.
+
+## What the title shapes constrain, and one filter that must not be used
+
+The extracted spans give each title's **word-length shape**, which is key-free. Matching
+those against a 327-word vocabulary of 3301's own terms:
+
+| page | shape | combinations | scarcest slot |
+|---|---|---|---|
+| 54 | (1) | **1** | one 1-rune word exists |
+| 33 | (2, 8) | 144 | |
+| 0 | (8, 5) | 1,032 | |
+| 3 | (2, 11, 3) | 1,656 | 11 runes → 6 words |
+| 8 | (4, 8) | 1,920 | |
+| 27 | (3, 12, 4) | 11,040 | 12 runes → **3** words |
+| 53 | (5,4,4,11,2,3,2,6,5,5,2,2) | 8.6e15 | |
+
+The method identifies both titles that are independently known — (2,3) matches AN END,
+(7) matches PARABLE — so it works. None of the fifteen unsolved shapes matches any
+common LP title phrase, so those titles are not the obvious ones.
+
+Several are genuinely constrained: page 33's title has 144 candidate phrases and page
+27's has a 12-rune slot with only three vocabulary words. What is missing is a way to
+*test* a candidate without the key.
+
+**A tempting key-free test exists and it is not safe.** Because g⁵ = id, positions i and
+i+5 within a word share an alphabet, so a ciphertext distance-5 coincidence should mean
+a plaintext one and vice versa — which would filter candidate words by their own
+distance-5 repeat pattern. Applied, it removes 10–15% of candidates and cuts the
+11-rune slot to three (ENLIGHTENED, PRESERUATIAN, PRESERVATION).
+
+**Do not use it as a hard filter.** Two reasons:
+
+- It assumes φ5 = 1, and φ5 is measured at 0.64–1.0 and underpowered
+  (`d5-partial-alphabet-leak.md`). Under φ5 < 1 a true plaintext repeat can fail to
+  appear in the ciphertext, and the filter then rejects the true word.
+- Under the preventer reading now favoured by `key-local-channel-is-empty.md`, a clock
+  skip between i and i+5 breaks the shared alphabet outright, so the correspondence
+  fails in both directions.
+
+**And it cannot be validated on what we have.** The ground truth available — PARABLE,
+and the three words of length ≥ 6 in the solved AN END page — has an *empty* distance-5
+pattern on both the ciphertext and plaintext side in every case. "The filter agrees with
+the truth" is therefore vacuous: it has never been given a case where it could disagree.
+It may be used as a soft score; as a hard filter it is the retention failure that
+`schedule-band-retention.md` documents, in a new place.
