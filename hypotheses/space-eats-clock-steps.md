@@ -16,10 +16,13 @@ clock distance = (transmitted runes between) + k x (boundaries between)
 
 ## Status
 
-**Status**: not settled, and not settleable by the coincidence route. The test is
-well-powered and comes back flat, but a second mechanism — the per-word base change —
-predicts exactly the same flatness whatever `k` is, so the negative does not
-discriminate.
+**Status**: not settled. The coincidence route is well-powered and comes back flat, but
+the per-word base change predicts that flatness whatever `k` is, so it does not
+discriminate. Two cells elsewhere in the battery CAN see `k` — `d5x` and `triplets` —
+and neither separates the skips by more than the LP's own error on one corpus. The
+strongest statement available is that a skip of −2 under the forward dodge, or −1 under
+a drift-free preventer, is mildly disfavoured by the corpus holding zero triplets, at
+P ≈ 0.45.
 
 ## The test, and why five classes exhaust every skip in both directions
 
@@ -96,22 +99,55 @@ This is a general obstacle, not one specific to this hypothesis: **any test that
 the absolute clock phase is unavailable while the preventer is in the model**, because
 the preventer's own fires are invisible in the ciphertext.
 
+## Is `k` identifiable at all?
+
+Yes, barely, and by a route nobody would have guessed. Before fitting `k` it is worth
+asking whether any statistic can see it, so `experiments/space_skip_identifiable.py`
+enciphers one plaintext with one key at all five skips and compares the fingerprints
+pairwise over 30 keys. Holding the key fixed cancels the key-to-key noise.
+
+Seventeen of nineteen cells are blind to `k`. Two are not:
+
+| cell | paired z |
+|---|---|
+| `d5x` | 3.41 |
+| `triplets` | 4.04 |
+
+**`triplets` is the mechanism, and it picks out one specific skip.** A triplet needs the
+preventer to fail on two adjacent runes, which needs both to be at the same clock phase.
+Inside a word the clock always moves, so that cannot happen. Across a boundary it can,
+when the fire's own step plus `k` is a multiple of five. A failure implies the preventer
+FIRED, so the step is whatever that variant advances on a fire:
+
+| preventer | step on a fire | phase preserved when | mean triplets |
+|---|---|---|---|
+| advance (dodge) | 2 | `k = 3` (= −2) | 0.77 |
+| re-emit (drift-free) | 1 | `k = 4` (= **−1**, the backward space) | 0.83 |
+
+So the backward space is the triplet-producing case for a preventer that does not move
+the clock, and `k = −2` is the case for the forward dodge.
+
+**The corpus cannot use it.** The LP holds zero triplets, and against a model mean of
+0.77 to 0.83 that is P = 0.44 to 0.47. Mildly disfavouring, nowhere near excluding.
+`d5x` is no better: the LP reads 0.0347 and all five skips sit within ±0.6 of that on
+the key spread.
+
 ## What to do next
 
-1. **Test `k` inside words instead.** The space only acts at boundaries, so within a
-   word the clock is undisturbed by it. Nothing there depends on `k`, which is why this
-   route found nothing — but a model FIT can still prefer one `k`, because `k` changes
-   the phase each word starts on and therefore which words can carry a seam doublet.
-   That is a likelihood comparison over `k`, not a coincidence count.
-2. **Or drop the preventer's clock skip.** If doublet suppression works some other way
-   that leaves the clock alone, the phase-concentration test above becomes available and
-   settles `k` in one measurement. That is a reason to look for a non-skipping
-   suppression rule beyond the ones already tried.
+1. **More text, or nothing.** The two cells that see `k` separate the skips by about the
+   size of the LP's own error on them, so a single corpus of this length cannot settle
+   it. The triplet route would need enough text for the expected count to reach about 4
+   before zero observed becomes decisive, which is roughly five times the Liber Primus.
+2. **Or drop the preventer's clock skip**, which makes the phase-concentration test
+   available — though `doublet-preventer-clock-drift.md` then disproves that whole
+   half of the family on the LP's flat doublet phases.
 
 ## Scripts
 
 - `experiments/space_eats_clock.py` — the residue-class scan, the within-word control,
   the power calculation and the drift calculation that blocks the phase test.
+- `experiments/space_skip_identifiable.py` — whether any battery cell can see `k`, and
+  what the corpus says about each skip through the two that can.
 
 ## Related
 
