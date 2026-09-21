@@ -70,6 +70,8 @@ def dispersion(words, phase) -> float:
                 hit[key] += a[len(a) - 1 - di] == b[j]
     keys = [k for k in cnt if cnt[k] >= FLOOR]
     n = sum(cnt[k] for k in keys)
+    if len(keys) < 3 or not n:
+        return float("nan")  # too few units to fill the cells
     p = sum(hit[k] for k in keys) / n
     chi = sum((hit[k] - cnt[k] * p) ** 2 / (cnt[k] * p * (1 - p)) for k in keys)
     return chi / (len(keys) - 1)

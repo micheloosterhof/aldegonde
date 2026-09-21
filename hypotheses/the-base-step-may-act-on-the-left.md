@@ -65,6 +65,11 @@ Stated so the lean is not over-read.
 1. **The base may change at some unit other than the block.** If it changes per line or
    per sentence, most "seams" are not base changes and the cross-seam pairs are ordinary
    within-base pairs, which would also flatten the table.
+
+   *Tested, same tick.* Running the identical statistic with the base changing at line
+   boundaries instead gives **−0.23** on 594 lines of 21.8 runes, against the block-level
+   −0.05 and a right-acting walk's +1.84 ± 0.92. Lines are not it either. Pages cannot be
+   tested: 55 units leave too few pairs to fill the cells.
 2. **There may be no chain at a seam at all** — bases drawn independently per block. The
    chain evidence is `word-repeat-accounting.md`'s consistency argument, which rests on
    one repeated phrase.
