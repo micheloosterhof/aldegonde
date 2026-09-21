@@ -92,7 +92,7 @@ proposed mechanisms scored against them.
 | [page-reset-keystream.md](page-reset-keystream.md) | Shared Positional Keystream Resetting at Page/Section Boundaries | disproved |
 | [per-word-related-alphabets.md](per-word-related-alphabets.md) | Per-Word Related-Alphabet Cipher (5 Alphabets, Bigram-Dodging Step) | plausible — superseded by `length-clocked-walk.md` |
 | [period5-doublet-linkage.md](period5-doublet-linkage.md) | The Doublet Suppression and the d5 Leak Are One Order-5 Walk | unresolved (phase-gating mechanism refuted; walk family still fits) |
-| [periodic-polyalphabetic.md](periodic-polyalphabetic.md) | Periodic Polyalphabetic Cipher (Vigenere with Fixed Key) | disproved |
+| [periodic-polyalphabetic.md](periodic-polyalphabetic.md) | Periodic Polyalphabetic Cipher (Vigenere with Fixed Key) | disproved, but the reasoning corrected (Sep 2026): the Friedman leg is blinded by a preventer (a period-8 key with 6 interrupts in 251 runes is invisible, demonstrated on the author's own ciphertext) and its claim that keys of several hundred would be detectable holds only for an uninterrupted cipher. The disproof rests on the phase-independent IoC bound instead: L >= 949 under one key, >= 60 runes per key even with a free rekey every page |
 | [plaintext-autokey.md](plaintext-autokey.md) | Plaintext Autokey Cipher | disproved |
 | [playfair-variant.md](playfair-variant.md) | Playfair / Seriated Playfair Variant | disproved |
 | [position-within-word.md](position-within-word.md) | Position-Within-Word Dependent Cipher | disproved (additive variants; the mixed-alphabet member is the live walk model) |

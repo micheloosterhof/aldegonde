@@ -27,12 +27,25 @@ constructions. All share the property of a fixed repeating key period.
 
 ## Evidence against
 
-- **No Friedman period**: The Friedman test detects no period. Any periodic key
-  would produce a detectable IOC spike at the key length. With ~13,000 runes of
-  ciphertext, even long keys (up to several hundred) would be detectable.
-- **IOC exactly random**: The IOC is 0.0345, exactly matching 1/29. A periodic
-  polyalphabetic cipher on English text produces IOC above random at multiples
-  of the key length.
+- **IOC exactly random**: The IOC is 0.0345, exactly matching 1/29. This is the
+  load-bearing evidence, and it is now quantified. Two positions share an alphabet
+  with probability 1/L, so `IoC = 1 + (I_p − 1)/L`; with the author's own plaintext
+  giving `I_p = 1.788`, the body's IoC bounds **L ≥ 949** under a single key, and
+  ≥ 60 runes per key even granted a fresh key on every page
+  (`flat-ioc.md`, `alphabet_count_bound.py`, `per_page_key_bound.py`). No periodic
+  key anywhere near a human-memorable length survives that.
+- **No Friedman period**: the Friedman test detects no period — but this bullet used
+  to add that "even long keys (up to several hundred) would be detectable", and that
+  is **only true of an uninterrupted cipher**. On the author's own ciphertext, a
+  period-8 Vigenère with 6 interrupts in 251 runes is *invisible* to the Friedman
+  scan, and restoring the interrupt phase recovers the full signal
+  (`preventer-blinds-absolute-tests.md`). Friedman indexes runes by absolute
+  position, so one interrupt corrupts every coset downstream.
+
+  The correction does not rescue this hypothesis, because the IoC bound above is
+  phase-independent: a perturbation changes *which* alphabet is used at a position,
+  never *how many* alphabets exist. But the Friedman leg must not be cited on its own
+  against any cipher in the preventer family.
 
 ## Scripts
 
