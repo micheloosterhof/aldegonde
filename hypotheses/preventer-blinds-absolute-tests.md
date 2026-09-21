@@ -63,3 +63,25 @@ history is the warning: its sweep failed because the scorer assumed clock = posi
 - `solved-page-testbed.md` — the known-period, known-interrupt ciphertext used here.
 - `no-periodicity.md` — the negative this qualifies.
 - `key-local-channel-is-empty.md` — where the preventer reading is favoured.
+
+## Where the 1.75% comes from, and why it is now an upper bound (September 2026)
+
+The interrupt rates used here are calibrated on the author's own device, measured on the
+solved front matter. `interrupter-is-a-plaintext-rule.md` shows that device is an exact
+plaintext rule -- every plaintext F is passed through literally, nothing else is -- so
+its rate is the plaintext's F frequency, 0.0158, and it EMITS a rune. That makes it
+visible in the unigram table, and the body refutes it: the predicted rune-F rate is
+0.0497 against an observed 0.0354, z = -4.43, or 205 predicted interrupts against at
+most 47 allowed.
+
+Two consequences, pulling opposite ways.
+
+**For emitting interrupters the reach quoted here is four times too pessimistic.** The
+body's 95% ceiling is q = 0.0037, so the expected clean run is 273 runes rather than the
+57 this file's tables assume. Prefix-scored searches were conservative by that factor.
+
+**For the family this file is actually about, nothing changes.** A preventer skips a key
+step while still enciphering the rune, leaves no unigram trace, and is not bounded by
+that measurement at all. The rates tabulated above remain the right ones to price a
+preventer with; what is excluded is only the author's own pass-through device.
+
