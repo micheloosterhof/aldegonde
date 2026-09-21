@@ -22,6 +22,11 @@ and folding the per-word step into `Q`, that is
 a condition on the base_0-free coordinates alone. So fires are detectable GIVEN `v`, and
 `v` is exactly what the assignment solves for. Chicken and egg, not a wall: alternate.
 
+**Cost.** Separation switches on between 720 and 1,083 runes and is sharp, not
+gradual, because the per-window phase is itself fitted and overfits short text. So the
+first stage of a sweep is about 1,100 runes rather than the 100 a cheap bound would
+want, and the saving is 1.66x rather than an order of magnitude.
+
 **The loop.** Cut the stream into short windows. Inside a window assume no fire, so the
 clock is the position plus an unknown phase in 0..4 — short windows are mostly
 fire-free, at a rate of `(1-q)^L`. Then:
@@ -60,6 +65,7 @@ from quagmire_runner import load_clean, load_register  # noqa: E402
 WINDOW = 18  # runes; (1-q)^18 is about half with q = 0.035
 PASSES = 3
 WRONG_KEYS = 60
+SHARES = (0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0)
 
 
 def letter_maps(K, offsets):
@@ -180,6 +186,64 @@ def score(cipher_words, K, offsets, startdials, logf) -> float:
     return total / n_runes
 
 
+def prefix(cipher_words, runes: int):
+    """The first `runes` runes of the ciphertext, cut at a word boundary."""
+    out, total = [], 0
+    for word in cipher_words:
+        if total >= runes:
+            break
+        out.append(word)
+        total += len(word)
+    return out
+
+
+def rejection_curve(cipher, K, offsets, startdials, logf, rng) -> None:
+    """How little text is enough to throw a wrong key away.
+
+    The full-length score is what a sweep would use on survivors. What decides its cost
+    is the cheap first look: if a short prefix already puts every wrong key below the
+    planted one, the sweep only pays full price for the few that pass.
+    """
+    full = sum(len(w) for w in cipher)
+    print(
+        f"\n{'prefix':>8}{'runes':>8}{'planted':>10}{'best wrong':>12}"
+        f"{'gap':>8}{'z':>8}   separates"
+    )
+    for share in SHARES:
+        part = prefix(cipher, max(60, int(full * share)))
+        runes = sum(len(w) for w in part)
+        true = score(part, K, offsets, startdials, logf)
+        vals = np.array(
+            [
+                score(
+                    part,
+                    rng.sample(range(M), M),
+                    schedule(rng),
+                    (rng.randrange(M), rng.randrange(M)),
+                    logf,
+                )
+                for _ in range(WRONG_KEYS)
+            ]
+        )
+        gap = true - vals.max()
+        print(
+            f"{share:>8.0%}{runes:>8}{true:>10.3f}{vals.max():>12.3f}"
+            f"{gap:>8.3f}{(true - vals.mean()) / vals.std():>8.1f}"
+            f"   {'yes' if gap > 0 else 'NO'}"
+        )
+    print(
+        "\nRejection switches on sharply between 40% and 60%, not gradually. Below that"
+        "\nthe per-window phase -- a FITTED parameter, one of five per window -- flatters"
+        "\na wrong key as much as the true one, and it pays off only once the base_0"
+        "\nassignment is well determined. So the useful first stage is about 1,100 runes,"
+        "\nnot the 100 a really cheap bound would want."
+        "\n"
+        "\nTwo stages, then: score every key at 60% and keep what clears the wrong-key"
+        "\nmean by 3 SD, which the planted key beats by 5.5; full-score the survivors."
+        "\nThat costs about 0.6 of the full score per key rather than 1.0."
+    )
+
+
 def main() -> None:
     rng = random.Random(3301)
     _stream, wid = load_clean()
@@ -195,7 +259,7 @@ def main() -> None:
     startdials = (rng.randrange(M), rng.randrange(M))
     plain = matched_register(rng, lens, pools)
 
-    for variant in ("advance", "hold"):
+    for variant in ("advance",) if "--curve" in sys.argv else ("advance", "hold"):
         cipher = encipher(plain, K, offsets, startdials, 0, variant)
         runes = sum(len(w) for w in cipher)
         print(
@@ -250,8 +314,9 @@ def main() -> None:
         )
     print(
         "   against 30 core-hours for the old kernel, which cannot score this family"
-        "\n   at all. A cheap first-pass bound would cut it further, as skip_below does."
+        "\n   at all. A cheap first-pass bound cuts it further, as skip_below does:"
     )
+    rejection_curve(cipher, K, offsets, startdials, logf, rng)
 
 
 if __name__ == "__main__":
