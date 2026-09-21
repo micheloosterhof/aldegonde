@@ -34,7 +34,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source | Scope |
 |---|---|---|---|
-| C-1 | **g's graph carries ≈ 0.026 of the plaintext bigram mass**, one-sigma [0.0209, 0.0343] — the 16th to 60th percentile of random order-5 permutations, ~1.2 bits | `seam-to-d1w-ratio-is-a-constraint.md` | Read off the seam-to-within-word doublet ratio, calibrated on 18 permutations; assumes a preventer whose seam rate is g-free |
+| C-1 | **g's graph carries ≈ 0.026 of the plaintext bigram mass**, one-sigma [0.0209, 0.0343] — the 16th to 60th percentile of random order-5 permutations, ~1.2 bits | `seam-to-d1w-ratio-is-a-constraint.md` | Read off the seam-to-within-word doublet ratio, calibrated on 18 permutations; assumes a preventer whose seam rate is g-free. `seam` is a mechanism cell (key ratio 0.91) but `d1w` is not (3.02), so the ratio inherits key sensitivity |
 | C0 | The base family is **A₂₉** — no algebraic structure to exploit | `base-family-is-the-symmetric-group.md`, narrowed by `sigma-is-even.md` | A₂₉ or S₂₉ from the classification; A₂₉ once σ is even, which is conditional on the DJU-BEI return |
 | C1 | The per-word base family acts **2-transitively** — H₂, H₄ and H₇ subgroups of AGL(1,29) excluded by 1–2 orders of magnitude | `base-family-is-2-transitive.md` | H₁₄ survives but its extra invariant is scrambled by a non-affine g, so it carries nothing |
 | C2 | No rune partition into **three or more blocks** (planted detection 100%), and every small block size 2-5 excluded by exhaustive enumeration at 67-100% power | `no-block-partition.md` | What remains is subsets that leak nothing measurable, which a solver would gain nothing from knowing |
@@ -83,7 +83,8 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 | G1 | The local channel is worth **13 bits on g and 0 on σ**, against an 80- and 103-bit search | `why-the-body-resists.md` |
 | G2 | The key is nonetheless **over-determined 69×** by the ciphertext, so a unique answer exists | `unicity-distance.md` |
 | G3 | A **battery cell count is not evidence** — a maximally wrong cipher lands 12 of 19; only d1w, d6w, doublet_gap_min, returns and seam discriminate | `battery-cell-counts-are-not-evidence.md` |
-| G4 | On those five, the best model reaches **4 of 5** (substitution preventer), and `returns` is missed by everything | `models-on-the-informative-cells.md` |
+| G4 | **Eleven of the nineteen cells test the key, not the mechanism** — between-key spread exceeds within-key spread, and that includes `d1w` and `doublet_gap_min`. Score a model by the fraction of keys that make the corpus plausible, never by one key | `battery-cells-test-the-key.md` |
+| G5 | On the four reachable cells the three preventer shapes are indistinguishable: median 2 of 4 for the substitution preventer and for the plain dodge, and only 4 cells of 19 separate the shapes at all | `battery-cells-test-the-key.md` |
 
 ## What that leaves
 
@@ -102,7 +103,9 @@ mechanisms have been measured against it and all fail.
 
 **D6 — the single state return.** One repeat, 1 in 2,700 by chance, at the end of the
 body, with no shorter companions. Four results now hang on reading it as genuine, and the
-test that would settle it cannot be run because nothing follows it.
+test that would settle it cannot be run because nothing follows it. The walk's own rate
+is now measured rather than argued: one return in 1,440 simulated corpora, which agrees
+with the 1-in-2,700 figure and withdraws the claim that no unfitted key could produce it.
 
 Everything else in this table is a constraint. These two are the facts a solution has to
 explain.
