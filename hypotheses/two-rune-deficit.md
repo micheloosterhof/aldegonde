@@ -233,3 +233,43 @@ The reasoning behind the prediction was wrong. Merges put a diluted seam into wo
 cancel against the fact that longer merged words carry more pairs. So the observed
 gradient is evidence for neither reading, and anyone re-running this should not expect
 it to settle anything.
+
+## Line wraps carry at most ~20 of the 280, which weighs against the transcriptional reading
+
+Layout gives the discriminating test that the d5 gradient could not. A transcription
+drops a separator where it is hardest to see, and the overwhelmingly likeliest such
+place is a **line break** — the break itself reads as a word gap, so a separator glyph
+beside it is easy to miss. Authorial word choice has no reason to track line breaks.
+
+The clean corpus holds 1,338 wraps. Only **454** fall inside a word against 817 ± 15
+under random placement (z = −25): the scribe breaks lines at word boundaries, as
+expected. The question is whether those 454 "words" are genuine or merges.
+
+A merged word is two words glued, so merges hiding at wraps must inflate their mean
+length. The length bias — long words are likelier to contain a wrap — is already in the
+null:
+
+| | mean length of a wrap-spanning word |
+|---|---|
+| observed | 5.75 |
+| null | 5.69 ± 0.06 |
+| **z** | **+0.95** |
+
+No excess. And the test is sensitive:
+
+| merges hiding there | mean becomes | z |
+|---|---|---|
+| 10 | 5.81 | +1.9 |
+| 20 | 5.87 | +2.8 |
+| 40 | 5.98 | +4.6 |
+| **280** | **7.36** | **+26.6** |
+
+**So line wraps hold at most ~20 of the 280 separators the model needs, and the full
+280 is excluded at 27 sigma.** If separators were lost, they were lost mid-line, with
+a visible separator glyph simply overlooked in running text — which is not how
+transcription errors are distributed.
+
+That does not close the transcriptional reading, since a mid-line loss mechanism
+could exist that nobody has proposed. It does remove its most natural mechanism, and
+correspondingly strengthens the plain register explanation: the body's prose uses
+fewer short words than the front matter's didactic register does.
