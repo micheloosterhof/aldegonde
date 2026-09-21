@@ -93,6 +93,44 @@ drives the order *further* to zero (−0.0006). It also makes the histogram fit 
 known to be wrong from the solved pages, where words demonstrably flow across wraps. So
 the one convention that improves the mean improves nothing else.
 
+## Encipherment is not what removes the structure
+
+The strongest control available is the author's own enciphered pages, where the word
+boundaries are known to be real words because the plaintext is recovered. Measured
+exactly like the body:
+
+| group | words | excess per pair |
+|---|---|---|
+| plaintext pages (6) | 231 | 0.0281 ± 0.0270 |
+| monoalphabetic ciphertext (5) | 255 | 0.1111 ± 0.0297 |
+| interrupted-Vigenère ciphertext (5) | 237 | 0.0261 ± 0.0322 |
+| **unsolved body** | **2,928** | **0.0039 ± 0.0025** |
+
+Each group is noisy at ~240 words, but all three are positive and the **enciphered** ones
+carry the structure as plainly as the plaintext ones — as they must, since a
+position-preserving cipher cannot touch a word length. So the body's absence is not an
+artifact of encipherment, of the tokenizer, or of the statistic.
+
+## The lengths depend on nothing measurable
+
+Both surviving readings predict the block lengths are attached to nothing. Mutual
+information against a label-shuffling null, 2,973 blocks:
+
+| block length against | z |
+|---|---|
+| first rune of the block | +0.24 |
+| last rune of the block | −1.22 |
+| absolute rune index mod 5 | +0.23 |
+| absolute rune index mod 29 | +0.71 |
+| line index mod 4 | −0.47 |
+| position in line, bucketed | +1.26 |
+| the previous block's length | +0.04 |
+
+Nothing. If the lengths were set by the enciphering process they would depend on
+position; if by the page layout, on the line; if they still carried plaintext words, on
+each other. They are i.i.d. draws from a language-shaped distribution, attached to
+nothing — which is what makes them hard to explain and hard to exploit.
+
 ## The reference holds under a jackknife
 
 The comparison's load-bearing half is the 723-word plaintext reference, pooled from 16
