@@ -67,10 +67,19 @@ This is a positive constraint, which is rarer here than the negatives.
   `substitution-preventer` — and this is the first evidence that the feature they model
   is a property of the cipher rather than a modelling convenience.
 
-It also prices the strength: 81% suppression, not 100%. A rule that never repeats would
-give zero doublets; 86 survive. Whatever the rule is, it fails about one time in five —
-which is the quantity `substitution-preventer` fits with τ's fixed points and
-`probabilistic-preventer` with φ.
+It also prices the strength — but not the way this file first put it.
+
+*Corrected, October 2026.* "81% suppression" divides 86 by 447 = pairs/29, which assumes
+the cipher without a preventer would repeat at chance. It would not: adjacent positions
+inside a block use `g^k` and `g^(k+1)`, so a would-be repeat needs the plaintext bigram
+mass on `g`'s graph, and `how_strong_is_the_preventer.py` measures the same walk with no
+preventer at **515 ± 163** repeats rather than 447.
+
+Parameterised properly by the probability φ of acting on a would-be repeat, the body gives
+**φ ≈ 0.90**, with [0.85, 0.95] inside one sigma and [0.80, 1.00] inside two. φ = 0 is
+excluded at −2.63σ. **φ = 1, the plain clock dodge, is not excluded** — it sits at +1.73σ.
+The key-to-key spread is the dominant term at every φ, which is why an arithmetic estimate
+that ignored it put the dodge at six sigma.
 
 ## Falsification
 
