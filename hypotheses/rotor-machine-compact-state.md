@@ -318,8 +318,11 @@ Rather than arguing about which machine, scan every lag. A machine of period
 otherwise. The surviving corner is period > 6478 — e.g. a 3-rotor odometer at
 29³ = 24,389, which never reuses an alphabet inside a 12,956-rune corpus —
 but such a machine cannot produce DJU-BEI as a state return either, so it
-must declare that repeat a coincidence (the repo's Monte Carlo puts that at
-~1%).
+must declare that repeat a coincidence. **That figure is now recomputed**
+(`dju-bei-is-more-surprising-than-recorded.md`): a block-aligned repeat spanning whole
+blocks, which is what a state return would produce, has chance probability **0.00037 --
+about 1 in 2,700**, thirty times smaller than the ~1% recorded here. An unaligned
+6-gram repeat anywhere is 1 in 8, and the (3,3) shape actually seen is 1 in 35,000.
 
 ## The weakest leg: word-boundary scope
 
