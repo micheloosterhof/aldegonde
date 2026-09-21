@@ -40,10 +40,42 @@ Three results, in decreasing order of how well they are established.
    over-dispersed and clustered (cv 1.12, p = 0.9998; 35.5% short gaps, p = 1.000).
    Pooling them averages a spreading process against a clumping one.
 
+## The word-length signature, split by glyph (the pooled result was already right)
+
+Spacing is one probe. The word-length signature at the boundary is another, and
+`word-length-keystream-and-boundaries.md` already ran it properly: it used these same
+solved pages as calibration (solved finals 5.56 vs 4.01, z = +7.06, only 2.3% of
+finals 1-2 runes against a 27.9% baseline), found the unsolved marks show none of it
+(z = -1.21), and reported the contrast at z = +5.86. **That result is not rediscovered
+here and no credit for it belongs to this file.**
+
+What is added is only the per-glyph split, which that test did not do. The question it
+leaves open is whether pooling a linguistic glyph with a layout glyph hid a signature
+in one of them. It did not:
+
+| group | marks | corpus mean | word before | z | word after | z | z if the effect were real |
+|---|---|---|---|---|---|---|---|
+| solved `.` (calibration) | 86 | 3.62 | 4.95 | **+5.86** | 3.87 | +0.46 | — |
+| unsolved, pooled | 173 | 3.90 | 4.14 | +1.65 | 4.05 | +1.01 | +8.3 |
+| unsolved, 4-dot | 141 | 3.90 | 4.06 | +1.04 | 4.08 | +1.09 | +7.5 |
+| unsolved, 13-dot | 29 | 3.90 | 4.41 | +1.22 | 3.95 | +0.03 | +3.2 |
+
+Genuine clause boundaries in this book lengthen the preceding word by 1.33 runes,
+z = +5.86 on only 86 marks (the earlier run's +7.06 on the same pages, under a
+slightly different tokenization and denominator — the two agree). The last column
+projects that effect onto each group's own sample size: the 4-dot mark, with **more**
+data at 141 marks, would have shown z = +7.5 had the effect been there. It shows
++1.04.
+
+So splitting does not rescue the signature. Neither glyph carries it, and the
+glyph-pooling defect found above is not the reason the pooled test came back null.
+
 ## Status
 
 **Status**: confirmed (measurement) for all three, with the power check run before
-the negative was accepted. `experiments/mark_clause_lengths.py`,
+the negative was accepted, and and consistent with the
+established word-length-signature result, which is re-run per glyph here rather than
+reproduced as new evidence. `experiments/mark_clause_lengths.py`,
 `experiments/mark_clause_power.py`.
 
 ## Why this reference is the right one
@@ -90,6 +122,21 @@ author used for composition *and* the cipher used for state, so plaintext respec
 them without their spacing being linguistic. That is a hypothesis, not a finding,
 and nothing here tests it.
 
+## The quote alignment is now isolated, and it is carried entirely by the 4-dot mark
+
+All 8 of the quote-span edges that land on a mark land on the **4-dot** glyph; none
+lands on 13-dot or 10-dot (`experiments/quote_span_analysis.py`, re-read per glyph).
+That is the direction the rest of this file predicts — 4-dot is the candidate
+linguistic glyph, 13-dot the layout one — but it is **not evidence**: 4-dot is 81.8%
+of the marks in that corpus, so 8 of 8 has probability 0.818⁸ = 0.20 under random
+glyph assignment. Recorded as directional only, and underpowered at n = 8.
+
+So the conflict tightens rather than resolves. Two independent statistics, both
+calibrated on this book's own solved pages, say the unsolved marks are not English
+clause boundaries. One statistic — the quote-edge alignment at p = 1.5e-7 — still
+says the plaintext respects them. The alignment is now the single anomaly, and it
+cannot be dismissed as a glyph-pooling artifact.
+
 ## Limits
 
 - **Register.** The solved pages are the book's introductory and didactic material
@@ -123,6 +170,8 @@ and nothing here tests it.
   random placement, per glyph; decision rule registered in the docstring.
 - `experiments/mark_clause_power.py` — the power check, planting the solved pages'
   clause-length shape at the unsolved rate.
+- `experiments/mark_word_signature.py` — the word-length signature per glyph, with
+  the solved pages calibrating what a real clause boundary does.
 
 ## Related
 
