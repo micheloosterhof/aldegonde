@@ -90,3 +90,33 @@ family is the standing next step.
 - `no-known-plaintext-foothold.md` — no KP shortcut either.
 - `length-clocked-walk.md` — the candidate model and key `(base_0, g, σ)`
   (plausible, not confirmed).
+
+## The plaintext does not repeat either (September 2026)
+
+This file censuses repeated CIPHERTEXT, which only finds matches where the plaintext
+and the key state recur together. The word-length sequence gives a strictly more
+sensitive test of the plaintext alone: every cipher family standing here is
+per-position bijective, so word lengths pass through in clear and a repeated passage
+must appear as a repeated run of lengths whatever the cipher does to the runes.
+
+**The longest repeated word-length run in the body is 7 words** — at positions 2608
+and 2775 — against a shuffled null whose mean is 7.7 and maximum over 300 draws is 11.
+The observed run is *shorter* than chance provides (P = 0.99). A repeated passage of
+12 or more words would have been visible; there is none.
+
+So the body carries no refrain, no repeated liturgical formula, and no self-quotation
+at passage length. That closes a crib route that costs nothing to hope for, and it is
+worth knowing before anyone looks for one.
+
+**DJU-BEI sits in no such passage.** It is confirmed here as the only repeated
+adjacent ciphertext word pair in the corpus, at words 1477–1478 and 2926–2927, and the
+word-length context matches **0 words before and 0 after**: the four words preceding
+run 12, 4, 7, 2 against 7, 7, 2, 6. The second occurrence is also the last word pair in
+the corpus, so there is no "after" context to compare at all.
+
+This does not argue against DJU-BEI being a genuine two-word plaintext repeat — a
+short phrase recurring in two different sentences is ordinary. What it rules out is
+the stronger reading, that it marks a longer repeated passage whose remainder was
+enciphered into different ciphertext by a changing key.
+
+`experiments/length_repeat_census.py`.
