@@ -156,6 +156,32 @@ book and it would still leave a −3.8 residual.
   the two ordinary explanations — different content, different orthography — are both
   out. What remains is a rule applied uniformly to the body and not to the front matter.
 
+## What the d5 leak cannot settle
+
+`period5-is-confirmed.md` makes d5 the one key-free channel: within a block the base is
+fixed and `g^5` is the identity, so lag-5 coincidence reads the plaintext directly. That
+looked like a way to decide whether the blocks are words or arbitrary cuts of a rune
+stream — if they are words, the body's d5 should match the author's within-word rate; if
+cuts, his continuous rate.
+
+Measured on the solved plaintext:
+
+| segmentation | lag-5 rate | pairs |
+|---|---|---|
+| within the author's words | 0.0575 ± 0.0144 | 261 |
+| continuous, boundaries ignored | 0.0624 ± 0.0055 | 1,908 |
+| re-cut into the body's block lengths | 0.0633 ± 0.0127 | 200 recuts |
+| **body, within blocks** | **0.0492 ± 0.0048** | 2,073 |
+
+**The three predictions differ by 0.006 and the body's own error is 0.005, so the test
+has no power.** The body sits below all three at z = −0.54, −1.80 and −1.04. The reason
+is structural: at lag 5 English has almost no positional structure left, so crossing a
+word boundary barely changes the rate. Lags 10 and 15 would leak too, `g` having order
+5, but blocks of eleven runes or more are 1.5% of the body and supply too few pairs.
+
+So d5 cannot decide the segmentation question, and this is worth recording so it is not
+attempted again.
+
 ## Falsification
 
 - The 486-word plaintext sample is the weak point. If the 2-rune fraction is a property
