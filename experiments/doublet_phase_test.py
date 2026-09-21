@@ -52,7 +52,7 @@ from fingerprint_battery import M, fingerprint, lp_words  # noqa: E402
 from pure_quagmire_restart import matched_register, running, schedule  # noqa: E402
 from quagmire_runner import load_clean, load_register  # noqa: E402
 
-SKIPS = (0, 1, 2, 3, 4)
+SKIPS = (-4, -3, -2, -1, 0, 1, 2, 3, 4)  # negatives included to show they duplicate
 
 
 # The preventer does two separable things: it re-emits with a NEIGHBOURING alphabet, and
@@ -229,16 +229,35 @@ def variant_table(plain, K, offsets, start, lp) -> None:
 def on_the_corpus() -> None:
     """Run the prediction against the LP."""
     words = lp_words()
-    print(f"{len(words)} words\n")
-    print(f"{'space skip':>11}{'doublets':>10}{'phase counts':>22}{'chi2':>9}{'p':>9}")
+    print(f"{len(words)} words")
+    print(
+        "a space that goes BACK one step is k = -1, and the alphabet is a period-5\n"
+        "schedule, so only k mod 5 can matter. The negative rows below are printed to\n"
+        "show they are the same measurement, not a new one.\n"
+    )
+    print(
+        f"{'space skip':>11}{'same as':>9}{'doublets':>10}"
+        f"{'phase counts':>22}{'chi2':>9}{'p':>9}"
+    )
     rows = []
+    seen: dict[int, tuple] = {}
     for k in SKIPS:
         phases = doublet_phases(words, k)
         chi2, _best, counts = concentration(phases)
         # four degrees of freedom; survival of the chi-square by series
         p = math.exp(-chi2 / 2) * (1 + chi2 / 2)
-        rows.append((chi2, k, counts, p))
-        print(f"{k:>11}{len(phases):>10}{str(counts):>22}{chi2:>9.1f}{p:>9.3f}")
+        if k >= 0:
+            rows.append((chi2, k, counts, p))
+        mate = seen.get(k % 5)
+        if mate is not None:
+            assert mate == tuple(counts), (
+                f"skip {k} must reproduce skip {k % 5} exactly under a period-5 schedule"
+            )
+        seen[k % 5] = tuple(counts)
+        label = "" if mate is None else f"k={k % 5}"
+        print(
+            f"{k:>11}{label:>9}{len(phases):>10}{str(counts):>22}{chi2:>9.1f}{p:>9.3f}"
+        )
     best = max(rows)
     print(
         f"\nthe model predicts ONE class holding all {sum(rows[0][2])} and four at zero."

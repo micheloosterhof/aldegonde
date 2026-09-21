@@ -21,7 +21,7 @@ well-powered and comes back flat, but a second mechanism — the per-word base c
 predicts exactly the same flatness whatever `k` is, so the negative does not
 discriminate.
 
-## The test, and why scanning k is one question
+## The test, and why five classes exhaust every skip in both directions
 
 Within words the period-5 echo is plain: gap 5 reads 0.0492 against chance 0.0345,
 z = +3.67, because two positions five apart share an alphabet. If the space eats `k`
@@ -30,8 +30,15 @@ multiple of five.
 
 For pairs spanning a single boundary the clock distance is `gap + k`, so changing `k`
 only relabels which residue class of the gap carries the echo. Pooling every cross-word
-pair by `gap mod 5` therefore tests all five values of `k` at once, and uses every pair
+pair by `gap mod 5` therefore tests all values of `k` at once, and uses every pair
 rather than the few at gap exactly 5. That is where the power comes from.
+
+**Negative skips are the same rows.** Michel raised the space running the clock BACK
+instead of forward — repeating the previous word's last alphabet. Only `k mod 5` can
+matter, because the schedule has period 5, so `k = −1` is `k = 4`, `k = −2` is `k = 3`,
+and so on. The five classes cover every skip in both directions. `doublet_phase_test.py`
+asserts this rather than assuming it: the phase counts for `k = −1 … −4` come out
+byte-identical to those for `k = 4 … 1`.
 
 ## Result: flat at every k
 
@@ -40,11 +47,11 @@ chance 0.0345.
 
 | gap mod 5 | implies k | hits / pairs | rate | z vs chance | z vs the other classes |
 |---|---|---|---|---|---|
-| 0 | 0 | 338 / 9,887 | 0.0342 | −0.16 | −0.03 |
-| 1 | 4 | 278 / 8,170 | 0.0340 | −0.23 | −0.11 |
-| 2 | 3 | 429 / 12,204 | 0.0352 | +0.41 | +0.63 |
-| 3 | 2 | 404 / 12,485 | 0.0324 | −1.30 | −1.32 |
-| 4 | 1 | 408 / 11,494 | 0.0355 | +0.60 | +0.84 |
+| 0 | 0 or −5 | 338 / 9,887 | 0.0342 | −0.16 | −0.03 |
+| 1 | 4 or **−1** | 278 / 8,170 | 0.0340 | −0.23 | −0.11 |
+| 2 | 3 or −2 | 429 / 12,204 | 0.0352 | +0.41 | +0.63 |
+| 3 | 2 or −3 | 404 / 12,485 | 0.0324 | −1.30 | −1.32 |
+| 4 | 1 or −4 | 408 / 11,494 | 0.0355 | +0.60 | +0.84 |
 
 **The power is real, unlike at distance 6.** Each class holds about 10,800 pairs, so an
 echo the size of the within-word one would read **z = +8.40**. The largest observed is
@@ -117,9 +124,10 @@ the preventer's own fires are invisible in the ciphertext.
 
 ## Verdict
 
-Not settled. The coincidence test is well-powered, comes back flat at every `k` from 0
-to 4, and cannot distinguish the hypothesis from the per-word base change that would
-produce the same flatness. Recorded mainly for two things it does establish: the
+Not settled. The coincidence test is well-powered, comes back flat at every `k` — and
+since only `k mod 5` matters, that is every skip in both directions, the backward space
+included — and cannot distinguish the hypothesis from the per-word base change that
+would produce the same flatness. Recorded mainly for two things it does establish: the
 cross-word channel carries no period-5 signal at any clock convention, and no test
 requiring the absolute clock phase is available while a clock-skipping doublet
 preventer is in the model.

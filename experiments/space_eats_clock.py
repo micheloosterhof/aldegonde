@@ -14,10 +14,17 @@ z = +3.67, because two positions five apart share an alphabet. If the space eats
 steps, the same echo should appear across a boundary wherever that total is a multiple
 of five.
 
-**Scanning k is one question, not five.** For pairs spanning a single boundary the clock
-distance is `gap + k`, so changing `k` only relabels which residue class of the gap
-should carry the echo. The test is therefore: pool every cross-word pair by `gap mod 5`
-and ask whether any one class is elevated. A class at residue `r` means `k = -r mod 5`.
+**Scanning k is one question, not five, and it covers negative skips too.** For pairs
+spanning a single boundary the clock distance is `gap + k`, so changing `k` only relabels
+which residue class of the gap should carry the echo. The test is therefore: pool every
+cross-word pair by `gap mod 5` and ask whether any one class is elevated. A class at
+residue `r` means `k = -r mod 5`.
+
+Only `k mod 5` can matter, because the schedule has period 5. So a space that goes BACK
+a step -- repeating the last alphabet of the previous word -- is `k = -1`, which is the
+same class as `k = 4`; `k = -2` is `k = 3`, and so on. Five classes exhaust every skip in
+both directions.
+
 Pooling this way uses every pair instead of the handful at gap exactly 5, which is where
 the power comes from.
 
@@ -117,7 +124,7 @@ def main() -> None:
         f"{total_h}/{total_n} = {total_h / total_n:.4f}\n"
     )
     print(
-        f"{'gap mod 5':>10}{'implies skip':>14}{'hits/pairs':>16}"
+        f"{'gap mod 5':>10}{'implies k':>12}{'hits/pairs':>16}"
         f"{'rate':>9}{'z vs chance':>13}{'z vs others':>13}"
     )
     best = None
@@ -125,8 +132,11 @@ def main() -> None:
         hits, pairs = classes[r]
         others_h, others_n = total_h - hits, total_n - pairs
         z_rest = two_rate_z(hits, pairs, others_h, others_n)
+        # k is fixed only mod 5, so a class names one positive and one negative skip:
+        # a space that goes BACK one step is k = -1 and lands in the same class as k = 4
+        label = f"{(-r) % 5} or {(-r) % 5 - 5}"
         print(
-            f"{r:>10}{(-r) % 5:>14}{f'{hits}/{pairs}':>16}"
+            f"{r:>10}{label:>12}{f'{hits}/{pairs}':>16}"
             f"{hits / pairs:>9.4f}{z_of(hits, pairs):>13.2f}{z_rest:>13.2f}"
         )
         if best is None or z_rest > best[0]:
