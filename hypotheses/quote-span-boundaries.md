@@ -152,3 +152,44 @@ word separator does not survive this test. They delimit units that quoted
 speech opens on, closes on, and avoids crossing. What those units are is the
 open question, and it is now sharper than before: something the plaintext
 respects, that is not an English sentence.
+
+## Sharpened: the ticks are IMMEDIATELY adjacent to a 4-dot (September 2026)
+
+This file measures the alignment at the level of span *edges* landing on a mark. The
+raw transcription shows something tighter: the quote ticks sit immediately beside a ④
+in the character stream.
+
+| | |
+|---|---|
+| ticks immediately adjacent to a ④ | **8 of 14** |
+| ④ share of all boundary glyphs | 139/3599 = 3.86% |
+| expected if ticks attached at random | 1.08 |
+| P(≥ 8) | **2.2e−6** |
+
+That is the same anomaly stated without the span construction in between, so it does
+not depend on how the 14 ticks were paired into 7 spans.
+
+**And one of them is a cluster.** The stream contains the literal sequence `"④"` — a
+single ④ between two ticks with **no rune between them**. Under the span reading those
+two ticks close one quotation and open the next.
+
+## Two readings, and what separates them
+
+**Genuine punctuation clustering.** A closing quote, a clause mark, an opening quote is
+an ordinary sequence in printed English: *…he said." ¶ "Then…*. On this reading the
+alignment is linguistic and the ④ is doing real work.
+
+**One glyph transcribed as two.** If the LP writes a quotation mark as a tick plus a
+dot cluster, the transcriber would record `"` and `④` separately at the same spot, and
+the alignment would be an artifact with no linguistic content. This would also explain
+why ④ has no other role: `marks-are-not-clause-punctuation.md` finds it carries no
+clause-final word-length signature and does not space like clause punctuation, and
+`marks-are-not-clause-punctuation.md`'s later section finds the doublet suppression
+runs straight through it, so it is not a cipher event either.
+
+**What separates them is the page images, not the transcription.** If the 8 tick-adjacent
+④ differ in size, spacing or vertical placement from the other 131, they are part of the
+quote glyph; if they are identical, the clustering is linguistic. `contraction-cribs.md`
+already did a connected-component sweep of all 58 pages and measured the tick at
+h = 40, w = 12 against dot marks of 9–10 px — the same sweep, restricted to the 8 sites,
+would settle it. Nothing in this repository's text files can.
