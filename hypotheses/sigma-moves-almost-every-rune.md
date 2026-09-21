@@ -103,3 +103,34 @@ planted controls show both clocks produce the body's pattern.
 - `g-has-more-than-one-cycle.md` — the same channel for the letter step.
 - `key-local-channel-is-empty.md` — the order bound this complements.
 - `base-family-is-the-symmetric-group.md` — the structural classification it fits.
+
+## The graph-mass reframing adds nothing here, and that is worth knowing
+
+`seam-to-d1w-ratio-is-a-constraint.md` turned a model-comparison statistic into a
+measurement of **g's graph mass**, Σₓ P(x, g(x)). The same move is available for σ: the
+adjacent-block channel above coincides when `σ(u') = u`, so it measures
+Σₓ p(x)·p(σ(x)) — a graph mass — and the fixed-point count is the special case σ(x) = x.
+
+Tested by planting σ at controlled graph masses:
+
+| σ graph mass | adjacent-block nIoC |
+|---|---|
+| 0.0204 | 0.697 |
+| 0.0300 | 0.906 |
+| 0.0345 (chance) | 0.863 |
+| 0.0450 | 0.963 |
+| 0.0553 | 1.000 |
+| **body** | **1.0685** |
+
+The channel does track mass, monotonically apart from noise. But the slope is shallow: the
+whole range available to a random σ — 0.0202 to 0.0521 over 4,000 draws — moves the
+statistic only from 0.70 to 1.00, so inverting the body's value gives an interval wider
+than the range itself.
+
+**The fixed-point parametrisation is simply the sensitive one.** Fixed points contribute
+p(x)² where moved points contribute p(x)·p(σ(x)), and the former is larger on average, so
+f_σ is where the mass actually varies — the planted medians for f = 0, 2, 5, 10, 15, 24
+span 1.04 to 2.18 against this table's 0.70 to 1.00. The two readings are the same
+measurement and the earlier one resolves it better.
+
+So the g result does not generalise to σ. Recorded so the move is not tried again.
