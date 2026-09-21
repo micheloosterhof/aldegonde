@@ -500,3 +500,42 @@ applies to the 7.0 bits the within-word d1 channel gives g.
 That makes the preventer question the most valuable open question here, and gives it a
 price: under the relational reading the local channel yields ~13 bits on g plus ~28 on
 the seam relations; under the preventer reading it yields ~6 on g and nothing on σ.
+
+## The fork resolves toward the preventer, so the headline stands after all
+
+The section above priced the preventer question at 28 bits and left it open. It does
+not stay open long, because boundary-blindness decides it.
+
+**The two rates are statistically equal.** Within words 63/10028 = 0.00628 ± 0.00079;
+at the seam 23/2927 = 0.00786 ± 0.00163. The difference is +0.00158 ± 0.00181,
+**z = +0.87** — the suppression does not care about the word boundary, which
+`doublet-suppression.md` already records as "boundary-blind".
+
+**A preventer predicts that for free.** One mechanism acting on adjacent ciphertext
+runes gives one rate, and the boundary is irrelevant to it.
+
+**The relational reading has to buy it.** The within-word rate and the seam rate come
+from different relations acting on different plaintext distributions, so under that
+reading they are independent draws:
+
+| | z | P |
+|---|---|---|
+| within-word, relation g⁻¹ | −2.03 | 2.1e−2 |
+| seam, one fixed relation | −2.59 | 4.8e−3 |
+| seam, five relations averaged | −5.79 | 3.6e−9 |
+
+Jointly with the within-word rate, the relational reading needs a coincidence of
+**13 bits** if a single relation acts at the seam, or **34 bits** if five do — and then
+needs the two independent results to land within 2σ of each other on top of that.
+
+So the preventer explains with one mechanism what the relational reading must buy with
+13 to 34 bits of tuning. That is a decisive parsimony argument, and it resolves the fork
+in the direction that **removes** the 28 bits: if a preventer produces the suppression,
+the seam relation is unconstrained and σ is not reachable through it.
+
+**This file's headline therefore stands: σ gets ~0 local constraint.** The 28 bits were
+real arithmetic about a reading that the boundary-blindness argues against.
+
+What would overturn it is evidence that the suppression is *not* boundary-blind — a
+measured difference between the within-word and seam rates — or a mechanism-level reason
+the two relations should coincide. Neither exists at present.
