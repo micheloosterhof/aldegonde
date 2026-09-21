@@ -79,6 +79,23 @@ That is a materially stronger statement than the "4 of 5" it replaces, and it is
 strongest model result in this directory. It is not a solution: four cells is four cells,
 and `battery-cell-counts-are-not-evidence.md` is the reason to say so quietly.
 
+## RETRACTED, same day: both sections above hold one key
+
+`battery-cells-test-the-key.md` varies the key as well as the corpus and finds that
+11 of the 19 cells, `d1w` and `doublet_gap_min` among them, are decided by which key
+was drawn rather than by the mechanism.
+
+- **The 4-of-4 is one key in 24.** Across 24 random keys the substitution preventer
+  lands 4 of 4 once, with a median of 2. The plain dodge lands 4 of 4 three times,
+  also median 2. The ranking above is inverted and the difference is noise.
+- **`returns` is not unreachable.** The 10⁻²⁴ figure counts base collisions, but the
+  cell counts repeated six-rune ciphertext phrases, which chance also produces. The
+  measured rate is one in 1,440 corpora, matching the independent 1-in-2,700 estimate
+  for DJU-BEI. The cell is still not a model discriminator — every shape gives the
+  same near-zero rate — but the stated reason was wrong.
+
+Read the correction file, not this one, for any statement about how well a model does.
+
 ## A caveat on the dodge's numbers
 
 `dodge_three_cells.py` finds fixed-point sets landing d1w and the seam. That sweep varies
