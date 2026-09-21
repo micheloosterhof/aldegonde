@@ -42,10 +42,20 @@ mean redness `R − (G+B)/2` is bimodal, with most runes at 0 and rubricated one
 
 Span lengths run 1 to 24 runes, median 9.
 
-**Cross-check.** Excluding the front matter (pages 0–14) and the solved Parable and AN
-END pages (56, 57) leaves 135 runes of rubricated title on unsolved pages, against the
-**128 runes** `crib-budget-for-g.md` costs out. Two independently written pipelines
-agreeing to 5% is the check that this census is measuring the same thing.
+**Cross-check, with a numbering caveat that matters.** The page numbers above are
+**image** page numbers (`0.jpg` … `57.jpg`). They are *not* the transcription's
+`%`-chunk indices: the master transcription holds **72** rune-bearing `%`-chunks against
+**58** page images, so a chunk index cannot be assumed equal to a page number, and the
+solved/unsolved split established on chunks elsewhere in this directory does not
+transfer to these rows by index.
+
+Taking the conventional structure — front matter at the start, the Parable and AN END
+at 56–57 — and excluding those, the remainder is 135 runes of rubricated title against
+the **128 runes** `crib-budget-for-g.md` costs out. Two independently written pipelines
+agreeing to 5% is the check that the census measures the same thing, and it is also the
+only evidence here that the exclusion is drawn in roughly the right place. Anyone
+needing the split exactly must align images to transcription first, which is not
+currently possible — see below.
 
 ## Status
 
@@ -65,6 +75,19 @@ further rubricated runes.
 `g` by cribs needs on the order of 300 known words where the titles supply 29. Doubling
 the title material to ~58 words still falls short by a factor of five. Better scans
 would improve the verification material, not open the crib route.
+
+## Reading the titles needs alignment, which blob detection cannot provide
+
+The obvious next step is to read the rubricated titles on solved pages, which would fix
+what an LP section heading looks like. That needs each red rune box mapped to its
+position in the transcription, and counting blobs does not achieve it. Detected blobs
+of rune height disagree with the transcription's rune counts in both directions — image
+page 0 gives 261 against 184, page 6 gives 194 against 218, a range of −11% to +42% —
+because some runes split into several components and some touching pairs merge. Line
+structure does not rescue it either: the counts per line do not line up.
+
+So the titles stay unread until a real OCR pass exists, and this census is a census of
+*where* the rubrication is, not of what it says.
 
 ## What the spans are for
 
