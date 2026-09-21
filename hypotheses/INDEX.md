@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (46)
+### Observations (47)
 
 | File | Feature | Status |
 |---|---|---|
@@ -48,6 +48,7 @@ proposed mechanisms scored against them.
 | [unicity-distance.md](unicity-distance.md) | The Walk Family Is Over-Determined 60-Fold; a Free Per-Word Permutation Is Unbreakable | confirmed (calculation), with plaintext entropy measured on the author's own 1,796 runes: the walk (308 bits, U=106-203) and odometer (137 bits, U=47-90) are pinned 60-140x over by the 12,956 runes available, so their difficulty is SEARCH not information; a freely chosen per-word permutation (301,005 bits, U=104k-198k) is unbreakable with this corpus by 8-15x. The decisive question is therefore whether the per-word bases are GENERATED or CHOSEN, not which family they come from. No more ciphertext exists |
 | [two-rune-deficit.md](two-rune-deficit.md) | The 2-Rune Word Deficit (one bucket, z ≈ −10) | confirmed (characterization) for the deficit, on two independent references with the transliteration convention calibrated; MECHANISM still open but narrowed twice (Sep 2026): the deficit fits SELECTIVE separator loss at ~280 sites (chi2 21 vs 94 uniform, 149 none) while uniform loss fails, AND line wraps -- the likeliest place a transcription drops a separator -- can hold at most ~20 of those 280, the full count excluded at 27 sigma. So a transcriptional reading now needs a mid-line mechanism nobody has proposed |
 | [two-rune-depth-no-base-reuse.md](two-rune-depth-no-base-reuse.md) | Short Words Show No Depth: the Base Essentially Never Repeats | confirmed (characterization); a 29-state schedule excluded at 10^-124 on 3-rune words, enumeration-free and g-free |
+| [why-the-body-resists.md](why-the-body-resists.md) | The Information Is There and the Local Channel Cannot Reach It -- 13 Bits Against 170 | confirmed (composition of four measured results): the walk key is 285 bits and 12,956 runes can pin ~19,700, so it is over-determined 69x and the answer is unique; but the only base-invariant statistic of a within-word pair is EQUALITY (orbit theorem), that yields 13.0 bits on g and 0 on sigma against search spaces of 80 and 103, and a preventer attenuates even those. The 13 bits is a ceiling, not a current best, and no more ciphertext exists. Progress needs information from outside the local channel |
 | [within-word-d5-coincidence.md](within-word-d5-coincidence.md) | Within-Word Distance-5 Coincidence Excess | plausible (verified anomaly; mechanism unknown) |
 | [within-word-repeated-rune-structure.md](within-word-repeated-rune-structure.md) | Within-Word Repeated-Rune Structure (doublet avoidance + period-5 leak; per-section; Sigel/s8 block echo) | confirmed (characterization); s8 trigram crib is a lead (w599 spans a line wrap but is one word under standard tokenisation) |
 | [word-length-keystream-and-boundaries.md](word-length-keystream-and-boundaries.md) | Word-Length Keystream & Boundary Authenticity | confirmed (characterization) for the keystream disproof and the '.'-semantics; transcription omission now CLOSED so the clock is sound; the short-word deficit is split out to two-rune-deficit.md |
