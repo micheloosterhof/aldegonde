@@ -65,7 +65,12 @@ being the right frame. This one is not: it reads the group off the ciphertext.
 - H₁₄ remains formally untested, but `base-family-is-2-transitive.md` shows its extra
   invariant is the quadratic-residue class of g^j(p_j) − g^i(p_i), which a non-affine g
   scrambles — so it carries nothing even if present.
-- A₂₉ against S₂₉ is not decided here and probably cannot be from statistics.
+- A₂₉ against S₂₉ is not decided here and probably cannot be from statistics —
+  **but it is decided elsewhere, and not statistically.** `sigma-is-even.md` derives
+  sign(σ) = +1 from the DJU-BEI return: the base step is a product `g^a ∘ σ`, g is even
+  because its cycles are all 5-cycles, so the product's sign is sign(σ)^gap, and an
+  identity return with an odd gap forces σ even. The repo-default gap 1,449 is odd. So
+  the base family is **A₂₉**, conditional on the return being genuine.
 
 ## Status
 
