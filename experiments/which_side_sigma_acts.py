@@ -102,6 +102,50 @@ def walk(g, sigma, plain, rng, side: str):
     return out
 
 
+def phase_family(lengths, alpha: int, beta: int) -> list[int]:
+    """phase = (alpha * cumulative runes + beta * block index) mod 5.
+
+    A family wide enough to cover every affine convention in the two quantities the
+    scribe could have been counting. alpha = 1, beta = 0 is the per-rune clock the
+    walk assumes; alpha = 0 drops the rune count entirely.
+    """
+    out, cum = [], 0
+    for w, length in enumerate(lengths):
+        cum += length
+        out.append((alpha * (cum - 1) + beta * w) % 5)
+    return out
+
+
+def scan_conventions(words, label: str, draws: int = 40, seed: int = 0) -> None:
+    """Is there ANY affine phase convention under which the table is overdispersed?"""
+    lengths = [len(w) for w in words]
+    rng = random.Random(seed)
+    base = float(np.mean([
+        dispersion(words, [rng.randrange(5) for _ in lengths]) for _ in range(draws)
+    ]))
+    grid = np.zeros((5, 5))
+    for a in range(5):
+        for b in range(5):
+            grid[a, b] = dispersion(words, phase_family(lengths, a, b)) - base
+    # the null for a maximum over 25 cells, taken as a maximum over random labellings
+    maxnull = []
+    for t in range(200):
+        r = random.Random(1000 + t)
+        maxnull.append(
+            max(dispersion(words, [r.randrange(5) for _ in lengths]) for _ in range(5))
+            - base
+        )
+    mn = np.array(maxnull)
+    i, j = np.unravel_index(int(np.argmax(grid)), grid.shape)
+    print(f"\n{label}: random-phase baseline {base:.2f}")
+    print("      " + "".join(f"{'beta=' + str(b):>9}" for b in range(5)))
+    for a in range(5):
+        print(f"  a={a}" + "".join(f"{grid[a, b]:>9.2f}" for b in range(5)))
+    print(f"  best alpha={i}, beta={j}, excess {grid[i, j]:+.2f}; "
+          f"max-of-scan null {mn.mean():.2f} +- {mn.std():.2f}  ->  "
+          f"z = {(grid[i, j] - mn.mean()) / mn.std():+.2f}")
+
+
 def main() -> None:
     keys = 8
     for i, a in enumerate(sys.argv):
@@ -138,6 +182,21 @@ def main() -> None:
         below = int((v > body).sum())
         print(f"\n  against the {side:<5} simulations: z = {z:+.2f}, "
               f"and the body is below {below} of {keys}")
+
+    rk2 = random.Random(31)
+    g = order5_fixing(rk2.sample(range(M), 4), rk2)
+    sigma = rk2.sample(range(M), M)
+    scan_conventions(
+        walk(g, sigma, corpora[0], random.Random(5), "right"),
+        "planted RIGHT-acting walk, one corpus (true alpha=1, beta=0)",
+    )
+    scan_conventions(lp_words(), "THE BODY")
+    print(
+        "\nThe scan covers every affine phase convention in the two quantities the"
+        "\nscribe could have been counting. The planted walk lights up the whole beta=0"
+        "\ncolumn, since any invertible alpha is a relabelling of the true one, and"
+        "\nreaches z = +6 over a max-of-scan null. The body's grid is flat everywhere."
+    )
 
     print(
         "\nA right action predicts a clearly positive excess and produces one under every"

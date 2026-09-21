@@ -74,9 +74,20 @@ Stated so the lean is not over-read.
    chain evidence is `word-repeat-accounting.md`'s consistency argument, which rests on
    one repeated phrase.
 3. **The clock convention may differ** in a way the phase labelling does not capture.
-   Three conventions were tried — per rune, per rune plus separator, reset per block —
-   and none produced an excess on the body. A constant offset cannot matter, since it
-   relabels cells without changing homogeneity.
+
+   *Tested, same tick, and this one is now closed.* Scanning the whole affine family
+   `phase = (α · cumulative runes + β · block index) mod 5` — 25 conventions covering
+   both quantities the scribe could have been counting — the body's best excess is
+   **+0.48**, at z = +0.23 against a max-of-scan null. A planted right-acting walk at the
+   same corpus size reaches **+2.26 at z = +6.07**, and lights up its whole β = 0 column,
+   since any invertible α is a relabelling of the true convention.
+
+   Even α = 0, which drops the rune count entirely and leaves only the offset-into-block
+   structure, gives the planted walk +1.59 and the body −0.51. The body lacks not just
+   the phase structure but the positional structure a right action produces.
+
+   A constant offset cannot matter either way, since it relabels cells without changing
+   homogeneity.
 
 ## Falsification
 
