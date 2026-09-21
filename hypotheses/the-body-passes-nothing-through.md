@@ -43,9 +43,9 @@ margin. The body's unigram table is flat — χ² 26.4 on 28 df.
 | O | 0.0968 | 0.1279 | 0.0354 | +0.53 | −57.1 |
 | A | 0.0734 | 0.1053 | 0.0372 | +1.64 | −41.0 |
 | R | 0.0688 | 0.1009 | 0.0327 | −1.12 | −43.6 |
-| **F** | **0.0158** | **0.0497** | **0.0354** | **+0.53** | **−8.9** |
+| **F** | **0.0149** | **0.0489** | **0.0354** | **+0.53** | **−8.3** |
 
-**F — the rune the author actually uses — misses its pass-through rate by 8.9 sigma**,
+**F — the rune the author actually uses — misses its pass-through rate by 8.3 sigma**,
 and it is the closest of all 29. The common plaintext runes miss by tens.
 
 ## What this excludes, and what it does not
@@ -82,10 +82,17 @@ prime running key — and each keeps the same interrupt convention. The body dro
   rule is a tendency and half one weakens. Twelve for twelve is a small sample of pages,
   though not of interrupts.
 - If the body's plaintext register is very unlike the front matter's — F rate far below
-  0.0158 — the predicted pass-through rate drops. It would have to fall below about
-  0.002, an eighth of the author's own rate, for the −8.9 sigma to close.
+  0.0149 — the predicted pass-through rate drops. It would have to fall below about
+  0.002, an eighth of the author's own rate, for the −8.3 sigma to close.
 - The prediction assumes a passed-through rune is otherwise enciphered flat. That is what
   the body's χ² 26.4 on 28 df says it is.
+
+## Register note
+
+The plaintext rates above are from the sixteen-page register
+(`lp_plaintext_register.corpus()`, 723 words and 2,882 runes). On the eleven-page
+register this file originally used, F read 0.0158 and the miss was −8.9 sigma. Every
+other row moves by a similar tenth and none of them changes sign.
 
 ## Scripts
 

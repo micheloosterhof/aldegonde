@@ -78,18 +78,56 @@ def words_of(page: str, key: list[int] | None = None) -> list[list[int]]:
     return out
 
 
-def corpus() -> list[list[int]]:
-    """Every word of authentic LP plaintext available, from both sources."""
+def words_from_plaintext(page: str, plain: list[int]) -> list[list[int]]:
+    """Split a solved page's recovered plaintext at the ciphertext's separators.
+
+    Every solved page is position-aligned: an interrupt holds the key index but still
+    emits a rune, so the ciphertext and the plaintext have the same length and the
+    same separator positions. Checked for all ten triples.
+    """
+    out: list[list[int]] = []
+    current: list[int] = []
+    k = 0
+    for ch in page:
+        if RUNE.match(ch):
+            current.append(plain[k])
+            k += 1
+        elif ch in WRAP:
+            continue
+        elif current:
+            out.append(current)
+            current = []
+    if current:
+        out.append(current)
+    return out
+
+
+def corpus(keyed: bool = True) -> list[list[int]]:
+    """Every word of authentic LP plaintext available.
+
+    Three sources, not two. The six pages transcribed as plaintext; the five
+    monoalphabetic pages, whose key is a 29-rune substitution and so position-
+    preserving; and -- the ones this function used to drop -- the four interrupted
+    Vigenere pages and the prime running key page.
+
+    The old comment said those "carry a keystream, not a substitution, and must not be
+    applied here". That is right about applying a KEY to the ciphertext and irrelevant
+    here, because `solved_page_triples.json` stores the recovered plaintext directly in
+    `plaintext_runes`. Using it lifts the register from 486 words and 1,963 runes to
+    723 words and 2,882 runes, a 47% increase, and makes it agree with `word_lengths()`
+    which has counted all sixteen pages since it was written.
+
+    `keyed=False` restores the old eleven-page set for reproducing earlier numbers.
+    """
     pages = MASTER.read_text().split("%")
     words: list[list[int]] = []
     for n in PLAIN_PAGES:
         words += words_of(pages[n])
     for t in json.loads(TRIPLES.read_text()):
-        # only the monoalphabetic triples are position-preserving with a 29-rune
-        # key; the Vigenere and running-key ones carry a keystream, not a
-        # substitution, and must not be applied here
         if t["cipher"] == "monoalphabetic":
             words += words_of(pages[t["page"]], t["key"])
+        elif keyed:
+            words += words_from_plaintext(pages[t["page"]], t["plaintext_runes"])
     return words
 
 

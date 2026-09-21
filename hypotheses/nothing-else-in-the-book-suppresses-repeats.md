@@ -33,7 +33,7 @@ The book supplies all three as controls, in the author's own hand.
 | text | runes | doublets | d1 rate | z | IoC | seam |
 |---|---|---|---|---|---|---|
 | chance | | | 0.0345 | 0.00 | 1.000 | 0.0345 |
-| the author's plaintext | 1,963 | 47 | 0.0240 | −2.56 | 1.788 | 0.0309 |
+| the author's plaintext | 2,882 | 76 | 0.0264 | −2.38 | 1.777 | 0.0309 |
 | his monoalphabetic ciphertext | 962 | 19 | 0.0198 | −2.50 | 1.579 | 0.0236 |
 | **his interrupted Vigenère** | 834 | 25 | **0.0300** | **−0.71** | 1.107 | 0.0284 |
 | his prime running key | 85 | 2 | 0.0238 | −0.54 | 0.942 | 0.0417 |
@@ -41,7 +41,7 @@ The book supplies all three as controls, in the author's own hand.
 
 **The Vigenère is the control that matters.** Its key changes between adjacent positions,
 so a plaintext doublet stops being a ciphertext doublet and the rate returns to chance —
-and it lands there, at z = −0.71. The language effect is real (−2.56 in the plaintext)
+and it lands there, at z = −0.71. The language effect is real (−2.38 in the plaintext)
 and it is an order of magnitude too small to matter.
 
 The monoalphabetic pages behave exactly as they must, inheriting the plaintext rate.
@@ -54,7 +54,7 @@ keystream cipher.
 
 This is a positive constraint, which is rarer here than the negatives.
 
-- The deficit is **not** the language: the language accounts for 0.0240, not 0.0066.
+- The deficit is **not** the language: the language accounts for 0.0264, not 0.0066.
 - It is **not** an artifact of any cipher the author is known to use: his own keystream
   cipher returns the rate to chance.
 - So something in the body's cipher **inspects its own output and refuses to repeat.**
@@ -74,7 +74,7 @@ which is the quantity `substitution-preventer` fits with τ's fixed points and
   its z of −0.71 has room for a real deficit of a few percent, not for one of 81%.
 - If the body's plaintext register has a far lower doublet rate than the front matter's,
   the language explanation revives. It would have to be four times lower, against a
-  measured 0.0240 that is itself only 1.4× below chance.
+  measured 0.0264 that is itself only 1.3× below chance.
 - The prime-running-key row is 85 runes and settles nothing on its own; it is listed for
   completeness.
 

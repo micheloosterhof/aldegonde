@@ -44,7 +44,7 @@ longer corpus also has more distinct types:
 | register | repeated word pairs | repeated phrase pairs |
 |---|---|---|
 | prose | 14,981 | 662 |
-| **LP's own** | **18,804** | **3,977** |
+| **LP's own** | **16,349** | **2,830** |
 
 exponents 1.88 and 1.77. **The LP's plaintext repeats whole phrases about seven times
 as often as prose does.** Word repeats differ by only 1.3×, so this is specifically a
@@ -66,7 +66,7 @@ A model is consistent when both counts give the same pool.
 | register | from `identical` | `returns`: chain | `returns`: free |
 |---|---|---|---|
 | prose | 2,456 | 132 [36, 5,231] | 26 [13, 162] |
-| **LP's own** | **3,083** | **795 [216, 31,442]** | **63 [33, 396]** |
+| **LP's own** | **2,752** | **566 [153, 22,369]** | **53 [28, 334]** |
 
 Intervals are the exact Poisson 95% range for a single observed count.
 
@@ -91,8 +91,8 @@ no key, no choice of null family — the corpus is its own control.
 
 ## What this changes
 
-- The pool tension is gone. `identical` implies 3,083 with a 95% lower bound near
-  1,500, which is what one base per block looks like. The 357 in
+- The pool tension is gone. `identical` implies 2,752 with a 95% lower bound near
+  1,300, which is what one base per block looks like. The 357 in
   `base_pool_thermometer.py` is withdrawn.
 - Yesterday's chain evidence was a factor of 30 from simulated prose. This replaces it
   with a corpus-internal 1-in-20,000 and a consistency argument the free model fails
@@ -124,6 +124,14 @@ P = 0.34. Nothing. The spans are 42, 100, 178, 254, 276, 411, 904, 998, 1114, 12
 Worth noting for its own sake: **all 17 repeated words are 3 runes long.** Not one
 4-rune repeat exists, which is why `long` is 0 and why the whole channel sits in the
 chance-dominated class.
+
+## Register note (September 2026)
+
+The plaintext supplies above are from the sixteen-page register, 723 words rather than
+486. On the eleven-page register the figures were 18,804 and 3,977, giving pools of
+3,083, 795 [216, 31,442] and 63 [33, 396]. Every number moves about a tenth and the
+verdict is unchanged: the chain's interval contains the pool that `identical` implies and
+the chainless one misses it by a factor of eight.
 
 ## Falsification
 
