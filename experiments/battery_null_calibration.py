@@ -15,7 +15,13 @@ per-word step or a doublet rule -- none of the machinery the project models:
     one random alphabet per word    per-word monoalphabetic, nothing else
     plain Vigenere, key length 11   a repeating shift
 
-    python battery_null_calibration.py [--draws 25]
+**Sixty draws are required, and the reason is a one-sided resolution limit.** The
+battery's tail is `2 * min(below, 1 - below + 1/n)`, so a corpus value sitting ABOVE every
+model draw yields `2/n` at best. At 25 draws that is 0.08, above the 0.05 threshold, and
+such a cell can never register as a miss however wrong the model is. Forty draws is the
+minimum; the battery's own `compare` uses sixty and so does this.
+
+    python battery_null_calibration.py [--draws 60]
 """
 
 from __future__ import annotations
@@ -81,7 +87,7 @@ def score(gen, lp, cells, draws: int):
 
 
 def main() -> None:
-    draws = 25
+    draws = 60
     for i, a in enumerate(sys.argv):
         if a == "--draws" and i + 1 < len(sys.argv):
             draws = int(sys.argv[i + 1])

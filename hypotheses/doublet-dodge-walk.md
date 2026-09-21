@@ -155,11 +155,11 @@ land together at exactly the rate uncorrelated variation would give, so reaching
 same caution applies to the twelve cells this file counts as landing, and
 `battery-cell-counts-are-not-evidence.md` now prices it: a cipher with a fresh random
 alphabet at every position — no letter step, no order-5 structure, no per-word step, no
-doublet rule — lands **16 of the battery's 19 cells**. So twelve is four *worse* than
-having nothing in common with the corpus, and the tally is not the argument.
+doublet rule — lands **12 of the battery's 19 cells**. So twelve is exactly what having
+nothing in common with the corpus achieves, and the tally is not the argument.
 
-What is the argument is the three cells every wrong model fails: **d1w, the seam and
-triplets**. This model produces the first two structurally, from one rule, with no tuned
+What is the argument is the five cells every wrong model fails: **d1w, d6w,
+doublet_gap_min, returns and the seam**. This model produces the first two structurally, from one rule, with no tuned
 diagonal. Stated as a tally that claim disappears; stated against the baseline it is the
 strongest thing here.
 
