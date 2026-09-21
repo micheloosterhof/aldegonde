@@ -91,3 +91,23 @@ which excludes shifts and any other regular family but does not by itself prove 
 - `key-local-channel-is-empty.md` — the 13-bit figure this bounds as a ceiling.
 - `bigram-ioc.md` — the uniformity this derives.
 - `zero-triplets.md` — the (1,2) row above.
+
+## The 2-transitivity condition, sharpened (September 2026)
+
+The difference test above rules out a base family of pure shifts. It does not rule out
+the other proper subgroups of AGL(1,29): a base x -> m*x + c with m drawn from a
+multiplicative subgroup H of order k is transitive but 2-transitive only when k = 28,
+and its invariant is the coset H*(b - a), not the difference itself. Spread over 27
+degrees of freedom, such a signal is diluted by up to 27x.
+
+`base-family-is-2-transitive.md` runs the concentrated test at every subgroup order
+k in {1, 2, 4, 7, 14, 28}, both for the difference and for the ratio, at lags 1 to 5,
+against a surrogate null. Nothing exceeds z = +2.5 in 60 tests. Planted controls put
+H_2, H_4 and H_7 one to two orders of magnitude above what the body shows.
+
+H_14 is the one family the scan cannot see, because the invariant it exposes is the
+quadratic-residue class of g^j(p_j) - g^i(p_i) rather than of p_j - p_i, and a
+non-affine g scrambles those classes. The conclusion of this file is unaffected: that
+extra bit is not a plaintext statistic unless g is affine, and the only affine maps of
+order 5 on F_29 are translations, which the difference test above already excludes.
+
