@@ -1,7 +1,7 @@
 ---
 type: observation
 ---
-# Observation: Six Pages of the Transcription Are Literal Plaintext, and the Nine Enciphered ASCII-Convention Pages Resist the Obvious Families
+# Observation: A Non-Simulated Testbed — Six Transcription Pages Are Literal Plaintext, Five More Are Monoalphabetic and Now Recovered, Four Remain Polyalphabetic
 
 ## Feature
 
@@ -21,7 +21,7 @@ INSTRUCTIAN CWESTIAN ALL THNGS DISCOUER TRUTH INSIDE YOURSELF FOLLOW YOUR TRUTH
 IMPOSE NOTHNG"*. The gap between the two groups is over 4 nats per rune, so the
 classification is not marginal.
 
-**The nine enciphered pages are not cracked by any of:**
+**None of the nine is cracked by any of the keyed-shift families:**
 
 - identity, Atbash, all 29 shifts, Atbash composed with a shift in either order
 - Vigenère, Beaufort, Atbash-then-Vigenère and Vigenère-then-Atbash, keyed by each of
@@ -31,7 +31,47 @@ classification is not marginal.
 
 Best score reached on any of the nine is −6.90, against the −4.2 to −4.7 that the six
 plaintext pages establish as what English looks like under this scorer. Nothing is
-close.
+close — because five of them are not keyed shifts at all, as the next section shows.
+
+## Five of the nine are monoalphabetic, and are now recovered
+
+The index of coincidence says why the keyword search above was aimed wrongly. IoC is
+invariant under any monoalphabetic substitution, and normalised to 29 symbols it
+splits the pages into three groups:
+
+| group | pages | normalised IoC |
+|---|---|---|
+| plaintext in the transcription | 3, 8, 9, 10, 11, 14 | 1.52 – 1.96 |
+| **monoalphabetic ciphertext** | 0, 4, 5, 6, 7 | 1.63 – 2.06 |
+| polyalphabetic ciphertext | 1, 2, 12, 13 | 1.07 – 1.28 |
+| the unsolved corpus, for scale | — | 1.000 |
+
+Five pages sit in the plaintext IoC range, so they are simple substitutions on a
+general keyed alphabet — which shifts and Atbash cannot reach, and which is why the
+earlier family missed them. Steepest-ascent hill climbing over transpositions,
+scored by runeglish quadgrams, recovers all five:
+
+| page | runes | score | plaintext |
+|---|---|---|---|
+| 0 | 184 | −4.23 | A WARNING BELIEUE NOTHNG FROM THIS BOOC EXCEPT WHAT YOU CNO[W] |
+| 4 | 209 | −4.05 | A COAN A MAN DECIDED TO GO AND STUDY WITH A MASTER HE WENT |
+| 5 | 210 | −4.09 | …AGAIN THE MAN THOUGHT FOR A MOMENT AND REPLIED I AM A PRO… |
+| 6 | 218 | −4.19 | …O ARE YOU WHO WISHES TO STUDY HERE ASCED THE MASTER AGAI[N] |
+| 7 | 141 | −4.20 | BUT HE COULD NOT THINC OF ANYTHNG ELSE TO SAY SO HE TRAILED |
+
+All five land in the −4.05 to −4.23 band that the six plaintext pages establish as
+English under this scorer. The solver was controlled first: a random key planted on
+page 8's real plaintext is recovered exactly, at −4.25.
+
+The keys and full plaintexts are written to `experiments/solved_page_triples.json`.
+**That is the deliverable** — five genuine (ciphertext, key, plaintext) triples in the
+author's own hand, against which any scorer or key search here can be validated
+without manufacturing its own ciphertext.
+
+What remains enciphered is four pages, 1, 2, 12 and 13, whose IoC of 1.07–1.28 is
+below the plaintext range but well above the unsolved corpus's 1.000. That is the
+signature of a polyalphabetic cipher with a short period, and it is the obvious next
+target: a period estimate on those four is cheap and has not been run.
 
 ## Status
 
@@ -85,11 +125,17 @@ The search can see a key of the kind it is looking for, on genuine LP material.
 
 ## What would change it
 
-Cracking any of the nine would add a genuine (ciphertext, key, plaintext) triple,
-which is worth more than the plaintext alone: it would let a key search be validated
-end to end on material the project did not manufacture. The cheapest untried
-directions are a wider keyword list, keyed alphabets rather than keyed shifts
-(Quagmire rather than Vigenère), and fixing the interrupt round trip.
+Four pages are still enciphered: 1, 2, 12 and 13. Their IoC of 1.07–1.28 sits below
+the plaintext range and well above the unsolved corpus's 1.000, which is the signature
+of a polyalphabetic cipher with a short period. The cheapest next steps, in order:
+
+- a period estimate on those four (Friedman, or IoC by decimation), which is minutes
+  of work and tells the search what it is aiming at;
+- if a period falls out, solve each coset as a monoalphabetic with the climber that
+  already works here;
+- fixing the ᚠ-interrupt round trip, which is the one family whose control is weak.
+
+Each of the four would add another genuine triple.
 
 ## Scripts
 
@@ -97,6 +143,9 @@ directions are a wider keyword list, keyed alphabets rather than keyed shifts
   shift/Atbash family.
 - `experiments/solved_page_keywords.py` — the keyword and running-key families, the
   interrupt variants, and the planted-key control.
+- `experiments/solved_page_masc.py` — the IoC split and the substitution hill climber,
+  with its own planted-key control.
+- `experiments/solved_page_triples.json` — the five recovered triples.
 
 ## Related
 
