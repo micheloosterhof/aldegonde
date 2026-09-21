@@ -1,0 +1,205 @@
+# ABOUTME: Measures transition structure in the word-length sequence, which no substitution
+# ABOUTME: can touch, and finds the body carries a tenth of what the author's plaintext does.
+"""Word lengths are not enciphered. So they can be read directly, and they do not fit.
+
+Every cipher this project still entertains is position-preserving: the ciphertext has the
+same runes in the same places, so the sequence of word lengths passes through untouched.
+Whatever the body's plaintext is, its word-length sequence is visible in the clear.
+
+English word lengths are strongly serially dependent -- short function words alternate
+with long content words -- so that sequence should carry structure. The statistic is the
+G^2 of the length-transition table, bucketed at 6+, against a surrogate that shuffles the
+same lengths. Reported per pair so corpora of different sizes can be compared.
+
+    prose, six Gutenberg books carried into runeglish     0.0484 +- 0.0159
+    the LP's own solved plaintext, 723 words              0.0387 +- 0.0105
+    the unsolved body, 2,928 words                        0.0037 +- 0.0023
+
+The two references agree with each other and the body is an order of magnitude below
+both, on six times the plaintext's data.
+
+The obvious mechanism is tested and fails. Merging adjacent words -- what
+`separator-loss-is-selective.md` proposes -- removes only about a third of the structure
+at the merge rate that matches the body's mean word length, and moves the 2-rune share
+from 0.228 to 0.209 where the body sits at 0.159.
+
+    python word_length_sequence.py [--merge]
+"""
+
+from __future__ import annotations
+
+import collections
+import math
+import random
+import re
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "experiments"))
+
+from lp_plaintext_register import MASTER, PLAIN_PAGES, words_of  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
+
+RUNE = re.compile(r"[ᚠ-᛿]")
+CACHE = Path(tempfile.gettempdir()) / "lp_external_texts"
+CAP = 6
+
+
+def g2(seqs: list[list[int]]) -> tuple[float, int]:
+    """G^2 of the length-transition table, and the pair count. Sequences are kept
+    separate so no transition is counted across a page or section boundary."""
+    pairs = [(min(a, CAP), min(b, CAP)) for s in seqs for a, b in zip(s, s[1:])]
+    tab = collections.Counter(pairs)
+    ra = collections.Counter(a for a, _ in pairs)
+    rb = collections.Counter(b for _, b in pairs)
+    n = len(pairs)
+    out = 0.0
+    for (a, b), o in tab.items():
+        e = ra[a] * rb[b] / n
+        if o and e:
+            out += 2 * o * math.log(o / e)
+    return out, n
+
+
+def excess_per_pair(seqs: list[list[int]], rng: random.Random, draws: int = 200):
+    """(excess G^2 per pair, its standard error) against a length-shuffling surrogate."""
+    obs, n = g2(seqs)
+    flat = [x for s in seqs for x in s]
+    sur = []
+    for _ in range(draws):
+        t = flat[:]
+        rng.shuffle(t)
+        it = iter(t)
+        sur.append(g2([[next(it) for _ in s] for s in seqs])[0])
+    mu = sum(sur) / len(sur)
+    sd = (sum((x - mu) ** 2 for x in sur) / len(sur)) ** 0.5
+    return (obs - mu) / n, sd / n, obs, mu, n
+
+
+def body_sequences() -> list[list[int]]:
+    text = (ROOT / "data" / "page0-56.txt").read_text()
+    out = []
+    for s in [x for x in text.split("$") if RUNE.search(x)][:10]:
+        seq, cur = [], 0
+        for ch in s:
+            if RUNE.match(ch):
+                cur += 1
+            elif ch in "/\n":
+                continue
+            elif cur and ch in c3301.WORD_BOUNDARY:
+                seq.append(cur)
+                cur = 0
+        if cur:
+            seq.append(cur)
+        out.append(seq)
+    return out
+
+
+def plaintext_sequences() -> list[list[int]]:
+    """One sequence per solved page. Vigenere pages are position-preserving, so their
+    ciphertext word lengths are the plaintext's."""
+    import json  # noqa: PLC0415
+
+    pages = MASTER.read_text().split("%")
+    seqs = [[len(w) for w in words_of(pages[n])] for n in PLAIN_PAGES]
+    for t in json.loads((ROOT / "experiments" / "solved_page_triples.json").read_text()):
+        key = t["key"] if t["cipher"] == "monoalphabetic" else None
+        seqs.append([len(w) for w in words_of(pages[t["page"]], key)])
+    return seqs
+
+
+def prose_sequences(limit: int = 20000) -> list[tuple[str, list[int]]]:
+    from runeglish_frequency import english_to_runeglish  # noqa: PLC0415
+
+    out = []
+    for b in sorted(CACHE.glob("pg*.txt"))[:6]:
+        text = b.read_text(encoding="utf-8", errors="ignore")
+        words = re.findall(r"[A-Za-z']+", text.upper())[:limit]
+        lens = [len(english_to_runeglish(w.replace("'", ""))) for w in words]
+        out.append((b.name, [x for x in lens if x]))
+    return out
+
+
+def merge_control(rng: random.Random) -> None:
+    """Does merging adjacent words reproduce the body? No."""
+    books = prose_sequences(40000)
+    if not books:
+        print("no cached prose available for the merge control")
+        return
+    lens = books[1][1]
+    body = [x for s in body_sequences() for x in s]
+    print(
+        f"body: mean {sum(body) / len(body):.2f}, "
+        f"2-rune share {sum(1 for x in body if x == 2) / len(body):.3f}, "
+        "excess/pair 0.0037\n"
+    )
+    print(f"{'merge p':>8}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}")
+    for p in (0.0, 0.04, 0.08, 0.12, 0.16):
+        out, i = [], 0
+        while i < len(lens):
+            cur = lens[i]
+            i += 1
+            while i < len(lens) and rng.random() < p:
+                cur += lens[i]
+                i += 1
+            out.append(cur)
+        e, _se, _o, _m, _n = excess_per_pair([out], rng, draws=25)
+        print(
+            f"{p:>8.2f}{sum(out) / len(out):>7.2f}"
+            f"{sum(1 for x in out if x == 2) / len(out):>9.3f}{e:>13.4f}"
+        )
+    print(
+        "\nAt the merge rate that matches the body's mean length the 2-rune share is"
+        "\nstill 0.209 against the body's 0.159, and two thirds of the transition"
+        "\nstructure survives. Merging is not what happened."
+    )
+
+
+def main() -> None:
+    rng = random.Random(3301)
+    if "--merge" in sys.argv:
+        merge_control(rng)
+        return
+
+    print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")
+    rows = {}
+    for label, seqs in (
+        ("LP solved plaintext", plaintext_sequences()),
+        ("unsolved body", body_sequences()),
+    ):
+        e, se, obs, mu, _n = excess_per_pair(seqs, rng)
+        rows[label] = (e, se)
+        words = sum(len(s) for s in seqs)
+        print(f"{label:<26}{words:>8,}{obs:>9.1f}{mu:>11.1f}{e:>9.4f} +-{se:.4f}")
+
+    prose = prose_sequences()
+    if prose:
+        vals = []
+        for name, lens in prose:
+            e, _se, obs, mu, _n = excess_per_pair([lens], rng, draws=40)
+            vals.append(e)
+            print(f"{'  prose ' + name:<26}{len(lens):>8,}{obs:>9.1f}{mu:>11.1f}{e:>14.4f}")
+        m = sum(vals) / len(vals)
+        sd = (sum((x - m) ** 2 for x in vals) / len(vals)) ** 0.5
+        rows["prose"] = (m, sd)
+        print(f"{'prose, 6 books':<26}{'':>8}{'':>9}{'':>11}{m:>9.4f} +-{sd:.4f}")
+
+    be, bse = rows["unsolved body"]
+    print("\nthe body against each reference:")
+    for ref in ("LP solved plaintext", "prose"):
+        if ref not in rows:
+            continue
+        e, se = rows[ref]
+        z = (e - be) / math.sqrt(se**2 + bse**2)
+        print(f"  vs {ref:<22} {e:.4f} vs {be:.4f}   z = {z:+.2f}")
+    print(
+        "\nThe references' own uncertainty dominates, so these are 3-sigma statements,"
+        "\nnot the 15 sigma a naive comparison against the body's surrogate would give."
+    )
+
+
+if __name__ == "__main__":
+    main()
