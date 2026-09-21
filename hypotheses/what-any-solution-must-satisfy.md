@@ -36,6 +36,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source | Scope |
 |---|---|---|---|
+| C-0 | **g has five five-cycles** — it fixes 4 of the 29 runes and moves 25. The body's lag-2,3,4,6,7 profile filters a pool of order-5 permutations by 100×, and the survivors' cycle-count profile [0,0,2,22,36] matches a planted k=5 control | `d-profile-pins-g-to-five-cycles.md` | Key-free: the base cancels from a lag-k coincidence. Controls at true k = 1, 3, 5 all recover the truth |
 | C-1 | **g's graph carries ≈ 0.026 of the plaintext bigram mass**, one-sigma [0.0209, 0.0343] — the 16th to 60th percentile of random order-5 permutations, ~1.2 bits | `seam-to-d1w-ratio-is-a-constraint.md` | Read off the seam-to-within-word doublet ratio, calibrated on 18 permutations; assumes a preventer whose seam rate is g-free. `seam` is a mechanism cell (key ratio 0.91) but `d1w` is not (3.02), so the ratio inherits key sensitivity |
 | C0 | The base family is **A₂₉** — no algebraic structure to exploit | `base-family-is-the-symmetric-group.md`, narrowed by `sigma-is-even.md` | A₂₉ or S₂₉ from the classification; A₂₉ once σ is even, which is conditional on the DJU-BEI return |
 | C1 | The per-word base family acts **2-transitively** — H₂, H₄ and H₇ subgroups of AGL(1,29) excluded by 1–2 orders of magnitude | `base-family-is-2-transitive.md` | H₁₄ survives but its extra invariant is scrambled by a non-affine g, so it carries nothing |
