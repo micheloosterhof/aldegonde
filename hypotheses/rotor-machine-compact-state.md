@@ -526,6 +526,13 @@ their conclusions move (observed values sit at 0.93 to 1.05). Within a block the
 is distance-dependent, running 0.63 to 2.23 on the LP's own words, and no single constant
 is right there.
 
+**The base floor is now verified too** (September 2026). `base_pool_floor.py` calibrates
+it with planted pools: the body's joint-agreement excess is −13.4 ± 10.6 against medians
+of 362.9, 108.2, 35.1, 16.9 and 7.6 for pools of 29, 100, 300, 1,000 and 2,928 bases. The
+body sits below the 10th percentile of every one, so the base is effectively distinct per
+block and the ~300 figure is conservative by an order of magnitude. Everything this file
+rests on it — "29 alphabets is too few" above all — gets stronger, not weaker.
+
 **Taken on trust, not verified here**: the ≥300-base floor of
 `two-rune-depth-no-base-reuse.md` (which is what makes "29 alphabets is too
 few" bite), and the repo's plaintext coincidence reference ~0.060.

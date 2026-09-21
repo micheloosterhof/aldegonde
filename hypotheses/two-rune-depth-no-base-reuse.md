@@ -199,3 +199,36 @@ twentieth of the data.
 
 So the exclusion in this file is not an absence of evidence: the same statistic on
 genuinely reusing ciphertext from the same author screams, and on the body it is silent.
+
+## The floor is verified and is an order of magnitude too modest (September 2026)
+
+`rotor-machine-compact-state.md` cites this file's "~300 effective states" under *taken on
+trust, not verified here*, and it is what makes "29 alphabets is too few" bite. It is now
+calibrated (`experiments/base_pool_floor.py`).
+
+The measurement reproduces: 465 two-rune blocks, 107,880 pairs, **112** agreeing at both
+positions against an independent baseline of **125.4** — an excess of **−13.4 ± 10.6**,
+95% upper bound **+4.0**. A deficit, not an excess.
+
+The conversion needs the plaintext repeat rate, measured on the LP's own words rather than
+assumed: 116 two-rune words, 20 distinct, P(two identical) = **0.1006**. A pool of N bases
+then predicts an excess of 10,853/N, and planted pools confirm the conversion:
+
+| pool N | median excess | 10th | 90th | predicted |
+|---|---|---|---|---|
+| 29 | 362.9 | 277.8 | 406.0 | 374.2 |
+| 100 | 108.2 | 89.3 | 124.4 | 108.5 |
+| 300 | 35.1 | 29.2 | 42.1 | 36.2 |
+| 1,000 | 16.9 | 6.8 | 35.2 | 10.9 |
+| 2,928 | 7.6 | −5.0 | 16.2 | 3.7 |
+
+**The body sits below the 10th percentile of every pool**, including one as large as the
+block count itself. So the measurement is consistent with the base being **distinct for
+every block**, and the cited floor of 300 is exceeded by an order of magnitude.
+
+**One correction worth recording.** The first version of this control varied a pool of
+*shifts* and got ~520 excess at every N from 29 to 3,000. That is correct behaviour: shifts
+collapse mod 29, so a shift schedule has at most 29 effective states however many nominal
+ones it has. A pool of N must be a pool of N *permutations* for the arithmetic to mean
+anything — which is also, from the other side, why this test excludes shift-like schedules
+so violently.
