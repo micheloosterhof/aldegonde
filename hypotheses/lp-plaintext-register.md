@@ -68,6 +68,42 @@ length 3.67 (really 4.04), a 9.3% one-rune share (really 3.3%), and d1 = 0.0203 
 sigma (really 0.0217 at 2.70). The headline direction survives; its size does not, and
 the agreement with `two-rune-deficit.md` above only appeared once the bug was fixed.
 
+## The prose reference is vindicated at every lag that matters
+
+`d5-partial-alphabet-leak.md` calibrates against 128,577 words of Project Gutenberg
+#1342 converted to runeglish. That import is the basis of the standing register
+objection in this project. Tested against the author's own plaintext:
+
+| lag | LP rate | LP IoC | prose IoC | pairs | z (LP vs prose) |
+|---|---|---|---|---|---|
+| 1 | 0.0217 | 0.63 | 1.005 | 1477 | **−2.73** |
+| 2 | 0.0427 | 1.24 | 1.011 | 1007 | +1.36 |
+| 3 | 0.0567 | 1.64 | 1.569 | 653 | +0.29 |
+| 4 | 0.0670 | 1.94 | 1.514 | 418 | +1.36 |
+| 5 | 0.0575 | 1.67 | **1.595** | 261 | **+0.18** |
+| 6 | 0.0680 | 1.97 | 2.120 | 147 | −0.24 |
+
+**Lags 2 through 6 agree**, every one inside 1.4 sigma. In particular d5 — the
+full-leak reference that φ5 is divided by, and the single most load-bearing number in
+the d5 analysis — agrees at z = +0.18. Substituting the LP's own 1.67 for the prose
+1.595 moves φ5 from 0.72 to 0.64, which is inside the 0.64–0.71 range that file
+already reports. **The register objection does not bite on the d5 result.**
+
+Only **d1 differs**, at z = −2.73 (p = 0.006, still significant after correcting for
+six lags). Prose says plaintext adjacent repeats sit at chance; the LP's own plaintext
+says 0.63× chance.
+
+**And that difference has no consequence for any live model**, which is worth stating
+so it is not mistaken for a new problem. Plaintext d1 reaches the ciphertext only when
+adjacent positions share an alphabet. Every model still standing applies its letter
+step per rune, so adjacent positions never share one and the ciphertext d1 baseline is
+the decorrelated 1.0 whatever the plaintext does. The one place alphabets do coincide
+is the dodge's zero-offset phase, and a surviving doublet there requires s_(z−1) ≠ 0,
+so the doublet rate is not the term that enters.
+
+So: the import was sound where it was used, and the one place it is wrong is a place
+nothing depends on.
+
 ## What it does and does not settle
 
 It **does** replace an assumption with a measurement anywhere a model needs the rate at
