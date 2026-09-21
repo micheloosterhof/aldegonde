@@ -240,6 +240,17 @@ and is consistent with:
 5. **Segmentation.** Tested and survived: all sixteen tokenization conventions give
    essentially zero, so a wrong tokenizer is not the explanation.
 
+## The separators are still the cipher's units
+
+A fair objection to all of this is that the separators might not be cipher structure at
+all. `separators-are-the-cipher-unit.md` answers it: sliding every boundary by a fixed
+number of runes, keeping the length sequence unchanged, destroys the d5 echo. The real
+positions give 1.427x chance where twelve decorrelated offsets give 0.998 +- 0.103, so
+the echo sits +4.17 sigma above that null and is anchored to exactly these marks.
+
+So the author's segmentation is real and deliberate, and is not the plaintext's word
+segmentation. Both halves of that sentence are now measured.
+
 ## Status
 
 **Status**: plausible, and consequential if true. The measurement is confirmed at 3σ
