@@ -152,17 +152,18 @@ weakest on can be covered exhaustively rather than argued about:
 | 3 | 3,654 | 47.8 | 47.6 | 1.004 | 5/6 | 69 |
 | 4 | 23,751 | 50.3 | 49.2 | 1.023 | 5/6 | 67 |
 | 5 | 118,755 | 59.0 | 54.4 | 1.085 | 4/6 | 130 |
+| 6 | 475,020 | 64.7 | 59.9 | 1.081 | 5/6 | 201 |
 
 At every size the body's maximum sits well below what a planted block of that size
 scores, and its best candidate is separated from the best *disjoint* candidate by 0.4% to
 8.5% — the margin a maximum over correlated draws produces, not the 11%-to-190% margin
 the successful plants show.
 
-Power falls with size, from 6/6 at size 2 to 4/6 at size 5, because the misses are always
+Power runs 4/6 to 6/6 across the sizes, because the misses are always
 sets whose letters carry little indicator structure in the plaintext. That is a ceiling
 on this method rather than a gap in the conclusion: a partition no statistic can see is
 also a partition that tells a solver nothing.
 
-**So the two-block family is closed for small blocks (2–5) at 67–100% power**, the
+**So the two-block family is closed for small blocks (2–6) at 67–100% power**, the
 optimiser covers balanced splits at 50%, and three or more blocks are excluded outright.
 The intransitive escape is effectively shut.
