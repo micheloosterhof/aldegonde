@@ -173,3 +173,29 @@ The 2-rune words carry no depth. Position-0 agreement predicts nothing about
 position 1, where a shared-base schedule would force the two together. Any
 scheme whose base takes fewer than ~300 effective values is excluded at 22
 sigma, without enumerating a single key.
+
+## A positive control on ciphertext where base reuse really exists (September 2026)
+
+This file's exclusion rests on not finding repeated short ciphertext words. That is only
+evidence if the method would find them where they are. `solved-page-testbed.md` supplies
+ciphertext where they must be: the front-matter Vigenère pages use keys of 8 and 13
+runes, so their alphabets repeat constantly by construction.
+
+| corpus | word length | words | identical pairs | chance | ratio |
+|---|---|---|---|---|---|
+| front matter Vigenère | 2 | 51 | 9 | 1.52 | **5.9×** |
+| front matter Vigenère | 3 | 49 | 4 | 0.05 | **83×** |
+| the unsolved body | 2 | 465 | 112 | 128.28 | 0.87× |
+| the unsolved body | 3 | 726 | 17 | 10.79 | 1.58× |
+
+**The method sees reuse when it is there.** On the Vigenère pages the 3-rune excess is
+4 observed against 0.05 expected, P = 2.3e−6 — and on only 49 words. On 2-rune words it
+is 9 against 1.52, P = 4.4e−5.
+
+**And the body shows none.** Its 2-rune words sit slightly *below* chance (z = −1.44)
+and its 3-rune words are mildly above (17 against 10.79, z = +1.89) — not significant,
+and in any case two orders of magnitude short of what genuine reuse produces on a
+twentieth of the data.
+
+So the exclusion in this file is not an absence of evidence: the same statistic on
+genuinely reusing ciphertext from the same author screams, and on the body it is silent.
