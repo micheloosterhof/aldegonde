@@ -106,3 +106,38 @@ period 5 regardless of how the doublet question resolves.
   `stream-cipher-no-repeat.md` — the four escape classes.
 - `doublet-suppression.md` — the measurement being explained.
 - `length-clocked-walk.md` — the model that pays the design cost this note describes.
+
+## Demonstrated on the author's own ciphertext, not only in simulation (September 2026)
+
+The argument above is made from first principles and checked against simulated
+ciphers. `solved-page-testbed.md` now supplies the missing empirical leg: real LP
+ciphertext whose cipher is known, from the same author and the same book.
+
+| corpus | words | d1 rate | × chance | z vs chance |
+|---|---|---|---|---|
+| plaintext, 6 pages | 231 | 0.0247 | 0.72 | −1.49 |
+| monoalphabetic ciphertext, 5 pages | 255 | 0.0184 | 0.53 | −2.35 |
+| **interrupted Vigenère ciphertext, 4 pages** | 212 | **0.0305** | **0.89** | −0.54 |
+| the unsolved body | 2,928 | 0.0063 | 0.18 | −15.48 |
+
+The three known groups behave exactly as the theory requires, which is what makes the
+fourth row mean something:
+
+- **Monoalphabetic preserves coincidence**, so it inherits the plaintext's own mild
+  suppression (0.53× against the plaintext's 0.72×, consistent within noise).
+- **Polyalphabetic decorrelates**, so it returns the rate to chance: 0.89×, z = −0.54.
+  This is the "baseline is 1.0 whatever the plaintext does" step that the argument
+  elsewhere in this directory assumes; here it is measured on the author's own work
+  rather than assumed.
+- **The body is nowhere near either.** At 0.0063 it sits 4.9× below 3301's own
+  polyalphabetic output, a difference of z = −3.49 (19/622 against 63/10028).
+
+So the body's doublet suppression is not something polyalphabetic encipherment
+produces on its own — the author's own polyalphabetic pages demonstrate that it does
+not. A mechanism is required, which is this file's claim, now with a non-simulated
+control behind it.
+
+**Limits.** The front-matter groups are small (622 within-word pairs for the Vigenère
+row) and their register is didactic where the body's is not. The comparison is
+directional and 3.5 sigma, not decisive on its own; its value is that every step is
+measured on real material from the same source.
