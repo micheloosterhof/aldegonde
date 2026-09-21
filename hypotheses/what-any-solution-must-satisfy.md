@@ -64,6 +64,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 |---|---|---|---|
 | E1 | The **block lengths carry no language order** — excess G² per transition 0.0039 ± 0.0025 against 0.0397 ± 0.0101 for the author's own plaintext | `separators-are-not-word-boundaries.md` | Survives 16 tokenizations, a jackknife, and an enciphered-page control |
 | E2 | The lengths are **attached to nothing** — content, absolute position, line, previous length, all \|z\| < 1.3 | `block_length_independence.py` | Marginal dependence on those seven variables |
+| E3 | The length **marginal has a hole at 2**: 0.159 against the author's own 0.239, z = −3.24 against the between-page spread, and no one-parameter register tilt fits (χ² 72.7 on 10 df, residual −5.2 at length 2) | `block-lengths-have-a-hole-at-two.md` | Absorbing a third of the 2-rune units closes it, but at that rate the serial excess is still 0.023 against the body's 0.004. Two effects, not one |
 | E3 | Not produced by **merging, nulls or padding** — whatever matches the histogram keeps five times too much order | same | Three families, each swept |
 | E4 | Not restored by any **route or keyed columnar transposition** — 17 route rules and 46,232 keyed ones, the best failing cross-validation at +0.0011 on held-out pages | `separators-are-not-word-boundaries.md` | Per-page, whole blocks |
 | E5 | Not a **vocabulary list** (type-weighted lengths are unmistakable) and not **sorted** (sorting creates order, eighty-fold) | same | |
@@ -98,9 +99,12 @@ lengths.
 
 The largest unexplained facts were two. One is now reduced to a tension over a number.
 
-**E1/E2 — the block lengths are detached from everything.** They have the marginal of
+**E1/E2/E3 — the block lengths are detached from everything.** They have the marginal of
 running text, the serial order of nothing, and depend on no visible variable. Ten
-mechanisms have been measured against it and all fail.
+mechanisms have been measured against it and all fail. E3 adds a second, independent
+number to hit: the marginal is not the author's either, being short of 2-rune units by a
+third, and the one rule that closes that hole leaves the serial excess six times too
+high.
 
 **D6 — the single state return, now partly explained.** One repeat, 1 in 2,700 by
 chance, at the end of the body, with no shorter companions. The walk's own rate is
