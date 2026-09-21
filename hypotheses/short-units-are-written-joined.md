@@ -74,10 +74,33 @@ Three readings, none tested:
    than when it was composed. That would make it uniform across the body, which it is
    (χ² 3.9 on 8 df over nine sections), and absent from pages enciphered by simpler means,
    which it is.
+
+   ***Tested and dead.*** If joining were preparation it should track how hard the page's
+   cipher is. `experiments/joining_is_not_preparation.py` finds no gradient at all:
+
+   | cipher | pages | words | fraction at 2 | z vs the body |
+   |---|---|---|---|---|
+   | plaintext (no cipher) | 6 | 231 | 0.2597 | −3.41 |
+   | monoalphabetic | 5 | 255 | 0.2196 | −2.27 |
+   | interrupted Vigenère | 4 | 212 | 0.2406 | −2.71 |
+   | prime running key | 1 | 25 | 0.3200 | −1.72 |
+   | **all enciphered pages** | | 492 | **0.2337** | **−3.70** |
+   | **the body** | | 2,928 | **0.1588** | |
+
+   All four groups sit between 0.22 and 0.32, within each other's errors and around the
+   0.2422 median of twenty-two English registers. The AN END page — the hardest cipher
+   the author ever solved — reads the *highest* of any group at 0.320, though on 25 words
+   it cannot carry the argument alone.
+
+   **Being enciphered is not what distinguishes the body.**
 3. **The 2-rune deficit is not joining at all** but some other process that happens to
    leave the same marginal and the same serial order. Nothing else measured does.
 
-Reading 2 is the one that fits the pattern of the book without needing a second hand.
+Reading 2 was the one that fitted the pattern of the book without needing a second hand.
+It is now dead, so what survives is reading 1 — the body's scribe or exemplar differs —
+or reading 3, that the deficit is not joining at all. Nothing else measured produces the
+same marginal and the same serial order, which is what keeps reading 3 unattractive
+rather than excluded.
 
 ## Falsification
 

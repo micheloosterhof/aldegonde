@@ -62,6 +62,21 @@ at lag 5 specifically.
 estimate is about three times the dodge's rate and the shortfall is two sigma, so the
 direction favours a perturbed clock and the precision does not settle it.
 
+## The joining correction does not move it
+
+If the body's blocks are words with about 10% joined pairs
+(`short-units-are-written-joined.md`), some within-block lag-5 pairs span an internal
+word boundary, where the plaintext rate differs. Rebuilding prose's blocks the same way:
+
+| prose blocks built as | lag-5 rate | A | q |
+|---|---|---|---|
+| plain words | 0.0589 | 0.604 ± 0.195 | 0.096 [0.003, 0.260] |
+| 2-rune joined at q = 0.40 | 0.0583 | 0.618 ± 0.199 | 0.092 [0.000, 0.257] |
+
+A tenth of a percent on the plaintext rate and nothing on the bound. The reason is the
+one this file already gives: at lag 5 the within-word and cross-boundary rates differ by
+only about 0.005, which is why the segmentation test had no power either.
+
 ## Why the channel is exhausted
 
 - The plaintext side is already at ±0.0008 from prose. Nothing to gain.
