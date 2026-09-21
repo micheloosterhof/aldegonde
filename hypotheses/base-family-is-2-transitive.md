@@ -94,3 +94,18 @@ at lag 1. `experiments/coset_invariant_scan.py`, `--power` for the planted table
 - `local-channel-is-exactly-coincidence.md` — the theorem whose condition this sharpens.
 - `bigram-ioc.md` — the doublet trap, met again in ratio coordinates.
 - `mixed-alphabet-vigenere.md` — the shift-family case, already excluded.
+
+## The group this scan could not reach is now excluded too (September 2026)
+
+Everything above tests families that FAIL 2-transitivity. AGL(1,29) itself passes, so it
+survives this scan and the orbit theorem alike — and it is the attractive one, 812
+members against 29!, enough with five phases to clear the alphabet-count floor.
+
+`base-is-not-affine.md` reaches it with triples, since 2-transitive does not imply
+3-transitive. For an affine base the ratio (c_c − c_a)/(c_b − c_a) cancels both m and t
+and is base-invariant; for a general base it is scrambled. On disjoint within-block
+triples, planted affine bases give chi² 620–1,252 and planted general bases 31.5–141.2,
+with no overlap. The body reads 89.7 — the general-base median.
+
+So the base family is 2-transitive and strictly larger than the affine group.
+
