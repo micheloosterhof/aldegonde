@@ -102,6 +102,29 @@ no key, no choice of null family — the corpus is its own control.
 - `long` is exactly what chance gives (0 against 0.21), so it carries nothing either
   way, which is worth knowing before anyone fits to it.
 
+## Two things the 17 pairs do not give
+
+Both were tried and both are underpowered, which is worth recording so they are not
+tried again.
+
+**Span parity does not pin σ.** `sign(Π g^a σ) = sign(σ)^L`, since `g` has odd order and
+is therefore even. So under an odd σ only even-span pairs can be genuine base returns,
+and the ~6 genuine ones would pile up at even spans. Observed: 10 even, 7 odd, against a
+random-pair baseline of 8.51 ± 2.07 — z = +0.72. The two hypotheses differ by about 3
+pairs and the spread is 2.07, so 17 pairs cannot separate them. (The DJU-BEI span is
+1449, odd, which is the single-event route by which `sigma-is-even.md` already gets
+there.)
+
+**There is no chain period.** If the walk returned to its start every P blocks, the
+genuine returns would share P as a divisor. Scanning P from 2 to 1464, the best divides
+10 of the 17 spans — and a surrogate scan over random pairs reaches 8.76 ± 1.83, giving
+P = 0.34. Nothing. The spans are 42, 100, 178, 254, 276, 411, 904, 998, 1114, 1227,
+1252, 1449, 1449, 1474, 1973, 1983, 2009.
+
+Worth noting for its own sake: **all 17 repeated words are 3 runes long.** Not one
+4-rune repeat exists, which is why `long` is 0 and why the whole channel sits in the
+chance-dominated class.
+
 ## Falsification
 
 - The chance floor is a property of the shuffle. If the corpus's rune frequencies are
