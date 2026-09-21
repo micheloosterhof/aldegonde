@@ -79,6 +79,36 @@ This upgrades `g-has-more-than-one-cycle.md` from "at least two" to "five", and 
 confirms as a measurement what `doublet_dodge_walk.order5_fixing(…, 4)` has assumed by
 construction since it was written.
 
+## Binning by position ranks better and reads worse
+
+`experiments/d_profile_binned.py` splits each lag by position inside the block — j = 0,
+1, 2-3, 4+ — since the identity holds at every position and word-initial runes have their
+own distribution. That turns five constraints into **twelve cells of at least 400 pairs**.
+
+It helps at one job and hurts at the other.
+
+| true k | rank of the true g, 5 cells | rank of the true g, 12 cells |
+|---|---|---|
+| 1 | 832 / 6,000 | **52 / 6,000** |
+| 3 | 89 / 6,000 | **8 / 6,000** |
+| 5 | 2 / 6,000 | **0 / 6,000** |
+
+**Binning ranks the true g an order of magnitude better**, which is what a key search
+needs.
+
+But the cycle-count readout degrades. At true k = 3 the binned top-1% profile is
+[25, 21, 13, 1, 0] — it peaks at k = 1 although the true g sits at rank 8. The filter
+finds the right permutation and the fifty-nine around it are the wrong shape. Each binned
+cell's plaintext table comes from a fifth as much prose, so register error per cell grows
+as counting error falls, and the top of the list picks that up.
+
+The body's binned profile is [0, 5, 14, 19, 22] against the aggregate's
+[0, 0, 2, 22, 36], and only 12 of the two top-1% lists' 60 members are shared.
+
+**So: rank with the binned score, read the cycle structure from the aggregate one.** The
+claim above stays on the aggregate basis, which is the one whose controls behave at every
+true k.
+
 ## Scope and small biases
 
 - **Prose stands in for the body's plaintext.** The register agrees where it can be
