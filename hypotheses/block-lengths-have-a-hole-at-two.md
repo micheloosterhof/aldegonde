@@ -136,6 +136,53 @@ against the body's 4.42 — the same to two decimals — and a 2-rune fraction o
 against 0.1588. So the body is not simply a wordier register; a register can have
 exactly the body's mean and none of its hole.
 
+## Nor is it separators lost at line breaks
+
+The body is laid out in 594 lines of 21.8 runes, and a separator at a line break is the
+easiest kind to lose in transcription. Losing one merges two blocks, which is the shape
+of the deficit exactly.
+
+The right null is length bias: a long block covers more of a line, so it contains a break
+more often whatever the scribe did. Laying the body's own block lengths over its own line
+lengths in random order, 500 times:
+
+| | observed | length-bias null | z |
+|---|---|---|---|
+| blocks spanning a break | 454 | 459.1 ± 9.8 | −0.52 |
+| their mean length | 5.753 | 5.981 ± 0.095 | **−2.39** |
+
+Losing separators at breaks would make spanning blocks both commoner and longer. They
+are neither — the count is exactly as predicted and the mean is if anything short.
+
+And the deficit survives in the blocks the breaks never touched: 2,474 of them, fraction
+at length 2 **0.1774 ± 0.0077** against the author's 0.2420 ± 0.0159, z = −3.65. (That
+subset over-samples short blocks, which is why its rate sits above the body's own
+0.1588.)
+
+## A test that looks decisive and is not
+
+Recorded so it is not repeated. If separators were placed by the line rather than by the
+text, the count per line would be more regular, and less coupled to how many runes the
+line holds, than a random arrangement of the same blocks. The body reads sd z ≈ −4.3 and
+correlation z ≈ −7.5, which looks like exactly that.
+
+Two controls kill it.
+
+| text | lines | sd z | corr z |
+|---|---|---|---|
+| body | 594 | −4.25 | −7.53 |
+| front matter, plaintext | 55 | +9.30 | **−21.86** |
+| front matter, enciphered | 92 | −3.2 | −0.6 |
+| ordinary prose, same layout | ~590 | −2.9 to −5.4 | +1.4 to +2.7 |
+
+Prose laid out the same way reads the same sd z as the body, and the book's own
+**plaintext** front matter reads a correlation z three times more extreme.
+
+The fault is the null. It holds the line lengths fixed and shuffles the blocks, but a
+scribe chooses where to break a line to fit what is on it, so line length and content are
+not independent. The null breaks that link as well as the hypothesis and manufactures a
+coupling the real text never had.
+
 ## The hole is a process, not a register
 
 Content varies between sections of a 58-page book. A scribal or cipher rule does not.
