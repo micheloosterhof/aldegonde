@@ -37,8 +37,11 @@ and a fixed pad per word -- for the same reason the merge family was swept. They
 same way: whatever matches the histogram leaves five times too much order.
 
 `--jackknife` checks the reference, which is the load-bearing half of the comparison.
+`--types` tests the list reading in its natural form: a list of distinct vocabulary items
+is TYPE-weighted, not token-weighted, and looks nothing like the body.
 
-    python word_length_sequence.py [--merge] [--shape] [--tokenize] [--perturb] [--jackknife]
+    python word_length_sequence.py [--merge] [--shape] [--tokenize] [--perturb]
+                                   [--jackknife] [--types]
 """
 
 from __future__ import annotations
@@ -196,6 +199,51 @@ def tokenize_sweep(rng: random.Random) -> None:
         "\nlanguage, 4.07 against 3.99, and drives the order further to zero -- and that"
         "\nconvention is known to be wrong from the solved pages, where words demonstrably"
         "\nflow across wraps."
+    )
+
+
+def type_control() -> None:
+    """A list of distinct words is type-weighted. The body is not."""
+    from runeglish_frequency import english_to_runeglish  # noqa: PLC0415
+
+    text = "".join(
+        (CACHE / f"pg{n}.txt").read_text(encoding="utf-8", errors="ignore")
+        for n in ("1033", "131", "10")
+    )
+    tokens = re.findall(r"[A-Za-z]+", text.upper())
+    token_lengths = [len(english_to_runeglish(w)) for w in tokens]
+    type_lengths = [len(english_to_runeglish(w)) for w in sorted(set(tokens))]
+    body = [x for s in body_sequences() for x in s]
+    plain = [x for s in plaintext_sequences() for x in s]
+
+    def hist(ls: list[int], cap: int = 12) -> tuple[list[float], int]:
+        c = collections.Counter(min(x, cap) for x in ls if x > 0)
+        n = sum(c.values())
+        return [c[k] / n for k in range(1, cap + 1)], n
+
+    hb, nb = hist(body)
+    ht, _ = hist(token_lengths)
+    hy, _ = hist(type_lengths)
+    hp, _ = hist(plain)
+    print(f"{'len':>4}{'body':>9}{'prose tokens':>14}{'prose TYPES':>13}{'LP plaintext':>14}")
+    for k in range(12):
+        print(f"{k + 1:>4}{hb[k]:>9.3f}{ht[k]:>14.3f}{hy[k]:>13.3f}{hp[k]:>14.3f}")
+    print(f"\nmeans: body {sum(body) / len(body):.2f}  "
+          f"tokens {sum(token_lengths) / len(token_lengths):.2f}  "
+          f"types {sum(type_lengths) / len(type_lengths):.2f}  "
+          f"LP plaintext {sum(plain) / len(plain):.2f}")
+
+    def fit(h: list[float], n: int, m: list[float]) -> float:
+        return sum(2 * n * o * math.log(o / e) for o, e in zip(h, m) if o > 0 < e) / n
+
+    print("\nG2 per word, the body against:")
+    print(f"  prose tokens  {fit(hb, nb, ht):.4f}")
+    print(f"  prose TYPES   {fit(hb, nb, hy):.4f}")
+    print(f"  LP plaintext  {fit(hb, nb, hp):.4f}")
+    print(
+        "\nA list of distinct words has mean 6.77 and a 0.5% two-rune share against the"
+        "\nbody's 4.42 and 15.9%. The body's lengths are token-weighted: they look like"
+        "\nrunning text, and carry none of running text's order."
     )
 
 
@@ -363,6 +411,9 @@ def main() -> None:
         return
     if "--jackknife" in sys.argv:
         jackknife(rng)
+        return
+    if "--types" in sys.argv:
+        type_control()
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")

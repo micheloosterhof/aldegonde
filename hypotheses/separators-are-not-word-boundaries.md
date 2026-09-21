@@ -169,6 +169,26 @@ swept across its parameter range, and none reaching the body's order level while
 its histogram. **Every mechanism that preserves word identity leaves most of the order
 intact.** The order is destroyed, not diluted.
 
+## The lengths are token-weighted, which rules out a vocabulary list
+
+The most natural form of the list reading is a list of distinct items. It predicts
+**type-weighted** lengths, and those are unmistakable:
+
+| length | 1 | 2 | 3 | 4 | 6 | 8 | mean |
+|---|---|---|---|---|---|---|---|
+| body | 0.034 | 0.159 | 0.248 | 0.176 | 0.086 | 0.054 | **4.42** |
+| prose tokens | 0.027 | 0.256 | 0.267 | 0.181 | 0.061 | 0.028 | 3.79 |
+| **prose types** | 0.001 | **0.005** | 0.033 | 0.100 | 0.193 | 0.134 | **6.77** |
+| LP plaintext | 0.040 | 0.242 | 0.239 | 0.177 | 0.087 | 0.033 | 3.99 |
+
+G² per word, the body against each: prose tokens 0.1205, prose **types 1.9269**, LP
+plaintext 0.0668. The type-weighted fit is sixteen times worse than the worst
+token-weighted one.
+
+**So the body's block lengths have the marginal of running text and none of running
+text's order.** That is the anomaly in its sharpest form, and it is what any reading has
+to produce.
+
 ## But the blocks are not memoryless either
 
 A block process that starts a new block with fixed probability per rune would give
@@ -217,8 +237,12 @@ and is consistent with:
 2. **~~The length distribution should be the cipher's, not language's.~~** Tested and
    **failed**: the histogram is as far from geometric as language is. A memoryless block
    process is out. Two readings survive and are the live ones:
-   - **an i.i.d.-length source** — a list rather than prose, whose word lengths carry no
-     order because there is no sentence order to carry;
+   - **~~an i.i.d.-length source~~** — a list rather than prose. **Refuted in its
+     natural form**: a list of distinct vocabulary items is TYPE-weighted, and prose
+     types have mean 6.77 with a 0.5% two-rune share against the body's 4.42 and 15.9%
+     (G² per word 1.9269, against 0.0668 for the author's own plaintext). The body's
+     lengths are token-weighted — the marginal of running text. Only a list whose items
+     repeat like running text survives, which is to say a text;
    - **~~block-level reordering~~** — the lengths are the plaintext's, permuted.
      **Narrowed sharply**: a reader has to be able to undo a reordering, so it is a rule,
      not a shuffle, and the classical rules are few. Un-permuting each page under 17 route
