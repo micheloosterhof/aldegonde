@@ -50,7 +50,11 @@ def register():
 
 
 def histogram(words) -> tuple[np.ndarray, int]:
-    c = collections.Counter(min(len(w), CAP) for w in words)
+    return length_histogram([len(w) for w in words])
+
+
+def length_histogram(lengths) -> tuple[np.ndarray, int]:
+    c = collections.Counter(min(x, CAP) for x in lengths)
     return np.array([c[k] for k in range(1, CAP + 1)], float), sum(c.values())
 
 
@@ -74,17 +78,21 @@ def tilt_fit(base: np.ndarray, obs: np.ndarray) -> tuple[float, float, np.ndarra
     return lam, chi, (obs - e) / np.sqrt(np.maximum(e, 1e-9))
 
 
-def merged(words, absorb_len: int, q: float, rng) -> list:
-    """Join each word of `absorb_len` runes to the next with probability q."""
-    out, carry = [], []
-    for w in words:
+def merged(lengths, absorb_len: int, q: float, rng) -> list[int]:
+    """Join each unit of `absorb_len` runes to the next with probability q.
+
+    Works on lengths rather than words, so it can use all sixteen solved pages
+    instead of the eleven whose runes are recoverable.
+    """
+    out, carry = [], 0
+    for length in lengths:
         if carry:
-            out.append(carry + list(w))
-            carry = []
-        elif len(w) == absorb_len and rng.random() < q:
-            carry = list(w)
+            out.append(carry + length)
+            carry = 0
+        elif length == absorb_len and rng.random() < q:
+            carry = length
         else:
-            out.append(list(w))
+            out.append(length)
     if carry:
         out.append(carry)
     return out
@@ -100,11 +108,13 @@ def page_spread(mod) -> tuple[float, float, int]:
             fracs.append(sum(1 for x in w if len(x) == 2) / len(w))
             sizes.append(len(w))
     for t in json.loads(mod.TRIPLES.read_text()):
-        if t["cipher"] == "monoalphabetic":
-            w = mod.words_of(pages[t["page"]], t["key"])
-            if w:
-                fracs.append(sum(1 for x in w if len(x) == 2) / len(w))
-                sizes.append(len(w))
+        # lengths survive an interrupt, so every solved page counts here even where
+        # its runes do not
+        key = t["key"] if t["cipher"] == "monoalphabetic" else None
+        w = mod.words_of(pages[t["page"]], key)
+        if w:
+            fracs.append(sum(1 for x in w if len(x) == 2) / len(w))
+            sizes.append(len(w))
     f = np.array(fracs)
     s = np.array(sizes, float)
     return float((f * s).sum() / s.sum()), float(f.std(ddof=1) / np.sqrt(len(f))), len(f)
@@ -115,7 +125,7 @@ def main() -> None:
 
     mod = register()
     body, n_body = histogram(lp_words())
-    plain, n_plain = histogram(mod.corpus())
+    plain, n_plain = length_histogram(mod.word_lengths())
     prose = np.zeros(CAP)
     n_prose = 0
     for p in prose_corpora(2928, 10):
@@ -123,7 +133,8 @@ def main() -> None:
         prose += h
         n_prose += n
 
-    print(f"body {n_body:,} blocks, LP plaintext {n_plain} words, "
+    print(f"body {n_body:,} blocks, LP plaintext {n_plain} words "
+          f"(all sixteen solved pages), "
           f"prose {n_prose:,} words\n")
     print(f"{'len':>4}{'LP plain':>10}{'prose':>9}{'body':>9}")
     for i in range(CAP):
@@ -152,7 +163,7 @@ def main() -> None:
 
     print("\nWhich length has to be absorbed? One parameter, fitted:")
     rng = random.Random(31)
-    words = mod.corpus()
+    lengths = mod.word_lengths()
     print(f"{'absorbed':>9}{'best q':>8}{'chi2':>9}{'len-2 resid':>13}")
     for absorb in (1, 2, 3):
         best = (float("inf"), 0.0, None)
@@ -160,7 +171,7 @@ def main() -> None:
             h = np.zeros(CAP)
             n = 0
             for _ in range(40):
-                mh, mn = histogram(merged(words, absorb, float(q), rng))
+                mh, mn = length_histogram(merged(lengths, absorb, float(q), rng))
                 h += mh
                 n += mn
             e = h / n * n_body

@@ -93,6 +93,26 @@ def corpus() -> list[list[int]]:
     return words
 
 
+def word_lengths() -> list[int]:
+    """Plaintext word lengths from ALL sixteen solved pages, not just the eleven.
+
+    `corpus()` above excludes the Vigenere and running-key pages because their
+    interrupts make the plaintext-to-ciphertext RUNE map non-trivial. Lengths are a
+    different matter: an interrupt is a rune the key skips, not a rune inserted or
+    removed, so those pages' ciphertext word lengths are their plaintext's exactly.
+    `word_length_sequence.plaintext_sequences` already relies on this.
+
+    That lifts the sample from 486 words to 723, a 49% increase, and every
+    length-based statistic in this directory should use it.
+    """
+    pages = MASTER.read_text().split("%")
+    lengths = [len(w) for n in PLAIN_PAGES for w in words_of(pages[n])]
+    for t in json.loads(TRIPLES.read_text()):
+        key = t["key"] if t["cipher"] == "monoalphabetic" else None
+        lengths += [len(w) for w in words_of(pages[t["page"]], key)]
+    return lengths
+
+
 def profile(words: list[list[int]], lag: int) -> tuple[int, int]:
     """(matches, pairs) at a within-word distance."""
     hits = pairs = 0
@@ -136,6 +156,16 @@ def main() -> None:
             f"{lag:>4}{hits:>9}{pairs:>8}{rate:>9.4f}{rate * M:>10.2f}"
             f"{(rate - 1 / M) / se:>+8.2f}"
         )
+    lens_all = word_lengths()
+    print(
+        f"\nword lengths from all sixteen solved pages: {len(lens_all)} words, "
+        f"mean {sum(lens_all) / len(lens_all):.3f}"
+    )
+    print(
+        f"  fraction of 2-rune words {sum(1 for x in lens_all if x == 2) / len(lens_all):.4f}"
+        "  (the body's blocks read 0.1588)"
+    )
+
     d1 = profile(words, 1)
     print(
         f"\nThe plaintext doublet rate is {d1[0] / d1[1]:.4f} ({d1[0]}/{d1[1]}), "
