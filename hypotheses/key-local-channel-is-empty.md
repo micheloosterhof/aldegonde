@@ -425,3 +425,39 @@ That is the tuned-relation argument of `doublet-suppression-requires-design.md`,
 new handle on σ.
 
 **This file's headline therefore stands unchanged: σ has no local constraint.**
+
+## The local constraint on g, priced distance by distance (September 2026)
+
+The validated identity in `doublet-suppression-requires-design.md` generalises: under
+the walk the within-word relation between positions j and j+d is `g⁻ᵈ`, so the
+distance-d coincidence rate is exactly `Σ_x P_d(x, g⁻ᵈ(x))` — the plaintext distance-d
+bigram mass that `g⁻ᵈ` selects. That turns "how much does the corpus say about g" into
+a counting question, answered against the author's own plaintext:
+
+| d | body rate | relation | random order-5 g within 2σ | bits |
+|---|---|---|---|---|
+| 1 | 0.00628 ± 0.00079 | g⁻¹ | 0.0078 | **7.0** |
+| 2 | 0.03473 ± 0.00216 | g⁻² | 0.2509 | 2.0 |
+| 3 | 0.03702 ± 0.00272 | g⁻³ | 0.2940 | 1.8 |
+| 4 | 0.04098 ± 0.00351 | g⁻⁴ | 0.3320 | 1.6 |
+| **all four jointly** | | | **0.00013** | **13.0** |
+
+Three things follow.
+
+**The doublet rate is more than half the total.** d1 alone supplies 7.0 of the 13.0
+bits; d2 through d4 add 6 between them. Any effort to constrain g locally is mostly an
+effort about doublets.
+
+**13 bits is cross-validated and nearly useless.** This file's independent figure is
+16.0 bits from d1 through d7, and 13.0 from d1 through d4 is consistent with it. But
+there are about 9.8e+23 order-5 permutations of cycle type 5⁵1⁴ — roughly 80 bits —
+so 13 bits of constraint leaves about 67. The local channel narrows g by four orders of
+magnitude out of twenty-four, which is why the search surface is flat: this is the
+quantitative form of that observation.
+
+**The d5 echo constrains g not at all.** Since g⁵ = id, *every* order-5 g predicts the
+same distance-5 rate, namely the plaintext's own. So the corpus's most-studied anomaly
+carries zero information about which g it is; it tests whether the walk frame is right.
+On that it is consistent: the walk predicts the plaintext rate 0.0575 ± 0.0144 against
+the body's 0.0492 ± 0.0048, a difference of z = −0.55, so φ5 = 1 is not rejected and
+not confirmed — the underpowered verdict `d5-partial-alphabet-leak.md` already records.
