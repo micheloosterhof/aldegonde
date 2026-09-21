@@ -28,7 +28,11 @@ could work, because it removes exactly the short-long alternation that creates t
 structure. It reproduces the body's length histogram at q = 0.3 and its length sequence
 only at q = 0.9, and those are different corpora.
 
-    python word_length_sequence.py [--merge] [--shape]
+Segmentation is the obvious alternative explanation, so it is swept rather than assumed:
+sixteen tokenization conventions, crossing line wraps, multi-dot marks, page marks and
+quotes. Every one gives essentially zero.
+
+    python word_length_sequence.py [--merge] [--shape] [--tokenize]
 """
 
 from __future__ import annotations
@@ -128,6 +132,67 @@ def prose_sequences(limit: int = 20000) -> list[tuple[str, list[int]]]:
     return out
 
 
+MULTI = {chr(0x2460 + i) for i in range(1, 20)}  # circled 2..20, the multi-dot marks
+
+
+def tokenize(wrap: bool, multi: bool, pct: bool, quote: bool) -> list[list[int]]:
+    """Body word lengths under one convention for which marks break a word."""
+    text = (ROOT / "data" / "page0-56.txt").read_text()
+    out = []
+    for s in [x for x in text.split("$") if RUNE.search(x)][:10]:
+        seq, cur = [], 0
+        for ch in s:
+            if RUNE.match(ch):
+                cur += 1
+                continue
+            if ch in "/\n":
+                brk = wrap
+            elif ch in MULTI:
+                brk = multi
+            elif ch == "%":
+                brk = pct
+            elif ch == '"':
+                brk = quote
+            else:
+                brk = ch in c3301.WORD_BOUNDARY
+            if brk and cur:
+                seq.append(cur)
+                cur = 0
+        if cur:
+            seq.append(cur)
+        out.append(seq)
+    return out
+
+
+def tokenize_sweep(rng: random.Random) -> None:
+    """Is the missing structure a segmentation artifact? No, under any convention."""
+    import itertools  # noqa: PLC0415
+
+    print(f"{'wrap':>6}{'multi':>7}{'%':>5}{chr(34):>5}{'words':>8}{'mean':>7}"
+          f"{'2-rune':>9}{'excess/pair':>15}")
+    best = None
+    for w, m, p, q in itertools.product([False, True], repeat=4):
+        seqs = tokenize(w, m, p, q)
+        flat = [x for s in seqs for x in s]
+        e, se, _o, _mu, _n = excess_per_pair(seqs, rng, draws=60)
+        if best is None or e > best[0]:
+            best = (e, se, w, m, p, q)
+        print(
+            f"{str(w):>6}{str(m):>7}{str(p):>5}{str(q):>5}{len(flat):>8,}"
+            f"{sum(flat) / len(flat):>7.2f}"
+            f"{sum(1 for x in flat if x == 2) / len(flat):>9.3f}{e:>10.4f}+-{se:.4f}"
+        )
+    print(
+        f"\nbest of sixteen: {best[0]:.4f} +- {best[1]:.4f}, against a language"
+        "\nreference of 0.0397 +- 0.0101 (the LP's own plaintext) and 0.0484 +- 0.0160"
+        "\n(prose). The repo's own convention is the best of the sixteen and is still an"
+        "\norder of magnitude short. Breaking at line wraps brings the MEAN closest to"
+        "\nlanguage, 4.07 against 3.99, and drives the order further to zero -- and that"
+        "\nconvention is known to be wrong from the solved pages, where words demonstrably"
+        "\nflow across wraps."
+    )
+
+
 def shape_control(rng: random.Random) -> None:
     """Is the block-length histogram memoryless, and how far is it from language?"""
     body = [x for s in body_sequences() for x in s]
@@ -225,6 +290,9 @@ def main() -> None:
         return
     if "--shape" in sys.argv:
         shape_control(rng)
+        return
+    if "--tokenize" in sys.argv:
+        tokenize_sweep(rng)
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")

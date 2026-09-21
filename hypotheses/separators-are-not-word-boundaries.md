@@ -70,6 +70,29 @@ sequence needs q = 0.9, which drops the 2-rune share to 0.024 and the mean to 5.
 No rule in the family fits both. This is the quantitative version of the refutation:
 the length histogram and the length order cannot be produced by one merge process.
 
+## It is not a segmentation artifact
+
+The obvious alternative is that the tokenizer is wrong — that the structure is there and
+the wrong marks are being treated as breaks. Sweeping sixteen conventions, crossing line
+wraps, multi-dot marks, page marks and quotes:
+
+| | excess per pair |
+|---|---|
+| all sixteen conventions | **−0.0011 to +0.0037** |
+| best of the sixteen (the repo's own) | 0.0037 ± 0.0026 |
+| the LP's own plaintext | 0.0397 ± 0.0101 |
+| prose | 0.0484 ± 0.0160 |
+
+**Every convention gives essentially zero.** No segmentation of this text recovers
+language-like word-length order.
+
+One convention is worth naming because it fails instructively. Breaking words at line
+wraps brings the mean closest to language — 4.07 against the plaintext's 3.99 — and
+drives the order *further* to zero (−0.0006). It also makes the histogram fit worse
+(0.0861 per word against the plaintext, versus 0.0668 for the repo default), and it is
+known to be wrong from the solved pages, where words demonstrably flow across wraps. So
+the one convention that improves the mean improves nothing else.
+
 ## But the blocks are not memoryless either
 
 A block process that starts a new block with fixed probability per rune would give
@@ -133,6 +156,8 @@ and is consistent with:
    matter. A register whose word lengths are genuinely serially independent would
    explain the measurement without any of this — but no natural language register is,
    and the two references here bracket the question from both sides.
+5. **Segmentation.** Tested and survived: all sixteen tokenization conventions give
+   essentially zero, so a wrong tokenizer is not the explanation.
 
 ## Status
 
