@@ -22,8 +22,13 @@ driven as an odometer — `a` every word, `b` only when `a` wraps.
 ## Status
 
 **Status**: unresolved, and the best-scoring model in this directory on the
-fitted-to-free ledger. Untuned it lands 17 of 19 free cells. Its systematic failure is
-`d6w`, which this model could not reach even with the search aimed at it.
+fitted-to-free ledger. Untuned it lands 17 of 19 free cells.
+
+The `d6w` failure recorded below is **much weaker than it was first written**. That
+verdict came from `fingerprint_battery`, which scores a cell by where the LP falls in
+the MODEL's spread and treats the corpus value as exact. The LP's within-word distance-6
+rate is 31 coincidences in 1,267 pairs. Counting its error too, the gap is z = 1.65 to
+2.29 rather than p = 0.000. See `distance-6-has-no-power.md`.
 
 ## Why each piece is forced
 
@@ -73,11 +78,16 @@ register draws:
 So `d6w` moves only when the other diagonals give way, and with them held it goes back
 where it started. The corpus needs 0.0245 and the model sits at 0.0350.
 
-This is weaker than proof. The search is a hill-climb of 900 steps with a crude
-neighbourhood, so it bounds what that search found rather than what the family can do.
-But the two runs trade off against each other, which is what a real constraint between
+This is weaker than proof, for two reasons. The search is a hill-climb of 900 steps
+with a crude neighbourhood, so it bounds what that search found rather than what the
+family can do. And the target it was aiming at is itself uncertain: the corpus's 0.0245
+carries a binomial error of +-0.0043, so the model's 0.0350 is between 1.65 and 2.29
+standard errors away, not the p = 0.000 the battery printed.
+
+The two runs do trade off against each other, which is what a real constraint between
 the diagonals would look like, and `sigma_algebraic_floor.py` records the same kind of
-floor for arithmetic families.
+floor for arithmetic families. But the cell being chased may not be a real relation at
+all.
 
 `quagmire-dodge.md` reports d6 as reachable at 0.0083, but that model has a general
 permutation σ in the per-word step. The difference between the two is the thing this
@@ -123,7 +133,14 @@ and it was invisible. Fixed; both are flagged now.
 
 Unresolved. On the fitted-to-free ledger it is the strongest model here: 17 of 19 cells
 land with nothing tuned, including the seam that killed the restart and the flat IoC
-that was thought to require a general permutation. Its failure is `d6w`, which did not
-come down under a search aimed at it and which the σ-bearing sibling does reach. Whether
-that is a floor of the shift-only step or a weak hill-climb is the next thing to settle,
-and it is an algebra question rather than a search.
+that was thought to require a general permutation.
+
+The one cell it does not reach is `d6w`, and the case against it has since weakened
+twice over. The hill-climb could not bring it down without breaking d2w and d5x, which
+suggests a constraint between the diagonals. But the corpus's own distance-6 rate is 31
+coincidences with an error bar of +-0.0043, the gap is 1.65 to 2.29 standard errors
+rather than p = 0.000, and the rest of the 1-mod-5 family has no power to corroborate
+it: distance 11 holds 35 within-word pairs and distance 16 holds none.
+
+So the model has no established failure other than the DJU-BEI repeat, and chasing
+`d6w` further means chasing a relation that may not exist.
