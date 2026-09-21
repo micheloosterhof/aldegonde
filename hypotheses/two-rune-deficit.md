@@ -273,3 +273,52 @@ That does not close the transcriptional reading, since a mid-line loss mechanism
 could exist that nobody has proposed. It does remove its most natural mechanism, and
 correspondingly strengthens the plain register explanation: the body's prose uses
 fewer short words than the front matter's didactic register does.
+
+## A third line: the body's word lengths are serially independent, the author's are not
+
+In English, adjacent word lengths are not independent — function words cluster, so a
+short word tends to follow a long one. Measured as a lag-1 correlation of the length
+sequence, which is key-free because per-position ciphers preserve word lengths:
+
+| corpus | words | lag-1 correlation |
+|---|---|---|
+| the author's own plaintext | 486 | **−0.098** (z = −2.16 against zero) |
+| the body | 2,928 | −0.009 (z = −0.46) |
+
+The body shows none of it, on six times the data. The direct comparison is
+**z = −1.83** — suggestive, not significant, and limited by the reference being only
+486 words.
+
+Merging destroys the dependence, which is consistent with the body's value. Applying
+the proportional merge count (42) to the author's own sequence:
+
+| | lag-1 correlation |
+|---|---|
+| unmerged | −0.098 |
+| after 42 selective merges | **+0.015 ± 0.041** |
+| after 42 random merges | −0.058 ± 0.040 |
+| the body, for comparison | −0.009 |
+
+So the body sits where selective merging would put it. But it is within 1.2 sigma of
+the random-merge value too, so this does not separate the two merge models, and it
+does not separate merging from register at all.
+
+## Synthesis: if words were merged, the author did it, not the transcriber
+
+Three weak lines now exist and they do not all point the same way. The length
+distribution fits selective merging at ~280 sites; the lag-1 dependence is absent as
+merging predicts; but line wraps — the only place a transcription plausibly drops a
+separator — can host at most ~20 of those 280.
+
+The reading that reconciles them is that **the merging is authorial orthography, not
+transcription error**: the body divides words differently from the front matter,
+compounding where the didactic pages separate. That produces the 2-rune deficit, the
+longer mean word, and the flattened serial dependence, with no lost glyph anywhere and
+no mid-line transcription failure to explain.
+
+**This matters for more than bookkeeping.** A transcriptional loss would mean the
+ciphertext word boundaries are not the boundaries the cipher used, so every key search
+in this project ran on a wrong clock. An authorial difference means the boundaries are
+exactly right and the clock is sound; only the plaintext's register differs from the
+front matter's. The three measurements above favour the second, and the wrap bound is
+the strongest of them.

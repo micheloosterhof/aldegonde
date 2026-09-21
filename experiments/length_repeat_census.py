@@ -122,3 +122,14 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def lag1_correlation(seq: list[int]) -> float:
+    """Serial correlation of adjacent word lengths: key-free, since lengths pass through."""
+    a, b = seq[:-1], seq[1:]
+    n = len(a)
+    ma, mb = sum(a) / n, sum(b) / n
+    num = sum((x - ma) * (y - mb) for x, y in zip(a, b))
+    da = sum((x - ma) ** 2 for x in a) ** 0.5
+    db = sum((y - mb) ** 2 for y in b) ** 0.5
+    return num / (da * db) if da * db else 0.0
