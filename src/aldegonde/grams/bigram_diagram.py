@@ -86,6 +86,44 @@ def print_auto_bigram_diagram(
     )
 
 
+def print_within_word_bigram_diagram(
+    words: Sequence[Sequence[T]],
+    alphabet: Sequence[T],
+    skip: int = 1,
+    groups: int = DEFAULT_GROUPS,
+) -> None:
+    """Input is a sequence of words (each a sequence of symbols).
+    Output is the bigram frequency diagram of within-word pairs at the given
+    skip, printed to stdout in the same format as `print_bigram_diagram`.
+
+    Unlike `print_auto_bigram_diagram`, pairs never span a word boundary.
+    """
+    rows, columns = within_word_pairs(words, skip=skip)
+    # Tuples so the length-1 slices bigram_diagram takes stay hashable; a list
+    # slice is a list, which Counter cannot key on.
+    print_bigram_diagram(tuple(rows), tuple(columns), alphabet=alphabet, groups=groups)
+
+
+def within_word_pairs(
+    words: Sequence[Sequence[T]],
+    skip: int = 1,
+) -> tuple[list[T], list[T]]:
+    """The row and column streams of within-word symbol pairs at a given skip.
+
+    For every word, pairs each symbol with the one `skip` positions later in
+    the same word: (word[i], word[i + skip]). Pairs never cross a word
+    boundary, and a word shorter than skip + 1 contributes none. The two
+    returned lists are aligned and equal length, ready for `print_bigram_diagram`.
+    """
+    rows: list[T] = []
+    columns: list[T] = []
+    for word in words:
+        for i in range(len(word) - skip):
+            rows.append(word[i])
+            columns.append(word[i + skip])
+    return rows, columns
+
+
 def bigram_diagram(
     rows: Sequence[T],
     columns: Sequence[T],
