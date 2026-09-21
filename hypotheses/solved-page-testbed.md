@@ -329,3 +329,47 @@ Two storage notes, both learned by getting them wrong:
   of nine triples while the triples themselves were sound.
 - The interrupt positions are stored, not re-derived. They are the only part of an
   interrupted-Vigenère key that a search must find rather than guess.
+
+## 3301's interrupter rule, characterised completely
+
+With the testbed verified, the rule can be read off the ground truth rather than
+guessed. Counting plaintext ᚠ against interrupt positions in every triple:
+
+| page | cipher | plaintext F | interrupts | F at an interrupt | F elsewhere |
+|---|---|---|---|---|---|
+| 1 | Vigenère | 6 | 6 | 6 | **0** |
+| 2 | Vigenère | 3 | 3 | 3 | **0** |
+| 12 | Vigenère | 2 | 2 | 2 | **0** |
+| 13 | Vigenère | 0 | 0 | 0 | **0** |
+| 0, 4, 5, 6, 7 | monoalphabetic | 16 | — | — | 16 |
+
+**Across the four Vigenère pages: 11 plaintext F, 11 interrupts, and every plaintext F
+sits at one. No exceptions.** So the rule is deterministic, not a choice the encipherer
+makes case by case: under this scheme a plaintext ᚠ is *never* enciphered.
+
+The monoalphabetic pages are the control that keeps this from being circular — they
+carry 16 plaintext F which are enciphered normally, so ᚠ is an ordinary letter in
+general and only privileged under the Vigenère scheme.
+
+Note that decryption is still ambiguous at each ciphertext ᚠ, which is why the beam
+search is needed: page 1 carries 14 ciphertext ᚠ of which only 6 are interrupts, the
+other 8 being ordinary letters that happened to encipher to ᚠ.
+
+## The rule is excluded for the body at 4 sigma
+
+Knowing the rule exactly, and knowing the author's own plaintext F frequency, turns
+the earlier generic bound into a direct test. If the body used this scheme its
+ciphertext ᚠ rate would be `p_F + (1 − p_F)/29`:
+
+| hypothesis | predicts | observed | z |
+|---|---|---|---|
+| 3301's rule: plaintext F literal | 0.0490 | 0.0354 | **−4.25** |
+| no rule: ᚠ is an ordinary letter | 0.0345 | 0.0354 | **+0.53** |
+
+with `p_F = 0.0150 ± 0.0029` measured on 1,796 runes of the author's own plaintext, and
+the error on `p_F` propagated into the first row rather than ignored.
+
+The body fits "ᚠ is an ordinary letter" almost exactly and rejects the author's own
+interrupter. As a positive control the same test on the four pages where the rule *is*
+true predicts 0.0472 against 0.0360 observed, z = −1.53 — under-predicting slightly but
+within noise at 834 runes.
