@@ -143,11 +143,33 @@ treated every ᚠ as an interrupt, scored DIVINITY below a meaningless key and r
 the whole family as a miss. The interrupt is a mark the scribe placed, not a property
 of the rune, and no rule stated over the alphabet alone can recover it.
 
-**Page 2, same key, quadgram −4.48:**
+**Page 2, same key but starting at key offset 4, three interrupts, −4.37.** The first
+attempt at this page used offset 0 and needed 15-24 skips whose runes were not F,
+which is the shape of a beam fitting noise rather than a solve. Searching the eight
+key phases fixes it:
 
-> …THROUGH THIS PILGRIMAGE THAT WE SHAPE OURSELUES AND OUR REALITI… JOURNEY DEEP
-> WITHIN AND YOU WILL ARRIUE OUTSIDE LICE THE INSTAR… EACH INTELLIGENCE IS HOLY FOR
-> ALL THAT LIUES IS HOLY AN INSTRUCTIAN COMMAND YOUR OWN SEL[F]
+> IT IS THROUGH THIS PILGRIMAGE THAT WE SHAPE OURSELUES AND OUR REALITIES JOURNEY
+> DEEP WITHIN AND YOU WILL ARRIUE OUTSIDE LICE THE INSTAR IT IS ONLY THROUGH GONG
+> WITHIN THAT WE MAY EMERGE WIDSOM YOU ARE A BENG UNTO YOURSEL[F] YOU ARE A LAW UNTO
+> YOURSEL[F] EACH INTELLIGENCE IS HOL[Y] [F]OR ALL THAT LIUES IS HOLY AN INSTRUCTIAN
+> COMMAND YOUR OWN SEL[F]
+
+**Page 12, key FIRFUMFERENFE, two interrupts, −4.09.** Found by scoring only the first
+36 runes under plain Vigenère — interrupts break sync from the first one onward, so a
+short prefix identifies the key with no interrupt search at all:
+
+> A COAN DURNG A LESSON THE MASTER EXPLAINED THE I THE I IS THE UOICE O[F] THE
+> CIRCUM[F]ERENCE HE SAID WHEN ASCED BY A STUDENT TO EXPLAIN WHAT THAT MEANT THE
+> MASTER SAID IT IS A UOICE INSIDE YOUR HEAD I DONT HAUE A UOICE IN MY HEAD THOUGHT
+> THE STUDENT AND HE RAISED HIS HAND TO TELL THE MASTER THE MASTER STOP[PED]
+
+Both of its skips are ciphertext F, and again the letters that vanish under a
+deletion reading are exactly the plaintext F's.
+
+**A keystream that may run across pages.** Page 1 is 251 runes with 6 interrupts, so
+it consumes 245 key letters and ends at phase 245 mod 8 = 5. Page 2 begins at phase 4.
+That is continuity to within one position — suggestive, not established, and one
+off-by-one in the page split or the interrupt count would account for it.
 
 ## What the beam can and cannot be trusted for
 
@@ -157,10 +179,11 @@ Page 2's 24 skips over 264 runes is more latitude, and it is accepted on externa
 grounds — *EACH INTELLIGENCE IS HOLY*, *AN INSTRUCTIAN COMMAND YOUR OWN SELF* is LP
 content, not an artifact a trigram beam would invent.
 
-Pages 12 and 13 are **not** solved. Under DIVINITY the beam reaches only −5.86 and
-−5.70 and needs 115 and 42 skips respectively — on 226 and 93 runes, that is nearly
-one decision per two runes, which is enough freedom to fit noise. Their keys are
-different and remain unknown.
+Page 12 is now solved with the right key and needs only two skips. **Page 13 is not.**
+No keyword in a 324-word vocabulary scores better than −6.33 on its prefix, and under
+DIVINITY the beam needs 42 skips on 93 runes to reach −5.70 — roughly one decision per
+two runes, which fits noise. Its key is unknown and it is the last unsolved page in
+the ASCII-convention set.
 
 ## Status
 
