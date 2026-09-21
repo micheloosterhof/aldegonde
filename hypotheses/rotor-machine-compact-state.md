@@ -388,6 +388,21 @@ null there is uninformative rather than confirming.
 few-block ones** — which is weaker than the earlier claim that specific shapes
 "survive".
 
+**Narrowed again, September 2026.** The power loss above is about degrees of
+freedom, not about the effect, and it comes from testing one *named* partition
+per shape. `no-block-partition.md` searches the partition instead: for each k it
+maximises the block-sequence mutual information over all assignments of the 29
+runes to k blocks, against doublet-preserving surrogates. Observed maxima sit
+inside the null at every k from 2 to 6 (z = +1.30, +0.53, −0.18, −0.36, −1.59).
+Planted controls detect shapes [10,10,9] and [10,9,5,5] **100%** of the time, so
+three and four blocks are now excluded outright. Two blocks are not: [15,14] is
+detected half the time and **[25,4] only 8%**, because a small block leaks almost
+nothing.
+
+That leaves exactly one live intransitive hypothesis, and it is the shape the mass
+test above already singled out — g's five 5-cycles in one block of 25, g's four
+fixed points in one block of 4.
+
 ## Every word-level state variable, swept (`word_state_sweep.py`)
 
 The tests above all index the base by WORD COUNT. That is one scheme among
