@@ -6,7 +6,10 @@ type: observation
 ## Status
 
 **Status**: confirmed (characterization) for the alignment itself
-(p = 1.5e-7, layout-robust). What the '.' marks therefore *are* remains open —
+(p = 1.5e-7, layout-robust). Sharpened by
+`marks-are-not-clause-punctuation.md`: the marks do NOT space like the clause
+punctuation of this book's own solved pages, so whatever the plaintext is
+respecting here, it is not English clause structure. What the '.' marks therefore *are* remains open —
 this result rules out one answer, not in another.
 
 ## Claim

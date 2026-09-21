@@ -157,6 +157,8 @@ Two additional measurements:
 - `length-clocked-walk.md` — the irregular clocking this disk would need.
 - `running-key-math-sequence.md` — solved-page interrupt mechanics (the
   keystream-consumption question).
+- `marks-are-not-clause-punctuation.md` — the gap test redone in words, with the
+  solved pages as control; it sharpens the near-exponential reading and splits the glyphs.
 
 ## Verdict
 
