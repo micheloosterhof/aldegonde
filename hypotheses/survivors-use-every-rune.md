@@ -63,6 +63,34 @@ rather than being one fixed τ. The last is worth saying explicitly — a τ dra
 each collision would be rune-blind and is untouched here, but it is a different model
 with a different key.
 
+## The other half: where the suppressed doublets went
+
+The argument above is about the 86 that survived. `experiments/where_the_doublets_went.py`
+follows the 361 that did not.
+
+Whatever the rule emitted instead landed in the off-diagonal bigram table, and the shape
+of the landing measures how many distinct substitutions could be in play. With one fixed
+τ the mass falls in 29 cells, one per row, each gaining 361/29 = **12.4 on a base of
+15.8** — an eighty percent bump. With k substitutions it splits 29k ways. A rune-blind
+rule spreads it over all 812 cells at 0.44 each, which is invisible.
+
+Observed: off-diagonal χ² **841.2 on 811 df**, largest standardised row maximum **3.70**.
+Planting the same 361 into k one-per-row targets:
+
+| k | off-diagonal χ² | largest row-max z | |
+|---|---|---|---|
+| rune-blind | 814 ± 39 (z +0.7) | 3.47 ± 0.43 (z +0.5) | **the corpus sits here** |
+| 1 | 1086 ± 48 (z −5.2) | 5.77 ± 0.67 (z −3.1) | **excluded** |
+| 2 | 945 ± 46 (z −2.3) | 4.34 ± 0.62 (z −1.0) | **excluded** |
+| 3 | 899 ± 45 (z −1.3) | 3.92 ± 0.55 (z −0.4) | open |
+| 6 | 856 ± 42 (z −0.4) | 3.65 ± 0.48 (z +0.1) | open |
+
+So a substituting preventer is not refuted outright by this second test — but it needs
+**at least three distinct substitutions**, three more permutations of key doing what one
+clock re-run does for nothing. That is a parsimony argument and should be quoted as one;
+the arithmetic refutation above is the one that stands on its own, and it applies to the
+single-τ case.
+
 ## Placement says nothing more
 
 A rule that failed in bursts would show it. It does not.
