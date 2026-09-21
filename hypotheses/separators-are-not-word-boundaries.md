@@ -36,7 +36,7 @@ comparison. Propagating it gives 3.5σ. The same error class as
 `scan-maxima-need-surrogate-nulls`: the uncertainty that matters is the one in the
 quantity being compared against.
 
-## The obvious mechanism is refuted
+## The merge family, swept properly, cannot fit both observables
 
 `separator-loss-is-selective.md` proposes that separators were lost, merging adjacent
 words. Merging prose at the rate that matches the body's mean word length:
@@ -48,10 +48,47 @@ words. Merging prose at the rate that matches the body's mean word length:
 | 0.16 | 4.81 | 0.191 | 0.0201 |
 | **body** | **4.42** | **0.159** | **0.0039** |
 
-At the rate that reproduces the body's mean, merging leaves the 2-rune share at 0.209
-against the body's 0.159, and two thirds of the transition structure survives. **Merging
-cannot produce the body's profile.** Neither the 2-rune deficit nor the transition
-collapse is a merge artifact.
+Random merging fails on both axes at once. But the version that could work is merging
+only SHORT words, because that removes exactly the short-long alternation the structure
+is made of. Swept over the merge probability q:
+
+| rule | mean | 2-rune share | excess per pair |
+|---|---|---|---|
+| prose untouched | 4.11 | 0.227 | 0.0341 |
+| **merge length ≤ 2, q = 0.3** | **4.43** | **0.164** | 0.0199 |
+| merge length ≤ 2, q = 0.5 | 4.66 | 0.121 | 0.0115 |
+| merge length ≤ 2, q = 0.7 | 4.89 | 0.071 | 0.0062 |
+| merge length ≤ 2, q = 0.9 | 5.12 | 0.024 | 0.0043 |
+| merge length ≤ 3, q = 0.5 | 5.16 | 0.117 | 0.0074 |
+| **body** | **4.42** | **0.159** | **0.0039 ± 0.0025** |
+
+**The two observables demand different rules.** At q = 0.3 the histogram matches almost
+exactly — mean 4.43 against 4.42, 2-rune share 0.164 against 0.159 — and the sequence
+still carries 0.0199 where the body has 0.0039, a gap of **5.7σ**. Reaching the body's
+sequence needs q = 0.9, which drops the 2-rune share to 0.024 and the mean to 5.12.
+
+No rule in the family fits both. This is the quantitative version of the refutation:
+the length histogram and the length order cannot be produced by one merge process.
+
+## But the blocks are not memoryless either
+
+A block process that starts a new block with fixed probability per rune would give
+**geometric** lengths. The body's are not geometric, and not by a little: G² per word
+against a matched-mean geometric is 0.4110 for the body, against 0.4144 for the LP's own
+plaintext and 0.4356 for prose. **The body is exactly as far from memoryless as language
+is** — mode at 3, near-absent at 1.
+
+So whatever placed these boundaries produced a language-shaped histogram in a random
+order. The histograms do still differ from language, and the two references show how much
+of that is register:
+
+| G² per word | |
+|---|---|
+| body vs LP plaintext | 0.0668 |
+| body vs prose | 0.0656 |
+| **LP plaintext vs prose** | **0.0173** |
+
+The references agree with each other four times better than either agrees with the body.
 
 ## The hypothesis
 
@@ -78,9 +115,17 @@ and is consistent with:
 
 1. **Block lengths should be i.i.d.** Measured: excess per pair 0.0039 ± 0.0025,
    consistent with zero. Any serial dependence found at higher order kills it.
-2. **The length distribution should be the cipher's, not language's.** It should fit a
-   simple generative rule — geometric, uniform on a range, or a keyed sequence — better
-   than it fits a word-length histogram. Untested.
+2. **~~The length distribution should be the cipher's, not language's.~~** Tested and
+   **failed**: the histogram is as far from geometric as language is. A memoryless block
+   process is out. Two readings survive and are the live ones:
+   - **an i.i.d.-length source** — a list rather than prose, whose word lengths carry no
+     order because there is no sentence order to carry;
+   - **block-level reordering** — the lengths are the plaintext's, permuted, which
+     preserves the histogram exactly and destroys the order exactly. This one predicts
+     the residual histogram gap above comes from the merge step, and pairs naturally with
+     the q = 0.3 merge that fits it.
+
+   Both are testable against rune-level statistics that survive reordering.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
    correct decryption would produce unbroken runeglish. Any solution that recovers
    space-delimited words at these separators refutes this outright.

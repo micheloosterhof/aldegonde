@@ -23,7 +23,12 @@ The obvious mechanism is tested and fails. Merging adjacent words -- what
 at the merge rate that matches the body's mean word length, and moves the 2-rune share
 from 0.228 to 0.209 where the body sits at 0.159.
 
-    python word_length_sequence.py [--merge]
+The merge family is then swept properly. Merging only SHORT words is the version that
+could work, because it removes exactly the short-long alternation that creates the
+structure. It reproduces the body's length histogram at q = 0.3 and its length sequence
+only at q = 0.9, and those are different corpora.
+
+    python word_length_sequence.py [--merge] [--shape]
 """
 
 from __future__ import annotations
@@ -123,8 +128,44 @@ def prose_sequences(limit: int = 20000) -> list[tuple[str, list[int]]]:
     return out
 
 
+def shape_control(rng: random.Random) -> None:
+    """Is the block-length histogram memoryless, and how far is it from language?"""
+    body = [x for s in body_sequences() for x in s]
+    plain = [x for s in plaintext_sequences() for x in s]
+    prose = [x for _n, l in prose_sequences() for x in l]
+
+    def hist(ls: list[int], cap: int = 12) -> tuple[list[float], int]:
+        c = collections.Counter(min(x, cap) for x in ls)
+        return [c[k] / len(ls) for k in range(1, cap + 1)], len(ls)
+
+    def fit(h: list[float], n: int, model: list[float]) -> float:
+        return sum(2 * n * o * math.log(o / e) for o, e in zip(h, model) if o > 0 < e)
+
+    print(f"{'len':>4}{'body':>9}{'LP plain':>10}{'prose':>9}{'geometric':>11}")
+    hb, nb = hist(body)
+    hp, npl = hist(plain)
+    hr, nr = hist(prose)
+    q = len(body) / sum(body)
+    geo = [(1 - q) ** (k - 1) * q for k in range(1, 13)]
+    geo = [x / sum(geo) for x in geo]
+    for k in range(12):
+        print(f"{k + 1:>4}{hb[k]:>9.3f}{hp[k]:>10.3f}{hr[k]:>9.3f}{geo[k]:>11.3f}")
+    print("\nG2 per word against a geometric of matching mean:")
+    for name, h, n, ls in (("body", hb, nb, body), ("LP plaintext", hp, npl, plain),
+                           ("prose", hr, nr, prose)):
+        qq = len(ls) / sum(ls)
+        g = [(1 - qq) ** (k - 1) * qq for k in range(1, 13)]
+        g = [x / sum(g) for x in g]
+        print(f"  {name:<14}{fit(h, n, g) / n:>8.4f}")
+    print("\nSo the body is no more memoryless than language is -- a simple block")
+    print("process is out. But the shapes still differ, G2 per word:")
+    print(f"  body vs LP plaintext {fit(hb, nb, hp) / nb:.4f}")
+    print(f"  body vs prose        {fit(hb, nb, hr) / nb:.4f}")
+    print(f"  LP plaintext vs prose{fit(hp, npl, hr) / npl:>8.4f}   <- the two references agree")
+
+
 def merge_control(rng: random.Random) -> None:
-    """Does merging adjacent words reproduce the body? No."""
+    """Does merging adjacent words reproduce the body? Not on both axes at once."""
     books = prose_sequences(40000)
     if not books:
         print("no cached prose available for the merge control")
@@ -151,10 +192,29 @@ def merge_control(rng: random.Random) -> None:
             f"{p:>8.2f}{sum(out) / len(out):>7.2f}"
             f"{sum(1 for x in out if x == 2) / len(out):>9.3f}{e:>13.4f}"
         )
+    print("\nmerging only SHORT words, which removes the alternation itself:")
+    print(f"{'rule':<32}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}")
+    for cap, q in ((2, 0.3), (2, 0.5), (2, 0.7), (2, 0.9), (3, 0.3), (3, 0.5), (3, 0.7)):
+        out, i = [], 0
+        while i < len(lens):
+            cur = lens[i]
+            i += 1
+            while i < len(lens) and cur <= cap and rng.random() < q:
+                cur += lens[i]
+                i += 1
+            out.append(cur)
+        e, se, _o, _m, _n = excess_per_pair([out], rng, draws=30)
+        print(
+            f"{f'merge length<={cap}, q={q}':<32}{sum(out) / len(out):>7.2f}"
+            f"{sum(1 for x in out if x == 2) / len(out):>9.3f}{e:>9.4f}+-{se:.4f}"
+        )
     print(
-        "\nAt the merge rate that matches the body's mean length the 2-rune share is"
-        "\nstill 0.209 against the body's 0.159, and two thirds of the transition"
-        "\nstructure survives. Merging is not what happened."
+        "\nThe two observables demand different rules. q = 0.3 on words of length <= 2"
+        "\nreproduces the body's mean (4.45 against 4.42) and its 2-rune share (0.162"
+        "\nagainst 0.159) almost exactly, and still leaves 0.0199 of transition"
+        "\nstructure where the body has 0.0039 +- 0.0025 -- a gap of 5.7 sigma. Reaching"
+        "\nthe body's sequence needs q = 0.9, which drops the 2-rune share to 0.024."
+        "\nNo rule in the family fits both."
     )
 
 
@@ -162,6 +222,9 @@ def main() -> None:
     rng = random.Random(3301)
     if "--merge" in sys.argv:
         merge_control(rng)
+        return
+    if "--shape" in sys.argv:
+        shape_control(rng)
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")
