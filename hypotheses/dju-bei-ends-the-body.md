@@ -19,6 +19,16 @@ aligned. A coincidence predicts chance.
 the final six runes, blocks 2,926 and 2,927 of 2,928, ending master chunk 70 — the last
 body chunk before the solved AN END page.
 
+*Checked, September 2026.* "Nothing follows" is not quite right and the conclusion is
+unchanged. `data/page0-56.txt` is a strict prefix of `data/page0-58.txt`, which carries
+180 more runes: 85 on the AN END page, split into two runic segments of 45 and 40 either
+side of the hex signature, and 95 in the plaintext Parable. So material does follow — but
+the 85 runes are enciphered with a **prime running key**, a different and already-solved
+system (`solved_page_triples.json`, page 71: "AN END. WITHIN THE DEEP WEB THERE EXISTS A
+PAGE THAT HASHES TO…"), and the 95 are not enciphered at all. Nothing enciphered with the
+body's own cipher follows the return, so the continuation test remains impossible for the
+reason this file gives, with a sharper statement of why.
+
 | | |
 |---|---|
 | first occurrence | rune 6,555, block 1,477 |
