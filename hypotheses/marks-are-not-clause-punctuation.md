@@ -137,6 +137,35 @@ clause boundaries. One statistic — the quote-edge alignment at p = 1.5e-7 — 
 says the plaintext respects them. The alignment is now the single anomaly, and it
 cannot be dismissed as a glyph-pooling artifact.
 
+## Readings tested and excluded
+
+**A verse, breath or metrical unit.** If the 4-dot mark closed a metrical unit rather
+than a clause, its gaps would concentrate near preferred lengths, which would explain
+the short-gap avoidance and the quote alignment at once while predicting no
+clause-final word signature. It is refuted by the bulk of the distribution: the 4-dot
+mark's gaps measured in runes have cv = 1.02 against 0.66 for the solved pages' real
+clause punctuation, so the bulk is exponential and there is no preferred unit length.
+A verse structure is the one thing an exponential gap distribution cannot be.
+
+**The quote glyph is another mark glyph, mis-transcribed.** This would dissolve the
+quote alignment into a statement about the mark system rather than the plaintext. It
+is excluded by the image census in `contraction-cribs.md`: the tick is a raised stroke
+of h = 40, w = 12 px against dot marks of 9-10 px, found by connected-component sweep
+of the page images, and distinct in both height and vertical placement. The glyphs are
+not confusable.
+
+**A refractory minimum separation.** The 4-dot mark's smallest rune gap is 6 and
+random placement over rune positions reproduces that only 4 times in 10,000 — but this
+is an artifact of the wrong null. Marks sit only at word boundaries, so a rune gap is
+at least one word wide by construction. The solved pages' punctuation shows the same
+apparent floor at the same significance (min 5, p = 0.00002), which is how the error
+surfaced. Nothing is claimed from rune-level floors; the word-boundary-respecting
+tests above are the ones that count.
+
+**No control exists for the quote alignment.** All 14 quote ticks fall on unsolved
+pages and none on the solved pages, so the natural check — do quotes align to marks in
+known LP English? — cannot be run on this corpus.
+
 ## Limits
 
 - **Register.** The solved pages are the book's introductory and didactic material
