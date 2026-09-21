@@ -69,12 +69,39 @@ frequencies (which are strongly non-uniform, IoC ~1.7-1.8) to this.
   an alphabet the key does not already have. The natural "the body is the front matter
   with more interrupts" hypothesis is therefore closed, and any surviving model must
   make two random positions collide in alphabet less than about once in a thousand.
+- **Closes the per-page rekeying escape too** (September 2026). The obvious reply to
+  the bound above is that the body need not use ONE key: the front matter changes key
+  between page groups, so the body might rekey per page or per section, leaving every
+  stretch short-keyed while the pooled IoC goes flat. It does not, because rekeying
+  does not flatten a page's OWN IoC — a page under a length-L key sits at
+  1 + (I_p − 1)/L whatever its neighbours use.
+
+  The body is flat at every level: all nine sections within |z| ≤ 1.5, and the largest
+  of 49 page z-scores is 2.08 against an expected maximum near 2.5 for that many draws.
+  Pooling the pages turns a weak per-page test into a strong one, mean per-page IoC
+  0.9874 against a flat null of 0.9998 ± 0.0044:
+
+  | per-page key length | mean IoC implied | z |
+  |---|---|---|
+  | 8 (DIVINITY) | 1.0985 | **+22.4** |
+  | 13 (FIRFUMFERENFE) | 1.0606 | **+13.8** |
+  | 40 | 1.0197 | +4.5 |
+  | 80 | 1.0098 | +2.2 |
+
+  **The smallest per-page key not excluded at 3 sigma is 60 runes.** The author's own
+  demonstrated keys are excluded at 22 and 14 sigma even granted a free rekey on every
+  page.
+
+  (The pooled mean sits slightly *below* flat, z = −2.86. That is about the size the
+  doublet suppression contributes — adjacent pairs are ~0.8% of all pairs on a 250-rune
+  page and are suppressed 5.5x — and is not read here as a separate anomaly.)
 
 ## Scripts
 
 - `experiments/obs_flat_ioc.py` — chi-square uniformity + IoC.
 - `experiments/passthrough_interrupter_bound.py` — the interrupter bound above.
 - `experiments/alphabet_count_bound.py` — the alphabet-count bound above.
+- `experiments/per_page_key_bound.py` — the per-page rekeying bound above.
 
 ## Related
 
