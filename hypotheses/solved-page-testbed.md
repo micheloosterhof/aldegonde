@@ -294,3 +294,38 @@ Each of the four would add another genuine triple.
   is meant to supplement.
 - `running-key-math-sequence.md` — the source of the prime/totient keystreams and the
   ᚠ-interrupt convention.
+
+## The testbed is complete and verified (September 2026)
+
+`experiments/solved_page_triples.json` now holds all **nine** triples, not just the
+five monoalphabetic ones, and `experiments/verify_triples.py` re-enciphers each
+recorded plaintext under its recorded key and compares the result to the transcription
+rune for rune. **All nine reproduce the ciphertext exactly.**
+
+| page | cipher | keyword | runes | interrupts | score |
+|---|---|---|---|---|---|
+| 0 | monoalphabetic | — | 184 | 0 | −4.23 |
+| 1 | interrupted Vigenère | DIVINITY | 251 | 6 | −4.40 |
+| 2 | interrupted Vigenère | DIVINITY (offset 4) | 264 | 3 | −4.38 |
+| 4 | monoalphabetic | — | 209 | 0 | −4.05 |
+| 5 | monoalphabetic | — | 210 | 0 | −4.09 |
+| 6 | monoalphabetic | — | 218 | 0 | −4.19 |
+| 7 | monoalphabetic | — | 141 | 0 | −4.20 |
+| 12 | interrupted Vigenère | FIRFUMFERENFE | 226 | 2 | −4.08 |
+| 13 | interrupted Vigenère | FIRFUMFERENFE (offset 3) | 93 | 0 | −4.29 |
+
+**All four Vigenère pages share one interrupt convention with no exceptions**: a
+ciphertext ᚠ at an interrupt position is a literal plaintext F and consumes no key
+letter. Every one of the eleven interrupt positions across the four pages is an ᚠ.
+Page 2 had briefly been recorded with a skip on a ᛞ, from a beam search allowed to skip
+anywhere; requiring the convention moves it to the ᚠ two positions later and raises the
+page to −4.38.
+
+Two storage notes, both learned by getting them wrong:
+
+- The plaintext is stored as rune **indices**. Its English rendering is lossy — TH, EA,
+  NG, OE and the rest are single runes written with multi-letter names — so parsing it
+  back is ambiguous. A first version of the verifier did exactly that and failed eight
+  of nine triples while the triples themselves were sound.
+- The interrupt positions are stored, not re-derived. They are the only part of an
+  interrupted-Vigenère key that a search must find rather than guess.
