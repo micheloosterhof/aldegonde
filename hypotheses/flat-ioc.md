@@ -50,11 +50,31 @@ frequencies (which are strongly non-uniform, IoC ~1.7-1.8) to this.
   **Scope.** This bounds only interrupters that emit the rune. A clock perturbation
   that skips a key step while still enciphering the rune — the `quagmire-dodge.md`
   and `interrupted-walk.md` families — leaves no unigram trace and is untouched.
+- **Forces at least ~950 distinct alphabets, which excludes extending the solved front
+  matter** (September 2026). Two positions drawn at random share an alphabet with
+  probability 1/L for `L` the effective alphabet count, and agree at the plaintext rate
+  when they do, so `IoC = 1 + (I_p − 1)/L`. With `I_p = 1.788` from the author's own
+  plaintext (`lp-plaintext-register.md`) and the body's IoC measured against its own
+  simulated error bar (SE 0.0006 — the pair count grows as n², so the IoC's standard
+  error falls as 1/n, not 1/√n):
+
+  | confidence | IoC upper | L ≥ |
+  |---|---|---|
+  | 95% one-sided | 1.0008 | **949** |
+  | 99% | 1.0012 | 643 |
+
+  `solved-page-testbed.md` solves the front matter with DIVINITY (8 runes) and
+  FIRFUMFERENFE (13), so that scheme is short by two orders of magnitude. **Adding
+  interrupts does not rescue it**: an interrupt moves the key phase, it does not create
+  an alphabet the key does not already have. The natural "the body is the front matter
+  with more interrupts" hypothesis is therefore closed, and any surviving model must
+  make two random positions collide in alphabet less than about once in a thousand.
 
 ## Scripts
 
 - `experiments/obs_flat_ioc.py` — chi-square uniformity + IoC.
 - `experiments/passthrough_interrupter_bound.py` — the interrupter bound above.
+- `experiments/alphabet_count_bound.py` — the alphabet-count bound above.
 
 ## Related
 
