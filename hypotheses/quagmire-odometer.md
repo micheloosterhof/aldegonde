@@ -112,7 +112,8 @@ and it was invisible. Fixed; both are flagged now.
    that shifts cannot supply, which would restore part of σ.
 3. ~~Inherited: `walk_score_kernel` cannot score any model with the doublet
    preventer.~~ `experiments/dodge_aware_scorer.py` now can, separating a planted key
-   by z = 12 to 20. This model is searchable.
+   by z = 12 to 20, and `dodge_score_kernel.c` runs it at 5,000 keys/s/core. This model
+   is searchable for about 20 core-hours.
 
 ## What the sweep has to enumerate
 
@@ -129,18 +130,27 @@ sweep would only enumerate (alphabet, schedule). It does not.
 None of the 40 wrong-dial scores clears the wrong-key ceiling. A wrong dial start makes
 the correct alphabet and schedule look exactly like noise.
 
-Nor are the dials covered by the schedule enumeration. Changing `a₀` adds a constant to
-every running sum `S_k`, which leaves the OFFSETS unchanged, so it is a different key
-with the same schedule. `b₀` is an outer shift. Both are independent of the offsets, so
-the sweep carries a factor of 29 × 29 = 841.
+**But only the INNER dial.** That first measurement drew random `(a₀, b₀)` PAIRS and
+concluded about both, which was a scope error. Separating them:
 
-Priority vocabulary: 1.3×10⁷ (alphabet, schedule) pairs × 841 = 1.1×10¹⁰ keys. At the
-projected 1,250–2,500 keys/s/core for a C port, with the two-stage 60% prefilter costing
-0.6 of a full score, that is **730–1,470 core-hours**.
+| varied | score spread |
+|---|---|
+| the outer dial `b₀`, at any fixed inner dial | **0.000000** |
+| the inner dial `a₀` | 0.0930 — true 1.0785, next best 0.6248 |
 
-That number happens to match the earlier estimate, which assumed the σ-model's 369
-keyword disks as the multiplier. The arithmetic is different and the answer is the same
-to within rounding.
+The outer dial shifts every ciphertext rune by the same amount, and a uniform shift is
+itself a bijection, so the free assignment absorbs it exactly. It is not a key parameter
+at all as far as the scorer is concerned.
+
+The inner dial is. Changing `a₀` adds a constant to every running sum `S_k`, which
+leaves the OFFSETS unchanged, so it is a different key with the same schedule and the
+schedule enumeration does not cover it.
+
+So the sweep carries a factor of 29, not 841.
+
+Priority vocabulary: 1.3×10⁷ (alphabet, schedule) pairs × 29 = 3.8×10⁸ keys. The
+compiled kernel does 5,000 keys/s/core, so that is **21 core-hours**, or 13 with the
+two-stage 60% prefilter.
 
 ## Scripts
 
