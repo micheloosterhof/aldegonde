@@ -26,7 +26,7 @@ and withdrawn as a blocker: the collision costs 0-6 runes in 12,388.
 The scorer that blocked it now exists. `walk_score_kernel` scores a planted key of this
 family BELOW two thousand random wrong sigmas, but `dodge_aware_scorer.py` puts it on
 top by z = 12 to 20 by alternating the base₀ assignment with a per-window clock phase.
-The sweep is affordable at 1,200–2,400 core-hours over 3301's own vocabulary. `d6w` and
+The sweep is affordable at 720–1,470 core-hours over 3301's own vocabulary. `d6w` and
 `d1w` miss for unfitted keys, and `distance-6-has-no-power.md` weakens the first of
 those to 31 coincidences.
 
@@ -253,7 +253,7 @@ same shape as the DJU-BEI gate.
    fire condition leaves `v_j = Q(v_(j-1))` in base₀-free coordinates, so short windows
    plus a five-way clock-phase choice and three passes separate a planted key from wrong
    ones by z = 12 to 20, in every category and for both preventer directions. Cost at a
-   C port: 1,200–2,400 core-hours for the priority sweep, against the old kernel's 30,
+   C port: 720–1,470 core-hours for the priority sweep, against the old kernel's 30,
    which buys nothing because it cannot see the family.
 2. **Then run the zero-offset sweep on the priority vocabulary.** 4.9e9 keys, 30
    core-hours with the scorer above, using the census's one-zero generator and its

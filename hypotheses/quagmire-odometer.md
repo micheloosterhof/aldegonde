@@ -112,8 +112,35 @@ and it was invisible. Fixed; both are flagged now.
    that shifts cannot supply, which would restore part of σ.
 3. ~~Inherited: `walk_score_kernel` cannot score any model with the doublet
    preventer.~~ `experiments/dodge_aware_scorer.py` now can, separating a planted key
-   by z = 12 to 20 at 1,200–2,400 core-hours for the priority sweep. This model is
-   searchable.
+   by z = 12 to 20. This model is searchable.
+
+## What the sweep has to enumerate
+
+The scorer leaves an unknown bijection on the ciphertext, which is what makes it
+base₀-free. A natural hope is that this absorbs the odometer's dial STARTS, so the
+sweep would only enumerate (alphabet, schedule). It does not.
+
+| scored with | score |
+|---|---|
+| the true key | −3.078 |
+| the true alphabet and schedule, 40 wrong dial starts | mean −3.572, best −3.532 |
+| 40 fully wrong keys | mean −3.582, best −3.527 |
+
+None of the 40 wrong-dial scores clears the wrong-key ceiling. A wrong dial start makes
+the correct alphabet and schedule look exactly like noise.
+
+Nor are the dials covered by the schedule enumeration. Changing `a₀` adds a constant to
+every running sum `S_k`, which leaves the OFFSETS unchanged, so it is a different key
+with the same schedule. `b₀` is an outer shift. Both are independent of the offsets, so
+the sweep carries a factor of 29 × 29 = 841.
+
+Priority vocabulary: 1.3×10⁷ (alphabet, schedule) pairs × 841 = 1.1×10¹⁰ keys. At the
+projected 1,250–2,500 keys/s/core for a C port, with the two-stage 60% prefilter costing
+0.6 of a full score, that is **730–1,470 core-hours**.
+
+That number happens to match the earlier estimate, which assumed the σ-model's 369
+keyword disks as the multiplier. The arithmetic is different and the answer is the same
+to within rounding.
 
 ## Scripts
 
