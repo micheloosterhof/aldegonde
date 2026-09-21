@@ -92,7 +92,8 @@ sigma. Driving q to 1.0 brings the sequence to 0.0096, still two sigma high, and
 destroys the marginal entirely.
 
 So absorption accounts for the hole at length 2 and not for the missing serial order.
-**They are two effects, not one.**
+**They are two effects, not one.** *(Withdrawn — see the retraction below. Both numbers
+in this section carry the wrong error.)*
 
 This also corrects the standing shorthand that merging is "refuted by the length
 sequence". It is not refuted — it removes three quarters of the serial excess, which is
@@ -264,6 +265,44 @@ author's own practice settles it:
 **125 digraph tokens in the solved plaintext, not one written apart.** A convention
 change in the body is not impossible, but there is no instance of it anywhere in the
 book and it would still leave a −3.8 residual.
+
+## RETRACTION: both numbers were errored against a reference held exact
+
+The two results above — that absorption fits the marginal poorly, and that it leaves the
+serial order three sigma short — are both computed against the 723-word reference as
+though it had no sampling error. It has a great deal.
+`experiments/reference_noise_in_length_tests.py` re-errors them.
+
+**The marginal does not reject absorption.** Under a parametric null in which absorption
+is true and both a 723-word reference and a 2,928-block body are drawn from it, the
+fitted χ² runs **53.6 ± 30.9** (10th percentile 22.1, 90th 93.4). The observed 29.5 sits
+at **P = 0.79**. The 42.9 recorded above as a poor fit was a χ² with only the body's
+counts in the denominator.
+
+**The serial gap is one sigma, not three.** The ±0.0058 quoted above is the spread over
+merge realisations with the sixteen pages held fixed. Those pages differ enormously —
+per-page excesses run from **−0.20 to +0.42** — so the right error is a leave-one-page-out
+jackknife. A bootstrap cannot be used: it duplicates pages, and a duplicated page adds
+serial structure by construction.
+
+| q | reference | jackknife se | z against the body |
+|---|---|---|---|
+| 0.00 | 0.0393 | **0.0263** | **−1.35** |
+| 0.40 | 0.0264 | **0.0179** | **−1.25** |
+
+**So "two effects, not one" is withdrawn.** Absorbing about 40% of 2-rune units into the
+preceding word is consistent with the marginal at P = 0.79 and with the serial order at
+1.2 sigma. One mechanism accounts for both, within the precision a 723-word reference
+allows.
+
+**And constraint E1 is weaker than recorded.** It contrasts the body's 0.0039 ± 0.0025
+with the author's 0.0397 ± 0.0101, where the ±0.0101 is the surrogate spread and carries
+no page sampling. With the jackknife the author's figure is 0.0393 ± 0.0263 and the
+contrast is **1.35 sigma**, not the strong result the specification records.
+
+What survives untouched is the hole at length 2 itself: that is a distribution comparison
+between 2,928 blocks and 723 words, with both samples' errors in the two-sample z from
+the start, and it reads −4.81.
 
 ## Consequences
 
