@@ -232,6 +232,93 @@ def joint_scan() -> None:
         "\n\nSo absorbing short units accounts for the hole at length 2 and not for the"
         "\nmissing serial order. They are two effects, not one."
     )
+    author_never_splits()
+    hole_is_uniform()
+
+
+def author_never_splits() -> None:
+    """Could the body simply spell digraphs differently?
+
+    Seven of the 29 runes stand for two English letters, TH among them, and THE is
+    the commonest 2-rune word. If the body wrote T+H instead of the single rune, mass
+    would move from length 2 to length 3 -- which is the shape of the deficit. The
+    hypothesis is worth a number and then a check against the author's own practice.
+    """
+    from aldegonde import c3301  # noqa: PLC0415
+
+    eng = c3301.CICADA_ENGLISH_ALPHABET
+    plain = register().corpus()
+    body, n_body = histogram(lp_words())
+    print("\nCould the body spell digraphs differently?\n")
+    for label, extra in (
+        ("as transcribed", ()),
+        ("TH written as two runes", ("TH",)),
+        ("TH, EA, NG as two runes", ("TH", "EA", "NG")),
+    ):
+        lens = [len(w) + sum(1 for r in w if eng[r] in extra) for w in plain]
+        c = collections.Counter(min(x, CAP) for x in lens)
+        h = np.array([c[k] for k in range(1, CAP + 1)], float)
+        e = h / h.sum() * n_body
+        chi = float((((body - e) ** 2) / np.maximum(e, 1e-9)).sum())
+        res2 = (body[1] - e[1]) / np.sqrt(max(e[1], 1e-9))
+        print(f"  {label:<26} chi2 {chi:>7.1f}   length-2 residual {res2:+.1f}")
+    print("\n  Splitting TH halves the misfit. But the author never does it:")
+    pairs = {"TH": ("T", "H"), "EA": ("E", "A"), "NG": ("N", "G"),
+             "IA": ("I", "A"), "AE": ("A", "E")}
+    for dg, (a, b) in pairs.items():
+        one = sum(1 for w in plain for r in w if eng[r] == dg)
+        two = sum(1 for w in plain for i in range(len(w) - 1)
+                  if eng[w[i]] == a and eng[w[i + 1]] == b)
+        print(f"    {dg}: {one} as one rune, {two} as two")
+    print("  125 digraph tokens in the solved plaintext, not one written apart.")
+
+
+def hole_is_uniform() -> None:
+    """Content varies between sections; a scribal or cipher rule does not.
+
+    If the deficit is register it should move with the text. If it is a process it
+    should not.
+    """
+    import re  # noqa: PLC0415
+
+    from aldegonde import c3301  # noqa: PLC0415
+
+    rune = re.compile(r"[\u16a0-\u16ff]")
+    text = (ROOT / "data" / "page0-56.txt").read_text()
+    rows = []
+    for k, chunk in enumerate(x for x in text.split("$") if rune.search(x)):
+        seq, cur = [], 0
+        for ch in chunk:
+            if rune.match(ch):
+                cur += 1
+            elif ch in "/\n":
+                continue
+            elif cur and ch in c3301.WORD_BOUNDARY:
+                seq.append(cur)
+                cur = 0
+        if cur:
+            seq.append(cur)
+        if len(seq) >= 40:
+            rows.append((k, len(seq), sum(1 for x in seq if x == 2) / len(seq)))
+    print(f"\nIs the hole uniform across the body? {len(rows)} sections of 40+ blocks.\n")
+    print(f"{'section':>8}{'blocks':>8}{'frac len 2':>12}")
+    for k, n, f in rows:
+        print(f"{k:>8}{n:>8}{f:>12.3f}")
+    f = np.array([r[2] for r in rows])
+    n = np.array([r[1] for r in rows], float)
+    pooled = float((f * n).sum() / n.sum())
+    chi = float((((f - pooled) ** 2) * n / (pooled * (1 - pooled))).sum())
+    print(f"\npooled {pooled:.4f} over {int(n.sum()):,} blocks; homogeneity chi2 "
+          f"{chi:.1f} on {len(rows) - 1} df")
+    print(f"observed sd across sections {f.std(ddof=1):.4f}, binomial expectation "
+          f"{np.sqrt(pooled * (1 - pooled) * (1 / n).mean()):.4f}")
+    print(f"highest section {f.max():.3f}; the author's own plaintext is 0.239; "
+          f"sections reaching it: {(f >= 0.239).sum()}")
+    print(
+        "\nThe body is homogeneous and no section comes near the author's rate. Content"
+        "\nvaries from section to section and this does not, which is what a process"
+        "\nlooks like and not what a register looks like."
+    )
 
 
 if __name__ == "__main__":

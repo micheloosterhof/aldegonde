@@ -89,6 +89,60 @@ This also corrects the standing shorthand that merging is "refuted by the length
 sequence". It is not refuted — it removes three quarters of the serial excess, which is
 far more than anything else tried. It is insufficient.
 
+## The hole is a process, not a register
+
+Content varies between sections of a 58-page book. A scribal or cipher rule does not.
+Splitting the body into its nine sections of 40 blocks or more:
+
+| section | blocks | fraction at length 2 |
+|---|---|---|
+| 0 | 160 | 0.181 |
+| 1 | 259 | 0.135 |
+| 2 | 385 | 0.145 |
+| 4 | 439 | 0.178 |
+| 5 | 227 | 0.150 |
+| 6 | 352 | 0.170 |
+| 7 | 357 | 0.157 |
+| 8 | 680 | 0.156 |
+| 9 | 67 | 0.164 |
+
+pooled 0.1589 over 2,926 blocks, **homogeneity χ² = 3.9 on 8 df**. The observed spread
+across sections is 0.0152 against a binomial expectation of 0.0248, so the sections are
+if anything more alike than independent sampling requires.
+
+**No section reaches the author's 0.239; the highest is 0.181.** Whatever removes the
+2-rune blocks applies evenly to the whole body.
+
+That is the argument against a register explanation, and it is stronger than the
+between-page one: a register that happened to be uniformly article-poor across nine
+sections of unrelated content would be a coincidence, whereas a rule applied by the
+scribe or the cipher is uniform by definition.
+
+## And it is not a spelling convention
+
+Seven of the 29 runes stand for two English letters, and THE — the commonest 2-rune
+word — is ᚦ + ᛖ. If the body spelled it ᛏ + ᚻ + ᛖ, mass would move from length 2 to
+length 3, which is the shape of the deficit exactly.
+
+| convention | χ² | length-2 residual |
+|---|---|---|
+| as transcribed | 162.7 | −8.8 |
+| **TH as two runes** | **79.4** | **−3.8** |
+| TH, EA, NG as two runes | 89.8 | −3.8 |
+
+**Splitting TH halves the misfit**, so the hypothesis is worth the number. But the
+author's own practice settles it:
+
+    TH  74 as one rune,  0 as two
+    NG  24 as one rune,  0 as two
+    IA  14 as one rune,  0 as two
+    EA  11 as one rune,  0 as two
+    AE   2 as one rune,  0 as two
+
+**125 digraph tokens in the solved plaintext, not one written apart.** A convention
+change in the body is not impossible, but there is no instance of it anywhere in the
+book and it would still leave a −3.8 residual.
+
 ## Consequences
 
 - Row E1 should read that the lengths have the marginal of running text *with a hole at
@@ -98,12 +152,17 @@ far more than anything else tried. It is insufficient.
 - The eleven mechanisms measured against E1 were all tested against the serial statistic
   alone. The marginal is a second, independent handle, and it is the sharper of the two
   because it needs no surrogate — it is a distribution comparison.
+- Because the hole is uniform across the body and the author's spelling is consistent,
+  the two ordinary explanations — different content, different orthography — are both
+  out. What remains is a rule applied uniformly to the body and not to the front matter.
 
 ## Falsification
 
 - The 486-word plaintext sample is the weak point. If the 2-rune fraction is a property
   of front matter, any newly solved body page must show 0.159 and not 0.239. That is a
   direct prediction on the next page solved.
+- If the body's plaintext spells TH apart, a solved body page will show it. The front
+  matter's 125-for-125 consistency predicts it will not.
 - If the deficit is a transcription effect — 2-rune blocks lost to unrecorded separators
   — then the pages with the most separators should show the largest deficit. The body is
   uniform (`section-homogeneity.md`), so this predicts no page-to-page gradient.
