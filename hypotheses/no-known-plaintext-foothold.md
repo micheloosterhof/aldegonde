@@ -164,3 +164,29 @@ go.
   not confirmed).
 - `repeated-phrase-dju-bei.md` — the one known state-return constraint.
 - `experiments/length_clocked_cipher.py` — encrypt/decrypt + round-trip.
+
+## The body's section openings are not simply enciphered (September 2026)
+
+The front matter fell to prefix scoring: because an interrupted keystream only loses
+sync from its first interrupt onward, a page's opening decrypts under plain Vigenere
+and the key can be read off the first ~32 runes with no interrupt search at all
+(`solved-page-testbed.md`). If the body's sections carry titles or headers enciphered
+more simply than the running text — which is how the front matter behaves — the same
+scan would find them.
+
+It does not. Scanning the first 32 runes of each body section against 250 keywords
+from 3301's own vocabulary plus all 29 shifts, at every key phase:
+
+| | best quadgram score |
+|---|---|
+| front matter page 1 (DIVINITY, known) | **−3.78** |
+| front matter page 12 (FIRFUMFERENFE, known) | **−4.67** |
+| null: 108 shuffled section openings, maximum | −5.05 |
+| the best of 9 body sections | −5.91 |
+
+**Zero of nine body sections reach the null maximum**, while both known-answer controls
+clear it — the weaker control by +0.38, the best body section falling 0.85 short. The
+method is demonstrably sensitive on this corpus and finds nothing.
+
+So there is no simply-keyed header, title or incipit at any section opening. The body's
+opening runes are enciphered the same way as the rest of it.
