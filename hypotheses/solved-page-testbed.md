@@ -166,10 +166,35 @@ short prefix identifies the key with no interrupt search at all:
 Both of its skips are ciphertext F, and again the letters that vanish under a
 deletion reading are exactly the plaintext F's.
 
-**A keystream that may run across pages.** Page 1 is 251 runes with 6 interrupts, so
+**Page 13, and the keystream continuity confirmed.** Page 12 consumes 224 key letters
+(226 runes, 2 interrupts), so a continuous keystream predicts page 13 begins at phase
+224 mod 13 = **3** of FIRFUMFERENFE. Searching all thirteen phases, the best is
+**3**, at −4.44 on the prefix against −6.97 for the runner-up. The whole page then
+decrypts with **zero interrupts** at −4.29:
+
+> [STOP]PED THE STUDENT AND SAID THE UOICE THAT JUST SAID YOU HAUE NO UOICE IN YOUR
+> HEAD IS THE I AND THE STUDENTS WERE ENLIGHTENED
+
+Zero skips means no fitted parameter of any kind — the page is a plain continuation of
+page 12's keystream. And the text confirms it independently: page 12 ends *THE MASTER
+STOP* and page 13 opens *PED THE STUDENT*, so the sentence runs across the page break
+mid-word. Prediction and text agree.
+
+**A keystream that runs across pages.** Page 1 is 251 runes with 6 interrupts, so
 it consumes 245 key letters and ends at phase 245 mod 8 = 5. Page 2 begins at phase 4.
-That is continuity to within one position — suggestive, not established, and one
-off-by-one in the page split or the interrupt count would account for it.
+That is continuity to within one position — and pages 12 to 13 then confirm it
+exactly, phase 3 predicted and phase 3 observed, with the text running across the
+break mid-word. So the keystream does not reset at a page boundary. The one-position
+slack between pages 1 and 2 is most likely an off-by-one in the page split or in
+page 1's interrupt count, not a reset.
+
+**What this says about the unsolved body.** Two things transfer. The body should be
+treated as one continuous stream rather than per-page, since the author demonstrably
+does not reset at page boundaries. And 3301 verifiably uses a keystream that does not
+advance in step with position — which is the exact device
+`quagmire-dodge.md` records as having broken this project's own sweeps, whose scorer
+assumed clock = position. That an interrupter is in the author's confirmed repertoire
+is evidence for, not against, the perturbed-clock families.
 
 ## What the beam can and cannot be trusted for
 
@@ -179,11 +204,8 @@ Page 2's 24 skips over 264 runes is more latitude, and it is accepted on externa
 grounds — *EACH INTELLIGENCE IS HOLY*, *AN INSTRUCTIAN COMMAND YOUR OWN SELF* is LP
 content, not an artifact a trigram beam would invent.
 
-Page 12 is now solved with the right key and needs only two skips. **Page 13 is not.**
-No keyword in a 324-word vocabulary scores better than −6.33 on its prefix, and under
-DIVINITY the beam needs 42 skips on 93 runes to reach −5.70 — roughly one decision per
-two runes, which fits noise. Its key is unknown and it is the last unsolved page in
-the ASCII-convention set.
+Page 12 needs two skips; page 13 needs **none**. Every ASCII-convention page is now
+accounted for.
 
 ## Status
 
