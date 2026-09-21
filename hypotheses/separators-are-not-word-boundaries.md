@@ -143,12 +143,17 @@ and is consistent with:
    process is out. Two readings survive and are the live ones:
    - **an i.i.d.-length source** — a list rather than prose, whose word lengths carry no
      order because there is no sentence order to carry;
-   - **block-level reordering** — the lengths are the plaintext's, permuted, which
-     preserves the histogram exactly and destroys the order exactly. This one predicts
-     the residual histogram gap above comes from the merge step, and pairs naturally with
-     the q = 0.3 merge that fits it.
+   - **~~block-level reordering~~** — the lengths are the plaintext's, permuted.
+     **Narrowed sharply**: a reader has to be able to undo a reordering, so it is a rule,
+     not a shuffle, and the classical rules are few. Un-permuting each page under 17 route
+     transpositions — reverse, columnar 2–12, rail 2–5 — restores nothing: the best rule
+     reaches 0.0034 ± 0.0022 against the language level of 0.0397. The search has full
+     power: planting a columnar-7 transposition on prose drops it from 0.0842 to 0.0162,
+     and the search recovers the exact rule at 0.0842 with the runner-up at 0.0162. So no
+     per-page route transposition of blocks is what happened. A key-driven permutation
+     survives, at the cost of the hand-runnability that motivated the reading.
 
-   Both are testable against rune-level statistics that survive reordering.
+   The list reading is now the simpler of the two.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
    correct decryption would produce unbroken runeglish. Any solution that recovers
    space-delimited words at these separators refutes this outright.
