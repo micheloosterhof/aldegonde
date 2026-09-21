@@ -49,10 +49,25 @@ So the ratio is not a barrier the dodge family fails. It is a **one-parameter re
 g**, and the corpus's value corresponds to an ordinary g rather than a tuned one. The
 1.91 floor reported below is the floor *for the single g those runs happened to use*.
 
-**What survives.** The ratio is still worth having, as a measurement rather than an
-exclusion: it pins Σₓ P(prev = g(x), cur = x) to roughly the middle of its range, which is
-real information about g that no other statistic here supplies. A precise calibration —
-the model's ratio is about 1.4× the naive (1/29)/mass — is the obvious next step.
+**What survives, now calibrated.** Across eighteen order-5 permutations spanning the mass
+range of four thousand, the relation is an inverse law — the numerator is the seam rate,
+which does not depend on g at all:
+
+    ratio = 0.0325 / mass(g),    mass(g) = Σₓ P(previous = g(x), current = x)
+
+Inverting it on the corpus's 1.25 ± 0.30:
+
+| | ratio | mass | percentile of random order-5 g |
+|---|---|---|---|
+| +1σ | 1.56 | 0.0209 | 15.8% |
+| **point** | **1.25** | **0.0259** | **31.6%** |
+| −1σ | 0.95 | 0.0343 | 59.5% |
+
+**g's graph carries about 0.026 of the plaintext bigram mass**, below the 0.0345 an
+unrelated graph would carry — its arcs avoid common adjacencies slightly. The one-sigma
+interval spans the 16th to the 60th percentile, about **1.2 bits**: modest, and the first
+measurement of g's *graph* rather than its cycle count
+(`experiments/g_graph_mass.py`).
 
 ## Why the two contexts differ at all
 

@@ -34,6 +34,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source | Scope |
 |---|---|---|---|
+| C-1 | **g's graph carries ≈ 0.026 of the plaintext bigram mass**, one-sigma [0.0209, 0.0343] — the 16th to 60th percentile of random order-5 permutations, ~1.2 bits | `seam-to-d1w-ratio-is-a-constraint.md` | Read off the seam-to-within-word doublet ratio, calibrated on 18 permutations; assumes a preventer whose seam rate is g-free |
 | C0 | The base family is **A₂₉ or S₂₉** — no algebraic structure to exploit | `base-family-is-the-symmetric-group.md` | Composition of transitivity, the coset scan and the triple invariant with the classification of 2-transitive groups of prime degree |
 | C1 | The per-word base family acts **2-transitively** — H₂, H₄ and H₇ subgroups of AGL(1,29) excluded by 1–2 orders of magnitude | `base-family-is-2-transitive.md` | H₁₄ survives but its extra invariant is scrambled by a non-affine g, so it carries nothing |
 | C2 | No rune partition into **three or more blocks** (planted detection 100%), and every small block size 2-5 excluded by exhaustive enumeration at 67-100% power | `no-block-partition.md` | What remains is subsets that leak nothing measurable, which a solver would gain nothing from knowing |
