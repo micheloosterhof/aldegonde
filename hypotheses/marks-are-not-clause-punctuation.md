@@ -322,3 +322,33 @@ known LP English? — cannot be run on this corpus.
 - `mark-glyph-inventory.md` — the glyph collapse whose consequence this measures.
 - `word-length-keystream-and-boundaries.md` — the absent sentence-final signature,
   which this agrees with by a different route.
+
+## The 4-dot mark is not a cipher event either (September 2026)
+
+The question this file left open was whether ④ does anything to the key — whether it
+consumes a clock step or changes the alphabet. It was recorded as blocked for want of a
+key-free test. The orbit theorem supplies one
+(`local-channel-is-exactly-coincidence.md`): across any boundary the only base-invariant
+statistic is coincidence, so if ④ altered the seam relation, the coincidence profile
+across ④ boundaries would differ from ordinary ones.
+
+**The doublet suppression is present at ④ boundaries.** Across the 136 ④ boundaries
+there is **1** distance-1 coincidence where chance gives 4.69 — Poisson P(≤1) = 0.052.
+Ordinary boundaries give 22/2722 = 0.0081, and ④ gives 1/136 = 0.0074. So whatever
+suppresses doublets is still operating across a ④, and ④ does not switch it off.
+
+That is the informative half. A preventer acting on adjacent ciphertext runes predicts
+exactly this: it has no way to know a mark is there.
+
+**The relation test is weak and says little.** Pooled over distances 1–7, ④ boundaries
+give 52/1867 = 0.0279 against ordinary 1309/40348 = 0.0324, a difference of z = −1.17.
+The test resolves a 23% rate change at 2σ, which sounds adequate — but **most seam
+relations produce a rate near chance anyway**, so a *changed* relation would usually
+look identical. This test has power against a rate change and little against the
+hypothesis of interest, and is reported so that its null is not over-read.
+
+**Net:** ④ behaves like an ordinary word boundary as far as the cipher is concerned.
+Combined with the earlier results — it carries no clause-final word-length signature,
+does not space like clause punctuation, and is homogeneous across sections — the 4-dot
+mark now has no established role in either the language or the cipher. The quote-edge
+alignment at p = 1.5e-7 remains the single thing about it that wants explaining.
