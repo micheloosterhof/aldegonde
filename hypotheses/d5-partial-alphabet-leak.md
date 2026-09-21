@@ -319,3 +319,38 @@ full-leak value 1.60, and the corpus is ~4x too small to separate them. Do not
 cite the "72% / base drifts within the word" reading as established; it is a
 point estimate awaiting more data or a decryption. What is solid: a real,
 word-anchored, twice-confirmed period-5 same-alphabet structure.
+
+## A positive control for the within/cross asymmetry (September 2026)
+
+This file reads the LP's within/cross d5 asymmetry — 1.43x inside words, 1.01x across
+them — as created by the cipher's word-anchored phase. That was an inference. The
+solved front matter now supplies the control it lacked: ciphers by the same author, in
+the same book, with **known key lengths**, whose keys advance with position and know
+nothing about words.
+
+**The method recovers the truth before being trusted.** Kappa on the full stream picks
+the true key length in both cases: pages 1+2 (DIVINITY, length 8) peak at d = 8,
+z = +3.3, with 2x8 = 16 behind it; pages 12+13 (FIRFUMFERENFE, length 13) peak at
+d = 13, z = +2.3. The monoalphabetic pages are elevated at every lag, as a
+single-alphabet cipher must be.
+
+**And a positional key leaks across word boundaries, where the body does not:**
+
+| corpus | d | within-word | z | cross-word | z |
+|---|---|---|---|---|---|
+| pages 1+2, key length 8 | 8 | — | — | **1.65** | +2.72 |
+| pages 12+13, key length 13 | 13 | — | — | **1.71** | +2.33 |
+| the unsolved body | 5 | 1.43 | +3.67 | **1.01** | +0.10 |
+
+(The within-word cells for the Vigenère pages are empty: those pages hold 14 and 0
+within-word pairs at distances 8 and 13, since the words are too short. The
+cross-word channel is the one that carries the comparison, and it is well populated
+at 493 and 306 pairs.)
+
+So the body's flat cross-word channel is a **positive signature of a word-anchored key
+state**, not a generic property of ciphertext. A stream cipher in this very corpus
+leaks across boundaries at 1.65–1.71x; the body leaks at 1.01x while leaking 1.43x
+inside words. The two architectures are distinguished empirically, on the author's own
+material, by a single matched statistic.
+
+`experiments/echo_architecture_control.py`.
