@@ -245,6 +245,15 @@ and is consistent with:
      full-corpus maximum is overfitting, and keyed columnar transposition is excluded.
 
    The list reading is now the simpler of the two.
+
+**A third reading is disfavoured.** Both of the above keep a block equal to a word. The
+alternative — that the blocks are arbitrary cuts of a continuous stream — would
+invalidate every crib program, and `blocks-are-still-words.md` tests it. Measured on
+runeglish prose, the d5 coincidence's correlation with segment length is +0.0360 for real
+words and +0.0029 for cuts at the body's lengths; the body reads +0.0369. That statistic
+survives the d5 leak in the direction that matters, since chance matches carry no length
+trend and so can only shrink it — the body's value is a floor on its plaintext's. A 1.55σ
+lean toward words, and 2,073 pairs is the whole channel.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
    correct decryption would produce unbroken runeglish. Any solution that recovers
    space-delimited words at these separators refutes this outright.
