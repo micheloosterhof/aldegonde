@@ -45,6 +45,7 @@ from ea_direction_test import PROSE_CACHE  # noqa: E402
 from fingerprint_battery import (  # noqa: E402
     M,
     compare,
+    cross_word_d5,
     fingerprint,
     lp_words,
 )
@@ -211,8 +212,113 @@ def matched() -> None:
         )
 
 
+TARGETS = {"d1w": 0.003, "d6w": 0.006, "d2w": 0.003, "d3w": 0.003, "d5x": 0.002}
+
+
+def fit_profile(rng, lens, pools, cells, tries=900):
+    """Hill-climb K and the schedule onto `cells` of the distance profile.
+
+    Under a period-5 schedule 6 = 1 mod 5, so the distance-6 relation is a shift like
+    the distance-1 one and the alphabet can tune it. Fitting d1w and d6w alone pushes
+    d2w and d5x out, so this takes the set to fit as an argument: whether the whole
+    profile can be satisfied at once decides if that was a local optimum or a real
+    tension between the diagonals.
+    """
+    lp = fingerprint(lp_words())
+    plain = [matched_register(rng, lens, pools) for _ in range(3)]
+
+    def rate(words, distance):
+        hits = pairs = 0
+        for w in words:
+            for j in range(len(w) - distance):
+                pairs += 1
+                hits += w[j] == w[j + distance]
+        return hits / pairs
+
+    def cost(K, offsets, start):
+        # only the requested cells are scored, so skip the rest of the battery: a full
+        # fingerprint runs a 39-skip kappa scan this search has no use for
+        runs = [encipher(p, K, offsets, start) for p in plain]
+        total = 0.0
+        for cell in cells:
+            if cell == "d5x":
+                got = float(np.mean([cross_word_d5(r) for r in runs]))
+            else:
+                got = float(np.mean([rate(r, int(cell[1])) for r in runs]))
+            total += abs(got - lp[cell]) / TARGETS[cell]
+        return total
+
+    K, offsets, start = draw(rng)
+    best = cost(K, offsets, start)
+    for _ in range(tries):
+        cand_K, cand_off = list(K), list(offsets)
+        if rng.random() < 0.75:
+            i, j = rng.randrange(M), rng.randrange(M)
+            cand_K[i], cand_K[j] = cand_K[j], cand_K[i]
+        else:
+            cand_off = schedule(rng)
+        score = cost(cand_K, cand_off, start)
+        if score < best:
+            best, K, offsets = score, cand_K, cand_off
+    return K, offsets, start, best
+
+
+def fitted_run() -> None:
+    """Fit d1w and d6w only, then score every other cell as a free prediction."""
+    rng = random.Random(3301)
+    _stream, wid = load_clean()
+    counts: dict[int, int] = {}
+    for w in wid:
+        counts[w] = counts.get(w, 0) + 1
+    lens = [counts[k] for k in sorted(counts)]
+    pools, _t, _f = load_register(PROSE_CACHE)
+    lp = fingerprint(lp_words())
+
+    cells = (
+        {"d1w", "d6w"} if "--two" in sys.argv else {"d1w", "d6w", "d2w", "d3w", "d5x"}
+    )
+    K, offsets, start, score = fit_profile(rng, lens, pools, cells)
+    print(f"fitting {sorted(cells)}")
+    print(f"schedule {offsets}, residual {score:.2f}\n")
+    rows = [
+        fingerprint(encipher(matched_register(rng, lens, pools), K, offsets, start))
+        for _ in range(40)
+    ]
+    tuned = cells
+    print(f"{'cell':<16}{'LP':>10}{'model':>11}{'spread':>10}{'tail':>8}   tag")
+    misses = []
+    for key in lp:
+        values = np.array([r[key] for r in rows])
+        below = float((values <= lp[key]).mean())
+        tail = 2 * min(below, 1 - below + 1.0 / len(values))
+        if values.std() < 1e-12 and abs(values.mean() - lp[key]) < 1e-9:
+            tail = 1.0
+        tag = "fitted" if key in tuned else "FREE"
+        # a FITTED cell that still misses is the more serious result, so flag it too:
+        # it means the search could not reach the corpus even while aiming at it
+        flag = ""
+        if tail <= 0.05:
+            flag = "  <== miss" if tag == "FREE" else "  <== MISSED WHILE FITTED"
+            misses.append(f"{key} ({tag})")
+        print(
+            f"{key:<16}{lp[key]:>10.4f}{values.mean():>11.4f}{values.std():>10.4f}"
+            f"{tail:>8.3f}   {tag}{flag}"
+        )
+    print(
+        f"\n{len(lp) - len(tuned)} free cells, {len(tuned)} fitted; "
+        f"misses: {', '.join(misses) if misses else 'none'}"
+    )
+    print(
+        f"the walk fits six cells and leaves 13 free with one miss; this fits "
+        f"{len(tuned)}\nand leaves {len(lp) - len(tuned)}, with no general "
+        f"permutation in the key."
+    )
+
+
 def main() -> None:
-    if "--matched" in sys.argv:
+    if "--fit-d6" in sys.argv:
+        fitted_run()
+    elif "--matched" in sys.argv:
         matched()
     elif "--fit" in sys.argv:
         rng = random.Random(3301)
