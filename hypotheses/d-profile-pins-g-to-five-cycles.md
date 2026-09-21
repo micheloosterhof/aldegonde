@@ -114,6 +114,29 @@ true k.
 - **Prose stands in for the body's plaintext.** The register agrees where it can be
   checked: at lag 5 the sixteen-page LP register gives 0.0733 ± 0.0133 against prose's
   0.0589 ± 0.0008, z = 1.1.
+
+  *Tested directly, October 2026* (`g_filter_register_check.py`). Running the filter with
+  the LP's own 723 words supplying the lag-k tables gives a visibly flatter answer,
+  [2, 8, 13, 14, 23], sharing only 3 of 60 permutations with the prose list. That is a
+  **size** effect, not a register effect: prose cut to the same 723 words gives
+  [0.2, 4.8, 11.5, 17.5, 26.0] over six draws and shares 9.7 of 60, flattening the same
+  way. Both still rise toward five five-cycles.
+
+  | lag-k tables from | lag-2 pairs | top-1% five-cycle counts |
+  |---|---|---|
+  | prose, 60 corpora | 375,684 | [0, 0, 2, 22, 36] |
+  | prose, 10 corpora | 66,270 | [0, 0, 2, 19, 39] |
+  | prose cut to 723 words | ~1,550 | [0.2, 4.8, 11.5, 17.5, 26.0] |
+  | the LP register, 723 words | 1,465 | [2, 8, 13, 14, 23] |
+
+  So the filter needs prose at ten corpora or more — sixty and ten agree closely — and
+  cannot be run on the LP's own register at all. That is a limit of the control, not
+  evidence against the result.
+
+- **The joining correction does not move it.** If the body's blocks are words with about
+  10% joined pairs (`short-units-are-written-joined.md`), the right tables are a mixture.
+  Rebuilding them that way at q = 0.22, 0.40 and 0.50 gives [0, 0, 4, 21, 35],
+  [0, 0, 4, 21, 35] and [0, 0, 4, 22, 34] against the original [0, 0, 2, 22, 36].
 - **The preventer perturbs about 2.8% of runes**, so a lag-k pair is touched about 5.5%
   of the time and every d_k is diluted toward chance by that much. Undoing it moves d6
   from 0.0245 to 0.0239 — negligible against ±0.0043.
