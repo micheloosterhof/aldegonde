@@ -17,6 +17,14 @@ The method is a calibration curve, not a model fit: generate corpora at a ladder
 pool sizes, take the median of each count, and invert. Errors come from the spread at
 each rung, so a count that is a single event gets an honestly wide interval.
 
+RETRACTED INVERSION. The `identical` row below is not corrected for the rate at which
+a random rune stream produces repeated three-rune words, and that rate is most of the
+count: 11.1 of the corpus's 17. The pool of 357 this script reports is therefore wrong,
+and the tension it created with the 2,928 of `two-rune-depth-no-base-reuse.md` was an
+artifact. `word_repeat_accounting.py` redoes it with the floor subtracted and the LP's
+own plaintext register, and gets 3,083. The calibration curves here are still sound;
+only the inversion is not.
+
     python base_pool_thermometer.py [--draws 40]
 """
 

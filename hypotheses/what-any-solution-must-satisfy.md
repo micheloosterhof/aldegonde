@@ -55,7 +55,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 | D4 | No **emitting interrupter**: the author's own rule (every plaintext F passes through literally) predicts 205 interrupts and the flat unigrams allow at most 47, z = −4.43 | `interrupter-is-a-plaintext-rule.md` | A non-emitting clock perturbation leaves no unigram trace and is untouched |
 | D5 | The **repeat suppression is context-free**: its failures must be as likely at a seam as inside a word | `seam-to-d1w-ratio-is-a-constraint.md`, `separators-are-the-cipher-unit.md` | Two independent routes; the ratio also reads out C-1 |
 | D6 | Exactly **one state return** in the corpus, at the end of the body, 1 in 2,700 by chance | `dju-bei-is-more-surprising-than-recorded.md`, `dju-bei-stands-alone.md`, `dju-bei-ends-the-body.md` | No shorter returns at any length 3–8; the continuation test is impossible |
-| D7 | The base is **chained, not redrawn**: of the word pairs that repeat, one extends to a repeated phrase. A chain extends one in 79, independent per-word draws one in 2,390 | `the-chain-shows-only-in-extension.md` | A factor of 30 on a single event, and it cannot be strengthened — 3σ would need 700 identical pairs against the corpus's 17. Every marginal battery cell is blind to the distinction |
+| D7 | The base is **chained, not redrawn**. Two counts must give one pool: `identical` gives 3,083 and the chain reading of `returns` gives 795 [216, 31,442], while the chainless reading gives 63 [33, 396] and is excluded. Independently, holding the corpus's 17 repeats fixed and shuffling only word order puts two of them adjacent once in 20,000 | `word-repeat-accounting.md`, `the-chain-shows-only-in-extension.md` | Rests on one repeated phrase, so quote it as a consistency argument. Every marginal battery cell is blind to the distinction |
 | D7 | The base step is a **product**, not a bare σ — no divisor of the word gap survives the base-pool floor | `dju-bei-needs-a-product-step.md` | Needs no σ order floor and survives every tokenization |
 
 ## E. The plaintext side
@@ -110,9 +110,16 @@ measured rather than argued: one return in 1,440 simulated corpora, which agrees
 Read conditionally rather than marginally the event stops being strange. From 17 identical
 word pairs, a chained base pool of a few hundred produces at least one extension 19% of
 the time; independent per-word draws produce one 0.7% of the time. So DJU-BEI is an
-ordinary event for a chained cipher, and "no shorter companions" is what a pool of a few
-hundred gives. What remains unexplained is not the return itself but the pool size it
-implies, which sits below the ≥2,928 the two-rune depth test prefers.
+ordinary event for a chained cipher, and "no shorter companions" is what chance gives:
+`word-repeat-accounting.md` shows 11.1 of the 17 shorter repeats are three-rune
+coincidence, leaving an excess of 5.9 +- 3.4. With the floor subtracted and the LP's own
+plaintext register used, `identical` implies a pool of 3,083 and the chain reading of
+`returns` implies 795 with a 95% interval of [216, 31,442]. The two agree; the chainless
+reading gives 63 with an interval of [33, 396] and does not. There is no pool tension.
+
+The strongest form of the evidence needs no register at all. Shuffling the ORDER of the
+corpus's own ciphertext words holds all seventeen repeats fixed and destroys only
+adjacency: two of them land adjacent in the same order once in 20,000 shuffles.
 
 Everything else in this table is a constraint. These two are the facts a solution has to
 explain.

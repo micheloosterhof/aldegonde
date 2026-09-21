@@ -98,6 +98,17 @@ chained pool of 300 and 17/2,390 = 0.0071 under free draws. The corpus has one.
 independent per-word draws.** Under the chain it is an ordinary event; under free
 draws it is a 1-in-140 coincidence.
 
+## Superseded on evidence, confirmed on direction (next day)
+
+The positive half above is a factor of 30 built from simulated prose at a chosen pool
+size. `word-repeat-accounting.md` reaches the same conclusion from the corpus alone:
+shuffling only the ORDER of the corpus's own ciphertext words holds all 17 repeats fixed
+and puts two of them adjacent once in 20,000 draws, and requiring `identical` and
+`returns` to imply one pool excludes the chainless reading by a factor of eight.
+
+The negative half -- that no marginal battery cell sees the chain -- is unaffected and
+is what makes the conditional reading necessary.
+
 ## Consequences
 
 - `returns` is not a dead cell and it is not a key measurement. It is the chain's
