@@ -34,9 +34,10 @@ deck-permutation cipher rather than a machine cipher.
 **Status**: disproved for autonomous machines (three legs; the strong one is
 the lag scan). The **wheel-indexable** form of the compact-state idea fails
 under the walk's premises, for transitive state groups. Intransitive groups
-occupy the middle ground: excluded at six or more blocks, **untestable at four
-or fewer**. Nothing here settles whether a hand procedure of some other shape
-exists.
+occupy the middle ground, and searching the partition rather than naming it
+(`no-block-partition.md`) now excludes **three blocks or more**. One shape
+survives: 25 runes against 4, which leaks too little to see. Nothing here
+settles whether a hand procedure of some other shape exists.
 
 ## The main result: 29 is prime, so there is no middle-sized TRANSITIVE group
 
