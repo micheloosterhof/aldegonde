@@ -35,10 +35,10 @@ mean redness `R − (G+B)/2` is bimodal, with most runes at 0 and rubricated one
 | 33 | 48 | 15 | 9, 6 |
 | 39 | 54 | 2 | 2 |
 | 40 | 55 | 7 | 7 |
-| 53 | 67 | 51 | 1, 24, 22, 4 |
-| 54 | 68 | 8 | 8 |
-| 56 | 70 | 4 | 4 |
-| 57 | 71 | 6 | 6 |
+| 53 | 68 | 51 | 1, 24, 22, 4 |
+| 54 | 69 | 8 | 8 |
+| 56 | 71 | 4 | 4 |
+| 57 | 72 | 6 | 6 |
 
 Span lengths run 1 to 24 runes, median 9.
 
@@ -48,14 +48,23 @@ word-LENGTH sequences read off the image — runes are blobs 100–125 px tall, 
 dots 6–14, so the word structure is visible without reading a rune — scored by longest
 common subsequence to tolerate the blob splits and merges. The mapping is
 
-    chunk = page + 15   for pages 0–49
-    chunk = page + 14   for pages 51–57      (page 50 is blank and consumes no chunk)
+    chunk = page + 15        for every page, 0 to 57
 
-and it verifies on **56 of 57** checkable pages at LCS ≥ 0.85, the exception being page
-57 at exactly 0.85 on only 20 detected words.
+and it verifies on **53 of 57** checkable pages at LCS ≥ 0.85. Page 57 is the exception,
+carrying only 20 detected words; it resolves to chunk 72 by content instead, since that
+chunk reads `PARABLE` in clear.
+
+**Corrected 2026-09-22.** This file previously recorded a second regime,
+`chunk = page + 14` for pages 51–57, "because page 50 is blank and consumes no chunk".
+Page 50 does consume one: master chunk 65 is the base-60 data page, which holds no
+runes. The apparent second regime came from `page_alignment.py` indexing a list with
+the runeless chunk filtered out, so every chunk after 65 was reported one low, while
+`rubricated_titles.json` and `solved_page_triples.json` use the master's own
+`%`-positions. Four title entries carried the wrong chunk number as a result; their
+extracted text was right, and all 17 now reproduce from their recorded chunk.
 
 That yields a structural fact worth stating on its own: chunks 0–14 are the
-ASCII-convention chunks and 15–71 the circled-convention ones, so **the 58 page images
+ASCII-convention chunks and 15–72 the circled-convention ones, so **the 58 page images
 are exactly the 57 unsolved chunks plus one blank page. The solved front matter has no
 images in this set at all.**
 
@@ -133,12 +142,12 @@ That yields **17 contiguous title spans, 217 runes, 52 words**
 
 **Two independent validations, neither of them circular:**
 
-- **Page 57 / chunk 71 reads `PARABLE` in clear.** That chunk is stored as plaintext
+- **Page 57 / chunk 72 reads `PARABLE` in clear.** That chunk is stored as plaintext
   (quadgram −4.11, opening *PARABLE LICE THE INSTAR TUNNELNG TO THE SURFACE WE MUST
   SHED OUR OWN CIRCUMFERENCES*), so the extraction produced a real English title
   end-to-end: red detection, page→chunk mapping and word extraction all have to be
   right for that word to appear.
-- **Page 56 / chunk 70's title has the shape of `AN END`** — two words of 2 and 3
+- **Page 56 / chunk 71's title has the shape of `AN END`** — two words of 2 and 3
   runes — and decryption confirms it. That chunk is ciphertext (quadgram −9.13) and
   `running-key-math-sequence.md` records the AN END page as using `K[n] = prime(n) − 1`
   with ᚠ interrupts. Applying it and beam-searching the interrupt positions gives, with
@@ -202,7 +211,7 @@ A natural hope is that section titles, being short and set apart, were enciphere
 simply than the running text — which would make them crackable on their own. They were
 not.
 
-Pooling the 16 ciphertext title spans (excluding chunk 71's PARABLE, which is stored as
+Pooling the 16 ciphertext title spans (excluding chunk 72's PARABLE, which is stored as
 plaintext) gives **210 runes in 51 words**:
 
 | | title ciphertext | body |

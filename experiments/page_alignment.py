@@ -100,8 +100,11 @@ def lcs(a: list[int], b: list[int]) -> int:
 
 
 def main() -> None:
-    chunks = [c for c in MASTER.read_text().split("%") if RUNE.search(c)]
-    tw = [chunk_word_lengths(c) for c in chunks]
+    # index by the master's own %-position, which is what every other consumer of
+    # rubricated_titles.json and solved_page_triples.json uses. Filtering the runeless
+    # chunk out of the list instead renumbers everything after it by one.
+    raw = MASTER.read_text().split("%")
+    tw = {i: chunk_word_lengths(c) for i, c in enumerate(raw) if RUNE.search(c)}
     rows, offsets = [], []
     print(f"{'page':>5}{'words':>7}{'chunk':>7}{'score':>7}{'2nd':>7}{'offset':>8}")
     for page in range(58):
@@ -111,7 +114,7 @@ def main() -> None:
             print(f"{page:>5}{len(iw):>7}{'-':>7}{'-':>7}{'-':>7}{'-':>8}")
             continue
         scored = sorted(
-            ((lcs(iw, t) / min(len(iw), len(t)), i) for i, t in enumerate(tw) if t),
+            ((lcs(iw, t) / min(len(iw), len(t)), i) for i, t in tw.items() if t),
             reverse=True,
         )
         best, idx = scored[0]
