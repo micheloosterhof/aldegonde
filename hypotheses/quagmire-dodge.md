@@ -23,10 +23,12 @@ key that every sweep in this directory excluded by construction.
 The decodability objection it inherited from `doublet-dodge-walk.md` is now measured
 and withdrawn as a blocker: the collision costs 0-6 runes in 12,388.
 
-What blocks it instead is that the sweep's scorer cannot see the model at all. A
-planted key of this family scores BELOW two thousand random wrong sigmas under
-`walk_score_kernel`, so the search recorded below as "never done" cannot be done until
-that is fixed. `d6w` and `d1w` also miss for unfitted keys.
+The scorer that blocked it now exists. `walk_score_kernel` scores a planted key of this
+family BELOW two thousand random wrong sigmas, but `dodge_aware_scorer.py` puts it on
+top by z = 12 to 20 by alternating the base₀ assignment with a per-window clock phase.
+The sweep is affordable at 1,200–2,400 core-hours over 3301's own vocabulary. `d6w` and
+`d1w` miss for unfitted keys, and `distance-6-has-no-power.md` weakens the first of
+those to 31 coincidences.
 
 ## Mechanism
 
@@ -245,12 +247,14 @@ same shape as the DJU-BEI gate.
 
 ## What to do next
 
-1. **Write a dodge-aware scorer.** This now gates everything else. The decoder in
-   `quagmire_dodge_decode.py` tracks the clock correctly, but it needs base₀ and runs at
-   Python speed. The sweep's kernel needs the same branch test with base₀ left free,
-   which means an assignment problem per surviving clock path rather than one per key.
-   A beam of 2–4 would hold the true path at 95% of positions; the cost is unestimated
-   and is the real work.
+1. ~~Write a dodge-aware scorer.~~ **Done** — `experiments/dodge_aware_scorer.py`. The
+   circularity I recorded here (fire detection needs base₀, base₀ is what the assignment
+   solves for) is soluble by alternating the two. Eliminating the plaintext from the
+   fire condition leaves `v_j = Q(v_(j-1))` in base₀-free coordinates, so short windows
+   plus a five-way clock-phase choice and three passes separate a planted key from wrong
+   ones by z = 12 to 20, in every category and for both preventer directions. Cost at a
+   C port: 1,200–2,400 core-hours for the priority sweep, against the old kernel's 30,
+   which buys nothing because it cannot see the family.
 2. **Then run the zero-offset sweep on the priority vocabulary.** 4.9e9 keys, 30
    core-hours with the scorer above, using the census's one-zero generator and its
    d1/d4/d6 bands in place of the `nz` mask and the five-phase band.
@@ -272,6 +276,7 @@ same shape as the DJU-BEI gate.
   dictionary and over 3301's own vocabulary.
 - `experiments/dodge_scorer_check.py` — the sweep's own positive control run against
   dodge ciphertext, which is where the planted key scores below random.
+- `experiments/dodge_aware_scorer.py` — the scorer that fixes it, and its cost.
 - `experiments/dodge_d5_attenuation.py` — the no-free-parameter d5 prediction below.
 
 ## Related

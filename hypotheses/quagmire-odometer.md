@@ -110,8 +110,10 @@ and it was invisible. Fixed; both are flagged now.
 2. **If it is floored, the per-word step needs more than two shift dials.** The state
    budget in `pure-quagmire-word-restart.md` is met by 841, but d6 may need structure
    that shifts cannot supply, which would restore part of σ.
-3. Inherited: `walk_score_kernel` cannot score any model with the doublet preventer, so
-   none of this family can be searched for yet. See `quagmire-dodge.md`.
+3. ~~Inherited: `walk_score_kernel` cannot score any model with the doublet
+   preventer.~~ `experiments/dodge_aware_scorer.py` now can, separating a planted key
+   by z = 12 to 20 at 1,200–2,400 core-hours for the priority sweep. This model is
+   searchable.
 
 ## Scripts
 

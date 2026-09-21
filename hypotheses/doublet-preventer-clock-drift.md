@@ -104,8 +104,10 @@ rows depend on the transcription being complete.
    nearly equal and opposite. A rule that alternates direction strictly — first fire
    forward, second back — keeps total drift bounded by one step and leaves the phase
    readable, which would bring it back inside this test. Nobody has tried it.
-2. **The drifting pair stays only testable by fitting**, not by a phase count, which
-   leaves the decodability work in `quagmire_dodge_decode.py` as their main handle.
+2. **The drifting pair stays only testable by fitting**, not by a phase count. That is
+   no longer a dead end: `experiments/dodge_aware_scorer.py` scores both drifting
+   variants, separating a planted key by z = 16.4 (advance) and z = 18.6 (hold) from
+   fully wrong keys, so they can be searched for directly.
 
 ## Scripts
 
