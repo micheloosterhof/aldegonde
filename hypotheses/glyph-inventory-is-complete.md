@@ -45,7 +45,18 @@ detached second stroke** that connected-component labelling splits off as an ext
 That also confirms the tick census was uncontaminated: the tick class is h 38–42 and this
 one is h 50–62, cleanly apart.
 
-> **No mark class is missing from the transcription at this resolution.**
+> **No mark class is missing from the transcription at this resolution** — with one
+> qualification added the following day, below.
+
+## Qualified: a class that matches the runes in SIZE was invisible here
+
+This census bins by size, so it cannot separate a mark that is rune-sized from a rune.
+`colour-channel-holds-one-layer.md` finds exactly that: five rune-sized **red** glyphs on
+pages 36–38, standing at the start of a line and absent from the transcription. They were
+counted here as runes.
+
+The claim that survives is narrower: no mark class is missing *at a size that
+distinguishes it from a rune*.
 
 ## The by-product is worth more than the census
 

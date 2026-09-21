@@ -48,16 +48,46 @@ saturated as the titles.
 So pages 36–38 carry deliberate red marking that no catalogue records, and pages 36–39 form
 a run of four consecutive pages with one to three red runes each.
 
-## What is not established
+## They are not runes at all: they are extra line-initial marks
 
-**Where they are.** Mapping a blob to a rune index needs a reliable alignment, and the
-naive one fails here: these pages yield 232–244 rune-sized blobs against 228–240 runes in
-the transcription, an excess of three to six. Until that excess is accounted for, any
-claim about *which* rune is red is unfounded — and an earlier draft of this file named
-them before the counts were checked.
+The blob excess that blocked the first attempt at locating them turns out to be the
+answer. Grouping blobs into lines and comparing line by line:
 
-The excess is not the ᚣ artefact from `glyph-inventory-is-complete.md`, which sits at
-h 50–62 and is excluded by the 90–140 rune filter.
+- every page carries **five header blobs** above the text, in two short rows, which no
+  transcription encodes;
+- after dropping those, most lines match the transcription exactly;
+- **every red mark sits at line index 0**, and on pages 36–38 every line carrying one has
+  **exactly one blob more** than the transcription has runes for that line.
+
+| page | line | blobs | transcribed runes | red at index |
+|---|---|---|---|---|
+| 36 | 5 | 22 | 21 | 0 |
+| 37 | 0 | 21 | 20 | 0 |
+| 37 | 4 | 23 | 22 | 0 |
+| 37 | 9 | 21 | 20 | 0 |
+| 38 | 3 | 22 | 21 | 0 |
+
+Remove the red blob and every count matches. At page level the same arithmetic closes:
+page 37 has 234 blobs, 3 header, 3 red, and 234 − 3 − 3 = **228 = its transcribed rune
+count**; page 38 gives 232 − 3 − 1 = **228**, exactly right.
+
+Page 39 behaves differently and is the control: 243 − 3 = **240 = its rune count** with
+its two reds *included*, so those are red-coloured text runes, which is why the census
+has it.
+
+> **The five marks on pages 36–38 are not runes. They are rune-sized red glyphs standing
+> at the start of a line, outside the transcribed text.**
+
+## This qualifies the ink census
+
+`glyph-inventory-is-complete.md` concludes that no mark class is missing from the
+transcription. That conclusion was reached by binning **size**, and these marks are
+rune-sized — they hid inside the rune class and were counted as runes. Only colour
+separates them.
+
+So the honest statement is narrower than the one that file makes: no mark class is missing
+*at a size that distinguishes it from a rune*. A class that matches the runes in size and
+differs only in colour was invisible to that census, and there is one.
 
 ## Why it might matter
 
