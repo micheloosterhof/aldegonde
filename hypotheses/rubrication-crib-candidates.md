@@ -119,3 +119,34 @@ can confirm a candidate key quickly but cannot generate one.
 - `mark-glyph-inventory.md` — the [title][13-dot][body] structure.
 - `marks-are-not-clause-punctuation.md` — the independent evidence that 13-dot is
   structural markup.
+
+## The titles extracted, and the pipeline validated twice (September 2026)
+
+With `page_alignment.py` fixing the image-to-chunk correspondence, the red runes can be
+placed in the transcription. Within a page the word-length sequences agree almost
+exactly — image page 15 and chunk 30 both hold 37 words with one length differing — so
+word-level alignment is direct, and **titles turn out to be whole-word spans**: on the
+pages where a title opens the page, every rune of the first few words is red.
+
+That yields **17 contiguous title spans, 217 runes, 52 words**
+(`experiments/rubricated_titles.json`).
+
+**Two independent validations, neither of them circular:**
+
+- **Page 57 / chunk 71 reads `PARABLE` in clear.** That chunk is stored as plaintext
+  (quadgram −4.11, opening *PARABLE LICE THE INSTAR TUNNELNG TO THE SURFACE WE MUST
+  SHED OUR OWN CIRCUMFERENCES*), so the extraction produced a real English title
+  end-to-end: red detection, page→chunk mapping and word extraction all have to be
+  right for that word to appear.
+- **Page 56 / chunk 70's title has the shape of `AN END`** — two words of 2 and 3
+  runes — and decryption confirms it. That chunk is ciphertext (quadgram −9.13) and
+  `running-key-math-sequence.md` records the AN END page as using `K[n] = prime(n) − 1`
+  with ᚠ interrupts. Applying it and beam-searching the interrupt positions gives, with
+  **one** interrupt at rune 56 and quadgram −4.27:
+
+  > AN END. WITHIN THE DEEP WEB THERE EXISTS A PAGE THAT HASHES TO IT. [IT] IS THE DUTY
+  > OF EUERY PILGRIM TO SEEC OUT THIS PAGE
+
+  The title predicted from red word-shape alone is the title the key produces.
+
+AN END is added to `experiments/solved_page_triples.json` as a tenth triple.
