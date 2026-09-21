@@ -311,9 +311,13 @@ What replaced it was a fourth obstacle in the same place, found by checking the
 generator rather than the scorer: the d1/d4/d6 rate bands keep a true key only 9% of
 the time, and the d6 band -- whose evidence is 31 coincidences -- rejects 72% of true
 schedules on its own. `schedule-band-retention.md` has the measurement and the cost
-table showing the bands are cost-neutral. With them dropped the sweep is 216
-core-hours and covers the family by construction, so it is now runnable and nothing
-known blocks it.
+table showing the bands are cost-neutral. With them dropped the sweep is 218
+core-hours measured on its own call shape, and covers the family by construction, so it
+is runnable and nothing known blocks it.
+
+It has NOT been run. Michel's call, 2026-09-21: the sweep stays parked as a validated
+and priced next step rather than occupying the machine for a day. `--selftest` passes
+all three prerequisites, so it can be started at any time without further checking.
 
 It also answers the question Michel asked first — whether the doublet rule is what
 breaks the distance-5 repeat. It is: the attenuation (1-q)^5 = 0.8525 follows from the
