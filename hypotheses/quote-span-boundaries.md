@@ -187,6 +187,46 @@ clause-final word-length signature and does not space like clause punctuation, a
 `marks-are-not-clause-punctuation.md`'s later section finds the doublet suppression
 runs straight through it, so it is not a cipher event either.
 
+## Settled from the page images: the mark is a separate glyph (September 2026)
+
+The page scans are present (`~/src/cicada-2014/stage11/…onion/`, 59 files), so the
+question does not have to be left open. Reusing `apostrophe_census.py`'s detector —
+ticks are ink blobs 38–42 px tall inside the text block, where a rune is ~114 px and a
+mark dot ~9–10 — and clustering the dots into marks:
+
+| 4-dot clusters | n | mean internal spread |
+|---|---|---|
+| adjacent to a tick | 8 | 30.6 px |
+| free-standing | 25 | 31.0 px |
+| **difference** | | **−0.4 ± 0.3 px** |
+
+**The marks beside ticks are the same glyph as the marks elsewhere**, identical in
+internal dot spacing to within half a pixel. The 8 here are the same 8 the
+transcription reports, so the two methods agree on which sites they are.
+
+And the spacing says they are separate glyphs, not one:
+
+| distance | px |
+|---|---|
+| tick to its neighbouring mark | 71–115 |
+| tick to tick *within one double quote* | ~20 |
+| adjacent runes on a line | 5 (median, n = 2,426) |
+
+A mark sitting 71–115 px away is three to six times farther than the two halves of a
+single quotation mark, and roughly a full glyph position distant.
+
+**So the "one glyph transcribed as two" reading is refuted.** The tick and the mark are
+distinct glyphs that the scribe wrote in sequence, and the alignment is linguistic
+rather than an artifact of transcription.
+
+**Which sharpens the anomaly rather than dissolving it.** The 4-dot mark carries no
+clause-final word-length signature, does not space like clause punctuation, is
+homogeneous across sections, and the doublet suppression runs straight through it — yet
+it is a genuine separate glyph that quoted speech aligns to at P = 2.2e−6. That
+combination is now the open problem, and it can no longer be blamed on the transcriber.
+
+## What would have separated them (now resolved)
+
 **What separates them is the page images, not the transcription.** If the 8 tick-adjacent
 ④ differ in size, spacing or vertical placement from the other 131, they are part of the
 quote glyph; if they are identical, the clustering is linguistic. `contraction-cribs.md`
