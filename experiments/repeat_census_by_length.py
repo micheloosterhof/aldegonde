@@ -74,9 +74,13 @@ def main() -> None:
         "\nan author who forced one return forced exactly one. Both readings inherit that:"
         "\nchance must produce exactly one 1-in-2,700 event, and design must have used the"
         "\ncapability once."
-        "\n\nThe unaligned column is the background. Length-3 repeats run BELOW chance"
-        "\n(3,009 against 3,461), which is the corpus's repeat suppression showing through;"
-        "\nlengths four and five sit on it."
+        "\n\nThe analytic expectations are for orientation only. They assume independent"
+        "\nwindows, and overlapping windows are not independent, so the formula runs high"
+        "\n-- at length 3 it gives 3,461 where empirical surrogates give 2,909 (plain"
+        "\nshuffle) and 2,992 (doublet-preserving). The observed 3,009 sits ON the"
+        "\ndoublet-preserving null at z = +0.57, so there is NO trigram-level deficit."
+        "\nThe length-6 conclusion is unaffected: the overestimate is a factor under 1.2"
+        "\nand the gap there is a factor of 2,500."
     )
 
 

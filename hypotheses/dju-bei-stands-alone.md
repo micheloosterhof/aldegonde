@@ -42,12 +42,28 @@ trail. Both readings inherit the consequence:
 Neither reading is embarrassed, but the space of designs narrows: an author who wove
 returns through the text would have left more than one, and did not.
 
-## The background is worth noting separately
+## Correction: there is no trigram deficit, and the analytic null was wrong
 
-The unaligned column is the language-and-chance floor. Length-3 repeats run **below**
-chance — 3,009 against 3,461 — which is the corpus's own repeat suppression showing
-through at trigram scale, the same mechanism that holds doublets to 0.0063. Lengths four
-and five sit on the expectation.
+The first version of this file read the length-3 row as a deficit — 3,009 observed against
+3,461 expected — and called it "the corpus's repeat suppression showing through at trigram
+scale". That was wrong, and the error is in the null.
+
+The analytic expectation assumes **independent windows**, and overlapping windows are not
+independent, so the formula runs high. Measured against surrogates instead:
+
+| | repeated trigrams |
+|---|---|
+| analytic, C(N,2)·p₂³ | 3,461 |
+| plain shuffle | 2,909 ± 28 |
+| doublet-preserving shuffle | 2,992 ± 30 |
+| **observed** | **3,009** |
+
+The observed count sits **on** the doublet-preserving null at **z = +0.57**. There is no
+trigram-level deficit and no suppression reaching three runes deep — only the doublet
+effect already on the books, which the surrogate carries.
+
+**The length-6 conclusion is unaffected.** The analytic overestimate is a factor under
+1.2, and the gap at length six is a factor of 2,500.
 
 ## Status
 
