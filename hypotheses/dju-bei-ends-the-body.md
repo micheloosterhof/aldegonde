@@ -53,6 +53,31 @@ still requires the key state to coincide, and so still implies the return.
 In other words the deliberate reading does not remove the need for a state return; it
 supplies a motive for one.
 
+## The first occurrence is marked too
+
+If the repeat is deliberate, the first occurrence should also sit somewhere the book marks.
+It does (`experiments/dju_bei_structural_position.py`):
+
+| | position |
+|---|---|
+| **first** | chunk 42, page 27 — which **opens a section** and **carries a rubricated title** of 19 runes in 3 words. The repeat begins **9 runes after the title ends**, at chunk offset 28 of 234. |
+| **second** | chunk 70, page 55 — offset 70 of 76, **zero runes left**, the last two blocks of the body. |
+
+How surprising a randomly placed 2-block unit would find each:
+
+| | probability |
+|---|---|
+| landing in the final six runes | 0.00046 (1 in 2,158) |
+| landing in the first five blocks of one of the 15 rubricated-title pages | 0.026 (1 in 39) |
+
+**Both occurrences sit where a scribe would put a refrain** — one just after a section
+title, one as the last words of the enciphered book. That is what a deliberate repeat
+looks like and not what a coincidence looks like.
+
+The caution is the same as above and applies twice over: both positions were noticed
+*after* the repeat, neither was predicted, and the two probabilities should not be
+multiplied into a single figure.
+
 ## Status
 
 **Status**: confirmed (position, exact). The consequence — that the continuation test is
