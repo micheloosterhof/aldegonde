@@ -115,6 +115,53 @@ attacking: the unsolved body is at IoC 1.000 and gives a search nothing to climb
 while these four leak 2 to 8 sigma of the same structure and are 93-264 runes long
 instead of 12,956.
 
+## Pages 1 and 2 are solved: DIVINITY, with an interrupted keystream
+
+Plain Vigenere with the key DIVINITY decrypts page 1's first 49 runes exactly —
+*WELCOME WELCOME PILGRIM TO THE GREAT JOURNEY TOWARD THE END* — and then loses sync.
+That is an interrupted keystream, so rather than guess what triggers the interrupt,
+`experiments/interrupt_beam.py` searches the skip positions directly: at each rune the
+keystream either advances or holds, and a beam scored by runeglish trigrams picks the
+path. The answer can then be read off instead of assumed.
+
+**Page 1, six interrupts, quadgram −4.40** (plaintext pages run −4.15 to −4.66):
+
+> WELCOME WELCOME PILGRIM TO THE GREAT JOURNEY TOWARD THE END OF ALL THNGS IT IS NOT
+> AN EASY TRIP BUT FOR THOSE WHO FIND THEIR WAY HERE IT IS A NECESSARY ONE ALONG THE
+> WAY YOU WILL FIND AN END TO ALL STRUGGLE AND SUF[F]ERING YOUR INNOCENCE YOUR
+> ILLUSIANS YOUR CERTAINTY AND YOUR REALITY ULTIMATELY YOU WILL DISCOUER AN END TO
+> SEL[F]
+
+Every one of the six skips falls on a ciphertext **ᚠ**, and the letters that go
+missing if the skip is treated as a deletion are exactly the plaintext F's — *END
+[OF] ALL*, *BUT [F]OR THOSE WHO [F]IND*. So the documented rule is confirmed from the
+data: a ciphertext ᚠ can be a literal plaintext F that consumes no key.
+
+**The detail that matters is that only SOME of them are.** Page 1 carries 14
+ciphertext ᚠ and only 6 are interrupters. That is why `solved_page_keywords.py`, which
+treated every ᚠ as an interrupt, scored DIVINITY below a meaningless key and reported
+the whole family as a miss. The interrupt is a mark the scribe placed, not a property
+of the rune, and no rule stated over the alphabet alone can recover it.
+
+**Page 2, same key, quadgram −4.48:**
+
+> …THROUGH THIS PILGRIMAGE THAT WE SHAPE OURSELUES AND OUR REALITI… JOURNEY DEEP
+> WITHIN AND YOU WILL ARRIUE OUTSIDE LICE THE INSTAR… EACH INTELLIGENCE IS HOLY FOR
+> ALL THAT LIUES IS HOLY AN INSTRUCTIAN COMMAND YOUR OWN SEL[F]
+
+## What the beam can and cannot be trusted for
+
+Skip count is the guard against the beam manufacturing English. Six binary choices
+over 251 runes is negligible freedom and the output is clean, so page 1 is a solve.
+Page 2's 24 skips over 264 runes is more latitude, and it is accepted on external
+grounds — *EACH INTELLIGENCE IS HOLY*, *AN INSTRUCTIAN COMMAND YOUR OWN SELF* is LP
+content, not an artifact a trigram beam would invent.
+
+Pages 12 and 13 are **not** solved. Under DIVINITY the beam reaches only −5.86 and
+−5.70 and needs 115 and 42 skips respectively — on 226 and 93 runes, that is nearly
+one decision per two runes, which is enough freedom to fit noise. Their keys are
+different and remain unknown.
+
 ## Status
 
 **Status**: confirmed (measurement). `experiments/solved_page_testbed.py` classifies
@@ -190,6 +237,10 @@ Each of the four would add another genuine triple.
 - `experiments/solved_page_triples.json` — the five recovered triples.
 - `experiments/poly_page_profile.py` — the elevation, diversity, period and locality
   tests on the four remaining pages.
+- `experiments/interrupt_cipher.py` — the interrupter family with an exact round trip
+  and a 6/6 planted-key control.
+- `experiments/interrupt_beam.py` — the beam over skip positions that solves pages 1
+  and 2 and reports which rune sits at each interrupt.
 
 ## Related
 
