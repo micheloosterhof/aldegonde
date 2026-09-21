@@ -322,3 +322,22 @@ in this project ran on a wrong clock. An authorial difference means the boundari
 exactly right and the clock is sound; only the plaintext's register differs from the
 front matter's. The three measurements above favour the second, and the wrap bound is
 the strongest of them.
+
+## The merge explanation is refuted, and a different one now fits (September 2026)
+
+The standing reading of this deficit is that separators were lost, merging short words
+into longer ones. `separators-are-not-word-boundaries.md` tests that directly by merging
+prose: at the merge rate that reproduces the body's mean word length the 2-rune share
+lands at 0.209, against the body's 0.159. Merging does not reach the deficit.
+
+The same file finds a second anomaly on the same data. Word lengths pass through any
+position-preserving cipher untouched, and the body's length SEQUENCE carries a tenth of
+the serial structure language has -- excess G2 per transition 0.0039 +- 0.0025, against
+0.0397 +- 0.0101 for the author's own plaintext and 0.0484 +- 0.0160 for runeglish prose.
+The body's figure is consistent with zero.
+
+One reading covers both: the body's separators delimit cipher blocks rather than
+plaintext words, so their lengths owe nothing to an English word-length histogram and
+nothing to English word order. On that reading this deficit is not a deficit at all --
+it is a different distribution being compared to the wrong reference.
+
