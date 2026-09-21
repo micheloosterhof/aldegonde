@@ -54,6 +54,12 @@ for a cross-block same-position statistic it is **1.79**. Those have been correc
 ## Status
 
 **Status**: confirmed (measurement on 1,963 LP runes and 127,456 prose runes).
+
+*Register note, October 2026.* The LP side is the eleven-page register. On the
+sixteen-page one (2,882 runes) the unconditional coincidence is 1.778× chance against the
+1.788× recorded here — the headline agreement with prose's 1.783 is unchanged to two
+decimals. The within-block rows are measured on fewer pairs than the unconditional one
+and move more; recompute them before quoting any individual lag.
 `experiments/coincidence_reference.py`. Supersedes the trusted constant wherever a pair
 type is identifiable.
 

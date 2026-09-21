@@ -3,6 +3,42 @@ type: observation
 ---
 # Observation: The LP's Own Plaintext Register, and a Doublet Rate 2.7 Sigma Below Chance
 
+
+## UPDATED: the register is 723 words, not 486 (October 2026)
+
+This file was written when `lp_plaintext_register.corpus()` returned the six plaintext
+pages plus the five monoalphabetic ones. It dropped the four interrupted Vigenère pages
+and the prime running key page because their KEY is a keystream — which is irrelevant
+here, since `solved_page_triples.json` stores the recovered plaintext directly in
+`plaintext_runes` and every solved page is position-aligned (an interrupt holds the key
+index but still emits a rune). `register_is_bigger.py` records the correction.
+
+**The register is 723 words and 2,882 runes**, a 47% increase, and it agrees with
+`word_lengths()`, which has counted all sixteen pages since it was written. Every table
+below is on the old eleven-page basis; the current figures are:
+
+| quantity | 11 pages | **16 pages** |
+|---|---|---|
+| words / runes | 486 / 1,963 | **723 / 2,882** |
+| mean word length | 4.039 | **3.986** |
+| unigram IoC | 0.0617 (1.788×) | **0.0613 (1.778×)** |
+| fraction at length 2 | 0.2387 | **0.2420** |
+| within-word d1 | 0.0217 (1,477 pairs) | **0.0236 (2,159)** |
+| within-word d2 | 0.0427 | **0.0389** |
+| within-word d3 | 0.0567 | **0.0507** |
+| within-word d4 | 0.0670 | **0.0583** |
+| **within-word d5** | **0.0575 (261 pairs)** | **0.0733 (382)** |
+| within-word d6 | 0.0680 | **0.0594** |
+| within-word d7 | 0.0769 | **0.0924** |
+
+d5 is the one that matters, since `g` has order 5 and a clean walk would put the body's
+d5 at the plaintext's. It moved from 0.0575 to 0.0733 ± 0.0133, which is what
+`d5-bounds-the-clock-perturbation.md` uses. The unigram IoC barely moves, so anything
+resting on the letter distribution is unaffected.
+
+`corpus(keyed=False)` reproduces the eleven-page figures below.
+
+
 ## Feature
 
 Every register-matched control in this directory draws its English from an outside
