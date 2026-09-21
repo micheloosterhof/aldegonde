@@ -461,3 +461,42 @@ carries zero information about which g it is; it tests whether the walk frame is
 On that it is consistent: the walk predicts the plaintext rate 0.0575 ± 0.0144 against
 the body's 0.0492 ± 0.0048, a difference of z = −0.55, so φ5 = 1 is not rejected and
 not confirmed — the underpowered verdict `d5-partial-alphabet-leak.md` already records.
+
+## The seam is not empty — but only under the relational reading (September 2026)
+
+This file's headline is that σ gets ~0 local constraint. That needs qualifying, and the
+qualification is worth 28 bits.
+
+The orbit theorem (`local-channel-is-exactly-coincidence.md`) applies across a word
+boundary too: a pair `(last of w, first of w+1)` is `(β_w(u), β_w(σ^k(v)))`, so equality
+is again the only invariant and the seam coincidence rate is a selected-bigram-mass
+statistic — `Σ_x P_cross(x, R(x))` for the seam relation `R`.
+
+**The cross-word plaintext is not uniform**, which is what decides whether that
+statistic can say anything. English word-final and word-initial letters are each
+strongly skewed, so `P_cross` is non-uniform from the marginals alone, even with no
+dependence between adjacent words. Measured on the author's own plaintext, with the
+sparsity artefact of a 485-pair table subtracted:
+
+| channel | pairs | observed spread | noise floor | real signal |
+|---|---|---|---|---|
+| within-word d1 | 1,477 | 0.01469 | 0.00473 | 0.01391 |
+| cross-word seam | 485 | 0.01321 | 0.00828 | **0.01029** |
+
+The seam signal is 0.74× the within-word one — the same order, not negligible.
+
+**So the seam rate is a strong constraint.** The body's seam coincidence is 23/2927 =
+0.00786 against 0.0345 expected. Averaged over the five relations (one per word length
+mod 5, which the corpus cannot separate — chi² 3.10 on 4 df) the spread is 0.00460, so
+the observation sits **z = −5.79**, p = 3.6e−9, or **28 bits**.
+
+**The fork that decides whether those bits exist.** All of the above assumes the
+suppression is *relational* — that `R` was chosen to avoid common plaintext bigrams. If
+instead a doublet **preventer** produces it, by re-emitting whenever a repeat would
+occur, then `R` is unconstrained and the seam yields **zero** bits on σ.
+`doublet-suppression-requires-design.md` leaves both readings open, and the same fork
+applies to the 7.0 bits the within-word d1 channel gives g.
+
+That makes the preventer question the most valuable open question here, and gives it a
+price: under the relational reading the local channel yields ~13 bits on g plus ~28 on
+the seam relations; under the preventer reading it yields ~6 on g and nothing on σ.
