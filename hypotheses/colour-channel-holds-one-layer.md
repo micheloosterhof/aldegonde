@@ -78,6 +78,33 @@ has it.
 > **The five marks on pages 36–38 are not runes. They are rune-sized red glyphs standing
 > at the start of a line, outside the transcribed text.**
 
+## The whole book, reconciled: the five are the only red excess
+
+`page_blob_reconciliation.py` runs the same arithmetic on all 58 pages, line by line. It
+does **not** balance the book — only 5 pages reconcile exactly — and the reason is
+mechanical: runes touch, so blobs merge. **74 lines carry one fewer blob than runes.**
+
+The direction is the finding:
+
+| | lines |
+|---|---|
+| fewer blobs than runes (merging) | **103** |
+| more blobs than runes | **20** |
+
+Of the twenty excess lines, **six carry a red blob**: the five line-initial marks on pages
+36–38, plus the rubricated title line on page 53 where two red runes were counted apart.
+**Every other excess line is black**, and they cluster on a handful of pages (2, 22, 32,
+33, 53) where artwork reaches into the text block.
+
+So across the whole corpus the only red-associated excess blobs are the five already
+identified. And because deficits outnumber excesses five to one, the dominant segmentation
+error is merging — the transcription is not systematically short of glyphs, which is what
+would otherwise explain an excess.
+
+Four pages (15, 49, 51, 56) are excluded: their image row count and transcription line
+count disagree by more than three, so the alignment is unreliable and nothing is claimed
+about them.
+
 ## This qualifies the ink census
 
 `glyph-inventory-is-complete.md` concludes that no mark class is missing from the
