@@ -86,3 +86,17 @@ the boundary put at a number.
 What should change is the citation: the "any lag to 6520" reach belongs to an
 uninterrupted cipher, and against a preventer-family model this scan should be quoted
 as covering short lags only.
+
+## The gap this file leaves is now closed (September 2026)
+
+The caveat above exempts "a NON-repeating key at least as long as the text and
+statistically uniform". A book used once satisfies the first half and fails the second,
+and `running-key-of-language.md` measures that failure: a keystream with the spectrum of
+the LP's own plaintext predicts a unigram chi2 of 743 against the body's observed 26.4,
+about 90 sigma. The test is a frequency table, so no alignment or period is involved and
+no interrupter blinds it.
+
+The running-key family is therefore excluded whether or not the key repeats. What
+survives is only a keystream that is flat AND non-repeating -- arithmetic, algorithmic
+or random, never copied from a text.
+
