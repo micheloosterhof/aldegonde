@@ -7,14 +7,41 @@ import pytest
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
     JointCount,
+    WithinWordRate,
     boundary_coincidence,
     boundary_permutation_test,
     joint_coincidence,
     match_indicator,
     recut_words,
+    within_word_match_rate,
     word_index_map,
 )
 from aldegonde.exceptions import InsufficientDataError, InvalidInputError
+
+
+def test_within_word_match_rate_counts_only_inside_words() -> None:
+    """Pairs are taken inside each word; the doublet in word 0 is the only match."""
+    words = [[1, 1, 2], [3, 4]]
+    result = within_word_match_rate(words, lag=1)
+    assert result == WithinWordRate(matches=1, pairs=3, rate=1 / 3)
+
+
+def test_within_word_match_rate_larger_lag_skips_short_words() -> None:
+    """A word shorter than lag+1 offers no pair, so it never contributes."""
+    words = [[5, 6, 5], [7, 8]]
+    result = within_word_match_rate(words, lag=2)
+    assert result == WithinWordRate(matches=1, pairs=1, rate=1.0)
+
+
+def test_within_word_match_rate_no_pairs_is_zero() -> None:
+    """With no available pair the rate is 0, not a division error."""
+    assert within_word_match_rate([[1], [2]], lag=1) == WithinWordRate(0, 0, 0.0)
+
+
+def test_within_word_match_rate_word_shorter_than_lag_adds_no_pairs() -> None:
+    """A word shorter than the lag contributes zero pairs, never a negative count."""
+    result = within_word_match_rate([[1, 2, 2, 1], [3]], lag=3)
+    assert result == WithinWordRate(matches=1, pairs=1, rate=1.0)
 
 
 def test_match_indicator_basic() -> None:

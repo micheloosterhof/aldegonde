@@ -242,6 +242,42 @@ def _within_word_matches(
     return matches
 
 
+class WithinWordRate(NamedTuple):
+    """Within-word lag-L match count, the pairs available, and their ratio.
+
+    Attributes:
+        matches: Pairs (i, i + lag) inside one word whose symbols are equal
+        pairs: Position pairs available inside a single word at this lag
+        rate: matches / pairs, or 0.0 when no pair is available
+    """
+
+    matches: int
+    pairs: int
+    rate: float
+
+
+def within_word_match_rate(words: Sequence[Sequence[T]], lag: int) -> WithinWordRate:
+    """The within-word same-symbol rate at a given lag.
+
+    Counts pairs (i, i + lag) that fall inside one word and the fraction of
+    them whose two symbols are equal. Pairs never cross a word boundary, and a
+    word shorter than lag + 1 offers none. This is the diagonal of the
+    within-word bigram diagram as a single number, per lag.
+
+    Args:
+        words: Tokenized text, one sequence per word
+        lag: Distance between the compared symbols
+
+    Returns:
+        The match count, the available pair count, and their ratio
+    """
+    stream = [symbol for word in words for symbol in word]
+    lengths = [len(word) for word in words]
+    matches = _within_word_matches(stream, lengths, lag)
+    pairs = sum(max(0, length - lag) for length in lengths)
+    return WithinWordRate(matches, pairs, matches / pairs if pairs else 0.0)
+
+
 def boundary_permutation_test(
     sections: Sequence[Sequence[Sequence[T]]],
     lag: int,
