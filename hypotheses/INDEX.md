@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (45)
+### Observations (46)
 
 | File | Feature | Status |
 |---|---|---|
@@ -34,6 +34,7 @@ proposed mechanisms scored against them.
 | [negative-control-battery.md](negative-control-battery.md) | Negative-Control Battery: Which Measurements Survive a Structureless Corpus | confirmed (characterization); family-blind, only the d5 echo survives (p=0.020); lag-5 pairing, seam diagonal and d6 do not |
 | [no-known-plaintext-foothold.md](no-known-plaintext-foothold.md) | No Known-Plaintext Foothold; Section 11 is the Only Plaintext Section | confirmed (characterization) for the no-known-plaintext claim |
 | [no-periodicity.md](no-periodicity.md) | No Periodic Key (Friedman flat at every period) | confirmed (characterization) |
+| [preventer-blinds-absolute-tests.md](preventer-blinds-absolute-tests.md) | A Preventer Blinds Absolute-Position Tests and Barely Touches Relative-Distance Ones | confirmed (measurement on known-period, known-interrupt front-matter ciphertext): a 2.4% interrupt rate makes a period-8 Vigenere INVISIBLE to the Friedman coset scan (only the 19% prefix before the first interrupt is usable) while kappa at the same period loses just 0.1-1.2 sigma, since a distance-d pair breaks only if an interrupt falls between its members, 1-(1-q)^d. Rule: absolute-position tests are destroyed, relative-distance tests degrade gently, and alphabet-COUNT bounds are unaffected |
 | [quote-span-boundaries.md](quote-span-boundaries.md) | Quoted Spans Align to the '.' Marks (the Marks Are Not Inert) | confirmed (characterization) for the alignment (p=1.5e-7, layout-robust); what the marks delimit stays open |
 | [no-running-key-depth.md](no-running-key-depth.md) | No Running-Key Depth at Any Lag | confirmed (characterization) |
 | [pairwise-dependence.md](pairwise-dependence.md) | No Pairwise Dependence Except Lag 1 | confirmed (characterization); extended Aug 2026 to JOINT 2nd-order (bigram->next): conditional MI at the exact-bigram null (z=-0.48), and the pooled test rejects 2-back autokeys (planted additive/Quagmire z~+40) -- consistent with the walk, not running feedback |
