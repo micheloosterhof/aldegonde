@@ -41,7 +41,7 @@ maximum is 1.0257 ± 0.0053** — so every state, the word-index control include
 inside the null.
 
 Power is not the issue. A planted dot clock at period 37 reads **nIoC 2.638**, found at
-period 111, its own third harmonic. A state that fully indexes the alphabet gives 1.74 by
+period 111, its own third harmonic. A state that fully indexes the alphabet gives about 1.79 by
 construction.
 
 ## The null had to be empirical, and the first one was wrong

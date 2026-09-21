@@ -518,6 +518,14 @@ disagrees with itself about how firmly to state it.
   not depend on this.
 - The lag scan covers periods ≤ 6478; the word-level sweeps mostly ≤ 60–120.
 
+**The plaintext coincidence reference is now measured** (September 2026).
+`coincidence-reference-is-not-one-number.md` replaces the trusted 0.060 with a table by
+pair type: **1.79** for cross-block pairs at arbitrary positions — which is the row this
+file's state-indexing tests need, so the three places quoting ~1.74 are 3% low and none of
+their conclusions move (observed values sit at 0.93 to 1.05). Within a block the reference
+is distance-dependent, running 0.63 to 2.23 on the LP's own words, and no single constant
+is right there.
+
 **Taken on trust, not verified here**: the ≥300-base floor of
 `two-rune-depth-no-base-reuse.md` (which is what makes "29 alphabets is too
 few" bite), and the repo's plaintext coincidence reference ~0.060.

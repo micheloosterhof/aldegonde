@@ -32,7 +32,7 @@ global rather than boundary-anchored. Everything else is chance, on 5,000 to 8,4
 per lag. **Nothing crosses a block boundary because it shares a line.**
 
 Bucketing by position-in-line reaches at most nIoC 1.0083 against a surrogate's 1.0002 ±
-0.0029, where a shared alphabet reads 1.74 — a sharing fraction under 1.1%.
+0.0029, where a shared alphabet at this pair type reads 1.79 (`coincidence-reference-is-not-one-number.md`) — a sharing fraction under 1.1%.
 
 ## That whole residue is the known layout artifact
 
