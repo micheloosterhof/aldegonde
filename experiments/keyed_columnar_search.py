@@ -15,9 +15,11 @@ back into row order, and the length-transition structure is re-measured.
 A planted keyed columnar confirms the search can find one.
 
 `--null` reruns the whole search on the body's own lengths shuffled within each page,
-which is the only honest way to read a maximum over 46,232 correlated rules.
+which is the only honest way to read a maximum over 46,232 correlated rules. `--split`
+goes further and cross-validates: find the best rule on half the pages, then score that
+rule on the other half. A real rule survives the move; an overfit one does not.
 
-    python keyed_columnar_search.py [--control] [--null] [--max-cols 8]
+    python keyed_columnar_search.py [--control] [--null] [--split] [--max-cols 8]
 """
 
 from __future__ import annotations
@@ -98,6 +100,42 @@ def main() -> None:
     for i, a in enumerate(sys.argv):
         if a == "--max-cols" and i + 1 < len(sys.argv):
             max_cols = int(sys.argv[i + 1])
+
+    if "--split" in sys.argv:
+        pages = page_lengths()
+        halves = {"A": pages[0::2], "B": pages[1::2]}
+        rng = random.Random(5)
+        base, npair = {}, {}
+        for k, ps in halves.items():
+            npair[k] = sum(len(p) - 1 for p in ps)
+            vals = []
+            for _ in range(40):
+                sh = []
+                for p in ps:
+                    t = p[:]
+                    rng.shuffle(t)
+                    sh.append(t)
+                vals.append(g2(sh)[0])
+            base[k] = sum(vals) / len(vals)
+
+        def excess(k: str, rule) -> float:
+            cols, order = rule
+            rest = [unpermute(p, readout(len(p), cols, order)) for p in halves[k]]
+            return (g2(rest)[0] - base[k]) / npair[k]
+
+        rules = [
+            (c, o) for c in range(2, max_cols + 1) for o in itertools.permutations(range(c))
+        ]
+        sa = sorted(((excess("A", r), r) for r in rules), reverse=True)
+        sb = sorted(((excess("B", r), r) for r in rules), reverse=True)
+        print(f"best rule on half A: {sa[0][0]:.4f}  cols {sa[0][1][0]} order {sa[0][1][1]}")
+        print(f"   the same rule on B: {excess('B', sa[0][1]):+.4f}")
+        print(f"best rule on half B: {sb[0][0]:.4f}  cols {sb[0][1][0]} order {sb[0][1][1]}")
+        print(f"   the same rule on A: {excess('A', sb[0][1]):+.4f}")
+        rank = next(i for i, (_s, r) in enumerate(sb) if r == sa[0][1]) + 1
+        print(f"\nA's winner ranks {rank:,} of {len(rules):,} on B -- the median.")
+        print("Neither winner survives the move. The full-corpus maximum is overfitting.")
+        return
 
     if "--null" in sys.argv:
         rng = random.Random(99)

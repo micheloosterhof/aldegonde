@@ -233,10 +233,16 @@ and is consistent with:
      read out in an order a keyword sets, not left to right — so inverting with the
      identity order, as the route search did, is wrong for every keyed variant and the
      family was not covered. Enumerating it: for c columns there are c! read-out orders,
-     and c = 2 to 8 gives **46,232 rules**. The body's best reaches **0.0156**, against a
-     structureless null whose search maximum is **0.0140** and a language level of 0.0397.
-     The search finds a planted keyed columnar (6 columns, order (3,0,5,1,4,2)) at rank 1
-     of 5,912. So keyed columnar transposition is excluded too.
+     and c = 2 to 8 gives **46,232 rules**. The search finds a planted keyed columnar
+     (6 columns, order (3,0,5,1,4,2)) at rank 1 of 5,912, so it works.
+
+     The body's best reaches **0.0156**, against four structureless nulls whose search
+     maxima are 0.0125–0.0147 (mean 0.0137) and a language level of 0.0397. That is a
+     mild excess rather than nothing, so it was cross-validated rather than waved away:
+     **the best rule on half the pages scores +0.0011 on the other half**, the best rule
+     on that half scores +0.0005 back on the first, and the winner of one half ranks
+     24,661 of 46,232 on the other — the median. Neither generalises at all. The
+     full-corpus maximum is overfitting, and keyed columnar transposition is excluded.
 
    The list reading is now the simpler of the two.
 3. **The plaintext word boundaries are then absent from the text entirely**, so a
