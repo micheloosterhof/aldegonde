@@ -124,3 +124,24 @@ So the disproof stands, now against a search 2,300 times larger and against the 
 own interrupter. The standing scope limit is unchanged: this linearizes only ADDITIVE
 keystreams over the standard rune order. A mixed alphabet in the loop does not.
 
+## Re-run at the corrected prefix length (September 2026)
+
+The 57-rune prefix above was set by the author's interrupt rate of 1.75%.
+`interrupter-is-a-plaintext-rule.md` shows the body cannot carry that device: it would
+need 205 pass-through interrupts and the flat unigrams allow at most 47, so the expected
+clean run is 273 runes rather than 57.
+
+Re-running the same 11.1 million alignments at a 200-rune prefix:
+
+| prefix | best score in the body | a true key scores |
+|---|---|---|
+| 57 | +12.03 | +14.25 |
+| **200** | **+9.24** | **+13.77** |
+
+The true-key level is a per-trigram mean and barely moves with length; the chance ceiling
+falls, from +12.03 to +9.24. The margin widens from 2.2 to **4.5** in mean log-trigram,
+now over 198 trigrams rather than 55. The exclusion is the same one, four times wider.
+
+This assumes no NON-emitting clock perturbation, which no unigram measurement can bound.
+If the body's clock is perturbed at all, the 57-rune reading is the conservative one and
+stands on its own.
