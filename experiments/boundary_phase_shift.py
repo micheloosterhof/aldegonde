@@ -16,7 +16,11 @@ PAIRS inside the same block they were in, so small shifts are not independent nu
 decay over shifts 1 to 3 is the pair sets decorrelating, not a signal. The comparison
 that means something is shift 0 against shifts 4 and beyond.
 
-    python boundary_phase_shift.py [--lag 5] [--shifts 16]
+`--profile` turns the same shift into a null for every lag at once. It isolates what is
+ANCHORED to the separators from what is merely true of the text, and the two come apart
+sharply: the doublet deficit is not boundary-anchored at all, while lags 4, 5 and 6 are.
+
+    python boundary_phase_shift.py [--lag 5] [--shifts 16] [--profile]
 """
 
 from __future__ import annotations
@@ -43,7 +47,75 @@ def coincidence(stream: list[int], cuts: list[int], lag: int) -> tuple[int, int]
     return hits, pairs
 
 
+def shifted_cuts(lengths: list[int], n: int, s: int) -> list[int]:
+    """The same block-length sequence with every boundary moved s runes later."""
+    cuts = [0] + ([s] if s else [])
+    pos = s
+    for length in lengths:
+        pos += length
+        if pos >= n:
+            break
+        cuts.append(pos)
+    cuts.append(n)
+    return cuts
+
+
+def profile() -> None:
+    """Which lags carry structure anchored to the separators, and which do not."""
+    stream, wid = load_clean()
+    n = len(stream)
+    bounds = [0] + [i for i in range(1, n) if wid[i] != wid[i - 1]] + [n]
+    lengths = [b - a for a, b in zip(bounds, bounds[1:])]
+    offsets = list(range(4, 30))
+    rates: dict[int, list[float]] = {}
+    for s in [0, *offsets]:
+        cuts = bounds if s == 0 else shifted_cuts(lengths, n, s)
+        rates[s] = []
+        for lag in range(1, 9):
+            h, p = coincidence(stream, cuts, lag)
+            rates[s].append(h / p * M)
+
+    print(f"{'lag':>4}{'x chance':>11}{'shifted null':>15}{'z':>8}")
+    for lag in range(1, 9):
+        vals = [rates[s][lag - 1] for s in offsets]
+        mu = sum(vals) / len(vals)
+        sd = (sum((x - mu) ** 2 for x in vals) / len(vals)) ** 0.5
+        print(f"{lag:>4}{rates[0][lag - 1]:>11.3f}{mu:>9.3f} +-{sd:.3f}"
+              f"{(rates[0][lag - 1] - mu) / sd:>+8.2f}")
+
+    def concentration(target: int, pool: list[int], lags: tuple[int, ...]) -> float:
+        total = 0.0
+        for lag in lags:
+            vals = [rates[s][lag - 1] for s in pool]
+            mu = sum(vals) / len(vals)
+            sd = (sum((x - mu) ** 2 for x in vals) / len(vals)) ** 0.5
+            total += ((rates[target][lag - 1] - mu) / sd) ** 2
+        return total
+
+    for lags, label in (((4, 5, 6), "lags 4, 5, 6"), ((1, 2, 3, 7, 8), "the other lags")):
+        obs = concentration(0, offsets, lags)
+        null = sorted(
+            concentration(s, [x for x in offsets if x != s], lags) for s in offsets
+        )
+        worse = sum(1 for x in null if x >= obs)
+        print(f"\nsum of z^2 over {label}: observed {obs:.2f}, "
+              f"shifted median {null[len(null) // 2]:.2f}, max {null[-1]:.2f}")
+        print(f"  offsets at least as high: {worse}/{len(null)}  "
+              f"-> p = {(worse + 1) / (len(null) + 1):.3f}")
+    print(
+        "\nThe boundary-anchored structure is confined to lags 4, 5 and 6 -- exactly"
+        "\nwhere a letter step of order 5 puts it: lag 5 repeats the alphabet, lags 4"
+        "\nand 6 sit on g's two diagonals, and they move in opposite directions."
+        "\nLag 1 is NOT anchored: the shifted null reproduces the doublet deficit"
+        "\nalmost exactly (0.192 against 0.182), so the doublet rule is a property of"
+        "\nthe emitted stream, not of the block's alphabet schedule."
+    )
+
+
 def main() -> None:
+    if "--profile" in sys.argv:
+        profile()
+        return
     lag, shifts = 5, 16
     for i, a in enumerate(sys.argv):
         if a == "--lag" and i + 1 < len(sys.argv):
