@@ -78,3 +78,36 @@ handle, i.e. the standing `stream-cipher-no-repeat.md` problem (and the
 page-spanning doublet-suppression continuity plus the mid-word page breaks
 argue against any per-page state reset at all — see `five-block-boundary.md`
 co-tiling notes and `aligned-kappa-no-reset.md`).
+
+## The disproof survives a preventer, unlike the Friedman one (September 2026)
+
+Page-aligned kappa indexes runes by absolute position, so
+`preventer-blinds-absolute-tests.md` puts it in the category a clock perturbation
+damages. It is worth checking whether the damage is enough to matter, because the same
+category contains the Friedman scan, which a 2.4% interrupt rate blinds completely.
+
+Simulating 20 pages of 230 runes sharing one positional keystream, plaintext drawn from
+the author's own runes, with interrupts shifting the phase:
+
+| interrupt rate | aligned ratio | sigma |
+|---|---|---|
+| 0.000 | 1.799 | 31.0 |
+| 0.012 | 1.320 | 12.4 |
+| 0.024 | 1.112 | 4.3 |
+| 0.050 | 1.147 | 5.7 |
+
+At the 2.4% rate that makes a period-8 Vigenère invisible to Friedman, a shared
+positional keystream still shows at **z = +4.3 on 190 simulated page pairs**. The real
+corpus has 1,485 pairs, so the same effect there would read near **z = +12**. The
+observed value is z = +0.22.
+
+**So this disproof is robust where the Friedman one was not.** The difference is that
+aligned kappa compares two pages at the same index: an interrupt shifts one of them, but
+the two still agree wherever their interrupt counts happen to match, which is often
+enough to keep most of the signal. Friedman instead assigns every rune to a coset by
+absolute index, so one interrupt corrupts everything downstream.
+
+*Simulation caveat:* rates above ~5% are not reported because the harness emits a fixed
+rune as the interrupter, so at high rates the pages share that rune at aligned positions
+and the ratio rises again spuriously — an artifact of the harness, not a property of the
+cipher. The rates that matter here are well below that.

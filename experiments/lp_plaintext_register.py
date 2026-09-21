@@ -85,7 +85,11 @@ def corpus() -> list[list[int]]:
     for n in PLAIN_PAGES:
         words += words_of(pages[n])
     for t in json.loads(TRIPLES.read_text()):
-        words += words_of(pages[t["page"]], t["key"])
+        # only the monoalphabetic triples are position-preserving with a 29-rune
+        # key; the Vigenere and running-key ones carry a keystream, not a
+        # substitution, and must not be applied here
+        if t["cipher"] == "monoalphabetic":
+            words += words_of(pages[t["page"]], t["key"])
     return words
 
 
