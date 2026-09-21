@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (40)
+### Observations (41)
 
 | File | Feature | Status |
 |---|---|---|
@@ -39,6 +39,7 @@ proposed mechanisms scored against them.
 | [schedule-band-retention.md](schedule-band-retention.md) | The Dodge Sweep's Rate Bands Are Cost-Neutral, and the d6 Band Rejects Seven True Keys in Ten | confirmed (measurement, n=2,000 planted keys): all three bands keep a true schedule 9.0% of the time, d6 alone 27.7% because its upper edge sits at chance; every band cuts the work and the retention by the same factor, so expected core-hours per key found is flat (216/215/217/235) and the unbanded sweep is the only one that covers the family by construction. Third search in this project that could not have found its target, after the DJU-BEI gate and the clock-blind scorer |
 | [rune-s-lag5-echo.md](rune-s-lag5-echo.md) | The Lag-5 Echo is Carried by the Rune S | confirmed (characterization; p=2.4e-6 vs identity-preserving nulls, expected-level under the walk) |
 | [seam-channel-clean.md](seam-channel-clean.md) | The Seam Channel is Clean (Suppressed Diagonal Only) | confirmed (characterization) |
+| [solved-page-testbed.md](solved-page-testbed.md) | Six Pages of the Transcription Are Literal Plaintext, and the Nine Enciphered ASCII-Convention Pages Resist the Obvious Families | confirmed (measurement): the '.' convention is a TRANSCRIPTION convention, not the solved section -- pages 3/8/9/10/11/14 are plaintext (-4.2 to -4.7 nats/rune, page 8 reads "THE LOSS OF DIUINITY...") and 0/1/2/4/5/6/7/12/13 are ciphertext (-8.8 to -9.6). The nine resist shift/Atbash, 120-keyword Vigenere/Beaufort/Atbash-composed families with and without the F-interrupt, and prime/totient running keys; best reached is -6.90. Search controlled first: 4 of 4 planted keys recovered on real LP plaintext. Supplies 1,001 runes of genuine author plaintext as a non-simulated testbed |
 | [transcription-verification.md](transcription-verification.md) | Transcription verification worksheet | confirmed (characterization) |
 | [two-rune-deficit.md](two-rune-deficit.md) | The 2-Rune Word Deficit (one bucket, z ≈ −10) | confirmed (characterization) for the deficit, on two independent references with the transliteration convention calibrated; MECHANISM OPEN and not identifiable from word lengths |
 | [two-rune-depth-no-base-reuse.md](two-rune-depth-no-base-reuse.md) | Short Words Show No Depth: the Base Essentially Never Repeats | confirmed (characterization); a 29-state schedule excluded at 10^-124 on 3-rune words, enumeration-free and g-free |
