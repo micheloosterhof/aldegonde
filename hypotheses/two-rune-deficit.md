@@ -220,11 +220,16 @@ front matter's — which is a live possibility, since the front matter is didact
 aphoristic and the body is not. This measurement constrains the *shape* any
 separator-loss account must have; it does not establish that separators were lost.
 
-**What would discriminate.** Under the walk family the base changes at every word
-boundary, so a merged "word" carries an internal base change and a within-word pair
-spanning it sees two different alphabets. Merged words are precisely the longer ones,
-which are where the d5 echo's pairs live. So separator loss predicts the d5 echo is
-diluted in long words in a specific, quantifiable way, where a register explanation
-predicts nothing of the kind. `long-word-structure.md` already reports that long words
-carry no structure beyond the d5 echo; measuring that echo's strength against word
-length is the test, and it has not been run.
+**A test I proposed here does NOT discriminate, and is retracted.** The idea was that
+a merged "word" carries an internal base change, so a within-word d5 pair spanning it
+sees two alphabets and the echo should weaken with word length. Run and then simulated
+(`experiments/d5_length_trend.py`): the body does show a length gradient, 1.15x chance
+at lengths 6-7 rising to 1.81x at 10+, trend z = +1.68. **But the merge model predicts
+no such gradient** — simulating 280 selective merges with the author's own d5 echo
+gives a median trend of z = −0.23 and clears z = 1.96 in 2% of runs.
+
+The reasoning behind the prediction was wrong. Merges put a diluted seam into words of
+*every* length, not preferentially short ones, and the per-length dilution fractions
+cancel against the fact that longer merged words carry more pairs. So the observed
+gradient is evidence for neither reading, and anyone re-running this should not expect
+it to settle anything.

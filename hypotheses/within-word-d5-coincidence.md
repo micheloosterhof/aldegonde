@@ -355,3 +355,26 @@ next steps are the d6 suppression (the echo's period-5 partner, see
 quantitatively reproduce both the 4.92% rate and the doublet suppression.
 (The transcription is settled ground truth, and the d=10 tail is
 unmeasurable at ~88-92 eligible pairs, so neither is an available check.)
+
+## The echo is concentrated in long words (September 2026)
+
+The pooled figure averages a gradient:
+
+| word length | matches | pairs | rate | × chance | z |
+|---|---|---|---|---|---|
+| 6–7 | 27 | 680 | 0.0397 | 1.15 | +0.75 |
+| 8–9 | 37 | 785 | 0.0471 | 1.37 | +1.94 |
+| 10+ | 38 | 608 | 0.0625 | 1.81 | +3.79 |
+
+Trend of match against word length over all 2,073 pairs: z = +1.68. The author's own
+plaintext shows no such trend (z = −0.15 over 261 pairs), so it is not inherited
+structure — though that control is thin.
+
+At 1.7 sigma this is suggestive only. It is recorded because the pooled d5 = 1.43 is an
+average over a factor-of-1.6 spread, so any φ5 estimate pooled across lengths is
+averaging a heterogeneous population, and a length-stratified estimate would be the
+better one if this survives more data.
+
+**It does not bear on separator loss.** That was the motivation for measuring it, and a
+simulation of the merge model shows the model predicts no gradient at all (median
+z = −0.23). See `two-rune-deficit.md`.
