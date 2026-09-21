@@ -137,6 +137,44 @@ clause boundaries. One statistic — the quote-edge alignment at p = 1.5e-7 — 
 says the plaintext respects them. The alignment is now the single anomaly, and it
 cannot be dismissed as a glyph-pooling artifact.
 
+## What the 13-dot mark is: a paragraph glyph
+
+The transcription carries its own structural delimiter, `&` for paragraph, placed
+from the page layout and independent of any cipher reading. The 13-dot mark tracks
+it and the 4-dot mark does not:
+
+| glyph | marks | median rune distance to nearest `&` | null | p |
+|---|---|---|---|---|
+| 4-dot | 17 | 88.0 | 77.0 | 0.73 |
+| 13-dot | 26 | **0.0** | 56.5 | **0.0002** |
+
+Sharpened to immediate adjacency in the character stream, where `&` is 0.8% of all
+boundaries:
+
+| glyph | beside a `&` | total | rate | expected by chance |
+|---|---|---|---|---|
+| 4-dot | 0 | 141 | 0% | 1.1 |
+| 13-dot | **14** | 31 | **45%** | 0.3 |
+
+Fourteen of the 32 `&` delimiters carry a 13-dot mark. The 4-dot mark touches one
+never, and at an expectation of 1.1 that zero is unremarkable on its own — the
+identification rests on the 13-dot side, where 14 against 0.3 expected is not a
+coincidence.
+
+So the 13-dot glyph is paragraph-associated structural markup, which accounts for
+every way it misbehaved above: it clusters (paragraph breaks bunch at headings and
+short paragraphs), it sits at line ends half the time (paragraphs end lines), and its
+per-section rate is inhomogeneous (paragraph density is a property of the text, not of
+a cipher). It is not a clause mark and should be excluded from mark statistics that
+are about the clause or cipher system.
+
+It is not simply the same symbol as `&`: 17 of 31 occurrences are not adjacent to one.
+"Paragraph-associated" is the claim; "paragraph delimiter" is not established.
+
+That leaves the **4-dot mark as the only candidate for a clause or cipher mark**, and
+alone it is homogeneous across sections, uniform in rune context, carries no
+clause-final word-length signature, and does not space like clause punctuation.
+
 ## The other two pooled statistics, split
 
 `thirty-symbol-disk.md` rests its machinery reading partly on two pooled
@@ -233,6 +271,8 @@ known LP English? — cannot be run on this corpus.
   clause-length shape at the unsolved rate.
 - `experiments/mark_word_signature.py` — the word-length signature per glyph, with
   the solved pages calibrating what a real clause boundary does.
+- `experiments/mark_glyph_roles.py` — co-location with the paragraph delimiter, which
+  identifies the 13-dot glyph.
 
 ## Related
 
