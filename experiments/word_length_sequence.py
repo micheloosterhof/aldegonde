@@ -38,10 +38,11 @@ same way: whatever matches the histogram leaves five times too much order.
 
 `--jackknife` checks the reference, which is the load-bearing half of the comparison.
 `--types` tests the list reading in its natural form: a list of distinct vocabulary items
-is TYPE-weighted, not token-weighted, and looks nothing like the body.
+is TYPE-weighted, not token-weighted, and looks nothing like the body. `--sort` tests the
+most natural compact permutation, which turns out to CREATE order rather than destroy it.
 
     python word_length_sequence.py [--merge] [--shape] [--tokenize] [--perturb]
-                                   [--jackknife] [--types]
+                                   [--jackknife] [--types] [--sort]
 """
 
 from __future__ import annotations
@@ -199,6 +200,39 @@ def tokenize_sweep(rng: random.Random) -> None:
         "\nlanguage, 4.07 against 3.99, and drives the order further to zero -- and that"
         "\nconvention is known to be wrong from the solved pages, where words demonstrably"
         "\nflow across wraps."
+    )
+
+
+def sort_control(rng: random.Random) -> None:
+    """Sorting is the obvious compact permutation. It is the wrong shape entirely."""
+    from runeglish_frequency import english_to_runeglish  # noqa: PLC0415
+
+    text = (CACHE / "pg1033.txt").read_text(encoding="utf-8", errors="ignore")
+    tokens = re.findall(r"[A-Za-z]+", text.upper())[:40000]
+
+    def lengths(ws: list[str]) -> list[int]:
+        out = [len(english_to_runeglish(w)) for w in ws]
+        return [x for x in out if x]
+
+    print(f"{'word order':<28}{'mean':>7}{'2-rune':>9}{'excess/pair':>14}")
+    for label, ws in (
+        ("original order", tokens),
+        ("sorted alphabetically", sorted(tokens)),
+        ("sorted by reversed word", sorted(tokens, key=lambda w: w[::-1])),
+        ("shuffled", rng.sample(tokens, len(tokens))),
+    ):
+        ls = lengths(ws)
+        e, se, _o, _m, _n = excess_per_pair([ls], rng, draws=25)
+        print(f"{label:<28}{sum(ls) / len(ls):>7.2f}"
+              f"{sum(1 for x in ls if x == 2) / len(ls):>9.3f}{e:>10.4f}+-{se:.4f}")
+    body = [x for s in body_sequences() for x in s]
+    print(f"{'body':<28}{sum(body) / len(body):>7.2f}"
+          f"{sum(1 for x in body if x == 2) / len(body):>9.3f}{0.0039:>10.4f}+-0.0025")
+    print(
+        "\nSorting does not destroy order, it creates it: repeated words cluster into"
+        "\nruns of equal length, and the excess jumps eighty-fold. The body matches the"
+        "\nSHUFFLED row instead, which is the statement to carry forward -- whatever"
+        "\nordered these blocks behaves like a random permutation."
     )
 
 
@@ -414,6 +448,9 @@ def main() -> None:
         return
     if "--types" in sys.argv:
         type_control()
+        return
+    if "--sort" in sys.argv:
+        sort_control(rng)
         return
 
     print(f"{'corpus':<26}{'words':>8}{'G2':>9}{'surrogate':>11}{'excess/pair':>14}")

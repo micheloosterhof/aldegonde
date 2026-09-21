@@ -169,6 +169,26 @@ swept across its parameter range, and none reaching the body's order level while
 its histogram. **Every mechanism that preserves word identity leaves most of the order
 intact.** The order is destroyed, not diluted.
 
+## Sorting creates order rather than destroying it
+
+The most natural compact permutation is a sort. It fails in the opposite direction from
+everything else here:
+
+| word order | mean | 2-rune | excess per pair |
+|---|---|---|---|
+| prose, original order | 4.03 | 0.228 | 0.0337 |
+| **sorted alphabetically** | 4.03 | 0.228 | **2.7126** |
+| sorted by reversed word | 4.03 | 0.228 | **2.8000** |
+| **shuffled** | 4.03 | 0.228 | **−0.0002** |
+| **body** | 4.42 | 0.159 | **0.0039 ± 0.0025** |
+
+Sorting clusters every repeat of a common word together, so runs of equal length appear
+and the excess jumps **eighty-fold**. Any sort is out by four orders of magnitude.
+
+The row the body matches is **shuffled**. That is the statement to carry forward: whatever
+ordered these blocks is statistically indistinguishable from a random permutation of
+running-text word lengths.
+
 ## The lengths are token-weighted, which rules out a vocabulary list
 
 The most natural form of the list reading is a list of distinct items. It predicts
@@ -267,6 +287,9 @@ and is consistent with:
      on that half scores +0.0005 back on the first, and the winner of one half ranks
      24,661 of 46,232 on the other — the median. Neither generalises at all. The
      full-corpus maximum is overfitting, and keyed columnar transposition is excluded.
+     (An independently-written slower version of the same split, with the surrogate
+     baseline recomputed per rule rather than once, reproduces it: A's best 0.0318 scoring
+     −0.0006 on B, B's best 0.0291 scoring +0.0012 on A, rank 27,582 of 46,232.)
 
    The list reading is now the simpler of the two.
 
