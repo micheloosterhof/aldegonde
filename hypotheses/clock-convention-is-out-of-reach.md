@@ -77,3 +77,22 @@ repeated attempts, and this one is now priced.
 
 - `key-local-channel-is-empty.md` — the two bounds this leaves standing side by side.
 - `sigma-moves-almost-every-rune.md` — channel one, and its retraction.
+
+## One piece of evidence does exist, from outside the coincidence channel (September 2026)
+
+Both channels priced above are coincidence statistics, and both are too small. A third
+source is not: the DJU-BEI return.
+
+Under a continuous clock a state return requires the phases to agree as well as the bases,
+so the RUNE gap must divide by 5; under a reset clock every block starts at phase 0 and
+the gap is unconstrained. The rune gap is 6,395 = 5 x 1,279 -- certain under one
+hypothesis, one chance in five under the other, a **likelihood ratio of 5 : 1 for the
+continuous clock** (`dju-bei-favours-the-continuous-clock.md`).
+
+It is conditional on the return being genuine, and it is tokenization-proof: the rune gap
+is invariant at 6,395 under every convention audited, unlike the word gap.
+
+Five to one does not settle a question this file prices at 0.54 sigma, but it is the only
+evidence there is, and it points at the CONTINUOUS reading -- which gives the weaker sigma
+bound, 307 rather than 1,536. The instruction to quote both stands.
+
