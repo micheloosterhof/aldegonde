@@ -4,6 +4,18 @@ type: observation
 # Observation: The Seam-to-Within-Word Doublet Ratio Measures g's Graph Mass
 
 
+## FULLY DISSOLVED (October 2026)
+
+The ratio is not a constraint. `one-parameter-fits-both-suppressions.md` fits the seam
+and the within-block rate together across twelve keys, and a single skip probability
+lands both: at φ = 0.90 they read −0.39 and +0.09 sigma. The ratio then falls out — 1.07
+at φ = 0.90, 1.35 at φ = 1.00, bracketing the corpus's 1.25.
+
+The 1.91 floor this file reports came from holding `g` fixed, and neither rate is 1/29
+without a preventer: inside a block a would-be repeat needs the plaintext bigram mass on
+`g`'s graph, at a seam the cross-word mass on `g^u ∘ σ ∘ g^v`. A ratio of two
+key-dependent quantities was never going to sit still.
+
 ## The shape this file points to is now closed (September 2026)
 
 The argument here names a rule whose residual collision probability is the same inside a
