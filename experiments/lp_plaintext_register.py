@@ -52,14 +52,24 @@ ENG = c3301.CICADA_ENGLISH_ALPHABET
 PLAIN_PAGES = (3, 8, 9, 10, 11, 14)
 
 
+WRAP = "/\n"  # line wrap and newline: words flow across them, as in lp_corpus
+
+
 def words_of(page: str, key: list[int] | None = None) -> list[list[int]]:
-    """Words as rune-index lists. `key` applies a position-preserving substitution."""
+    """Words as rune-index lists. `key` applies a position-preserving substitution.
+
+    Line wraps are NOT word boundaries. `lp_corpus.load_clean` is explicit about this
+    and an earlier version of this file split on them, which inflated the 1- and
+    2-rune buckets and shortened the words every statistic below is measured over.
+    """
     out: list[list[int]] = []
     current: list[int] = []
     for ch in page:
         if RUNE.match(ch):
             r = IDX[ch]
             current.append(key[r] if key else r)
+        elif ch in WRAP:
+            continue
         elif current:
             out.append(current)
             current = []
