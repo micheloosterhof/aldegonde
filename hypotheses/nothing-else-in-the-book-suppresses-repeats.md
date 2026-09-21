@@ -33,7 +33,7 @@ The book supplies all three as controls, in the author's own hand.
 | text | runes | doublets | d1 rate | z | IoC | seam |
 |---|---|---|---|---|---|---|
 | chance | | | 0.0345 | 0.00 | 1.000 | 0.0345 |
-| the author's plaintext | 2,882 | 76 | 0.0264 | −2.38 | 1.777 | 0.0309 |
+| the author's plaintext | 2,882 | 76 | 0.0264 | −2.38 | 1.778 | 0.0346 |
 | his monoalphabetic ciphertext | 962 | 19 | 0.0198 | −2.50 | 1.579 | 0.0236 |
 | **his interrupted Vigenère** | 834 | 25 | **0.0300** | **−0.71** | 1.107 | 0.0284 |
 | his prime running key | 85 | 2 | 0.0238 | −0.54 | 0.942 | 0.0417 |
@@ -49,6 +49,11 @@ The monoalphabetic pages behave exactly as they must, inheriting the plaintext r
 **The body is unlike anything else in the book**, at both positions: 0.0066 inside a
 block and 0.0079 at a block seam, against 0.0300 and 0.0284 for the author's own
 keystream cipher.
+
+The plaintext seam is worth a line of its own: **0.0346, chance to three decimals.**
+English suppresses a doubled letter *inside* a word far more than it suppresses one
+across a word boundary, so the language explanation was never available for the seam at
+all — and the body suppresses there just as hard as inside a block.
 
 ## What it establishes
 
