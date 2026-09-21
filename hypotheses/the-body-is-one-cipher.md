@@ -56,8 +56,10 @@ over-determined 69× by the full corpus, and correspondingly under-determined by
 
 - Three statistics, not all statistics. A page differing in some way none of them
   touches would pass.
-- The chunk grain is 55 pages of ~230 runes; a difference confined to a few dozen runes
-  would not surface.
+- The chunk grain is 55 pages of ~230 runes. `no-plaintext-window.md` closes that gap by
+  sliding a window instead: at widths 100, 200 and 400 the body's most coincidence-rich
+  stretch is *below* a shuffled corpus's, while a spliced plaintext passage is located
+  exactly. Nothing hides between 100 runes and a page.
 - Section 3 of the clean corpus is a 9-rune fragment and is dropped by the 50-rune floor.
 
 ## Status
