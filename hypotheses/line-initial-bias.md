@@ -38,3 +38,15 @@ analysis must treat line-initial non-uniformity as a null artifact.
 
 - `word-length-keystream-and-boundaries.md` — the line-wrap convention that
   produces this.
+
+## Localised: it is the line, not the segmentation (September 2026)
+
+`lines-are-not-cipher-units.md` separates the two divisions that coincide at a quarter of
+line starts. Line-initial runes read nIoC 1.0900 (z = +6.96 against a same-size random
+subset), and **removing every block-initial rune leaves 1.0584 at z = +3.29** — so the
+bias is a property of the written line, not of the block boundary.
+
+Block-initial runes, by contrast, read 0.9985 at z = -0.52 over 2,928 runes. The
+typesetting artifact and the cipher's own unit are cleanly separable, which any
+line-anchored analysis should use rather than treating all "initial" positions alike.
+
