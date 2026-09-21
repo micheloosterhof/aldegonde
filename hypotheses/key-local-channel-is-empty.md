@@ -617,3 +617,22 @@ of length 9, 11 or 13 in every case.
 **The 2-rune channel is not used** for this bound. It shows 112 identical pairs against
 128 expected — a *deficit* — because the doublet suppression removes 2-rune words with
 equal runes, so that channel is contaminated and would give a spuriously strong answer.
+
+## The convention cannot be settled here, and now that is priced (September 2026)
+
+The two readings above differ by a factor of five, and the choice between them has been
+left open. `clock-convention-is-out-of-reach.md` prices both channels the model exposes.
+
+The first — reading adjacent blocks under each phase convention — fails outright: a
+planted continuous clock scores +2.54 under the reset reading against a planted reset
+clock's +2.86.
+
+The second does discriminate. Under a continuous clock, matching position mod 5 across
+adjacent blocks is correct exactly when the first block's length is divisible by 5, so the
+signal concentrates in that class; under a reset clock it is flat. Planted at sigma fixing
+5 runes the contrast is +0.0641 for reset against +0.1314 for continuous — a separation of
+0.067 against the body's own noise of 0.125 on that statistic. **0.54 sigma**, needing
+14x the corpus to reach 2.
+
+So both bounds stand together permanently. Quote 307 and 1,536, not one of them.
+
