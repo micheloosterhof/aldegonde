@@ -49,13 +49,43 @@ pairs they add back within blocks are too few to shift the doublet rate.
 **The hole at length 2 gets deeper, not shallower.** So none of
 `block-lengths-have-a-hole-at-two.md` is at risk; its numbers are the conservative ones.
 
+## The re-baselining pass is not owed after all
+
+`experiments/tokenization_sensitivity.py` runs every headline body statistic under both
+tokenizations.
+
+| statistic | as recorded | page-joined | change |
+|---|---|---|---|
+| blocks | 2,928 | 2,896 | −32 |
+| mean block length | 4.4249 | 4.4738 | +0.0489 |
+| fraction at length 2 | 0.1588 | 0.1547 | −0.0041 |
+| within-block d1 | 0.0063 | 0.0063 | −0.0000 |
+| within-block d5 | 0.0492 | 0.0494 | +0.0002 |
+| within-block d6 | 0.0245 | 0.0248 | +0.0003 |
+| seam | 0.0079 | 0.0079 | +0.0001 |
+| stream doublet rate | 0.0066 | 0.0066 | +0.0000 |
+| IoC | 0.9999 | 0.9999 | +0.0000 |
+| **identical word pairs (3+)** | **17** | **17** | **0** |
+| **returns** | **1** | **1** | **0** |
+
+The whole d-profile moves by at most 0.001 absolute against its own errors of 0.002 to
+0.007. The seam, the doublet rate and the IoC do not move at four decimals. **The two
+discrete counts the chain argument rests on do not move at all.** The largest relative
+change among the rate statistics is 2.5%.
+
+So the pass is cosmetic and the recorded numbers stand. The only statistics that shift
+are the ones explicitly about block counts, and there the correction **deepens** the hole
+at length 2 rather than closing it — so `block-lengths-have-a-hole-at-two.md` is quoting
+the conservative figure, as it says.
+
 ## What to do about it
 
 `load_clean(join_pages=True)` gives the corrected tokenization. **The default is left
 unchanged**, because switching it re-bases every block-level number recorded in this
-directory — 2,928 blocks appears in dozens of files — and that is a decision to take
-deliberately rather than as a side effect. The recommendation is to switch it and re-run
-the affected files in one pass.
+directory — 2,928 blocks appears in dozens of files — and the section above shows there
+is nothing to gain: no conclusion depends on the 34 fragments. Switch the default only if
+a future result turns out to be sensitive to them, and use `join_pages=True` directly for
+anything that counts blocks.
 
 What would need re-running: anything quoting a block count, a block-length statistic, or
 a position index into the block sequence. The DJU-BEI return is identified by word
