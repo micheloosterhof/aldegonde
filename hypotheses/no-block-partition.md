@@ -101,3 +101,42 @@ balanced shapes (50% at 15/14) and **untested for a small block** (8% at 25/4).
 - `bigram-ioc.md` — why the surrogate must preserve doublets.
 - `local-channel-is-exactly-coincidence.md` — an intransitive family is not 2-transitive,
   so a surviving block structure would reopen the local channel.
+
+## The surviving shape, enumerated (September 2026)
+
+The partition optimiser detects a [25, 4] split only 8% of the time, so the shape was
+left open above. Enumerating it directly does much better, because the statistic factors:
+block membership passes through the cipher untouched, so the ciphertext's membership
+INDICATOR is the plaintext's, and the 2x2 indicator transition table at lag k is four sums
+over the 29x29 lag-k bigram matrix. Build the matrices once and all **23,751** four-rune
+subsets cost a few lookups each -- three seconds for the whole enumeration.
+
+Pooling G^2 over lags 1 to 5:
+
+| | |
+|---|---|
+| subsets | 23,751 |
+| mean / sd | 16.31 / 7.16 |
+| **body maximum** | **50.30** at (4, 5, 21, 22) |
+| best set sharing no rune with it | 49.18 at (1, 12, 15, 19) |
+| **top-to-disjoint ratio** | **1.023** |
+
+**Power, measured by planting eight random 4-sets into the LP's own plaintext:**
+
+| planted score | 20.0 | 25.2 | 47.7 | 84.8 | 106.2 | 122.1 | 145.2 | 371.5 |
+|---|---|---|---|---|---|---|---|---|
+| rank of 23,751 | 656 | 129 | **1** | **1** | **1** | **1** | **1** | **1** |
+
+Six of eight rank first — **75% detection**, against the optimiser's 8%. The two misses
+are 4-sets whose letters carry almost no indicator structure in the plaintext to begin
+with, so there is nothing for any statistic to find.
+
+**The discriminator is the margin, not the score.** A real block wins by one: the
+successful plants beat their runners-up by 11% to 190%. The body's top three candidates
+are (4,5,21,22), (4,5,20,22) and (0,4,5,22) — an overlapping cluster sharing runes 4, 5
+and 22 — scoring 50.30, 50.28 and 50.23, and the best *disjoint* set reaches 49.18. A
+ratio of **1.023** is what the maximum of 23,751 correlated draws looks like, not a block.
+
+**So [25, 4] is now excluded at 75% power**, and the last structural escape narrows to
+4-sets that leak nothing measurable — which are also the 4-sets a solver would gain
+nothing from knowing.
