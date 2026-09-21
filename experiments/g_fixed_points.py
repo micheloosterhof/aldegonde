@@ -76,6 +76,28 @@ def echo(stream: list[int], wid: list[int]) -> float:
     return hits / pairs * M
 
 
+def ratio(stream: list[int], wid: list[int]) -> float:
+    """The same echo, normalised by the d5 echo, which estimates f/29 directly.
+
+    At d = 5 the step is the identity, so EVERY rune contributes plaintext coincidence;
+    at d = 2, 3, 4 only the fixed points do. Dividing one excess by the other cancels the
+    plaintext register and the d5 leak fraction phi5, which attenuate both equally, and
+    leaves an estimate of the fixed-point share. It pays for that with the sampling noise
+    of the d5 cell, which rests on only ~2,000 pairs.
+    """
+    def rate(lag: int) -> float:
+        hits = pairs = 0
+        for i in range(len(stream) - lag):
+            if wid[i] == wid[i + lag]:
+                pairs += 1
+                hits += stream[i] == stream[i + lag]
+        return hits / pairs * M
+
+    off = sum(rate(d) for d in LAGS) / len(LAGS)
+    five = rate(5)
+    return (off - 1) / (five - 1) if five > 1 else float("nan")
+
+
 def main() -> None:
     draws = 40
     for i, a in enumerate(sys.argv):
@@ -103,6 +125,24 @@ def main() -> None:
         "\nit. At 40 draws the body excludes a single 5-cycle (2% of draws fall below it)"
         "\nand sits at the median for four 5-cycles. Everything from k = 2 up is"
         "\nadmissible."
+    )
+    print("\nthe same echo normalised by the d5 cell, which estimates f/29 directly:")
+    print(f"  body ratio {ratio(stream, wid):.4f}")
+    print(f"{'5-cycles':>9}{'f/29':>8}{'median ratio':>15}{'draws below body':>19}")
+    b = ratio(stream, wid)
+    for k in range(1, 6):
+        vals = sorted(
+            x for x in (ratio(*planted(k, words, rng)) for _ in range(draws)) if x == x
+        )
+        below = sum(1 for v in vals if v < b) / len(vals)
+        print(f"{k:>9}{(29 - 5 * k) / 29:>8.3f}{statistics.median(vals):>15.4f}"
+              f"{below:>18.0%}")
+    print(
+        "\nThe medians track f/29, so the ratio is calibrated in fixed points rather"
+        "\nthan in coincidence units. The body's 0.21 reads as about six fixed points,"
+        "\nbetween k = 4 and k = 5. It excludes k = 1 only at p = 0.10 -- weaker than"
+        "\nthe raw statistic's 0.02, because dividing by the d5 cell imports that"
+        "\ncell's own noise. Use the raw one to exclude and this one to interpret."
     )
 
 
