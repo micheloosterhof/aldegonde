@@ -88,3 +88,39 @@ alignments, and rune-interrupter keying. If the totient hints are
 architectural, the most economical reading is that the inner cipher
 operating over 28 = phi(29) symbols (see `autokey-plus-substitution.md`)
 IS the totient reference — not that phi generates the keystream.
+
+## The evidence is now interrupt-tolerant and 24 generators wide (September 2026)
+
+The disproof above rested on whole-text IoC for eight sequences. That score cannot
+survive the author's own device: after the first keystream interrupt every later rune
+decrypts against the wrong key letter, and at the solved pages' 1.75% rate the expected
+clean run is about 57 runes out of 12,956. Only `prime(n) - 1` was ever given the
+interrupt-tolerant beam treatment.
+
+`experiments/sequence_key_sweep.py` closes that. It scores a 57-rune PREFIX, so only
+the stretch before the first interrupt has to be right, and it sweeps three axes the
+old scan did not:
+
+| axis | old | now |
+|---|---|---|
+| generators | 8 | 24 |
+| sequence start term | 0 only | 0-199 |
+| text origin | text start | 400 word starts across the body |
+| alphabet offset x sense | 29 x 2 | 29 x 2 |
+
+That is 11.1 million keystream alignments.
+
+**The positive control passes on real data.** On the AN END page, 56 runes before its
+one interrupt, `prime(n) - 1` at start 0 ranks **1 of 4,800** with a mean log-trigram of
++14.248 against a best false of +10.987. The unigram chi2 finds it too, 92.1 against
+72.4, which makes chi2 a sound 58-fold cheaper prefilter since it is blind to both the
+offset and the Beaufort reflection.
+
+**The body returns nothing.** The best score over all 11.1 million alignments is +12.03,
+against +14.25 for a true key on a prefix of the same length. The gap is 2.2 in mean
+log-trigram over 55 trigrams -- a likelihood ratio around 10^52.
+
+So the disproof stands, now against a search 2,300 times larger and against the author's
+own interrupter. The standing scope limit is unchanged: this linearizes only ADDITIVE
+keystreams over the standard rune order. A mixed alphabet in the loop does not.
+
