@@ -195,3 +195,29 @@ pattern on both the ciphertext and plaintext side in every case. "The filter agr
 the truth" is therefore vacuous: it has never been given a case where it could disagree.
 It may be used as a soft score; as a hard filter it is the retention failure that
 `schedule-band-retention.md` documents, in a new place.
+
+## The titles are enciphered exactly like the body
+
+A natural hope is that section titles, being short and set apart, were enciphered more
+simply than the running text — which would make them crackable on their own. They were
+not.
+
+Pooling the 16 ciphertext title spans (excluding chunk 71's PARABLE, which is stored as
+plaintext) gives **210 runes in 51 words**:
+
+| | title ciphertext | body |
+|---|---|---|
+| normalised IoC | 0.953 (flat null 0.999 ± 0.036, z = −1.30) | 1.000 |
+| within-word doublets | 0/159 | 0.18× chance |
+
+**The IoC is flat**, where a monoalphabetic title cipher would sit near 1.79 and a
+five-alphabet Vigenère near 1.16. At 2σ the titles use **at least 11 alphabets**, which
+excludes every simple cipher the front matter uses — the front matter's own keys are 8
+and 13 runes and would show.
+
+**The doublet suppression is present too**: zero doublets in 159 within-word pairs,
+where chance gives 5.5 and the body's own rate gives 1.0. Observing zero is consistent
+with the body's rate (P = 0.37) and rules out chance (P = 0.004).
+
+So the titles carry the same cipher as the text around them. Their value remains what
+`crib-budget-for-g.md` says it is — verification material, not a way in.
