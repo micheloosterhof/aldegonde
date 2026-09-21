@@ -293,6 +293,38 @@ same shape as the DJU-BEI gate.
   free parameters and no mechanism.
 - `length-clocked-walk.md` — the incumbent, which fits six cells to this one's one.
 
+## Independent support: boundary-blindness favours a preventer over tuning (September 2026)
+
+This file's case has rested on the 1/5 derivation. A second and independent line now
+supports the preventer *class* it belongs to, argued in `key-local-channel-is-empty.md`.
+
+The doublet suppression is boundary-blind — within words 0.00628 ± 0.00079, at the seam
+0.00786 ± 0.00163, difference z = +0.87. There are two ways to get that:
+
+- **a preventer** acting on adjacent ciphertext runes, which gives one rate and is
+  indifferent to the boundary by construction;
+- **tuned relations**, where the within-word rate is the plaintext bigram mass selected
+  by `g⁻¹` and the seam rate is the mass selected by the seam relation. Those are
+  different relations on different plaintext distributions, so under this reading the
+  two rates are independent draws that happen to coincide.
+
+Pricing the coincidence against the author's own plaintext: the within-word rate sits at
+z = −2.03 of its distribution and the seam rate at z = −2.59 (one seam relation) or
+−5.79 (five, one per word length mod 5). Jointly the tuned reading needs **13 bits** if
+one relation acts at the seam and **34** if five do — and then needs the two independent
+results to land within 2σ of each other on top of that.
+
+So a preventer explains with one mechanism what tuning must buy with 13 to 34 bits. That
+does not single out *this* preventer over `interrupted-walk.md`'s or
+`doublet-preventer-clock-drift.md`'s, but it raises the whole class, and this file is in
+it.
+
+**Consequence for the parked sweep.** `solved-page-testbed.md` independently establishes
+that 3301 verifiably uses a clock-perturbing interrupter in his own solved pages. Between
+that and the argument above, the preventer families now have two lines of support that
+do not depend on the 1/5 fit. The 218-core-hour sweep recorded below is correspondingly
+better motivated than when it was parked.
+
 ## Verdict
 
 Unresolved. It is the first mechanism here to derive the 1/5 in the doublet rate rather
