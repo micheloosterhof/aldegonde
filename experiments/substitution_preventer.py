@@ -19,6 +19,14 @@ times the would-be rate -- **the same factor in both contexts**. The rate is set
 many points tau holds still, which is one integer of key, and the ratio should fall out
 near 1 rather than being fitted.
 
+REFUTED (September 2026), by a measurement that needs no key. A doublet survives this
+rule exactly when tau fixes the emitted rune, so every surviving doublet is a fixed point
+of tau. The body's 86 survivors use 28 of the 29 runes, which forces |fix(tau)| >= 28,
+while the 81% suppression rate forces |fix(tau)| ~ 5.6. No permutation does both. See
+`survivors-use-every-rune.md` and `experiments/which_runes_survive.py`. The file is kept
+because the seam-ratio reasoning that motivated it is still sound and still needs a
+candidate that satisfies it.
+
     python substitution_preventer.py [--draws 60]
 """
 
