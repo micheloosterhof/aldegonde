@@ -391,42 +391,37 @@ known, and §2 argues none exists.
 - `magic-square-grid-key.md` — route 1.
 - `two-rune-deficit.md` — where the plaintext's own structure is anomalous.
 
-## One constraint on σ does exist, in the seam fixed-point count (September 2026)
+## RETRACTED: the seam "fixed-point" constraint was an algebra error (September 2026)
 
-This file records that σ gets essentially no local constraint. That holds for the
-relations it tests, but there is one it does not, and it is worth having because it is
-the only handle on σ in the directory.
+A previous revision of this file claimed the seam doublet rate measures the fixed-point
+count of the seam relation, and derived from it a constraint on σ — "the five seam
+relations carry ~1 fixed point where random permutations carry 5". **That is wrong and
+is withdrawn.**
 
-The argument needs almost no model. If the letter step has order 5 and the base changes
-once per word, then the relation between a word's last rune and the next word's first
-rune is a permutation `R_k` that depends only on `k = (word length) mod 5`. A doublet at
-that seam happens exactly when the seam pair is a fixed point of `R_k`, so the seam
-doublet rate in class `k` **is** `fix(R_k)/29`. Five classes, five permutations, and the
-corpus measures all five:
+The error is one step. A seam doublet is `c_last = c_first`, so with `A` the alphabet
+at each position,
 
-| k | pairs | seam doublets | implied fix(R_k) |
-|---|---|---|---|
-| 0 | 369 | 5 | 0.393 ± 0.175 |
-| 1 | 379 | 3 | 0.230 ± 0.132 |
-| 2 | 697 | 7 | 0.291 ± 0.110 |
-| 3 | 888 | 5 | 0.163 ± 0.073 |
-| 4 | 594 | 3 | 0.146 ± 0.084 |
+    A_last(p_last) = A_first(p_first)   hence   p_first = R(p_last),  R = A_first⁻¹ ∘ A_last
 
-**Total: 1.22 ± 0.27 fixed points across the five seam relations.** Five random
-permutations of 29 points carry 5.00 ± 2.24 between them, so the observation sits
-z = −1.68 below random, P(random ≤ 1.22) = 0.040.
+The condition is that the plaintext pair lies on the **graph** of `R`, not that `R`
+fixes a point. Fixed points would require `p_last = p_first`, which is not what a
+ciphertext doublet says. So the seam rate is
 
-Two things follow, of different strengths.
+    Σ_x P(p_last = x, p_first = R(x))
 
-**Usable, and the point of recording it:** any candidate (g, σ) must put ≈ 1 fixed point
-in total across its five seam relations. That is a genuine filter on σ, stated with its
-width — 1.22 ± 0.27 — so a search using it can set a band wide enough not to discard
-the true key, which is the failure `schedule-band-retention.md` documents.
+— the plaintext cross-word bigram mass that `R` happens to select. For a random `R`
+that averages 1/29, which is why a random relation sits at chance, but it is a sum of
+bigram probabilities and takes any real value. Nothing forces it to be a multiple of
+1/29, so the integer argument evaporates, and with it the claim that a single fixed σ
+is favoured over free per-word choice.
 
-**Suggestive only:** the total is 0.83 sigma from the integer 1, which is what a single
-fixed σ requires (the five relations are then five specific permutations, and their
-fixed points are whole numbers). Free per-word choice would need the suppression
-arranged at 2,927 separate boundaries rather than once. That is a design argument for
-generation over free choice — the question `unicity-distance.md` identifies as decisive
-— but at P = 0.04 it is a lean, not a result: five random permutations land at or below
-1.22 fixed points one time in twenty-five.
+The per-class breakdown had no power either, which a homogeneity test would have shown
+before the claim was made: the five classes hold 3 to 7 doublets each and are
+consistent with a single rate, chi² = 3.10 on 4 df, p = 0.54.
+
+**What survives** is only what was already known: the seam doublet rate is 23/2927 =
+0.00786, 0.228x chance, so the relation `R` selects low-probability plaintext bigrams.
+That is the tuned-relation argument of `doublet-suppression-requires-design.md`, not a
+new handle on σ.
+
+**This file's headline therefore stands unchanged: σ has no local constraint.**
