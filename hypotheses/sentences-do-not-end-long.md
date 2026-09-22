@@ -5,11 +5,34 @@ type: hypothesis
 
 ## The claim
 
-In English the last word of a sentence is a content word and runs long. The body's
-blocks do not. The block before a circled numeral runs **0.21 runes shorter** than the
-body's own interior blocks, where every reference text runs **0.8 to 1.5 runes longer**.
+**Revised 2026-09-22 and materially narrowed.** The anomaly is real but confined to the
+spans where both texts have data, and the pooled figure that carried it was substantially
+a composition effect.
 
-This is the first positional evidence bearing on whether the body's blocks are words.
+The author's mark and the body's are the same glyph class (below). Comparing them
+pooled gives the author +1.63 ± 0.25 runes of final-block lengthening against the body's
+−0.33 ± 0.20, a difference of −6.1σ. **Most of that is not evidence.** The gap depends
+strongly on the length of the span the mark closes, and the two texts close very
+different spans.
+
+| stratum | share: author / body | author | the body | difference |
+|---|---|---|---|---|
+| 1–2 blocks | 20.2% / 2.9% | +2.78 ± 0.61 | −1.49 ± 0.71 | n = 4, ignore |
+| 3–6 | 31.9% / 18.2% | +2.20 ± 0.42 | −0.81 ± 0.33 | **−5.66σ** |
+| 7–14 | 38.3% / 29.2% | +0.90 ± 0.34 | −0.19 ± 0.36 | **−2.19σ** |
+| 15+ | 9.6% / 49.6% | +0.20 ± 0.53 | −0.17 ± 0.30 | **−0.61σ** |
+
+So: real at short and medium spans, **absent in the stratum holding half the body's
+spans**. The author has only 9 spans at 15+, so that cell settles nothing by itself — but
+it is where the body mostly lives, and the pooled number leans on the author closing
+short units five times as often.
+
+Reading the solved pages with their plaintext spliced into their own separator layout
+shows what those short units are: the mark is a period, and it closes titles and
+exclamations as readily as sentences — `A WARNNG.`, `WELCOME.`, `SOME WISDOM.`, whose
+final word is necessarily a content word. That is where +2.78 comes from.
+
+`experiments/the_gap_depends_on_span_length.py`.
 
 ## The measurement
 
@@ -94,6 +117,25 @@ author's own dispersion (0.738) agrees with Austen's (0.771).
 A section mixture would inflate dispersion innocently and does not: 9.2% of variance is
 between the nine sections, and the within-section CV is 0.956 against the pooled 0.972.
 The 13 short spans driving it are spread over 7 sections and 13 pages, not clustered.
+
+## Austen is a poor model for this register — a second retraction
+
+Every "predicted +0.75" in this file is Austen's pooled figure with the body's joining
+model applied. Stratifying shows Austen's profile runs the **opposite way** to the
+author's:
+
+| stratum | Austen | the LP author |
+|---|---|---|
+| 3–6 | +0.35 ± 0.08 | +2.20 ± 0.42 |
+| 7–14 | +0.67 ± 0.06 | +0.90 ± 0.34 |
+| 15+ | **+1.08 ± 0.05** | **+0.20 ± 0.53** |
+
+Austen rises with span length; the author falls. The author's own long spans sit 1.66σ
+*below* Austen's, which is the wrong direction for treating Austen as the register model.
+Austen's composition happens to match the body's (46.7% vs 49.6% at 15+) while its shape
+does not match the author's, so the pooled benchmark looked more authoritative than it
+was. Every Austen-based sigma in this file should be read with that discount; the
+author-versus-body strata above are the load-bearing comparison.
 
 ## Why joining does not explain it
 
@@ -221,12 +263,14 @@ So this result does not overturn it — it names the kind of rule that would hav
 
 ## Status
 
-**Status**: open, and the reading has shifted. The sentence-final anomaly is 5.0–5.5σ
-against the joined-English prediction and is the one solid cell. The sentence-initial
-control is **equivocal, not passing**. The mark spacing excludes mechanical placement at
-6.7σ but leans 3:1 to 33:1 towards the marks NOT falling at sentence ends — which, if it
-holds, dissolves the anomaly rather than deepening it. `sentences_do_not_end_long.py`,
-`profile_around_a_mark.py`, `what_the_marks_space_like.py`.
+**Status**: open and narrowed. Pooled, the author-versus-body difference is −6.1σ, but
+stratifying by the span length the mark closes shows it is **−5.7σ at 3–6 blocks, −2.2σ
+at 7–14, and −0.6σ at 15+** — absent in the stratum holding half the body's spans. The
+Austen benchmark is retracted as a register model: its profile runs opposite to the
+author's. The mark spacing excludes mechanical placement at 6.7σ and leans 3:1 to 33:1
+against the marks falling at sentence ends. `sentences_do_not_end_long.py`,
+`profile_around_a_mark.py`, `what_the_marks_space_like.py`, `what_the_marks_are.py`,
+`the_gap_depends_on_span_length.py`.
 
 ## Related
 
