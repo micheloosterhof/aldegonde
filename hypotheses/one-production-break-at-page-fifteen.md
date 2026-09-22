@@ -9,6 +9,10 @@ The joining rate, the mark rate and the line measure all switch at page 14–15,
 P < 0.0001 against a surrogate null for the scan maximum. Two of those describe the text
 being copied; the third describes the person ruling the page. They change together.
 
+Three observables, not four: the 13-dot is a further difference at this boundary but
+cannot be scanned, since it does not occur before page 15 at all, and the interrupter
+turns out not to be a phase convention (below).
+
 | observable | kind | max | null | P | best split |
 |---|---|---|---|---|---|
 | blocks of length 2 | exemplar | 24.9 | 4.1 ± 2.4 | 0.0000 | p14: 0.243 → 0.159 |
@@ -46,16 +50,21 @@ the body's regime.
 
 ## What it does not identify
 
-Which of a different hand, a different pen, a different page format or a simply a
+Which of a different hand, a different pen, a different page format or simply a
 different sitting produced the change. All four give this signature and the transcription
 cannot separate them. Nor does it say anything about *why* the cipher also changes there.
 
 ## How to falsify
 
-- **A fourth convention changing elsewhere.** The interrupter convention is the obvious
-  candidate (`interrupter-is-a-scribal-mark`): it is present on the solved keyed pages
-  and absent from the body, but the body's plaintext is unknown, so locating its change
-  point needs a key-free proxy that does not yet exist.
+- **A fourth convention changing elsewhere.** ~~The interrupter is the obvious
+  candidate~~ — **checked and withdrawn, September 2026.** Both halves of that were
+  wrong. The key-free proxy exists and `interrupter_rule.py` already uses it: the rule is
+  that every interrupt is a plaintext F passed through *literally*, so it shows as rune F
+  and the rune-F rate measures it. And the convention does not belong to a phase at all —
+  it appears on every polyalphabetic page the author solved, **including page 71, which
+  is after the break**, and cannot appear on the monoalphabetic pages because they have no
+  keystream to interrupt. It tracks the cipher, not the scribe, so there is no change
+  point to find. See `the_interrupter_tracks_the_cipher.py`.
 - **Page format.** If the physical page dimensions were known, a format change would
   explain the line measure without any change of hand, and the two exemplar observables
   would have to carry the break alone.
