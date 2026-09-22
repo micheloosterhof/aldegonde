@@ -198,3 +198,37 @@ lacks only marks.
 Caveat: pages qualify only when image and transcription counts agree exactly, which is
 easy for a few four-dots and hard for forty one-dots, so the four-dot row draws on 23
 pages and the control on 3.
+
+## A bound on the mixture: at most a sixth
+
+`experiments/the_rank_of_the_last_block.py`
+
+Every earlier test of the mixture used a **mean**, which is the wrong instrument: if one
+span in five ends on a genuinely heavy word and the rest end anywhere, the mean moves by a
+fifth of the effect. The **rank of a span's last block among its own blocks** is
+reference-free — the span's multiset is its own control — and sensitive to a minority.
+
+| corpus | spans | mean rank of the last block | a random block of the same spans | z |
+|---|---|---|---|---|
+| **the author** | 68 | **0.647** | 0.500 ± 0.030 | **+4.97** |
+| **the body** | 129 | **0.481** | 0.500 ± 0.023 | **−0.86** |
+
+Taking the author's lift as one genuine sentence end's contribution, the body's lift over
+his is the fraction of four-dots that could be real:
+
+**f = −0.135 ± 0.153 — so f < 0.17 at two sigma, f < 0.32 at three.**
+
+**A large mixture is dead.** More than a sixth of four-dots being genuine sentence ends is
+excluded.
+
+**A small one is not, and the physical evidence points at that size.** The four-dot takes
+a line break 10.6% of the time against a separator's 3.9%, and gets extra space in about
+one occurrence in six. A mixture of one in ten would produce that coupling and sit inside
+the bound. The two lines are consistent rather than in tension: a minority of four-dots may
+be real sentence ends, small enough that no length statistic here can confirm it.
+
+**A note on the cell that failed.** The natural statistic — the share of spans whose last
+block is in the top tenth of its span's ranks — does not work, and the control says so: the
+author reads only 0.044 there despite a +1.17 rune lift, because block lengths tie
+constantly and a midrank rarely reaches 0.9. His mass sits at the 0.8 decile (0.31). A cell
+the positive control cannot fill is not a test.
