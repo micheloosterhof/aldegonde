@@ -92,7 +92,8 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source |
 |---|---|---|
-| G1 | The local channel is worth **13 bits on g and 0 on σ**, against an 80- and 103-bit search | `why-the-body-resists.md` |
+| G1 | The measured channels reach **16 bits of 283** — g 6.2 of 79.7, σ under 10 of 101.8 and only under a right-acting step, base₀ **0 of 101.8**. C-0's cycle structure is worth 0.0024 bits, since 99.8% of order-5 permutations have five five-cycles | `the-bit-budget.md` | base₀ has no channel at all: every block draws its own alphabet, so nothing accumulates. Supersedes the earlier "13 bits on g and 0 on σ" |
+| ~~G1b~~ | ~~The local channel is worth **13 bits on g and 0 on σ**~~, against an 80- and 103-bit search | `why-the-body-resists.md` |
 | G2 | The key is nonetheless **over-determined 69×** by the ciphertext, so a unique answer exists | `unicity-distance.md` |
 | G3 | A **battery cell count is not evidence** — a maximally wrong cipher lands 12 of 19; only d1w, d6w, doublet_gap_min, returns and seam discriminate | `battery-cell-counts-are-not-evidence.md` |
 | G4 | **Eleven of the nineteen cells test the key, not the mechanism** — between-key spread exceeds within-key spread, and that includes `d1w` and `doublet_gap_min`. Score a model by the fraction of keys that make the corpus plausible, never by one key | `battery-cells-test-the-key.md` |
