@@ -192,3 +192,56 @@ unit-opening mark, 0.000 for a title-closing one. The four-dot's 0.106 sits furt
 the first than the pooled comparison suggested. Its own coupling result (+4.02 against the
 separator) is unaffected, as is the red-ink finding, which asks which words are red and
 has nothing to do with line ends.
+
+## ANSWERED: the second function is punctuating a title
+
+`experiments/the_thirteen_dot_brackets_a_title.py`
+
+This file used to record, under "What it does not settle": *"Fifteen of the 31 are
+followed by a rune, so the 13-dot is not exclusively terminal. Whether that is a second
+function, or the same one at boundaries the transcription does not record, is not
+answerable from this corpus."*
+
+It is answerable. The corpus holds a second record of structure the mark had never been
+checked against — `rubricated_titles.json`, seventeen passages in red ink read off the
+scans rather than the transcription.
+
+| class | n |
+|---|---|
+| closes a chunk (the section-end job) | 7 |
+| sits on the **last block of a rubricated title** | 12 |
+| sits on the **block just before a title starts** | 5 |
+| unexplained | 2 |
+
+Title-edge hits: **17 observed against 0.84 ± 0.89** under a permutation that keeps each
+mark in its own chunk and moves it to a random block there. That null holds the mark's
+section habitat fixed, so it tests only where inside a section the mark lands — counting
+against random placement anywhere in the body would prove nothing, since thirteen-dots and
+titles both live near section breaks.
+
+**The thirteen-dot brackets titles.** Of the six body titles that begin mid-chunk, five
+carry both an opening and a closing mark. A title that begins a chunk carries only the
+closing one: the chunk boundary is already the opening.
+
+### The two strays, and what is not checked
+
+Chunk 30 block 1 sits *inside* a five-word title whose closing mark is at block 4; chunk 69
+block 1 is one block past a one-word title. Both fit a title range recorded one word wide
+or narrow, and neither was re-read against the scans.
+
+### Scope
+
+The master holds 31 thirteen-dots, not all analysable here. Three are in chunks 71–72,
+outside the body range. Two of the 28 in range close no block — they follow another mark
+with no rune between — so `body_parse` drops them; both are in chunks that already show
+the bracket pattern. This leaves 26.
+
+### What it changes elsewhere
+
+- The one-block ⑬→⑬ pairs in `the_floor_belongs_to_the_four_dot.py` are now explained
+  rather than merely flagged as confounded: they are a one-word title with its opening and
+  closing mark.
+- The "bimodal spacing" of the thirteen-dot recorded in `marks-are-not-one-glyph` has a
+  mechanism. The short mode is a title's width; the long mode is a section's.
+- It does not touch the four-dot. Nothing here gives the four-dot a function.
+
