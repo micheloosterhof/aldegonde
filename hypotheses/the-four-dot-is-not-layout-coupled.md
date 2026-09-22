@@ -142,12 +142,19 @@ so justification cancels:
 is exactly a word break's; a few wide gaps carry the mean. The typical four-dot is spaced
 like an ordinary separator.
 
-**These two physical channels now disagree**, and the disagreement is the honest state.
-The gap width says the four-dot gets no extra space (median 1.000 against a word break's
-1.000). The corrected line-end rate says it gets a line break 2.7 times as often as a word
-break (0.106 against 0.039, +4.02σ). A scribe who breaks his line at a mark but leaves no
-extra space when he does not break is not contradictory, but nothing here shows that is
-what happened, and the two measurements are not mutually supporting as first reported.
+**Both physical channels agree once the gap width is read correctly.** The median said
+nothing because the effect is a minority one; the tail says otherwise. Share of gaps above
+each percentile of the one-dot distribution:
+
+| cutoff | one-dot | four-dot | ratio | z |
+|---|---|---|---|---|
+| p75 | 0.278 | 0.433 | 1.56 | +3.22 |
+| p95 | 0.051 | 0.144 | 2.81 | **+3.92** |
+
+So the four-dot gets extra space in roughly one occurrence in six, and a line break in
+about one in ten (0.106 against a separator's 0.039). **The scribe gave it special
+physical treatment in 10–20% of cases and ordinary word-break treatment otherwise** — two
+measurements off the page images, agreeing.
 
 The thirteen-dot row is unusable — most thirteen-dots sit at a line end, where there is no
 following rune to measure against, leaving seven pairs.

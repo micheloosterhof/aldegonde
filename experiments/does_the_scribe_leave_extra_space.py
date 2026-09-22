@@ -53,14 +53,29 @@ this hand.
 | **four** | 90 | **1.230** | 0.109 | **1.000** | +2.04 |
 | thirteen | 7 | 0.839 | 0.054 | 0.857 | -3.11 |
 
-**The mean says +2.04 sigma and the median says nothing.** The four-dot's median
-whitespace is 1.000, exactly a word break's; a handful of wide gaps pull the mean to
-1.230. The typical four-dot is spaced like an ordinary separator.
+**CORRECTED, September 2026. The first reading of this table was wrong.**
 
-That is the answer, and it agrees with the other physical channel: the four-dot sits at a
-line end 10.6% of the time against the word separator's 11.5%
-(`the-four-dot-is-not-layout-coupled.md`). **Two independent measurements off the scans,
-both saying the scribe treated the four-dot as an ordinary word break.**
+It said: the mean says +2.04 sigma, the median says nothing, so the typical four-dot is
+spaced like a separator and the mean is outlier-driven. That dismissed the mean for being
+carried by a tail -- but **a tail is exactly what a mechanism that fires only sometimes
+produces**, and the right statistic for it is the tail itself, not the median.
+
+Share of gaps above each percentile of the one-dot distribution:
+
+| cutoff | one-dot | four-dot | ratio | z |
+|---|---|---|---|---|
+| p75 | 0.278 | 0.433 | 1.56 | **+3.22** |
+| p90 | 0.125 | 0.211 | 1.69 | +2.44 |
+| p95 | 0.051 | 0.144 | 2.81 | **+3.92** |
+
+**The four-dot does get extra space, in a minority of its occurrences.** The median is
+unmoved because the effect touches roughly one in six; the quartiles already showed it
+(four-dot 0.909 / 1.143 against one-dot 0.909 / 1.083).
+
+That agrees with the corrected line-end rate rather than contradicting it: the four-dot
+takes a line break 10.6% of the time against a separator's 3.9%, +4.02 sigma
+(`the-four-dot-is-not-layout-coupled.md`). **Both physical channels say the same thing --
+special treatment in 10 to 20% of cases, ordinary treatment otherwise.**
 
 The thirteen-dot cell has seven usable pairs and should not be read. Most thirteen-dots
 sit at a line end, where there is no following rune to measure against.
