@@ -74,3 +74,33 @@ composition is arithmetic.
 - `unicity-distance.md`, `local-channel-is-exactly-coincidence.md`,
   `key-local-channel-is-empty.md`, `preventer-blinds-absolute-tests.md` — the four
   components.
+
+## There is no weak stretch to seed a search from
+
+`experiments/is_there_an_unsuppressed_stretch.py`
+
+This file argues a key search has nothing to climb. The obvious hope against that is a
+**local lapse** — one page where the encipherer forgot the preventer, leaving a stretch
+with a weaker mechanism and a foothold. Every previous test of the suppression asks
+whether it holds on average, which a lapse would survive: one unsuppressed page moves the
+pooled rate by less than a tenth of its own standard error.
+
+A sliding window over all 12,955 adjacent pairs, scored against a surrogate null that
+shuffles the doublet flags:
+
+| window | expected at 0.0066 | expected at chance | observed max | null max | P |
+|---|---|---|---|---|---|
+| 200 | 1.3 | 6.9 | 5 | 5.5 ± 0.8 | 0.920 |
+| 500 | 3.3 | 17.2 | 8 | 8.7 ± 1.2 | 0.863 |
+| 1000 | 6.6 | 34.5 | 15 | 13.0 ± 1.5 | 0.150 |
+
+**No lapse anywhere.** And the scan could see one: a 500-pair stretch without the
+preventer would hold 17.2 doublets against a null maximum of 8.7 ± 1.2 — **seven sigma**.
+The shortest complete lapse it resolves is about 200 pairs, roughly a page of runes.
+
+So the preventer was applied without a gap across the whole body. That closes the foothold
+this file's argument predicts should not exist, by direct measurement rather than by
+inference.
+
+**Limits:** a lapse shorter than ~200 pairs would pass unseen, and the scan tests for
+absence of the mechanism, not for a locally lower φ.
