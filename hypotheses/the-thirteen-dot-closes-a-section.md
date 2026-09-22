@@ -172,14 +172,19 @@ separator baseline of 0.0401:
 
 | thirteen-dot | n | at a line end | z |
 |---|---|---|---|
-| **closes a title** | 9 | **0/9 = 0.000** | −0.61 |
-| opens a title | 4 | 3/4 = 0.750 | +7.23 |
-| **neither** | 13 | **12/13 = 0.923** | +16.19 |
+| **closes a title** | 12 | **2/12 = 0.167** | +2.25 |
+| opens a title | 5 | **5/5 = 1.000** | +10.99 |
+| neither | 9 | 8/9 = 0.889 | +13.03 |
 | pooled | 26 | 15/26 = 0.577 | |
 
-A title's **closing** ⑬ is never at a line end — the body text continues on the title's own
-line, as a short heading set at the head of a paragraph would. Every other ⑬ ends its line
-almost always, which is what opening a new unit looks like.
+**Corrected September 2026.** The first version read 0/9, 3/4 and 12/13 from a parser that
+reset its rune counter at each line start, which disagrees with the title file's word
+indexing on 45 of 58 chunks and misaligned every mid-page title. The pooled figure is
+unchanged — only the labels moved — and the split survives in a softer form.
+
+A title's **opening** ⑬ always ends its line; a title's **closing** ⑬ rarely does, 2 of 12
+against 13 of 14 for every other role. The body text continues on the title's own line, as
+a short heading set at the head of a paragraph would.
 
 **Consequence.** `the-four-dot-is-not-layout-coupled.md` uses ⑬'s pooled 0.516 as its
 benchmark for a structural mark. That benchmark is wrong in both directions: 0.923 for a

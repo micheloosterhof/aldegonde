@@ -25,23 +25,25 @@ looks like. This checks whether that benchmark survives the split.
 Same pages, same hand, same cipher. The baseline is the body's own one-dot separator, so
 no external control applies.
 
-## Result: the two roles behave oppositely
+## Result: the two roles behave differently
 
-The body's one-dot separator sits at a line end 0.0401 of the time (108/2,695).
+The body's one-dot separator sits at a line end 0.0397 of the time (108/2,722).
 
-| thirteen-dot | n | at a line end | z | P |
-|---|---|---|---|---|
-| **closes a title** | 9 | **0/9 = 0.000** | -0.61 | 1.0e-09 against 0.9 |
-| opens a title | 4 | 3/4 = 0.750 | +7.23 | 2.5e-04 |
-| **neither** | 13 | **12/13 = 0.923** | +16.19 | 2.1e-16 |
-| pooled, as used elsewhere | 26 | 15/26 = 0.577 | | |
+| thirteen-dot | n | at a line end | z |
+|---|---|---|---|
+| **closes a title** | 12 | **2/12 = 0.167** | +2.25 |
+| opens a title | 5 | **5/5 = 1.000** | +10.99 |
+| neither | 9 | 8/9 = 0.889 | +13.03 |
+| pooled, as used elsewhere | 26 | 15/26 = 0.577 | |
 
-**The pooled figure is a mixture of 0.000 and 0.923 and describes neither role.**
+**CORRECTED.** The first version of this file reported 0/9, 3/4 and 12/13 from a parser
+that reset its rune counter at each line start, which disagrees with the title file's word
+indexing on 45 of 58 chunks and misaligned every mid-page title. The pooled figure is
+unchanged, since only the labels moved.
 
-A title's **closing** thirteen-dot is never at a line end: the body text continues on the
-title's own line, which is what a short title set at the head of a paragraph looks like.
-Every other thirteen-dot ends its line almost always, which is what starting a new unit
-looks like.
+A title's **opening** thirteen-dot always ends its line and a title's **closing** one
+rarely does -- 2 of 12 against 13 of 14 for every other role. The body text continues on
+the title's own line, which is a short heading set at the head of a paragraph.
 
 ## What this costs and what it does not
 
@@ -72,6 +74,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from body_parse import chunk_blocks  # noqa: E402
 from scipy import stats
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -86,25 +89,20 @@ BODY = range(15, 71)
 
 
 def marks_by_chunk():
-    """{chunk: [(word index, glyph, at a line end)]} over rune-bearing lines."""
+    """{chunk: [(word index, glyph, at a line end)]}, blocks spanning line wraps.
+
+    The word index must match the convention `rubricated_titles.json` was built with,
+    which carries a word across a line break. A per-line parser disagrees with it on
+    45 of 58 chunks and misaligns every mid-page title.
+    """
     text = MASTER.read_text().split("%")
     out = {}
     for ci in range(15, 73):
-        if ci >= len(text):
-            continue
-        idx, rec = 0, []
-        for line in re.split(r"[/\n]", text[ci]):
-            if not RUNE.search(line):
-                continue
-            n = 0
-            for i, ch in enumerate(line):
-                if RUNE.match(ch):
-                    n += 1
-                elif (ch in MARKS or ch in SEPARATORS) and n:
-                    rec.append((idx, ch, not RUNE.search(line[i + 1 :])))
-                    idx += 1
-                    n = 0
-        out[ci] = rec
+        if ci < len(text):
+            out[ci] = [
+                (idx, glyph, line_end)
+                for idx, (_, glyph, line_end) in enumerate(chunk_blocks(text[ci]))
+            ]
     return out
 
 
@@ -159,10 +157,10 @@ def main() -> None:
         f"{int(np.sum(allv))}/{len(allv)} = {np.mean(allv):.3f}"
     )
     print(
-        "\nThe pooled figure is a mixture of 0.000 and 0.923 and describes neither role."
-        "\nA title's CLOSING thirteen-dot is never at a line end -- the body text"
-        "\ncontinues on the title's own line. Every other thirteen-dot ends its line"
-        "\nalmost always, which is what starting a new unit looks like."
+        "\nThe pooled figure is a mixture of 0.167 and 0.93 and describes neither role."
+        "\nA title's CLOSING thirteen-dot rarely ends its line -- the body text continues"
+        "\non the title's own line. Every other thirteen-dot ends its line almost always,"
+        "\nwhich is what opening a new unit looks like."
     )
 
 
