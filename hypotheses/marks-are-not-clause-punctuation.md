@@ -387,3 +387,32 @@ is the first positive statement about the four-dot rather than another absence.
 This also explains why `are_the_two_marks_one_system.py` had no power: at cv ≈ 1 the
 backward recurrence time matches the gap law, so renewal geometry cannot separate "at a
 boundary" from "inside an interval" even though the process is not actually memoryless.
+
+## The four-dot's placement ignores the page
+
+`experiments/is_the_four_dot_placed_per_page.py`
+
+With the thinning reading excluded at 7σ, most four-dots are not sentence ends and
+something else sets their spacing. Their gaps are not memoryless — nine of three blocks or
+less where a constant-rate process predicts 18.4 — so something keeps them apart, and the
+natural candidate needing no reference to the text is a scribe marking off each page.
+
+Counting each glyph per body page against a constant per-rune rate:
+
+| glyph | total | per page | χ² | df | P | reading |
+|---|---|---|---|---|---|---|
+| **④** | 139 | 2.53 | 55.8 | 54 | **0.406** | Poisson at a constant rate |
+| ⑬ | 26 | 0.47 | 82.8 | 54 | **0.007** | over-dispersed, clustered |
+| ① | 2,722 | 49.49 | 13.9 | 54 | **1.000** | under-dispersed, near-determined |
+
+**The two controls land where they must** — the section mark clusters (titles are bounded
+by a pair a few words apart), the word separator is nearly fixed by a page's rune count —
+so the test discriminates and the four-dot's cell is readable.
+
+**It sits exactly on a constant per-rune rate: the page is invisible to it.** That closes
+the production explanation for its spacing, and matches what the doublet preventer says
+from a different direction (`the-preventer-is-in-the-stream.md`) — the mechanisms in this
+book do not see the layout.
+
+It does not explain the short-gap deficit itself. Something spaces the four-dots more
+evenly than chance; this only says where not to look.
