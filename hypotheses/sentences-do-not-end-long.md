@@ -292,6 +292,21 @@ Three readings, none yet eliminated:
 3. **A block adjacent to a mark is not a word** — it is a cipher-cut remainder, or the
    cipher pads to a boundary at a sentence end. This predicts a gap of zero and the
    observation is −0.21 ± 0.18.
+
+   *The LOCAL form is excluded, September 2026* (`does_a_mark_split_a_unit.py`). If a mark
+   falls inside a unit and splits it, the blocks either side are two halves of one thing:
+
+   | | splitting | independence | observed |
+   |---|---|---|---|
+   | mean of (before + after) | ≈ 4.5 | ≈ 8.9 | **8.71 ± 0.25** (z = **+17** vs split) |
+   | var(sum) / 2·var(block) | ≈ 0.5 | 1.0 | **0.904 ± 0.099** (z = **+4.07** vs split) |
+   | correlation across the mark | strongly − | 0 | **−0.097, P = 0.21** |
+
+   All three say two ordinary independent blocks, and blocks two apart across a mark give
+   r = −0.048 (P = 0.54), so nothing is cut across a wider span either. What survives is
+   only the **global** form — that no block anywhere is a word — which is not a claim
+   about marks and belongs to `blocks-are-still-words.md`, where smooth cutting laws are
+   rejected with two free parameters and joined words fit with one.
 4. **The marks open rather than close.** A circled numeral that labels the verse
    *following* it terminates nothing, so the block before it is mid-sentence and flat by
    construction — while the block after it still starts a unit of text, which is why the
