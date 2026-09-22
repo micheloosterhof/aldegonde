@@ -303,9 +303,12 @@ within), and that is structural, not accidental:
 | the body | **+0.031** | **+0.023** | −0.019 | −0.036 |
 | ten English registers | −0.105 | −0.111 | +0.065 | +0.152 |
 
-The body's span-final blocks are **enriched in short words**. Joining *removes* short
-blocks, so every convention for it pushes the final edge away from short-enrichment. No
-rate, direction or threshold can reverse that:
+**CORRECTED.** The body's row is within 1.1σ of zero in every class (+0.031 ± 0.036,
++0.023 ± 0.044, −0.019 ± 0.034, −0.036 ± 0.033): the span-final block is
+indistinguishable from an ordinary interior block, not *enriched* in short words as first
+written. The argument is unaffected, because English is **depleted** there (−0.105, −0.111)
+and joining removes short blocks, so every convention for it moves the final edge further
+from the body. No rate, direction or threshold can reverse that:
 
 > No joining rule of any kind can flatten the final edge, because the deficit is in the
 > long classes and joining acts on the short ones.

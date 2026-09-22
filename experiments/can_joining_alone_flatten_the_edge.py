@@ -54,9 +54,10 @@ about **3,800 to 1** on eight cells.
 test and it comes out the wrong way round, which turns out to be structural rather than
 accidental.
 
-The body's span-final blocks are **enriched** in short words and depleted in long ones
-relative to the span interior: +0.031 and +0.023 in the 1-2 and 3-4 classes, -0.019 and
--0.036 in 5-6 and 7+. Joining *removes* short blocks. Every convention for it can only
+The body's span-final block is **statistically indistinguishable from an ordinary
+interior block** -- +0.031 +- 0.036, +0.023 +- 0.044, -0.019 +- 0.034, -0.036 +- 0.033
+across the four classes, every one within 1.1 sigma of zero. English is *depleted* in
+short blocks there (-0.105, -0.111) and joining removes short blocks. Every convention for it can only
 push the final edge further from short-enrichment, which is the opposite of what is
 needed. So this is not a matter of finding the right rate or direction:
 
