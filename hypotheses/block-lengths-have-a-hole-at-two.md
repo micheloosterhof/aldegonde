@@ -548,8 +548,13 @@ cell — leaving every other cell a prediction:
 | pg16643 | 60.2 | **48.2** |
 | pg2945 | 66.8 | **36.6** |
 
-**The ranking flips with the base text** and the spread across bases (15.9 to 66.8) far
-exceeds the gap between models. Inconclusive, for the reason that has caught several
+**The ranking flips with the base text** and the spread across bases far exceeds the gap
+between models.
+
+**Updated with a higher-precision run** (six bases, 25 fitting draws instead of 6):
+merging median **40.9**, omitting **55.2**, with a spread of 19.3 to 194.8. The lean
+toward merging is clearer than the 32.8 against 36.6 first recorded, and the conclusion is
+unchanged — the between-base spread still swamps it. Inconclusive, for the reason that has caught several
 statistics here: between-register variation exceeds the effect.
 
 The mechanism does behave as designed — merging predicts a heavier tail at every class
@@ -561,3 +566,24 @@ merge-or-omit parameter brings that to 15.9–66.8, so the deficit model earns m
 distance and still does not reach a fit — P = 0.10 at best, P = 0.0003 on the
 register-matched author base. Something beyond a single short-unit rule is shaping this
 histogram.
+
+
+## The misfit is not localised
+
+`experiments/where_the_histogram_misfits.py`
+
+The residuals above looked structured against the author base — +0.023 at length 5,
+−0.016 at 6, +0.008 at 8 — which a mis-set merge rate cannot produce. Fitting six
+references separately and comparing residuals cell by cell:
+
+**No cell misses consistently.** At length 5 the mean residual across six bases is −0.0013
+with **50% sign agreement** — a coin toss. The +5 / −6 / +8 alternation belonged to the
+choice of reference, not to the body.
+
+Lengths 6 and 9 are the only candidates, with all six references on the same side at
+z = −2.17 and −2.41 (the body low in each). On eleven cells neither survives multiple
+testing; recorded as candidates, not findings.
+
+So whatever shapes the body's length histogram beyond a short-unit rule is spread across
+the distribution and register-dependent. Localising it needs a reference this corpus does
+not have.
