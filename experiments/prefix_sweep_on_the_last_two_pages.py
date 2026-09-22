@@ -135,7 +135,7 @@ def main() -> None:
 
     print("CONTROL: page 1, whose key is known to be DIVINITY.\n")
     control = sweep(runes_of(CONTROL), words)
-    ranked = [r for r in control]
+    ranked = control
     where = next(
         (i for i, r in enumerate(ranked) if r[1] == "DIVINITY"), None
     )
