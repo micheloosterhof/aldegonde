@@ -1,6 +1,16 @@
 # ABOUTME: Salvages the d-profile comparison from a retracted experiment by applying it
 # ABOUTME: to the body's own two halves, with a null sized for an equal split.
-"""The body is one cipher on three statistics. Is it one LETTER STEP?
+"""SUPERSEDED. This duplicates `does_g_change_mid_book.py`, which I failed to find.
+
+That file asks the same question with better-built arms -- both planted, thirty trials --
+and reports chi2 6.9 for the body with a likelihood ratio of 5 to 1. This file
+independently reached the same 6.9 and 4.8 to 1, which is a useful agreement between two
+codebases and not a new result. Use `does_g_change_anywhere.py`, which extends the
+midpoint question to changes at any point.
+
+Kept for the reconciliation and for the note below on how to weigh a weak ratio.
+
+The body is one cipher on three statistics. Is it one LETTER STEP?
 
 `the-body-is-one-cipher.md` establishes homogeneity on doublet rate, d5 and IoC across
 nine sections and fifty-five pages. None of those carries `g`. The within-block d-profile

@@ -3,7 +3,7 @@
 """Every pooled statistic in this directory assumes the body is one text. It is.
 
 Nothing here has tested that directly. `does_g_change_mid_book.py` compares the halves'
-d-profiles and gets 7:1 for one g; `short-units-are-written-joined.md` checks the joining
+d-profiles and gets 5:1 for one g (this text said 7:1, which the file no longer reports); `short-units-are-written-joined.md` checks the joining
 rate over nine sections. Neither covers the rest, and every result that pools 2,896
 blocks or 12,956 runes rests on the assumption.
 
