@@ -119,10 +119,9 @@ def blocks(chunks):
             for i, ch in enumerate(line):
                 if RUNE.match(ch):
                     n += 1
-                elif ch in MARKS or ch in SEPARATORS:
-                    if n:
-                        out.append((n, ch, not RUNE.search(line[i + 1 :])))
-                        n = 0
+                elif (ch in MARKS or ch in SEPARATORS) and n:
+                    out.append((n, ch, not RUNE.search(line[i + 1 :])))
+                    n = 0
             if n:
                 out.append((n, "", False))
     return out
