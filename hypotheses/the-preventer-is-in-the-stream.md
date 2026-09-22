@@ -58,3 +58,35 @@ would show exactly this pattern, because the line breaks did not yet exist. The 
   rate rises toward chance.
 - The 205 pairs crossing both a separator and a line break carry one doublet against 7.1
   expected at chance; a larger corpus that moved that cell toward chance would reopen this.
+
+## The full census: the stream crosses everything testable
+
+`experiments/what_does_the_suppression_cross.py`
+
+Classifying every adjacent rune pair by what lies between the two runes:
+
+| between | pairs | doublets | rate | LR for a continuing stream |
+|---|---|---|---|---|
+| nothing (inside a word) | 9,640 | 60 | 0.0062 | (the baseline) |
+| a separator only | 2,587 | 21 | 0.0081 | 3e+16 to 1 |
+| a line break only | 389 | 3 | 0.0077 | 403 to 1 |
+| **a mark (any dot cluster)** | **156** | **1** | **0.0064** | **16 to 1** |
+| a separator and a line break | 124 | 1 | 0.0081 | 6 to 1 |
+| a page break | 45 | 0 | 0.0000 | unresolvable |
+| a section break | 14 | 0 | 0.0000 | unresolvable |
+
+**The mark cell reads the within-word rate.** One doublet where a break at the mark
+predicts 5.4: P = 0.028 against a break. At 16 to 1 this is support rather than proof.
+
+### Why this is a new claim about the mark
+
+Three different things are now excluded at the four-dot, and they are not the same claim:
+
+| claim | what it would change | test | result |
+|---|---|---|---|
+| the base resets | which alphabet | `does_the_cipher_restart.py` | z = −0.96 against +53 planted |
+| the key cycles | which alphabet, periodically | `a_shifted_stop_or_a_switched_key.py` | nothing at any period to 8 |
+| **the stream breaks** | **what counts as adjacent** | this file | 16 to 1 against |
+
+The preventer is the only instrument that can see the third, because it is the only
+mechanism in the model that depends on adjacency.
