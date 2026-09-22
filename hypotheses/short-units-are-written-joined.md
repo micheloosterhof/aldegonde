@@ -349,6 +349,26 @@ separates *no merging* from *universal merging* at about **1.7σ**, and every in
 value less. There is no reference either — the author's plaintext carries 158 d5 pairs in
 total.
 
-**Route closed by arithmetic rather than sample size.** The model's own parameter — merging
-units of two runes or less — is what makes its effect on the only key-free channel too
-small to see. A model merging longer units would be testable this way; this one is not.
+**CORRECTED.** The paragraph above used an assumed within-word rate of 0.075. Measured on
+English runeglish words of 8+ runes it is **0.0658 ± 0.0005** over 203,764 pairs, and the
+conclusion changes:
+
+| model for blocks of 8+ runes | predicted d5 | z against observed 0.0536 ± 0.0060 |
+|---|---|---|
+| **no merging at all** | 0.0658 | **−2.03** |
+| asymmetric merging, this model | 0.0534 | **+0.03** |
+| symmetric merging, boundary anywhere | 0.0430 | +1.77 |
+
+**d5 does detect merging, at two sigma against none**, and lands exactly on this model
+while disfavouring both alternatives by about two sigma on either side. That is the first
+independent confirmation of the joining model's *shape* from a key-free channel — it was
+fitted on the length histogram, and this is a different statistic entirely.
+
+Solving for the rate: d5 gives **0.98 ± 0.48** of 8+ blocks being merges against the
+model's predicted **0.25** — agreeing at 1.5σ with a point estimate four times higher. So
+the channel detects merging without pinning its rate.
+
+**Caveat:** 0.0658 is an English reference and the body's register is not known to match.
+Within-word d5 at long lengths is largely morphological, so it should be stable, but that
+is an argument rather than a measurement — the author's plaintext has 158 d5 pairs, too few
+to check.

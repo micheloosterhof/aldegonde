@@ -59,12 +59,40 @@ The author's plaintext pages carry **158 d5 pairs in total**, giving cell rates 
 0.1250, 0.0484 and 0.0250 across the four length bands. There is nothing to calibrate
 against even if the body's signal were larger.
 
-## Conclusion
+## Conclusion, after measuring the parameter instead of assuming it
 
-**d5 cannot test the joining model.** The route is closed by arithmetic rather than by
-sample size: the model's own parameter -- merging units of two runes or less -- is what
-makes its effect on the channel too small to see. A model that merged longer units would
-be testable this way; this one is not.
+The paragraphs above use a within-word d5 rate of 0.075, which I assumed. **Measured on
+English runeglish words of eight runes or more it is 0.0658 +- 0.0005**, over 203,764
+pairs. That changes the answer.
+
+With the measured value, and the crossing fraction of 0.396 that a two-rune merge gives on
+the body's actual long-block lengths:
+
+| model for blocks of 8+ runes | predicted d5 | z against the observed 0.0536 +- 0.0060 |
+|---|---|---|
+| **no merging at all** | 0.0658 | **-2.03** |
+| asymmetric merging, the fitted model | 0.0534 | +0.03 |
+| symmetric merging, boundary anywhere | 0.0430 | +1.77 |
+
+Solving for the merged fraction directly:
+
+    d5 says          0.98 +- 0.48 of blocks of 8+ runes are merges
+    the fitted model predicts   0.25
+
+**So d5 does detect merging, at two sigma against none.** It sits exactly on the
+asymmetric model and disfavours both "no merging" and a mid-block boundary by about two
+sigma on either side.
+
+What it cannot do is pin the rate: 0.98 +- 0.48 against the model's 0.25 agrees at 1.5
+sigma while the point estimate is four times higher. The earlier conclusion in this file
+-- that the channel cannot test the model at all -- was too strong, and it was too strong
+because of the assumed parameter rather than the arithmetic.
+
+**Caveat.** The 0.0658 is an English reference and the body's plaintext register is not
+known to match it. Within-word d5 at long lengths is largely morphological -- affixes
+repeating a letter five apart -- so it should be stable across registers, but that is an
+argument rather than a measurement, and the author's own plaintext has 158 d5 pairs, too
+few to check.
 
     python can_d5_see_the_joining.py
 """
@@ -90,7 +118,7 @@ BODY = range(15, 71)
 PLAIN = (3, 8, 9, 10, 11, 14)
 BANDS = ((6, 6), (7, 7), (8, 9), (10, 30))
 CHANCE = 1 / 29
-WITHIN = 0.075
+WITHIN = 0.0658  # measured: English runeglish words of 8+ runes, 203,764 pairs
 
 
 def words(chunks):
