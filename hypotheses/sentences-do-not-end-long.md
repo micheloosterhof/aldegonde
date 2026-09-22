@@ -489,3 +489,47 @@ is z = +0.66 — and on shape English is not rejected (P = 0.134 pooled), so the
 - `the-cipher-does-not-restart.md` — the marks mean nothing to the cipher, so whatever
   they are, they are the scribe's.
 - `separators-are-the-cipher-unit.md`, `separators-are-not-word-boundaries.md`.
+
+## The ink-confirmed boundary is too small a sample to test
+
+`experiments/the_ink_confirmed_boundary_does_not_lengthen.py`
+
+`do_the_marks_bound_the_titles.py` established that ⑬ is a section boundary, confirmed
+from the red ink rather than from any statistic of the text. That removes the standing
+objection to this file — "the marks may not be boundaries at all" — for that glyph, so
+the natural next step was to measure the final-block gap at the boundaries the ink
+corroborates.
+
+**It does not work, and the reason is sample size rather than sign.**
+
+| cell | blocks | gap vs interior | z vs +1.19 |
+|---|---|---|---|
+| before a ⑬ | 29 | +0.05 ± 0.36 | −2.51 |
+| ...closing a red title | 14 | −0.29 ± 0.48 | −2.65 |
+| ...closing ordinary prose | 15 | **+0.37 ± 0.52** | **−1.39** |
+| before an ink-confirmed title | 16 | −0.24 ± 0.48 | −2.58 |
+| before a ④ | 138 | −0.17 ± 0.21 | **−3.90** |
+
+The pooled ⑬ row reads −2.51 and that figure should not be quoted. Half of it is blocks
+closing a *red title*, where +1.19 is the wrong reference: it is measured on
+sentence-final words in running prose, and a title is a noun phrase. The half with a
+matched reference — the fifteen ⑬ that close ordinary prose — reads **+0.37 ± 0.52**,
+which is 0.7σ above zero and 1.4σ below English and discriminates nothing.
+
+**The anomaly therefore stays exactly where it was: on the 138 blocks before a four-dot,
+which no ink anchors.** What changed is that the objection has been split. "The marks are
+not boundaries" is refuted for ⑬ and untouched for ④.
+
+### A weak signal from inside the titles
+
+| | blocks | mean length | share at 2 runes |
+|---|---|---|---|
+| first block of a title | 13 | 3.38 ± 0.47 | **0.385** |
+| last block of a title | 13 | 4.46 ± 0.54 | 0.154 |
+| every mark-free body block | 2,755 | 4.43 ± 0.04 | 0.161 |
+
+Last minus first, paired within the same thirteen titles: **+1.08 ± 0.72**. Needing no
+external reference, this is positive under word order in place and zero under
+transposition — English titles run light to heavy, and THE, AN and OF are two runes in
+runeglish. At 1.5σ it leans against `the-words-are-transposed-within-sentences.md` and
+settles nothing.
