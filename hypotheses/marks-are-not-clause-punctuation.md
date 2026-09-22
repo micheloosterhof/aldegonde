@@ -448,3 +448,31 @@ twice — before and after joining — so English lengths taken from it cannot b
 construction. Comparing the body's small gaps against that reference shows English
 "never" having short sentences, which is the filter speaking. The English row above is
 built without it.
+
+### What the floor counts is unresolved
+
+`experiments/does_the_floor_count_blocks_or_runes.py`
+
+The floor could be a word count (≥2 blocks) or a letter count (≥6 runes). Both hold in the
+body — the smallest gaps are (2 blocks, 6 runes), (2, 7), (2, 7), (4, 7), (3, 8) — and
+they are distinguishable in principle, because each permits what the other forbids: a
+block floor allows a two-block gap of four or five runes, and a rune floor allows a
+one-block gap when that block is six runes or longer.
+
+Placing 138 marks at random in the body's own block sequence under one floor and counting
+violations of the other:
+
+| rule simulated | one-block gaps | sub-6-rune gaps | P(the body's zero) |
+|---|---|---|---|
+| a block floor alone | 0.00 | **1.06** | 0.35 |
+| a rune floor alone | **1.86** | 0.00 | 0.16 |
+| both floors | 0.00 | 0.00 | — |
+| **the body** | **0** | **0** | |
+
+**Neither single floor is excluded.** The preference for both is 3:1 and 6:1 — real but
+not a demonstration.
+
+This is the sharpest open question about the four-dot. If the unit is a **word count**, the
+mark divides the text by syntax however loosely; if a **rune count**, it divides by length
+and the text is not involved at all. Those are different objects, and the question turns on
+one or two expected violations, so it needs more marks rather than a better statistic.
