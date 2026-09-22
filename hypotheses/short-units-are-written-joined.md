@@ -162,6 +162,15 @@ Three readings, none tested:
    lengths. Two scribal features are in the transcription — line measure and which marks
    end a block — and both are confounded.
 
+   *Strengthened, September 2026.* The line measure now carries the reading rather than
+   weakening it. Comparing like with like — enciphered front matter against the body,
+   paragraph-final lines dropped — the change is **+2.07 ± 0.37, z = +5.57**, while the
+   confound itself (plaintext → enciphered front matter) is **+1.14 ± 1.00, z = +1.14**
+   and not significant. And a change-point scan puts the line measure's switch at page 15,
+   the same page as the mark rate and within one of the joining's
+   (`one-production-break-at-page-fifteen.md`). Three observables of two kinds — what was
+   copied and how it was ruled — change at one boundary.
+
    **Line measure** has an encipherment confound that must be handled first: enciphered
    text has no word shapes to break on, so a scribe fills to a measure while plaintext
    breaks at sentence ends. Paragraph-final lines dropped:
