@@ -525,3 +525,39 @@ long phrases to exploit. And it is measured evidence that the body is a differen
 from the author, which `which_edge_is_anomalous.py` assumes it is not; that argument
 survives on the ten-register spread rather than on the author alone, but its premise is
 weaker than stated.
+
+## Merging against omitting: the fork is real and the corpus cannot take it
+
+`experiments/merged_or_telegraphic.py`
+
+The deficit is fitted here with **merging**. A second mechanism has never been separated
+from it on this statistic: the plaintext could **omit** the short words — a telegraphic
+register, a list, an index. `word-length-keystream-and-boundaries.md` compares merge-39%
+against drop-39% and finds them indistinguishable *on the autocorrelation*, which is where
+they genuinely agree. On the histogram they should not, because merging preserves the rune
+total and loads the upper classes while omitting deletes it.
+
+Each model tuned so its 2-rune fraction lands on the body's exactly — one parameter, one
+cell — leaving every other cell a prediction:
+
+| base | merging χ² | omitting χ² |
+|---|---|---|
+| the author | **32.8** | 67.0 |
+| pg1342 | 19.3 | **15.9** |
+| pg205 | **27.0** | 36.3 |
+| pg16643 | 60.2 | **48.2** |
+| pg2945 | 66.8 | **36.6** |
+
+**The ranking flips with the base text** and the spread across bases (15.9 to 66.8) far
+exceeds the gap between models. Inconclusive, for the reason that has caught several
+statistics here: between-register variation exceeds the effect.
+
+The mechanism does behave as designed — merging predicts a heavier tail at every class
+above 7 (0.0456 against 0.0379 at length 8; 0.0190 against 0.0126 at 11+) — and the body
+is heavier than both (0.0539 and 0.0197). What lean exists favours merging.
+
+**Worth keeping:** the best of the twenty-two raw registers above gives χ² 105.2. One
+merge-or-omit parameter brings that to 15.9–66.8, so the deficit model earns most of the
+distance and still does not reach a fit — P = 0.10 at best, P = 0.0003 on the
+register-matched author base. Something beyond a single short-unit rule is shaping this
+histogram.
