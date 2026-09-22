@@ -109,6 +109,43 @@ The body's binned profile is [0, 5, 14, 19, 22] against the aggregate's
 claim above stays on the aggregate basis, which is the one whose controls behave at every
 true k.
 
+## The filter passes a split-half check (October 2026)
+
+A filter worth 6.2 bits should give the same answer on either half of the corpus, and
+`key-construction-is-unmeasurable.md` records split-half as the cheapest guard on any
+multi-cell statistic. `experiments/one_g_through_the_body.py` applies it: score the pool
+separately on each half and correlate the score vectors.
+
+| corpus | split-half correlation |
+|---|---|
+| planted walk 0 | 0.733 |
+| planted walk 1 | 0.953 |
+| planted walk 2 | 0.910 |
+| **the body** | **0.800** |
+
+The body sits inside the planted range, so the filter measures something stable rather
+than fitting noise.
+
+## One g runs through the body, as far as this can see
+
+The same machinery over quarters asks whether the key changes mid-book. A `g` that
+changed would show as a block of low cross-quarter correlations.
+
+| corpus | pairwise correlations over quarters | mean |
+|---|---|---|
+| planted, one g (4 keys) | | 0.76 ± 0.20 |
+| planted, g changes at half | +0.74 +0.69 +0.78 **+0.23 +0.17** +0.84 | 0.57 |
+| **the body** | +0.79 +0.88 +0.98 +0.66 +0.69 +0.82 | **0.80** |
+
+All six of the body's pairs are high and no quarter dissents, at the top of the one-g
+range. **Nothing suggests the key changes.**
+
+**The power is poor and the number says so.** A walk whose `g` changes outright at the
+halfway point still reads 0.57 — only 1.0 sigma below the one-g mean — because the
+quarter-level d-values rest on about 500 lag-5 pairs each. This rules out a gross change
+in `g` and would miss a subtle one. It adds an axis to F1, which tests doublets, d5 and
+IoC but not `g`.
+
 ## Scope and small biases
 
 - **Prose stands in for the body's plaintext.** The register agrees where it can be
