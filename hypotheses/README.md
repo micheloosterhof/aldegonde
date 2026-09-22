@@ -26,7 +26,7 @@ All paths are relative to the repository root.
 | File | Contents |
 |------|----------|
 | `data/page0-58.txt` | Full late corpus (13,136 runes; 2,973 words merging line-wraps, 3,367 counting wrap fragments) — includes two solved pages, see contamination note |
-| `data/page0-56.txt` | Same file with the solved trailing pages removed |
+| `data/page0-56.txt` | **Master pages 15–70** — the whole unsolved body, 12,956 runes. The name counts the file's own 56 pages, NOT master pages 0–56: the fifteen solved leading pages and the solved trailing ones are both gone. Verified by `experiments/corpus_geometry.py`. The only unsolved text outside it is master page 72, at 95 runes |
 | `data/liber-primus__transcription--master.txt` | Full transcription (solved + unsolved, 15,933 runes total) |
 | `lp_section_data.py` | Per-section word lists and page ranges for all 13 sections |
 
