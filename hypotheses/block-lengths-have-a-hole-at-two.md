@@ -160,6 +160,36 @@ at length 2 **0.1774 ± 0.0077** against the author's 0.2420 ± 0.0159, z = −3
 subset over-samples short blocks, which is why its rate sits above the body's own
 0.1588.)
 
+## Do the rubricated titles escape it? A lead at 1.25 sigma
+
+Every contrast above is between the body and something outside it — the author's other
+pages, twenty-two English registers, the body's own sections. The seventeen rubricated
+titles are *inside* it: same pages, same hand, marked in red, with their extents recorded
+in `rubricated_titles.json`.
+
+`experiments/titles_may_escape_the_hole.py`, 52 title blocks:
+
+| comparison | fraction at 2 | z |
+|---|---|---|
+| **the titles** | **0.231 ± 0.058** | |
+| against the rest of the body | 0.158 | +1.25 |
+| against the author's own plaintext | 0.242 | **−0.19** |
+
+**The titles are indistinguishable from ordinary plaintext and sit 1.25σ from the body
+around them.** On 52 blocks that is a lead, not a finding, and two things qualify it.
+
+The whole-distribution χ² is 9.7 on 9 df — nothing. Only the length-2 cell carries the
+signal, which is the cell one would look at first.
+
+And titles are short phrases, which carry *fewer* function words than running text. So the
+register confound points the opposite way to the observation: it should push the titles'
+2-rune rate **down**, and instead they read higher than the body. That makes the lead more
+interesting rather than less, but it is still a confound with no control available.
+
+Reaching three sigma would need about **302 title blocks against the 52 that exist** —
+roughly six times as many rubricated titles as have been identified. That is a
+transcription task, not an analysis one.
+
 ## Nor is it justification
 
 The remaining scribal story is that the scribe joined a short word to its neighbour to
