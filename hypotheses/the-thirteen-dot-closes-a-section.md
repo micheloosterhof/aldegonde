@@ -78,3 +78,47 @@ to arithmetic). Controlling for runes and lines on the page, the partial correla
 - `sentences-do-not-end-long.md` — where the per-glyph split first showed and was read as
   an underpowered cell.
 - `short-units-are-written-joined.md` — the other convention that changes at page 15.
+
+## Confirmed by the ink, independently of the text
+
+`experiments/do_the_marks_bound_the_titles.py`
+
+Everything in this file so far argued from the text. The rubrication supplies an
+independent anchor: `rubrication-crib-candidates.md` reads the red runes off the page
+scans and records which words each of seventeen titles covers, using only the red rune
+count and word lengths — **no mark is used to find a title**, so there is no circularity.
+
+Those seventeen titles are structural boundaries fixed by ink. The thirteen-dot is on
+them:
+
+| | observed | rate at an ordinary boundary | P |
+|---|---|---|---|
+| mid-page titles closed by ⑬ | 6 / 6 | 0.0098 | 9e-13 |
+| mid-page titles opened by ⑬ | 5 / 6 | 0.0098 | 5e-10 |
+| mid-page titles bounded by any mark, both sides | 6 / 6 | 0.0592 | 4e-08 |
+| page-opening titles after a page ending in a mark | 11 / 11 | 13 of 57 pages | 4e-10 |
+
+**Eleven of the body's thirteen page-final marks sit at a title.** A mark at the foot of a
+page is usually there because a title starts the next one.
+
+The one exception is the twelve-word span on page 53, opened by a four-dot. The census
+records that entry as four adjacent red runs read as a single range, so it is the weakest
+of the seventeen.
+
+### What this settles and what it does not
+
+**Settles:** the marks are not placed independently of the text's structure. The reading
+"the marks fall in positions unrelated to the syntax" (`marks-are-not-clause-punctuation.md`)
+cannot be maintained in that form — the ink says ⑬ marks section edges.
+
+**Does not settle, and this is the important half:** the glyph the titles pin is not the
+glyph that carries the sentence-final anomaly. On the final-block gap
+(`what_the_marks_are.py`) ⑬ reads +0.05 ± 0.39 and ④ reads −0.32 ± 0.20, and it is ④ that
+supplies 136 of the body's blocks-before-a-mark. The rubrication anchors ⑬ and is silent
+about ④.
+
+So the anomaly is unchanged and better located: **⑬ is a section mark and behaves like
+one; ④ is a mark of some other kind, and whatever it closes, the block before it does not
+lengthen.** That is consistent with `marks-are-not-one-glyph.md`, which found the two
+glyphs behave oppositely, and it means the two surviving readings should now be restated
+about ④ alone.
