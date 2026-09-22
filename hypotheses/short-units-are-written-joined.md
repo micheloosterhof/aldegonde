@@ -44,6 +44,34 @@ two-rune units fits equally, absorbing three-rune units is dead, and absorbing o
 one-rune units is rejected. The one- and two-rune versions cannot be separated: the
 author's 723 words hold only 29 of length one.
 
+## The boundary was found, not assumed
+
+Every comparison in this file partitions the book at page 15, because that is where the
+solved pages stop. A change-point scan removes the assumption
+(`experiments/where_the_joining_starts.py`): fit one 2-rune rate before each possible
+split and one after, take the likelihood ratio against a single rate, and price the
+maximum against a surrogate null rather than a χ² table.
+
+| scan over | max | null | P | best split |
+|---|---|---|---|---|
+| the whole book | **24.2** | 4.3 ± 2.3 | **0.0000** | p14: 0.243 → 0.160 |
+| pages 14+, a second change? | 2.3 | 4.2 ± 2.4 | 0.77 | — |
+| pages 0–13, an earlier one? | 8.0 | 2.5 ± 2.1 | 0.02 | p7: 0.201 → 0.294 |
+
+**One change, at page 14**, which is where the partition had put it. The localisation is
+soft — splits at 13, 14, 15, 17 and 18 all score within four units — so the boundary is
+13–15 and no finer, but that still covers the solved/unsolved edge.
+
+**Nothing changes after it** (P = 0.77), so the joining is a single switch rather than a
+drift. Together with `the-body-is-one-uniform-text.md`, which reaches the same verdict
+across sections by a different route, that is what **one different exemplar** looks like
+and not what a scribe changing habits looks like. It is the first positive evidence for
+reading 1 below, which had survived by elimination.
+
+The page-7 flag is **not supported**: it does not track cipher kind (both halves hold
+plaintext, monoalphabetic and Vigenère pages), it rests on pages 8–10 running high at
+about 2σ each, and three scans were run. Recorded so it is not mistaken for a finding.
+
 ## The form of the rule: a habit, not a threshold
 
 `which_lengths_merge.py` settled which unit gets absorbed (≤2 runes, not 3) but varied
@@ -233,6 +261,8 @@ same kind of object as the front matter's at all
 - `experiments/does_the_author_ever_join.py` — the direct bound on the author's own rate,
   and depletion tested against joining.
 - `experiments/is_the_joining_mechanical.py` — the deterministic size rule rejected.
+- `experiments/where_the_joining_starts.py` — the change-point scan that locates the
+  boundary and finds no second change.
 
 ## Related
 
