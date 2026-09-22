@@ -232,3 +232,32 @@ block is in the top tenth of its span's ranks — does not work, and the control
 author reads only 0.044 there despite a +1.17 rune lift, because block lengths tie
 constantly and a midrank rarely reaches 0.9. His mass sits at the 0.8 decile (0.31). A cell
 the positive control cannot fill is not a test.
+
+### The specially-treated four-dots are not the real sentence ends
+
+`experiments/are_the_special_four_dots_the_real_ones.py`
+
+The global bound leaves a small mixture alive (f < 0.17), and the obvious way to find it is
+to follow the scribe: the marks he set apart are the ones he noticed. Tested with the rank
+statistic:
+
+| subset | n | mean rank | a random block of the same spans | z |
+|---|---|---|---|---|
+| the author, all spans | 68 | **0.647** | 0.500 ± 0.030 | **+4.93** |
+| **closed AT a line end** | 14 | **0.501** | 0.500 ± 0.068 | **+0.01** |
+| closed mid-line | 110 | 0.490 | 0.500 ± 0.024 | −0.41 |
+
+**Dead uniform.** If all fourteen were genuine sentence ends the subset would read 0.647;
+it reads 0.501 — 2.17σ away, a likelihood ratio of about **10 to 1 for "none of them" over
+"all of them"**.
+
+So whatever makes the scribe break his line at a four-dot, **it is not that the four-dot
+ends a heavy word**. The coupling is real (10.6% against 3.9%, +4.02σ) and it does not
+track sentence-final lengthening.
+
+What survives is a mixture the layout does not flag — allowed by the global bound, and
+with nothing in this corpus able to point at which marks those would be. Unfalsifiable
+here rather than refuted.
+
+**Limit:** fourteen marks separates "all" from "none" at 2.17σ and cannot resolve the
+middle. A half-and-half subset would read 0.574 and sit one sigma from both.
