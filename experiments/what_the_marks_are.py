@@ -30,9 +30,18 @@ is a clean ④ ↔ `.` swap; ④ plus `.` totals 228 in both files; and ⑬, ③
 everywhere. So `.` and ④ are one glyph class, and the other three are genuinely
 distinct marks both transcribers saw the same way.
 
-Pages 0-14 therefore carry **87 marks of the ④ class and not one ⑬, ③ or ⑩**. The author
-reference is not a mixture at all -- it is pure four-dot. That makes the body's ④ row the
-exact like-for-like comparison:
+Pages 0-14 therefore carry **87 marks the transcription never resolves**, and the
+transcribers agree on the other classes everywhere they do resolve them.
+
+**CORRECTED, September 2026.** An earlier version of this file read that as "the author
+reference is pure four-dot". It is not: a dot count is only known where a scan was read,
+and `the_front_matter_dots_are_unmeasured.py` shows the scan corpus is
+`data/page0-58.txt` == master pages 15-72, with **no image of pages 0-14 at all**. The
+class of those 87 marks is unknown and cannot be settled from this repository. The
+comparison below survives anyway, because no body glyph class lengthens -- four-dot reads
+-0.32 +- 0.20 and thirteen-dot +0.05 +- 0.39 -- so no mixture in the front matter explains
+its +1.32. That makes the body's ④ row the
+closest available comparison, though not a guaranteed like-for-like one:
 
     the author, 87 marks of the ④ class     +1.28 +- 0.28
     the body,  136 blocks before a ④        -0.32 +- 0.20

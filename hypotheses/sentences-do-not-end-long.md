@@ -199,9 +199,13 @@ The two files are identical except for this one mark. **All 46 disagreements are
 `.` means "a dot mark whose count was not recorded" and ④ means "confirmed four dots";
 page 55 carries both in the same file, which rules out `.` being a pooled rendering.
 
-This makes the comparison **stronger, not weaker**. Pages 0–14 carry 87 marks of the ④
-class and not one ⑬, ③ or ⑩, so the author reference is pure four-dot rather than a
-mixture, and the body's ④ row is the exact like-for-like test:
+This makes the comparison stronger, not weaker — with one caveat added in September 2026.
+Pages 0–14's dot counts are **never resolved**, and the scan corpus that resolves them
+covers master pages 15–72 only, so the class of those 87 marks is unknown
+(`the_front_matter_dots_are_unmeasured.py`). It does not matter here: **no body glyph
+class lengthens** — four-dot −0.32 ± 0.20, thirteen-dot +0.05 ± 0.39 — so no mixture in
+the front matter explains its +1.32. The body's ④ row is the closest comparison
+available:
 
 | | marks | gap vs interior |
 |---|---|---|
