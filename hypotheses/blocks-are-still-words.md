@@ -3,6 +3,36 @@ type: observation
 ---
 # Observation: The Blocks Behave Like Whole Words, Not Arbitrary Cuts
 
+
+## The trend needs an error bar, and with one it is 1.75 sigma (October 2026)
+
+This file compares point estimates: the body's d5 length-trend of +0.0369 against prose
+words' +0.036 and arbitrary cuts' +0.0029. The floor argument is sound — attenuation can
+only shrink an observed correlation, so the observed value bounds the plaintext's from
+below whatever the leak fraction is. But a floor still has sampling error, and only
+**806** of the body's blocks reach six runes and contribute a lag-5 pair at all.
+
+`experiments/blocks_are_words_error.py` measures it two ways, which agree:
+
+    naive Fisher se on the 2,073 pairs   0.0220
+    bootstrap over the 806 blocks        0.0202
+    95% interval                         [-0.0021, +0.0743]
+
+| against | z |
+|---|---|
+| prose real words (+0.0169) | 0.99 |
+| words with 2-rune joined at q = 0.40 (+0.0204) | 0.82 |
+| **arbitrary cuts (+0.0016)** | **1.73** |
+
+**So the test leans toward words and does not establish them**, and the 95% interval
+reaches down to the cuts value. The third row is new: `short-units-are-written-joined.md`
+says the body's blocks are words with the short ones joined, and that segmentation gives
++0.0204 — between words and the body, and indistinguishable from either.
+
+This matters more than most weakenings, because E7 is what keeps every crib program
+valid. If the blocks are cuts, an eight-rune block spans word boundaries and matches no
+dictionary entry.
+
 ## Why it matters which
 
 `separators-are-not-word-boundaries.md` shows the block lengths carry no language order.
