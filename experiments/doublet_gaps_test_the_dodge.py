@@ -1,5 +1,5 @@
 # ABOUTME: Shows the recorded phase-gating refutation has no power, and replaces it with
-# ABOUTME: a doublet-gap test that does, which disfavours the quagmire-dodge model.
+# ABOUTME: a doublet-gap test that does, which disfavours both quagmire variants.
 """The test that refuted phase-gating cannot see it. A gap test can, and it says no.
 
 `period5-doublet-linkage.md` lists under "Evidence against":
@@ -33,8 +33,9 @@ residue first before profiles are compared. That rotation flatters concentration
 is applied to the corpus as well as to the models, so it works in the dodge's favour.
 
     aligned profile of gaps <= 40 runes
-    quagmire-dodge, one zero offset     [0.62, 0.03, 0.02, 0.08, 0.26]
-    probabilistic preventer             [0.36, 0.17, 0.16, 0.15, 0.16]
+    quagmire-dodge, one zero offset     [0.62, 0.05, 0.02, 0.08, 0.24]
+    quagmire-odometer                   [0.62, 0.06, 0.01, 0.07, 0.24]
+    probabilistic preventer             [0.35, 0.17, 0.17, 0.16, 0.15]
     the body, 12 short gaps             [0.42, 0.25, 0.17, 0.00, 0.17]
 
 ## Result
@@ -49,9 +50,15 @@ profile it helped build. The classifier is checked on corpora whose generator is
 
 The body sits in the middle of the preventer's distribution and outside the dodge's.
 
-**What this does and does not settle.** It bears on the dodge variant as specified --
-a five-step schedule with exactly one zero offset, which `quagmire-dodge.md` requires,
-since with no zero offset the model emits no doublets at all. It rests on **12 short
+The **odometer** variant carries the same signature, because it shares the single zero
+offset: log LR +4.38, about 80 : 1, P(>= observed | odometer) = 0.013. That is not a
+second independent refutation -- it is the same evidence reaching the same mechanism in
+both models.
+
+**What this does and does not settle.** It bears on the single zero offset, which
+neither model can drop: with no zero offset the preventer never fails and the corpus's
+doublets could not exist at all. So it reaches the load-bearing part of the quagmire
+family rather than an incidental choice. It rests on **12 short
 gaps**, which is thin, and the simulations run on prose rather than the LP's own
 register. The gap signature is driven by clock mechanics rather than by plaintext, so
 register should matter little, but that is an argument and not a measurement.
@@ -74,6 +81,8 @@ sys.path.insert(0, str(ROOT / "experiments"))
 from compact_state_models import order5, prose_corpora  # noqa: E402
 from does_the_cipher_restart import body_blocks  # noqa: E402
 from quagmire_dodge import M, alphabets, encipher, schedule  # noqa: E402
+from quagmire_odometer import draw as odometer_draw  # noqa: E402
+from quagmire_odometer import encipher as odometer_encipher  # noqa: E402
 
 GAP_LIMITS = (30, 40, 60, 90)
 REFERENCE_SEEDS = range(500, 620)  # held out from every corpus that gets scored
@@ -105,6 +114,13 @@ def dodge_corpus(seed):
         alphabets(K, schedule(rng, zeros=1)),
         rng.sample(range(M), M),
     )
+
+
+def odometer_corpus(seed):
+    """The odometer variant: two shift dials on a carry, same single zero offset."""
+    rng = random.Random(seed)
+    K, offsets, start = odometer_draw(rng)
+    return odometer_encipher(plaintext(), K, offsets, start)
 
 
 def preventer_corpus(seed, phi=0.90):
@@ -260,6 +276,43 @@ def main() -> None:
         f"\nlikelihood ratio for the preventer at this limit: "
         f"{math.exp(log_ratio(counts, prof_prev, prof_dodge)):.0f} : 1"
     )
+
+    print("\nThird: the odometer variant shares the single zero offset, so it should")
+    print("carry the same signature -- and the same evidence tells against it.\n")
+    prof_odometer = reference(odometer_corpus, limit)
+    print(f"{'model':<34}{'aligned profile':>40}")
+    for label, profile in (
+        ("quagmire-dodge, one zero offset", prof_dodge),
+        ("quagmire-odometer", prof_odometer),
+        ("probabilistic preventer", prof_prev),
+    ):
+        print(f"{label:<34}{str(np.round(profile, 3)):>40}")
+    print(f"{'the body':<34}{str(np.round(counts / counts.sum(), 3)):>40}")
+    print(
+        f"\n{'against':<26}{'body log LR':>13}{'ratio':>10}{'P(>=obs)':>11}{'accuracy':>11}"
+    )
+    for label, profile, generator in (
+        ("quagmire-dodge", prof_dodge, dodge_corpus),
+        ("quagmire-odometer", prof_odometer, odometer_corpus),
+    ):
+        observed = log_ratio(counts, prof_prev, profile)
+        known = np.array(
+            [
+                log_ratio(aligned_profile(generator(s), limit), prof_prev, profile)
+                for s in range(TRIALS)
+            ]
+        )
+        print(
+            f"{label:<26}{observed:>+13.2f}{math.exp(observed):>9.0f}:1"
+            f"{float((known >= observed).mean()):>11.3f}"
+            f"{float((known < 0).mean()):>11.0%}"
+        )
+    print(
+        "\nThese are not two independent refutations. Both models are hit by the same"
+    )
+    print("feature -- the single zero offset -- which neither can drop: with no zero")
+    print("offset the preventer never fails and the corpus's doublets could not exist")
+    print("at all. So the statistic bears on the load-bearing part of the family.")
 
     print(
         "\nThe body favours the preventer at every limit tried, and the evidence is"

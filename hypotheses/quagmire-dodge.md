@@ -24,6 +24,10 @@ closure. Note this test *also* withdrew the older refutation in
 `period5-doublet-linkage.md`, which had no power — the evidence here is new, not a
 restatement.
 
+The same test reaches `quagmire-odometer.md` at about 80:1, since it shares the single
+zero offset. The two verdicts are one piece of evidence against one shared mechanism,
+not two.
+
 Otherwise still the best-fitting mechanism in this directory. With one
 alphabet and one schedule fitted to the distance profile it matches every measured cell
 except the DJU-BEI repeat, across independent fits, with the seam landing unfitted. It

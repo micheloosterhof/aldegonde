@@ -21,8 +21,21 @@ driven as an odometer — `a` every word, `b` only when `a` wraps.
 
 ## Status
 
-**Status**: unresolved, and the best-scoring model in this directory on the
-fitted-to-free ledger. Untuned it lands 17 of 19 free cells.
+**Status**: unresolved, and **disfavoured at about 80:1** by the doublet-gap signature
+(`experiments/doublet_gaps_test_the_dodge.py`, September 2026), which it inherits from
+the single zero offset it shares with `quagmire-dodge.md`. Gating puts 62% of short
+doublet gaps on one residue mod 5; the corpus puts 0% there. Reference profiles come
+from held-out seeds and the classifier gets known odometer corpora right 71% of the
+time; the corpus reads log LR +4.38 with P(≥ observed | odometer) = 0.013. It rests on
+**12 short gaps**, so it is a strong lean rather than a closure.
+
+This is not independent of the verdict on `quagmire-dodge.md` — it is the same evidence
+reaching the same mechanism in both. What makes it serious is that neither model can
+drop the zero offset: without it the preventer never fails and the corpus's doublets
+could not exist at all.
+
+Otherwise still the best-scoring model in this directory on the fitted-to-free ledger.
+Untuned it lands 17 of 19 free cells.
 
 The `d6w` failure recorded below is **much weaker than it was first written**. That
 verdict came from `fingerprint_battery`, which scores a cell by where the LP falls in
