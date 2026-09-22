@@ -79,7 +79,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 | E10 | Not restored by any **route or keyed columnar transposition** — 17 route rules and 46,232 keyed ones, the best failing cross-validation at +0.0011 on held-out pages | `separators-are-not-word-boundaries.md` | Per-page, whole blocks |
 | E5 | Not a **vocabulary list** (type-weighted lengths are unmistakable) and not **sorted** (sorting creates order, eighty-fold) | same | |
 | E6 | Not **interleaved** at any depth to 30 — the language peak would move, not vanish | `interleaving_depth.md` | |
-| E7 | **Blocks lean toward words** rather than arbitrary cuts — the d5 length-trend is +0.0369 **± 0.0202**, which is 1.73σ from cuts (+0.0016) and 0.99σ from words (+0.0169). The 95% interval [−0.0021, +0.0743] reaches the cuts value | `blocks-are-still-words.md`, `blocks_are_words_error.py` | WEAKENED: the row quoted two point estimates and no error. 806 blocks reach six runes and supply a lag-5 pair. Matters because E7 is what keeps crib programs valid | 1.55σ; rescues the crib programmes |
+| E7 | **Blocks are words**, on two independent lines. The lengths: the author's own words with short ones joined fit at P = 0.83 with one free parameter, while a discrete lognormal and a negative binomial are rejected at P = 0.00 with two. The d5 length-trend agrees but weakly, +0.0369 ± 0.0202, 1.73σ from cuts | `blocks-are-still-words.md`, `lengths_say_words_not_cuts.py` | WEAKENED: the row quoted two point estimates and no error. 806 blocks reach six runes and supply a lag-5 pair. Matters because E7 is what keeps crib programs valid | 1.55σ; rescues the crib programmes |
 
 ## F. Uniformity
 

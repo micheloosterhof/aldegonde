@@ -4,6 +4,35 @@ type: observation
 # Observation: The Blocks Behave Like Whole Words, Not Arbitrary Cuts
 
 
+## A second line, from the lengths, far stronger than the trend (October 2026)
+
+The d5 trend is 1.73 sigma (below). The length distribution says the same thing much
+louder, and independently.
+
+If the blocks were cuts of a rune stream their lengths would follow whatever the cutting
+rule gives, and a natural rule gives a smooth law. If they are the author's words with the
+short ones joined (`short-units-are-written-joined.md`) they follow a one-parameter
+modification of a distribution measured independently from the sixteen solved pages.
+
+`experiments/lengths_say_words_not_cuts.py`, each model against its own parametric null:
+
+| model | free parameters | χ² | null, model true | P |
+|---|---|---|---|---|
+| **the author's words, short ones joined** | **1** | 29.5 | 55.2 ± 34.1 | **0.83** |
+| cuts: discrete lognormal | 2 | 54.3 | 9.3 ± 4.3 | **0.00** |
+| cuts: negative binomial | 2 | 177.6 | 10.1 ± 4.0 | **0.00** |
+
+The smooth laws are rejected outright **with two free parameters**. The joined-words model
+fits with **one**, and it is the handicapped entry — its null is wide because it carries
+the 723-word register's sampling error, while a smooth law is fitted straight to the body
+and carries none.
+
+**What this excludes is a natural cutting rule, not cuts in general.** A rule free to
+choose any cutting distribution fits by construction. The argument is parsimony: if the
+blocks were cuts, there is no reason their lengths should match a one-parameter
+modification of the author's own words rather than any of the smooth laws a cutting rule
+naturally gives.
+
 ## The trend needs an error bar, and with one it is 1.75 sigma (October 2026)
 
 This file compares point estimates: the body's d5 length-trend of +0.0369 against prose
