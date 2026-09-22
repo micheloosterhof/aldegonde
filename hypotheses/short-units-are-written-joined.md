@@ -317,3 +317,38 @@ This does not weaken the joining model itself — the ≤2 units at q = 0.40 sti
 length histogram, the serial order, and (from `order_survives_in_the_lengths.py`) the
 author's two-rune share. It removes joining from the list of things that could be causing
 the span-final anomaly.
+
+## The key-free channel cannot test this model, and the reason is the model itself
+
+`experiments/can_d5_see_the_joining.py`
+
+A merged block is two plaintext words concatenated, so its d5 pairs straddling the
+internal boundary are cross-word pairs — and cross-word d5 sits at chance where within-word
+d5 runs 4.92%. That predicts long blocks, which this model says are mostly merges, to show
+a diluted d5 rate. It is internal to the body and needs no reference.
+
+Measured, the rate **rises** with length: 0.0352, 0.0440, 0.0474, 0.0612 across lengths
+6, 7, 8–9 and 10–20. Short (6–7) 0.0407 against long (8+) 0.0536, difference −0.0129 ±
+0.0096, z = −1.34.
+
+**That is not evidence against joining, and the arithmetic is the point.** This model
+merges a unit of **two runes or less**, so the internal boundary sits at position 1 or 2,
+not in the middle. A d5 pair (i, i+5) straddles a boundary at `a` only when i < a ≤ i+5, so
+a boundary at position 2 is crossed by exactly **two** pairs however long the block is —
+against five for a boundary in the middle of a length-10 block.
+
+| fraction of long blocks merged | predicted d5 |
+|---|---|
+| 0.0 | 0.0750 |
+| 0.5 | 0.0669 |
+| 1.0 | 0.0588 |
+| **observed** | **0.0612 ± 0.0095** |
+
+The model's entire range spans 0.016 against a measurement error of 0.0095: the channel
+separates *no merging* from *universal merging* at about **1.7σ**, and every intermediate
+value less. There is no reference either — the author's plaintext carries 158 d5 pairs in
+total.
+
+**Route closed by arithmetic rather than sample size.** The model's own parameter — merging
+units of two runes or less — is what makes its effect on the only key-free channel too
+small to see. A model merging longer units would be testable this way; this one is not.
