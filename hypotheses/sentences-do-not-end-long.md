@@ -235,9 +235,21 @@ alone.
 
 Three readings, none yet eliminated:
 
-1. **The body's plaintext does not lengthen its sentence-final words.** Possible, but
-   both available English references do, including the book's own author, and his
-   effect is the stronger of the two.
+1. ~~**The body's plaintext does not lengthen its sentence-final words.**~~ **EXCLUDED,
+   September 2026** (`which_edge_is_anomalous.py`). This is the register escape, and the
+   book closes it. The LP author's own sentence-final lengthening is **+1.32 ± 0.26**,
+   sitting on top of a ten-register English mean of **+1.17 ± 0.27** (z = +0.42). So a
+   register explanation needs the body to be a different register from the front matter,
+   which the block-length evidence denies
+   (`blocks-are-still-words.md`, `short-units-are-written-joined.md`).
+
+   The same comparison settles the **other** edge in the opposite direction. Ten registers
+   show a sentence-initial dip of −0.66 ± 0.26; the body reads +0.07 ± 0.23 — but **so does
+   the author**, at −0.01 ± 0.27. The missing initial dip is an LP-register property, not a
+   body anomaly: English's dip comes from sentences opening on short function words, and
+   the LP opens on imperatives — `BELIEUE NOTHNG`, `TEST THE CNOWLEDGE`, `FIND YOUR TRUTH`.
+   This also means the initial edge cannot discriminate whether the marks open or close,
+   since there is no dip there for either arrangement to disturb.
 2. **The circled numerals are not sentence marks.** Then the sentence-initial match
    against the author is a coincidence. Hard to hold given that control.
 3. **A block adjacent to a mark is not a word** — it is a cipher-cut remainder, or the
@@ -294,7 +306,10 @@ So this result does not overturn it — it names the kind of rule that would hav
 
 ## Status
 
-**Status**: open and narrowed. Pooled, the author-versus-body difference is −6.1σ, but
+**Status**: open, narrowed to three readings. Reading 1 — the register escape — is
+**excluded**: the author's own sentence-final lengthening (+1.32 ± 0.26) matches ten
+English registers (+1.17 ± 0.27) while the body reads −0.29 ± 0.20. The anomaly is
+present in every span-length stratum at −2.3σ to −4.4σ. Pooled, the author-versus-body difference is −6.1σ, but
 stratifying by the span length the mark closes shows it is **−5.7σ at 3–6 blocks, −2.2σ
 at 7–14, and −0.6σ at 15+** — absent in the stratum holding half the body's spans. The
 Austen benchmark is retracted as a register model: its profile runs opposite to the
