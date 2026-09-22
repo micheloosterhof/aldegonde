@@ -241,3 +241,33 @@ and is sometimes dropped entirely, and 3-dot symbols are recorded as ordinary
 word separators. Splitting the `.` marks by glyph does not rescue the
 sentence-final signature at current coverage, but the test is weak and the
 inventory correction stands on its own.
+
+## The dot count does not name a level
+
+`experiments/does_the_dot_count_mean_a_level.py`
+
+The obvious reading of ③, ④, ⑩, ⑬ is that the count names a level — more dots, larger
+unit — with ⑬ closing sections and ④ dividing far more finely, which already puts two of
+the four in order. That predicts ③ closes units smaller than ④'s and ⑩ units in between.
+
+Measured as the distance from each mark to the **previous mark of the same glyph**, which
+is the size of the unit that glyph delimits:
+
+| glyph | dots | count | blocks to the previous | median |
+|---|---|---|---|---|
+| ③ | 3 | 4 | 741.0 | 468 |
+| ④ | 4 | 136 | 20.4 | 13 |
+| ⑩ | 10 | 2 | 727.0 | 727 |
+| ⑬ | 13 | 26 | 114.4 | 18 |
+
+**③ and ⑩ are not levels.** Their gaps of 741 and 727 are 2,900 divided by four and by
+two — scattered one-offs — and **every one has a four-dot on both sides**, so neither
+sits at a boundary the four-dot respects. That leaves two points, already known.
+
+**Two cautions this produced.** Distance to the *previous mark of any kind* is the wrong
+statistic: it makes ⑬ look small (median 4) because a title is opened and closed by a pair
+of thirteen-dots a few words apart, and pooled that way the dot-count correlation comes
+out **negative**, r = −0.181.
+
+And ⑬ is **bimodal** — mean 114.4 against median 18 — because it serves title-bounding
+pairs and section spans at once. Any statistic pooling ⑬ occurrences mixes the two.
