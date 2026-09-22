@@ -163,3 +163,30 @@ following rune to measure against, leaving seven pairs.
 separator. If the scribe left extra space at unmarked sentence ends, that would locate
 boundaries independently of the glyphs, and the within-word / word-break separation
 (0.407 against 1.007) shows the measurement is sharp enough to try.
+
+### The gap-width channel is confounded by justification
+
+`experiments/align_the_marks_to_the_image.py`
+
+The mixture test's weak arm was the image reader's word lengths. That is fixable: take the
+gap width from the image and the **length from the transcription**, matching them on pages
+where the two four-dot counts agree exactly. This gives 52 marks with exact lengths,
+against the line-end split's 14.
+
+| mark | marks | wide-gap subset | narrow | difference | r |
+|---|---|---|---|---|---|
+| four-dot | 52 | 3.65 | 3.88 | −0.23 ± 0.51 | −0.120 |
+| **one-dot (control)** | 93 | **4.18** | **3.41** | **+0.77 ± 0.41** | **+0.397** |
+
+**The control fails the channel.** Wide gaps follow long blocks for ordinary word
+separators too, at four sigma — justified text stretches spacing around whatever sits
+there. So gap width cannot test the mixture, and the four-dot's −0.23 ± 0.51 is
+uninterpretable; read against the control it is *less* than layout predicts, not more.
+
+The alignment technique is worth keeping for any statistic not confounded this way. The
+line-end flag is one — `are_some_four_dots_real.py` shows its control is clean — and it
+lacks only marks.
+
+Caveat: pages qualify only when image and transcription counts agree exactly, which is
+easy for a few four-dots and hard for forty one-dots, so the four-dot row draws on 23
+pages and the control on 3.
