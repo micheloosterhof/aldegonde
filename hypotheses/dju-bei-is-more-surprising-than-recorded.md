@@ -64,6 +64,32 @@ simulation is the authority since it assumes nothing; the likeliest cause is tha
 only *minimal* runs undercounts the opportunities. Recorded so the 1-in-10,514 is not
 mistaken for a correction.
 
+## What the one repeat bounds, if it is read as evidence
+
+`experiments/what_one_repeat_bounds.py` calibrates the other side: what a **compact** base
+pool of S states would predict. Drawing the base i.i.d. from S states gives a clean 1/S
+law, **λ ≈ 50/S**, measured at S = 100, 200, 406, 812 and 2,000.
+
+One repeat is a Poisson count giving λ̂ = 1 with a 95% interval of [0.025, 5.6], so
+**S ∈ [~10, ~2,000]**, and the open walk at λ = 0.00033 lies outside it. At S = 406 the
+likelihood ratio against the open walk is a couple of hundred to one.
+
+**This should not move much.** It is a likelihood ratio from a single count, and the
+independent evidence runs the other way: `rotor-machine-compact-state.md` disproves
+transitive compact groups of degree 29 by Burnside, and `two-rune-depth-no-base-reuse.md`
+excludes pools below ~300 using 465 two-rune words rather than one repeat. The window
+surviving both is roughly 300–2,000 — where AGL(1,29) and its order-406 subgroup sit,
+the one C-1 already records as surviving. Read it as a calibration of what the repeat
+*can* support, not as support.
+
+Two things checked and dropped: a crude base-reuse test (blocks identical at both
+positions) does not separate S = 406 from the open walk at all — 0.00133 against 0.00142,
+with the corpus at 0.00106 — so only the conditional form in
+`two-rune-depth-no-base-reuse.md` has power there. And a first model that cycled the base
+deterministically through the pool gave a non-monotonic answer (600 states → 0 repeats,
+812 → 0.267, 1,200 → 0): a lattice artifact between the cycle length and the clock, not a
+state count. Drawing i.i.d. removes it.
+
 ## Consequence
 
 **The DJU-BEI repeat is about thirty times more surprising than the number in
