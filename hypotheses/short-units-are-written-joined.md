@@ -70,6 +70,34 @@ Three readings, none tested:
 
 1. **The body's scribe or exemplar differs.** The book escalates its cipher page by page;
    it may escalate its orthography too.
+
+   *Tested, weak support at best.* A different hand should show in more than word
+   lengths. Two scribal features are in the transcription — line measure and which marks
+   end a block — and both are confounded.
+
+   **Line measure** has an encipherment confound that must be handled first: enciphered
+   text has no word shapes to break on, so a scribe fills to a measure while plaintext
+   breaks at sentence ends. Paragraph-final lines dropped:
+
+   | group | lines | runes per line |
+   |---|---|---|
+   | front: plaintext | 49 | 18.59 ± **6.49** |
+   | front: monoalphabetic | 46 | 19.52 ± **3.17** |
+   | front: interrupted Vigenère | 37 | 20.32 ± **2.60** |
+   | **the body** | 539 | **21.92 ± 2.32** |
+
+   The spread tightens monotonically, which is the confound doing its work. Against the
+   right comparison — the *enciphered* front matter — the body's lines are 1.6 runes
+   longer, about 8%, at z = +6.02. Real, but far smaller than the raw front-against-body
+   gap of +2.5 suggests, and an 8% line measure is not obviously a different hand.
+
+   **Mark inventory cannot be read at all.** The front matter uses `.` and never a
+   circled numeral; the body uses circled numerals and never `.`. Those are the same
+   manuscript feature under two *transcription* conventions — the circled numeral records
+   a dot count the `.` does not (`marks-are-not-one-glyph`). Comparing them measures the
+   transcriber. What is comparable is the rate: 12.5% of front-matter blocks end in a dot
+   mark against 5.7% in the body, which is ordinary for short instructional paragraphs
+   against continuous text.
 2. **The joining is part of the enciphering**, done when the plaintext was prepared rather
    than when it was composed. That would make it uniform across the body, which it is
    (χ² 3.9 on 8 df over nine sections), and absent from pages enciphered by simpler means,
