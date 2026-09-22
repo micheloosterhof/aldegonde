@@ -60,6 +60,48 @@ Compared against what each rule actually produces (`which_transposition.py`):
 support "not the original order" — at P = 0.034, not P = 0.65 — but it does **not** pick
 scrambling over reversal or rotation.
 
+## Which permutation: five rules excluded
+
+`which_transposition.py` left every candidate fitting, which was a power problem with two
+causes — the longest-block position collapses a span to one number, and the ±4 profile was
+computed only on spans of nine blocks or more. Two sharper statistics separate them
+(`which_permutation_survives.py`).
+
+**The exact edge cells**, over all 133 spans of three blocks or more, keep the contrast
+that binning destroys:
+
+| rule | FIRST z | LAST z | χ²(2) |
+|---|---|---|---|
+| **identity** | +2.08 | **−4.31** | **22.9** |
+| **reverse** | **−3.06** | +1.11 | **10.6** |
+| rotate 2 | +0.53 | −0.47 | 0.5 |
+| scramble | +0.28 | −1.27 | 1.7 |
+
+**The full ±4 profile** reaches rotations up to k = 3, since a rotation by k parks the
+long word at offset −(1+k):
+
+| rule | χ²(8) | P |
+|---|---|---|
+| identity | 33.3 | **0.0001** |
+| reverse | 17.6 | **0.024** |
+| rotate 1 | 25.5 | **0.0013** |
+| rotate 2 | 29.6 | **0.0002** |
+| rotate 3 | 18.1 | **0.021** |
+| rotate 6 | 7.9 | 0.447 |
+| scramble | 7.6 | 0.472 |
+
+**A deep scan** to offset −12 finds no parked long word anywhere: the largest gap in the
+window is +0.37 ± 0.30 at offset −12, which is 2.05σ below the +1.19 a rotation parking
+it there would give.
+
+**So: identity, reversal and rotations by 1–3 are excluded, and rotations out to 11 are
+disfavoured.** What survives is a permutation that **varies from sentence to sentence**,
+or a single rule that moves the final word more than twelve blocks from the end — which
+for a median span of 13 blocks is most of them.
+
+That bears on inverting it: a fixed rule would be recoverable from the statistics alone; a
+varying one needs a key.
+
 ## What it leaves untouched
 
 Everything else that is measured, because the **words themselves are intact**: the
