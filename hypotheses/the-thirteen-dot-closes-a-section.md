@@ -245,3 +245,45 @@ the bracket pattern. This leaves 26.
   mechanism. The short mode is a title's width; the long mode is a section's.
 - It does not touch the four-dot. Nothing here gives the four-dot a function.
 
+## The rule read backwards, and two predictions it makes
+
+`experiments/where_the_title_rule_breaks.py`
+
+Reading from the marks outward can be satisfied by a rule that fires rarely. Reading from
+the red ink outward asks whether every title is marked.
+
+**Twelve of fifteen body titles are closed by a thirteen-dot.** All six titles that begin
+mid-chunk are closed by one, and five of the six are opened by one as well. The sixth,
+chunk 68, is opened by a four-dot — the only four-dot adjacent to a title edge in the
+book, and one instance is not a pattern.
+
+### The three exceptions have one shape
+
+Every title the rule misses begins a chunk and runs one or two words: chunks 23, 55 and
+69. Chunks 23 and 55 carry no thirteen-dot anywhere on the page, so there the mark is
+absent from the page rather than from the title.
+
+### Two predictions about the red ink
+
+The bracket rule leaves exactly two thirteen-dots unexplained, and each implies a specific
+correction to the title record. Both are checkable against the scans at
+`~/src/cicada-2014/stage11` and **neither is checked here**.
+
+- **Chunk 69.** The title is recorded as word 0 alone and the thirteen-dot sits at word 1.
+  If the rule holds, the red ink runs to word 1 and the record is one word short.
+- **Chunk 30.** The title is recorded as words 0–4 and closed by a thirteen-dot at word 4,
+  with a second thirteen-dot at word 1 *inside* it. If the rule holds, this is two titles
+  — words 0–1 and 2–4 — not one.
+
+Either confirmation takes the rule to 26 of 26. A refutation — red ink that genuinely
+spans a thirteen-dot — breaks it, because a mark inside a title is not a bracket.
+
+### What the title sample cannot support
+
+The 15 body titles are 49 blocks in total. Two things were measured on them and neither
+resolves: title blocks average **4.18 against the body's 4.43** (z = −0.68), so there is
+no content-word lengthening visible; and short blocks of two runes or fewer run **0.265
+against 0.191** (z = +1.17), which leans towards titles being joined less than running
+text but settles nothing. Both cells need several times this many titles. They are
+recorded so the same two are not run again as if new.
+
