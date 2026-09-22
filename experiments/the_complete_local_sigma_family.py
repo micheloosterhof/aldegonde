@@ -20,6 +20,17 @@ exact rather than an approximation.
 Completing the family turns "this is a family, not an exhaustive account" into a closed
 statement about diagonals: after this, no further diagonal cell exists to test.
 
+## The z values are not standard normals, and the null is why that is safe
+
+Pooling reaches means a long word pair contributes several trials that share runes, so the
+trials are not independent and `sqrt(p(1-p)/n)` understates the spread. The surrogate null
+recomputes the same statistic on shuffled word order, so it carries exactly the same
+dependence, and the comparison of observed maximum against null maximum stays valid. As a
+check the null maximum comes out at 2.22 +- 0.41, close to the 2.4 that 24 independent
+standard normals would give, so the inflation is small in practice.
+
+Read the individual z values as a ranking, not as tail probabilities.
+
 ## The control comes first
 
 Twenty-five cells is twenty-five chances at a two-sigma departure. A planted sigma is run

@@ -67,13 +67,18 @@ Classifying every adjacent rune pair by what lies between the two runes:
 
 | between | pairs | doublets | rate | LR for a continuing stream |
 |---|---|---|---|---|
-| nothing (inside a word) | 9,640 | 60 | 0.0062 | (the baseline) |
-| a separator only | 2,587 | 21 | 0.0081 | 3e+16 to 1 |
-| a line break only | 389 | 3 | 0.0077 | 403 to 1 |
-| **a mark (any dot cluster)** | **156** | **1** | **0.0064** | **16 to 1** |
-| a separator and a line break | 124 | 1 | 0.0081 | 6 to 1 |
-| a page break | 45 | 0 | 0.0000 | unresolvable |
-| a section break | 14 | 0 | 0.0000 | unresolvable |
+| nothing (inside a word) | 9,636 | 60 | 0.0062 | (the baseline) |
+| a separator only | 2,581 | 21 | 0.0081 | 3e+16 to 1 |
+| a line break only | 388 | 3 | 0.0077 | 392 to 1 |
+| **a mark (any dot cluster)** | **146** | **1** | **0.0068** | **12 to 1** |
+| a separator and a line break | 123 | 1 | 0.0081 | 6 to 1 |
+| a page break | 44 | 0 | 0.0000 | unresolvable |
+| a section break | 12 | 0 | 0.0000 | unresolvable |
+
+(Figures corrected September 2026. The first version had no category for the annotation
+text in `page0-56.txt` — Latin letters, digits and quotes — so pairs spanning one were
+silently counted as "inside a word". Twenty-five pairs of 12,955 are affected and no cell
+moves by more than ten; the mark cell goes from 156 pairs to 146 and 16 to 1 to 12 to 1.)
 
 **The mark cell reads the within-word rate.** One doublet where a break at the mark
 predicts 5.4: P = 0.028 against a break. At 16 to 1 this is support rather than proof.

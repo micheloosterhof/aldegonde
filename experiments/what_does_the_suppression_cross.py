@@ -118,6 +118,12 @@ def pairs():
             between.add("page")
         elif ch in SECTION:
             between.add("section")
+        elif not ch.isspace():
+            # page0-56.txt carries annotation text -- Latin letters, digits, quotes.
+            # Without this branch such characters were invisible and their pairs were
+            # counted as "inside a word". Only 25 pairs of 12,955 are affected, so no
+            # cell here moves by more than ten, but the guard belongs in the code.
+            between.add("other")
     return out
 
 
@@ -157,7 +163,7 @@ def report(label, rows, baseline, *, is_baseline=False):
 
 def main() -> None:
     rows = pairs()
-    inside = cell(rows, [], ["line", "mark", "separator", "page", "section"])
+    inside = cell(rows, [], ["line", "mark", "separator", "page", "section", "other"])
     baseline = sum(1 for eq, _ in inside if eq) / len(inside)
     print(f"{len(rows):,} adjacent rune pairs in the body.")
     print(f"Within-word rate {baseline:.4f}; chance {CHANCE:.4f}.\n")
@@ -166,19 +172,19 @@ def main() -> None:
         f"{'vs chance':>10}{'stream':>8}{'break':>8}{'LR for stream':>16}"
     )
     report("nothing (inside a word)", inside, baseline, is_baseline=True)
-    report("a line break only", cell(rows, ["line"], ["mark", "separator", "page", "section"]), baseline)
-    report("a separator only", cell(rows, ["separator"], ["mark", "line", "page", "section"]), baseline)
-    report("a separator and a line break", cell(rows, ["separator", "line"], ["mark", "page", "section"]), baseline)
-    report("a MARK (any dot cluster)", cell(rows, ["mark"], ["page", "section"]), baseline)
-    report("a page break", cell(rows, ["page"], ["section"]), baseline)
-    report("a section break", cell(rows, ["section"]), baseline)
+    report("a line break only", cell(rows, ["line"], ["mark", "separator", "page", "section", "other"]), baseline)
+    report("a separator only", cell(rows, ["separator"], ["mark", "line", "page", "section", "other"]), baseline)
+    report("a separator and a line break", cell(rows, ["separator", "line"], ["mark", "page", "section", "other"]), baseline)
+    report("a MARK (any dot cluster)", cell(rows, ["mark"], ["page", "section", "other"]), baseline)
+    report("a page break", cell(rows, ["page"], ["section", "other"]), baseline)
+    report("a section break", cell(rows, ["section"], ["other"]), baseline)
 
     print(
         "\n  'stream' and 'break' are the doublets each account predicts."
         f"\n  Cells under {RESOLVABLE} pairs cannot separate them and print no verdict."
     )
 
-    marked = cell(rows, ["mark"], ["page", "section"])
+    marked = cell(rows, ["mark"], ["page", "section", "other"])
     hits, n = sum(1 for eq, _ in marked if eq), len(marked)
     print(
         f"\nThe mark cell: {hits} doublets in {n} pairs."
