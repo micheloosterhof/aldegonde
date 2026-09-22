@@ -44,6 +44,41 @@ two-rune units fits equally, absorbing three-rune units is dead, and absorbing o
 one-rune units is rejected. The one- and two-rune versions cannot be separated: the
 author's 723 words hold only 29 of length one.
 
+## The form of the rule: a habit, not a threshold
+
+`which_lengths_merge.py` settled which unit gets absorbed (≤2 runes, not 3) but varied
+only the absorbed unit's length — the *neighbour* was never part of any candidate rule.
+That is what separates the two readings of who did this:
+
+- a **habit**: a scribe running short words into a neighbour some of the time, with no
+  rule about when. Merging is then independent of the neighbour, so merged units inherit
+  the long tail of the word distribution.
+- a **mechanical step**: plaintext prepared into units of bounded size before
+  enciphering, merging a short word whenever the result still fits. The merged mass then
+  piles up below the cap and the tail keeps the author's own shape.
+
+`experiments/is_the_joining_mechanical.py`, each rule against its own parametric null:
+
+| rule | fitted | χ² | null, rule true | P |
+|---|---|---|---|---|
+| forward, probabilistic | q = 0.35 | 18.6 | 24.2 ± 13.0 | 0.70 |
+| backward, probabilistic | q = 0.40 | 17.5 | 22.0 ± 12.4 | 0.55 |
+| **forward, capped at N** | **N = 4** | **112.4** | 30.0 ± 16.3 | **0.00** |
+| to the shorter neighbour | q = 0.30 | 32.5 | 27.0 ± 16.0 | 0.30 |
+
+**The deterministic size rule is dead.** Giving it a probability as well does not rescue
+it: the fit drives N to 11, the top of the grid, where the cap never binds and the model
+collapses back to the plain probabilistic one.
+
+So the merge does not consult the neighbour's length — which a preparation step trimming
+units to a bounded size would have to do. This is consistent with reading 1 (a different
+hand or exemplar with an inconsistent habit) and is a second, independent argument
+against the preparation reading that the cipher-gradient test already killed.
+
+The direction stays undetermined: forward and backward fit equally well, and joining to
+whichever neighbour is shorter survives weakly at P = 0.30. This experiment settles the
+*kind* of rule, not its direction.
+
 ## The rate, and what it predicts
 
 Within the null's own spread the rate is indistinguishable over **q ∈ [0.22, 0.50]**, best
@@ -197,6 +232,7 @@ same kind of object as the front matter's at all
   surviving reading.
 - `experiments/does_the_author_ever_join.py` — the direct bound on the author's own rate,
   and depletion tested against joining.
+- `experiments/is_the_joining_mechanical.py` — the deterministic size rule rejected.
 
 ## Related
 
