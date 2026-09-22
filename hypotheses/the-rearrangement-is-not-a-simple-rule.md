@@ -83,3 +83,27 @@ destinations, never the rule that produced them.
 The rearrangement is applied *before* the short-unit joining, on the grounds that a
 scribal rearrangement precedes a scribal merge. The reverse order is untested and could
 move the marginal rules (columnar 3/4, rail fence 3) in either direction.
+
+## Seed audit: the χ² values are stable
+
+`experiments/are_the_headline_numbers_seed_stable.py`
+
+Every arm in this file applies the joining model to the ten registers **once**. After a
+single stochastic draw was found to have flipped a conclusion elsewhere
+(`what_would_it_take.py`), these were re-run under forty independent joining seeds:
+
+| rule | published | median | spread | range |
+|---|---|---|---|---|
+| identity | 38.5 | 39.6 | 0.6 | 38.5 to 40.9 |
+| reverse | 28.7 | 28.1 | 0.5 | 26.9 to 29.2 |
+| full shuffle | 8.5 | 9.7 | 0.6 | 8.2 to 10.8 |
+| keep first, reverse rest | 7.5 | 7.6 | 0.1 | 7.5 to 8.0 |
+
+**A spread of 0.6 on 39.6 does not move a P value.** Identity stays excluded at 2e-6 and
+the ranking is unchanged. The published identity-minus-shuffle gap of 30.0 matches the
+median gap of 29.9.
+
+The reason these are safe while the author's lag-1 was not is the size of the reference:
+ten registers pool 30,281 sentences and average the joining noise away before the
+statistic is formed, where the author has 94 spans. Draw-to-draw spread is 1.5% of the
+value here and 100% of it there.
