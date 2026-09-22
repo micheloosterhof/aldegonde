@@ -126,7 +126,7 @@ separately on each half and correlate the score vectors.
 The body sits inside the planted range, so the filter measures something stable rather
 than fitting noise.
 
-## One g runs through the body, as far as this can see
+## It does NOT show that one g runs through the body (corrected)
 
 The same machinery over quarters asks whether the key changes mid-book. A `g` that
 changed would show as a block of low cross-quarter correlations.
@@ -137,14 +137,28 @@ changed would show as a block of low cross-quarter correlations.
 | planted, g changes at half | +0.74 +0.69 +0.78 **+0.23 +0.17** +0.84 | 0.57 |
 | **the body** | +0.79 +0.88 +0.98 +0.66 +0.69 +0.82 | **0.80** |
 
-All six of the body's pairs are high and no quarter dissents, at the top of the one-g
-range. **Nothing suggests the key changes.**
+All six of the body's pairs are high and no quarter dissents. **That reads like evidence
+for a constant key and is not.**
 
-**The power is poor and the number says so.** A walk whose `g` changes outright at the
-halfway point still reads 0.57 — only 1.0 sigma below the one-g mean — because the
-quarter-level d-values rest on about 500 lag-5 pairs each. This rules out a gross change
-in `g` and would miss a subtle one. It adds an axis to F1, which tests doublets, d5 and
-IoC but not `g`.
+The score vector is dominated by how well each `g` fits **plaintext** structure, which
+both halves share whatever the key does, so the correlation stays high either way.
+Calibrated over five trials per arm on the sharper split-half version:
+
+| arm | split-half correlation |
+|---|---|
+| planted, one g | 0.867 ± 0.164 — 0.97, 0.94, 0.93, 0.54, 0.95 |
+| planted, g changes at the midpoint | 0.535 ± 0.325 — 0.76, 0.07, 0.27, 0.61, **0.97** |
+| the body | 0.800 |
+
+**One of the five changed-key trials returned 0.97.** The arms separate by 0.91 sigma.
+Subtracting the generic component — each `g`'s mean score over unrelated corpora — makes
+it *worse* at 0.69 sigma, and puts the body at −0.207 against +0.435 for one g and −0.109
+for a change. With arms that wide none of it means anything.
+
+**So this section validates the filter and says nothing about whether `g` is constant.**
+An earlier version claimed it ruled out a gross change; it does not. The stated reason
+was also wrong — the thin lags are 6 and 7 at 316 and 178 pairs per quarter, and lag 5
+does not enter the filter at all.
 
 ## Scope and small biases
 

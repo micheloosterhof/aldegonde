@@ -85,7 +85,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source | Scope |
 |---|---|---|---|
-| F3 | **One g runs through the body**: the d-profile score vector correlates at 0.66–0.98 between all four quarters, mean 0.80, against 0.76 ± 0.20 for planted one-g walks. The filter itself passes split-half at 0.800 against a planted 0.73–0.95 | `d-profile-pins-g-to-five-cycles.md`, `one_g_through_the_body.py` | Weak power: a walk whose g changes outright at the halfway point still reads 0.57, 1.0σ below the one-g mean. Rules out a gross change, not a subtle one |
+| F3 | **The d-profile filter is stable**: its score vector passes split-half at 0.800 against a planted 0.73–0.95, so its 6.2 bits are not noise | `d-profile-pins-g-to-five-cycles.md`, `one_g_through_the_body.py` | **Does NOT show g is constant across the body.** That version of the row is withdrawn: the score vector is dominated by shared plaintext structure, and a planted g-change at the midpoint still reads 0.535 ± 0.325 against 0.867 ± 0.164 for one g — arms separating by 0.91σ, with one changed-key trial returning 0.97 |
 | F1 | The body is **one cipher**: over 9 sections χ² 5.0 and 4.1 on 8 df for doublets and d5, IoC sd 0.0070; over 55 pages χ² 62.0 on 54 df and 46.7 on 49 df, IoC sd 0.0385. The most extreme page is −4.20 sd on 66 runes | `the-body-is-one-cipher.md` | The test has power: the Parable, a plaintext page spliced in, surfaces at nIoC 1.819, **+7.06 sd** |
 | F2 | **No window** from 100 runes up reads as plaintext or monoalphabetic — the body's best window is below a shuffled corpus's | `no-plaintext-window.md` | Coincidence only; a differently-keyed polyalphabetic stretch would not show |
 

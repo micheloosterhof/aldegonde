@@ -100,12 +100,23 @@ def main() -> None:
     print(f"\none-g planted: {b.mean():.2f} +- {b.std():.2f}")
     print(
         f"\nThe body's quarters all agree, mean {np.mean(c):.2f}, at the top of the"
-        "\none-g range. No quarter dissents, so nothing suggests the key changes."
-        f"\n\nBut the power is poor. A walk whose g changes outright at the halfway point"
-        f"\nstill reads {changed:.2f}, only {(b.mean() - changed) / b.std():.1f} sigma"
-        " below the one-g mean, because the"
-        "\nquarter-level d-values are measured on about 500 lag-5 pairs each. This rules"
-        "\nout a gross change in g and would miss a subtle one."
+        "\none-g range. That reads like evidence for a constant key and is not."
+    )
+    print(
+        "\nThe test has almost no power, for a reason worth stating. The score vector is"
+        "\ndominated by how well each g fits PLAINTEXT structure, which both halves share"
+        "\nwhatever the key does, so the correlation stays high either way. Calibrated"
+        "\nover five trials per arm the split-half correlation reads 0.867 +- 0.164 for"
+        "\none g and 0.535 +- 0.325 for a g that changes outright at the midpoint -- and"
+        "\none of those five changed-key trials still returned 0.97. The arms separate by"
+        "\n0.91 sigma."
+        "\n\nSubtracting the generic component -- each g's mean score over unrelated"
+        "\ncorpora -- makes it worse, 0.69 sigma, and moves the body to -0.207 against"
+        "\n+0.435 for one g and -0.109 for a change. With arms that wide none of it means"
+        "\nanything."
+        "\n\nSo this validates the filter and says NOTHING about whether g is constant."
+        "\nThe thin lags are 6 and 7, at 316 and 178 pairs per quarter; lag 5 does not"
+        "\nenter the filter at all."
     )
 
 
