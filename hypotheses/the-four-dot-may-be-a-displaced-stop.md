@@ -113,3 +113,32 @@ The reading it weighs against is "the four-dot is unrelated to the syntax"
 (`the-four-dot-is-not-layout-coupled.md`), which has no account of why the gaps should fit
 thinned sentence ends at all. That reading still holds the layout channel, which this does
 not touch.
+
+## The thinning reading is dead
+
+`experiments/the_thinning_model_is_dead.py`
+
+The gap law fits the author's own spans thinned to p = 0.357 at 4.3 to 1 over the next arm
+(`are_the_four_dot_gaps_memoryless.py`), and that has been treated here as compatible with
+the missing lengthening. It is not.
+
+**Thinning's p is the share of sentence ENDS that carry a mark, not the share of MARKS
+that sit at ends** — the latter is 1 by construction, since a thinned process marks a
+subset of real ends and nothing else. Reading p as though it described the marks is what
+made the two look compatible.
+
+The rank statistic measures the share of marks at genuine ends directly:
+
+| model | predicted f | σ away from the measured −0.131 ± 0.156 |
+|---|---|---|
+| **thinning: every mark is a sentence end** | 1.000 | **7.2** |
+| a mixture at the layout rate | 0.106 | 1.5 |
+| no four-dot is a sentence end | 0.000 | 0.8 |
+
+**Excluded at seven sigma.** So the gap law's 4.3-to-1 preference on 137 gaps is a
+coincidence of shape, not evidence for a mechanism — which is what a weak likelihood ratio
+looks like when a sharp test arrives.
+
+The standing tension between spacing and content resolves by the spacing losing. What
+survives is unchanged: a small mixture at the layout rate and no-mark-is-an-end are 1.5σ
+and 0.8σ away respectively, and the corpus cannot separate them.
