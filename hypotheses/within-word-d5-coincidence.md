@@ -378,3 +378,37 @@ better one if this survives more data.
 **It does not bear on separator loss.** That was the motivation for measuring it, and a
 simulation of the merge model shows the model predicts no gradient at all (median
 z = −0.23). See `two-rune-deficit.md`.
+
+## Against English rather than chance, the rate is ordinary
+
+`experiments/is_the_d5_rate_normal_for_english.py`
+
+This file's headline compares the within-word d5 rate with **chance**: 4.92% against 1/29
+= 3.45%. But d5 reads the plaintext directly — within a block the base cancels — so the
+question a plaintext statistic should answer is whether it matches **English**.
+
+Two corrections stand between the two comparisons and neither was on record.
+
+**Length.** English's within-word d5 is not flat: 0.0356 at six runes, 0.0539 at seven,
+0.0687 at eight to nine, 0.0622 beyond. Weighted by the body's own block lengths the
+English expectation is **0.0591**.
+
+**Drift.** The preventer advances the clock when it fires, and a firing between i and i+5
+destroys the relation, so the observed rate is `(1−q)^5` of the plaintext's own.
+
+| comparison | difference | sigma |
+|---|---|---|
+| against chance | +0.0149 | **+3.16** — the figure on record |
+| against length-matched English | −0.0096 | −2.04 |
+| against English, drift undone at q = 0.034 | −0.0069 | **−1.22** |
+
+**The body's implied plaintext d5 is within about one sigma of English.** The "+3σ excess"
+and a "−2σ deficit" are the same measurement against two different baselines.
+
+So the only key-free window onto the plaintext says it is ordinary English — agreeing with
+the word-length and function-word channels, and with what the transposition reading
+requires.
+
+**Weak point:** q is not measured directly. At q = 0 the deficit is −2.04σ. The conclusion
+needs the drift to be real, which `the-preventer-is-in-the-stream.md` establishes
+independently.
