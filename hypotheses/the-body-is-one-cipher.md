@@ -73,7 +73,28 @@ plaintext page at +7 sd. `experiments/section_homogeneity.py`.
 - `flat-ioc.md`, `doublet-suppression.md`, `within-word-d5-coincidence.md` — the three
   pooled statistics this shows are safe to pool.
 
+## The body's two halves also agree on the letter step, weakly
+
+`experiments/do_the_body_halves_share_g.py`
+
+The three statistics above — doublet rate, d5, IoC — carry no information about `g`. The
+within-block d-profile does: the base cancels at every distance, so the rate at distance k
+is set by g^(k mod 5), and d5 (identity power) is a plaintext control while d2, d3, d4, d6
+and d7 carry the step.
+
+The body's two halves, 1,464 blocks each, give **χ² = 6.9 on 5 df**, against a planted
+same-`g` median of 7.3 and a different-`g` median of 23.3: **4.8 to 1 for one letter step
+across the body.**
+
+Weak, and the same strength as the front-matter claim withdrawn below. It is reported
+because it agrees with every other statistic here, where that one stood against rune
+frequencies at P = 5e-79 and a doublet rate at z = +4.16.
+
 ## WITHDRAWN: the enciphered front matter is a different cipher
+
+**Scope: this withdrawal does not touch anything above it.** Constraint F1 in
+`what-any-solution-must-satisfy.md` cites this file for the body's internal homogeneity,
+which is unaffected — the withdrawal concerns only the comparison with the front matter.
 
 `experiments/does_the_front_matter_share_g.py`
 
