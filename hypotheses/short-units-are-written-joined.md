@@ -66,6 +66,30 @@ The front matter does not do it. Its 2-rune fraction is 0.2420, sitting at the m
 convention differs between the front matter and the body of the same book, written in the
 same hand.
 
+**Measured directly, September 2026** (`experiments/does_the_author_ever_join.py`).
+The fraction is indirect evidence — a text could join and still land at the median. The
+solved pages can be *read* instead: their ciphers preserve position, so the recorded
+plaintext splices back into each page's own separator layout, and every separated unit
+can be checked against a dictionary and against the author's own vocabulary. A unit
+counts as joined only if it is **not** an English word and **does** split into two words
+he writes separately elsewhere, each used twice or more. (A loose test is useless here:
+it flags AND as AN+D and WITHIN as WITH+IN.)
+
+| | |
+|---|---|
+| units on the 16 solved pages | 723 |
+| units of ≤ 2 runes | 204 (28.2%) |
+| **strict join candidates** | **0** |
+| the same detector on his text joined at q = 0.40 | **45** |
+
+Zero against forty-five. The detector finds about half the joins q = 0.40 would create,
+so seeing none puts the author at **q < 0.015** by the rule of three — **24× below** the
+body's fitted rate. His commonest short units are THE (43), TO (23), IS (22), A (19),
+WE (18), OF (9), and he writes every one of them separately.
+
+So "the front matter does not do it" is now a measurement rather than an inference, and
+the gap between the two halves of the book is 24-fold rather than suggestive.
+
 Three readings, none tested:
 
 1. **The body's scribe or exemplar differs.** The book escalates its cipher page by page;
@@ -122,13 +146,37 @@ Three readings, none tested:
 
    **Being enciphered is not what distinguishes the body.**
 3. **The 2-rune deficit is not joining at all** but some other process that happens to
-   leave the same marginal and the same serial order. Nothing else measured does.
+   leave the same marginal and the same serial order.
+
+   *One candidate now measured, and rejected.* The obvious alternative is **depletion** —
+   the body's plaintext simply carrying fewer function words, with nothing merged. Both
+   models take one free parameter and start from the author's own 723 words
+   (`does_the_author_ever_join.py`):
+
+   | model | fitted | χ² over 13 length cells |
+   |---|---|---|
+   | **joining**: a ≤2-rune unit merges with the next | q = 0.35 | **20.2** |
+   | **depletion**: a ≤2-rune unit is simply absent | d = 0.40 | **63.9** |
+
+   Depletion must renormalise the whole distribution upward, so it over-predicts lengths
+   3 and 4 (0.2702 and 0.1999 against the body's 0.2486 and 0.1771) and under-predicts
+   everything past 7, where joining puts the merged mass. **The deficit at two really is
+   a merge.** Reading 3 still stands as a possibility, but it now has one fewer candidate
+   mechanism and no positive instance.
 
 Reading 2 was the one that fitted the pattern of the book without needing a second hand.
 It is now dead, so what survives is reading 1 — the body's scribe or exemplar differs —
 or reading 3, that the deficit is not joining at all. Nothing else measured produces the
 same marginal and the same serial order, which is what keeps reading 3 unattractive
-rather than excluded.
+rather than excluded; depletion is the one alternative tested and it fails by a factor
+of three in χ².
+
+**The tension is now sharp rather than suggestive.** The body's block lengths are the
+author's own word lengths with about a third of the short units merged, and the author
+merges at under 1.5%. Same book, same alphabet, same hand by every other measure. That
+is the finding to explain, and it presses hard on whether the body's separators are the
+same kind of object as the front matter's at all
+(`separators-are-not-word-boundaries.md`).
 
 ## Falsification
 
@@ -147,6 +195,8 @@ rather than excluded.
 - `experiments/which_lengths_merge.py`
 - `experiments/reference_noise_in_length_tests.py` — the retraction that made this the
   surviving reading.
+- `experiments/does_the_author_ever_join.py` — the direct bound on the author's own rate,
+  and depletion tested against joining.
 
 ## Related
 
