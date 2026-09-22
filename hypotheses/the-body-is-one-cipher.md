@@ -72,3 +72,44 @@ plaintext page at +7 sd. `experiments/section_homogeneity.py`.
 - `unicity-distance.md` — the same conclusion from the information side.
 - `flat-ioc.md`, `doublet-suppression.md`, `within-word-d5-coincidence.md` — the three
   pooled statistics this shows are safe to pool.
+
+## The enciphered front matter probably shares the same letter step
+
+`experiments/does_the_front_matter_share_g.py`
+
+This file tests the body against itself. It does not compare the body with the nine
+enciphered ASCII-convention chunks (0, 1, 2, 4, 5, 6, 7, 12, 13), which are still
+unsolved and supply 1,796 runes in 467 blocks.
+
+The instrument is the within-block d-profile. The base cancels at every distance, so the
+rate at distance k is set by g raised to k mod 5. **At k = 5 the power is the identity**,
+so d5 measures the plaintext alone and is a built-in register control; d2, d3, d4, d6 and
+d7 carry g. d1 is unusable, because the body's adjacent rate is pushed down by the doublet
+preventer and no other part of the book suppresses repeats.
+
+| corpus | pairs | d2 | d3 | d4 | d5 | d6 | d7 |
+|---|---|---|---|---|---|---|---|
+| the body | 19,284 | 0.0347 | 0.0370 | 0.0410 | 0.0492 | 0.0245 | 0.0421 |
+| the body, first half | 9,735 | 0.0370 | 0.0348 | 0.0364 | 0.0512 | 0.0172 | 0.0476 |
+| the body, second half | 9,549 | 0.0324 | 0.0393 | 0.0457 | 0.0472 | 0.0318 | 0.0365 |
+| the enciphered front matter | 2,218 | 0.0326 | 0.0430 | 0.0401 | 0.0586 | 0.0625 | 0.0986 |
+
+Register control: d5 reads 0.0492 ± 0.0048 against 0.0586 ± 0.0158, **z = −0.57**. The two
+sections do not differ in plaintext.
+
+| pair | χ² on 5 df |
+|---|---|
+| the body's two halves (known same g) | 6.9 |
+| **the body against the enciphered front matter** | **6.0** |
+| simulated at these sizes, same g | median 5.1 |
+| simulated at these sizes, different g | median 15.6 |
+
+The observed 6.0 sits at 60.5% of the shared-g arm and 14.0% of the different-g arm:
+**a likelihood ratio of 4.3 to 1 for one letter step through the book.**
+
+Weak, and reported as weak. The front matter supplies 2,218 within-block pairs against the
+body's 19,284, and most of the χ² comes from d6 and d7, which have the fewest pairs.
+
+Its value is mainly that `encipherment_does_not_break_the_link.py` uses the front matter
+as its control for the sentence-final lengthening. That control is now somewhat better
+founded and still not established.
