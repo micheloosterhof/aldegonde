@@ -492,3 +492,36 @@ a simple generated law, which they are not.
   this bears on; it favours neither cleanly, which is the point.
 - `lp_plaintext_register.py` — the author's own register, without which this comparison
   reads against prose and misses by more.
+
+## The length sequence carries no phrase structure either
+
+`experiments/do_length_patterns_repeat.py`
+
+A repeated plaintext phrase leaves nothing in the ciphertext — the base changes at every
+block, so the second occurrence is enciphered under an unrelated alphabet. But the cipher
+is length-preserving, so it does leave a repeated **block-length n-gram**, and nothing had
+looked for those.
+
+The LP author repeats phrases verbatim: *WHO ARE YOU WHO WISHES TO STUDY HERE* occurs
+three times across pages 4–6. That makes his pages a positive control with a known answer.
+
+| n | author (719 blocks) | z | body (2,896 blocks) | z |
+|---|---|---|---|---|
+| 5 | 71 | +6.87 | 231 | −0.63 |
+| 6 | 41 | +12.87 | 37 | −0.42 |
+| 7 | 28 | +24.82 | 12 | +2.28 |
+| 8 | 19 | **+47.16** | **0** | −0.82 |
+| 9 | 13 | **+70.37** | **0** | −0.35 |
+| 10 | 6 | +60.05 | **0** | −0.25 |
+
+Against a shuffle of each corpus's own lengths, which keeps the marginal exactly.
+
+**Not one repeated eight-block pattern in the body, where the author has nineteen in a
+quarter of the length.** The style is detectable at 47σ, so this is decisive rather than
+underpowered. The +2.28 at n = 7 is one cell of six and does not survive multiple testing.
+
+Two consequences. The crib programme loses a nominally open route — there are no repeated
+long phrases to exploit. And it is measured evidence that the body is a different register
+from the author, which `which_edge_is_anomalous.py` assumes it is not; that argument
+survives on the ten-register spread rather than on the author alone, but its premise is
+weaker than stated.
