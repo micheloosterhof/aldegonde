@@ -21,13 +21,12 @@ driven as an odometer — `a` every word, `b` only when `a` wraps.
 
 ## Status
 
-**Status**: unresolved, and **disfavoured at about 80:1** by the doublet-gap signature
-(`experiments/doublet_gaps_test_the_dodge.py`, September 2026), which it inherits from
-the single zero offset it shares with `quagmire-dodge.md`. Gating puts 62% of short
-doublet gaps on one residue mod 5; the corpus puts 0% there. Reference profiles come
-from held-out seeds and the classifier gets known odometer corpora right 71% of the
-time; the corpus reads log LR +4.38 with P(≥ observed | odometer) = 0.013. It rests on
-**12 short gaps**, so it is a strong lean rather than a closure.
+**Status**: unresolved, and **disfavoured by the doublet-gap signature on a narrower
+basis than first published** (`experiments/doublet_gaps_conditioned.py`, September 2026).
+The original 80:1 is **withdrawn** — it came from a pooled scoring that conditions on
+nothing. Bucketed by gap size with the key phase marginalised, the within-block doublets
+give log LR **−0.91**, which if anything favours the odometer, and the seam doublets give
+**+3.41, about 30:1** against it. The verdict rests on the seam doublets alone.
 
 This is not independent of the verdict on `quagmire-dodge.md` — it is the same evidence
 reaching the same mechanism in both. What makes it serious is that neither model can

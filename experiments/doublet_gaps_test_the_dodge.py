@@ -2,6 +2,14 @@
 # ABOUTME: a doublet-gap test that does, which disfavours both quagmire variants.
 """The test that refuted phase-gating cannot see it. A gap test can, and it says no.
 
+**SUPERSEDED IN PART, September 2026.** The first half stands: the recorded refutation
+has no power, which is a fact about the simulation. The SCORING below does not --
+pooling every gap under 40 runes into one residue histogram conditions on nothing, and
+rotating twelve points onto their own modal residue manufactures concentration. The
+71:1 and 80:1 figures are withdrawn. `doublet_gaps_conditioned.py` redoes it bucketed by
+gap size with the key phase marginalised: the direction survives, but the within-block
+doublets alone give log LR +0.09 and the whole verdict rests on the 23 seam doublets.
+
 `period5-doublet-linkage.md` lists under "Evidence against":
 
     Doublets are not phase-gated. If a doublet survived only ~1 phase in 5, the 86

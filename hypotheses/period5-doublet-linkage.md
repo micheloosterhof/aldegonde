@@ -104,15 +104,16 @@ would set a rune-flat, phase-flat 5× suppression is not answered.
   | probabilistic preventer | [0.35, 0.17, 0.17, 0.16, 0.15] |
   | **the body**, 12 short gaps | **[0.42, 0.25, 0.17, 0.00, 0.17]** |
 
-  With reference profiles from held-out seeds, the classifier gets known dodge corpora
-  right 76% of the time and known preventer corpora 91%. The body reads log LR **+4.27**,
-  about **71:1 for the preventer**, with P(≥ observed | dodge) = 0.000 over 80 draws. The
-  sign holds at every gap limit from 30 to 90 and weakens as the limit grows, which is
-  where the drift should wash it out. It rests on **12 gaps**, and the simulations use
-  prose rather than the LP's register.
+  **The 71:1 first published here is withdrawn** — it pooled gaps of very different
+  sizes, whose predicted residues differ enormously, into one histogram. Conditioned on
+  gap size with the key phase marginalised (`doublet_gaps_conditioned.py`), the 63
+  within-block doublets give log LR **+0.09** — nothing — and the 23 seam doublets give
+  **+5.33, about 200:1** for the preventer. The split survives smoothing and survives
+  matching the body's block structure, and both tests classify known corpora at 93-97%.
 
-  So phase gating is still disfavoured — but on evidence, where before it was on a test
-  that could not see it.
+  So phase gating is still disfavoured, and on evidence rather than on a test that could
+  not see it — but the evidence lives entirely in the seam doublets, and why it should
+  not also show in the larger within-block set is unexplained.
 
 - **The suppression is rune-flat.** It is carried by 28 of 29 runes roughly in
   proportion, not by the ≥4 fixed points that an order-5 *g* on 29 letters must
