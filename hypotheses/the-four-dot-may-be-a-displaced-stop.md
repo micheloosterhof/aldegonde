@@ -80,3 +80,34 @@ testable against the layout.
   rejection.
 - Any channel that locates a sentence end independently would settle it. The red ink does
   this for ⑬ and not for ④.
+
+## The gap law supports this reading, weakly
+
+`experiments/are_the_four_dot_gaps_memoryless.py`
+
+The body's 137 four-dot gaps, in blocks, have the **mean of English sentences** (21.40
+against 22.76) and the **shape of the author's own spans** (7.65 mean, but the right
+short-gap deficit). Thinning the author's sentence ends to p = 0.357 reproduces both, and
+wins the binned likelihood comparison:
+
+| arm | log-likelihood | ratio |
+|---|---|---|
+| the author's spans, thinned to p = 0.357 | −239.07 | 1.000 |
+| the LP author's spans | −240.52 | 0.235 |
+| memoryless (geometric) | −241.08 | 0.134 |
+| English sentences, joined | −242.11 | 0.048 |
+
+4.3 to 1 over the next arm is weak, and the control says why: thinned-author and
+memoryless are only separated 70% of the time at n = 137. The well-separated arms (English
+joined 94%, author unthinned 92%) are the two the body rejects.
+
+**Why it matters here.** A thinned-sentence-end gap law says every four-dot sits at a real
+sentence end. This reading is one of only two that can hold that together with the missing
+lengthening — a mark displaced by a variable block or two keeps the gap law intact while
+the block immediately before it is no longer the sentence's last word. The other is
+`the-words-are-transposed-within-sentences.md`.
+
+The reading it weighs against is "the four-dot is unrelated to the syntax"
+(`the-four-dot-is-not-layout-coupled.md`), which has no account of why the gaps should fit
+thinned sentence ends at all. That reading still holds the layout channel, which this does
+not touch.
