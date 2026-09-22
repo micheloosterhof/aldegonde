@@ -73,9 +73,11 @@ testable against the layout.
 ## Falsifiable
 
 - The layout version is directly checkable: if the mark is written at the end of the line
-  holding the stop, its line-end rate would be high. It is 0.106 against the word
-  separator's 0.115 (`the-four-dot-is-not-layout-coupled.md`), so **that version is
-  already dead.**
+  holding the stop, its line-end rate would be high. **CORRECTED:** it is 0.106 against a
+  word separator's **0.039**, not 0.115 — the earlier baseline was contaminated by
+  annotation hyphens. At +4.02σ the four-dot *is* line-break coupled, so **this version is
+  live rather than dead**, though the coupling is far weaker than real punctuation's
+  (5.7× its baseline against the four-dot's 2.7×).
 - A larger corpus sharpens the ±1 row: at P = 0.11 it is the only smear still close to
   rejection.
 - Any channel that locates a sentence end independently would settle it. The red ink does

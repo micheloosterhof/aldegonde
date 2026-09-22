@@ -48,8 +48,15 @@ BODY_PAGES = range(15, 73)
 
 
 def lines_of(chunk: str) -> list[str]:
-    """Written lines: the transcription wraps with '/' and newlines, both line ends."""
-    return [ln for ln in re.split(r"[/\n]", chunk) if ln.strip()]
+    """Written lines that actually carry runes.
+
+    Lines with no rune are annotation -- page numbers, and the number grids on chunks 30
+    and 64 whose rows read `3258-3222-3152-3038`. Their delimiters are not word
+    separators, and because nothing follows them on the line every one counts as
+    line-final. Including them put 236 such hyphens into the body's separator baseline,
+    all at rate 1.000, and inflated it from 0.039 to 0.115.
+    """
+    return [ln for ln in re.split(r"[/\n]", chunk) if RUNE.search(ln)]
 
 
 def line_end_rates(pages) -> dict[str, tuple[int, int]]:

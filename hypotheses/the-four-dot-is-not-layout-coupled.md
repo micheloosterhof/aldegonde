@@ -1,7 +1,51 @@
 ---
 type: observation
 ---
-# Observation: The Four-Dot Gets No Line Break, and the Thirteen-Dot and Real Punctuation Both Do
+# Observation: The Four-Dot Does Get Line Breaks — Weakly, and Far Less Than Real Punctuation
+
+## RETRACTED AND REPLACED (September 2026)
+
+**This file first claimed the four-dot gets no line break at all, at z = −0.30 against the
+word separator. That was a contaminated baseline and the sign reverses.**
+
+The baseline pooled `①` with ASCII `-`. In the body `-` is not a word separator: it is the
+delimiter inside the **number-grid lines** on chunks 30 and 64, whose rows read
+`3258-3222-3152-3038`. Those lines carry no runes, so nothing can follow a hyphen on them
+and **every one of the 236 counted as line-final, at rate 1.000**. That inflated the body's
+separator baseline from 0.039 to 0.115 and buried a real effect.
+
+Excluding rune-free lines and using `①` alone:
+
+| section | glyph | count | at a line end | rate | z vs that section's separator |
+|---|---|---|---|---|---|
+| the body | separator ① | 2,764 | 108 | 0.039 | — |
+| the body | **④** | 141 | 15 | **0.106** | **+4.02** |
+| the body | ⑬ | 31 | 16 | 0.516 | +13.63 |
+| the body | ③ | 6 | 2 | 0.333 | +3.72 |
+| the author's plaintext | separator ① | 205 | 17 | 0.083 | — |
+| the author's plaintext | **`.`** | 34 | 16 | **0.471** | **+7.59** |
+| the enciphered ASCII pages | `.` | 53 | 8 | 0.151 | +2.97 |
+
+**The four-dot is layout-coupled.** It takes a line break 2.7 times as often as a word
+separator does. What survives from the original reading is the comparison with real
+punctuation: the author's own clause mark runs at 5.7 times its separator baseline, and
+against it the four-dot is still low — 0.106 against 0.471, **z = −4.07**.
+
+So the corrected statement is an intermediate one. The scribe breaks his line at a
+four-dot more often than at a word break and much less often than at a clause end, with
+the thirteen-dot (13.2× its baseline) behaving like a section boundary as the ink
+independently says.
+
+## What this costs elsewhere
+
+The layout channel no longer supports "the four-dot is unrelated to the syntax". It was
+reported as a second independent channel agreeing with the length evidence; it is not. The
+length evidence (no sentence-final lengthening, −3.35σ) is untouched, and the
+`does_the_scribe_leave_extra_space.py` gap-width result is untouched because it reads the
+page images rather than the transcription — but those two now **disagree**, and that
+tension is recorded at the end of this file rather than resolved.
+
+## The original measurement, left for the record
 
 ## Feature
 
@@ -98,9 +142,12 @@ so justification cancels:
 is exactly a word break's; a few wide gaps carry the mean. The typical four-dot is spaced
 like an ordinary separator.
 
-So two independent measurements off the scans agree: the scribe treated the four-dot as a
-word break, not a structural pause. The line-end rate said 0.106 against the separator's
-0.115; the gap width says 1.000 against 1.000.
+**These two physical channels now disagree**, and the disagreement is the honest state.
+The gap width says the four-dot gets no extra space (median 1.000 against a word break's
+1.000). The corrected line-end rate says it gets a line break 2.7 times as often as a word
+break (0.106 against 0.039, +4.02σ). A scribe who breaks his line at a mark but leaves no
+extra space when he does not break is not contradictory, but nothing here shows that is
+what happened, and the two measurements are not mutually supporting as first reported.
 
 The thirteen-dot row is unusable — most thirteen-dots sit at a line end, where there is no
 following rune to measure against, leaving seven pairs.
