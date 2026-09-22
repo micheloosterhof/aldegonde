@@ -26,10 +26,54 @@ The two-rune odds say the same thing more sharply at one point: the author has *
 85** sentence-final words at length 2, against 27% of interior words. The body has 27
 of 166.
 
-**The sentence-initial column is the control and it passes** (body against the author,
-z = +0.83 on mean length, z = +0.21 on the two-rune odds). The marks really are
-sentence marks — that is what `titles_are_just_sentence_initial.py` established and it
-holds here. So the final-position failure is not the marks being misread.
+**The sentence-initial column was called a passing control here and that was
+overstated.** It rested on comparing the body against the *author's* 85 words, where the
+error bar is ±0.24 and nothing resolves. Against Austen's 5,361 sentences the body's
+sentence-initial contrast is **+0.07 ± 0.21 where −0.30 ± 0.03 is predicted** — the
+wrong sign, at 1.67σ. It does not fail, but it does not pass: it is equivocal.
+See `profile_around_a_mark.py` and the profile section below.
+
+## The profile: English marks a sentence with three units, the body with none
+
+`experiments/profile_around_a_mark.py` widens the single cell to a profile over offsets
+from a mark, each against that text's own span interior. Both references agree on a
+three-point shape, and it is the shape English grammar predicts:
+
+| offset | what it is | Austen | joined q=0.40 | the LP author | **the LP body** |
+|---|---|---|---|---|---|
+| −2 | penultimate, usually a function word | −0.41 | −0.26 | −0.53 | **−0.01 ± 0.20** |
+| **−1** | **final, a content word** | **+0.97** | **+0.75** | **+1.28** | **−0.21 ± 0.19** |
+| +1 | initial, usually a function word | −0.40 | −0.30 | −0.29 | **+0.07 ± 0.21** |
+
+All three body cells lean away from English, but **only −1 is individually decisive**
+(z = −5.03 against joined Austen); −2 and +1 sit at 1.25σ and 1.67σ, which 156 spans
+cannot resolve. Joint χ² over the three pre-specified offsets is 29.7 on 3 df and is
+dominated by −1. Treat this as one strong cell inside a consistent shape, not as three
+independent results.
+
+A fourth cell, **+2, came out at +0.37 ± 0.21 against a predicted −0.14, z = +2.45**. It
+was noticed in the data, not predicted, and is excluded from the joint test. It needs an
+independent replication before it means anything.
+
+## The marks sit at prose sentence density
+
+New, and nothing had checked it. Units between consecutive marks:
+
+| | units per span | median |
+|---|---|---|
+| **the LP body** | **17.2** | 13 |
+| Austen, joined at q = 0.40 | 17.5 | 14 |
+| Austen, raw | 19.2 | 15 |
+| the LP author's own pages | 7.9 | 6 |
+
+The body's marks partition it at ordinary prose sentence spacing — **once its own
+joining model is applied**, which is the second check that model passes without having
+been fitted to it (the first is the interior mean, below). This is the strongest
+evidence that the marks are sentence-scale units at all, and it is what makes reading 2
+hard to hold.
+
+It also does not match the author's own solved pages at 7.9. Those pages are aphoristic;
+the body's marks are spaced like prose.
 
 ## Why joining does not explain it
 
@@ -78,6 +122,13 @@ Three readings, none yet eliminated:
    control passes. This explains both cells at once and is the most economical reading
    on the table.
 
+**The profile changes the standing between the readings.** Reading 4 now accounts for
+every cell at once: if the mark opens a verse and verses run on grammatically, the unit
+before it is mid-span (flat, observed −0.21), the unit after it starts a verse but need
+not start a sentence (weak or no dip, observed +0.07), and spans come out at sentence
+scale (17.2). Reading 3 fits the −1 and +1 cells equally well. Reading 2 is the one the
+span density hurts: arbitrary marks would not land at 17.2 units.
+
 Reading 4 has a problem the others do not: the inventory. If these were verse numbers
 there would be many distinct numerals, spread. There are four, and 4-dot alone is 139 of
 174. That is the shape of punctuation, not of numbering. It also predicts a *diluted*
@@ -103,6 +154,9 @@ So this result does not overturn it — it names the kind of rule that would hav
 - **More marks.** 166 final blocks give ±0.18. The full book beyond page 56 adds few.
   Going below ±0.10 would need a source of sentence marks this transcription does not
   have.
+- **Replicate the +2 cell.** It is the only unexplained positive in the profile and it
+  is currently post-hoc. Page 57 onward and the marks-file transcription are the places
+  to look for independent spans.
 - **Predict the final block's length distribution under reading 3.** If final blocks are
   remainders of a cutting rule, their lengths should be *exactly* the interior
   distribution, with no residual shape. The full distribution is already close
@@ -110,8 +164,11 @@ So this result does not overturn it — it names the kind of rule that would hav
 
 ## Status
 
-**Status**: open, 5.5σ against the joined-English prediction, controls clean.
-`experiments/sentences_do_not_end_long.py`.
+**Status**: open. The sentence-final anomaly is 5.0–5.5σ against the joined-English
+prediction depending on the baseline, and is the one solid cell. The sentence-initial
+control is **equivocal, not passing** — corrected here. The span-density match is new
+and independent. `experiments/sentences_do_not_end_long.py`,
+`experiments/profile_around_a_mark.py`.
 
 ## Related
 
