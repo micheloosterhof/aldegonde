@@ -54,7 +54,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 |---|---|---|---|
 | D1 | The **separators are the cipher's units**: the d5 echo is anchored to them at +4.17σ, and sliding every boundary destroys it | `separators-are-the-cipher-unit.md` | Inherits the echo's own ~3.7σ |
 | D2 | Boundary-anchored structure exists **only at lags 4, 5 and 6** — where a letter step of order 5 puts it, with g's two diagonals moving in opposite directions | same | Σz² = 25.10 against a shifted max of 11.13 |
-| D3 | The **doublet deficit is not boundary-anchored** — sliding boundaries leaves it at 0.193 against 0.182. It belongs to the emitted stream, not the block's alphabet schedule | same | Rules out deriving the deficit from the per-block relation; a preventer that inspects the *output* is untouched |
+| D3 | The **doublet deficit is not boundary-anchored** — sliding boundaries leaves it at 0.193 ± 0.011 against the observed 0.182, z = −1.02, while the same slide destroys the d5 echo. It belongs to the emitted stream, not the block's alphabet schedule | same | Rules out deriving the deficit from the per-block relation; a preventer that inspects the *output* is untouched |
 | D4 | No **emitting interrupter**: the author's own rule (every plaintext F passes through literally) predicts 205 interrupts and the flat unigrams allow at most 47, z = −4.43 | `interrupter-is-a-plaintext-rule.md` | A non-emitting clock perturbation leaves no unigram trace and is untouched |
 | D14 | **One φ fits both suppressions**: at φ ≈ 0.90 the within-block rate reads −0.39σ and the seam +0.09σ, and the ratio falls out at 1.07–1.35 around the corpus's 1.25. the ratio constraint is dissolved, and C-1, which was read off it, is left unsupported | `one-parameter-fits-both-suppressions.md` | With no preventer the walk gives an elevated within-block rate and a chance seam; one parameter suppresses both |
 | D5 | The **repeat suppression is context-free AND rune-blind**: its failures must be as likely at a seam as inside a word, and as likely for one rune as another. The 86 survivors use 28 of 29 runes at χ² 27.8 on 28 df | `seam-to-d1w-ratio-is-a-constraint.md`, `separators-are-the-cipher-unit.md`, `survivors-use-every-rune.md` | Rune-blindness refutes a fixed-τ substitution arithmetically: survivors force \|fix(τ)\| ≥ 28, suppression forces ≈ 5.6 |
@@ -63,7 +63,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 | D12 | The base **changes at essentially every block edge**: cross-block lag-5 reads 0.0347 ± 0.0018 against 0.0363 for a stepping walk and 0.0595 for a fixed one, so at most 15% of edges can carry an unchanged base | `base_changes_every_block.py` | Closes any cipher unit larger than the block — phrase, line or page |
 | D11 | The suppression is **strictly adjacent**: in a 4×4 cross-seam window only the adjacent cell is suppressed (z −16.3), the other fifteen sit at chance with \|z\| ≤ 1.6. No window rule, no memory beyond one rune | `the-preventer-is-strictly-adjacent.md` | Verified by an exact identity: the base cancels across a seam as well as inside a block |
 | D9 | The suppression's strength is **φ ≈ 0.90**, the probability of acting on a would-be repeat, with [0.85, 0.95] inside 1σ and [0.80, 1.00] inside 2σ. The plain clock dodge is φ = 1 and is **not excluded** at +1.73σ | `how_strong_is_the_preventer.py` | CORRECTS the earlier "81% effective": that divided 86 by 447 = pairs/29, but the same walk with no preventer gives **515 ± 163** repeats, since a would-be repeat needs the plaintext bigram mass on g's graph and that exceeds 1/29. The key-to-key spread is the dominant term at every φ |
-| D6 | Exactly **one state return** in the corpus, at the end of the body, 1 in 2,700 by chance | `dju-bei-is-more-surprising-than-recorded.md`, `dju-bei-stands-alone.md`, `dju-bei-ends-the-body.md` | No shorter returns at any length 3–8; the continuation test is impossible |
+| D6 | Exactly **one state return** in the corpus, at the end of the body. A block-aligned whole-block repeat of 6+ runes has probability 0.00037, 1 in 2,693; any repeated 6-gram anywhere would be 1 in 8 | `dju-bei-is-more-surprising-than-recorded.md`, `dju-bei-stands-alone.md`, `dju-bei-ends-the-body.md` | No shorter returns at any length 3–8; the continuation test is impossible |
 | D7 | The base is **chained, not redrawn**. Two counts must give one pool: `identical` gives 2,752 and the chain reading of `returns` gives 566 [153, 22,369], while the chainless reading gives 53 [28, 334] and is excluded. Independently, holding the corpus's 17 repeats fixed and shuffling only word order puts two of them adjacent once in 20,000 | `word-repeat-accounting.md`, `the-chain-shows-only-in-extension.md` | Rests on one repeated phrase, so quote it as a consistency argument. Every marginal battery cell is blind to the distinction |
 | D13 | The base step is a **product**, not a bare σ — no divisor of the word gap survives the base-pool floor | `dju-bei-needs-a-product-step.md` | Needs no σ order floor and survives every tokenization |
 
@@ -85,7 +85,7 @@ It is a summary, not a new result. Nothing here is argued; everything is cited.
 
 | # | Constraint | Source | Scope |
 |---|---|---|---|
-| F1 | The body is **one cipher**: doublets, d5 and IoC are homogeneous across 9 sections and 55 pages | `the-body-is-one-cipher.md` | Control finds the Parable, a plaintext page, at +7 sd |
+| F1 | The body is **one cipher**: over 9 sections χ² 5.0 and 4.1 on 8 df for doublets and d5, IoC sd 0.0070; over 55 pages χ² 62.0 on 54 df and 46.7 on 49 df, IoC sd 0.0385. The most extreme page is −4.20 sd on 66 runes | `the-body-is-one-cipher.md` | The test has power: the Parable, a plaintext page spliced in, surfaces at nIoC 1.819, **+7.06 sd** |
 | F2 | **No window** from 100 runes up reads as plaintext or monoalphabetic — the body's best window is below a shuffled corpus's | `no-plaintext-window.md` | Coincidence only; a differently-keyed polyalphabetic stretch would not show |
 
 ## G. The information ceiling
@@ -139,6 +139,16 @@ Everything else in this table is a constraint. These two are the facts a solutio
 explain.
 
 ## Status
+
+**Errors swept 2026-10-06.** Every row was checked for whether its claim carries an
+error, an interval or a bound. Nineteen of fifty-one did not. Most were rows that compress
+away a figure their source file does carry, and the load-bearing ones — D3, D6, F1 — now
+quote it. One was a real gap and is corrected in place: **E7** stated a d5 length-trend of
++0.0369 against +0.0029 for cuts with no error on either, and bootstrapped over the 806
+contributing blocks it is ±0.0202, so the separation is 1.73σ rather than decisive.
+
+The rule this follows from four earlier instances: a headline of the form *observed
+against reference* needs the error on both, and it is usually the size of the gap.
 
 **Audited 2026-10-04.** Fifty rows, all ids now distinct — three pairs had collided
 (D7, E3, E4) through many ticks of insertion. One live contradiction was found and
