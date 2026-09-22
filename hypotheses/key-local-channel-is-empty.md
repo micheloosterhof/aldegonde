@@ -636,3 +636,39 @@ signal concentrates in that class; under a reset clock it is flat. Planted at si
 
 So both bounds stand together permanently. Quote 307 and 1,536, not one of them.
 
+
+## The d-profile filter omits the clock drift, and it does not matter
+
+`experiments/the_g_filter_ignores_the_drift.py`
+
+The 16.0-bit figure above comes from scoring a candidate `g` by comparing the body's
+observed d_k against the undrifted plaintext mass m_k(g). That predictor is wrong: the
+doublet preventer advances the clock by one step whenever it fires, so a distance-k pair
+keeps its phase relation only if no firing falls between the two runes. With a firing rate
+q per position the correct prediction is
+
+    E[d_k] = (1−q)^k · m_k(g) + (1 − (1−q)^k) · (1/29)
+
+The observed rate is pulled toward chance, by 6.7% at k = 2 and 21.5% at k = 7, so the
+uncorrected filter prefers candidates whose masses are closer to 1/29 than the true key's.
+
+**Measured, the bias is under half a standard error at every distance.** At q = 0.034 a
+mass of 0.050 reads as 0.0467 at k = 7 — a shift of 0.0033 against that cell's standard
+error of 0.0075.
+
+Planting a known `g`, enciphering with a preventer, and ranking it in a pool of 4,000:
+
+| preventer φ | firing rate | uncorrected rank | corrected |
+|---|---|---|---|
+| 0.0 | 0.0000 | 0.061 | 0.061 |
+| 0.5 | 0.0164 | 0.072 | 0.066 |
+| 0.9 | 0.0295 | 0.077 | 0.070 |
+| 1.0 | 0.0328 | 0.079 | 0.072 |
+
+The preventer costs the filter a little power and the correction recovers about half of
+it. On the body the survivors of 4,000 at 2σ move from 29 to 30 to 35 as q goes from 0 to
+0.034 to 0.050.
+
+**No published number needs revising.** The correction is now available and costs nothing
+to apply. What this settles is that a sweep costed against this filter is not searching a
+biased region, which had not been checked.
