@@ -268,6 +268,40 @@ agrees.
 | transcription annotation lines (`3258-3222-…`) clearing the sentence-initial flag | dropped; they carry no runes and sit between a mark and the next block |
 | pooling unlike marks | 4-dot carries it (137 blocks, +0.16 ± 0.23 on the two-rune odds); 13-dot is consistent with English at −0.22 ± 0.58 but has only 26 blocks |
 
+## Encipherment is not what severs the link
+
+The tidiest account of the anomaly would be that the body's marks were added to text
+nobody could read. `the-scribe-ignored-the-blocks.md` shows the copyist worked
+mechanically — he keeps words whole when ruling lines on plaintext (z = +5.60) and not at
+all on ciphertext — so a scribe punctuating enciphered runes at arbitrary intervals would
+produce exactly what the body shows.
+
+**The book tests it and refutes it.** Ten of the author's sixteen solved pages are
+enciphered, and their plaintext is known:
+
+| group | spans | gap vs interior |
+|---|---|---|
+| plaintext pages | 26 | +1.48 ± 0.44 |
+| enciphered: monoalphabetic | 30 | +1.31 ± 0.37 |
+| enciphered: interrupted Vigenère | 18 | +1.11 ± 0.67 |
+| **all enciphered** | **49** | **+1.21 ± 0.33** |
+| ten English registers | | +1.19 ± 0.28 |
+| **the body** | 133 | **−0.29 ± 0.20** |
+
+The enciphered pages keep the link — their +1.21 sits on top of the plaintext pages' +1.48
+and the ten-register +1.19, and **3.89σ above the body**. So whoever marked the author's
+enciphered pages knew where the sentences were: the marks went in before or during
+enciphering, not afterwards by someone reading runes.
+
+That removes the mechanism that made reading 2 comfortable. It survives, but it can no
+longer lean on the marks having been added blind to ciphertext, because the same book
+does the opposite on pages of the same kind.
+
+It also joins a pattern: `joining_is_not_preparation.py` found the short-unit joining does
+not track cipher difficulty either. Two independent conventions change at page 15 and
+neither tracks encipherment — which is what `one-production-break-at-page-fifteen.md`
+concluded from the line measure.
+
 ## Three channels say the plaintext is ordinary English
 
 The register escape is closed from three independent directions, which is what makes the
