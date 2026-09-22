@@ -175,8 +175,12 @@ in `rubricated_titles.json`.
 | against the rest of the body | 0.158 | +1.25 |
 | against the author's own plaintext | 0.242 | **−0.19** |
 
-**The titles are indistinguishable from ordinary plaintext and sit 1.25σ from the body
-around them.** On 52 blocks that is a lead, not a finding, and two things qualify it.
+**WITHDRAWN the same day.** The comparison has a confound it did not control, and
+controlling it removes the effect entirely — see the next section. What follows is the
+original reading, kept because the replacement result comes out of it.
+
+*The titles are indistinguishable from ordinary plaintext and sit 1.25σ from the body
+around them.* On 52 blocks that is a lead, not a finding, and two things qualify it.
 
 The whole-distribution χ² is 9.7 on 9 df — nothing. Only the length-2 cell carries the
 signal, which is the cell one would look at first.
@@ -189,6 +193,32 @@ interesting rather than less, but it is still a confound with no control availab
 Reaching three sigma would need about **302 title blocks against the 52 that exist** —
 roughly six times as many rubricated titles as have been identified. That is a
 transcription task, not an analysis one.
+
+## The titles lead was composition, and what replaces it
+
+In English, sentence-initial words are disproportionately short function words — THE, WE,
+TO, IT, HE — and a title is a unit that *starts*. **Seventeen of the fifty-two title
+blocks are title-initial, a third, against 7% of body blocks that follow a heavy mark.**
+
+The body has that elevation and so does the author:
+
+| corpus | after a sentence mark | elsewhere | elevation |
+|---|---|---|---|
+| the body (heavy marks) | 0.2244 on 205 | 0.1539 on 2,722 | **1.46×** |
+| the author's plaintext (on `.`) | 0.4167 on 36 | 0.2320 on 194 | 1.80× |
+
+Comparing like with like dissolves the lead:
+
+| comparison | z |
+|---|---|
+| title-initial against the body's own sentence-initial blocks | **+0.61** |
+| the rest of the titles against the rest of the body | **+0.68** |
+
+Both under 0.7σ. **The titles are ordinary once sentence position is controlled.**
+
+What replaces the lead is smaller and real: the body's 2-rune rate rises after a heavy
+mark by the same factor English does. That is one more way the body behaves like ordinary
+text — and it means the heavy marks really do mark sentences, which had been assumed.
 
 ## Nor is it justification
 
