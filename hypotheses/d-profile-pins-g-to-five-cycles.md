@@ -156,9 +156,33 @@ it *worse* at 0.69 sigma, and puts the body at −0.207 against +0.435 for one g
 for a change. With arms that wide none of it means anything.
 
 **So this section validates the filter and says nothing about whether `g` is constant.**
+The question is answered instead by comparing the d-values directly, below.
 An earlier version claimed it ruled out a gross change; it does not. The stated reason
 was also wrong — the thin lags are 6 and 7 at 316 and 178 pairs per quarter, and lag 5
 does not enter the filter at all.
+
+## One g does run through the body, at five to one
+
+`experiments/does_g_change_mid_book.py` asks the same question with the direct statistic.
+Each d-value estimates one quantity fixed by `g` and the plaintext, so if `g` changed at
+the midpoint the halves would estimate *different* quantities. A two-sample χ² between
+the halves' five d-values tests that with nothing derived in between.
+
+| arm | χ² on 5 df | median | P(≤ body) |
+|---|---|---|---|
+| planted, one g | 5.5 ± 3.2 | 4.4 | 0.67 ± 0.09 |
+| planted, g changes at the midpoint | 26.7 ± 19.6 | 18.3 | 0.13 ± 0.06 |
+| **the body** | **6.9** | | |
+
+**Likelihood ratio about 5 to 1 in favour of one g.** The one-g arm reads 5.5 on 5 df,
+which is what a correct null should give, so the statistic is calibrated. The changed arm
+is heavily skewed — 4 of 30 trials sit at or below the body — because two random
+permutations sometimes happen to give similar d-profiles, and that is why the ratio is
+five and not thirty.
+
+Modest, and real. Correlating the filter's score vectors gave nothing on the same
+question: a derived score carries the plaintext with it, and comparing the estimated
+quantities directly does not.
 
 ## Scope and small biases
 
