@@ -77,3 +77,35 @@ one channel and a rival now has two.
   47% would then not be a punctuation signature.
 - Raise ④'s line-end rate above the word separator's on any subset defined without
   reference to lengths.
+
+## A second physical channel agrees: the gap width
+
+`experiments/does_the_scribe_leave_extra_space.py`
+
+The transcription throws away how wide the space at each separator actually is. Measuring
+it from the page images — connected components, whitespace defined as the rune-to-rune gap
+minus the dot cluster's own width, normalised by each line's median word-break whitespace
+so justification cancels:
+
+| dots in the gap | pairs | mean | se | median |
+|---|---|---|---|---|
+| none (within a word) | 8,758 | 0.407 | 0.002 | 0.417 |
+| one (a word break) | 2,392 | 1.007 | 0.005 | 1.000 |
+| **four** | 90 | 1.230 | 0.109 | **1.000** |
+| thirteen | 7 | 0.839 | 0.054 | 0.857 |
+
+**The mean reads +2.04σ and the median reads nothing.** The four-dot's median whitespace
+is exactly a word break's; a few wide gaps carry the mean. The typical four-dot is spaced
+like an ordinary separator.
+
+So two independent measurements off the scans agree: the scribe treated the four-dot as a
+word break, not a structural pause. The line-end rate said 0.106 against the separator's
+0.115; the gap width says 1.000 against 1.000.
+
+The thirteen-dot row is unusable — most thirteen-dots sit at a line end, where there is no
+following rune to measure against, leaving seven pairs.
+
+**What is not done:** looking for wide gaps at positions carrying only a one-dot
+separator. If the scribe left extra space at unmarked sentence ends, that would locate
+boundaries independently of the glyphs, and the within-word / word-break separation
+(0.407 against 1.007) shows the measurement is sharp enough to try.
