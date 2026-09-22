@@ -350,6 +350,30 @@ give 0.0558 ± 0.0054 and the verdict is unchanged at every plausible skip rate.
 So the body is English prose with a normal complement of short function words, and its
 sentence-final words still do not lengthen at the marks.
 
+## If the four-dot is not the full stop, nothing recorded is
+
+Every mark the body records, against blocks closed by the ordinary separator
+(`no_mark_is_a_full_stop.py`):
+
+| mark closing the block | n | gap vs interior | z vs +1.19 |
+|---|---|---|---|
+| four-dot | 136 | −0.32 ± 0.20 | **−4.41** |
+| thirteen-dot | 25 | +0.03 ± 0.39 | −2.41 |
+| three-dot | 4 | +0.51 ± 1.96 | −0.34 |
+| quote | 7 | +0.51 ± 0.76 | −0.84 |
+| all non-separator, non-four-dot | 39 | +0.21 ± 0.35 | −2.20 |
+| **every mark together** | **175** | **−0.20 ± 0.17** | **−4.22** |
+
+Ten English registers put +1.19 ± 0.28 before a full stop and the author +1.32 ± 0.26.
+**No mark in the body does.** The small cells carry nothing on their own — three-dot has
+four marks, quote seven — but the all-marks row has 175 and excludes the lengthening at
+4.2σ.
+
+With the transcription's mark record about 96% complete and misplacing none
+(`scans_verify_the_marks.py`), the full stop is not a recorded mark being misread. It is
+either absent from the record or absent from the text, and the length channel cannot say
+which: a mark that was never written leaves nothing to measure.
+
 ## What this leaves
 
 Three readings, none yet eliminated:
