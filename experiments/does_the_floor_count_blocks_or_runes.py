@@ -47,7 +47,10 @@ preference for both rules holding, not a demonstration of it.
 
 ## What this fixes and what it leaves
 
-The floor itself is established at 0.00015 against the author's own convention
+The floor itself is NOT established: the 0.00015 it was once priced at came from an
+author arm 2.7 times denser than the body, and scale-matched it reads 0.055
+(`the_floor_needs_a_scale_matched_reference.py`). This file asks what a floor would
+count if there were one
 (`the_four_dot_has_a_floor.py`). **What it counts is not**, and the reason is structural
 rather than a matter of effort: the whole question turns on one or two expected
 violations, so it needs more marks and not a better statistic.

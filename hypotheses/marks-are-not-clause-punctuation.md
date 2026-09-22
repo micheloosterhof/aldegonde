@@ -417,9 +417,11 @@ book do not see the layout.
 It does not explain the short-gap deficit itself. Something spaces the four-dots more
 evenly than chance; this only says where not to look.
 
-## The four-dot has a hard floor of two blocks
+## The four-dot's floor is suggestive, not a rule
 
-`experiments/the_four_dot_has_a_floor.py`
+`experiments/the_four_dot_has_a_floor.py`, corrected by `experiments/the_floor_needs_a_scale_matched_reference.py`
+
+**The strongest number below is wrong and the section heading it once carried — "a hard floor of two blocks" — is withdrawn.** The correction is at the end of this file. The measurement stands; the prices put on it do not.
 
 The short-gap deficit has a sharp shape: **there is not one gap of a single block in the
 whole body.**
@@ -500,3 +502,47 @@ number should not be quoted as the floor's evidence.
 
 The floor stands on its own comparisons — 0 against 6.8 expected under a memoryless
 process and 8.8 under the author's convention. What this adds is the premise they rest on.
+
+## Correction: the floor was priced against a reference at the wrong density
+
+`experiments/the_floor_needs_a_scale_matched_reference.py`
+
+The arm that gave P = 0.00015 applies the author's raw fraction of one-block sentences —
+6 of 94, rate 0.0638 — to the body's 138 gaps. His sentences average **7.65 blocks** and
+the body's four-dot gaps **20.4**. The arm is 2.7 times denser than the corpus it prices,
+and a denser marking process makes more short gaps for reasons unrelated to any floor.
+
+`are_the_four_dot_gaps_memoryless.py` already fixed the right relationship: the body's gap
+law fits the author's spans **thinned to p ≈ 0.36**. Thinning is how the scales should be
+matched, and it weakens the prediction sharply — a surviving one-block gap now needs a
+one-block sentence *and* both bounding marks retained.
+
+| arm | p | E[1-block] | P(zero) |
+|---|---|---|---|
+| memoryless, matched to the body | — | 6.77 | 0.0011 |
+| the author's sentences, thinned | 0.375 | 3.32 | **0.033** |
+| the author's sentences, thinned, his sampling error carried | 0.375 | 3.45 ± 2.31 | **0.055** |
+| English sentences, thinned | 0.901 | 4.11 | 0.015 |
+
+**Inflated by more than two orders of magnitude.** Zero one-block gaps is a 1.6σ event
+against the reference the gap law itself prefers.
+
+The memoryless arm still rejects at 0.001, but `are_the_four_dot_gaps_memoryless.py`
+rejects *that arm* on shape grounds independently (likelihood ratio 0.134 against the
+thinned author), so it cannot carry the conclusion either.
+
+### What this leaves
+
+- The four-dot's short-gap deficit is real and already accounted for: the gap law is not
+  memoryless, which is a fitted result, not a floor.
+- The direct glyph comparison reached P = 0.075 on its own and is confounded.
+- Both routes now agree at about 2σ. **The minimum unit is suggestive and is not a rule.**
+- The "first positive structural statement about the four-dot" claim is withdrawn.
+  Everything established about the mark is again a negation.
+
+### The standing lesson
+
+This is the same error as the contaminated separator baseline and the unmatched battery
+register: a reference that differs from the corpus in a variable the prediction depends
+on. Here the variable is the marking density, and it was visible in the same table — the
+means 7.6 and 20.4 sit two rows apart in the file that made the claim.

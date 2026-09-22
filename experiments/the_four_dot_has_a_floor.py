@@ -1,6 +1,13 @@
 # ABOUTME: Shows the body never places two four-dots one block apart, a hard floor the
 # ABOUTME: author's own sentence marks do not have.
-"""Something keeps the four-dots apart. It is a floor, not a tendency.
+"""Something keeps the four-dots apart -- but not as strongly as this file claims.
+
+**CORRECTED. The P = 0.00015 headline below is withdrawn.** Its "author's own
+convention" arm applies his raw one-block sentence rate to a corpus whose gaps are 2.7
+times longer than his sentences. Scale-matched by thinning -- the relationship the gap
+law itself fits -- the price is P = 0.055, not 0.00015. See
+`the_floor_needs_a_scale_matched_reference.py`. The counts measured here are correct;
+the conclusions drawn from them in the last three sections are not.
 
 `is_the_four_dot_placed_per_page.py` closes the production explanation for the four-dot's
 spacing -- its count per page sits exactly on a constant per-rune rate, so the page is
@@ -156,7 +163,9 @@ def main() -> None:
     print(f"\n  observed in the body: {body_counts.get(1, 0)}")
     print(
         "\n  The author's sentences have no floor -- six of ninety-four are one block."
-        "\n  The body's four-dots have one, and it is absolute."
+        "\n  WITHDRAWN: his rate cannot be applied here, his sentences being 2.7x"
+        "\n  shorter than these gaps. Scale-matched, P = 0.055. See"
+        "\n  the_floor_needs_a_scale_matched_reference.py."
     )
 
 
