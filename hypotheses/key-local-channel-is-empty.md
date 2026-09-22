@@ -672,3 +672,40 @@ it. On the body the survivors of 4,000 at 2σ move from 29 to 30 to 35 as q goes
 **No published number needs revising.** The correction is now available and costs nothing
 to apply. What this settles is that a sweep costed against this filter is not searching a
 biased region, which had not been checked.
+
+## The local σ diagonal family is now complete, and still empty
+
+`experiments/the_complete_local_sigma_family.py`
+
+Section 5 above records "No local constraint on σ is KNOWN, across the reach-≤3 family"
+and states its own limit: *"this is a family, not an exhaustive account of local σ
+observables: larger reaches exist up to the word length"*. Two facts about `g` having
+order 5 close that gap.
+
+**The family is finite and 25 is all of it.** The relation at reach (a, b) is
+`p_{last−a} = g^a σ g^b (p_{first+b})`, so only a mod 5 and b mod 5 matter. Reaches 0–4 in
+each direction exhaust the elements `g^a σ g^b`; the nine cells with a = 4 or b = 4 were
+missing.
+
+**Reach a and reach a+5 constrain the same element**, so their pairs pool exactly rather
+than approximately.
+
+| | pairs | z |
+|---|---|---|
+| (0,0), the seam doublet | 4,884 | −5.99 |
+| largest \|z\| over the other 24 | | **1.68** at (1,1) |
+| the same maximum on 40 word-order shuffles | | 2.22 ± 0.41 |
+
+(0,0) is the doublet preventer, not a σ signal, and `negative-control-battery.md` already
+retires it as evidence about the key. Excluded, the largest departure in the whole family
+is **1.68 against a shuffled maximum of 2.22 ± 0.41** — P = 0.90, below what 24 cells give
+by chance.
+
+Completing and pooling added nine cells with 10,263 pairs and raised the family to
+**57,167 pairs**, roughly double the reach-≤3 enumeration. So the null is not for want of
+data.
+
+**The scope caveat is discharged for diagonals.** No further diagonal cell exists to test.
+What remains outside is the non-diagonal case, and that is bounded by a different argument
+already in this file: under a 2-transitive base family the only invariant of a *pair* is
+whether it is equal. So the remaining gap is triples, not pairs.
