@@ -38,6 +38,20 @@ rule fires too reliably.
 no model in this directory produces it. It has been known as an outlier; seen here it is
 the single cell that separates the corpus from *every* candidate, wrong ones included.
 
+## The cell measures the observable, not the mechanism (September 2026)
+
+The correction below prices a **state return** — two of the 2,928 bases coinciding — at
+about 10⁻²⁴, and that is right. But the battery cell does not detect a return; it detects
+a **block-aligned whole-block repeat of 6+ runes**, and chance supplies that at
+**1 in 3,000**, confirmed by simulation in `dju_bei_chance_rate_simulated.py`: 2 of 6,000
+walk corpora built with no state return carry one, and in both the two occurrences have a
+different base and a different clock phase.
+
+So "no model in this directory produces it" is a statement about how many draws were
+taken. At 1 in 3,000, sixty draws expect 0.02. The cell is not unreachable — it is rare,
+and the corpus's single instance is a 1-in-3,000 coincidence or a return, which is a
+likelihood ratio and not a certainty.
+
 ## Correction: `returns` is unreachable by any unfitted key, so it is four cells not five
 
 `returns` is scored against every model above and missed by all of them. It should not
