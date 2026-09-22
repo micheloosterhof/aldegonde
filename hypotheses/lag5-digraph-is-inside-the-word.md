@@ -103,3 +103,52 @@ z = +2.73. The effect is not one word.
   the observed monograph rate and no digraph structure and recovering ratio 1.0.
 - Find an English register where the digraph-to-monograph² ratio reaches 2.86, which would
   make the body's nine hits unremarkable rather than merely unresolved.
+
+## Adversarial audit: five attacks on the channel itself
+
+`experiments/five_attacks_on_the_d5_channel.py`
+
+The d5 measurements built the period-5 model, so confirming the model with d5 is circular.
+Five attempts to break the within-word lag-5 result:
+
+| # | attack | outcome |
+|---|---|---|
+| 1 | different lags draw from different word populations | **fails** — fixing the minimum word length at 6, 7, 8, 9 or 10 leaves lag 5 at +3.6 to +3.9 and its neighbours flat |
+| 2 | look-elsewhere across lags | **fails** — max over lags 2–8 is +3.69 against a surrogate max of +0.29 ± 0.67 |
+| 3 | held-out halves | **fails** — +3.18 and +2.03 |
+| 4 | a single position inside the word | **fails** — the excess is at every start position 0–4 |
+| 5 | the baseline | **lands, then falls over** — see below |
+
+### The attack that landed
+
+Shuffling letters **inside each word** preserves word length and letter multiset and is the
+obvious null. It breaks the result: lags 2, 3 and 4 read +5.30, +4.40, +4.26 against lag
+5's +5.62, so "only lag 5 is special" collapses.
+
+**That null is contaminated by the cipher.** It preserves each word's letter multiset, and
+the doublet preventer has already stripped repeated letters out of those multisets —
+adjacent repeats are suppressed 82%. The null therefore sits about 24% below chance at
+every lag and manufactures an excess wherever it is used.
+
+A **global** shuffle — all body runes permuted, word lengths kept — preserves the
+ciphertext letter frequencies and destroys everything else, including the preventer's mark
+on the multisets. It lands on 1/29 (250.6 against 250.0 at lag 2) and only lag 5 survives,
+at +3.7.
+
+**Standing rule: a within-word shuffle is the wrong null for this corpus**, because the
+preventer has already edited the thing it preserves.
+
+### The control that decides nothing
+
+The solved front matter uses a different cipher, so it should show no lag-5 excess. It
+reads +1.70, with lag 7 higher at +2.37 — but on 694 words against 2,895 the body's own
+effect size would only produce about +1.5 there. Underpowered, and recorded so it is not
+mistaken for a passed control.
+
+### What survives, narrowly
+
+The excess is real at +3.7 on 104 hits against 72.6. It pins that **positions i and i+5
+inside a word share an alphabet**. It does **not** pin that g is a permutation of order 5:
+a five-long keystream restarting at each word predicts exactly the same thing, as does any
+scheme giving those two positions the same alphabet. The model is one member of that
+family, and this channel cannot choose between them.
