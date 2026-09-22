@@ -120,13 +120,17 @@ Grouping the spans by mark index mod N recovers it.
 
 | keys in the cycle | observed | z |
 |---|---|---|
-| 1 | 0.0337 | −0.87 |
-| 2 | 0.0341 | −0.49 |
-| 3 | 0.0300 | −2.09 |
-| 4 | 0.0357 | +0.63 |
-| 5 | 0.0309 | −1.38 |
-| 6 | 0.0310 | −1.26 |
-| 8 | 0.0320 | −0.83 |
+| 1 | 0.0337 | −0.89 |
+| 2 | 0.0341 | −0.43 |
+| 3 | 0.0300 | −2.03 |
+| 4 | 0.0357 | +0.36 |
+| 5 | 0.0309 | −1.50 |
+| 6 | 0.0310 | −1.18 |
+| 8 | 0.0320 | −1.04 |
+
+(The observed rates are exact; the z values come from a resampled null and moved by up to
+0.3 when the file was edited, since the null's random stream is shared. They are stable
+run to run and the range −2.03 to +0.36 is what a seven-cell scan gives by chance.)
 
 Chance is 1/29 = 0.0345. **Nothing at any period.**
 
