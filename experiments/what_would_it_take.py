@@ -34,7 +34,7 @@ assumption that the error falls as the square root of the corpus.
 |---|---|---|---|---|
 | span-final mean lift | +1.320 +- 0.265 | -0.291 +- 0.199 | **-4.86** | 0.38 |
 | span-final 7+ share | +0.140 +- 0.052 | -0.036 +- 0.033 | **-2.86** | 1.10 |
-| length lag-1 correlation | -0.046 +- 0.044 | -0.009 +- 0.019 | +0.78 | 14.85 |
+| length lag-1 correlation | -0.029 +- 0.030 | -0.009 +- 0.019 | +0.57 | 25 |
 
 The first two work and carry every result about the four-dot.
 
@@ -43,18 +43,26 @@ shuffle, which is exactly what the transposition reading predicts:
 
 | corpus | span length | observed | its own shuffle | excess | sigma |
 |---|---|---|---|---|---|
-| the body | 21.1 | -0.0087 | +0.0051 +- 0.0179 | -0.0138 | -0.77 |
-| the joined author | 8.2 | -0.0457 | -0.0171 +- 0.0387 | -0.0286 | -0.74 |
+| the body | 21.1 | -0.0087 | +0.0058 +- 0.0180 | -0.0145 | -0.81 |
+| the joined author | 8.4 | -0.0271 | -0.0051 +- 0.0393 | -0.0220 | -0.56 |
 
-**The reference cannot be told from a full shuffle.** The author's own excess is 0.74
+**The reference cannot be told from a full shuffle.** The author's own excess is 0.56
 sigma. So the arm separation is not merely smaller than the body's error; it is
-unmeasured. Taking his -0.0286 as the gap, three sigma needs about 4 times this corpus,
-and establishing the gap itself needs 16 times his solved pages.
+unmeasured. Taking his -0.0220 as the gap, three sigma needs about 6 times this corpus,
+and establishing the gap itself needs 29 times his solved pages.
 
-The body's excess is -0.0138 +- 0.0179: consistent with a full rearrangement and equally
+The body's excess is -0.0145 +- 0.0180: consistent with a full rearrangement and equally
 consistent with the author's value.
 
 ## Two errors this file had to fix first
+
+**A single JOINING draw is not a measurement either**, and this one was caught by
+re-running the file rather than by inspection. The joining is stochastic and the author
+has only 94 spans, so one draw is worth +-0.030 on his lag-1 -- over 200 draws it runs
+-0.029 +- 0.030, from -0.110 to +0.061. An unrelated edit that changed how much the shared
+random stream had been consumed flipped the reported value from -0.046 to +0.042 and its
+excess from -0.029 to +0.047, reversing the sign. The author's side is now averaged over
+120 joining draws.
 
 **A single shuffle is not an arm.** The first version drew one within-span shuffle and
 read -0.085 off it. The shuffle distribution has sd 0.039, so that was a two-sigma draw
@@ -98,6 +106,7 @@ from the_gap_depends_on_span_length import author_spans, body_spans  # noqa: E40
 LONG = 7
 TARGET = 3.0
 SHUFFLES = 400
+JOIN_DRAWS = 120
 JOIN_RATE = 0.40
 
 
@@ -145,10 +154,15 @@ def multiple(gap, se, target=TARGET) -> float:
 def main() -> None:
     rng = random.Random(3301)
     body, author = body_spans(), author_spans()
-    joined_author = [
-        s for s in (join(list(x), JOIN_RATE, rng, forward=True) for x in author)
-        if len(s) >= 3
-    ]
+    def joined(seed):
+        r = random.Random(seed)
+        return [
+            s
+            for s in (join(list(x), JOIN_RATE, r, forward=True) for x in author)
+            if len(s) >= 3
+        ]
+
+    joined_author = joined(0)
 
     print("JOB 1. Detect the anomaly: order intact against the body as observed.\n")
     print(
@@ -167,7 +181,8 @@ def main() -> None:
             f"{label:<30}{f'{a:+.3f} +- {sa:.3f}':>18}{f'{b:+.3f} +- {sb:.3f}':>18}"
             f"{(b - a) / se:>+8.2f}{multiple(abs(a - b), se):>10.2f}"
         )
-    r_a, s_a = lag_one(joined_author)
+    draws = np.array([serial(joined(s), 1)[0] for s in range(JOIN_DRAWS)])
+    r_a, s_a = float(draws.mean()), float(draws.std(ddof=1))
     r_b, s_b = lag_one(body)
     se = math.hypot(s_a, s_b)
     print(
@@ -192,11 +207,19 @@ def main() -> None:
     )
     excesses = {}
     for label, spans in (("the body", body), ("the joined author", joined_author)):
-        draws = []
-        for _ in range(SHUFFLES):
-            draws.append(serial(shuffled(spans, rng), 1)[0])
-        draws = np.array(draws)
-        obs = serial(spans, 1)[0]
+        if label.endswith("author"):
+            # the joining is stochastic and the author has only 94 spans, so one draw
+            # is worth +-0.030 on this statistic -- enough to flip its sign
+            obs = float(np.mean([serial(joined(s), 1)[0] for s in range(JOIN_DRAWS)]))
+            cuts = [
+                serial(shuffled(joined(s), rng), 1)[0] for s in range(JOIN_DRAWS)
+            ]
+            draws = np.array(cuts)
+        else:
+            draws = np.array(
+                [serial(shuffled(spans, rng), 1)[0] for _ in range(SHUFFLES)]
+            )
+            obs = serial(spans, 1)[0]
         excesses[label] = (obs - draws.mean(), float(draws.std(ddof=1)))
         print(
             f"{label:<22}{np.mean([len(s) for s in spans]):>10.1f}{obs:>+11.4f}"
