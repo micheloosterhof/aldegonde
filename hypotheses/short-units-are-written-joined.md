@@ -372,3 +372,28 @@ the channel detects merging without pinning its rate.
 Within-word d5 at long lengths is largely morphological, so it should be stable, but that
 is an argument rather than a measurement — the author's plaintext has 158 d5 pairs, too few
 to check.
+
+### The rate from d5, length by length
+
+`experiments/fit_the_merge_rate_from_d5.py`
+
+The crossing fraction is `2/(L−5)` — exactly two d5 pairs straddle a boundary at position
+2, whatever the block's length — so the model predicts dilution that **falls** as blocks
+get longer. That is a shape, and testable where a single pooled cell is not.
+
+| length | body d5 | English d5 | crossing | implied merged fraction |
+|---|---|---|---|---|
+| 6 | 0.0352 ± 0.0115 | 0.0356 | 1.00 | +0.38 ± 10.54 |
+| 7 | 0.0440 ± 0.0099 | 0.0539 | 1.00 | +0.51 ± 0.51 |
+| **8–9** | **0.0474 ± 0.0076** | **0.0687** | 0.61 | **+1.02 ± 0.36** |
+| 10–30 | 0.0612 ± 0.0095 | 0.0622 | 0.35 | +0.10 ± 0.98 |
+
+**Combined 0.78 ± 0.28 — zero excluded at 2.8σ**, sharper than the 2.0σ from the pooled
+8+ cell. And the four bands agree at **χ² = 1.2 on 3 df**, so the model's predicted shape
+holds, not just its size.
+
+**One tension.** The model predicts 0.25 of 8+ blocks are merges; d5 says 0.78 ± 0.28,
+higher by 1.9σ. Either the joining is heavier than the histogram fit gives, or some merged
+units exceed two runes (changing the crossing fraction), or the English within-word curve
+is too high for the body's register. The last is unresolvable here — the author's plaintext
+carries 158 d5 pairs.
