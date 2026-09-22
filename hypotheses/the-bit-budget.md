@@ -70,6 +70,22 @@ is not a limit of the statistics used. It is a property of the cipher.
 - C-0 should be quoted as *confirmation that the walk's default assumption is right*,
   not as a reduction of the search.
 
+## The 283 is the model space, not necessarily the key
+
+Every number in the table above is the size of a **free permutation space**, and a real
+key is rarely a free permutation. This author's is not: the solved pages use `DIVINITY`
+and `FIRFUMFERENFE`, keywords turned into mixed alphabets.
+
+`how-big-is-the-key-really.md` costs the alternative. With a structured `g` — fix four
+runes and step the other twenty-five by five, C(29,4) = 23,751 — and keyword-derived σ
+and base₀, the key is **38 bits and about 2.9 × 10¹¹ keys**, falling to 4 × 10⁹ once the
+filter and the cross-seam verifier have done their work.
+
+That does not contradict anything here. It says the conclusion "no statistical route
+exists" is right and the further conclusion "therefore the problem is out of reach" does
+not follow — it depends entirely on an assumption about how the key was built, which
+nothing in the body tests.
+
 ## Falsification
 
 - The class counts are exact arithmetic and can be checked directly.
