@@ -263,6 +263,31 @@ function words, the LP register does not dip at all, and the author is flat ther
 leaving 97 of the body's 148 marks. The −1 cell over all spans reads −0.29 ± 0.20 and
 agrees.
 
+## The scans confirm the marks are where the transcription puts them
+
+Everything here is measured against mark positions taken from the transcription, so a
+missing or misplaced mark could manufacture the result. The page scans check it
+(`scans_verify_the_marks.py`): every glyph on a line is classified by size and the
+sequence compared against the transcription line.
+
+| | |
+|---|---|
+| lines compared | 223 |
+| image sequence identical to the transcription | 152 (68.2%) |
+| lines with a mark the scan shows and the transcription omits | **3** |
+| lines with a transcribed mark the scan does not show | **0** |
+
+Scaled over the body's 594 lines that is roughly eight marks in 182 — about **4%** —
+matching the census's 145 four-dot clusters against 141 recorded. The remaining
+disagreement is adjacent rune blobs merging, the failure mode `locate_marks.py` names in
+its own docstring: 36 of the 71 mismatching lines have the same rune count anyway, and
+the mark counts agree on 68 of 71.
+
+A 4% omission rate cannot produce a −4.4σ edge effect, so the anomaly is a fact about the
+book and not about its transcription. It also caps the thinning idea that
+`the-marks-may-be-under-recorded.md` rested on: the transcription misses about 4% of
+marks, not the 60% that hypothesis needed.
+
 ## Confounds measured and cleared
 
 | confound | result |
