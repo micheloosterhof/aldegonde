@@ -104,8 +104,7 @@ def rescaled(sample, target_mean, rng, n=200000):
     """Draw from an empirical shape, rescaled to the target mean."""
     a = np.array(sample, float)
     scale = target_mean / a.mean()
-    out = np.maximum(1, np.round(rng.choice(a, size=n) * scale))
-    return out
+    return np.maximum(1, np.round(rng.choice(a, size=n) * scale))
 
 
 def geometric(target_mean, rng, n=200000):

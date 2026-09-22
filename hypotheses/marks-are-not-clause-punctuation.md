@@ -352,3 +352,38 @@ Combined with the earlier results — it carries no clause-final word-length sig
 does not space like clause punctuation, and is homogeneous across sections — the 4-dot
 mark now has no established role in either the language or the cipher. The quote-edge
 alignment at p = 1.5e-7 remains the single thing about it that wants explaining.
+
+## The spacing argument, redone properly (September 2026)
+
+`experiments/are_the_four_dot_gaps_memoryless.py`
+
+The spacing result above is withdrawn because its control pooled the author's plaintext
+pages with still-enciphered ones. This replaces it with a shape test rather than a cv
+comparison, in **blocks**, with every reference joined at q = 0.40 so the units match.
+
+| arm | cv | 1-3 | 4-7 | 8-14 | 15-24 | 25-39 | 40+ |
+|---|---|---|---|---|---|---|---|
+| **the body, 137 gaps** | **1.03** | **9** | 27 | 33 | 28 | 23 | 17 |
+| memoryless (geometric) | 0.98 | 18.4 | 20.7 | 27.8 | 26.8 | 22.1 | 21.2 |
+| English sentences, joined | 0.82 | 3.7 | 18.5 | 36.4 | 36.8 | 24.7 | 16.9 |
+| the LP author's spans | 0.73 | 8.7 | 19.1 | 30.6 | 32.1 | 33.5 | 13.0 |
+
+**cv is the wrong summary and should not be quoted again for this mark.** The body's 1.03
+is inflated by its long tail; the short end says the opposite. Nine gaps of three blocks
+or less against the 18.4 a constant-rate placement predicts is 2.2σ low, and matches the
+author's own 8.7 almost exactly.
+
+Binned log-likelihood: the author's spans −240.52, memoryless −241.08 (ratio 0.571),
+English sentences −242.11 (0.203). **1.75 to 1 is not a verdict.** The body sits between
+the arms — the author's short-gap deficit with a heavier long tail than either.
+
+The instrument has power: drawing 137 gaps from each arm names the right one 92–98% of the
+time, median likelihood ratios 50 to 6,000. The indecision belongs to the corpus.
+
+**Positive content, small but real:** the four-dot is not dropped at a constant rate.
+Something avoids placing two close together, which a memoryless process would not do. That
+is the first positive statement about the four-dot rather than another absence.
+
+This also explains why `are_the_two_marks_one_system.py` had no power: at cv ≈ 1 the
+backward recurrence time matches the gap law, so renewal geometry cannot separate "at a
+boundary" from "inside an interval" even though the process is not actually memoryless.
