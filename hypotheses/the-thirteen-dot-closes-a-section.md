@@ -46,11 +46,15 @@ text, as in `ALL THNGS SHOULD BE ENCRYPTED . <&> CNOW THIS . <&> <$>`.
   does not use, which is another entry in the list of conventions that change at page 15
   alongside the joining and the interrupter.
 
-## What it does not settle
+## What it does not settle — STALE, answered below
 
-Fifteen of the 31 are followed by a rune, so the 13-dot is not exclusively terminal.
-Whether that is a second function, or the same one at boundaries the transcription does
-not record, is not answerable from this corpus.
+*This section was left standing after `do_the_marks_bound_the_titles.py` answered it, and
+two later experiments re-derived that answer because they trusted this note. It is kept
+verbatim as the record of the mistake.*
+
+> Fifteen of the 31 are followed by a rune, so the 13-dot is not exclusively terminal.
+> Whether that is a second function, or the same one at boundaries the transcription does
+> not record, is not answerable from this corpus.
 
 ## A lead that died on the way, recorded so it is not chased again
 
@@ -195,16 +199,15 @@ has nothing to do with line ends.
 
 ## ANSWERED: the second function is punctuating a title
 
-`experiments/the_thirteen_dot_brackets_a_title.py`
+**Answered first by `experiments/do_the_marks_bound_the_titles.py` (commit `7f2523d`),
+which this file failed to record.** That experiment reads 6/6 mid-page titles closed by a
+thirteen-dot and 5/6 opened by one, at P = 9e-13, plus 11/11 page-opening titles preceded
+by a page that ends in a mark. Everything below was derived again without it and agrees
+with it; what it adds is listed at the end of this section.
 
-This file used to record, under "What it does not settle": *"Fifteen of the 31 are
-followed by a rune, so the 13-dot is not exclusively terminal. Whether that is a second
-function, or the same one at boundaries the transcription does not record, is not
-answerable from this corpus."*
-
-It is answerable. The corpus holds a second record of structure the mark had never been
-checked against — `rubricated_titles.json`, seventeen passages in red ink read off the
-scans rather than the transcription.
+`experiments/the_thirteen_dot_brackets_a_title.py` partitions the mark inventory instead
+of the title inventory — it asks what *every* thirteen-dot is doing, not only the
+title-adjacent ones.
 
 | class | n |
 |---|---|
@@ -286,4 +289,31 @@ no content-word lengthening visible; and short blocks of two runes or fewer run 
 against 0.191** (z = +1.17), which leans towards titles being joined less than running
 text but settles nothing. Both cells need several times this many titles. They are
 recorded so the same two are not run again as if new.
+
+## What the re-derivation actually added
+
+Stated separately because the headline was not new.
+
+1. **A partition of the whole mark inventory, not of the titles.** All 26 analysable
+   thirteen-dots classify as: 7 close a chunk, 12 close a title, 5 open one, 2 unexplained.
+   `do_the_marks_bound_the_titles.py` scores titles and is silent about marks that are
+   near no title.
+2. **A within-chunk permutation null.** 17 title-edge hits against 0.84 ± 0.89 from moving
+   each mark to a random block *in its own chunk*, which holds the mark's section habitat
+   fixed. The earlier null is a per-boundary rate.
+3. **Three titles that are not closed** — chunks 23, 55, 69, all chunk-initial and one or
+   two words. The earlier file measures the *opening* side of chunk-initial titles (11/11)
+   and does not measure their closing side.
+4. **Two predictions about the red ink** (chunk 30 splits in two, chunk 69 runs one word
+   further), which would take the rule to 26 of 26.
+5. **A parser caveat.** `body_parse.chunk_blocks` drops a mark that closes no block, losing
+   2 of the 28 body thirteen-dots. `do_the_marks_bound_the_titles.py` uses its own parser,
+   which is correct on line wraps, and a wider chunk range (15–72 against 15–70).
+
+## The process failure
+
+The stale note above said the question was unanswerable. Two ticks were spent answering
+it. The experiment that had already answered it was findable by grepping `experiments/`
+for `rubricat`, which was not done until afterwards. **A hypothesis file's open questions
+are not evidence that a question is open.**
 
