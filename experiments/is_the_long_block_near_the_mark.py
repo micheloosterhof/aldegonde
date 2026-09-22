@@ -23,56 +23,65 @@ it by only 0.066, so the net over a window is positive and roughly conserved as 
 widens. Under displacement that whole excess sits inside a window of 2k+1 blocks; under
 transposition it is spread over the ~21 blocks of a span and is invisible at any window.
 
-## Result: the statistic does not work in this book, and the author shows why
+## A correction: the first version of this file chose a span floor that broke it
+
+It required spans of **8 blocks or more**. The LP author's spans average 7.65, so that
+filter kept only 40 of his 75 and those were his longest. Under it his sentence-final 7+
+lift read +0.037 +- 0.058 -- flat -- and the file concluded that this register lengthens
+in the mean but not in the tail, and that the whole statistic was unusable here.
+
+**That was the filter, not the register.**
+
+| span floor | author's spans kept | his sentence-final 7+ lift | his mean lift |
+|---|---|---|---|
+| 3 | 75 | **+0.140 +- 0.052** | +1.32 |
+| 4 | 68 | +0.150 +- 0.055 | +1.39 |
+| 6 | 54 | +0.093 +- 0.057 | +0.98 |
+| 8 | 40 | +0.037 +- 0.058 | +0.90 |
+
+The floor is now the smallest that can supply each offset, never a fixed number.
+
+## Result: the statistic works, and the body is low in the tail too
 
 Share of blocks at 7+ runes, by offset from a mark, minus the span interior:
 
-| offset | ten registers | **the LP author** | the LP body |
+| offset | ten registers | the LP author | the LP body |
 |---|---|---|---|
-| -5 | -0.003 +- 0.009 | **+0.054** | -0.020 +- 0.044 |
-| -3 | +0.001 +- 0.015 | **+0.054** | -0.047 +- 0.041 |
-| -2 | -0.020 +- 0.010 | **+0.054** | -0.020 +- 0.044 |
-| **-1** | **+0.160 +- 0.034** | **+0.054** | -0.087 +- 0.036 |
-| +1 | -0.071 +- 0.034 | -0.029 | +0.034 +- 0.049 |
-| +3 | -0.005 +- 0.017 | -0.113 | +0.156 +- 0.055 |
+| -3 | -0.004 +- 0.012 | +0.028 (49) | -0.025 +- 0.035 |
+| -2 | -0.021 +- 0.013 | -0.026 (57) | -0.045 +- 0.031 |
+| **-1** | **+0.152 +- 0.038** | **+0.114 (57)** | **-0.030 +- 0.033** |
+| +1 | -0.066 +- 0.045 | +0.009 (57) | +0.025 +- 0.037 |
+| +3 | -0.007 +- 0.019 | +0.007 (49) | +0.069 +- 0.041 |
 
-**The author's sentence-final column is +0.054, exactly what he reads at offsets -5, -3
-and -2.** His profile is flat in the long-block share. Yet his sentence-final *mean*
-lengthening is +1.32 +- 0.26, matching English's +1.19.
+**The author carries the tail signature**, +0.114 against English's +0.152. On the full
+span set his sentence-final 7+ lift is +0.140 +- 0.052 against the body's -0.036 +- 0.033:
+**z = -2.85.** That is the central anomaly showing in the long tail as well as the mean,
+which had not been measured.
 
-So in this book's register the lengthening lives in the middle of the length distribution,
-not in the long tail. A count of 7+ blocks measures the tail, and the matched reference
-predicts **no excess at all**.
+## What it still cannot do
 
 | window | ten registers | the LP author | the LP body |
 |---|---|---|---|
-| +-1 blocks | +8.7 +- 3.0 | +0.6 | -3.9 +- 4.8 |
-| +-2 blocks | +5.2 +- 4.2 | -0.8 | -2.9 +- 6.8 |
-| +-3 blocks | +4.7 +- 5.7 | -2.2 | +5.2 +- 8.4 |
+| +-1 blocks | +11.7 +- 6.8 | +7.1 | -0.6 +- 6.3 |
+| +-2 blocks | +6.1 +- 8.2 | +5.1 | -3.2 +- 8.9 |
+| +-3 blocks | +4.3 +- 8.4 | +6.2 | +3.6 +- 10.5 |
 
-The English column predicts +8.7 extra long blocks near a mark and the body shows -3.9,
-z = -2.23. **That number should not be quoted.** English is the wrong register for a tail
-statistic here: the author predicts +0.6 and the body reads -3.9 +- 4.8, which is nothing.
+The window counts are about 1.2 sigma below the author at +-1 and nothing beyond. So the
+displaced-stop and transposition readings are still not separated -- but by lack of power,
+not because the instrument is invalid. English overstates the effect (+11.7 against the
+author's +7.1), so the author is the reference to use.
 
-**So this test cannot separate a displaced stop from a transposition**, and the failure is
-in the instrument rather than in the data. It joins the window mean and the window maximum
-(`a_shifted_stop_or_a_switched_key.py`) as the third statistic to die on this question.
+## The recurring bump is noise
 
-## The one recurring bump is noise
+The body's +0.069 at offset +3 in the long-block share, and +0.47 +- 0.27 there in the
+mean, looked like a signal. Priced against a scan over all ten offsets with a null that
+shuffles blocks inside each span:
 
-The body reads +0.156 +- 0.055 at offset +3 in the long-block share, and +0.47 +- 0.27
-there in the mean (`the_long_block_is_nowhere.py` records +0.44 as its largest value
-anywhere). Two statistics peaking at the same offset looks like something.
+    largest |z| over the ten offsets          1.70
+    the same on within-span shuffles     2.03 +- 0.67
+    P(null >= observed)                       0.684
 
-Priced against a scan over all ten offsets, with a null that shuffles the blocks inside
-each span -- which is what the transposition reading says happened:
-
-    largest |z| over the ten offsets          2.81
-    the same on within-span shuffles     1.96 +- 0.67
-    P(null >= observed)                       0.117
-
-**Not significant.** The offset +3 bump is what a ten-offset scan produces by chance, and
-should be dropped rather than carried forward.
+Noise, and more clearly so than under the broken floor, which gave 2.81 and P = 0.117.
 
     python is_the_long_block_near_the_mark.py
 """
@@ -96,32 +105,39 @@ from the_gap_depends_on_span_length import author_spans, body_spans  # noqa: E40
 LONG = 7
 OFFSETS = (-5, -4, -3, -2, -1, 1, 2, 3, 4, 5)
 WINDOWS = (1, 2, 3, 5)
-MIN_SPAN = 8
+MIN_SPAN = 3  # the author's spans average 7.65 blocks; a higher floor truncates him
 
 
 def at_offset(spans, o):
-    """The block at offset o from each mark; negative counts back, positive forward."""
+    """The block at offset o from each mark; negative counts back, positive forward.
+
+    The span floor is the smallest that can supply the offset, never a fixed number.
+    A floor of 8 keeps only 40 of the author's 75 spans -- his longest -- and that
+    truncation alone drops his sentence-final 7+ lift from +0.140 to +0.037.
+    """
+    need = abs(o) + 1
     out = []
     for i in range(len(spans) - 1):
         a, b = spans[i], spans[i + 1]
-        if len(a) < MIN_SPAN or len(b) < MIN_SPAN:
+        if len(a) < max(MIN_SPAN, need) or len(b) < max(MIN_SPAN, need):
             continue
         out.append(a[o] if o < 0 else b[o - 1])
     return np.array(out, float)
 
 
-def interior_rate(spans) -> float:
-    a = np.array([x for s in spans if len(s) >= MIN_SPAN for x in s[1:-1]], float)
+def interior_rate(spans, need=MIN_SPAN) -> float:
+    a = np.array([x for s in spans if len(s) >= need for x in s[1:-1]], float)
     return float((a >= LONG).mean())
 
 
 def window_excess(spans, half) -> tuple[float, float, int]:
     """Long blocks within `half` either side of a mark, minus the interior expectation."""
-    base = interior_rate(spans)
+    need = max(MIN_SPAN, half + 1)
+    base = interior_rate(spans, need)
     total = seen = 0
     for i in range(len(spans) - 1):
         a, b = spans[i], spans[i + 1]
-        if len(a) < MIN_SPAN or len(b) < MIN_SPAN:
+        if len(a) < need or len(b) < need:
             continue
         cells = a[-half:] + b[:half]
         total += len(cells)
@@ -140,15 +156,16 @@ def main() -> None:
     print(f"Share of blocks at {LONG}+ runes, by offset, minus the span interior.\n")
     print(f"{'offset':>8}{'ten registers':>20}{'the author':>14}{'the body':>18}")
     for o in OFFSETS:
+        need = max(MIN_SPAN, abs(o) + 1)
         ref = np.array(
-            [(at_offset(s, o) >= LONG).mean() - interior_rate(s) for s in registers]
+            [(at_offset(s, o) >= LONG).mean() - interior_rate(s, need) for s in registers]
         )
         ba, au = at_offset(body, o), at_offset(author, o)
-        pb = float((ba >= LONG).mean()) - interior_rate(body)
+        pb = float((ba >= LONG).mean()) - interior_rate(body, need)
         se = math.sqrt(max((ba >= LONG).mean() * (1 - (ba >= LONG).mean()), 1e-9) / len(ba))
         print(
             f"{o:>8}{f'{ref.mean():+.3f} +- {ref.std(ddof=1):.3f}':>20}"
-            f"{f'{float((au >= LONG).mean()) - interior_rate(author):+.3f}':>14}"
+            f"{f'{float((au >= LONG).mean()) - interior_rate(author, need):+.3f} ({len(au)})':>20}"
             f"{f'{pb:+.3f} +- {se:.3f}':>18}"
         )
 
