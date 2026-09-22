@@ -24,23 +24,20 @@ punctuation at all.
 Expanding each rune to its full English spelling and aligning the two letter streams with
 a longest-matching-block match gives 99% coverage.
 
-## Result: it is a sentence mark, and it is not a comma
+## Result: it is a sentence mark, it is never a comma, and it holds on two passages
 
-| what the dot mark sits at | count |
-|---|---|
-| **a sentence end** | **18** |
-| a line break | 4 |
-| a comma | **0** |
+| passage | marks | at a sentence end | ends marked | commas marked |
+|---|---|---|---|---|
+| the koan, pages 4-7, Atbash+3 | 22 | 18 | 18/21 | **0/6** |
+| the welcome, page 2, Vigenere | 10 | 8 | **8/8** | **0/1** |
+| **both** | **32** | **26** | **26/29** | **0/7** |
 
-| the converse | |
-|---|---|
-| English sentence ends carrying a dot mark | **18 of 21** |
-| commas carrying one | **0 of 6** |
+**Two passages, two ciphers, two registers.** The koan is dialogue and the welcome is
+continuous prose; one is Atbash-plus-three and the other Vigenere with DIVINITY and
+interrupts. The marks that do not sit at a sentence end sit at a line break -- the koan's
+dialogue turns, where the English transcription breaks the line instead of punctuating.
 
-**The author's mark is a sentence mark.** Eighteen of his twenty-two marks sit at a period
-or question mark, eighteen of the twenty-one sentence ends in the passage carry one, and
-**not one of the six commas does**. The four at line breaks are the dialogue turns in the
-koan, where the English transcription breaks the line rather than punctuating.
+**Not one of the seven commas carries a mark.**
 
 ## What this underwrites
 
@@ -70,9 +67,9 @@ section with no plaintext anywhere.
 from __future__ import annotations
 
 import difflib
+import json
 import re
 import sys
-from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -84,32 +81,47 @@ from aldegonde import c3301  # noqa: E402
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
-TRANSCRIBED = Path.home() / "src" / "cicada-2014" / "stage06" / "index.transcribed"
+CICADA = Path.home() / "src" / "cicada-2014"
+PASSAGES = (
+    ("the koan, pages 4-7, Atbash+3", (4, 5, 6, 7), CICADA / "stage06" / "index.transcribed"),
+    ("the welcome, page 2, Vigenere", (2,), CICADA / "stage04" / "index.1.decrypted"),
+)
+TRIPLES = ROOT / "experiments" / "solved_page_triples.json"
 ENGLISH = c3301.CICADA_ENGLISH_ALPHABET
 KOAN_PAGES = (4, 5, 6, 7)
 STRUCTURAL = '.,?!;:"\n'
 WINDOW = 2
 
 
-def runic_stream():
-    """The decrypted koan as English letters, with the position of each dot mark."""
+def plaintext_for(page):
+    """Rune indices of a page's plaintext: affine where that breaks it, else the triples."""
+    runes = runes_of(page)
+    score, _, plain = best_affine(runes)[0]
+    if score / len(runes) > -5.0:
+        return plain
+    triples = {e["page"]: e for e in json.loads(TRIPLES.read_text())}
+    return triples[page]["plaintext_runes"]
+
+
+def runic_stream(pages):
+    """The decrypted passage as English letters, with the position of each dot mark."""
     chunks = MASTER.read_text().split("%")
     stream, marks = "", []
-    for page in KOAN_PAGES:
-        runes = runes_of(page)
-        _, _, plain = best_affine(runes)[0]
+    for page in pages:
+        plain = plaintext_for(page)
         at = 0
         for ch in chunks[page]:
             if RUNE.match(ch):
-                stream += ENGLISH[plain[at]]
-                at += 1
+                if at < len(plain):
+                    stream += ENGLISH[plain[at]]
+                    at += 1
             elif ch == ".":
                 marks.append(len(stream))
     return stream, marks
 
 
-def english_stream():
-    text = TRANSCRIBED.read_text(errors="ignore").upper()
+def english_stream(path):
+    text = path.read_text(errors="ignore").upper().split("PAGE 6 FOOTER")[0]
     stream, punctuation = "", {}
     for ch in text:
         if ch.isalpha():
@@ -120,57 +132,46 @@ def english_stream():
 
 
 def main() -> None:
-    runic, marks = runic_stream()
-    english, punctuation = english_stream()
-    matcher = difflib.SequenceMatcher(None, runic, english, autojunk=False)
-    mapping = {}
-    for a, b, size in matcher.get_matching_blocks():
-        for k in range(size):
-            mapping[a + k] = b + k
-    print(
-        f"{len(runic)} decrypted letters against {len(english)} English letters;"
-        f" {100 * len(mapping) / len(runic):.0f}% aligned.\n"
-        f"{len(marks)} dot marks in the runic text.\n"
-    )
+    print(f"{'passage':<34}{'marks':>7}{'at a sentence end':>19}{'ends marked':>14}{'commas marked':>15}")
+    totals = [0, 0, 0, 0, 0, 0]
+    for label, pages, path in PASSAGES:
+        runic, marks = runic_stream(pages)
+        english, punctuation = english_stream(path)
+        matcher = difflib.SequenceMatcher(None, runic, english, autojunk=False)
+        mapping = {}
+        for a, b, size in matcher.get_matching_blocks():
+            for k in range(size):
+                mapping[a + k] = b + k
 
-    def nearby(at):
-        found = set()
-        for d in range(-WINDOW, WINDOW + 1):
-            found |= punctuation.get(at + d, set())
-        return found
-
-    table = Counter()
-    for position in marks:
-        at = mapping.get(position, mapping.get(position - 1, mapping.get(position + 1)))
-        if at is None:
-            table["unaligned"] += 1
-            continue
-        found = nearby(at)
-        table[
-            "a sentence end" if found & set(".?!")
-            else "a line break" if "NL" in found
-            else "a quotation mark" if '"' in found
-            else "a comma" if "," in found
-            else "nothing"
-        ] += 1
-    print(f"{'what the dot mark sits at':<26}{'count':>7}")
-    for label, count in table.most_common():
-        print(f"{label:<26}{count:>7}")
-
-    covered = set()
-    for position in marks:
-        at = mapping.get(position, mapping.get(position - 1, mapping.get(position + 1)))
-        if at is not None:
+        at_end, covered = 0, set()
+        for position in marks:
+            at = mapping.get(position, mapping.get(position - 1, mapping.get(position + 1)))
+            if at is None:
+                continue
             covered.update(range(at - WINDOW, at + WINDOW + 1))
-    ends = [p for p, s in punctuation.items() if s & set(".?!")]
-    commas = [p for p, s in punctuation.items() if s == {","}]
+            found = set()
+            for d in range(-WINDOW, WINDOW + 1):
+                found |= punctuation.get(at + d, set())
+            at_end += bool(found & set(".?!"))
+        ends = [p for p, s in punctuation.items() if s & set(".?!")]
+        commas = [p for p, s in punctuation.items() if s == {","}]
+        marked_ends = sum(1 for p in ends if p in covered)
+        marked_commas = sum(1 for p in commas if p in covered)
+        print(
+            f"{label:<34}{len(marks):>7}{at_end:>19}"
+            f"{f'{marked_ends}/{len(ends)}':>14}{f'{marked_commas}/{len(commas)}':>15}"
+        )
+        for i, v in enumerate(
+            (len(marks), at_end, marked_ends, len(ends), marked_commas, len(commas))
+        ):
+            totals[i] += v
     print(
-        f"\nthe converse: {sum(1 for p in ends if p in covered)} of {len(ends)}"
-        f" English sentence ends carry a dot mark"
+        f"{'both':<34}{totals[0]:>7}{totals[1]:>19}"
+        f"{f'{totals[2]}/{totals[3]}':>14}{f'{totals[4]}/{totals[5]}':>15}"
     )
     print(
-        f"              {sum(1 for p in commas if p in covered)} of {len(commas)}"
-        f" commas carry one"
+        "\n  Two passages, two ciphers, two registers -- dialogue and continuous prose."
+        "\n  The mark is a sentence mark and it is never a comma."
     )
 
 

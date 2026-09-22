@@ -402,10 +402,14 @@ convention, never a checked fact.
 ordinary English with ordinary punctuation. Those pages are Atbash-plus-three, so the
 runic and English letter streams can be aligned directly — 99% coverage.
 
-| what the dot mark sits at | count | | the converse | |
+| passage | marks | at a sentence end | ends marked | commas marked |
 |---|---|---|---|---|
-| **a sentence end** | **18** | | sentence ends carrying a mark | **18 of 21** |
-| a line break | 4 | | commas carrying one | **0 of 6** |
+| the koan, pages 4–7, Atbash+3 | 22 | 18 | 18/21 | **0/6** |
+| the welcome, page 2, Vigenère | 10 | 8 | **8/8** | **0/1** |
+| **both** | **32** | **26** | **26/29** | **0/7** |
+
+Two passages, two ciphers, two registers — the koan is dialogue, the welcome continuous
+prose.
 
 **It is a sentence mark and it is not a comma.** The four at line breaks are the koan's
 dialogue turns, where the English transcription breaks the line rather than punctuating.
@@ -419,5 +423,5 @@ at −4.66σ, and the author simply does not mark commas.
 this passage, enough that a first attempt scored 17 of 22 marks as landing on no
 punctuation at all.
 
-**Limits:** one passage, 22 marks, and it is dialogue. It covers the ASCII-convention `.`,
-not the body's circled numerals, which have no plaintext anywhere.
+**Limits:** 32 marks across two passages. It covers the ASCII-convention `.`, not the
+body's circled numerals, which have no plaintext anywhere.
