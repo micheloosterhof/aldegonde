@@ -62,11 +62,41 @@ Said plainly, because the number is the point of the file.
    larger, adding about 3 bits to each of σ and base₀.
 3. The filter's pruning is **unreliable**: three of six planted trials put the true `g`
    outside the top 2%. Keeping the top 20% instead costs a factor of ten.
-4. The whole reading is **a hypothesis**, supported by the author's habits on the solved
-   pages and by nothing in the body itself.
+4. The whole reading is **a hypothesis** — and its keyword half is now disfavoured at
+   P = 0.033, see below.
 
 Taken together those plausibly move 220 core-hours to a few thousand. The conclusion that
 survives is the order of magnitude: **10⁹ to 10¹¹ keys, not 10⁸⁵.**
+
+## The keyword assumption is now tested, and it leans against
+
+The third reading's 38 bits rests on σ and base₀ being keyword-mixed alphabets. That was
+recorded as the load-bearing untested assumption. `experiments/is_the_key_keyword_built.py`
+tests it.
+
+A keyword-mixed alphabet — the keyword's runes first, then the rest in alphabet order —
+is mostly a long run in order. Composed into the walk, that correlation survives into the
+ciphertext as residual structure, and several cells see it.
+
+| cell | the body | keyword-built | z | free permutations | z |
+|---|---|---|---|---|---|
+| ioc | 0.9999 | 1.0199 ± 0.0256 | −0.78 | 1.0024 ± 0.0073 | −0.35 |
+| entropy | 4.8565 | 4.8379 ± 0.0235 | +0.79 | 4.8539 ± 0.0090 | +0.29 |
+| bigram_chi2 | 841.2 | 1325.7 ± 672.0 | −0.72 | 881.0 ± 199.5 | −0.20 |
+| clock | 1.0071 | 1.0280 ± 0.0362 | −0.58 | 1.0069 ± 0.0087 | +0.02 |
+
+Mean |z| against keyword-built **0.61**, against free **0.30**. And the direct test:
+**only 1 of 30 keyword-built corpora look as free-like as the body does, P = 0.033.**
+
+Two limits on that. It excludes the **simplest** keyword construction; a columnar-mixed
+or reversed-rest alphabet is flatter and untouched. And the author's demonstrated habit is
+a repeating keyword **keystream** — DIVINITY with period 8 — which is not a permutation at
+all, so the evidence for the assumption was weaker than this file first presented it.
+
+**What survives**: the costing's arithmetic is unchanged, and its premise has gone from
+untested to disfavoured at about two sigma. The honest position is that the key's size
+depends on a construction nobody has identified, and the one natural candidate now has
+evidence against it.
 
 ## Falsification
 
