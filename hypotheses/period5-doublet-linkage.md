@@ -105,9 +105,20 @@ would set a rune-flat, phase-flat 5× suppression is not answered.
 - **The suppression is rune-flat.** It is carried by 28 of 29 runes roughly in
   proportion, not by the ≥4 fixed points that an order-5 *g* on 29 letters must
   have (29 = 5·5 + 4). So *g*'s fixed-point structure is invisible in the doublets.
-- The within-word doublet start-phase looks concentrated at j = 0,1, but that is
-  confounded by word length (short words over-weight low positions); it needs an
-  opportunity-normalized test before it counts.
+- ~~The within-word doublet start-phase looks concentrated at j = 0,1~~ — **the
+  confound was the whole effect.** Done opportunity-normalised, dividing by the adjacent
+  pairs that exist at each position (`experiments/doublets_by_position.py`), the profile
+  is flat: χ²(7) = 7.10, P = 0.42, with the block-initial pair at 0.0043 against the
+  overall 0.0063 — mildly low, not high. Binned by block length it is flatter still,
+  χ²(4) = 0.30, P = 0.99.
+
+  Power measured rather than assumed, by planting effects at the block-initial pair: a
+  preventer **blind** there is unmissable (χ² = 73, P = 0.000); one **twice as strong**
+  there is marginal (P = 0.057); one letting through **twice as many** is not caught at
+  all (P = 0.26). So this excludes a large position effect and nothing subtler.
+
+  What it rules out: a preventer whose state resets at the block boundary, a clock phase
+  tied to position within the block, and a rule that acts only after the first rune.
 - **The fixed points carry negligible text mass.** An order-5 *g* on 29 letters
   fixes ≥4 runes, and their self-coincidence would surface at d2/d3 (where the
   cycle relation g²/g³ is undesigned ≈ chance). The d2 excess is ≈ 0 (z=+0.1) and
