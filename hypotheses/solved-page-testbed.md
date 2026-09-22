@@ -46,9 +46,24 @@ splits the pages into three groups:
 | polyalphabetic ciphertext | 1, 2, 12, 13 | 1.07 – 1.28 |
 | the unsolved corpus, for scale | — | 1.000 |
 
-Five pages sit in the plaintext IoC range, so they are simple substitutions on a
-general keyed alphabet — which shifts and Atbash cannot reach, and which is why the
-earlier family missed them. Steepest-ascent hill climbing over transpositions,
+Five pages sit in the plaintext IoC range, so they are simple substitutions.
+
+**CORRECTED, September 2026.** This paragraph said they are "on a general keyed alphabet
+— which shifts and Atbash cannot reach, and which is why the earlier family missed them."
+That is wrong. `experiments/break_the_front_matter_pages.py` recovers all five with an
+**affine** sweep over `x → a·x + b`, 812 keys:
+
+| page | best affine key | equivalently |
+|---|---|---|
+| 0 | a=28, b=28 | **plain Atbash** |
+| 4, 5, 6, 7 | a=28, b=2 | Atbash then shift 3 |
+
+a = 28 is −1 mod 29, so these are reflections `x → (28+k) − x`, and Atbash is k = 0. The
+keys are a 29-member family, not a general keyed alphabet, and page 0 is the simplest
+classical cipher there is. So "shifts and Atbash cannot reach them" cannot be why an
+earlier search missed them, and that failure is still unexplained — a narrower family than
+claimed, a bug, or the interrupter handling. Worth knowing before trusting that search's
+negative results elsewhere. Steepest-ascent hill climbing over transpositions,
 scored by runeglish quadgrams, recovers all five:
 
 | page | runes | score | plaintext |
