@@ -85,18 +85,32 @@ ciphertext as residual structure, and several cells see it.
 | bigram_chi2 | 841.2 | 1325.7 ± 672.0 | −0.72 | 881.0 ± 199.5 | −0.20 |
 | clock | 1.0071 | 1.0280 ± 0.0362 | −0.58 | 1.0069 ± 0.0087 | +0.02 |
 
-Mean |z| against keyword-built **0.61**, against free **0.30**. And the direct test:
-**only 1 of 30 keyword-built corpora look as free-like as the body does, P = 0.033.**
+Mean |z| against keyword-built **0.61**, against free **0.30**.
 
-Two limits on that. It excludes the **simplest** keyword construction; a columnar-mixed
-or reversed-rest alphabet is flatter and untouched. And the author's demonstrated habit is
-a repeating keyword **keystream** — DIVINITY with period 8 — which is not a permutation at
-all, so the evidence for the assumption was weaker than this file first presented it.
+**The first version of this section reported "1 of 30 keyword corpora look as free-like as
+the body, P = 0.033" and called it two sigma. That was wrong, and the error is worth
+naming.** A tail probability under one hypothesis is not evidence; what matters is the
+same statistic scored under the alternative. Adding the control arm — corpora drawn
+*genuinely* from free permutations — at sixty keys each:
 
-**What survives**: the costing's arithmetic is unchanged, and its premise has gone from
-untested to disfavoured at about two sigma. The honest position is that the key's size
-depends on a construction nobody has identified, and the one natural candidate now has
-evidence against it.
+| arm | fraction as free-like as the body |
+|---|---|
+| keyword-built | 0.050 ± 0.028 |
+| **genuinely free (the control)** | **0.150 ± 0.046** |
+
+**Likelihood ratio about 3 to 1** against the keyword construction, the two arms differing
+at **1.85σ**. Weak, not two sigma.
+
+Two further limits. It bears on the **simplest** keyword construction only:
+`which_key_constructions_are_visible.py` finds columnar-mixed, reversed-rest, affine and
+shift alphabets all sit within 0.42σ of free permutations, so the battery cannot rule
+them in or out at all. And the author's demonstrated habit is a repeating keyword
+**keystream** — DIVINITY with period 8 — which is not a permutation, so the leap from his
+habits to mixed alphabets was weak to begin with.
+
+**What survives**: the costing's arithmetic is unchanged and its premise is essentially
+untested, as it was before. Three to one against one construction out of many is not a
+verdict on whether the key has a short description.
 
 ## Falsification
 

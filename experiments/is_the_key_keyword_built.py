@@ -74,7 +74,7 @@ def walk(g, sigma, base, plain, rng, phi: float = 0.9):
 
 
 def main() -> None:
-    keys = 30
+    keys = 60
     for i, a in enumerate(sys.argv):
         if a == "--keys" and i + 1 < len(sys.argv):
             keys = int(sys.argv[i + 1])
@@ -120,18 +120,44 @@ def main() -> None:
     print(f"\nmean |z| against keyword-built {np.abs(zk).mean():.2f}, "
           f"against free {np.abs(zf).mean():.2f}")
 
+    # A tail probability under ONE arm is not evidence. What matters is how much
+    # likelier the body is under one arm than the other, so the same statistic has to
+    # be scored on a control arm drawn genuinely from the alternative.
     free = arms["free"]
     target = float(np.abs(zf).mean())
-    hits = 0
-    for i in range(keys):
-        d = np.mean([
-            abs((arms["keyword"][k][i] - free[k].mean()) / free[k].std())
-            for k in CELLS
-        ])
-        if d <= target:
-            hits += 1
-    print(f"\nkeyword-built corpora that look as free-like as the body: "
-          f"{hits} of {keys}  (P = {hits / keys:.3f})")
+
+    def as_free_like(arm) -> float:
+        hits = 0
+        for i in range(len(arm[CELLS[0]])):
+            d = np.mean([
+                abs((arm[k][i] - free[k].mean()) / free[k].std()) for k in CELLS
+            ])
+            if d <= target:
+                hits += 1
+        return hits / len(arm[CELLS[0]])
+
+    rows = []
+    for t in range(keys):
+        g = order5_fixing(rk.sample(range(M), 4), rk)
+        sigma = rk.sample(range(M), M)
+        base = rk.sample(range(M), M)
+        rows.append(
+            fingerprint(walk(g, sigma, base, corpora[t], random.Random(700 + t)))
+        )
+    control = {k: np.array([r[k] for r in rows], float) for k in CELLS}
+
+    pk, pf = as_free_like(arms["keyword"]), as_free_like(control)
+    print(f"\nfraction of corpora as free-like as the body:")
+    print(f"  keyword-built                {pk:.3f}")
+    print(f"  genuinely free (the control) {pf:.3f}")
+    print(f"  likelihood ratio, free over keyword: {pf / max(pk, 1e-9):.1f} to 1")
+    print(
+        "\nThat ratio is the evidence. An earlier version of this file reported the"
+        "\nkeyword arm's figure alone as a P-value, which treats the control's as though"
+        "\nit were 1. At sixty keys per arm the two read 0.050 +- 0.028 and 0.150 +-"
+        "\n0.046: a likelihood ratio near three to one, with the arms differing at 1.85"
+        "\nsigma. Weak, and nothing like the two sigma once claimed."
+    )
     print(
         "\nA keyword-mixed alphabet is mostly a long run in alphabet order, so base o g^k"
         "\nmaps many runes in a correlated way and the ciphertext keeps residual"
