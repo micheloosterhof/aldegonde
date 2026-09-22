@@ -268,6 +268,25 @@ agrees.
 | transcription annotation lines (`3258-3222-…`) clearing the sentence-initial flag | dropped; they carry no runes and sit between a mark and the next block |
 | pooling unlike marks | 4-dot carries it (137 blocks, +0.16 ± 0.23 on the two-rune odds); 13-dot is consistent with English at −0.22 ± 0.58 but has only 26 blocks |
 
+## Three channels say the plaintext is ordinary English
+
+The register escape is closed from three independent directions, which is what makes the
+anomaly hard rather than merely odd:
+
+| channel | result |
+|---|---|
+| **word lengths** | the author's own distribution with a third of the short units merged fits at P = 0.83; smooth cutting laws are rejected with two free parameters (`blocks-are-still-words.md`) |
+| **function-word content** | depletion — a list or invocation register — fits at χ² 63.9 against joining's 20.2 (`does_the_author_ever_join.py`) |
+| **lag-5 structure** | the body's 0.0494 ± 0.0047 against a ten-register plaintext 0.0558 ± 0.0054, attenuated by the preventer: predicted 0.0525, **z = −0.47** (`d5_across_registers.py`) |
+
+d5 is the only key-free window onto the plaintext — two positions five apart inside a
+block share alphabet and base, so they coincide exactly when the plaintext does — and it
+says English prose. The earlier version of that test used a single book; ten registers
+give 0.0558 ± 0.0054 and the verdict is unchanged at every plausible skip rate.
+
+So the body is English prose with a normal complement of short function words, and its
+sentence-final words still do not lengthen at the marks.
+
 ## What this leaves
 
 Three readings, none yet eliminated:
