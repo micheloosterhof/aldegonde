@@ -35,18 +35,18 @@ letters would leave this bias, and there is none. The mark is consistent with a 
 clock, sitting 1.0 sigma below it -- the short-block lean already recorded as the -0.24
 sentence-final gap.
 
-## The author's lengthening is arithmetic, not only linguistic
+## The author's cell cannot discriminate, which is not the same as being explained
 
-His marks lengthen by **+1.42** and his own size bias predicts **+1.18**. A verified
-sentence mark and a letter countdown make the same prediction on his pages, and the
-observed value sits 0.7 sigma from the countdown.
+His marks lengthen by **+1.42** where a length-proportional placement on his pages gives
+**+1.18**. His cell sits 0.7 sigma from a letter countdown, so it cannot tell the two
+models apart.
 
-That is a degeneracy, not a claim that he counted letters -- `what_the_authors_mark_means.py`
-verifies his mark against an English transcription outside the repository, 26 of 32 at
-sentence ends. What it changes is what his +1.39 may be quoted for. **It is not evidence
-that sentence marks lengthen more than an arbitrary length-proportional mark**, because
-they do not. The comparison against the body survives only because the body shows neither
-effect.
+It does not follow that his sentence effect is only the difference. Size bias is what a
+length-proportional placement produces; a sentence mark is placed by syntax and samples
+blocks uniformly, so under the sentence model -- verified for him from outside this
+repository, 26 of 32 at sentence ends -- the whole +1.42 is linguistic, at z = +4.5 against
+his own interior. The body-against-author comparison is unaffected: both sides are
+measured against their own corpus's uniform interior.
 
 ## What this tightens
 

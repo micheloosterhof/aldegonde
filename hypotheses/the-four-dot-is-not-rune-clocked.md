@@ -1,7 +1,7 @@
 ---
 type: observation
 ---
-# Observation: The Four-Dot Counts Words, Not Letters — and the Author's Lengthening Is Mostly Arithmetic
+# Observation: The Four-Dot Counts Words, Not Letters
 
 ## Question
 
@@ -52,20 +52,28 @@ in which the four-dot is a production quantity measured off the page, and
 finding it adequate — a per-page test cannot separate runes from blocks, because the two
 are nearly proportional per page.
 
-## What it costs
+## What it does not cost
 
-The author's marks lengthen by **+1.42** where his own size bias alone predicts **+1.18**.
-A verified sentence mark and a letter countdown make the same prediction on his pages, and
-the observed value sits 0.7σ from the countdown.
+The author's marks lengthen by **+1.42** where a length-proportional mark on his pages
+would give **+1.18**. A verified sentence mark and a letter countdown therefore make
+almost the same prediction there, and his cell sits 0.7σ from the countdown.
 
-This is a degeneracy, not a claim that he counted letters —
-`what_the_authors_mark_means.py` verifies his mark against an English transcription
-outside this repository, 26 of 32 at sentence ends. What changes is what his +1.39 may be
-quoted for. **It is not evidence that sentence marks lengthen more than an arbitrary
-length-proportional mark**, because they do not. Any future use of the author's
-lengthening as a sentence signature has to subtract var/mean first.
+That is a statement about **discrimination**, and an earlier version of this file
+overstated it into a statement about **magnitude**. It said his +1.39 "has to subtract
+var/mean first" before being quoted as a sentence signature. That is wrong. Size bias is
+what a *length-proportional* placement would produce; a sentence mark is placed by syntax
+and samples blocks uniformly, so under the sentence model — which
+`what_the_authors_mark_means.py` verifies from outside this repository, 26 of 32 at
+sentence ends — the whole +1.42 is the linguistic effect, measured against his own uniform
+interior at z = +4.5.
 
-The body comparison survives because the body shows neither effect.
+What the degeneracy does mean, exactly:
+
+- the author's lengthening **cannot tell** a sentence mark from a rune clock;
+- it remains the full measure of the sentence effect under the model already verified for
+  him;
+- the body-against-author comparison at −4.65σ is unaffected, because both sides are
+  measured against their own corpus's uniform interior.
 
 ## How to falsify
 
@@ -77,3 +85,30 @@ The body comparison survives because the body shows neither effect.
 - Show a scribe counting letters would mark *before* the block the count falls in rather
   than after it. That model predicts the corpus mean, is indistinguishable from a block
   clock here, and would leave the question open.
+
+## The detector was calibrated after the fact, and it works
+
+`experiments/does_the_size_bias_detector_work.py`
+
+A null result from an untested detector proves nothing. The same statistic was run on
+boundaries whose clock is physical rather than editorial — a line holds a fixed width of
+runes, so the block a line break falls inside is drawn in proportion to its length.
+
+| class | n | mean | uniform | z | size-biased | z |
+|---|---|---|---|---|---|---|
+| blocks a line break falls inside | 419 | 5.909 | 4.428 | **+9.2** | 5.635 | +1.9 |
+| blocks a page break falls inside | 34 | 6.676 | 4.428 | **+3.7** | 5.631 | +1.6 |
+| four-dot | 139 | 4.165 | 4.428 | −1.0 | 5.630 | **−4.9** |
+| thirteen-dot | 26 | 4.462 | 4.420 | +0.1 | 5.640 | −1.9 |
+| three-dot | 4 | 5.000 | 4.445 | +0.2 | 5.629 | −0.3 |
+| one-dot separator | 2,722 | 4.442 | 4.427 | +0.3 | 5.634 | −24.9 |
+
+The detector separates the two clocks at **9.2σ on 419 blocks**, so the four-dot's
+negative is a measurement and not a missing sensitivity. Both physical classes read at or
+slightly above the size-biased prediction, which is expected — a scribe avoids breaking a
+short word, so the real selection is steeper than proportional.
+
+**No mark class in the book is rune-clocked.** The one-dot row is definitional: it is the
+block delimiter, and it fixes the uniform column. The thirteen-dot leans with the four-dot
+on a quarter of the sample and is unresolved alone.
+
