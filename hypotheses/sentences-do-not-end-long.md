@@ -55,27 +55,49 @@ A fourth cell, **+2, came out at +0.37 ± 0.21 against a predicted −0.14, z = 
 was noticed in the data, not predicted, and is excluded from the joint test. It needs an
 independent replication before it means anything.
 
-## The marks sit at prose sentence density
+## The marks' spacing: mechanical is dead, sentences are in doubt
 
-New, and nothing had checked it. Units between consecutive marks:
+**This section previously claimed the opposite and the claim is withdrawn.** It reported
+that the marks "partition the body at ordinary prose sentence density — 17.2 units a
+span against 17.5 for joined Austen" and called that the strongest evidence the marks
+are sentence-scale. It is not evidence at all: random placement matches **any** mean by
+construction, since the density is its one free parameter. Only the shape discriminates.
 
-| | units per span | median |
-|---|---|---|
-| **the LP body** | **17.2** | 13 |
-| Austen, joined at q = 0.40 | 17.5 | 14 |
-| Austen, raw | 19.2 | 15 |
-| the LP author's own pages | 7.9 | 6 |
+`experiments/what_the_marks_space_like.py` measures the shape. Dispersion of the gap
+between marks:
 
-The body's marks partition it at ordinary prose sentence spacing — **once its own
-joining model is applied**, which is the second check that model passes without having
-been fitted to it (the first is the interior mean, below). This is the strongest
-evidence that the marks are sentence-scale units at all, and it is what makes reading 2
-hard to hold.
+| | spans | mean | CV |
+|---|---|---|---|
+| **the LP body** | 148 | 19.6 | **0.972 ± 0.145** |
+| the LP author's own pages | 92 | 7.9 | 0.738 ± 0.049 |
+| Pride and Prejudice, joined q = 0.40 | 5,361 | 17.4 | 0.771 ± 0.010 |
+| marks placed at random | 148 | 19.6 | 0.970 ± 0.071 |
+| mechanical, every 19.6 blocks | — | 19.6 | 0 |
 
-It also does not match the author's own solved pages at 7.9. Those pages are aphoristic;
-the body's marks are spaced like prose.
+**Mechanical placement is dead** at 6.7σ. That much is settled, and it was worth
+checking: a counting device would have dissolved the whole anomaly.
+
+Between sentence ends and a memoryless process the body sits **exactly on memoryless**
+and 1.4σ from English. On the mean-normalised shape, scored under both models rather
+than one:
+
+| reference | P(D ≥ body) under it | under random | ratio |
+|---|---|---|---|
+| Pride and Prejudice, 5,361 sentences | 0.028 | 0.938 | **33 : 1 for random** |
+| the LP author's own 92 sentences | 0.793 | 0.915 | **1.2 : 1 — no power** |
+
+So the honest range is **3:1 to 33:1 leaning to random**, and the loud number depends on
+Austen standing in for the LP's register. The register-matched control cannot confirm it
+— 92 sentences resolve nothing — though it does support the reference *value*, since the
+author's own dispersion (0.738) agrees with Austen's (0.771).
+
+A section mixture would inflate dispersion innocently and does not: 9.2% of variance is
+between the nine sections, and the within-section CV is 0.956 against the pooled 0.972.
+The 13 short spans driving it are spread over 7 sections and 13 pages, not clustered.
 
 ## Why joining does not explain it
+
+
 
 This was the first thing to rule out and it needed measuring rather than asserting.
 The body joins units of ≤2 runes at q ≈ 0.40 (`short-units-are-written-joined.md`).
@@ -126,8 +148,11 @@ Three readings, none yet eliminated:
 every cell at once: if the mark opens a verse and verses run on grammatically, the unit
 before it is mid-span (flat, observed −0.21), the unit after it starts a verse but need
 not start a sentence (weak or no dip, observed +0.07), and spans come out at sentence
-scale (17.2). Reading 3 fits the −1 and +1 cells equally well. Reading 2 is the one the
-span density hurts: arbitrary marks would not land at 17.2 units.
+scale. Reading 3 fits the −1 and +1 cells equally well. **Reading 2 is now the one the spacing
+favours**, reversing what this file said before: the gaps between marks are
+over-dispersed for sentence ends and sit exactly on a memoryless process. If the marks
+are not at sentence ends, nothing about the plaintext needs to lengthen before them and
+the whole anomaly dissolves.
 
 Reading 4 has a problem the others do not: the inventory. If these were verse numbers
 there would be many distinct numerals, spread. There are four, and 4-dot alone is 139 of
@@ -164,16 +189,21 @@ So this result does not overturn it — it names the kind of rule that would hav
 
 ## Status
 
-**Status**: open. The sentence-final anomaly is 5.0–5.5σ against the joined-English
-prediction depending on the baseline, and is the one solid cell. The sentence-initial
-control is **equivocal, not passing** — corrected here. The span-density match is new
-and independent. `experiments/sentences_do_not_end_long.py`,
-`experiments/profile_around_a_mark.py`.
+**Status**: open, and the reading has shifted. The sentence-final anomaly is 5.0–5.5σ
+against the joined-English prediction and is the one solid cell. The sentence-initial
+control is **equivocal, not passing**. The mark spacing excludes mechanical placement at
+6.7σ but leans 3:1 to 33:1 towards the marks NOT falling at sentence ends — which, if it
+holds, dissolves the anomaly rather than deepening it. `sentences_do_not_end_long.py`,
+`profile_around_a_mark.py`, `what_the_marks_space_like.py`.
 
 ## Related
 
-- `titles-are-just-sentence-initial.md` — established that the marks are sentence marks,
-  which is what makes this test possible and supplies its control.
-- `block-lengths-have-a-hole-at-two.md` — the joining model and its fitted q.
-- `lengths-say-words-not-cuts.md` — the marginal-distribution result this is in tension with.
-- `separators-are-the-cipher-unit.md`, `block-lengths-are-detached.md`.
+- `block-lengths-have-a-hole-at-two.md` — records the withdrawn rubricated-titles lead
+  and, in its place, the finding that the heavy marks do fall at sentence-initial
+  positions. That is what made this test possible.
+- `short-units-are-written-joined.md` — the joining model and its fitted q = 0.40.
+- `blocks-are-still-words.md` — the marginal-distribution result, and the source of the
+  "natural cutting rule" qualification this leans on.
+- `the-cipher-does-not-restart.md` — the marks mean nothing to the cipher, so whatever
+  they are, they are the scribe's.
+- `separators-are-the-cipher-unit.md`, `separators-are-not-word-boundaries.md`.
