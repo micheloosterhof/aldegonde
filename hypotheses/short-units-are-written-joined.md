@@ -279,3 +279,38 @@ same kind of object as the front matter's at all
   explain it.
 - `separators-are-the-cipher-unit.md`, `blocks-are-still-words.md` — the two readings of
   what a block is; this says blocks are words with the short ones joined.
+
+## Joining cannot explain the span-final anomaly, and the reason is structural
+
+`experiments/can_joining_alone_flatten_the_edge.py`
+
+The joining model is the most economical rival to
+`the-words-are-transposed-within-sentences.md`: every reference arm joins short units
+*per sentence*, so a sentence's final word can never merge. The body's scribe had no such
+rule, and if joining ran along the stream a short span-final word would merge into the
+next span's first, displacing the final block with no rearrangement anywhere.
+
+**Twelve arms were swept — direction, threshold (≤2 and ≤3), whether a merge may cross a
+span boundary, and which side of a merged unit the mark falls on. Every one fails at
+P ≤ 0.001.** Best joining-only arm χ² = 26.2 against the transposition arm's 9.7, a
+likelihood ratio of about **3,800 : 1**.
+
+Crossing the boundary makes the fit *worse* (34.6 to 70.0 against 26.2–42.0 for joining
+within), and that is structural, not accidental:
+
+| span-final block, minus the span interior | 1-2 | 3-4 | 5-6 | 7+ |
+|---|---|---|---|---|
+| the body | **+0.031** | **+0.023** | −0.019 | −0.036 |
+| ten English registers | −0.105 | −0.111 | +0.065 | +0.152 |
+
+The body's span-final blocks are **enriched in short words**. Joining *removes* short
+blocks, so every convention for it pushes the final edge away from short-enrichment. No
+rate, direction or threshold can reverse that:
+
+> No joining rule of any kind can flatten the final edge, because the deficit is in the
+> long classes and joining acts on the short ones.
+
+This does not weaken the joining model itself — the ≤2 units at q = 0.40 still fit the
+length histogram, the serial order, and (from `order_survives_in_the_lengths.py`) the
+author's two-rune share. It removes joining from the list of things that could be causing
+the span-final anomaly.
