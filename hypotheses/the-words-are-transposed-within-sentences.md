@@ -109,12 +109,35 @@ joined-word length fit (P = 0.83), the d5 lag-5 echo (z = −0.47 against ten re
 the span lengths (CV 0.972 against 0.848 ± 0.120), and the two ordinary independent
 blocks either side of a mark.
 
-## What it does not establish
+## What it does not establish, and cannot
 
 Flatness is evidence, not proof: "the marks are not sentence marks" predicts a flat
-profile too. What separates them is that under transposition the spans are *genuine
-sentences*, and their lengths do match English sentence lengths — consistent, not
-decisive.
+profile too. The two differ in what a span *is* — a permuted sentence, or a run of words
+cut at points unrelated to the syntax — and **no block-length statistic can tell them
+apart** (`lengths_cannot_separate_the_readings.py`).
+
+Two attempts, both with no power:
+
+- **Span length against internal word length.** If a span is a sentence, any link between
+  its length and the words inside it survives transposition, since the multiset is
+  untouched. English has no such link to preserve: r runs −0.130 to +0.154 across ten
+  registers, mean 0.034 ± 0.087. The body reads 0.075 (z = +0.33).
+- **The longest block in a span.** A sentence holds exactly one sentence-final word; an
+  equally long arbitrary run holds a random number. Measured: sentences 9.72, the same
+  stream cut at random 9.78 — a difference of **−0.058 ± 0.081**, and matched by span
+  length it does not move.
+
+The reason is structural. A sentence and an equally long run of the same text are both
+samples of one word-length distribution. Sentence boundaries carry information about
+**order** — which word is last — and almost none about the **multiset**. Transposition
+destroys exactly the order and keeps exactly the multiset, so it removes the only thing
+that distinguished the readings.
+
+That explains why every length statistic tried has failed to separate them: the edge
+profile, the longest-block position, the span dispersion, the span shape. Separating them
+needs a channel that is not a length statistic — and d5, the only key-free window onto the
+plaintext, reads *inside* a block where transposition changes nothing, while cross-block
+structure is hidden by the base changing at every block edge.
 
 `separators-are-not-word-boundaries.md` tested 17 route rules and 46,232 keyed columnar
 transpositions; none survived cross-validation. **A per-sentence scramble is in neither
