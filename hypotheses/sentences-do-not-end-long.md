@@ -222,6 +222,43 @@ pages 0–14 against every 72.2 in the body, z = +5.02. Consistent with longer s
 and equally consistent with the mark meaning something else there, so it decides nothing
 alone.
 
+## The long block is not displaced — it is absent
+
+One of the surviving readings says the marks sit somewhere other than the true sentence
+end. If they are merely **displaced**, English's long final block should still be there
+at a different offset. `experiments/the_long_block_is_nowhere.py` searches the whole
+neighbourhood:
+
+| offset | ten registers | the LP body | z |
+|---|---|---|---|
+| −4 | +0.01 ± 0.07 | +0.11 ± 0.26 | +0.36 |
+| −3 | −0.02 ± 0.11 | −0.20 ± 0.22 | −0.72 |
+| −2 | −0.24 ± 0.07 | −0.14 ± 0.22 | +0.45 |
+| **−1** | **+1.19 ± 0.23** | **−0.27 ± 0.24** | **−4.42** |
+| +1 | −0.71 ± 0.23 | +0.22 ± 0.27 | +2.64 |
+| +2 | −0.14 ± 0.18 | +0.30 ± 0.25 | +1.44 |
+| +3 | −0.06 ± 0.12 | +0.44 ± 0.26 | +1.78 |
+| +4 | −0.01 ± 0.08 | −0.23 ± 0.24 | −0.86 |
+
+The body's **largest** value anywhere is +0.44 at offset +3, against +1.19. Every
+displacement variant scored against that lengthening fails: at the sentence end −4.42,
+one block early −2.70, one late −4.14, two late −4.35, two early −2.63.
+
+**So the long block is absent from the neighbourhood, not moved within it.** The three
+surviving readings now say one thing between them: *no sentence ends at or near a mark.*
+
+That sits oddly beside the spacing, which is ordinary prose-sentence scale — mean 19.6
+blocks, CV 0.972, both inside a ten-register range. Units of sentence size whose edges
+are not sentence edges.
+
+The +1 cell's z = +2.64 is **not** an anomaly: English dips there on short opening
+function words, the LP register does not dip at all, and the author is flat there too
+(`which_edge_is_anomalous.py`).
+
+*Scope*: the profile needs spans of nine blocks or more for the offsets to stay distinct,
+leaving 97 of the body's 148 marks. The −1 cell over all spans reads −0.29 ± 0.20 and
+agrees.
+
 ## Confounds measured and cleared
 
 | confound | result |
