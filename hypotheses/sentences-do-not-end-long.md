@@ -22,8 +22,24 @@ different spans.
 | 7–14 | 38.3% / 29.2% | +0.90 ± 0.34 | −0.19 ± 0.36 | **−2.19σ** |
 | 15+ | 9.6% / 49.6% | +0.20 ± 0.53 | −0.17 ± 0.30 | **−0.61σ** |
 
-So: real at short and medium spans, **absent in the stratum holding half the body's
-spans**. The author has only 9 spans at 15+, so that cell settles nothing by itself — but
+So: real at short and medium spans, and **apparently absent in the stratum holding half
+the body's spans**.
+
+**That last reading is withdrawn, September 2026.** It rests on the author's 15+ cell,
+which holds **nine spans**. Against ten English registers
+(`final_lengthening_across_registers.py`) the same stratum reads:
+
+| stratum | the body | ten registers | z |
+|---|---|---|---|
+| 3-6 | −0.81 ± 0.33 | +0.87 ± 0.63 | **−2.35** |
+| 7-14 | −0.19 ± 0.36 | +1.20 ± 0.32 | **−2.90** |
+| **15+** | **−0.17 ± 0.30** | **+1.25 ± 0.22** | **−3.80** |
+| all | −0.29 ± 0.20 | +1.19 ± 0.28 | **−4.38** |
+
+All ten registers lengthen (none below +0.78) and all ten **rise** with span length. The
+anomaly is present in every stratum and is *strongest* at 15+, not absent. What survives
+from the stratified reading is only that the pooled figure against the author was
+inflated by composition. The author has only 9 spans at 15+, so that cell settles nothing by itself — but
 it is where the body mostly lives, and the pooled number leans on the author closing
 short units five times as often.
 
@@ -138,8 +154,11 @@ author's:
 | 7–14 | +0.67 ± 0.06 | +0.90 ± 0.34 |
 | 15+ | **+1.08 ± 0.05** | **+0.20 ± 0.53** |
 
-Austen rises with span length; the author falls. The author's own long spans sit 1.66σ
-*below* Austen's, which is the wrong direction for treating Austen as the register model.
+Austen rises with span length; the author falls — **and ten registers show the rise is
+the English norm.** All ten rise from +0.87 at 3-6 blocks to +1.25 at 15+, so it is the
+*author* who is atypical, and his fall rests on nine spans at 15+ (1.8σ below the register
+mean). **This retraction is itself withdrawn**: Austen's shape was never the problem, one
+book's worth of it was.
 Austen's composition happens to match the body's (46.7% vs 49.6% at 15+) while its shape
 does not match the author's, so the pooled benchmark looked more authoritative than it
 was. Every Austen-based sigma in this file should be read with that discount; the
