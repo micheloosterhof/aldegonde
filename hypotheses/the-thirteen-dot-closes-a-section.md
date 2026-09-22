@@ -162,3 +162,28 @@ The residual is small and real: sd 2.32 against 2.97, F = 1.64, p = 0.0007 — a
 at the same rate in both (0.47 against 0.50).
 
 The ⑬-against-④ comparison above is unaffected: it is internal to the body.
+
+## The thirteen-dot has two layout roles, and pooling them describes neither
+
+`experiments/the_thirteen_dot_is_two_marks.py`
+
+Splitting every body ⑬ by its role at a rubricated title, against the body's own one-dot
+separator baseline of 0.0401:
+
+| thirteen-dot | n | at a line end | z |
+|---|---|---|---|
+| **closes a title** | 9 | **0/9 = 0.000** | −0.61 |
+| opens a title | 4 | 3/4 = 0.750 | +7.23 |
+| **neither** | 13 | **12/13 = 0.923** | +16.19 |
+| pooled | 26 | 15/26 = 0.577 | |
+
+A title's **closing** ⑬ is never at a line end — the body text continues on the title's own
+line, as a short heading set at the head of a paragraph would. Every other ⑬ ends its line
+almost always, which is what opening a new unit looks like.
+
+**Consequence.** `the-four-dot-is-not-layout-coupled.md` uses ⑬'s pooled 0.516 as its
+benchmark for a structural mark. That benchmark is wrong in both directions: 0.923 for a
+unit-opening mark, 0.000 for a title-closing one. The four-dot's 0.106 sits further below
+the first than the pooled comparison suggested. Its own coupling result (+4.02 against the
+separator) is unaffected, as is the red-ink finding, which asks which words are red and
+has nothing to do with line ends.
