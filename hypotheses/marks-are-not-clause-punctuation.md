@@ -416,3 +416,35 @@ book do not see the layout.
 
 It does not explain the short-gap deficit itself. Something spaces the four-dots more
 evenly than chance; this only says where not to look.
+
+## The four-dot has a hard floor of two blocks
+
+`experiments/the_four_dot_has_a_floor.py`
+
+The short-gap deficit has a sharp shape: **there is not one gap of a single block in the
+whole body.**
+
+| | n | mean | min | counts at 1..5 |
+|---|---|---|---|---|
+| the body, four-dot gaps | 138 | 20.4 | **2** | **0**, 4, 6, 7, 8 |
+| the author, sentences | 94 | 7.6 | **1** | **6**, 13, 7, 8, 6 |
+| English, sentences, unfiltered | 13,439 | 18.4 | **1** | **444**, 495, 377, 437, 492 |
+
+| gaps of one block predicted by | expected | P(0 or fewer) |
+|---|---|---|
+| a memoryless process | 6.8 | 0.00115 |
+| **the author's own convention** | **8.8** | **0.00015** |
+| English sentences | 4.6 | 0.01047 |
+
+The author's sentences have no floor — six of ninety-four are a single block — and neither
+does English. **The body's four-dots have one and it is absolute.**
+
+So the spacing is a *rule*, not a tendency: whatever places the four-dots enforces a
+minimum unit of two blocks. That is the first **positive** structural statement about the
+mark here; everything else established is a negation.
+
+**A filter artifact worth avoiding.** `register_spans` drops sentences under three words,
+twice — before and after joining — so English lengths taken from it cannot be 1 or 2 by
+construction. Comparing the body's small gaps against that reference shows English
+"never" having short sentences, which is the filter speaking. The English row above is
+built without it.
