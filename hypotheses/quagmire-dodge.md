@@ -13,16 +13,20 @@ The base advances per word, which is the word-delimited part.
 
 ## Status
 
-**Status**: unresolved and **disfavoured by the doublet-gap signature, on a narrower
-basis than first published** (`experiments/doublet_gaps_conditioned.py`, September 2026).
-The original 71:1 is **withdrawn**: it pooled every gap under 40 runes into one residue
-histogram, which conditions on nothing, and rotated twelve points onto their own modal
-residue. Bucketed by gap size with the key phase marginalised, the 63 within-block
-doublets give log LR **+0.09** — no discrimination — and the 23 seam doublets carry the
-whole verdict at **+5.33, about 200:1**. The split survives smoothing from 0.1 to 5.0 and
-survives running the models on a word stream merged at q = 0.35 so they share the body's
-block structure. Why gating should show in the seam doublets and not the within-block
-ones is unexplained, so read this as a lean. The mechanism is unchanged: the single zero offset makes surviving doublets share a
+**Status**: **unresolved.** The doublet-gap verdict recorded here in September 2026 is
+**fully withdrawn** (`experiments/doublet_gaps_conditioned.py`). It went through three
+figures — 71:1, then a corrected 200:1 resting on the seam doublets — and leave-one-out
+shows the last of them rests on **two of eighty-five gaps**: the most influential single
+gap is 54% of the total and removing two flips the sign. A likelihood ratio whose profile
+cells run to 0.001 is dominated by whichever few points land in them, and 86 doublets
+cannot fill five residues across seven buckets. The channel does not decide.
+
+What survives from that work is a negative result about an *older* entry, not about this
+model: the absolute-position test recorded in `period5-doublet-linkage.md` as refuting
+phase-gating has no power, since every dodge shifts the clock off absolute position. That
+is a fact about the simulation and does not depend on the corpus.
+
+The mechanism is unchanged: the single zero offset makes surviving doublets share a
 clock phase, which constrains the gap between consecutive doublets mod 5. What changed is
 the scoring. Note this test *also* withdrew the older refutation in
 `period5-doublet-linkage.md`, which had no power — that part is a fact about the

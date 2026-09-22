@@ -21,17 +21,15 @@ driven as an odometer — `a` every word, `b` only when `a` wraps.
 
 ## Status
 
-**Status**: unresolved, and **disfavoured by the doublet-gap signature on a narrower
-basis than first published** (`experiments/doublet_gaps_conditioned.py`, September 2026).
-The original 80:1 is **withdrawn** — it came from a pooled scoring that conditions on
-nothing. Bucketed by gap size with the key phase marginalised, the within-block doublets
-give log LR **−0.91**, which if anything favours the odometer, and the seam doublets give
-**+3.41, about 30:1** against it. The verdict rests on the seam doublets alone.
+**Status**: **unresolved.** The doublet-gap verdict recorded here is **fully withdrawn**
+(`experiments/doublet_gaps_conditioned.py`): conditioned on gap size with the key phase
+marginalised, the within-block doublets give log LR −0.91 — if anything favouring this
+model — and the seam-inclusive figure rests on two of eighty-five gaps, flipping sign
+when they are removed. The channel does not decide.
 
-This is not independent of the verdict on `quagmire-dodge.md` — it is the same evidence
-reaching the same mechanism in both. What makes it serious is that neither model can
-drop the zero offset: without it the preventer never fails and the corpus's doublets
-could not exist at all.
+The shared single zero offset remains the right place to attack both models — neither can
+drop it, since without it the preventer never fails and the corpus's doublets could not
+exist at all. The doublet gaps are simply too few to test it.
 
 Otherwise still the best-scoring model in this directory on the fitted-to-free ledger.
 Untuned it lands 17 of 19 free cells.

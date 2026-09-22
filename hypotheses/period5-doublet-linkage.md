@@ -91,29 +91,16 @@ would set a rune-flat, phase-flat 5× suppression is not answered.
   mechanism this entry used it to reject, so the entry established nothing either way.
 
   **Replaced by a test that does have power** — see below.
-- **Phase gating is disfavoured by the doublet GAPS, at about 70:1.** Gating constrains
-  the *clock* advance between consecutive surviving doublets to 0 mod 5; the clock
-  advance is the rune gap plus the dodges in between, so short gaps carry the signature.
-  It lands on residue 4, not 0, because a surviving doublet advances the clock twice at
-  its own position. Aligning each corpus on its own modal residue (which flatters
-  concentration, so it favours the gated model):
+- **The doublet GAPS cannot test phase gating either.** Gating constrains the *clock*
+  advance between consecutive doublets to 0 mod 5, and the clock advance is the rune gap
+  plus intervening dodges, so short gaps should carry it. Conditioned on gap size with the
+  key phase marginalised (`experiments/doublet_gaps_conditioned.py`), the 63 within-block
+  doublets give log LR **+0.09** — nothing — and the seam-inclusive figure of +5.33 rests
+  on **two of eighty-five gaps**, flipping sign when they are removed. Earlier figures of
+  71:1 and 200:1 from this channel are withdrawn.
 
-  | | profile of gaps ≤ 40 runes |
-  |---|---|
-  | quagmire-dodge, one zero offset | [0.62, 0.05, 0.02, 0.08, 0.24] |
-  | probabilistic preventer | [0.35, 0.17, 0.17, 0.16, 0.15] |
-  | **the body**, 12 short gaps | **[0.42, 0.25, 0.17, 0.00, 0.17]** |
-
-  **The 71:1 first published here is withdrawn** — it pooled gaps of very different
-  sizes, whose predicted residues differ enormously, into one histogram. Conditioned on
-  gap size with the key phase marginalised (`doublet_gaps_conditioned.py`), the 63
-  within-block doublets give log LR **+0.09** — nothing — and the 23 seam doublets give
-  **+5.33, about 200:1** for the preventer. The split survives smoothing and survives
-  matching the body's block structure, and both tests classify known corpora at 93-97%.
-
-  So phase gating is still disfavoured, and on evidence rather than on a test that could
-  not see it — but the evidence lives entirely in the seam doublets, and why it should
-  not also show in the larger within-block set is unexplained.
+  So phase gating is neither supported nor refuted by the doublets. The corpus has 86 of
+  them and the statistic needs far more.
 
 - **The suppression is rune-flat.** It is carried by 28 of 29 runes roughly in
   proportion, not by the ≥4 fixed points that an order-5 *g* on 29 letters must

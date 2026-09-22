@@ -1,6 +1,6 @@
-# ABOUTME: Redoes the doublet-gap test conditioning on gap size and marginalising the
-# ABOUTME: unknown key phase, which withdraws the pooled figure and narrows the verdict.
-"""The gap test was right in direction and wrong in method. Here it is done properly.
+# ABOUTME: Redoes the doublet-gap test conditioned on gap size with the phase
+# ABOUTME: marginalised, then shows by leave-one-out that the channel cannot decide.
+"""The doublet-gap channel cannot decide between these models. Here is why.
 
 `doublet_gaps_test_the_dodge.py` scored the corpus by pooling every gap under 40 runes
 into one residue histogram, rotating each corpus onto its own modal residue, and
@@ -49,13 +49,23 @@ adding to it.
   the models have seams the body does not. Re-running every model on a word stream merged
   at q = 0.35 leaves the split exactly where it was: +0.09 and +5.33.
 
-## What stands
+## The channel does not decide
 
-The direction is unchanged and the seam-inclusive evidence is stable, so both quagmire
-variants remain disfavoured. But the verdict **rests entirely on the seam doublets**,
-which is a narrower and weaker footing than the withdrawn figures suggested, and the
-within-block doublets -- the larger set -- say nothing either way. Why gating should show
-in one population and not the other is unexplained, and until it is, treat this as a lean.
+Leave-one-out over the gaps settles it. The seam-inclusive verdict rests on **two of
+eighty-five gaps**: the most influential single gap is 54% of the total, and removing two
+flips the sign from +5.33 to -0.29. The within-block figure flips on one.
+
+Both decisive gaps were checked against the parse and are ordinary -- normal block
+lengths either side, no page break or dropped marker nearby -- so they are real
+observations rather than artifacts. That does not rescue the inference. A likelihood
+ratio whose profile cells run down to 0.001 is dominated by whichever few points land in
+them, and 86 doublets cannot fill five residues across seven buckets.
+
+**So the gap channel does not decide between these models.** The direction it leans is
+not evidence, and the quagmire verdicts drawn from it are withdrawn. What survives is the
+negative result at the top of this file: the absolute-position test recorded as refuting
+phase-gating has no power, which is a fact about the simulation and does not depend on
+the corpus at all.
 
     python doublet_gaps_conditioned.py
 """
@@ -255,11 +265,54 @@ def main() -> None:
         print(f"{alpha:<10}{cells[0]:>20.2f}{cells[1]:>22.2f}")
 
     print(
-        "\nThe 63 within-block doublets do not discriminate; the 23 seam doublets carry"
-        "\nthe whole verdict. Both tests classify corpora of known origin well, so neither"
-        "\nis broken -- inserting the seam doublets splits long gaps into short ones and"
-        "\nchanges the gap population rather than adding to it. The direction is unchanged"
-        "\nand stable, but it rests on a narrower base than the withdrawn 71:1 suggested."
+        "\nHow much of the verdict rests on individual gaps? Drop each one in turn.\n"
+    )
+    print(
+        f"{'doublets used':<22}{'gaps':>6}{'full':>8}{'top gap':>10}"
+        f"{'drop-one range':>22}{'gaps to flip the sign':>23}"
+    )
+    for seams in (False, True):
+        rows = gap_table(body, seams=seams)
+        prof_preventer = profile(preventer, seams=seams)
+        prof_dodge = profile(dodge, seams=seams)
+        full = marginal_loglik(rows, prof_preventer) - marginal_loglik(rows, prof_dodge)
+        dropped = np.array(
+            [
+                marginal_loglik(rows[:i] + rows[i + 1 :], prof_preventer)
+                - marginal_loglik(rows[:i] + rows[i + 1 :], prof_dodge)
+                for i in range(len(rows))
+            ]
+        )
+        influence = full - dropped
+        order = np.argsort(-influence)
+        removed, running = 0, full
+        for i in order:
+            running -= influence[i]
+            removed += 1
+            if running < 0:
+                break
+        label = "with seam doublets" if seams else "within-block only"
+        print(
+            f"{label:<22}{len(rows):>6}{full:>+8.2f}{influence[order[0]]:>+10.2f}"
+            f"{f'{dropped.min():+.2f} to {dropped.max():+.2f}':>22}{removed:>23}"
+        )
+
+    print(
+        "\nThe seam-inclusive verdict rests on TWO of eighty-five gaps: the single most"
+        "\ninfluential is 54% of the total, and removing two flips the sign. Both were"
+        "\nchecked against the parse and are ordinary -- normal block lengths either side,"
+        "\nno page break or dropped marker nearby -- so they are real observations, not"
+        "\nartifacts. That does not rescue the inference. A likelihood ratio whose cells"
+        "\nrun to 0.001 is dominated by whichever few points land in them, and 86 doublets"
+        "\ndo not fill five residues across seven buckets."
+        "\n\nSo this channel does not decide between the models, and the direction it"
+        "\nleans is not evidence. What survives from it is the negative result: the"
+        "\nabsolute-position test recorded as refuting phase-gating has no power."
+    )
+
+    print(
+        "\n\nBoth tests classify corpora of known origin well, so neither is broken as a"
+        "\nclassifier. They are simply being asked to read 86 doublets, which is too few."
     )
 
 
