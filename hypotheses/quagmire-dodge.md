@@ -13,7 +13,18 @@ The base advances per word, which is the word-delimited part.
 
 ## Status
 
-**Status**: unresolved, and now the best-fitting mechanism in this directory. With one
+**Status**: unresolved and now **disfavoured at about 70:1** by the doublet-gap
+signature (`experiments/doublet_gaps_test_the_dodge.py`, September 2026). The model's
+one zero offset makes surviving doublets share a clock phase, which forces the gap
+between consecutive doublets onto one residue mod 5 for short gaps: the model puts 62%
+of them there, the corpus 0%. The classifier is validated on corpora of known origin
+(76% and 91% correct) and the corpus sits inside the rival preventer's distribution and
+outside the dodge's. It rests on 12 short gaps, so it is a strong lean rather than a
+closure. Note this test *also* withdrew the older refutation in
+`period5-doublet-linkage.md`, which had no power — the evidence here is new, not a
+restatement.
+
+Otherwise still the best-fitting mechanism in this directory. With one
 alphabet and one schedule fitted to the distance profile it matches every measured cell
 except the DJU-BEI repeat, across independent fits, with the seam landing unfitted. It
 derives the factor 1/5 in the observed doublet rate from the schedule length, where
@@ -160,7 +171,7 @@ repeat. It is, in the right direction and by the right amount, though not by eno
 decide anything.
 
 Under the walk `g⁵ = id`, so two positions five apart inside a word share the alphabet
-and the base and coincide exactly when the plaintext does. `period5-is-confirmed.md`
+and the base and coincide exactly when the plaintext does. the confirmed period-5 result
 records the observed leak as PARTIAL and the full-versus-partial question as undecided.
 The dodge supplies the attenuation and fixes its size from the doublet rate alone:
 
@@ -175,7 +186,7 @@ d5 = (1-q)^5 x plaintext_d5 + (1-(1-q)^5)/29        a skip in between kills the 
 | the same with the dodge | 0.04946 | **−0.04 SE** |
 
 The predictions sit 0.37 SE apart, so d5 does not separate the two models — the same
-verdict `period5-is-confirmed.md` reached by another route. What is new is that the
+verdict the confirmed period-5 result reached by another route. What is new is that the
 dodge DERIVES the partial leak where the walk has to accept it.
 
 The register decides these numbers. On raw prose the plaintext lag-5 rate reads 0.0596
