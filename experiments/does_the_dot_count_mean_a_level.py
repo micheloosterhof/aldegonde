@@ -31,18 +31,18 @@ statistics apply here.
 
 | glyph | dots | count | blocks to the previous same glyph | median |
 |---|---|---|---|---|
-| ③ | 3 | 4 | 741.0 | 468 |
-| ④ | 4 | 136 | 20.4 | 13 |
-| ⑩ | 10 | 2 | 727.0 | 727 |
-| ⑬ | 13 | 26 | 114.4 | 18 |
+| ③ | 3 | 4 | 756.0 | 476 |
+| ④ | 4 | 139 | 20.4 | 14 |
+| ⑩ | 10 | 2 | 744.0 | 744 |
+| ⑬ | 13 | 26 | 117.0 | 19 |
 | ㉓ | 23 | 0 | none in the body | |
 
-**③ and ⑩ are not levels.** Their same-glyph gaps of 741 and 727 blocks are simply 2,900
+**③ and ⑩ are not levels.** Their same-glyph gaps of 756 and 744 blocks are simply 2,900
 divided by four and by two -- four marks and two marks scattered through the body. And
 every one of them has a **four-dot on both sides**, so neither sits at a boundary the
 four-dot respects.
 
-That leaves ④ at 20.4 and ⑬ at 114.4, which is two points already known from the ink and
+That leaves ④ at 20.4 and ⑬ at 117.0, which is two points already known from the ink and
 the line geometry. Two points do not establish a relationship, and the two glyphs that
 could have tested it occur four times and twice.
 
@@ -51,7 +51,7 @@ mark plus a handful of one-offs, not a scale.
 
 ## One structural fact falls out
 
-**⑬ is bimodal**: mean 114.4 blocks between occurrences against a median of 18. Rubricated
+**⑬ is bimodal**: mean 117.0 blocks between occurrences against a median of 19. Rubricated
 titles are opened and closed by a pair of thirteen-dots a few words apart
 (`do_the_marks_bound_the_titles.py`), and sections run hundreds of blocks, so the glyph
 serves two spacings at once. Any statistic that pools ⑬ occurrences is mixing them --
@@ -68,6 +68,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from body_parse import blocks  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
@@ -80,24 +81,12 @@ BODY = range(15, 71)
 
 
 def stream():
-    """Blocks and marks in reading order, annotation lines dropped."""
-    text = MASTER.read_text().split("%")
+    """Blocks and marks in reading order, with blocks spanning line wraps."""
     out = []
-    for ci in BODY:
-        if ci >= len(text):
-            continue
-        for line in re.split(r"[/\n]", text[ci]):
-            if not RUNE.search(line):
-                continue
-            n = 0
-            for ch in line:
-                if RUNE.match(ch):
-                    n += 1
-                elif (ch in MARKS or ch in SEPARATORS) and n:
-                    out.append(("b", None))
-                    n = 0
-                    if ch in MARKS:
-                        out.append(("m", ch))
+    for _length, glyph, _ in blocks(BODY):
+        out.append(("b", None))
+        if glyph in MARKS:
+            out.append(("m", glyph))
     return out
 
 
@@ -139,7 +128,7 @@ def main() -> None:
 
     print(
         "\nEvery ③ and every ⑩ has a four-dot on both sides, so neither sits at a"
-        "\nboundary the four-dot respects. Their same-glyph gaps of 741 and 727 blocks"
+        "\nboundary the four-dot respects. Their same-glyph gaps of 756 and 744 blocks"
         "\nare just 2,900 divided by four and by two: four and two marks scattered"
         "\nthrough the body, not a level."
     )

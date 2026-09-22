@@ -51,12 +51,12 @@ that would have invalidated this test is absent. The method is sound.
 
 | the body, four-dot marks | marks | final gap |
 |---|---|---|
-| closed at a line end | **14** | +0.41 +- 0.82 |
-| closed mid-line | 119 | -0.05 +- 0.19 |
-| difference | | +0.45 +- 0.85, z = +0.54 |
+| closed at a line end | **14** | -0.01 +- 0.82 |
+| closed mid-line | 121 | -0.27 +- 0.20 |
+| difference | | +0.26 +- 0.85, z = +0.30 |
 
 Fourteen marks. A full mixture -- the line-end subset at English's +1.2 and the rest at
-zero -- would show at only 1.5 sigma here, so +0.45 +- 0.85 is equally consistent with a
+zero -- would show at only 1.5 sigma here, so +0.26 +- 0.85 is equally consistent with a
 mixture and with none. Reaching three sigma needs the line-end subset at about 36 marks,
 which at a 10.6% line-end rate means roughly **2.4 times the corpus**.
 
@@ -92,6 +92,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from body_parse import chunk_blocks  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
@@ -106,24 +107,12 @@ MIN_SPAN = 3
 
 
 def blocks(chunks):
-    """(length, closing glyph, at a line end) for every block, annotation lines dropped."""
+    """(length, closing glyph, at a line end) with blocks spanning line wraps."""
     text = MASTER.read_text().split("%")
     out = []
     for ci in chunks:
-        if ci >= len(text):
-            continue
-        for line in re.split(r"[/\n]", text[ci]):
-            if not RUNE.search(line):
-                continue
-            n = 0
-            for i, ch in enumerate(line):
-                if RUNE.match(ch):
-                    n += 1
-                elif (ch in MARKS or ch in SEPARATORS) and n:
-                    out.append((n, ch, not RUNE.search(line[i + 1 :])))
-                    n = 0
-            if n:
-                out.append((n, "", False))
+        if ci < len(text):
+            out.extend(chunk_blocks(text[ci]))
     return out
 
 

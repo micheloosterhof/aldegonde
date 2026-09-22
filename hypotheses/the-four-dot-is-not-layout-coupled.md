@@ -173,15 +173,23 @@ gap width from the image and the **length from the transcription**, matching the
 where the two four-dot counts agree exactly. This gives 52 marks with exact lengths,
 against the line-end split's 14.
 
+**RETRACTED.** This first reported a one-dot control at r = +0.397 on 93 marks and
+concluded the channel was confounded outright. The transcription parser behind it reset
+its rune counter at each line start (`body_parse.py`), and since pages were selected by
+*exact count agreement* between image and transcription, the pages kept were those where
+that parser's errors cancelled the image reader's. Selection by mutual error is not a
+sample; corrected, the control collapses to 17 marks.
+
+Measured on all 1,395 one-dot gaps with no count-agreement filter, the confound is real
+and small: **r = +0.054 ± 0.027**, wide-minus-narrow +0.05 ± 0.12 — and the reader's
+missed-rune artifact biases that negative, so it is a lower bound.
+
 | mark | marks | wide-gap subset | narrow | difference | r |
 |---|---|---|---|---|---|
-| four-dot | 52 | 3.65 | 3.88 | −0.23 ± 0.51 | −0.120 |
-| **one-dot (control)** | 93 | **4.18** | **3.41** | **+0.77 ± 0.41** | **+0.397** |
+| four-dot, aligned | 41 | 4.19 | 3.80 | +0.39 ± 0.63 | −0.128 |
 
-**The control fails the channel.** Wide gaps follow long blocks for ordinary word
-separators too, at four sigma — justified text stretches spacing around whatever sits
-there. So gap width cannot test the mixture, and the four-dot's −0.23 ± 0.51 is
-uninterpretable; read against the control it is *less* than layout predicts, not more.
+**The channel is underpowered, not confounded** — the same verdict the line-end split
+reached, for the same reason.
 
 The alignment technique is worth keeping for any statistic not confounded this way. The
 line-end flag is one — `are_some_four_dots_real.py` shows its control is clean — and it

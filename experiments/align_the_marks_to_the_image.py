@@ -32,38 +32,49 @@ Wide gaps might follow long blocks for a layout reason: justified text stretches
 after whatever happens to sit there. So the same correlation is measured on the **one-dot
 separators of the same pages**. If it is positive there, the four-dot's is worthless.
 
-## Result: the alignment works and the control kills the channel
+## RETRACTED: the control that killed the channel was itself an artifact
+
+The first version of this file reported a one-dot control at **r = +0.397 on 93 marks**
+and concluded that justification confounds the gap-width channel outright. Both halves of
+that are wrong.
+
+Its transcription parser reset the rune counter at each line start, cutting every wrapped
+word in two (`body_parse.py`). That mattered twice over. The block lengths were wrong --
+and worse, the page-selection rule is **exact count agreement between image and
+transcription**, so the pages it kept were the ones where the parser's errors happened to
+cancel the image reader's. Selection by mutual error is not a sample.
+
+With the parser corrected, genuine agreement is rarer and the one-dot control collapses
+from 93 marks to **17** -- too few to read.
+
+## The confound is real and small
+
+Measured instead on all 1,395 one-dot gaps the image reader finds, with no
+count-agreement filter:
+
+    correlation of whitespace with the preceding word    r = +0.054 +- 0.027
+    wide-gap minus narrow-gap block length               +0.05 +- 0.12
+
+The image reader's missed-rune artifact biases this **negative**, so +0.054 is a lower
+bound. Either way it is a tenth of the +0.397 first reported, and it does not rule the
+channel out.
+
+## What the channel actually gives
 
 | mark | marks | wide-gap subset | narrow | difference | r |
 |---|---|---|---|---|---|
-| four-dot | 52 | 3.65 | 3.88 | -0.23 +- 0.51 | -0.120 |
-| **one-dot (the control)** | 93 | **4.18** | **3.41** | **+0.77 +- 0.41** | **+0.397** |
+| four-dot, aligned | 41 | 4.19 | 3.80 | +0.39 +- 0.63 | -0.128 |
 
-**Wide gaps follow long blocks for ordinary word separators too**, at r = +0.397 on 93
-points -- about four sigma. Justified text stretches the spacing around whatever sits
-there, and long blocks end up beside wide gaps for reasons that have nothing to do with
-sentences. The gap-width channel is confounded and cannot test the mixture.
-
-The four-dot's own -0.23 +- 0.51 is therefore uninterpretable as it stands, and what it
-would mean if read against the control is *less* than layout predicts, not more: the
-difference is -1.00 +- 0.65, pointing away from a mixture rather than towards one.
-
-**A limit on the control itself.** Pages qualify only when the image and transcription
-counts agree exactly, which is easy for a handful of four-dots and hard for forty
-one-dots. So the four-dot row draws on 23 pages and the control on 3. The two are not
-measured on the same pages, and the control is the weaker half of the comparison even
-though it carries more marks.
+Forty-one marks and a standard error of 0.63 against an effect that would be about +1.2
+under a full mixture. **The channel is underpowered, not confounded** -- which is the same
+verdict the line-end split reached, and for the same reason.
 
 ## What is worth keeping
 
-The alignment itself. Matching image gaps to transcription blocks on count-agreeing pages
-gives **52 four-dots with exact block lengths**, against the 14 the line-end split had and
-the 60 noisy ones the image reader produced on its own. It removes the missed-rune
-artifact at its source, because lengths no longer come from blob counts.
-
-Any statistic that is *not* confounded by justification can use it. Gap width is not such
-a statistic; the line-end flag is, which is why `are_some_four_dots_real.py` keeps its
-clean control and only lacks marks.
+The alignment. Matching image gaps to transcription blocks gives 41 four-dots with exact
+lengths and removes the missed-rune artifact at its source. The count-agreement rule is
+the limiting factor and now rejects more pages than it did, because it is no longer
+accepting cancelled errors.
 
     python align_the_marks_to_the_image.py
 """
