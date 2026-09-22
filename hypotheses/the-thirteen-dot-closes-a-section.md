@@ -122,3 +122,28 @@ one; ④ is a mark of some other kind, and whatever it closes, the block before 
 lengthen.** That is consistent with `marks-are-not-one-glyph.md`, which found the two
 glyphs behave oppositely, and it means the two surviving readings should now be restated
 about ④ alone.
+
+## A third physical channel: paragraph breaks
+
+`experiments/does_the_body_break_paragraphs.py`
+
+A manuscript set as justified text fills every line except where a unit ends, so a **short
+line** marks a paragraph break without reading a rune. The device is real in both sections
+— a short line is closed by a mark at ~15× the ordinary rate (author 11/14 against 0.04;
+body 9/19 against 0.03, P = 3e-10).
+
+In the body the instances are almost all ⑬:
+
+| glyph | in the body | closing a short line | rate |
+|---|---|---|---|
+| ⑬ | 28 | 5 | **0.179** |
+| ④ | 139 | 3 | **0.022** |
+
+**z = +3.55.** The thirteen-dot takes a paragraph break eight times as often as the
+four-dot — a third physical channel separating the two glyphs, after the red ink and the
+line-end rate, agreeing with both.
+
+**Side observation, and the larger one.** The body's non-page-final lines have sd 2.3
+runes against the author's 4.7, and short lines are 3.5% of them against his 10.6%. The
+body is set as continuous justified text whose scribe almost never let a unit end a line —
+paragraph breaks three times rarer than the author allows.
