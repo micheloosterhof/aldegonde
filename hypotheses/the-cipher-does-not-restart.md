@@ -105,3 +105,36 @@ reset, which is unreachable key-free. `experiments/does_the_cipher_restart.py`.
 - `d-profile-pins-g-to-five-cycles.md` — the lag-k cancellation identity, and why the
   clock is invisible inside a block.
 - `page-breaks-cut-blocks.md` — the tokenization this depends on.
+
+## The key does not cycle either, for any period up to eight
+
+`experiments/a_shifted_stop_or_a_switched_key.py`
+
+This file excludes a base **reset** at a mark: blocks following one would share a base and
+coincide at the plaintext rate, and they read z = −0.96 against +53 for a planted reset.
+That assumes the mark returns the base to a single common value.
+
+A key that **cycles** through N keys, advancing at each mark, is invisible to that test:
+with N = 3 only every third span shares a base and pooling dilutes the signal by N.
+Grouping the spans by mark index mod N recovers it.
+
+| keys in the cycle | observed | z |
+|---|---|---|
+| 1 | 0.0337 | −0.87 |
+| 2 | 0.0341 | −0.49 |
+| 3 | 0.0300 | −2.09 |
+| 4 | 0.0357 | +0.63 |
+| 5 | 0.0309 | −1.38 |
+| 6 | 0.0310 | −1.26 |
+| 8 | 0.0320 | −0.83 |
+
+Chance is 1/29 = 0.0345. **Nothing at any period.**
+
+The control enciphers English with a real 3-key cycle and reads it back at z = +34.19 for
+N = 3 and +22.83 for N = 6, its multiple, against +9.8 to +19.5 at the wrong periods — the
+wrong periods stay positive because their groups still contain some same-key pairs, which
+is why the true period has to stand out rather than merely be positive.
+
+This closes key switching at the four-dot as a family rather than as a single variant. It
+remains blind to a clock-only switch, for the reason given above: blocks carrying
+different bases coincide at chance whatever their phase.
