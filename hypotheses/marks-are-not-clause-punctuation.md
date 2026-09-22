@@ -476,3 +476,27 @@ This is the sharpest open question about the four-dot. If the unit is a **word c
 mark divides the text by syntax however loosely; if a **rune count**, it divides by length
 and the text is not involved at all. Those are different objects, and the question turns on
 one or two expected violations, so it needs more marks rather than a better statistic.
+
+### The floor is the four-dot's, not the medium's
+
+`experiments/the_floor_belongs_to_the_four_dot.py`
+
+The floor rests on an unchecked premise: that a one-block gap between marks is possible at
+all. If the transcription, the hand or the page never permits two marks that close, the
+floor is a property of the medium rather than the mark.
+
+| pair kind | n | min blocks | min runes |
+|---|---|---|---|
+| four-dot to four-dot | 123 | **2** | **6** |
+| every other pair | 47 | **1** | **3** |
+
+**Two thirteen-dots sit one block and three runes apart, twice.** So the alternative was
+physically available and the four-dot never takes it.
+
+The direct glyph comparison is confounded and reaches only **Fisher P = 0.075** — both
+one-block cases are a *one-word rubricated title* bounded by its pair of section marks,
+which is a distinct structure rather than a scribe placing two marks close together. That
+number should not be quoted as the floor's evidence.
+
+The floor stands on its own comparisons — 0 against 6.8 expected under a memoryless
+process and 8.8 under the author's convention. What this adds is the premise they rest on.
