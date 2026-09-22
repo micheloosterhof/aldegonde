@@ -110,7 +110,15 @@ than one:
 | the LP author's own 92 sentences | 0.793 | 0.915 | **1.2 : 1 — no power** |
 
 So the honest range is **3:1 to 33:1 leaning to random**, and the loud number depends on
-Austen standing in for the LP's register. The register-matched control cannot confirm it
+Austen standing in for the LP's register.
+
+**Tested, September 2026, and it does not stand in.** Across ten English registers
+(`sentence_length_across_registers.py`) the sentence-length CV runs **0.645 to 1.068**,
+mean 0.848 ± 0.120. The body's 0.972 is **z = +0.66** — ordinary — and its mean span of
+19.6 blocks sits inside a register range of 16.0 to 32.8. On the mean-normalised shape,
+the body against all ten pooled gives **D = 0.095, P = 0.134**, so English is **not
+rejected**; random placement gives D = 0.064, P = 0.580. The ratio is nearer 4:1 than
+33:1, and the dispersion evidence is gone entirely. The register-matched control cannot confirm it
 — 92 sentences resolve nothing — though it does support the reference *value*, since the
 author's own dispersion (0.738) agrees with Austen's (0.771).
 
@@ -271,9 +279,11 @@ So this result does not overturn it — it names the kind of rule that would hav
 stratifying by the span length the mark closes shows it is **−5.7σ at 3–6 blocks, −2.2σ
 at 7–14, and −0.6σ at 15+** — absent in the stratum holding half the body's spans. The
 Austen benchmark is retracted as a register model: its profile runs opposite to the
-author's. The mark spacing excludes mechanical placement at 6.7σ and leans 3:1 to 33:1
-against the marks falling at sentence ends. `sentences_do_not_end_long.py`,
-`profile_around_a_mark.py`, `what_the_marks_space_like.py`, `what_the_marks_are.py`,
+author's. The mark spacing excludes mechanical placement at 6.7σ. It is **not** over-dispersed —
+across ten English registers the sentence-length CV runs 0.645–1.068 and the body's 0.972
+is z = +0.66 — and on shape English is not rejected (P = 0.134 pooled), so the earlier
+3:1-to-33:1 lean against the marks falling at sentence ends narrows to about 4:1. `sentences_do_not_end_long.py`,
+`profile_around_a_mark.py`, `what_the_marks_space_like.py`, `what_the_marks_are.py`, `sentence_length_across_registers.py`,
 `the_gap_depends_on_span_length.py`.
 
 ## Related

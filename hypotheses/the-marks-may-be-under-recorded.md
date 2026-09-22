@@ -67,8 +67,23 @@ edge profile — is not falsifiable from this corpus and is not proposed.
 
 ## Status
 
-**Status**: open, and explicitly partial. Explains the rate (fitted) and the span shape
-(predicted); leaves the sentence-edge anomaly untouched.
+**Status**: **WITHDRAWN**, one day after it was proposed
+(`experiments/sentence_length_across_registers.py`). Both facts it was built to explain
+turn out to need no explaining.
+
+Measured across **ten** English registers rather than Austen alone, sentence length in
+blocks has CV running **0.645 to 1.068**, mean 0.848 ± 0.120. The body's 0.972 ± 0.145
+sits at **z = +0.66**, and one register exceeds it. Its mean span of 19.6 blocks is
+ordinary too, against a register range of 16.0 to 32.8.
+
+So the spacing is not over-dispersed and the rate is not low — the *author's* pages are
+short because they are aphoristic ("A WARNNG.", "WELCOME.", "SOME WISDOM.") at 7.86
+blocks a span. **p = 1.** The falsification route this file named — "the rate is explained
+by register instead" — is the one that held.
+
+The machinery below stands as a correct treatment of a thinning process; there is just
+nothing here for it to explain.
+
 `experiments/are_the_marks_under_recorded.py`.
 
 ## Related
