@@ -706,6 +706,21 @@ Completing and pooling added nine cells with 10,263 pairs and raised the family 
 data.
 
 **The scope caveat is discharged for diagonals.** No further diagonal cell exists to test.
-What remains outside is the non-diagonal case, and that is bounded by a different argument
-already in this file: under a 2-transitive base family the only invariant of a *pair* is
-whether it is equal. So the remaining gap is triples, not pairs.
+
+**CORRECTED.** This paragraph first said the remaining gap was "triples, not pairs". There
+is no such gap. `base-family-is-the-symmetric-group.md` completes the classification — the
+family is A₂₉ or S₂₉, and **both are 27-transitive** — so every ordered triple of distinct
+runes lies in one orbit and triples carry nothing, as does every k-tuple up to 27. The
+local channel is exactly the equality pattern **at every order**, not only at order two.
+
+`experiments/do_triples_carry_anything.py` checks this against the corpus and also records
+a statistic not to reuse: mutual information between the two differences of a triple has
+no power here. A planted affine base — 2-transitive, not 3-transitive, exactly the case
+such a test must catch — reads z = −0.33 against a general base's −0.40. Under
+`x → a·x + b` both differences carry the same unknown multiplier, so only their *ratio*
+survives, and MI measures independence rather than that ratio. The ratio test in
+`base-is-not-affine.md` is the instrument that works.
+
+So there is no order-k statistic left to try. The classification rests on measured
+premises — transitive, not Frobenius, not affine — and attacking one of those is the only
+route, not a higher-order local statistic.
