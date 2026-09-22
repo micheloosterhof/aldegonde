@@ -13,30 +13,38 @@ is deliberate.
 
 Page-final lines are dropped throughout: they are short by construction.
 
-## The device exists in both sections
+## The control has to be the ENCIPHERED front matter
 
-| | non-page-final lines | mean runes | sd | short (<= 80% of mean) |
-|---|---|---|---|---|
-| the body | 539 | 21.9 | **2.3** | **19 (3.5%)** |
-| the author | 132 | 19.4 | **4.7** | **14 (10.6%)** |
+`does_the_body_have_a_different_hand.py` states the confound: enciphered text has no word
+shapes to break on, so a scribe fills to a measure, where plaintext breaks where the text
+does. Comparing the body's layout against the author's **plaintext** pages measures
+encipherment, not the scribe.
 
-**The body's lines are twice as uniform and its short lines three times rarer.** It is set
-as continuous justified text; the author's pages are not.
+| | lines | mean | sd | short | ending mid-word |
+|---|---|---|---|---|---|
+| front matter, plaintext | 49 | 18.6 | 6.6 | 16.3% | 46.9% |
+| **front matter, enciphered** | 83 | 19.9 | **3.0** | **4.8%** | **69.9%** |
+| the body | 539 | 21.9 | **2.3** | **3.5%** | **77.7%** |
 
-And where a short line does occur it is closed by a mark, in both sections, at about
-fifteen times the rate of an ordinary line.
+The enciphered front matter sits beside the body on every column and far from the
+plaintext pages. So the layout difference is the cipher, not the hand.
 
-## Result
+What survives as a real difference is small: the body's lines are more uniform than the
+enciphered front matter's, **sd 2.32 against 2.97, F = 1.64, p = 0.0007** -- a factor of
+1.28, not the 2 the plaintext comparison suggested. The short-line rate (3.5% against
+4.8%) and the mid-word rate (77.7% against 69.9%) are both within noise.
 
-**The device is real in both sections.** A short line is closed by a mark at roughly
-fifteen times the ordinary rate:
+## Result: the device is real, identical in both, and carried by the thirteen-dot
+
+A short line is closed by a mark at about twenty times the ordinary rate, and at the same
+rate in both sections:
 
 | | short lines | closed by a mark | on ordinary lines | P |
 |---|---|---|---|---|
-| the author | 14 | 11 (0.79) | 0.04 | 2.6e-13 |
-| the body | 19 | 9 (0.47) | 0.03 | 2.8e-10 |
+| front matter, enciphered | 4 | 2 (0.50) | 0.025 | 3.7e-03 |
+| the body | 19 | 9 (0.47) | 0.025 | 2.8e-10 |
 
-**But the body barely uses it**, and its instances are the wrong glyph:
+Within the body the two glyphs separate sharply:
 
 | glyph | in the body | closing a short line | rate |
 |---|---|---|---|
@@ -44,29 +52,21 @@ fifteen times the ordinary rate:
 | ④ | 139 | 3 | **0.022** |
 
 **z = +3.55.** The thirteen-dot takes a paragraph break eight times as often as the
-four-dot.
+four-dot. That comparison is internal to the body -- same pages, same hand, same cipher --
+so the confound above does not touch it.
 
 ## What this settles and what it does not
 
-**Settles:** the four-dot is not a paragraph mark either. Three short lines out of 141
-occurrences, where the glyph the red ink independently confirms as a section boundary
-(`do_the_marks_bound_the_titles.py`) takes 5 of 28. That is a third physical channel
-separating the two glyphs, after the ink and the line-end rate, and it agrees with both.
+**Settles:** the four-dot is not a paragraph mark. Three short lines out of 139, where the
+glyph the red ink confirms as a section boundary takes 5 of 28. A third physical channel
+separating the two glyphs, after the ink and the line-end rate, agreeing with both.
 
 **Does not:** supply the mixture test with marks. Three four-dots is fewer than the
-fourteen the line-end flag gave, so this route is worse, not better, for locating sentence
-ends.
+fourteen the line-end flag gave, so this route is worse for locating sentence ends.
 
-## The side observation is the larger one
-
-The body's non-page-final lines have **sd 2.3 runes against the author's 4.7**, and short
-lines are 3.5% of them against his 10.6%. The body is set as continuous justified text
-with paragraph breaks three times rarer than the author allows.
-
-Whatever the body's plaintext is, its scribe almost never let a unit end a line. That sits
-with the other things the body does not do -- no sentence-final lengthening, no phrase
-repetition (`do_length_patterns_repeat.py`), no formulaic structure -- and it is layout
-evidence rather than statistical, so it fails for a different reason than those would.
+**And it retracts a side observation.** The first version of this file reported the body's
+paragraph breaks as "three times rarer than the author allows" and its lines as twice as
+uniform. Both came from the plaintext comparison and neither survives the right control.
 
     python does_the_body_break_paragraphs.py
 """

@@ -143,7 +143,22 @@ In the body the instances are almost all ⑬:
 four-dot — a third physical channel separating the two glyphs, after the red ink and the
 line-end rate, agreeing with both.
 
-**Side observation, and the larger one.** The body's non-page-final lines have sd 2.3
-runes against the author's 4.7, and short lines are 3.5% of them against his 10.6%. The
-body is set as continuous justified text whose scribe almost never let a unit end a line —
-paragraph breaks three times rarer than the author allows.
+**RETRACTED side observation.** This first read the body's lines as twice as uniform as
+the author's (sd 2.3 against 4.7) with paragraph breaks three times rarer (3.5% against
+10.6%). That compared against his **plaintext** pages, and
+`does_the_body_have_a_different_hand.py` states the confound: enciphered text has no word
+shapes to break on, so a scribe fills to a measure.
+
+Against the enciphered front matter — the right control — the body is barely different:
+
+| | lines | sd | short | mid-word |
+|---|---|---|---|---|
+| front matter, plaintext | 49 | 6.6 | 16.3% | 46.9% |
+| front matter, enciphered | 83 | 3.0 | 4.8% | 69.9% |
+| the body | 539 | 2.3 | 3.5% | 77.7% |
+
+The residual is small and real: sd 2.32 against 2.97, F = 1.64, p = 0.0007 — a factor of
+1.28. The short-line and mid-word rates are within noise, and a short line is mark-closed
+at the same rate in both (0.47 against 0.50).
+
+The ⑬-against-④ comparison above is unaffected: it is internal to the body.
