@@ -388,3 +388,36 @@ The body fits "ᚠ is an ordinary letter" almost exactly and rejects the author'
 interrupter. As a positive control the same test on the four pages where the rule *is*
 true predicts 0.0472 against 0.0360 observed, z = −1.53 — under-predicting slightly but
 within noise at 834 runes.
+
+## The author's dot mark is verified as a sentence mark, from outside the transcription
+
+`experiments/what_the_authors_mark_means.py`
+
+Every statement about the four-dot in this directory uses the author's `.` as its
+reference — the sentence-final lift of +1.39, the line-end rate of 0.471, the rank lift of
++4.93. That it marks sentences has always been a plausible reading of an undeciphered
+convention, never a checked fact.
+
+`~/src/cicada-2014/stage06/index.transcribed` holds the koan of master pages 4–7 as
+ordinary English with ordinary punctuation. Those pages are Atbash-plus-three, so the
+runic and English letter streams can be aligned directly — 99% coverage.
+
+| what the dot mark sits at | count | | the converse | |
+|---|---|---|---|---|
+| **a sentence end** | **18** | | sentence ends carrying a mark | **18 of 21** |
+| a line break | 4 | | commas carrying one | **0 of 6** |
+
+**It is a sentence mark and it is not a comma.** The four at line breaks are the koan's
+dialogue turns, where the English transcription breaks the line rather than punctuating.
+
+This also settles by convention what `what_punctuation_class_is_the_four_dot.py` settled
+statistically — that file finds the comma the worst-fitting English class for the four-dot
+at −4.66σ, and the author simply does not mark commas.
+
+**The alignment needs the digraph expansion.** A rune maps to one English letter or two
+(TH, EO, NG, AE, IA, EA), so indexing one letter per rune drifts — 35 letters over 813 on
+this passage, enough that a first attempt scored 17 of 22 marks as landing on no
+punctuation at all.
+
+**Limits:** one passage, 22 marks, and it is dialogue. It covers the ASCII-convention `.`,
+not the body's circled numerals, which have no plaintext anywhere.
