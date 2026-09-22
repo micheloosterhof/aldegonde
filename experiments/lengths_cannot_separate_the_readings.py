@@ -60,9 +60,18 @@ span dispersion, the span shape.
 
 ## What would separate them
 
-Something that is not a length statistic. The only key-free window onto the plaintext
-itself is d5 (`d5_across_registers.py`), and it reads *inside* a block, where transposition
-changes nothing. Cross-block plaintext structure is hidden because the base changes at
+**NARROWED, September 2026.** The blanket claim above is too wide. The argument covers
+statistics computed inside one span, and the **lag-1 serial correlation of the length
+stream** is not one: it is a property of the order, which transposition destroys and
+arbitrary marks leave alone. `order_survives_in_the_lengths.py` measures it. The fork is
+real; the body sits +0.64 sigma from order intact and -0.08 from transposed, the two arms
+are 0.026 apart, and three-sigma separation needs 4.7 times this corpus. So the lengths
+still do not separate the readings -- because the surviving statistic is throttled by the
+joining nuisance, not because no such statistic exists.
+
+Otherwise: something that is not a length statistic. The only key-free window onto the
+plaintext itself is d5 (`d5_across_registers.py`), and it reads *inside* a block, where
+transposition changes nothing. Cross-block plaintext structure is hidden because the base changes at
 every block edge (D12). So the distinction needs a key, or a channel this corpus does not
 have.
 

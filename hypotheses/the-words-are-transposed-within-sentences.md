@@ -209,3 +209,52 @@ by the full profile at P = 0.024.
 - `sentences-do-not-end-long.md` — the anomaly.
 - `separators-are-not-word-boundaries.md` — the older anomaly this unifies with, and the
   transposition families already excluded.
+
+## The order channel forks the readings but cannot reach them
+
+`experiments/order_survives_in_the_lengths.py`
+
+`lengths_cannot_separate_the_readings.py` concluded that no block-length statistic can
+separate this reading from "the marks are not sentence marks". Its argument was about
+what a span *contains*: a sentence and an equally long run of the same text hold the same
+multiset of word lengths, and transposition keeps the multiset. Every statistic it tried
+was computed inside one span.
+
+The **lag-1 serial correlation of the length stream** escapes that argument. It is a
+property of the order, not the multiset, and the two readings predict opposite things
+about it — transposition destroys within-span order, arbitrary marks leave it untouched.
+So the blanket claim was drawn too wide.
+
+Measured, the fork exists and is too small:
+
+| lag | order intact | transposed | the body |
+|---|---|---|---|
+| 1 | −0.031 ± 0.029 | −0.005 ± 0.042 | −0.009 ± 0.019 |
+| 2 | +0.028 ± 0.031 | +0.008 ± 0.047 | +0.023 ± 0.020 |
+| 3 | +0.000 ± 0.040 | +0.002 ± 0.051 | −0.018 ± 0.020 |
+
+**+0.64σ from order intact, −0.08σ from transposed.** The body leans to this reading and
+the lean means nothing. The arms are 0.026 apart at lag 1; the body's own sampling error
+is 0.019 and the reference adds 0.029 because the solved pages are only 719 blocks.
+Three-sigma separation needs about 13,000 pairs, **4.7× the corpus**.
+
+**The reference is the whole difficulty, and it produced a false positive twice.**
+
+- **Unmatched short-word population.** Lag-1 here is driven by the fraction of blocks two
+  runes long: English alternates short and long words, joining removes the short ones, and
+  both quantities slide together. The body carries 15.5%, raw Gutenberg prose 25.5%.
+  Compared directly the body reads **+3.2σ** from order intact — a difference in joining
+  read as a difference in order.
+- **Unmatched register.** Matching the fraction is not enough. At the same 15.9%
+  two-rune share the ten registers read −0.082 and the author's joined pages read −0.028:
+  **the two references disagree by three times the effect.** The curves are parallel, so
+  the slope is shared and the level is a register property. Only the author's own solved
+  pages match on both.
+
+So the lengths still cannot separate the two readings, but not for the reason previously
+given: the surviving statistic is throttled by the joining nuisance the corpus has already
+spent, not excluded by a structural argument.
+
+**Side-finding, independent of all of this.** The joining rate that brings the author's
+two-rune share onto the body's is **q = 0.40**, the rate `short-units-are-written-joined.md`
+fitted from the length histogram. Two unrelated statistics, the same rate.
