@@ -1,6 +1,20 @@
 # ABOUTME: Asks whether the enciphered front matter and the body use the same letter step g,
 # ABOUTME: using the within-block d-profile, with d5 as a built-in plaintext-register control.
-"""Does the book use one letter step throughout, or did it change at page fifteen?
+"""WITHDRAWN, September 2026. The conclusion below is wrong.
+
+`the_preventer_is_only_in_the_body.py` settles the question by rune frequency: the
+enciphered front matter is non-uniform at P = 5e-79 and the body is uniform at
+P = 0.55. A flat distribution over 29 runes needs many alphabets and the front
+matter plainly has few, so the two sections are not the same cipher. The doublet
+rates agree -- 0.0241 against 0.0063, z = +4.16.
+
+The 4.3 to 1 reported here is about 1.3 sigma and was measuring shared PLAINTEXT
+structure at distance five, which both sections have, not a shared g. The d5
+register control passing (z = -0.57) should have been read as a warning rather than
+a reassurance: it says the plaintexts match, which is exactly what makes the rest of
+the profile agree without any shared key.
+
+The measurement below stands; its reading does not.
 
 `the-body-is-one-cipher.md` shows the body is homogeneous across its own sections and
 pages. It does not compare the body with the **enciphered front matter** -- the nine

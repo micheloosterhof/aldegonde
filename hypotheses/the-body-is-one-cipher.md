@@ -73,7 +73,7 @@ plaintext page at +7 sd. `experiments/section_homogeneity.py`.
 - `flat-ioc.md`, `doublet-suppression.md`, `within-word-d5-coincidence.md` — the three
   pooled statistics this shows are safe to pool.
 
-## The enciphered front matter probably shares the same letter step
+## WITHDRAWN: the enciphered front matter is a different cipher
 
 `experiments/does_the_front_matter_share_g.py`
 
@@ -105,7 +105,11 @@ sections do not differ in plaintext.
 | simulated at these sizes, different g | median 15.6 |
 
 The observed 6.0 sits at 60.5% of the shared-g arm and 14.0% of the different-g arm:
-**a likelihood ratio of 4.3 to 1 for one letter step through the book.**
+a likelihood ratio of 4.3 to 1 for one letter step — **which is withdrawn.**
+`experiments/the_preventer_is_only_in_the_body.py` settles it the other way by rune
+frequency: the enciphered front matter is non-uniform at P = 5e-79, the body uniform at
+P = 0.55, and the doublet rates differ at z = +4.16 (0.0241 against 0.0063). The
+d-profile agreement was shared plaintext structure at distance five, not a shared key.
 
 Weak, and reported as weak. The front matter supplies 2,218 within-block pairs against the
 body's 19,284, and most of the χ² comes from d6 and d7, which have the fewest pairs.
