@@ -144,6 +144,41 @@ transpositions; none survived cross-validation. **A per-sentence scramble is in 
 family.** With about twenty blocks to a sentence there are 20! orderings, so detecting
 the transposition and inverting it are different problems.
 
+## The transposition precedes the cipher
+
+The first result here that is not a length statistic
+(`the_transposition_precedes_the_cipher.py`). The preventer acts on adjacent runes
+**including across a block boundary** — `previous` carries over the seam — so the seam
+doublet rate records which blocks were neighbours when the cipher ran:
+
+| | rate |
+|---|---|
+| within-block adjacent doublets | 63 / 10,060 = 0.0063 |
+| seam doublets | 23 / 2,895 = **0.0079** |
+| an unrelated pair (Σf²) | 0.0346 |
+
+The seam is suppressed fourfold. Had the blocks been rearranged **after** enciphering,
+the observed seams would be unrelated pairs:
+
+| rearrangement applied after enciphering | seam doublets | z |
+|---|---|---|
+| the whole body shuffled | 100.1 ± 9.2 | **−8.35** |
+| shuffled within each span | 96.6 ± 9.5 | **−7.71** |
+| reversed within each span | 89.0 ± 9.4 | **−7.00** |
+| **the body as written** | **23** | |
+
+**So if the words are transposed, it was done to the plaintext before the cipher ran** —
+a preparation step, like the short-unit joining, and not a rearrangement of finished
+ciphertext. Both are properties of the text handed to the cipher, and both change at the
+page-15 break.
+
+It follows that a solver cannot undo the transposition by moving ciphertext blocks: they
+must be deciphered first, because the cipher state runs through them in the order they
+appear.
+
+This closes a family of mechanisms, not a reading — "the marks are not sentence marks"
+proposes no rearrangement at all and is untouched.
+
 ## How to falsify
 
 - **A residual order.** If the permutation is a rule rather than a scramble — a reversal,
