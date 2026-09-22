@@ -101,3 +101,39 @@ to care which side the step acts on.
 - `d-profile-pins-g-to-five-cycles.md` — the filter, which constrains cycle structure and
   not this.
 - `the-base-step-may-act-on-the-left.md` — the lean that would close the system.
+
+## The firing rate is recoverable even though m₁ and φ are not
+
+`experiments/measure_the_drift_from_d5.py`
+
+This file concludes that m₁ and φ form an underdetermined pair — one equation, two
+unknowns — and that neither can be recovered. That is right for those two, and it is not
+right for the quantity most of the directory actually needs.
+
+    q = φ · m₁          (the preventer's firing rate)
+    observed = (1 − φ) · m₁ = 0.0063
+    ⇒  q = m₁ − observed
+
+**φ cancels.** The firing rate depends on m₁ alone, so the prior on m₁ (0.0309 ± 0.0110
+over order-5 permutations) transfers directly: **q = 0.0246 ± 0.0110**.
+
+That matters because q is what every drift correction here needs — the `(1−q)^k`
+attenuation on the d-profile, and the d5 recalibration in
+`within-word-d5-coincidence.md`.
+
+**And it can be checked independently.** The d5 attenuation gives a second estimate from
+completely different inputs — the distance-5 rate against a length-matched English
+reference rather than the adjacent rate against a prior over g:
+
+| source | q |
+|---|---|
+| the doublets | 0.0246 ± 0.0110 |
+| the d5 attenuation | 0.0949 ± 0.0573 |
+| difference | +0.0703 ± 0.0583, **z = +1.20** |
+| combined | **0.0271 ± 0.0108** |
+
+They agree at 1.2σ with nothing tuned to make them meet — a consistency check on the walk
+plus preventer.
+
+**Assumptions:** the arithmetic takes a firing to always remove the doublet (otherwise q is
+overestimated), and the d5 arm inherits the English-register question.
