@@ -36,20 +36,29 @@ compare the body's whole offset profile (`are_the_words_transposed.py`):
 Every offset is within 1.7σ of scrambled English. The −1 cell moves from −4.42 against
 English as written to −1.05 against English scrambled.
 
-## An independent check that is not just flatness
+## An independent check — weaker than first reported
 
-A flat profile is consistent with several readings, so this second test carries the
-weight: **where the longest block sits inside a span.** English puts it late; scrambling
-puts it anywhere.
+**Corrected.** The first version of this file tested the longest-block position against a
+*uniform* null and reported the body at P = 0.65, reading that as support for scrambling.
+Uniform is the wrong null: the position is i/(n−1), so pooling across span lengths is
+lumpy even under a random permutation — applied to English, a scramble gives D = 0.051
+against uniform (P = 4×10⁻⁶⁵), not 0. And 122 spans can only resolve D above 0.123, so
+that test was never going to reject anything.
 
-| | spans | mean position | KS against uniform |
+Compared against what each rule actually produces (`which_transposition.py`):
+
+| rule | longest-block position | | sentence-final gap |
 |---|---|---|---|
-| ten registers pooled | 28,551 | 0.547 | **P = 2×10⁻²⁶⁴** |
-| the LP author | 60 | 0.579 | P = 0.01 |
-| **the LP body** | 122 | **0.482** | **P = 0.65** |
+| | KS D | P | z vs the body |
+| **identity** | **0.128** | **0.034** | **−4.42** |
+| reverse | 0.077 | 0.445 | +1.36 |
+| rotate 1 | 0.105 | 0.130 | +1.36 |
+| rotate 3 | 0.083 | 0.356 | −0.82 |
+| scramble | 0.080 | 0.393 | −0.99 |
 
-The author behaves like English. The body is indistinguishable from uniform and 2.30σ
-from the register spread.
+**Both statistics reject the identity and nothing else.** The second statistic does
+support "not the original order" — at P = 0.034, not P = 0.65 — but it does **not** pick
+scrambling over reversal or rotation.
 
 ## What it leaves untouched
 
@@ -72,11 +81,13 @@ the transposition and inverting it are different problems.
 
 ## How to falsify
 
-- **A residual order.** If the permutation is a rule rather than a scramble — a reversal
-  within the sentence, a rotation, an interleave — the block-length sequence inside spans
-  should carry a trace. Reversal within the whole text is already rejected (χ² 17.6,
-  z = −2.70 at offset +1); reversal *within each sentence* is not yet tested and is the
-  obvious next candidate.
+- **A residual order.** If the permutation is a rule rather than a scramble — a reversal,
+  a rotation, an interleave — the block-length sequence inside spans should carry a trace.
+  Reversal **within each sentence** gives the same mirrored profile as reversal of the
+  whole text, so it is covered: χ² 17.6 on 8 df, P = 0.024, driven by the offset +1 cell
+  where reversal predicts +1.19 and the body reads +0.22. But on the single final-block
+  cell reversal *fits* (z = +1.36), so the cells disagree and P = 0.024 is a lean rather
+  than an exclusion. **Rotation and scrambling are not separated at all.**
 - **The author's pages.** His spans are not scrambled (longest block at 0.579, P = 0.01
   against uniform), so whatever does this starts at the page-15 break with the joining,
   the mark rate and the line measure (`one-production-break-at-page-fifteen.md`).
@@ -86,8 +97,11 @@ the transposition and inverting it are different problems.
 
 ## Status
 
-**Status**: open, and the best-fitting reading of the sentence-edge result. Two
-independent statistics support it; neither is decisive alone.
+**Status**: open. What is established is that the word order inside a span is **not** the
+order English would give — the identity is rejected by the offset profile (χ² 33.3 on
+8 df, P = 0.0001) and by the longest-block position (P = 0.034). **Which** permutation is
+undetermined: reversal, rotation and scrambling all fit, and reversal is disfavoured only
+by the full profile at P = 0.024.
 `experiments/are_the_words_transposed.py`.
 
 ## Related
