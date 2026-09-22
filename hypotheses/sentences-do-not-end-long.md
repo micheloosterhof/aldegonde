@@ -533,3 +533,29 @@ external reference, this is positive under word order in place and zero under
 transposition — English titles run light to heavy, and THE, AN and OF are two runes in
 runeglish. At 1.5σ it leans against `the-words-are-transposed-within-sentences.md` and
 settles nothing.
+
+## The result without any reference at all
+
+`experiments/is_there_any_order_inside_a_span.py`
+
+Every statement of this file's result compares the body against something — ten English
+registers, the author's pages, a joining model, a definition of "span interior". Three
+retractions this session came from reference mismatches.
+
+There is a version that needs none. For each span, compare its **last** block against a
+block drawn uniformly from that same span. The multiset is identical by construction, so
+the only thing tested is whether position matters.
+
+| corpus | spans | last block | a random block of its span | z |
+|---|---|---|---|---|
+| **the author** | 68 | **5.21** | 4.04 ± 0.25 | **+4.62** |
+| **the body** | 129 | **4.22** | 4.39 ± 0.19 | **−0.86** |
+
+The author's span-final block is 1.17 runes longer than a random block of the same span.
+The body's is 0.17 shorter. **Difference 1.34 ± 0.31, z = 4.3.**
+
+The first block, same treatment: author −1.86 (the sentence-initial dip), body +0.50.
+
+No English, no joining rate, no matched register, no interior definition — each corpus is
+scored against a reshuffle of its own spans. This is the cleanest form the result has
+taken and the only one immune to the reference problem that caps everything else here.
