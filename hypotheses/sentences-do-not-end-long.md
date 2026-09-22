@@ -184,7 +184,11 @@ mixture, and the body's ④ row is the exact like-for-like test:
 
 Within the body the glyphs disagree, as earlier work on the dot-counts predicted: ④ carries
 the anomaly at −5.34σ against the joined-English prediction, ⑬ reads +0.05 ± 0.39 on 25
-blocks and sits 1.79σ below it — an unresolved cell, not a counter-example.
+blocks. That was recorded here as an underpowered cell; **it is the wrong population.**
+`the-thirteen-dot-closes-a-section.md` shows ⑬ is a structural mark sitting at section
+breaks (median 9 runes to the nearest `$`, against 429 for ④) and standing immediately
+before the `&` marker 15 times in 31, where ④ does so 0 times in 141. The two are
+different kinds of mark, so ⑬ was never a counter-example to a sentence-level result.
 
 **The mark rate differs 2.3×**, needing no reference text: one mark every 32.1 runes on
 pages 0–14 against every 72.2 in the body, z = +5.02. Consistent with longer sentences
