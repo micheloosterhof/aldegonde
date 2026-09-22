@@ -397,3 +397,37 @@ higher by 1.9σ. Either the joining is heavier than the histogram fit gives, or 
 units exceed two runes (changing the crossing fraction), or the English within-word curve
 is too high for the body's register. The last is unresolvable here — the author's plaintext
 carries 158 d5 pairs.
+
+
+### RETRACTED: d5 does not detect the joining
+
+`experiments/simulate_the_joining_and_read_d5.py`
+
+Both d5 results above are void. Running the joining model forward on real English runes and
+reading the d5 curve off the result:
+
+| joining rate | 6 | 7 | 8–9 | 10–30 |
+|---|---|---|---|---|
+| the body | 0.0352 | 0.0440 | 0.0474 | 0.0612 |
+| q = 0.00 | 0.0372 | 0.0520 | 0.0684 | 0.0623 |
+| q = 0.70 | 0.0319 | 0.0585 | 0.0689 | 0.0632 |
+
+**The curve barely moves.** Merging does not dilute d5, because the premise was false:
+
+    English d5 pairs not crossing a word join   503,922   rate 0.0597
+    English d5 pairs crossing a word join       813,861   rate 0.0620
+    chance                                                0.0345
+
+The cross-boundary rate is **103σ above chance and level with the within-word rate**. Both
+earlier results divided the body–English gap by `(within − chance)` where the correct
+denominator is `(within − cross)` ≈ 0, so any gap converts to an arbitrarily large "merge
+rate".
+
+The error was reading "cross-word d5 count at chance" from the README as a fact about
+plaintext. It is a fact about the body's **ciphertext** across a block boundary, where the
+base changes. Inside a merged block the base does not change.
+
+**What survives:** the body's d5 curve sits below English at every length, most at 8–9
+(0.0474 ± 0.0076 against 0.0687, −2.8σ; pooled χ² 8.3 on 4 cells, P ≈ 0.08). Merging does
+not explain it. Either the body's plaintext repeats letters at distance five less than
+English prose, or something else suppresses it. Unresolved.
