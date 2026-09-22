@@ -117,6 +117,38 @@ Joining at the fitted rate reproduces the body's interior mean (4.60 against 4.4
 check the model was never fitted to pass — and still predicts +0.79. The observation sits
 **5.5σ** below that. A rate of 0.70, far above fitted, does not reach it either.
 
+## The two marks are the same glyph, which the transcription hid
+
+The author's mark is written `.` and the body's ④, and the changeover falls exactly at
+the solved section's edge — pages 0–14 carry 87 `.` and no circled numeral, pages 15–72
+carry 182 circled numerals and no `.`. That looked like it might be a convention change
+masquerading as a finding, so `experiments/what_the_marks_are.py` audits it against the
+repository's second transcription.
+
+The two files are identical except for this one mark. **All 46 disagreements are clean
+④ ↔ `.` swaps**, ④ plus `.` totals 228 in both, and ⑬, ③, ⑩ agree exactly everywhere. So
+`.` means "a dot mark whose count was not recorded" and ④ means "confirmed four dots";
+page 55 carries both in the same file, which rules out `.` being a pooled rendering.
+
+This makes the comparison **stronger, not weaker**. Pages 0–14 carry 87 marks of the ④
+class and not one ⑬, ③ or ⑩, so the author reference is pure four-dot rather than a
+mixture, and the body's ④ row is the exact like-for-like test:
+
+| | marks | gap vs interior |
+|---|---|---|
+| the author, ④ class | 87 | **+1.28 ± 0.28** |
+| the body, before a ④ | 136 | **−0.32 ± 0.20** |
+| | | **z = −4.65** |
+
+Within the body the glyphs disagree, as earlier work on the dot-counts predicted: ④ carries
+the anomaly at −5.34σ against the joined-English prediction, ⑬ reads +0.05 ± 0.39 on 25
+blocks and sits 1.79σ below it — an unresolved cell, not a counter-example.
+
+**The mark rate differs 2.3×**, needing no reference text: one mark every 32.1 runes on
+pages 0–14 against every 72.2 in the body, z = +5.02. Consistent with longer sentences
+and equally consistent with the mark meaning something else there, so it decides nothing
+alone.
+
 ## Confounds measured and cleared
 
 | confound | result |
