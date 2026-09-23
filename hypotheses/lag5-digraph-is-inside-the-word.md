@@ -242,3 +242,63 @@ The body clusters at 2.90× where English clusters at 1.68×, putting the observ
 On nine hits that is not a result. If it survives more material it is a problem for the
 plaintext-is-ordinary-English arm, not for the shared alphabet.
 
+
+## Which period-5 cipher does this pin?
+
+`experiments/which_period_five_cipher.py`
+
+**It does not choose between them, and it kills one variant outright.**
+
+### Every period-5 scheme makes the same prediction here
+
+If positions i and i+5 share an alphabet, `c_i = c_{i+5}` exactly when `p_i = p_{i+5}`, and
+likewise for digraphs and trigraphs. A Vigenère with a five-long key, a Quagmire with a
+five-long key, and the length-clocked walk with g of order 5 are **observationally
+identical** on this channel. It sees that the alphabets repeat with period five. It cannot
+see how the five alphabets relate to one another — shifts of a common alphabet in the first
+two, powers of one permutation in the third.
+
+### Triplets: yes, and they are present
+
+| step | H0 | H1 | seen | LR |
+|---|---|---|---|---|
+| 1 monograph count | 72.6 | 114.7 | 104 | 265 : 1 |
+| 2 digraph \| monograph count | 3.15 | 5.28 | 9 | 12.4 : 1 |
+| 3 trigraph \| digraph count | 0.036 | 1.32 | 1 | 10.3 : 1 |
+| **chain** | | | | **33,850 : 1** |
+| without step 3 | | | | 3,295 : 1 |
+
+Conditioning each order on the one below makes the steps independent, so they multiply;
+the unconditional cells do not, because the hits nest.
+
+**Step 3 swings on one word.** Had the trigraph count been zero it would read 0.28 : 1
+*against*. The defensible figure is a few thousand to one with a hint of more.
+
+*(This also corrects the earlier note that the trigraph cell "cannot be read at all". That
+was priced against H0 only. With both arms specified — English repeats a trigraph at
+distance 5 inside a word at 28.6× chance — one hit against 0.036 expected is worth about
+ten to one.)*
+
+### What is excluded: a key that does not restart at each word
+
+A globally periodic key of period five repeats the alphabet every five runes regardless of
+where words begin, so it makes the same prediction **across** word boundaries. Then the
+whole-stream lag-5 coincidence would equal the plaintext rate:
+
+| | |
+|---|---|
+| whole-stream lag-5 observed | 479 of 12,951 = 0.0370 |
+| a globally periodic key predicts | 0.0614 → 796 hits |
+| no shared alphabet predicts | 0.0345 → 447 hits |
+
+**−11.6σ from the globally periodic prediction.** A plain period-5 Vigenère or Quagmire
+over the running text is dead. `kappa-spectrum.md` reached the same verdict from the kappa
+spectrum; this is it from the plaintext side, with the alternative quantified rather than
+only the null.
+
+### The shape is fixed, the mechanism is not
+
+**Five alphabets cycling inside each word, re-based at every word boundary.** A Quagmire
+whose key restarts per word fits exactly, and so does the walk. Separating them needs the
+relationship between the five alphabets, which equality coincidence cannot see — that is
+the local-channel theorem, not a gap in effort.
