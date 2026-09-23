@@ -59,8 +59,10 @@ A base depending on the previous word **and** something else — an absolute pos
 page, a running counter — would not give identical bases to identical predecessors, and
 none of this touches it. What is excluded is the previous word acting alone.
 
-Also untouched: a **plaintext** autokey. That is unfalsifiable here for the obvious reason,
-and it is worth recording that the ciphertext version was the testable one and it failed.
+~~Also untouched: a **plaintext** autokey. That is unfalsifiable here for the obvious
+reason.~~ **Wrong, and corrected below.** A plaintext key has something a ciphertext key
+does not: plaintext words repeat constantly, so the base recurs and the repeats are
+countable. Michel pointed this out; see the next section.
 
 ## How to falsify this result
 
@@ -70,3 +72,50 @@ and it is worth recording that the ciphertext version was the testable one and i
   treating page breaks as word-internal, which merges 32 blocks relative to `body_parse`.
 - Show the English matched-position rate of 0.0794 is the wrong H1 for a plaintext whose
   register differs from the three used.
+
+## The plaintext autokey is falsifiable after all, and it is excluded
+
+`experiments/a_plaintext_autokey_would_repeat.py`
+
+Under a plaintext autokey the base for word w is a function of p_{w−1}. English repeats
+words, so the same base recurs whenever the same word precedes two others. Worse for the
+hypothesis, whenever the same plaintext *pair* (p_{w−1}, p_w) recurs, the ciphertext word
+is **identical**.
+
+### Test A: word-aligned coincidence
+
+| | |
+|---|---|
+| P(two joined English tokens are the same word) | 0.00539 |
+| a plaintext autokey predicts | 0.03472 |
+| chance | 0.03448 |
+| the body observes | **0.03439** |
+
+Predicted 468,903 hits against 464,370 observed, **z = −6.8**.
+
+### Test B: repeated ciphertext words, which is far sharper
+
+| | |
+|---|---|
+| observed repeated-word pairs | 230 |
+| chance floor, runes permuted, lengths kept | 245.7 ± 15.8 (z = −0.99) |
+| a plaintext autokey adds ~245 more | → 491 (**z = −16.5**) |
+
+The body's repeated words are entirely chance, and they sit where chance puts them: 107
+pairs among one-rune words, 106 among two-rune, 17 among three-rune against 10.6 expected.
+That last mild excess is the DJU-BEI family.
+
+### The sharpest form: long words never repeat at all
+
+| words of | in the body | repeats | chance | if a word always enciphered alike | P |
+|---|---|---|---|---|---|
+| 4+ runes | 1,646 | **0** | 0.19 | 1,317 | 0 |
+| 5+ runes | 1,133 | **0** | 0.00 | 454 | 4e-198 |
+| 6+ runes | 815 | **0** | 0.00 | 161 | 1e-70 |
+
+**Not one ciphertext word of four runes or more occurs twice in the whole book.**
+
+This is the same conclusion as `alphabet_count_bound.py`'s ≥ 949 alphabets, reached from
+the plainest possible observation. It excludes far more than the autokey: any scheme in
+which the same plaintext word enciphers the same way, whenever its context recurs, is
+dead.
