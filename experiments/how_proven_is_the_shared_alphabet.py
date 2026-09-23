@@ -2,9 +2,13 @@
 # ABOUTME: says how much more long-word material proof would take.
 """How strongly is "positions i and i+5 inside a word share an alphabet" actually held?
 
-It rests on one number: 104 within-word lag-5 coincidences against 72.5 expected. The
-digraph and trigraph cells are not extra evidence -- their hits are a subset of those 104,
-so they are the same observation looked at again.
+**CORRECTED.** An earlier version of this file said the claim rests on one number, the 104
+within-word lag-5 coincidences, and dismissed the digraph cell as "the same observation
+looked at again" because its hits are a subset of those 104. That is wrong. The digraph
+counts how those 104 hits are **arranged**, and arrangement is close to independent of
+count. Holding the monograph total fixed at 104 and scattering them at random over the
+2,105 slots gives 3.11 +- 1.69 adjacent pairs against 9 observed, P = 0.0027. It is
+separate evidence and it is worth about 13 to 1 on its own.
 
 A sigma is the wrong summary for a claim with two named alternatives. Both are specified:
 
@@ -22,7 +26,8 @@ A sigma is the wrong summary for a claim with two named alternatives. Both are s
     H0 no sharing       0.0346   expects  72.8                         observed +3.72 sigma
     observed            0.0494              104
 
-**Between one and three hundred to one.** That is strong, and it is not proof. It is also the right way round:
+**Between one and three hundred to one from the monograph cell alone**, and about
+3,400 to 1 once the digraph cell below is included. That is strong, and it is not proof. It is also the right way round:
 the observed value sits one sigma below the shared-alphabet prediction and nearly four
 above the no-sharing one.
 
@@ -31,6 +36,35 @@ above the no-sharing one.
 H1's rate comes from English at matched word lengths across three registers, and English
 registers differ. The likelihood ratio moves with p1 and nothing pins p1 to better than
 about ten percent. The 265 should be read as a couple of hundred, not as a precise figure.
+
+## The digraph cell, which is separate evidence
+
+    null: the same 104 hits scattered at random over the 2,105 slots
+        adjacent-pair digraph hits   3.11 +- 1.69
+        observed                     9            P = 0.0027
+
+    H0  no shared alphabet -> coincidences are chance, so no clustering   expects 3.11
+    H1  shared alphabet    -> English's clustering of 1.68x               expects 5.22
+    observed 9                                          LR = 12.9 : 1
+
+Combined with the monograph cell: **about 3,400 to 1**, not 265.
+
+### A mechanism that does not bite
+
+The preventer costs the digraph almost nothing extra. A monograph distance-five relation
+needs no extra clock step across five positions, (1 - q)^5 = 0.872; the digraph needs none
+across six, (1 - q)^6 = 0.848. The extra cost is (1 - q) = 0.973, under 3%.
+
+Conditionally the preventer slightly **raises** the digraph rate. Given c_i = c_(i+5) = X,
+it forbids both c_(i+1) = X and c_(i+6) = X, so each draws from 28 letters rather than 29:
+1/28 against 1/29, a 3.6% increase that moves the null from 3.11 to 3.22.
+
+### The tension worth watching
+
+The body clusters at 2.90x where English clusters at 1.68x, which puts the observation
++2.2 sigma **above** H1 rather than below it. On nine hits that is not a result, and it is
+the opposite sign to the monograph cell's -1.03. If it survives more material it is a
+problem for the plaintext-is-ordinary-English arm, not for the shared alphabet.
 
 ## What proof would need
 

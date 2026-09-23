@@ -157,9 +157,12 @@ family, and this channel cannot choose between them.
 
 `experiments/how_proven_is_the_shared_alphabet.py`
 
-**Likely, not proven.** The claim rests on one number — 104 within-word lag-5 coincidences
-against 72.8 expected. The digraph and trigraph cells are not extra evidence: their hits
-are a subset of those 104, so they are the same observation looked at again.
+**Likely, not proven.** The monograph cell is 104 within-word lag-5 coincidences against
+72.8 expected.
+
+*(An earlier version of this section said the digraph cell was not extra evidence, because
+its hits are a subset of those 104. That was wrong — see "The digraph is separate
+evidence" below. Michel caught it.)*
 
 A σ is the wrong summary when both alternatives are specified, and here they are.
 
@@ -199,3 +202,43 @@ alphabet that is **not** the coincidence rate. The local-channel theorem says eq
 the only invariant visible at every order
 (`key-local-channel-is-empty.md`), which is why there is one number here and not a
 battery — and that is a structural ceiling, not a gap in effort.
+
+## The digraph is separate evidence
+
+`experiments/how_proven_is_the_shared_alphabet.py`
+
+The digraph hits are a subset of the monograph hits, but the digraph statistic counts how
+those hits are **arranged**, and arrangement is close to independent of count. Holding the
+monograph total fixed at 104 and scattering them at random over the 2,105 slots:
+
+| | value |
+|---|---|
+| adjacent-pair digraph hits under the scatter null | 3.11 ± 1.69 |
+| observed | **9** |
+| P | **0.0027** |
+
+| model | expects | |
+|---|---|---|
+| H0 no shared alphabet → coincidences are chance, so no clustering | 3.11 | |
+| H1 shared alphabet → English's clustering of 1.68× | 5.22 | |
+| observed 9 | | **LR = 12.9 : 1** |
+
+**Combined with the monograph cell: about 3,400 to 1, not 265.**
+
+### The preventer does not cost the digraph much
+
+A monograph distance-five relation needs no extra clock step across five positions,
+(1−q)⁵ = 0.872. The digraph needs none across six, (1−q)⁶ = 0.848. The extra cost is
+(1−q) = 0.973 — under 3%, not the large reduction one might expect.
+
+Conditionally the preventer slightly **raises** the digraph rate: given c_i = c_{i+5} = X,
+it forbids both c_{i+1} = X and c_{i+6} = X, so each draws from 28 letters rather than 29.
+That is a 3.6% increase, moving the null from 3.11 to 3.22.
+
+### The tension worth watching
+
+The body clusters at 2.90× where English clusters at 1.68×, putting the observation
+**+2.2σ above H1** rather than below it — the opposite sign to the monograph cell's −1.03σ.
+On nine hits that is not a result. If it survives more material it is a problem for the
+plaintext-is-ordinary-English arm, not for the shared alphabet.
+
