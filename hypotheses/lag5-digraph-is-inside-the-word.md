@@ -152,3 +152,50 @@ inside a word share an alphabet**. It does **not** pin that g is a permutation o
 a five-long keystream restarting at each word predicts exactly the same thing, as does any
 scheme giving those two positions the same alphabet. The model is one member of that
 family, and this channel cannot choose between them.
+
+## How strongly is the shared alphabet actually held?
+
+`experiments/how_proven_is_the_shared_alphabet.py`
+
+**Likely, not proven.** The claim rests on one number — 104 within-word lag-5 coincidences
+against 72.8 expected. The digraph and trigraph cells are not extra evidence: their hits
+are a subset of those 104, so they are the same observation looked at again.
+
+A σ is the wrong summary when both alternatives are specified, and here they are.
+
+| model | rate | expects | LR vs H0 | observed sits |
+|---|---|---|---|---|
+| H1 raw (English, length-matched) | 0.0574 | 120.9 | 123 : 1 | −1.59σ |
+| H1 drift-adjusted | 0.0545 | 114.7 | **265 : 1** | −1.03σ |
+| H0 no sharing (ciphertext chance) | 0.0346 | 72.8 | — | +3.72σ |
+| **observed** | **0.0494** | **104** | | |
+
+The drift adjustment is the preventer: a distance-five relation breaks whenever the
+preventer fires in between, attenuating the excess by (1 − q)⁵ = 0.872 at the measured
+q = 0.0271.
+
+**A couple of hundred to one.** Strong, the right way round — the observed value sits one
+σ below the shared-alphabet prediction and nearly four above the no-sharing one — and not
+proof.
+
+### What the number is sensitive to
+
+H1's rate comes from English at matched word lengths over three registers, and registers
+differ. Nothing pins that rate to better than about ten percent, so read 265 as "a couple
+of hundred", not as a figure.
+
+### Why it cannot be pushed much further here
+
+| target | needs |
+|---|---|
+| 1,000 : 1 | about 1.2× these 2,105 pairs |
+| 10,000 : 1 | about 1.7× |
+
+The pairs come from the 815 body words of six runes or more, and the book has no more. So
+within this corpus the claim tops out in the low thousands to one at best.
+
+Getting past that needs either material outside the body, or a consequence of the shared
+alphabet that is **not** the coincidence rate. The local-channel theorem says equality is
+the only invariant visible at every order
+(`key-local-channel-is-empty.md`), which is why there is one number here and not a
+battery — and that is a structural ceiling, not a gap in effort.
