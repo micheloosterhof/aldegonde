@@ -302,3 +302,66 @@ only the null.
 whose key restarts per word fits exactly, and so does the walk. Separating them needs the
 relationship between the five alphabets, which equality coincidence cannot see — that is
 the local-channel theorem, not a gap in effort.
+
+## What the five alphabets are: two answers and one impossibility
+
+`experiments/what_the_five_alphabets_are.py`
+
+### 1. Are they one alphabet shifted five ways? Undecidable
+
+Inside a word the only visible thing is whether two runes are equal, and that depends on
+the five alphabets only through the composite τ_k = A_r⁻¹A_{r+k}. The coincidence rate at
+lag d is the diagonal mass of the plaintext distance-d bigram matrix under τ_{d mod 5}.
+
+| lag | body rate | shift ensemble | arbitrary permutations |
+|---|---|---|---|
+| 2 | 0.0348 | 0.0221–0.0546, sd 0.0069 | 0.0344, sd 0.0085 |
+| 3 | 0.0371 | 0.0245–0.0595, sd 0.0087 | 0.0347, sd 0.0073 |
+| 4 | 0.0405 | 0.0216–0.0560, sd 0.0085 | 0.0345, sd 0.0068 |
+| 6 | 0.0248 | 0.0231–0.0660, sd 0.0097 | 0.0345, sd 0.0077 |
+| 7 | 0.0410 | 0.0205–0.0569, sd 0.0084 | 0.0346, sd 0.0077 |
+
+Same centre, same spread, same range. **No observed value is evidence either way**, and
+this is not a sample-size problem: the base family is 27-transitive, so the equality
+pattern is the only base-invariant statistic of any tuple up to 27 runes, and the longest
+body word is 14. There is nothing else to reach for.
+
+### 2. Is the per-word re-basing a shift? No
+
+Already in the repo (`affine_triple_invariant.py`), not re-derived. For an affine base the
+ratio (c_c − c_a)/(c_b − c_a) cancels multiplier and offset, surviving the re-basing.
+
+| | χ² on 28 df |
+|---|---|
+| the body, 3,357 within-word triples | **89.7** |
+| planted affine bases | 620–1,252, median 848 |
+| planted general bases | 31.5–141.2, median **82.2** |
+
+**The per-word base is a general permutation — not a shift, not affine.** That kills the
+AGL(1,29) family, the one that would have collapsed the base key space from 29! to 812.
+
+It is also why question 1 is closed rather than merely hard: a shift-structured re-basing
+would leave additive traces that expose the five alphabets, and a general one does not.
+
+### 3. A continuous key with the words shuffled afterwards? Excluded
+
+The model — one period-5 key running through the plaintext, words transposed afterwards,
+preventer on top — explains the within-word period 5 and explains why nothing survives
+across word boundaries, since the shuffle scrambles each word's entry phase. It is a
+genuinely good fit to everything measured so far.
+
+But it makes a prediction the general model does not: there is **no per-word base at all**,
+only five entry phases. Two words sharing a phase use identical alphabets and coincide at
+matched positions at the plaintext rate.
+
+| | |
+|---|---|
+| English word-aligned coincidence (the same-phase rate) | 0.0794 |
+| a five-phase model predicts 0.2 × 0.0794 + 0.8 × 0.0345 | 0.0435 |
+| the body, 13.5M word pairs at matched positions | **0.0344** |
+| chance | 0.0345 |
+
+**Observed 464,370 against 586,927 predicted, z = −164.** Word-aligned coincidence does
+not move off chance at all, so there is no small set of shared alphabets. Whatever re-bases
+each word takes many more than five values — the same conclusion `alphabet_count_bound.py`
+reaches from the other direction.
