@@ -1,5 +1,6 @@
 """Mathematical utilities for cryptographic operations."""
 
+from aldegonde.maths import permutation
 from aldegonde.maths.factor import factor_pairs, prime_factors
 from aldegonde.maths.modular import div29, modDivide, modInverse
 from aldegonde.maths.moebius_function import isPrime, moebius
@@ -17,6 +18,8 @@ __all__ = [
     "div29",
     "modDivide",
     "modInverse",
+    # permutation
+    "permutation",
     # primes
     "PrimeGenerator",
     "gen_primes_opt",

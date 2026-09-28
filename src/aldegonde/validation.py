@@ -136,3 +136,37 @@ def validate_positive_integer(value: Any, name: str) -> int:
         raise InvalidInputError(msg, input_value=value)
 
     return value
+
+
+def validate_permutation(perm: Sequence[int]) -> list[int]:
+    """Validate that a sequence is a permutation of 0..N-1.
+
+    Args:
+        perm: The image of each point, in point order
+
+    Returns:
+        The permutation as a list of integers
+
+    Raises:
+        InvalidInputError: If the sequence is empty, holds a value outside
+            0..N-1, or holds a value twice
+    """
+    size = len(perm)
+    if size == 0:
+        msg = "Permutation cannot be empty"
+        raise InvalidInputError(msg, input_value=perm)
+
+    seen = [False] * size
+    images: list[int] = []
+    for value in perm:
+        image = int(value)
+        if not 0 <= image < size:
+            msg = f"Permutation of size {size} holds {image}, outside 0..{size - 1}"
+            raise InvalidInputError(msg, input_value=perm)
+        if seen[image]:
+            msg = f"Permutation holds {image} more than once"
+            raise InvalidInputError(msg, input_value=perm)
+        seen[image] = True
+        images.append(image)
+
+    return images
