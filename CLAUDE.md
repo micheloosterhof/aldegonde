@@ -25,6 +25,7 @@ aldegonde/
 │   ├── disk.py              # Cipher disk operations
 │   ├── column.py            # Columnar operations
 │   ├── c3301.py             # Cicada 3301 specific functions
+│   ├── alphabet.py          # Codec between symbols and integer indices
 │   ├── exceptions.py        # Custom exception hierarchy
 │   ├── validation.py        # Input validation utilities
 │   ├── analysis/            # Cryptanalysis algorithms
@@ -46,6 +47,7 @@ aldegonde/
 │   │   ├── primes.py        # Prime number operations
 │   │   ├── factor.py        # Factorization
 │   │   ├── modular.py       # Modular arithmetic
+│   │   ├── permutation.py   # Permutation algebra on integers 0..N-1
 │   │   ├── totient.py       # Euler's totient
 │   │   └── moebius.py       # Moebius function
 │   ├── grams/               # N-gram visualization
@@ -309,6 +311,8 @@ python examples/lp_analysis.py     # Run Liber Primus analysis
 ## Important Notes for AI Assistants
 
 1. **Alphabet Independence**: The library is designed for arbitrary alphabets. Don't assume 26-letter English alphabet.
+
+   Functions that index tables or do arithmetic take integers `0..N-1` and an explicit alphabet size. Convert symbols at the edge with `aldegonde.alphabet.Alphabet`. Statistics that only compare symbols for equality stay generic over `T`.
 
 2. **Generator Usage**: Many functions return generators, not lists. Convert with `list()` or `"".join()` when needed.
 
