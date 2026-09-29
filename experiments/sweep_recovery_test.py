@@ -111,7 +111,10 @@ def main() -> None:
         f"{best[0]:.3f} at wheel #{best[1][0]}, disk #{best[1][1]}"
     )
 
-    assert best[1] == (pick, true_sigma_index), (
+    # the candidate lists hold some keys more than once, so the top key is compared
+    # by value: the same key at another position in the list is still the planted one
+    top_wheel, top_disk = best[1]
+    assert (stream[top_wheel], sigmas[top_disk]) == (stream[pick], true_sigma), (
         f"the sweep's top key is not the planted one: {best[1]} vs "
         f"{(pick, true_sigma_index)}"
     )
