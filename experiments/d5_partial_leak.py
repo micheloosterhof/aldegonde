@@ -79,7 +79,7 @@ def coincidence(stream, wid, d, same):
     return (m / e if e else 0.0), m, e
 
 
-DIGRAPHS = ["TH", "EO", "NG", "OE", "IA", "EA", "IO"]
+DIGRAPHS = ["TH", "EO", "NG", "OE", "AE", "IA", "EA", "IO"]
 SUBS = {"K": "C", "Q": "C", "V": "U", "Z": "S"}
 SINGLES = set("FUORCGWHNIJPXSTBEMLDAY")
 
