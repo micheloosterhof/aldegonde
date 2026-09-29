@@ -79,25 +79,8 @@ def coincidence(stream, wid, d, same):
     return (m / e if e else 0.0), m, e
 
 
-DIGRAPHS = ["TH", "EO", "NG", "OE", "AE", "IA", "EA", "IO"]
-SUBS = {"K": "C", "Q": "C", "V": "U", "Z": "S"}
-SINGLES = set("FUORCGWHNIJPXSTBEMLDAY")
-
-
 def to_runeglish(word: str) -> list[str]:
-    w = "".join(SUBS.get(c, c) for c in word)
-    out: list[str] = []
-    i = 0
-    while i < len(w):
-        if i + 1 < len(w) and w[i : i + 2] in DIGRAPHS:
-            out.append(w[i : i + 2])
-            i += 2
-        elif w[i] in SINGLES:
-            out.append(w[i])
-            i += 1
-        else:
-            i += 1
-    return out
+    return [c3301.CICADA_ENGLISH_ALPHABET[i] for i in c3301.encode_english(word)]
 
 
 def plaintext_reference(rng: random.Random) -> tuple[float, float]:

@@ -109,70 +109,9 @@ def main() -> None:
     from wordfreq import top_n_list, word_frequency
 
     def transliterate(word: str) -> list[int] | None:
-        w = word.upper()
-        if not w.isalpha():
+        if not (word.isascii() and word.isalpha()):
             return None
-        for a, b in (("K", "C"), ("Q", "C"), ("V", "U"), ("Z", "S")):
-            w = w.replace(a, b)
-        digraphs = {
-            "TH": 2,
-            "EO": 12,
-            "NG": 21,
-            "OE": 22,
-            "AE": 25,
-            "IA": 27,
-            "IO": 27,
-            "EA": 28,
-        }
-        singles = {
-            c: i
-            for i, c in enumerate(
-                [
-                    "F",
-                    "U",
-                    None,
-                    "O",
-                    "R",
-                    "C",
-                    "G",
-                    "W",
-                    "H",
-                    "N",
-                    "I",
-                    "J",
-                    None,
-                    "P",
-                    "X",
-                    "S",
-                    "T",
-                    "B",
-                    "E",
-                    "M",
-                    "L",
-                    None,
-                    None,
-                    "D",
-                    "A",
-                    None,
-                    "Y",
-                    None,
-                    None,
-                ]
-            )
-            if c
-        }
-        out: list[int] = []
-        i = 0
-        while i < len(w):
-            if w[i : i + 2] in digraphs:
-                out.append(digraphs[w[i : i + 2]])
-                i += 2
-            elif w[i] in singles:
-                out.append(singles[w[i]])
-                i += 1
-            else:
-                return None
-        return out
+        return c3301.encode_english(word)
 
     lex_pos_pairs: Counter = Counter()
     lex_pos_reps: Counter = Counter()

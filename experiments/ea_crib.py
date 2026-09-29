@@ -28,64 +28,14 @@ WORD_BOUNDARIES = set(
     c3301.MARK_CHARS + "&$§%" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
 )
 
-# Greedy English -> runeglish (Gematria Primus). Digraphs win over singles.
-DIGRAPHS = {
-    "TH": "ᚦ",
-    "EO": "ᛇ",
-    "NG": "ᛝ",
-    "OE": "ᛟ",
-    "AE": "ᚫ",
-    "IA": "ᛡ",
-    "IO": "ᛡ",
-    "EA": "ᛠ",
-}
-SINGLE = {
-    "F": "ᚠ",
-    "U": "ᚢ",
-    "O": "ᚩ",
-    "R": "ᚱ",
-    "C": "ᚳ",
-    "K": "ᚳ",
-    "G": "ᚷ",
-    "W": "ᚹ",
-    "H": "ᚻ",
-    "N": "ᚾ",
-    "I": "ᛁ",
-    "J": "ᛄ",
-    "P": "ᛈ",
-    "X": "ᛉ",
-    "S": "ᛋ",
-    "T": "ᛏ",
-    "B": "ᛒ",
-    "E": "ᛖ",
-    "M": "ᛗ",
-    "L": "ᛚ",
-    "D": "ᛞ",
-    "A": "ᚪ",
-    "Y": "ᚣ",
-    "Q": "ᚳ",
-    "V": "ᚠ",
-    "Z": "ᛋ",
-}
 
 
 def to_runeglish(word: str) -> list[str] | None:
     """Encode an English word to a runeglish rune list, or None if it has a
     character outside the supported set."""
-    w = word.upper()
-    out: list[str] = []
-    i = 0
-    while i < len(w):
-        dg = w[i : i + 2]
-        if dg in DIGRAPHS:
-            out.append(DIGRAPHS[dg])
-            i += 2
-        elif w[i] in SINGLE:
-            out.append(SINGLE[w[i]])
-            i += 1
-        else:
-            return None
-    return out
+    if not (word.isascii() and word.isalpha()):
+        return None
+    return c3301.RUNES.decode(c3301.encode_english(word))
 
 
 def parse_words(text: str) -> list[str]:

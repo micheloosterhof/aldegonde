@@ -253,57 +253,9 @@ def main() -> None:
         return
 
     def transliterate(word: str) -> list[int] | None:
-        w = word.upper()
-        if not w.isalpha():
+        if not (word.isascii() and word.isalpha()):
             return None
-        w = w.replace("K", "C").replace("Q", "C").replace("V", "U")
-        w = w.replace("Z", "S")
-        out: list[int] = []
-        i = 0
-        digraphs = {
-            "TH": 2,
-            "EO": 12,
-            "NG": 21,
-            "OE": 22,
-            "AE": 25,
-            "IA": 27,
-            "IO": 27,
-            "EA": 28,
-        }
-        singles = {
-            "F": 0,
-            "U": 1,
-            "O": 3,
-            "R": 4,
-            "C": 5,
-            "G": 6,
-            "W": 7,
-            "H": 8,
-            "N": 9,
-            "I": 10,
-            "J": 11,
-            "P": 13,
-            "X": 14,
-            "S": 15,
-            "T": 16,
-            "B": 17,
-            "E": 18,
-            "M": 19,
-            "L": 20,
-            "D": 23,
-            "A": 24,
-            "Y": 26,
-        }
-        while i < len(w):
-            if w[i : i + 2] in digraphs:
-                out.append(digraphs[w[i : i + 2]])
-                i += 2
-            elif w[i] in singles:
-                out.append(singles[w[i]])
-                i += 1
-            else:
-                return None
-        return out
+        return c3301.encode_english(word)
 
     lex_words: list[list[int]] = []
     lex_weights: list[float] = []

@@ -25,6 +25,8 @@ import random
 
 import numpy as np
 
+from aldegonde import c3301
+
 MOD = 29
 OBSERVED = 0.0063
 RESTARTS = 60
@@ -32,30 +34,12 @@ CYCLES = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14],
           [15, 16, 17, 18, 19], [20, 21, 22, 23, 24]]
 FIXED_SLOTS = [25, 26, 27, 28]
 
-_DIGRAPHS = {"TH": 2, "EO": 12, "NG": 21, "OE": 22, "AE": 25, "IA": 27, "IO": 27, "EA": 28}
-_SINGLES = {
-    "F": 0, "U": 1, "O": 3, "R": 4, "C": 5, "G": 6, "W": 7, "H": 8, "N": 9, "I": 10,
-    "J": 11, "P": 13, "X": 14, "S": 15, "T": 16, "B": 17, "E": 18, "M": 19, "L": 20,
-    "D": 23, "A": 24, "Y": 26,
-}
 
 
 def transliterate(word: str) -> list[int] | None:
-    w = word.upper().replace("K", "C").replace("Q", "C").replace("V", "U").replace("Z", "S")
-    if not w.isalpha():
+    if not (word.isascii() and word.isalpha()):
         return None
-    out: list[int] = []
-    i = 0
-    while i < len(w):
-        if w[i : i + 2] in _DIGRAPHS:
-            out.append(_DIGRAPHS[w[i : i + 2]])
-            i += 2
-        elif w[i] in _SINGLES:
-            out.append(_SINGLES[w[i]])
-            i += 1
-        else:
-            return None
-    return out
+    return c3301.encode_english(word)
 
 
 def bigram_table() -> np.ndarray:

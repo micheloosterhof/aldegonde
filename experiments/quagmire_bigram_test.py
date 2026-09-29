@@ -12,64 +12,12 @@ sys.path.insert(0, "src")
 from aldegonde import c3301
 from aldegonde.grams import bigram_diagram
 
-# Gematria Primus mapping
-GEMATRIA_RULES = [
-    ("ing", "ᛝ"),
-    ("ng", "ᛝ"),
-    ("th", "ᚦ"),
-    ("ea", "ᛠ"),
-    ("eo", "ᛇ"),
-    ("oe", "ᛟ"),
-    ("ae", "ᚫ"),
-    ("ia", "ᛡ"),
-    ("io", "ᛡ"),
-    ("f", "ᚠ"),
-    ("u", "ᚢ"),
-    ("o", "ᚩ"),
-    ("r", "ᚱ"),
-    ("c", "ᚳ"),
-    ("k", "ᚳ"),
-    ("g", "ᚷ"),
-    ("w", "ᚹ"),
-    ("h", "ᚻ"),
-    ("n", "ᚾ"),
-    ("i", "ᛁ"),
-    ("j", "ᛄ"),
-    ("p", "ᛈ"),
-    ("x", "ᛉ"),
-    ("s", "ᛋ"),
-    ("z", "ᛋ"),
-    ("t", "ᛏ"),
-    ("b", "ᛒ"),
-    ("e", "ᛖ"),
-    ("m", "ᛗ"),
-    ("l", "ᛚ"),
-    ("d", "ᛞ"),
-    ("a", "ᚪ"),
-    ("y", "ᚣ"),
-    ("q", "ᚳ"),
-    ("v", "ᚢ"),
-]
-
 ALPHABET = c3301.CICADA_ALPHABET
 
 
 def english_to_runeglish(text: str) -> str:
     """Convert English text to Runeglish."""
-    text = text.lower()
-    result = []
-    i = 0
-    while i < len(text):
-        matched = False
-        for pattern, rune in GEMATRIA_RULES:
-            if text[i : i + len(pattern)] == pattern:
-                result.append(rune)
-                i += len(pattern)
-                matched = True
-                break
-        if not matched:
-            i += 1
-    return "".join(result)
+    return "".join(c3301.RUNES.decode(c3301.encode_english(text)))
 
 
 def mixed_alphabet(keyword: str, alphabet: list[str]) -> list[str]:

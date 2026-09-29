@@ -17,66 +17,15 @@ import math
 import numpy as np
 from lp_structure import R2I, RUNES, N, flat, parse
 
+from aldegonde import c3301
+
 pages = parse("data/page0-56.txt")[:55]
 s = np.array(flat(pages))
 n = len(s)
 
-# runeglish words -> rune-index sequences. Standard Gematria Primus letter set.
-LAT2I = {
-    "F": 0,
-    "U": 1,
-    "TH": 2,
-    "O": 3,
-    "R": 4,
-    "C": 5,
-    "K": 5,
-    "G": 6,
-    "W": 7,
-    "H": 8,
-    "N": 9,
-    "I": 10,
-    "J": 11,
-    "EO": 12,
-    "P": 13,
-    "X": 14,
-    "S": 15,
-    "Z": 15,
-    "T": 16,
-    "B": 17,
-    "E": 18,
-    "M": 19,
-    "L": 20,
-    "NG": 21,
-    "ING": 21,
-    "OE": 22,
-    "D": 23,
-    "A": 24,
-    "AE": 25,
-    "Y": 26,
-    "IA": 27,
-    "IO": 27,
-    "EA": 28,
-}
-
 
 def to_runes(word):
-    word = word.upper()
-    out = []
-    i = 0
-    multi = ["ING", "TH", "EO", "NG", "OE", "AE", "IA", "IO", "EA"]
-    while i < len(word):
-        for m in multi:
-            if word[i : i + len(m)] == m:
-                out.append(LAT2I[m])
-                i += len(m)
-                break
-        else:
-            if word[i] in LAT2I:
-                out.append(LAT2I[word[i]])
-                i += 1
-            else:
-                i += 1
-    return out
+    return c3301.encode_english(word)
 
 
 CRIBS = [

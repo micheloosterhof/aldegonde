@@ -18,46 +18,8 @@ sys.path.insert(0, "src")
 
 from collections import Counter  # noqa: I001
 
+from aldegonde import c3301  # noqa: E402
 
-# Gematria Primus mapping (simplified - digraphs first, then single letters)
-# Order matters: check digraphs before single letters
-GEMATRIA_RULES = [
-    ("ing", "ᛝ"),  # ING -> NG rune (special case)
-    ("ng", "ᛝ"),  # NG
-    ("th", "ᚦ"),  # TH
-    ("ea", "ᛠ"),  # EA
-    ("eo", "ᛇ"),  # EO
-    ("oe", "ᛟ"),  # OE
-    ("ae", "ᚫ"),  # AE
-    ("ia", "ᛡ"),  # IA
-    ("io", "ᛡ"),  # IO (same rune as IA)
-    ("f", "ᚠ"),
-    ("u", "ᚢ"),
-    ("o", "ᚩ"),
-    ("r", "ᚱ"),
-    ("c", "ᚳ"),
-    ("k", "ᚳ"),  # K -> C rune
-    ("g", "ᚷ"),
-    ("w", "ᚹ"),
-    ("h", "ᚻ"),
-    ("n", "ᚾ"),
-    ("i", "ᛁ"),
-    ("j", "ᛄ"),
-    ("p", "ᛈ"),
-    ("x", "ᛉ"),
-    ("s", "ᛋ"),
-    ("z", "ᛋ"),  # Z -> S rune
-    ("t", "ᛏ"),
-    ("b", "ᛒ"),
-    ("e", "ᛖ"),
-    ("m", "ᛗ"),
-    ("l", "ᛚ"),
-    ("d", "ᛞ"),
-    ("a", "ᚪ"),
-    ("y", "ᚣ"),
-    ("q", "ᚳ"),  # Q -> C rune (usually QU)
-    ("v", "ᚢ"),  # V -> U rune
-]
 
 RUNE_NAMES = {
     "ᚠ": "F",
@@ -94,21 +56,7 @@ RUNE_NAMES = {
 
 def english_to_runeglish(text: str) -> str:
     """Convert English text to Runeglish using Gematria Primus."""
-    text = text.lower()
-    result = []
-    i = 0
-    while i < len(text):
-        matched = False
-        for pattern, rune in GEMATRIA_RULES:
-            if text[i : i + len(pattern)] == pattern:
-                result.append(rune)
-                i += len(pattern)
-                matched = True
-                break
-        if not matched:
-            # Skip non-alphabetic characters
-            i += 1
-    return "".join(result)
+    return "".join(c3301.RUNES.decode(c3301.encode_english(text)))
 
 
 def analyze_runeglish_frequencies(
