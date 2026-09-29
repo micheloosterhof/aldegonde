@@ -117,9 +117,7 @@ def sweep(page_runes, words):
         for family in FAMILIES:
             for interrupt in (False, True):
                 plain = decrypt(page_runes, k, family, interrupt=interrupt)
-                out.append(
-                    (score(plain[:PREFIX]), word, family, interrupt, plain)
-                )
+                out.append((score(plain[:PREFIX]), word, family, interrupt, plain))
     out.sort(key=lambda r: -r[0])
     return out
 
@@ -136,11 +134,11 @@ def main() -> None:
     print("CONTROL: page 1, whose key is known to be DIVINITY.\n")
     control = sweep(runes_of(CONTROL), words)
     ranked = control
-    where = next(
-        (i for i, r in enumerate(ranked) if r[1] == "DIVINITY"), None
-    )
+    where = next((i for i, r in enumerate(ranked) if r[1] == "DIVINITY"), None)
     top = ranked[0]
-    print(f"  best key found      : {top[1]} ({top[2]}, interrupt={top[3]}) {top[0]:+.3f}")
+    print(
+        f"  best key found      : {top[1]} ({top[2]}, interrupt={top[3]}) {top[0]:+.3f}"
+    )
     print(f"  DIVINITY's rank     : {where}")
     print(f"  its reading         : {readable(top[4])[:58]}")
     null = np.array([r[0] for r in ranked[10:]])

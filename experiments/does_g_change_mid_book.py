@@ -80,8 +80,9 @@ def main() -> None:
         corpus = prose[t % 40]
         one.append(halves_chi2(walk(g, sigma, corpus, random.Random(1 + t))))
         g2 = order5_fixing(rk.sample(range(M), 4), rk)
-        mixed = (walk(g, sigma, corpus[:1464], random.Random(1 + t))
-                 + walk(g2, sigma, corpus[1464:], random.Random(500 + t)))
+        mixed = walk(g, sigma, corpus[:1464], random.Random(1 + t)) + walk(
+            g2, sigma, corpus[1464:], random.Random(500 + t)
+        )
         changed.append(halves_chi2(mixed))
 
     o, c = np.array(one), np.array(changed)
@@ -90,19 +91,27 @@ def main() -> None:
     sa = math.sqrt(pa * (1 - pa) / trials)
     sb = math.sqrt(max(pb, 1 / trials) * (1 - pb) / trials)
 
-    print(f"{trials} trials per arm; two-sample chi2 between the halves' d-profiles, "
-          f"5 df\n")
+    print(
+        f"{trials} trials per arm; two-sample chi2 between the halves' d-profiles, "
+        f"5 df\n"
+    )
     print(f"{'arm':<32}{'chi2':>22}{'median':>9}{'P(<= body)':>14}")
-    print(f"{'planted, one g':<32}{f'{o.mean():.1f} +- {o.std():.1f}':>22}"
-          f"{np.median(o):>9.1f}{f'{pa:.2f} +- {sa:.2f}':>14}")
-    print(f"{'planted, g changes at half':<32}{f'{c.mean():.1f} +- {c.std():.1f}':>22}"
-          f"{np.median(c):>9.1f}{f'{pb:.2f} +- {sb:.2f}':>14}")
+    print(
+        f"{'planted, one g':<32}{f'{o.mean():.1f} +- {o.std():.1f}':>22}"
+        f"{np.median(o):>9.1f}{f'{pa:.2f} +- {sa:.2f}':>14}"
+    )
+    print(
+        f"{'planted, g changes at half':<32}{f'{c.mean():.1f} +- {c.std():.1f}':>22}"
+        f"{np.median(c):>9.1f}{f'{pb:.2f} +- {sb:.2f}':>14}"
+    )
     print(f"{'THE BODY':<32}{body:>22.1f}")
 
     lr = pa / max(pb, 1 / (2 * trials))
     print(f"\nlikelihood ratio, one g over a mid-book change: {lr:.0f} to 1")
-    print(f"  {int(pb * trials)} of {trials} changed-key trials sit at or below the "
-          f"body's {body:.1f}")
+    print(
+        f"  {int(pb * trials)} of {trials} changed-key trials sit at or below the "
+        f"body's {body:.1f}"
+    )
     print(
         "\nThe one-g arm reads 5.5 on 5 df, which is what a correct null should give, so"
         "\nthe statistic is calibrated. The changed arm is heavily skewed -- median 18.3,"

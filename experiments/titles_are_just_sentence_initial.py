@@ -98,8 +98,10 @@ def main() -> None:
 
     print("sentence position in the body, on the heavy marks\n")
     print(f"{'group':<34}{'blocks':>8}{'frac at 2':>12}{'se':>9}")
-    for label, v in (("after a heavy mark", sentence_initial),
-                     ("elsewhere", elsewhere)):
+    for label, v in (
+        ("after a heavy mark", sentence_initial),
+        ("elsewhere", elsewhere),
+    ):
         f, se, n = rate(v)
         print(f"{label:<34}{n:>8,}{f:>12.4f}{se:>9.4f}")
     fi, _, _ = rate(sentence_initial)
@@ -126,25 +128,33 @@ def main() -> None:
                 after = ch == "."
     pf, _, npf = rate(plain_first)
     pr, _, npr = rate(plain_rest)
-    print(f"\nthe author's own plaintext, split on '.': "
-          f"{pf:.4f} on {npf} against {pr:.4f} on {npr}, {pf / pr:.2f}x")
+    print(
+        f"\nthe author's own plaintext, split on '.': "
+        f"{pf:.4f} on {npf} against {pr:.4f} on {npr}, {pf / pr:.2f}x"
+    )
     print("So the elevation is a property of English, and the body keeps it.")
 
     print("\n\nthe titles, compared like with like\n")
     print(f"{'group':<34}{'blocks':>8}{'frac at 2':>12}{'se':>9}")
-    for label, v in (("first block of a title", first),
-                     ("the rest of the titles", rest_of_title)):
+    for label, v in (
+        ("first block of a title", first),
+        ("the rest of the titles", rest_of_title),
+    ):
         f, se, n = rate(v)
         print(f"{label:<34}{n:>8}{f:>12.4f}{se:>9.4f}")
 
     f1, s1, n1 = rate(first)
     f2, s2, n2 = rate(sentence_initial)
-    print(f"\ntitle-initial against the body's sentence-initial blocks: "
-          f"z = {(f1 - f2) / math.sqrt(s1**2 + s2**2):+.2f}")
+    print(
+        f"\ntitle-initial against the body's sentence-initial blocks: "
+        f"z = {(f1 - f2) / math.sqrt(s1**2 + s2**2):+.2f}"
+    )
     f3, s3, n3 = rate(rest_of_title)
     f4, s4, n4 = rate(elsewhere)
-    print(f"the rest of the titles against the body elsewhere:        "
-          f"z = {(f3 - f4) / math.sqrt(s3**2 + s4**2):+.2f}")
+    print(
+        f"the rest of the titles against the body elsewhere:        "
+        f"z = {(f3 - f4) / math.sqrt(s3**2 + s4**2):+.2f}"
+    )
     print(
         "\nBoth under 0.7 sigma. The titles are ordinary once sentence position is"
         "\ncontrolled, and the 1.25 sigma reported earlier was composition: a third of"

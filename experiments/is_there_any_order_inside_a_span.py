@@ -145,7 +145,9 @@ def main() -> None:
         ("the author", author),
         ("English", english),
     ):
-        obs, mean, sd, chi = score(data, rng, draws=200 if label == "English" else DRAWS)
+        obs, mean, sd, chi = score(
+            data, rng, draws=200 if label == "English" else DRAWS
+        )
         rows[label] = (obs, mean, sd, chi, data)
         cells = " ".join(f"{v:5.2f}" for v in obs)
         print(f"{label:<16}{len(data):>7}{sum(len(s) for s in data):>8}   {cells}")

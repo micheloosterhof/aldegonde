@@ -81,9 +81,9 @@ def excess(words, seed: int, draws: int = 50) -> float:
     """True phases minus randomised phases, so only the phase structure counts."""
     lengths = [len(w) for w in words]
     rng = random.Random(seed)
-    null = np.array([
-        dispersion(words, [rng.randrange(5) for _ in lengths]) for _ in range(draws)
-    ])
+    null = np.array(
+        [dispersion(words, [rng.randrange(5) for _ in lengths]) for _ in range(draws)]
+    )
     return dispersion(words, phases(lengths)) - float(null.mean())
 
 
@@ -120,9 +120,14 @@ def scan_conventions(words, label: str, draws: int = 40, seed: int = 0) -> None:
     """Is there ANY affine phase convention under which the table is overdispersed?"""
     lengths = [len(w) for w in words]
     rng = random.Random(seed)
-    base = float(np.mean([
-        dispersion(words, [rng.randrange(5) for _ in lengths]) for _ in range(draws)
-    ]))
+    base = float(
+        np.mean(
+            [
+                dispersion(words, [rng.randrange(5) for _ in lengths])
+                for _ in range(draws)
+            ]
+        )
+    )
     grid = np.zeros((5, 5))
     for a in range(5):
         for b in range(5):
@@ -141,9 +146,11 @@ def scan_conventions(words, label: str, draws: int = 40, seed: int = 0) -> None:
     print("      " + "".join(f"{'beta=' + str(b):>9}" for b in range(5)))
     for a in range(5):
         print(f"  a={a}" + "".join(f"{grid[a, b]:>9.2f}" for b in range(5)))
-    print(f"  best alpha={i}, beta={j}, excess {grid[i, j]:+.2f}; "
-          f"max-of-scan null {mn.mean():.2f} +- {mn.std():.2f}  ->  "
-          f"z = {(grid[i, j] - mn.mean()) / mn.std():+.2f}")
+    print(
+        f"  best alpha={i}, beta={j}, excess {grid[i, j]:+.2f}; "
+        f"max-of-scan null {mn.mean():.2f} +- {mn.std():.2f}  ->  "
+        f"z = {(grid[i, j] - mn.mean()) / mn.std():+.2f}"
+    )
 
 
 def main() -> None:
@@ -170,8 +177,10 @@ def main() -> None:
             vals.append(excess(syn, t))
         v = np.array(vals)
         results[side] = v
-        print(f"{label:<34}"
-              f"{f'{v.mean():+.2f} +- {v.std():.2f}  ({int((v > 0).sum())}/{keys} up)':>26}")
+        print(
+            f"{label:<34}"
+            f"{f'{v.mean():+.2f} +- {v.std():.2f}  ({int((v > 0).sum())}/{keys} up)':>26}"
+        )
 
     body = excess(lp_words(), 99)
     print(f"{'THE BODY':<34}{f'{body:+.2f}':>26}")
@@ -180,8 +189,10 @@ def main() -> None:
         v = results[side]
         z = (body - v.mean()) / v.std()
         below = int((v > body).sum())
-        print(f"\n  against the {side:<5} simulations: z = {z:+.2f}, "
-              f"and the body is below {below} of {keys}")
+        print(
+            f"\n  against the {side:<5} simulations: z = {z:+.2f}, "
+            f"and the body is below {below} of {keys}"
+        )
 
     rk2 = random.Random(31)
     g = order5_fixing(rk2.sample(range(M), 4), rk2)

@@ -90,8 +90,10 @@ def main() -> None:
         if b > best[0]:
             best = (b, lag)
         print(f"{lag:>4}{b:>13.4f} +-{bse:.4f}{p:>10.4f}")
-    print(f"\nbody maximum {best[0]:.4f} at lag {best[1]}, against 0.0555 for prose at"
-          " lag 1")
+    print(
+        f"\nbody maximum {best[0]:.4f} at lag {best[1]}, against 0.0555 for prose at"
+        " lag 1"
+    )
     print(
         "\nNo lag carries language-like structure. Interleaving at any depth up to"
         f"\n{max_lag} is excluded: it would move the peak, not remove it."

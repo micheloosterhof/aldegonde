@@ -172,10 +172,26 @@ def main() -> None:
         f"{'vs chance':>10}{'stream':>8}{'break':>8}{'LR for stream':>16}"
     )
     report("nothing (inside a word)", inside, baseline, is_baseline=True)
-    report("a line break only", cell(rows, ["line"], ["mark", "separator", "page", "section", "other"]), baseline)
-    report("a separator only", cell(rows, ["separator"], ["mark", "line", "page", "section", "other"]), baseline)
-    report("a separator and a line break", cell(rows, ["separator", "line"], ["mark", "page", "section", "other"]), baseline)
-    report("a MARK (any dot cluster)", cell(rows, ["mark"], ["page", "section", "other"]), baseline)
+    report(
+        "a line break only",
+        cell(rows, ["line"], ["mark", "separator", "page", "section", "other"]),
+        baseline,
+    )
+    report(
+        "a separator only",
+        cell(rows, ["separator"], ["mark", "line", "page", "section", "other"]),
+        baseline,
+    )
+    report(
+        "a separator and a line break",
+        cell(rows, ["separator", "line"], ["mark", "page", "section", "other"]),
+        baseline,
+    )
+    report(
+        "a MARK (any dot cluster)",
+        cell(rows, ["mark"], ["page", "section", "other"]),
+        baseline,
+    )
     report("a page break", cell(rows, ["page"], ["section", "other"]), baseline)
     report("a section break", cell(rows, ["section"], ["other"]), baseline)
 

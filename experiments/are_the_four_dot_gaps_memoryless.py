@@ -197,15 +197,18 @@ def main() -> None:
         f"  Thinning the author needs p = {np.mean(author) / mean:.3f};"
         f"\nEnglish needs p = {np.mean(english) / mean:.3f}, that is none at all.\n"
     )
-    print(f"{'arm':<30}{'cv':>7}" + "".join(f"{f'{lo}-{hi}' if hi < 1000 else f'{lo}+':>9}" for lo, hi in BINS))
-    print(f"{'the body':<30}{gaps.std(ddof=1) / mean:>7.2f}" + "".join(f"{c:>9}" for c in counts(gaps)))
+    print(
+        f"{'arm':<30}{'cv':>7}"
+        + "".join(f"{f'{lo}-{hi}' if hi < 1000 else f'{lo}+':>9}" for lo, hi in BINS)
+    )
+    print(
+        f"{'the body':<30}{gaps.std(ddof=1) / mean:>7.2f}"
+        + "".join(f"{c:>9}" for c in counts(gaps))
+    )
     for label, sample in arms.items():
         p = bin_probs(sample)
         cv = np.std(sample, ddof=1) / np.mean(sample)
-        print(
-            f"{label:<30}{cv:>7.2f}"
-            + "".join(f"{x * len(gaps):>9.1f}" for x in p)
-        )
+        print(f"{label:<30}{cv:>7.2f}" + "".join(f"{x * len(gaps):>9.1f}" for x in p))
 
     obs = counts(gaps)
     lls = {label: loglik(obs, bin_probs(s)) for label, s in arms.items()}

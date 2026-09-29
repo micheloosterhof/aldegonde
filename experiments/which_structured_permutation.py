@@ -248,7 +248,9 @@ def main() -> None:
     author = author_spans()
     print(f"{len(body)} body spans, {len(author)} author spans, {len(raw)} registers.")
     print("Eight numbers per rule: four length classes at the first edge, four at the")
-    print("last. chi2 is against the body, carrying its error and the register spread.\n")
+    print(
+        "last. chi2 is against the body, carrying its error and the register spread.\n"
+    )
     print(f"{'rule':<28}{'chi2 first':>12}{'chi2 last':>12}{'chi2 both':>12}{'P':>10}")
 
     rows = []

@@ -45,18 +45,26 @@ def main() -> None:
     print(f"repeat {''.join(ENG[x] for x in repeated[0])} at rune offsets {a} and {b}")
     print(f"  blocks {wid[a]} and {wid[b]}, of {wid[-1]}")
     print(f"  runes after the second occurrence: {n - b - 6}")
-    print(f"  blocks occupied by the second occurrence: "
-          f"{sorted(set(wid[i] for i in range(b, n)))}")
+    print(
+        f"  blocks occupied by the second occurrence: "
+        f"{sorted(set(wid[i] for i in range(b, n)))}"
+    )
 
-    master = (ROOT / "data" / "liber-primus__transcription--master.txt").read_text().split("%")
+    master = (
+        (ROOT / "data" / "liber-primus__transcription--master.txt")
+        .read_text()
+        .split("%")
+    )
     total = 0
     for k in range(15, 71):
         if not RUNE.search(master[k]):
             continue
         c = sum(1 for ch in master[k] if RUNE.match(ch))
         if total <= b < total + c:
-            print(f"  master chunk {k}, offset {b - total} of {c}, "
-                  f"{total + c - b - 6} runes left in the chunk")
+            print(
+                f"  master chunk {k}, offset {b - total} of {c}, "
+                f"{total + c - b - 6} runes left in the chunk"
+            )
         total += c
 
     p = 6 / (n - 5)

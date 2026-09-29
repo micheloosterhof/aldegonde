@@ -81,8 +81,10 @@ def main() -> None:
         per_key.append({k: np.array([s[k] for s in sims], float) for k in lp})
 
     print(f"{keys} keys x {draws} corpora, substitution preventer with tau fixing 8.\n")
-    print(f"{'cell':<16}{'corpus':>10}{'mean':>11}{'within':>10}{'between':>10}"
-          f"{'key ratio':>11}{'hit':>6}  verdict")
+    print(
+        f"{'cell':<16}{'corpus':>10}{'mean':>11}{'within':>10}{'between':>10}"
+        f"{'key ratio':>11}{'hit':>6}  verdict"
+    )
     mechanism, keyed = [], []
     for k in lp:
         cols = [pk[k][np.isfinite(pk[k])] for pk in per_key]
@@ -104,8 +106,10 @@ def main() -> None:
         verdict = "key" if ratio > 1.0 else "mechanism"
         (keyed if ratio > 1.0 else mechanism).append(k)
         star = "*" if k in REACHABLE else " "
-        print(f"{k:<16}{lp[k]:>10.4f}{means.mean():>11.4f}{within:>10.4f}"
-              f"{between:>10.4f}{ratio:>11.2f}{f'{hits}/{len(cols)}':>6}  {verdict}{star}")
+        print(
+            f"{k:<16}{lp[k]:>10.4f}{means.mean():>11.4f}{within:>10.4f}"
+            f"{between:>10.4f}{ratio:>11.2f}{f'{hits}/{len(cols)}':>6}  {verdict}{star}"
+        )
 
     print("\n* = currently in the reachable-informative set.")
     print(f"\nmechanism cells ({len(mechanism)}): {', '.join(mechanism)}")
@@ -120,7 +124,11 @@ def main() -> None:
         "\nSo 'this model lands N cells' is a statement about one key. The mechanism-level"
         "\nquestion is what fraction of keys land them, which is the histogram below."
     )
-    print(f"\n{'shape':<15}" + "".join(f"{k} of 4".rjust(9) for k in range(5)) + "   median")
+    print(
+        f"\n{'shape':<15}"
+        + "".join(f"{k} of 4".rjust(9) for k in range(5))
+        + "   median"
+    )
     for label, make in (
         ("substitution", lambda g, s, t: sub_preventer(g, s, t)),
         ("probabilistic", lambda g, s, t: prob_preventer(g, s, 0.75)),

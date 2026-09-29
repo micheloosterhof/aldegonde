@@ -181,24 +181,23 @@ def main() -> None:
             sizes.append(len(names))
             same = [e for r, e in vocab[len(w)] if tuple(r) == tuple(w)]
             kept += any(e in names for e in same)
-        print(
-            f"{slack:<22}{f'{kept}/{len(covered)}':>16}{np.median(sizes):>20.0f}"
-        )
+        print(f"{slack:<22}{f'{kept}/{len(covered)}':>16}{np.median(sizes):>20.0f}")
 
-    print("\nThe bit budget: what the pattern supplies against what naming a word needs.\n")
-    rate = float(
-        np.mean(
-            [
-                p_
-                for v in vocab.values()
-                for r, _ in v
-                for p_ in pattern(r)
-            ]
-        )
+    print(
+        "\nThe bit budget: what the pattern supplies against what naming a word needs.\n"
     )
-    h = -(rate * math.log2(rate) + (1 - rate) * math.log2(1 - rate)) if 0 < rate < 1 else 0
+    rate = float(
+        np.mean([p_ for v in vocab.values() for r, _ in v for p_ in pattern(r)])
+    )
+    h = (
+        -(rate * math.log2(rate) + (1 - rate) * math.log2(1 - rate))
+        if 0 < rate < 1
+        else 0
+    )
     print(f"  a d5 pair is equal {rate:.3f} of the time, worth {h:.3f} bits\n")
-    print(f"{'length':>8}{'pairs':>8}{'bits supplied':>16}{'bits needed':>14}{'short by':>11}")
+    print(
+        f"{'length':>8}{'pairs':>8}{'bits supplied':>16}{'bits needed':>14}{'short by':>11}"
+    )
     for k in sorted(long_enough):
         pairs = k - 5
         supplied = pairs * h
@@ -211,7 +210,9 @@ def main() -> None:
     print("\nThe rubricated title words of six runes or more.\n")
     chunks = MASTER.read_text().split("%")
     titles = json.loads(TITLES.read_text())
-    print(f"{'page':>5}{'runes':>7}{'d5 pattern':>14}{'candidates in the vocabulary':>34}")
+    print(
+        f"{'page':>5}{'runes':>7}{'d5 pattern':>14}{'candidates in the vocabulary':>34}"
+    )
     for t in titles:
         a, b = t["word_range"]
         words, cur = [], []

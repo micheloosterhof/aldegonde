@@ -112,7 +112,9 @@ def preceding(chunks, chunk_id: int, index: int) -> str:
 def main() -> None:
     chunks = {i: chunk_words(c) for i, c in enumerate(MASTER.read_text().split("%"))}
     titles = json.loads(TITLES.read_text())
-    print(f"{len(titles)} rubricated titles, {sum(t['words'] for t in titles)} words.\n")
+    print(
+        f"{len(titles)} rubricated titles, {sum(t['words'] for t in titles)} words.\n"
+    )
 
     print(f"{'title':<32}{'before it':>12}{'after it':>12}{'opens a page':>15}")
     mid, initial = [], []
@@ -128,6 +130,7 @@ def main() -> None:
 
     bounds = [s for i in BODY if chunks.get(i) for _, s in chunks[i]]
     for glyph, name in (("\u246c", "a thirteen-dot"), (None, "any mark")):
+
         def carries(s, glyph=glyph):
             return s == glyph if glyph else s in MARKS
 

@@ -127,7 +127,9 @@ def planted(n_blocks, rng, *, change_at=None):
 def main() -> None:
     body = lp_words()
     print(f"{len(body):,} body blocks. Heterogeneity chi2 across equal segments.\n")
-    print(f"{'segments':>9}{'df':>5}{'the body':>11}{'one g':>18}{'g changes once':>20}{'LR':>8}")
+    print(
+        f"{'segments':>9}{'df':>5}{'the body':>11}{'one g':>18}{'g changes once':>20}{'LR':>8}"
+    )
     for k in SEGMENTS:
         obs, df = heterogeneity(body, k)
         arms = {}

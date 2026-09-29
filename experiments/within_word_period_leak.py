@@ -56,10 +56,9 @@ FIG_DIR = "experiments"
 SECTION_MARK = "⑬"
 MIN_SECTION_RUNES = 150
 R2I = {rune: index for index, rune in enumerate(c3301.CICADA_ALPHABET)}
-_WORD_END = (
-    set(c3301.MARK_CHARS + "&%$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
-    - {SECTION_MARK}
-)
+_WORD_END = set(c3301.MARK_CHARS + "&%$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS) - {
+    SECTION_MARK
+}
 
 
 def chance_rate(words: list[list[int]]) -> float:
@@ -186,24 +185,32 @@ def main() -> None:
     sections = dot_sections()
     ct_words = [w for sec in sections for w in sec]
     pt_words = plaintext_reference()
-    print(f"ciphertext (pages 0-56): {len(sections)} 13-dot sections, "
-          f"{sum(len(w) for w in ct_words)} runes; "
-          f"plaintext reference: {sum(len(w) for w in pt_words)} runes")
+    print(
+        f"ciphertext (pages 0-56): {len(sections)} 13-dot sections, "
+        f"{sum(len(w) for w in ct_words)} runes; "
+        f"plaintext reference: {sum(len(w) for w in pt_words)} runes"
+    )
 
     ct_rate = [within_word_match_rate(ct_words, k).rate for k in SKIPS]
     pt_rate = [within_word_match_rate(pt_words, k).rate for k in SKIPS]
     b_mean, b_lo, b_hi = doublet_null_band(ct_words, permutations=400, rng=rng)
     q2_ct, p2_pt = chance_rate(ct_words), chance_rate(pt_words)
 
-    print(f"\nchance rate Sum(freq^2): ct={q2_ct:.4f}  pt={p2_pt:.4f}  uniform={1/MOD:.4f}")
+    print(
+        f"\nchance rate Sum(freq^2): ct={q2_ct:.4f}  pt={p2_pt:.4f}  uniform={1 / MOD:.4f}"
+    )
     print("\nskip | R_ct   | B (null)  [95% band]     | R_ct/B | R_pt")
     for i, k in enumerate(SKIPS):
-        print(f"  {k}  | {ct_rate[i]:.4f} | {b_mean[i]:.4f} "
-              f"[{b_lo[i]:.4f},{b_hi[i]:.4f}] |  {ct_rate[i]/b_mean[i]:.2f}  | {pt_rate[i]:.4f}")
+        print(
+            f"  {k}  | {ct_rate[i]:.4f} | {b_mean[i]:.4f} "
+            f"[{b_lo[i]:.4f},{b_hi[i]:.4f}] |  {ct_rate[i] / b_mean[i]:.2f}  | {pt_rate[i]:.4f}"
+        )
 
     pi5 = duty_cycle(ct_rate[4], b_mean[4], p2_pt)
-    print(f"\nglobal period-5 duty cycle pi(5) = "
-          f"({ct_rate[4]:.4f}-{b_mean[4]:.4f})/({p2_pt:.4f}-{b_mean[4]:.4f}) = {pi5:.2f}")
+    print(
+        f"\nglobal period-5 duty cycle pi(5) = "
+        f"({ct_rate[4]:.4f}-{b_mean[4]:.4f})/({p2_pt:.4f}-{b_mean[4]:.4f}) = {pi5:.2f}"
+    )
 
     _figure_decomposition(ct_rate, pt_rate, b_mean, b_lo, b_hi, q2_ct, p2_pt)
     _per_section_leak(sections, rng)
@@ -217,33 +224,67 @@ def _figure_decomposition(ct_rate, pt_rate, b_mean, b_lo, b_hi, q2_ct, p2_pt):
     import matplotlib.pyplot as plt
 
     fig, (axA, axB) = plt.subplots(1, 2, figsize=(14, 5.6))
-    axA.fill_between(SKIPS, b_lo, b_hi, color="steelblue", alpha=0.18,
-                     label="doublet-avoidance null (95%)")
+    axA.fill_between(
+        SKIPS,
+        b_lo,
+        b_hi,
+        color="steelblue",
+        alpha=0.18,
+        label="doublet-avoidance null (95%)",
+    )
     axA.plot(SKIPS, b_mean, color="steelblue", ls=":", lw=2, label="null mean B(d)")
     axA.plot(SKIPS, ct_rate, color="tab:blue", marker="o", lw=2.2, label="ciphertext")
     axA.plot(SKIPS, pt_rate, color="tab:orange", marker="s", label="plaintext (solved)")
-    axA.axhline(1 / MOD, color="black", ls="--", lw=1, label=f"uniform {1/MOD:.4f}")
-    axA.axhline(q2_ct, color="tab:blue", ls="-.", lw=1, label=f"random ct Σq²={q2_ct:.4f}")
-    axA.axhline(p2_pt, color="tab:orange", ls="-.", lw=1, label=f"random pt Σp²={p2_pt:.4f}")
+    axA.axhline(1 / MOD, color="black", ls="--", lw=1, label=f"uniform {1 / MOD:.4f}")
+    axA.axhline(
+        q2_ct, color="tab:blue", ls="-.", lw=1, label=f"random ct Σq²={q2_ct:.4f}"
+    )
+    axA.axhline(
+        p2_pt, color="tab:orange", ls="-.", lw=1, label=f"random pt Σp²={p2_pt:.4f}"
+    )
     axA.axvspan(4.6, 5.4, color="gold", alpha=0.15)
-    axA.set(xlabel="skip", ylabel="within-word same-rune rate",
-            title="Raw rates + true random rate per corpus")
+    axA.set(
+        xlabel="skip",
+        ylabel="within-word same-rune rate",
+        title="Raw rates + true random rate per corpus",
+    )
     axA.legend(fontsize=7.5)
     axA.grid(alpha=0.3)
 
     axB.axhline(1.0, color="black", ls="--", lw=1, label="own random rate = 1.0")
-    axB.fill_between(SKIPS, [x / q2_ct for x in b_lo], [x / q2_ct for x in b_hi],
-                     color="steelblue", alpha=0.18)
-    axB.plot(SKIPS, [x / q2_ct for x in ct_rate], color="tab:blue", marker="o", lw=2.2,
-             label="ciphertext / Σq²")
-    axB.plot(SKIPS, [x / p2_pt for x in pt_rate], color="tab:orange", marker="s",
-             label="plaintext / Σp²")
+    axB.fill_between(
+        SKIPS,
+        [x / q2_ct for x in b_lo],
+        [x / q2_ct for x in b_hi],
+        color="steelblue",
+        alpha=0.18,
+    )
+    axB.plot(
+        SKIPS,
+        [x / q2_ct for x in ct_rate],
+        color="tab:blue",
+        marker="o",
+        lw=2.2,
+        label="ciphertext / Σq²",
+    )
+    axB.plot(
+        SKIPS,
+        [x / p2_pt for x in pt_rate],
+        color="tab:orange",
+        marker="s",
+        label="plaintext / Σp²",
+    )
     axB.axvspan(4.6, 5.4, color="gold", alpha=0.15)
-    axB.set(xlabel="skip", ylabel="rate / own random rate",
-            title="Normalized: positional structure only")
+    axB.set(
+        xlabel="skip",
+        ylabel="rate / own random rate",
+        title="Normalized: positional structure only",
+    )
     axB.legend(fontsize=7.5)
     axB.grid(alpha=0.3)
-    fig.suptitle("LP within-word repeated-rune: doublet avoidance + a lone period-5 leak")
+    fig.suptitle(
+        "LP within-word repeated-rune: doublet avoidance + a lone period-5 leak"
+    )
     fig.tight_layout()
     path = f"{FIG_DIR}/within_word_period_leak.png"
     fig.savefig(path, dpi=130)
@@ -281,10 +322,14 @@ def _per_section_leak(sections, rng, bootstrap=300):
         lo, hi = boot[int(0.16 * len(boot))], boot[int(0.84 * len(boot))]
         # A lifted d1 and a lifted off-period baseline mark a solved MASC section.
         flag = "MASC/solved" if d1 > 0.5 and base / uniform > 1.2 else "cipher"
-        rows.append((idx, runes, d1, base / uniform, d5 / uniform, excess, lo, hi, flag))
+        rows.append(
+            (idx, runes, d1, base / uniform, d5 / uniform, excess, lo, hi, flag)
+        )
     for idx, runes, d1, base, d5, excess, lo, hi, flag in rows:
-        print(f"  s{idx:<2} {runes:>5} | {d1:4.2f}  {base:5.2f}  {d5:4.2f} |"
-              f"  {excess:+5.2f}  [{lo:+4.2f},{hi:+4.2f}]  | {flag}")
+        print(
+            f"  s{idx:<2} {runes:>5} | {d1:4.2f}  {base:5.2f}  {d5:4.2f} |"
+            f"  {excess:+5.2f}  [{lo:+4.2f},{hi:+4.2f}]  | {flag}"
+        )
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
     xs = range(len(rows))
@@ -296,9 +341,11 @@ def _per_section_leak(sections, rng, bootstrap=300):
     ax.axhline(0, color="gray", lw=1)
     ax.set_xticks(list(xs))
     ax.set_xticklabels([f"s{r[0]}\n{r[1]}r" for r in rows], fontsize=8)
-    ax.set(ylabel="skip-5 excess over off-period baseline (/uniform)",
-           title="Period-5 leak per 13-dot section (orange = solved/MASC intro; "
-                 "68% word-bootstrap CI)")
+    ax.set(
+        ylabel="skip-5 excess over off-period baseline (/uniform)",
+        title="Period-5 leak per 13-dot section (orange = solved/MASC intro; "
+        "68% word-bootstrap CI)",
+    )
     ax.grid(alpha=0.3, axis="y")
     fig.tight_layout()
     path = f"{FIG_DIR}/within_word_period_leak_per_section.png"
@@ -347,8 +394,10 @@ def _rune_s_by_section(sections):
         frac = exc_ss / exc_all if exc_all > 0 else float("nan")
         runes = sum(len(w) for w in sec)
         rows.append((idx, runes, matches, exp_all, ss, exp_ss, exc_all, exc_ss, frac))
-        print(f"  s{idx:<2} {runes:>5} | {matches:>3}({exp_all:5.1f})   |"
-              f" {ss:>2}({exp_ss:4.1f}) | {exc_all:+5.1f}  {exc_ss:+5.1f}  {frac:.2f}")
+        print(
+            f"  s{idx:<2} {runes:>5} | {matches:>3}({exp_all:5.1f})   |"
+            f" {ss:>2}({exp_ss:4.1f}) | {exc_all:+5.1f}  {exc_ss:+5.1f}  {frac:.2f}"
+        )
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
     xs = list(range(len(rows)))
@@ -359,8 +408,10 @@ def _rune_s_by_section(sections):
     ax.axhline(0, color="gray", lw=1)
     ax.set_xticks(xs)
     ax.set_xticklabels([f"s{r[0]}\n{r[1]}r" for r in rows], fontsize=8)
-    ax.set(ylabel="skip-5 same-rune excess (pairs over chance)",
-           title="Who carries the period-5 leak per section: rune S vs the rest")
+    ax.set(
+        ylabel="skip-5 same-rune excess (pairs over chance)",
+        title="Who carries the period-5 leak per section: rune S vs the rest",
+    )
     ax.legend()
     ax.grid(alpha=0.3, axis="y")
     fig.tight_layout()

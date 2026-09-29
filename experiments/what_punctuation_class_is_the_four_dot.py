@@ -53,8 +53,12 @@ from sentence_length_across_registers import REGISTERS, fetch  # noqa: E402
 
 JOIN_RATE = 0.40
 THRESHOLD = 2
-CLASSES = (("sentence end", ".!?"), ("comma", ","), ("colon or semicolon", ":;"),
-           ("dash", "-—"))
+CLASSES = (
+    ("sentence end", ".!?"),
+    ("comma", ","),
+    ("colon or semicolon", ":;"),
+    ("dash", "-—"),
+)
 TOKEN = re.compile(r"[A-Za-z']+|[.!?,:;—-]")
 
 
@@ -120,7 +124,9 @@ def body_cells(glyph="④"):
 
 def gap(values, interior):
     a, b = np.array(values, float), np.array(interior, float)
-    se = math.hypot(a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b)))
+    se = math.hypot(
+        a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b))
+    )
     return float(a.mean() - b.mean()), se
 
 
@@ -139,8 +145,10 @@ def main() -> None:
         if p is not None
     ]
     print(f"{len(streams)} registers, {sum(len(s) for s in streams):,} blocks.\n")
-    print(f"{'English mark':<22}{'count':>9}{'before it':>16}{'after it':>16}"
-          f"{'2-rune lift after':>20}")
+    print(
+        f"{'English mark':<22}{'count':>9}{'before it':>16}{'after it':>16}"
+        f"{'2-rune lift after':>20}"
+    )
     reference = {}
     for label, marks in CLASSES:
         befores, afters, shorts, counts = [], [], [], 0
@@ -177,7 +185,9 @@ def main() -> None:
     )
 
     print("\nHow far the body sits from each English mark, in sigma.\n")
-    print(f"{'English mark':<22}{'before':>10}{'after':>10}{'2-rune':>10}{'chi2 (3 df)':>14}")
+    print(
+        f"{'English mark':<22}{'before':>10}{'after':>10}{'2-rune':>10}{'chi2 (3 df)':>14}"
+    )
     for label, (b, a, s) in reference.items():
         z = (
             (gb - b[0]) / math.hypot(sb, b[1]),

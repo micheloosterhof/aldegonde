@@ -152,7 +152,9 @@ def curve(spans, rng, draws=DRAWS):
             j = joined(spans, q, rng)
             shorts.append(short_fraction(j))
             ones.append(serial(j, 1)[0])
-        out.append((q, float(np.mean(shorts)), float(np.mean(ones)), float(np.std(ones))))
+        out.append(
+            (q, float(np.mean(shorts)), float(np.mean(ones)), float(np.std(ones)))
+        )
     return out
 
 
@@ -160,14 +162,20 @@ def main() -> None:
     rng = random.Random(3301)
     body, author = body_spans(), author_spans()
     target = short_fraction(body)
-    print(f"The body carries {target:.1%} two-rune blocks, the author {short_fraction(author):.1%}.")
-    print("Lag-1 tracks that fraction, so a reference at the wrong one is not a reference.\n")
+    print(
+        f"The body carries {target:.1%} two-rune blocks, the author {short_fraction(author):.1%}."
+    )
+    print(
+        "Lag-1 tracks that fraction, so a reference at the wrong one is not a reference.\n"
+    )
 
     print(f"{'joining rate':<16}{'two-rune share':>16}{'lag-1':>12}{'spread':>10}")
     author_curve = curve(author, rng)
     for q, frac, one, sd in author_curve:
         flag = "  <- matches the body" if abs(frac - target) < 0.01 else ""
-        print(f"{f'the author, q={q:.1f}':<16}{frac:>16.3f}{one:>12.3f}{sd:>10.3f}{flag}")
+        print(
+            f"{f'the author, q={q:.1f}':<16}{frac:>16.3f}{one:>12.3f}{sd:>10.3f}{flag}"
+        )
 
     print()
     registers = [

@@ -65,8 +65,10 @@ def main() -> None:
         pool.append((sum(tab[x][g[x]] for x in range(M)), g))
     pool.sort(key=lambda t: t[0])
     masses = [m for m, _ in pool]
-    print(f"mass over 4,000 random order-5 permutations: min {masses[0]:.4f}, "
-          f"median {masses[len(masses) // 2]:.4f}, max {masses[-1]:.4f}")
+    print(
+        f"mass over 4,000 random order-5 permutations: min {masses[0]:.4f}, "
+        f"median {masses[len(masses) // 2]:.4f}, max {masses[-1]:.4f}"
+    )
     print(f"chance, if g's graph were unrelated to the table: 1/29 = {1 / M:.4f}\n")
 
     sigma = rng.sample(range(M), M)
@@ -88,13 +90,21 @@ def main() -> None:
 
     ratio = lp["seam"] / lp["d1w"]
     se = ratio * math.sqrt(1 / 63 + 1 / 23)
-    print(f"\ncorpus ratio {ratio:.2f} +- {se:.2f}, from 63 within-word doublets and 23 at"
-          " the seam")
-    for label, rr in (("+1 sigma", ratio + se), ("point", ratio), ("-1 sigma", ratio - se)):
+    print(
+        f"\ncorpus ratio {ratio:.2f} +- {se:.2f}, from 63 within-word doublets and 23 at"
+        " the seam"
+    )
+    for label, rr in (
+        ("+1 sigma", ratio + se),
+        ("point", ratio),
+        ("-1 sigma", ratio - se),
+    ):
         mm = a / rr
         frac = sum(1 for x in masses if x <= mm) / len(masses)
-        print(f"  {label:<9} ratio {rr:>5.2f} -> mass {mm:.4f}  "
-              f"({frac:.1%} of random order-5 g lie below)")
+        print(
+            f"  {label:<9} ratio {rr:>5.2f} -> mass {mm:.4f}  "
+            f"({frac:.1%} of random order-5 g lie below)"
+        )
     print(
         "\nSo g's graph carries about 0.026 of the plaintext bigram mass, below the 0.0345"
         "\nan unrelated graph would carry: g's arcs avoid common adjacencies slightly. The"

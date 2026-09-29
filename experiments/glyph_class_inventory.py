@@ -62,7 +62,9 @@ def detached_per_page(pages) -> dict[int, int]:
         out[int(page.stem)] = sum(
             1
             for y, x, h, w in components(page)
-            if TEXT_BLOCK_X[0] <= x <= TEXT_BLOCK_X[1] and h0 <= h <= h1 and w0 <= w <= w1
+            if TEXT_BLOCK_X[0] <= x <= TEXT_BLOCK_X[1]
+            and h0 <= h <= h1
+            and w0 <= w <= w1
         )
     return out
 
@@ -78,9 +80,14 @@ def verify(pages) -> None:
     idx = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
     eng = c3301.CICADA_ENGLISH_ALPHABET
     master = (
-        Path(__file__).resolve().parent.parent
-        / "data" / "liber-primus__transcription--master.txt"
-    ).read_text().split("%")
+        (
+            Path(__file__).resolve().parent.parent
+            / "data"
+            / "liber-primus__transcription--master.txt"
+        )
+        .read_text()
+        .split("%")
+    )
     tall = detached_per_page(pages)
 
     def y_count(chunk: int):
@@ -115,7 +122,11 @@ def verify(pages) -> None:
 
 
 def main() -> None:
-    directory = Path(sys.argv[1]) if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else IMAGE_DIR
+    directory = (
+        Path(sys.argv[1])
+        if len(sys.argv) > 1 and not sys.argv[1].startswith("-")
+        else IMAGE_DIR
+    )
     pages = sorted(directory.glob("*.jpg"), key=lambda p: int(p.stem))
     if "--verify" in sys.argv:
         verify(pages)

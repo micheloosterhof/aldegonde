@@ -55,12 +55,16 @@ def main() -> None:
     expected = np.array([(freq[r] / n) ** 2 * (n - 1) for r in range(M)])
     observed = np.array([survivors[r] for r in range(M)], float)
 
-    print(f"{total} surviving doublets in {n:,} runes, against "
-          f"{expected.sum():.0f} expected if the cipher were flat")
+    print(
+        f"{total} surviving doublets in {n:,} runes, against "
+        f"{expected.sum():.0f} expected if the cipher were flat"
+    )
     print(f"suppression {100 * (1 - total / expected.sum()):.0f}%\n")
-    print(f"they use {int((observed > 0).sum())} of the 29 runes; "
-          f"the one missing is "
-          f"{', '.join(ENG[r] for r in range(M) if observed[r] == 0) or 'none'}")
+    print(
+        f"they use {int((observed > 0).sum())} of the 29 runes; "
+        f"the one missing is "
+        f"{', '.join(ENG[r] for r in range(M) if observed[r] == 0) or 'none'}"
+    )
 
     share = expected / expected.sum()
     exp_counts = total * share
@@ -75,14 +79,18 @@ def main() -> None:
     for k in (6, 8, 12):
         null = sorted_draws[:, :k].sum(axis=1) / total
         got = top[:k].sum() / total
-        print(f"{'share held by the top ' + str(k) + ' runes':<34}{got:>10.3f}"
-              f"{f'{null.mean():.3f} +- {null.std():.3f}':>18}"
-              f"{(got - null.mean()) / null.std():>+8.2f}")
+        print(
+            f"{'share held by the top ' + str(k) + ' runes':<34}{got:>10.3f}"
+            f"{f'{null.mean():.3f} +- {null.std():.3f}':>18}"
+            f"{(got - null.mean()) / null.std():>+8.2f}"
+        )
     null_zero = (draws == 0).sum(axis=1).astype(float)
     got_zero = int((observed == 0).sum())
-    print(f"{'runes with no survivor':<34}{got_zero:>10}"
-          f"{f'{null_zero.mean():.1f} +- {null_zero.std():.1f}':>18}"
-          f"{(got_zero - null_zero.mean()) / null_zero.std():>+8.2f}")
+    print(
+        f"{'runes with no survivor':<34}{got_zero:>10}"
+        f"{f'{null_zero.mean():.1f} +- {null_zero.std():.1f}':>18}"
+        f"{(got_zero - null_zero.mean()) / null_zero.std():>+8.2f}"
+    )
 
     print(
         "\nThe survivors are spread across essentially every rune, exactly as a"
@@ -96,8 +104,9 @@ def main() -> None:
     )
 
     gaps = np.diff(positions)
-    print(f"\n\nplacement: {len(gaps)} gaps, mean {gaps.mean():.1f}, "
-          f"minimum {gaps.min()}")
+    print(
+        f"\n\nplacement: {len(gaps)} gaps, mean {gaps.mean():.1f}, minimum {gaps.min()}"
+    )
     mins, shorts, cvs = [], [], []
     for _ in range(20000):
         p = np.sort(rng.choice(n - 1, total, replace=False))
@@ -109,16 +118,22 @@ def main() -> None:
     print(f"{'statistic':<34}{'observed':>10}{'null':>18}{'z':>8}")
     # a minimum is nowhere near normal, so quote the empirical tail rather than a z
     tail = float((mins >= gaps.min()).mean())
-    print(f"{'smallest gap':<34}{gaps.min():>10}"
-          f"{f'{mins.mean():.1f} +- {mins.std():.1f}':>18}"
-          f"{f'P={tail:.3f}':>8}")
-    print(f"{'gaps of 20 or less':<34}{int((gaps <= 20).sum()):>10}"
-          f"{f'{shorts.mean():.1f} +- {shorts.std():.1f}':>18}"
-          f"{((gaps <= 20).sum() - shorts.mean()) / shorts.std():>+8.2f}")
+    print(
+        f"{'smallest gap':<34}{gaps.min():>10}"
+        f"{f'{mins.mean():.1f} +- {mins.std():.1f}':>18}"
+        f"{f'P={tail:.3f}':>8}"
+    )
+    print(
+        f"{'gaps of 20 or less':<34}{int((gaps <= 20).sum()):>10}"
+        f"{f'{shorts.mean():.1f} +- {shorts.std():.1f}':>18}"
+        f"{((gaps <= 20).sum() - shorts.mean()) / shorts.std():>+8.2f}"
+    )
     cv = gaps.std() / gaps.mean()
-    print(f"{'gap coefficient of variation':<34}{cv:>10.3f}"
-          f"{f'{cvs.mean():.3f} +- {cvs.std():.3f}':>18}"
-          f"{(cv - cvs.mean()) / cvs.std():>+8.2f}")
+    print(
+        f"{'gap coefficient of variation':<34}{cv:>10.3f}"
+        f"{f'{cvs.mean():.3f} +- {cvs.std():.3f}':>18}"
+        f"{(cv - cvs.mean()) / cvs.std():>+8.2f}"
+    )
     deciles = np.array_split(np.arange(n - 1), 10)
     seen = set(positions)
     counts = [sum(1 for p in d if int(p) in seen) for d in deciles]

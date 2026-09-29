@@ -147,8 +147,12 @@ def main() -> None:
             inner_q += 1
     n_ap = text.count(APOSTROPHE)
     n_q = text.count(QUOTE)
-    print(f"  apostrophes rune-flanked on BOTH sides: {inner_ap}/{n_ap}  (strictly mid-word)")
-    print(f"  quotes      rune-flanked on BOTH sides: {inner_q}/{n_q}  (never mid-word)")
+    print(
+        f"  apostrophes rune-flanked on BOTH sides: {inner_ap}/{n_ap}  (strictly mid-word)"
+    )
+    print(
+        f"  quotes      rune-flanked on BOTH sides: {inner_q}/{n_q}  (never mid-word)"
+    )
     print(
         "  => the quote is in WORD_BOUNDARY but can never split a word, because it\n"
         "     always sits next to a mark. Counting it changes nothing."
@@ -167,7 +171,9 @@ def main() -> None:
             if RUNE.match(nxt or " "):
                 adjacent.append((runes_seen, ch))
     total = sum(1 for ch in secs if ASCII_DIGIT.match(ch))
-    print(f"  {total} ASCII digits in sections 0-9; {len(adjacent)} immediately precede a rune")
+    print(
+        f"  {total} ASCII digits in sections 0-9; {len(adjacent)} immediately precede a rune"
+    )
     print(f"  those are the line-initial headers: {[c for _, c in adjacent]}")
     print(f"  at rune offsets {[r for r, _ in adjacent]} (DJU-BEI spans 6555..12950)")
 
@@ -221,7 +227,9 @@ def main() -> None:
                 f"  {label} gap {gap:>5} = {factorise(gap)}  "
                 f"divisors {dv if len(dv) <= 12 else str(dv[:12]) + '...'}"
             )
-            print(f"      usable small periods: {usable or 'NONE'}   29 divides? {gap % 29 == 0}")
+            print(
+                f"      usable small periods: {usable or 'NONE'}   29 divides? {gap % 29 == 0}"
+            )
 
 
 if __name__ == "__main__":

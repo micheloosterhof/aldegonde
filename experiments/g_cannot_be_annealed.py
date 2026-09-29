@@ -83,38 +83,54 @@ def main() -> None:
     for c in prose[:2]:
         cipher += walk(true_g, sigma, c, random.Random(1))
 
-    for label, meas in (("planted control", binned_measure(cipher)),
-                        ("the body", binned_measure(lp_words()))):
+    for label, meas in (
+        ("planted control", binned_measure(cipher)),
+        ("the body", binned_measure(lp_words())),
+    ):
         cells = [c for c in meas if meas[c][2] >= MIN_PAIRS and c in mats]
         fit = [c for c in cells if c[0] in (2, 3)]
         test = [c for c in cells if c[0] in (4, 6, 7)]
         per = lambda g, cs: chi2(g, meas, mats, tot, cs) / len(cs)  # noqa: E731
-        print(f"\n{label}: {len(cells)} cells, fitting on {len(fit)} (lags 2, 3), "
-              f"holding out {len(test)} (lags 4, 6, 7)\n")
+        print(
+            f"\n{label}: {len(cells)} cells, fitting on {len(fit)} (lags 2, 3), "
+            f"holding out {len(test)} (lags 4, 6, 7)\n"
+        )
         pool = [random_g(random.Random(900 + t)) for t in range(400)]
         rf = np.array([per(g, fit) for g in pool])
         rt = np.array([per(g, test) for g in pool])
         print(f"{'':<26}{'fit chi2/cell':>15}{'held-out chi2/cell':>20}")
-        print(f"{'random g (400 draws)':<26}{f'{rf.mean():.2f} +- {rf.std():.2f}':>15}"
-              f"{f'{rt.mean():.2f} +- {rt.std():.2f}':>20}")
+        print(
+            f"{'random g (400 draws)':<26}{f'{rf.mean():.2f} +- {rf.std():.2f}':>15}"
+            f"{f'{rt.mean():.2f} +- {rt.std():.2f}':>20}"
+        )
         print(f"{'  best of those 400':<26}{rf.min():>15.2f}{rt.min():>20.2f}")
         if label == "planted control":
-            print(f"{'THE TRUE g':<26}{per(true_g, fit):>15.2f}"
-                  f"{per(true_g, test):>20.2f}")
+            print(
+                f"{'THE TRUE g':<26}{per(true_g, fit):>15.2f}{per(true_g, test):>20.2f}"
+            )
         rows = []
         for t in range(12):
             _, g = climb(meas, fit, random_g(random.Random(600 + t)), mats, tot)
-            rows.append((per(g, fit), per(g, test),
-                         sum(1 for x in range(M) if g[x] == true_g[x])))
+            rows.append(
+                (
+                    per(g, fit),
+                    per(g, test),
+                    sum(1 for x in range(M) if g[x] == true_g[x]),
+                )
+            )
         rows.sort(key=lambda r: r[1])
         f = np.array([r[0] for r in rows])
         h = np.array([r[1] for r in rows])
-        print(f"{'12 hill-climb winners':<26}{f'{f.mean():.2f} +- {f.std():.2f}':>15}"
-              f"{f'{h.mean():.2f} +- {h.std():.2f}':>20}")
+        print(
+            f"{'12 hill-climb winners':<26}{f'{f.mean():.2f} +- {f.std():.2f}':>15}"
+            f"{f'{h.mean():.2f} +- {h.std():.2f}':>20}"
+        )
         print(f"{'  best held-out of those':<26}{rows[0][0]:>15.2f}{rows[0][1]:>20.2f}")
         if label == "planted control":
-            print(f"  winners share {min(r[2] for r in rows)}-{max(r[2] for r in rows)}"
-                  f" of 29 points with the true g")
+            print(
+                f"  winners share {min(r[2] for r in rows)}-{max(r[2] for r in rows)}"
+                f" of 29 points with the true g"
+            )
 
     print(
         "\n\nThe control shows what a working verifier looks like: the true g scores 3.11"

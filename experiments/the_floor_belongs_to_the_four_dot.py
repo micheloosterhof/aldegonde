@@ -94,10 +94,14 @@ def main() -> None:
     other = [p for p in pairs if not (p[0] == "④" and p[1] == "④")]
     print(f"{len(pairs)} consecutive mark pairs in the body.\n")
     print(f"{'pair kind':<24}{'n':>6}{'min blocks':>13}{'min runes':>12}")
-    print(f"{'four-dot to four-dot':<24}{len(four):>6}{min(p[2] for p in four):>13}"
-          f"{min(p[3] for p in four):>12}")
-    print(f"{'every other pair':<24}{len(other):>6}{min(p[2] for p in other):>13}"
-          f"{min(p[3] for p in other):>12}")
+    print(
+        f"{'four-dot to four-dot':<24}{len(four):>6}{min(p[2] for p in four):>13}"
+        f"{min(p[3] for p in four):>12}"
+    )
+    print(
+        f"{'every other pair':<24}{len(other):>6}{min(p[2] for p in other):>13}"
+        f"{min(p[3] for p in other):>12}"
+    )
 
     print(f"\nEvery pair separated by {SMALL} blocks or fewer:\n")
     for a, b, nb, nr in sorted(

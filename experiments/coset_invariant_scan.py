@@ -99,7 +99,11 @@ def scan(stream: list[int], wid: list[int], op: str) -> dict:
             lab = coset_map(k)
             counts = collections.Counter(lab[v] for v in vals)
             cells = 28 // k
-            out[lag, k] = (chi2([counts[i] for i in range(cells)]), cells - 1, len(vals))
+            out[lag, k] = (
+                chi2([counts[i] for i in range(cells)]),
+                cells - 1,
+                len(vals),
+            )
     return out
 
 
@@ -144,7 +148,9 @@ def power(nwords: int) -> None:
         row = "".join(f"{res[1, kk][0]:>8.0f}/{res[1, kk][1]:<3}" for kk in DIVISORS)
         tag = "H_%d%s" % (k, " (2-transitive)" if k == 28 else "")
         print(f"{tag:>16}{row}")
-    print("H_28 is the 2-transitive case the orbit theorem assumes: no signal by design.")
+    print(
+        "H_28 is the 2-transitive case the orbit theorem assumes: no signal by design."
+    )
     print(
         "\nH_14 is the blind spot, and the reason is g, not the sample size. The"
         "\ninvariant an H_14 base exposes is the quadratic-residue class of"
@@ -178,7 +184,9 @@ def main() -> None:
             rng.shuffle(sh)
             for key, (c, _df, _n) in scan(sh, wid, op).items():
                 nulls[key].append(c)
-        print(f"{'lag':>4}{'k':>4}{'cells':>7}{'pairs':>8}{'chi2':>9}{'null mu':>9}{'sd':>7}{'z':>7}")
+        print(
+            f"{'lag':>4}{'k':>4}{'cells':>7}{'pairs':>8}{'chi2':>9}{'null mu':>9}{'sd':>7}{'z':>7}"
+        )
         for lag in range(1, 6):
             for k in DIVISORS:
                 c, df, n = obs[lag, k]
@@ -187,7 +195,9 @@ def main() -> None:
                 sd = (sum((x - mu) ** 2 for x in s) / len(s)) ** 0.5
                 z = (c - mu) / sd if sd else 0.0
                 flag = "  <-- signal" if z > 3 else ""
-                print(f"{lag:>4}{k:>4}{df + 1:>7}{n:>8}{c:>9.1f}{mu:>9.1f}{sd:>7.1f}{z:>+7.2f}{flag}")
+                print(
+                    f"{lag:>4}{k:>4}{df + 1:>7}{n:>8}{c:>9.1f}{mu:>9.1f}{sd:>7.1f}{z:>+7.2f}{flag}"
+                )
 
 
 if __name__ == "__main__":

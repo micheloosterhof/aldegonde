@@ -86,8 +86,16 @@ def load_rich() -> dict[str, np.ndarray]:
             w += 1
         sent += 1
         ln += 1
-    a = {k: np.asarray(v, dtype=np.int64) for k, v in
-         (("rune", runes), ("w", wi), ("line", li), ("sent", si), ("sec", ci))}
+    a = {
+        k: np.asarray(v, dtype=np.int64)
+        for k, v in (
+            ("rune", runes),
+            ("w", wi),
+            ("line", li),
+            ("sent", si),
+            ("sec", ci),
+        )
+    }
     nw = int(a["w"][-1]) + 1
     lens = np.bincount(a["w"], minlength=nw)
     starts = np.concatenate([[0], np.cumsum(lens)[:-1]])
@@ -118,7 +126,9 @@ def pooled(codes: np.ndarray, keys: np.ndarray) -> tuple[int, int]:
     nb = int(keys.max()) + 1
     counts = np.bincount(keys * N + codes, minlength=nb * N)
     sizes = np.bincount(keys, minlength=nb)
-    return int((counts * (counts - 1) // 2).sum()), int((sizes * (sizes - 1) // 2).sum())
+    return int((counts * (counts - 1) // 2).sum()), int(
+        (sizes * (sizes - 1) // 2).sum()
+    )
 
 
 def z(h: int, t: int, p: float = CHANCE) -> float:
@@ -212,31 +222,41 @@ def plant(a: dict[str, np.ndarray], state: np.ndarray, mod: int, rng: random.Ran
 
 def main() -> None:
     a = load_rich()
-    print(f"corpus: {len(a['rune'])} runes, {int(a['w'][-1]) + 1} words, "
-          f"{int(a['sec'][-1]) + 1} sections, {int(a['sent'][-1]) + 1} sentences, "
-          f"{int(a['line'][-1]) + 1} lines")
+    print(
+        f"corpus: {len(a['rune'])} runes, {int(a['w'][-1]) + 1} words, "
+        f"{int(a['sec'][-1]) + 1} sections, {int(a['sent'][-1]) + 1} sentences, "
+        f"{int(a['line'][-1]) + 1} lines"
+    )
     print("chance nIoC 1.000; a shared alphabet ~1.74\n")
 
     print("POSITIVE CONTROLS")
-    for label, st, m in (("word-clocked disk (w mod 29)", a["w"], 29),
-                         ("letter-clocked disk (A mod 29)", a["A"], 29)):
+    for label, st, m in (
+        ("word-clocked disk (w mod 29)", a["w"], 29),
+        ("letter-clocked disk (A mod 29)", a["A"], 29),
+    ):
         planted = plant(a, st, m, random.Random(3301))
         res = sweep(a, planted)
         zz, sn, mm, pn, h, t = res[0]
-        print(f"  planted {label:<32} top hit: {sn} mod {mm} [{pn}]  "
-              f"nIoC {h / t * N:.2f}  z={zz:+.0f}")
+        print(
+            f"  planted {label:<32} top hit: {sn} mod {mm} [{pn}]  "
+            f"nIoC {h / t * N:.2f}  z={zz:+.0f}"
+        )
     print("  -> the sweep recovers both planted machines\n")
 
     res = sweep(a, a["rune"])
     print(f"THE LP: {len(res)} (state, modulus, phase) cells")
     print("  strongest 12:")
     for zz, sn, m, pn, h, t in res[:12]:
-        print(f"    {sn:<16} mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}  ({t} pairs)")
+        print(
+            f"    {sn:<16} mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}  ({t} pairs)"
+        )
     print("  weakest 3:")
     for zz, sn, m, pn, h, t in res[-3:]:
         print(f"    {sn:<16} mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}")
     mx = max(abs(r[0]) for r in res)
-    print(f"\n  scan max |z| {mx:.2f}; noise expects ~{math.sqrt(2 * math.log(len(res))):.2f}")
+    print(
+        f"\n  scan max |z| {mx:.2f}; noise expects ~{math.sqrt(2 * math.log(len(res))):.2f}"
+    )
 
     print("\n  the named schemes, best modulus each:")
     best: dict[str, tuple] = {}
@@ -244,7 +264,9 @@ def main() -> None:
         if sn not in best:
             best[sn] = (zz, m, pn, h, t)
     for sn, (zz, m, pn, h, t) in sorted(best.items(), key=lambda kv: -kv[1][0]):
-        print(f"    {sn:<16} best mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}")
+        print(
+            f"    {sn:<16} best mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}"
+        )
 
     # Effect size is the real argument, not significance: a genuine shared
     # alphabet gives nIoC ~1.74 by construction, so bound how much sharing
@@ -265,13 +287,17 @@ def main() -> None:
     for zz, sn, m, pn, h, t in res2[:8]:
         print(f"    {sn:<20} mod {m:>3} [{pn:<5}] nIoC {h / t * N:.3f}  z={zz:+5.2f}")
     mx2 = max(abs(r[0]) for r in res2)
-    print(f"  scan max |z| {mx2:.2f}; noise expects "
-          f"~{math.sqrt(2 * math.log(len(res2))):.2f}")
+    print(
+        f"  scan max |z| {mx2:.2f}; noise expects "
+        f"~{math.sqrt(2 * math.log(len(res2))):.2f}"
+    )
     q1 = [r for r in res2 if "|q=1" in r[1]]
     if q1:
         zz, sn, m, pn, h, t = q1[0]
-        print(f"  best PURE word-state cell (no letter step at all): {sn} mod {m} "
-              f"nIoC {h / t * N:.3f}  z={zz:+.2f}")
+        print(
+            f"  best PURE word-state cell (no letter step at all): {sn} mod {m} "
+            f"nIoC {h / t * N:.3f}  z={zz:+.2f}"
+        )
 
 
 if __name__ == "__main__":

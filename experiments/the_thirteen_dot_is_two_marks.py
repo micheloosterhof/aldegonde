@@ -117,10 +117,18 @@ def main() -> None:
                 opens.add((t["chunk"], a - 1))
             closes.add((t["chunk"], b))
 
-    base = [le for ci, rec in info.items() if ci < 71 for _, ch, le in rec if ch in SEPARATORS]
+    base = [
+        le
+        for ci, rec in info.items()
+        if ci < 71
+        for _, ch, le in rec
+        if ch in SEPARATORS
+    ]
     p0 = float(np.mean(base))
-    print(f"the body's one-dot separator sits at a line end {p0:.4f} of the time "
-          f"({int(np.sum(base))}/{len(base)}).\n")
+    print(
+        f"the body's one-dot separator sits at a line end {p0:.4f} of the time "
+        f"({int(np.sum(base))}/{len(base)}).\n"
+    )
 
     rows = []
     for ci, rec in info.items():
@@ -145,11 +153,11 @@ def main() -> None:
         p = hits / n
         se = math.sqrt(p0 * (1 - p0) * (1 / n + 1 / len(base)))
         tail = (
-            stats.binom.cdf(hits, n, 0.9)
-            if p < p0
-            else stats.binom.sf(hits - 1, n, p0)
+            stats.binom.cdf(hits, n, 0.9) if p < p0 else stats.binom.sf(hits - 1, n, p0)
         )
-        print(f"{kind:<20}{n:>5}{f'{hits}/{n} = {p:.3f}':>15}{(p - p0) / se:>+8.2f}{tail:>11.1e}")
+        print(
+            f"{kind:<20}{n:>5}{f'{hits}/{n} = {p:.3f}':>15}{(p - p0) / se:>+8.2f}{tail:>11.1e}"
+        )
 
     allv = [le for _, le in rows]
     print(

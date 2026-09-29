@@ -114,9 +114,15 @@ def main() -> None:
     b_obs, b_null, b_sd = lift(body, rng)
     unit = a_obs - a_null
 
-    print(f"{'corpus':<16}{'spans':>7}{'mean rank':>11}{'a random block':>18}{'lift':>9}")
-    print(f"{'the author':<16}{len(author):>7}{a_obs:>11.3f}{f'{a_null:.3f} +- {a_sd:.3f}':>18}{unit:>+9.3f}")
-    print(f"{'the body':<16}{len(body):>7}{b_obs:>11.3f}{f'{b_null:.3f} +- {b_sd:.3f}':>18}{b_obs - b_null:>+9.3f}")
+    print(
+        f"{'corpus':<16}{'spans':>7}{'mean rank':>11}{'a random block':>18}{'lift':>9}"
+    )
+    print(
+        f"{'the author':<16}{len(author):>7}{a_obs:>11.3f}{f'{a_null:.3f} +- {a_sd:.3f}':>18}{unit:>+9.3f}"
+    )
+    print(
+        f"{'the body':<16}{len(body):>7}{b_obs:>11.3f}{f'{b_null:.3f} +- {b_sd:.3f}':>18}{b_obs - b_null:>+9.3f}"
+    )
 
     f = (b_obs - b_null) / unit
     sf = b_sd / abs(unit)

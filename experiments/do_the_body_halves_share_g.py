@@ -101,7 +101,9 @@ def main() -> None:
             g = order5(r)
             a = encipher(plain[:half], r, g)
             b = encipher(
-                plain[half : 2 * half], r, g if same else order5(random.Random(9000 + t))
+                plain[half : 2 * half],
+                r,
+                g if same else order5(random.Random(9000 + t)),
             )
             chis.append(distance_between(d_profile(a), d_profile(b))[0])
         chis = np.array(chis)

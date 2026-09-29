@@ -49,7 +49,9 @@ def body_blocks() -> list[list[int]]:
     return out
 
 
-def cross(blocks: list[list[int]], gap: int, continuous: bool = False) -> tuple[int, int]:
+def cross(
+    blocks: list[list[int]], gap: int, continuous: bool = False
+) -> tuple[int, int]:
     """(hits, pairs) between blocks `gap` apart, at matching letter phase."""
     starts = []
     t = 0
@@ -69,7 +71,9 @@ def cross(blocks: list[list[int]], gap: int, continuous: bool = False) -> tuple[
     return hits, pairs
 
 
-def planted(f_sigma: int, words: list[list[int]], rng: random.Random) -> list[list[int]]:
+def planted(
+    f_sigma: int, words: list[list[int]], rng: random.Random
+) -> list[list[int]]:
     """A walk whose sigma fixes exactly f_sigma runes and deranges the rest."""
     points = list(range(M))
     rng.shuffle(points)
@@ -121,12 +125,16 @@ def main() -> None:
     rate = h / p
     body = rate * M
     se = math.sqrt((1 / M) * (1 - 1 / M) / p)
-    print(f"\nadjacent blocks, reset convention: {body:.4f} on {p:,} pairs, "
-          f"z = {(rate - 1 / M) / se:+.2f} against chance")
+    print(
+        f"\nadjacent blocks, reset convention: {body:.4f} on {p:,} pairs, "
+        f"z = {(rate - 1 / M) / se:+.2f} against chance"
+    )
 
     rng = random.Random(44)
     words = corpus()
-    print(f"\n{'sigma fixed':>12}{'median':>9}{'10th':>8}{'90th':>8}{'draws below body':>19}")
+    print(
+        f"\n{'sigma fixed':>12}{'median':>9}{'10th':>8}{'90th':>8}{'draws below body':>19}"
+    )
     for f in (0, 2, 5, 10, 15, 24):
         vals = []
         for _ in range(draws):
@@ -134,8 +142,10 @@ def main() -> None:
             vals.append(hh / pp * M)
         vals.sort()
         below = sum(1 for v in vals if v < body) / len(vals)
-        print(f"{f:>12}{statistics.median(vals):>9.4f}{vals[max(0, draws // 10)]:>8.4f}"
-              f"{vals[-1 - draws // 10]:>8.4f}{below:>18.0%}")
+        print(
+            f"{f:>12}{statistics.median(vals):>9.4f}{vals[max(0, draws // 10)]:>8.4f}"
+            f"{vals[-1 - draws // 10]:>8.4f}{below:>18.0%}"
+        )
     print(
         "\nThe medians rise monotonically with sigma's fixed points, so the channel is"
         "\ncalibrated. The body sits below the 10th percentile from ten fixed points"

@@ -96,8 +96,10 @@ def main() -> None:
 
     lp = lp_words()
     obs = recurrence_counts(lp)
-    print(f"corpus: identical {obs['identical']}, long {obs['long']}, "
-          f"returns {obs['returns']}\n")
+    print(
+        f"corpus: identical {obs['identical']}, long {obs['long']}, "
+        f"returns {obs['returns']}\n"
+    )
 
     # 1. the chance floor
     stream = [r for w in lp for r in w]
@@ -114,13 +116,19 @@ def main() -> None:
     print(f"chance floor, {draws} rune shuffles inside the corpus's own word shapes:")
     for k in floors:
         v = np.array(floors[k], float)
-        print(f"  {k:<11}{v.mean():>8.2f} +- {v.std():>5.2f}   corpus {obs[k]:>3}"
-              f"   excess {obs[k] - v.mean():>+7.2f}")
+        print(
+            f"  {k:<11}{v.mean():>8.2f} +- {v.std():>5.2f}   corpus {obs[k]:>3}"
+            f"   excess {obs[k] - v.mean():>+7.2f}"
+        )
     fl = np.array(floors["identical"], float)
     excess, se = obs["identical"] - fl.mean(), fl.std()
-    print(f"\nSo {fl.mean():.0f} of the {obs['identical']} repeated words are chance. The "
-          f"excess is {excess:.1f} +- {se:.1f}, z = {excess / se:+.2f}:")
-    print("`identical` is a weak pool estimator, and a lower bound on the pool at best.")
+    print(
+        f"\nSo {fl.mean():.0f} of the {obs['identical']} repeated words are chance. The "
+        f"excess is {excess:.1f} +- {se:.1f}, z = {excess / se:+.2f}:"
+    )
+    print(
+        "`identical` is a weak pool estimator, and a lower bound on the pool at best."
+    )
 
     # 2. the supplies, in both registers
     ei, ep = growth_exponents()
@@ -130,18 +138,24 @@ def main() -> None:
     prose = [supplies(p) for p in prose_corpora(BLOCKS, 40)]
     pr_i = float(np.mean([s[0] for s in prose]))
     pr_p = float(np.mean([s[1] for s in prose]))
-    print(f"\nplaintext repeat supply per {BLOCKS:,} words "
-          f"(growth exponents {ei:.2f} and {ep:.2f}, measured):")
+    print(
+        f"\nplaintext repeat supply per {BLOCKS:,} words "
+        f"(growth exponents {ei:.2f} and {ep:.2f}, measured):"
+    )
     print(f"  prose            words {pr_i:>9,.0f}   phrases {pr_p:>7,.0f}")
-    print(f"  LP own register  words {lp_i * f**ei:>9,.0f}   phrases "
-          f"{lp_p * f**ep:>7,.0f}   (from {lp_i} and {lp_p} in {len(plain)} words)")
+    print(
+        f"  LP own register  words {lp_i * f**ei:>9,.0f}   phrases "
+        f"{lp_p * f**ep:>7,.0f}   (from {lp_i} and {lp_p} in {len(plain)} words)"
+    )
     print("The LP's own plaintext repeats whole phrases about seven times as often as")
     print("prose does, which is the register effect every earlier estimate missed.")
 
     # 3. the inversion
     print("\npool size implied by each count, chance floor removed:")
-    print(f"{'register':<18}{'from identical':>18}{'returns: chain':>17}"
-          f"{'returns: free':>16}")
+    print(
+        f"{'register':<18}{'from identical':>18}{'returns: chain':>17}"
+        f"{'returns: free':>16}"
+    )
     for name, si, sp in (
         ("prose", pr_i, pr_p),
         ("LP own register", lp_i * f**ei, lp_p * f**ep),
@@ -152,9 +166,11 @@ def main() -> None:
         print(f"{name:<18}{pool_i:>18,.0f}{pool_chain:>17,.0f}{pool_free:>16,.0f}")
         # a single count of 1 has an exact Poisson 95% interval of [0.0253, 3.689]
         lo_n, hi_n = 0.0253, 3.689
-        print(f"{'  95% interval':<18}{'':>18}"
-              f"{f'[{sp / 5 / hi_n:,.0f}, {sp / 5 / lo_n:,.0f}]':>17}"
-              f"{f'[{math.sqrt(sp / hi_n):,.0f}, {math.sqrt(sp / lo_n):,.0f}]':>16}")
+        print(
+            f"{'  95% interval':<18}{'':>18}"
+            f"{f'[{sp / 5 / hi_n:,.0f}, {sp / 5 / lo_n:,.0f}]':>17}"
+            f"{f'[{math.sqrt(sp / hi_n):,.0f}, {math.sqrt(sp / lo_n):,.0f}]':>16}"
+        )
     print(
         "\nA model is consistent when both counts give the same pool. On the LP's own"
         "\nregister the chain does, within a factor of four and well inside the interval"
@@ -170,10 +186,14 @@ def main() -> None:
         rng.shuffle(s)
         hits.append(recurrence_counts(s)["returns"])
     h = np.array(hits, float)
-    print(f"\nword-order shuffle, 20,000 draws: every word intact, all "
-          f"{obs['identical']} repeats held fixed,")
-    print(f"only adjacency destroyed.  returns mean {h.mean():.4f}, "
-          f"P(>=1) = {(h >= 1).mean():.5f}")
+    print(
+        f"\nword-order shuffle, 20,000 draws: every word intact, all "
+        f"{obs['identical']} repeats held fixed,"
+    )
+    print(
+        f"only adjacency destroyed.  returns mean {h.mean():.4f}, "
+        f"P(>=1) = {(h >= 1).mean():.5f}"
+    )
     print(
         "\nGiven exactly the repeated words the corpus has, two of them landing adjacent"
         "\nin the same order happens once in twenty thousand shuffles. That needs no"

@@ -65,8 +65,12 @@ def page_lengths() -> list[list[int]]:
 
 def columnar(n: int, cols: int) -> list[int]:
     """Read-by-column order of n items written in rows of `cols`."""
-    return [r * cols + c for c in range(cols) for r in range((n + cols - 1) // cols)
-            if r * cols + c < n]
+    return [
+        r * cols + c
+        for c in range(cols)
+        for r in range((n + cols - 1) // cols)
+        if r * cols + c < n
+    ]
 
 
 def rail(n: int, rails: int) -> list[int]:
@@ -86,7 +90,10 @@ def rail(n: int, rails: int) -> list[int]:
 
 def rules(n: int) -> dict[str, list[int]]:
     """Candidate permutations of n blocks, as the order they were READ OUT in."""
-    out: dict[str, list[int]] = {"identity": list(range(n)), "reverse": list(range(n))[::-1]}
+    out: dict[str, list[int]] = {
+        "identity": list(range(n)),
+        "reverse": list(range(n))[::-1],
+    }
     for c in range(2, 13):
         out[f"columnar {c}"] = columnar(n, c)
     for k in range(2, 6):
@@ -119,16 +126,12 @@ def main() -> None:
             pages.append(prose[i : i + 45])
             i += 45
         pages = pages[: len(page_lengths())]
-        planted = [
-            [p[j] for j in rules(len(p))["columnar 7"]] for p in pages
-        ]
+        planted = [[p[j] for j in rules(len(p))["columnar 7"]] for p in pages]
         base = excess_per_pair(pages, rng, draws=40)[0]
         print(f"prose cut into {len(pages)} pages: excess/pair {base:.4f}")
         scram = excess_per_pair(planted, rng, draws=40)[0]
         print(f"after a columnar-7 transposition:  {scram:.4f}")
-        rows = sorted(
-            ((score(planted, n, rng)[0], n) for n in names), reverse=True
-        )
+        rows = sorted(((score(planted, n, rng)[0], n) for n in names), reverse=True)
         print("\nbest rules recovered by the search:")
         for e, n in rows[:4]:
             print(f"  {e:>8.4f}  {n}")

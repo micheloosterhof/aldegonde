@@ -28,9 +28,7 @@ MOD = 29
 ALPHABET = c3301.CICADA_ALPHABET
 R2I = {rune: index for index, rune in enumerate(ALPHABET)}
 RUNES = set(ALPHABET)
-WORD_END = set(
-    c3301.MARK_CHARS + "&%$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS
-)
+WORD_END = set(c3301.MARK_CHARS + "&%$" + c3301.NUMERAL_CHARS + c3301.QUOTE_CHARS)
 CIPHERTEXT = "data/page0-56.txt"
 
 
@@ -69,31 +67,39 @@ def main() -> None:
     #    here we report the ciphertext rate and the chance rate it beats).
     doublets, rate = doublet_rate(stream)
     chance = 1 / MOD
-    print(f"ciphertext ({CIPHERTEXT}): {n} runes, {doublets} adjacent doublets "
-          f"= {rate * 100:.2f}%  (chance {chance * 100:.2f}%, suppression {chance / rate:.2f}x)")
+    print(
+        f"ciphertext ({CIPHERTEXT}): {n} runes, {doublets} adjacent doublets "
+        f"= {rate * 100:.2f}%  (chance {chance * 100:.2f}%, suppression {chance / rate:.2f}x)"
+    )
     print("plaintext runeglish for comparison (see doc): solved LP 2.3%, lexicon 3.65%")
 
     # 2. per-rune spread: are doublets carried by a few runes?
     per_rune = Counter(stream[i] for i in range(n - 1) if stream[i] == stream[i + 1])
     carried = sum(1 for r in range(MOD) if per_rune.get(r, 0) > 0)
     top = per_rune.most_common(4)
-    print(f"\nper-rune doublets: carried by {carried}/{MOD} runes; "
-          f"top {[(ALPHABET[r], c) for r, c in top]} vs even share {doublets / MOD:.1f}")
+    print(
+        f"\nper-rune doublets: carried by {carried}/{MOD} runes; "
+        f"top {[(ALPHABET[r], c) for r, c in top]} vs even share {doublets / MOD:.1f}"
+    )
 
     # 3. phase-gating: doublet start position mod 5.
     phase = Counter(i % 5 for i in range(n - 1) if stream[i] == stream[i + 1])
     exp = doublets / 5
     chi2 = sum((phase.get(k, 0) - exp) ** 2 / exp for k in range(5))
     print(f"\ndoublet phase (abs position mod 5): {dict(sorted(phase.items()))}")
-    print(f"  expected/phase={exp:.1f}  chi2(4df)={chi2:.2f}  "
-          f"({'FLAT -- not phase-gated' if chi2 < 9.49 else 'concentrated'})")
+    print(
+        f"  expected/phase={exp:.1f}  chi2(4df)={chi2:.2f}  "
+        f"({'FLAT -- not phase-gated' if chi2 < 9.49 else 'concentrated'})"
+    )
 
     # within-word start-phase, flagged as opportunity-confounded.
     wphase = Counter(
         j % 5 for w in words for j in range(len(w) - 1) if w[j] == w[j + 1]
     )
-    print(f"within-word doublet start-phase: {dict(sorted(wphase.items()))}  "
-          f"(confounded by word length -- short words over-weight low phases)")
+    print(
+        f"within-word doublet start-phase: {dict(sorted(wphase.items()))}  "
+        f"(confounded by word length -- short words over-weight low phases)"
+    )
 
 
 if __name__ == "__main__":

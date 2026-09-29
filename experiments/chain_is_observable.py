@@ -170,9 +170,15 @@ def main() -> None:
     a = collect(walk, keys, draws, corpora)
     b = collect(free, keys, draws, corpora)
 
-    print(f"{keys} keys x {draws} corpora per cipher. Separation pools the within-model")
-    print("spread over corpora AND keys, since the key is the larger source for many cells.\n")
-    print(f"{'cell':<16}{'corpus':>10}{'chain':>11}{'free':>11}{'spread':>10}{'sep':>8}")
+    print(
+        f"{keys} keys x {draws} corpora per cipher. Separation pools the within-model"
+    )
+    print(
+        "spread over corpora AND keys, since the key is the larger source for many cells.\n"
+    )
+    print(
+        f"{'cell':<16}{'corpus':>10}{'chain':>11}{'free':>11}{'spread':>10}{'sep':>8}"
+    )
     rows = []
     for k in sorted(a.keys() & b.keys()):
         ma, sa = a[k]
@@ -182,17 +188,20 @@ def main() -> None:
         var_b = float(np.mean(sb**2) + mb.var(ddof=1))
         pooled = float(np.sqrt((var_a + var_b) / 2))
         sep = abs(ma.mean() - mb.mean()) / pooled if pooled > 1e-12 else 0.0
-        print(f"{k:<16}{lp[k]:>10.4f}{ma.mean():>11.4f}{mb.mean():>11.4f}"
-              f"{pooled:>10.4f}{sep:>8.2f}")
+        print(
+            f"{k:<16}{lp[k]:>10.4f}{ma.mean():>11.4f}{mb.mean():>11.4f}"
+            f"{pooled:>10.4f}{sep:>8.2f}"
+        )
         rows.append((k, sep))
 
     rows.sort(key=lambda r: -r[1])
     top = rows[0]
     print(f"\nlargest separation: {top[0]} at {top[1]:.2f}")
     strong = [k for k, s in rows if s > 1.0]
-    print(f"cells separating the chain from independent bases at sep > 1.0: "
-          f"{len(strong)} of {len(rows)}"
-          + (f" -- {', '.join(strong)}" if strong else ""))
+    print(
+        f"cells separating the chain from independent bases at sep > 1.0: "
+        f"{len(strong)} of {len(rows)}" + (f" -- {', '.join(strong)}" if strong else "")
+    )
     if not strong:
         print(
             "\nNo MARGINAL cell distinguishes a chained base from an independently"
@@ -205,14 +214,21 @@ def main() -> None:
     print("\nPaired on g, which both ciphers share. Only the base rule differs.\n")
     print(f"{'cell':<16}{'mean diff':>12}{'sd of diff':>12}{'t':>8}{'keys':>6}")
     paired = paired_differences(keys, draws, corpora)
-    for k, d in sorted(paired.items(), key=lambda kv: -abs(kv[1].mean() / (kv[1].std(ddof=1) / np.sqrt(len(kv[1])) + 1e-30))):
+    for k, d in sorted(
+        paired.items(),
+        key=lambda kv: (
+            -abs(kv[1].mean() / (kv[1].std(ddof=1) / np.sqrt(len(kv[1])) + 1e-30))
+        ),
+    ):
         se = d.std(ddof=1) / np.sqrt(len(d))
         t = d.mean() / se if se > 1e-30 else 0.0
         if abs(t) < 1.5:
             continue
         print(f"{k:<16}{d.mean():>12.5f}{d.std(ddof=1):>12.5f}{t:>8.2f}{len(d):>6}")
-    print("\nCells with |t| < 1.5 are omitted. A within-word cell must show t = 0 by"
-          "\nconstruction: both ciphers hold one uniformly random base inside a word.")
+    print(
+        "\nCells with |t| < 1.5 are omitted. A within-word cell must show t = 0 by"
+        "\nconstruction: both ciphers hold one uniformly random base inside a word."
+    )
 
     # Sensitivity: the same comparison against chains that DO revisit their states,
     # so a null result above can be read as blindness to chaining or as a real absence.
@@ -232,9 +248,11 @@ def main() -> None:
                 sep = abs(mc.mean() - mf.mean()) / pooled
                 if sep > best:
                     best, where = sep, k
-        print(f"{period:>8}{c['identical'][0].mean():>12.1f}"
-              f"{c['returns'][0].mean():>10.2f}{c['ioc'][0].mean():>9.4f}"
-              f"{best:>9.2f}  {where}")
+        print(
+            f"{period:>8}{c['identical'][0].mean():>12.1f}"
+            f"{c['returns'][0].mean():>10.2f}{c['ioc'][0].mean():>9.4f}"
+            f"{best:>9.2f}  {where}"
+        )
     print(
         "\nThe pool floor of `two-rune-depth-no-base-reuse.md` puts the corpus above the"
         "\nlargest row, so on the marginal counts the corpus sits where this test has no"
@@ -255,7 +273,9 @@ def extension_rate(keys: int, draws: int, corpora) -> None:
     """
     lp = recurrence_counts(lp_words())
     print("\nExtension rate: returns per identical pair, over keys and corpora.\n")
-    print(f"{'pool':>7}{'rule':>10}{'identical':>11}{'returns':>9}{'rate':>10}{'1 in':>9}")
+    print(
+        f"{'pool':>7}{'rule':>10}{'identical':>11}{'returns':>9}{'rate':>10}{'1 in':>9}"
+    )
     rng = random.Random(505)
     for period in (300, 500):
         for chained in (True, False):
@@ -272,8 +292,10 @@ def extension_rate(keys: int, draws: int, corpora) -> None:
             inv = f"{1 / rate:,.0f}" if rate else f">{tot_i:,}"
             print(f"{period:>7}{label:>10}{tot_i:>11,}{tot_r:>9}{rate:>10.5f}{inv:>9}")
     rate = lp["returns"] / lp["identical"]
-    print(f"{'corpus':>7}{'':>10}{lp['identical']:>11}{lp['returns']:>9}"
-          f"{rate:>10.5f}{1 / rate:>9,.0f}")
+    print(
+        f"{'corpus':>7}{'':>10}{lp['identical']:>11}{lp['returns']:>9}"
+        f"{rate:>10.5f}{1 / rate:>9,.0f}"
+    )
     print(
         "\nThe corpus's single return is tens of times more likely under a chained base"
         "\nthan under independent per-word draws. It rests on one event, so it is weak"

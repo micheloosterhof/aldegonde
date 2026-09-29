@@ -55,13 +55,19 @@ def main() -> None:
     n_10, p_10, k_10 = profile(list(prose_corpora(2928, 10)))
     n_lp, p_lp, k_lp = profile([corpus(True)])
 
-    print(f"{'lag-k tables from':<32}{'lag-2 pairs':>14}"
-          f"{'top-1% five-cycle counts':>28}{'shared':>9}")
+    print(
+        f"{'lag-k tables from':<32}{'lag-2 pairs':>14}"
+        f"{'top-1% five-cycle counts':>28}{'shared':>9}"
+    )
     print(f"{'prose, 60 corpora (as used)':<32}{n_pr:>14,}{str(p_pr):>28}{'-':>9}")
-    print(f"{'prose, 10 corpora':<32}{n_10:>14,}{str(p_10):>28}"
-          f"{f'{int((k_10 & k_pr).sum())}/60':>9}")
-    print(f"{'the LP register, 723 words':<32}{n_lp:>14,}{str(p_lp):>28}"
-          f"{f'{int((k_lp & k_pr).sum())}/60':>9}")
+    print(
+        f"{'prose, 10 corpora':<32}{n_10:>14,}{str(p_10):>28}"
+        f"{f'{int((k_10 & k_pr).sum())}/60':>9}"
+    )
+    print(
+        f"{'the LP register, 723 words':<32}{n_lp:>14,}{str(p_lp):>28}"
+        f"{f'{int((k_lp & k_pr).sum())}/60':>9}"
+    )
 
     print("\nprose cut to the LP register's word count, six draws:\n")
     rng = random.Random(4)
@@ -74,10 +80,14 @@ def main() -> None:
         shares.append(int((k & k_pr).sum()))
         print(f"{'draw ' + str(t):<32}{n:>14,}{str(p):>28}{f'{shares[-1]}/60':>9}")
     P = np.array(profiles, float)
-    print(f"\n{'matched-size prose, mean':<32}{'':>14}"
-          f"{str(np.round(P.mean(axis=0), 1)):>28}{f'{np.mean(shares):.1f}/60':>9}")
-    print(f"{'the LP register':<32}{'':>14}{str(p_lp):>28}"
-          f"{f'{int((k_lp & k_pr).sum())}/60':>9}")
+    print(
+        f"\n{'matched-size prose, mean':<32}{'':>14}"
+        f"{str(np.round(P.mean(axis=0), 1)):>28}{f'{np.mean(shares):.1f}/60':>9}"
+    )
+    print(
+        f"{'the LP register':<32}{'':>14}{str(p_lp):>28}"
+        f"{f'{int((k_lp & k_pr).sum())}/60':>9}"
+    )
 
     print(
         "\nThe LP register's flatter answer is a size effect, not a register effect."

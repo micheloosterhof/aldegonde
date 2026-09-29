@@ -72,8 +72,10 @@ def singletons(pages) -> None:
         flag = "" if known.get(p, 0) else "   not in the census"
         print(f"{p:>5}{len(cols):>12}{known.get(p, 0):>9}{flag}")
         if flag:
-            print(f"      mean RGB {tuple(int(v) for v in cols[0])}"
-                  f" against a catalogued title rune's (180, 4, 5)")
+            print(
+                f"      mean RGB {tuple(int(v) for v in cols[0])}"
+                f" against a catalogued title rune's (180, 4, 5)"
+            )
     print(
         "\nThe extra runes carry the same ink as the titles. rubrication_spans.py"
         "\ndiscards 'scattered singletons' as red initials or bleed, which is right for"
@@ -84,7 +86,8 @@ def singletons(pages) -> None:
 
 def main() -> None:
     directory = (
-        Path(sys.argv[1]) if len(sys.argv) > 1 and not sys.argv[1].startswith("-")
+        Path(sys.argv[1])
+        if len(sys.argv) > 1 and not sys.argv[1].startswith("-")
         else IMAGE_DIR
     )
     pages = sorted(directory.glob("*.jpg"), key=lambda p: int(p.stem))

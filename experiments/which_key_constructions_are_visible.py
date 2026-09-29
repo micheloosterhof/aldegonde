@@ -111,8 +111,7 @@ def main() -> None:
     for c in prose_corpora(2928, 20):
         for w in c:
             vocab[tuple(w)] += 1
-    keywords = [list(w) for w in vocab
-                if len(set(w)) == len(w) and 4 <= len(w) <= 10]
+    keywords = [list(w) for w in vocab if len(set(w)) == len(w) and 4 <= len(w) <= 10]
     corpora = list(prose_corpora(2928, keys))
     rk = random.Random(3)
 
@@ -135,8 +134,10 @@ def main() -> None:
     fmu, fsd = free.mean(0), free.std(0, ddof=1)
     body_free = float(np.abs((body - fmu) / fsd).mean())
 
-    print(f"{'construction':<16}{'n':>4}{'distance from free':>21}"
-          f"{'as free-like as the body':>27}")
+    print(
+        f"{'construction':<16}{'n':>4}{'distance from free':>21}"
+        f"{'as free-like as the body':>27}"
+    )
     for kind, A in arms.items():
         dist = float(np.abs((A.mean(0) - fmu) / fsd).mean())
         per = np.abs((A - fmu) / fsd).mean(axis=1)
@@ -159,8 +160,10 @@ def main() -> None:
             o = np.delete(A, i, 0)
             own.append(float(np.abs((A[i] - o.mean(0)) / o.std(0, ddof=1)).mean()))
         own = np.array(own)
-        print(f"{kind:<16}{bz:>15.2f}{f'{own.mean():.2f} +- {own.std():.2f}':>20}"
-              f"{float((own >= bz).mean()):>8.3f}")
+        print(
+            f"{kind:<16}{bz:>15.2f}{f'{own.mean():.2f} +- {own.std():.2f}':>20}"
+            f"{float((own >= bz).mean()):>8.3f}"
+        )
     print(
         "\nThe body is an ordinary member of every arm at P above 0.92. That is not"
         "\nevidence for any of them: a distance from an arm's own centre asks whether the"

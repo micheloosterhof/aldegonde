@@ -53,8 +53,10 @@ def main() -> None:
         return out
 
     print(f"{n:,} runes, {len(blocks):,} blocks, per-rune match probability {p2:.5f}\n")
-    print(f"{'len':>4}{'windows':>11}{'repeats':>9}{'expected':>10}"
-          f"   |{'aligned':>9}{'repeats':>9}{'expected':>11}")
+    print(
+        f"{'len':>4}{'windows':>11}{'repeats':>9}{'expected':>10}"
+        f"   |{'aligned':>9}{'repeats':>9}{'expected':>11}"
+    )
     for length in range(3, 9):
         w = [tuple(stream[i : i + length]) for i in range(n - length + 1)]
         c = collections.Counter(w)
@@ -64,8 +66,10 @@ def main() -> None:
         ca = collections.Counter(al)
         obs_a = sum(v - 1 for v in ca.values() if v > 1)
         exp_a = len(al) * (len(al) - 1) // 2 * p2**length
-        print(f"{length:>4}{len(w):>11,}{obs:>9}{exp:>10.1f}"
-              f"   |{len(al):>9}{obs_a:>9}{exp_a:>11.4f}")
+        print(
+            f"{length:>4}{len(w):>11,}{obs:>9}{exp:>10.1f}"
+            f"   |{len(al):>9}{obs_a:>9}{exp_a:>11.4f}"
+        )
     print(
         "\nEvery length but six matches chance in the aligned column: 17 against 12.2 at"
         "\nlength 3, zero against 0.28 at four, zero against 0.009 at five. At length six"

@@ -64,22 +64,29 @@ def main() -> None:
 
     print(f"apostrophes in the transcription: {text.count(chr(39))}")
     print(f"host blocks recovered: {len(sites)}\n")
-    print(f"{'block start':>12}{'apostrophe at':>15}{'shape':>9}{'tail':>6}  ciphertext")
+    print(
+        f"{'block start':>12}{'apostrophe at':>15}{'shape':>9}{'tail':>6}  ciphertext"
+    )
     logp = 0.0
     for start, block, apos in sites:
         logp += math.log(1 / (len(block) - 1))
-        print(f"{start:>12}{start + apos:>15}{f'{apos}+{len(block) - apos}':>9}"
-              f"{len(block) - apos:>6}  {''.join(ENG[r] for r in block)}")
+        print(
+            f"{start:>12}{start + apos:>15}{f'{apos}+{len(block) - apos}':>9}"
+            f"{len(block) - apos:>6}  {''.join(ENG[r] for r in block)}"
+        )
 
-    print(f"\nall four leave a one-rune tail; under a uniform internal slot that is"
-          f" p = {math.exp(logp):.4f}")
+    print(
+        f"\nall four leave a one-rune tail; under a uniform internal slot that is"
+        f" p = {math.exp(logp):.4f}"
+    )
     starts = [s for s, _b, _a in sites]
     print(f"recorded stream offsets {RECORDED}")
     print(f"block starts            {starts}   match: {starts == RECORDED}")
     print(
         "\nSo the offsets in contraction-cribs.md are HOST BLOCK starts. The"
         "\napostrophes themselves sit at "
-        + ", ".join(str(s + a) for s, _b, a in sites) + "."
+        + ", ".join(str(s + a) for s, _b, a in sites)
+        + "."
     )
 
 

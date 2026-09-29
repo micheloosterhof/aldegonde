@@ -154,6 +154,7 @@ def multiple(gap, se, target=TARGET) -> float:
 def main() -> None:
     rng = random.Random(3301)
     body, author = body_spans(), author_spans()
+
     def joined(seed):
         r = random.Random(seed)
         return [
@@ -196,7 +197,9 @@ def main() -> None:
     )
 
     print("\n\nJOB 2. Separate the readings: rearranged against not-a-sentence-mark.\n")
-    print("Each corpus is scored against ITS OWN within-span shuffle, which is what the")
+    print(
+        "Each corpus is scored against ITS OWN within-span shuffle, which is what the"
+    )
     print("transposition reading predicts exactly. That baseline matters: a random")
     print("permutation of a span of length L has expected lag-1 correlation -1/(L-1),")
     print("so an arm built on the author's 8-block spans is not comparable with the")
@@ -211,9 +214,7 @@ def main() -> None:
             # the joining is stochastic and the author has only 94 spans, so one draw
             # is worth +-0.030 on this statistic -- enough to flip its sign
             obs = float(np.mean([serial(joined(s), 1)[0] for s in range(JOIN_DRAWS)]))
-            cuts = [
-                serial(shuffled(joined(s), rng), 1)[0] for s in range(JOIN_DRAWS)
-            ]
+            cuts = [serial(shuffled(joined(s), rng), 1)[0] for s in range(JOIN_DRAWS)]
             draws = np.array(cuts)
         else:
             draws = np.array(

@@ -152,8 +152,12 @@ def main() -> None:
     )
     print("Sensitivity, so this is not an empty null:\n")
     print(f"  a {width}-pair stretch with no preventer would hold   {lapse:.1f}")
-    print(f"  the scan's null maximum at this width                {null_mean:.1f} +- {null_sd:.1f}")
-    print(f"  so a complete lapse would stand out at               {(lapse - null_mean) / null_sd:+.1f} sigma")
+    print(
+        f"  the scan's null maximum at this width                {null_mean:.1f} +- {null_sd:.1f}"
+    )
+    print(
+        f"  so a complete lapse would stand out at               {(lapse - null_mean) / null_sd:+.1f} sigma"
+    )
     print(
         f"\n  The shortest complete lapse this scan resolves is about"
         f" {math.ceil(3 * math.sqrt(width * rate) / (CHANCE - rate)):d} pairs."

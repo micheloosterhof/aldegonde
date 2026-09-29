@@ -161,7 +161,9 @@ def main() -> None:
     for (a, b), label in named.items():
         for zz, aa, bb, P, h, t in res:
             if (aa, bb, P) == (a, b, 29):
-                print(f"    a={a} b={b}  {label:<26} nIoC {h / t * N:.3f}  z={zz:+5.2f}")
+                print(
+                    f"    a={a} b={b}  {label:<26} nIoC {h / t * N:.3f}  z={zz:+5.2f}"
+                )
                 break
 
     best_any_p = {}
@@ -169,7 +171,9 @@ def main() -> None:
         if (a, b) not in best_any_p:
             best_any_p[(a, b)] = (zz, P, h, t)
     print("\n  best period for each rule (25 rules):")
-    for (a, b), (zz, P, h, t) in sorted(best_any_p.items(), key=lambda kv: -kv[1][0])[:6]:
+    for (a, b), (zz, P, h, t) in sorted(best_any_p.items(), key=lambda kv: -kv[1][0])[
+        :6
+    ]:
         print(f"    a={a} b={b}: best P={P:>3}  nIoC {h / t * N:.3f}  z={zz:+5.2f}")
 
 

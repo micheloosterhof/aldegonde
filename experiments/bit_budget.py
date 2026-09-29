@@ -66,11 +66,15 @@ def main() -> None:
     print(f"{'five-cycles':>12}{'permutations':>30}{'share':>10}")
     for k in range(1, 6):
         print(f"{k:>12}{order5_count(k):>30,}{order5_count(k) / total:>10.5f}")
-    print(f"\nSo C-0 -- 'g has five five-cycles' -- is 99.8% of the space and worth "
-          f"{log2(total / order5_count(5)):.4f} bits.")
-    print("The result is real; its value as a search constraint is not. The filter's"
-          "\nhundredfold reduction was measured on a pool uniform over cycle counts,"
-          "\nwhich over-represents the 0.2% the real space barely contains.")
+    print(
+        f"\nSo C-0 -- 'g has five five-cycles' -- is 99.8% of the space and worth "
+        f"{log2(total / order5_count(5)):.4f} bits."
+    )
+    print(
+        "The result is real; its value as a search constraint is not. The filter's"
+        "\nhundredfold reduction was measured on a pool uniform over cycle counts,"
+        "\nwhich over-represents the 0.2% the real space barely contains."
+    )
 
     prose = list(prose_corpora(2928, 60))
     mats, tot = lag_tables(prose)
@@ -89,17 +93,23 @@ def main() -> None:
         print(f"{t:>6}{f'{rank} / 6,000   (top {100 * rank / 6000:.2f}%)':>58}")
     median = float(np.median(ranks))
     worth = log2(6000 / median)
-    print(f"\nmedian rank {median:.0f} of 6,000 -> about {worth:.1f} bits, and unreliable:"
-          f"\n{sum(1 for r in ranks if r > 120)} of {trials} trials put the true g "
-          f"outside the top 2%.")
+    print(
+        f"\nmedian rank {median:.0f} of 6,000 -> about {worth:.1f} bits, and unreliable:"
+        f"\n{sum(1 for r in ranks if r > 120)} of {trials} trials put the true g "
+        f"outside the top 2%."
+    )
 
     key = log2(order5_count(5)) + 2 * log2(factorial(M) // 2)
     print(f"\n\nthe budget\n")
     print(f"{'part of the key':<34}{'bits':>8}{'channel':>26}{'supplied':>10}")
-    print(f"{'g (five-cycle class)':<34}{log2(order5_count(5)):>8.1f}"
-          f"{'d-profile filter':>26}{worth:>10.1f}")
-    print(f"{'sigma (A29)':<34}{log2(factorial(M) // 2):>8.1f}"
-          f"{'cross-seam cells':>26}{'< 10':>10}")
+    print(
+        f"{'g (five-cycle class)':<34}{log2(order5_count(5)):>8.1f}"
+        f"{'d-profile filter':>26}{worth:>10.1f}"
+    )
+    print(
+        f"{'sigma (A29)':<34}{log2(factorial(M) // 2):>8.1f}"
+        f"{'cross-seam cells':>26}{'< 10':>10}"
+    )
     print(f"{'base_0 (A29)':<34}{log2(factorial(M) // 2):>8.1f}{'none':>26}{'0':>10}")
     print(f"{'total':<34}{key:>8.0f}{'':>26}{f'{worth + 10:.0f} at best':>10}")
     print(

@@ -124,8 +124,10 @@ def main() -> None:
     boot = np.array(boot)
     print(f"\n  naive Fisher se on the pairs : {1 / math.sqrt(pairs - 3):.4f}")
     print(f"  bootstrap over blocks        : {boot.std():.4f}")
-    print(f"  95% interval                 : [{np.percentile(boot, 2.5):+.4f}, "
-          f"{np.percentile(boot, 97.5):+.4f}]")
+    print(
+        f"  95% interval                 : [{np.percentile(boot, 2.5):+.4f}, "
+        f"{np.percentile(boot, 97.5):+.4f}]"
+    )
     print(f"\n{'against':<32}{'z':>8}")
     for label, value in references.items():
         print(f"{label:<32}{(observed - value) / boot.std():>8.2f}")

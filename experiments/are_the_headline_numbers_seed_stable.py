@@ -137,9 +137,7 @@ def main() -> None:
         )
 
     print("\nThe joining arms, same treatment.\n")
-    print(
-        f"{'arm':<40}{'published':>11}{'median':>9}{'spread':>9}{'range':>17}"
-    )
+    print(f"{'arm':<40}{'published':>11}{'median':>9}{'spread':>9}{'range':>17}")
     arms = (
         (
             "join within the span, forward, <=2",

@@ -118,7 +118,9 @@ def report(label, rows):
         f"\n{label}: {len(rows)} non-page-final lines, mean {n.mean():.1f} runes,"
         f" sd {n.std(ddof=1):.1f}"
     )
-    print(f"  short lines (<= {SHORT:.0%} of the mean): {total} ({total / len(rows):.1%})")
+    print(
+        f"  short lines (<= {SHORT:.0%} of the mean): {total} ({total / len(rows):.1%})"
+    )
     print(
         f"  of those, closed by a mark: {hits}/{total} = {hits / total:.2f}"
         f"   against {base:.2f} on ordinary lines"
@@ -151,7 +153,9 @@ def main() -> None:
         )
     p1 = counts.get("⑬", 0) / all_marks["⑬"]
     p2 = counts.get("④", 0) / all_marks["④"]
-    pooled = (counts.get("⑬", 0) + counts.get("④", 0)) / (all_marks["⑬"] + all_marks["④"])
+    pooled = (counts.get("⑬", 0) + counts.get("④", 0)) / (
+        all_marks["⑬"] + all_marks["④"]
+    )
     se = math.sqrt(pooled * (1 - pooled) * (1 / all_marks["⑬"] + 1 / all_marks["④"]))
     print(f"\n  thirteen-dot against four-dot: z = {(p1 - p2) / se:+.2f}")
     print(

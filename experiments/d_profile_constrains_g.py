@@ -129,13 +129,17 @@ def main() -> None:
     pool = make_pool(size, 5)
     counts = np.array([cycles(g) for g in pool])
 
-    print(f"pool of {size:,} order-5 permutations, five-cycle counts "
-          f"{np.bincount(counts, minlength=6)[1:]}\n")
+    print(
+        f"pool of {size:,} order-5 permutations, five-cycle counts "
+        f"{np.bincount(counts, minlength=6)[1:]}\n"
+    )
 
     print("planted controls: encipher prose with a known g and see whether the top 1%")
     print("by chi2 recovers its cycle structure.\n")
-    print(f"{'true k':>7}{'rank of the true g':>21}"
-          f"{'five-cycle counts in the top 1%':>36}")
+    print(
+        f"{'true k':>7}{'rank of the true g':>21}"
+        f"{'five-cycle counts in the top 1%':>36}"
+    )
     rng = random.Random(51)
     for true_k in (1, 3, 5):
         points = rng.sample(range(M), 5 * true_k)
@@ -152,8 +156,10 @@ def main() -> None:
         scores = np.array([chi2(h, meas, mats, tot) for h in pool])
         top = scores <= np.percentile(scores, 1)
         rank = int((scores < chi2(g, meas, mats, tot)).sum())
-        print(f"{true_k:>7}{f'{rank}/{size}':>21}"
-              f"{str(np.bincount(counts[top], minlength=6)[1:]):>36}")
+        print(
+            f"{true_k:>7}{f'{rank}/{size}':>21}"
+            f"{str(np.bincount(counts[top], minlength=6)[1:]):>36}"
+        )
     print("\nThe top-1% profile tracks the truth, and the filter sharpens as g moves")
     print("more points: a g with one five-cycle is nearly the identity and many others")
     print("mimic it.")
@@ -163,17 +169,22 @@ def main() -> None:
     print(f"{'lag':>4}{'g power':>9}{'measured':>20}{'pool prediction':>26}")
     for k in LAGS:
         v = np.array([predict(g, k, mats, tot) for g in pool])
-        print(f"{k:>4}{k % 5:>9}{f'{meas[k][0]:.4f} +- {meas[k][1]:.4f}':>20}"
-              f"{f'{v.mean():.4f} +- {v.std():.4f}':>26}")
+        print(
+            f"{k:>4}{k % 5:>9}{f'{meas[k][0]:.4f} +- {meas[k][1]:.4f}':>20}"
+            f"{f'{v.mean():.4f} +- {v.std():.4f}':>26}"
+        )
 
     scores = np.array([chi2(g, meas, mats, tot) for g in pool])
-    print(f"\nchi2 over the pool: min {scores.min():.1f}, "
-          f"median {np.median(scores):.1f}")
+    print(
+        f"\nchi2 over the pool: min {scores.min():.1f}, median {np.median(scores):.1f}"
+    )
     for pct in (1, 5):
         keep = scores <= np.percentile(scores, pct)
-        print(f"  top {pct}% ({int(keep.sum())} permutations, "
-              f"{100 // pct}x reduction): five-cycle counts "
-              f"{np.bincount(counts[keep], minlength=6)[1:]}")
+        print(
+            f"  top {pct}% ({int(keep.sum())} permutations, "
+            f"{100 // pct}x reduction): five-cycle counts "
+            f"{np.bincount(counts[keep], minlength=6)[1:]}"
+        )
     print(
         "\nThe body's top 1% is concentrated on five five-cycles, matching the k=5"
         "\ncontrol almost exactly. So g fixes 4 of the 29 runes and moves the other 25."

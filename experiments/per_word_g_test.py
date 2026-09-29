@@ -98,7 +98,9 @@ def main() -> None:
 
     pool = tune_pool(p1, rng, size=40)
     d1s = [diag_rate(p1, g) for g in pool]
-    print(f"pool: {len(pool)} order-5 g tuned to d1~{D1_TARGET}: mean d1 {sum(d1s) / len(d1s):.4f}")
+    print(
+        f"pool: {len(pool)} order-5 g tuned to d1~{D1_TARGET}: mean d1 {sum(d1s) / len(d1s):.4f}"
+    )
     print(f"register: {len(words)} words, {n4} d4 pairs, {n6} d6 pairs\n")
 
     # per-g single-permutation d4/d6 (the H_FIXED spread: one g, no averaging)

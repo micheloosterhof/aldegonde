@@ -65,8 +65,10 @@ def rule_on_solved_pages() -> None:
     )
     f = ENG.index("F")
     print("the interrupt rule on every solved page that carries a keystream\n")
-    print(f"{'page':>5}{'cipher':>22}{'plain F':>9}{'interrupts':>12}"
-          f"{'all at plain F':>16}")
+    print(
+        f"{'page':>5}{'cipher':>22}{'plain F':>9}{'interrupts':>12}"
+        f"{'all at plain F':>16}"
+    )
     total_f = total_i = 0
     for x in triples:
         if x["cipher"] == "monoalphabetic":
@@ -75,11 +77,11 @@ def rule_on_solved_pages() -> None:
         ints = x.get("interrupts") or []
         cipher = [IDX[ch] for ch in RUNE.findall(chunks[x["page"]])]
         pf = sum(1 for r in plain if r == f)
-        ok = all(
-            plain[i] == f and i < len(cipher) and cipher[i] == f for i in ints
+        ok = all(plain[i] == f and i < len(cipher) and cipher[i] == f for i in ints)
+        print(
+            f"{x['page']:>5}{x['cipher']:>22}{pf:>9}{len(ints):>12}"
+            f"{('yes' if ok else 'NO'):>16}"
         )
-        print(f"{x['page']:>5}{x['cipher']:>22}{pf:>9}{len(ints):>12}"
-              f"{('yes' if ok else 'NO'):>16}")
         total_f += pf
         total_i += len(ints)
     print(f"\n{total_i} interrupts against {total_f} plaintext F. The rule is exact.")
@@ -97,8 +99,10 @@ def body_passes_nothing() -> None:
 
     print(f"\n\nthe body: {n:,} runes. If a rune passed through, its ciphertext rate")
     print("would be its plaintext rate plus the flat rate from everything else.\n")
-    print(f"{'rune':>5}{'plain rate':>12}{'predicted':>11}{'observed':>10}"
-          f"{'z vs flat':>11}{'z vs pass-through':>19}")
+    print(
+        f"{'rune':>5}{'plain rate':>12}{'predicted':>11}{'observed':>10}"
+        f"{'z vs flat':>11}{'z vs pass-through':>19}"
+    )
     rows = []
     for i in range(M):
         pf = pc[i] / pn
@@ -107,16 +111,24 @@ def body_passes_nothing() -> None:
         se = math.sqrt(obs * (1 - obs) / n) or 1e-9
         rows.append((pf, i, pred, obs, (obs - 1 / M) / se, (obs - pred) / se))
     for pf, i, pred, obs, zflat, zpass in sorted(rows, reverse=True)[:10]:
-        print(f"{ENG[i]:>5}{pf:>12.4f}{pred:>11.4f}{obs:>10.4f}{zflat:>+11.2f}"
-              f"{zpass:>+19.2f}")
+        print(
+            f"{ENG[i]:>5}{pf:>12.4f}{pred:>11.4f}{obs:>10.4f}{zflat:>+11.2f}"
+            f"{zpass:>+19.2f}"
+        )
     f = ENG.index("F")
     row = next(r for r in rows if r[1] == f)
-    print(f"{'F':>5}{row[0]:>12.4f}{row[2]:>11.4f}{row[3]:>10.4f}{row[4]:>+11.2f}"
-          f"{row[5]:>+19.2f}")
+    print(
+        f"{'F':>5}{row[0]:>12.4f}{row[2]:>11.4f}{row[3]:>10.4f}{row[4]:>+11.2f}"
+        f"{row[5]:>+19.2f}"
+    )
 
     closest = max(r[5] for r in rows)
-    print(f"\nEvery rune is flat and none is near its pass-through rate. The closest any")
-    print(f"rune comes is {closest:+.1f} sigma, which is F -- the one the author actually")
+    print(
+        f"\nEvery rune is flat and none is near its pass-through rate. The closest any"
+    )
+    print(
+        f"rune comes is {closest:+.1f} sigma, which is F -- the one the author actually"
+    )
     print("uses -- and the common plaintext runes miss by tens of sigma.")
     chi = sum((counts[i] - n / M) ** 2 / (n / M) for i in range(M))
     print(f"unigram chi2 against uniform: {chi:.1f} on 28 df")

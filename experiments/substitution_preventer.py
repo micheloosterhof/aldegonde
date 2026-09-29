@@ -111,21 +111,27 @@ def main() -> None:
     lp = fingerprint(lp_words())
     ratio = lp["seam"] / lp["d1w"]
     se = ratio * math.sqrt(1 / 63 + 1 / 23)
-    print(f"corpus: d1w {lp['d1w']:.4f}, seam {lp['seam']:.4f}, "
-          f"ratio {ratio:.2f} +- {se:.2f}\n")
+    print(
+        f"corpus: d1w {lp['d1w']:.4f}, seam {lp['seam']:.4f}, "
+        f"ratio {ratio:.2f} +- {se:.2f}\n"
+    )
 
     rng = random.Random(11)
     g = order5_fixing(rng.sample(range(M), 4), rng)
     sigma = rng.sample(range(M), M)
-    print(f"{'tau fixes':>10}{'d1w':>10}{'seam':>10}{'seam/d1w':>10}"
-          f"{'gap_min':>10}{'d6w':>10}{'lands':>8}")
+    print(
+        f"{'tau fixes':>10}{'d1w':>10}{'seam':>10}{'seam/d1w':>10}"
+        f"{'gap_min':>10}{'d6w':>10}{'lands':>8}"
+    )
     for f in (0, 2, 4, 6, 8, 12):
         tau = tau_fixing(rng.sample(range(M), f), rng)
         r = score(preventer(g, sigma, tau), lp, draws)
         landed = sum(1 for k in INFORMATIVE if r[k][1] > 0.05)
         rr = r["seam"][0] / r["d1w"][0] if r["d1w"][0] else float("inf")
-        print(f"{f:>10}{r['d1w'][0]:>10.4f}{r['seam'][0]:>10.4f}{rr:>10.2f}"
-              f"{r['doublet_gap_min'][0]:>10.2f}{r['d6w'][0]:>10.4f}{f'{landed}/5':>8}")
+        print(
+            f"{f:>10}{r['d1w'][0]:>10.4f}{r['seam'][0]:>10.4f}{rr:>10.2f}"
+            f"{r['doublet_gap_min'][0]:>10.2f}{r['d6w'][0]:>10.4f}{f'{landed}/5':>8}"
+        )
     print(
         "\nThe rate is set by how many points tau holds still. The ratio is not fitted:"
         "\nit falls out of the mechanism, because the residual collision probability is"

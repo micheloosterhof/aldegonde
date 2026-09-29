@@ -80,8 +80,9 @@ def table(rows, title: str, predicate) -> None:
             continue
         f1, f2 = (a == 2).mean(), (rest == 2).mean()
         se = math.sqrt(f1 * (1 - f1) / len(a) + f2 * (1 - f2) / len(rest))
-        print(f"{group:>10}{len(a):>9,}{a.mean():>8.3f}{f1:>12.4f}"
-              f"{(f1 - f2) / se:>11.2f}")
+        print(
+            f"{group:>10}{len(a):>9,}{a.mean():>8.3f}{f1:>12.4f}{(f1 - f2) / se:>11.2f}"
+        )
 
 
 def main() -> None:
@@ -92,13 +93,13 @@ def main() -> None:
     print(f"{'group':>10}{'spans?':>9}{'blocks':>9}{'mean':>8}{'frac len 2':>12}")
     for group in ("first", "middle", "last"):
         for spans in (False, True):
-            a = np.array(
-                [L for L, g, s in rows if g == group and s == spans], float
-            )
+            a = np.array([L for L, g, s in rows if g == group and s == spans], float)
             if len(a) < 20:
                 continue
-            print(f"{group:>10}{str(spans):>9}{len(a):>9,}{a.mean():>8.3f}"
-                  f"{(a == 2).mean():>12.4f}")
+            print(
+                f"{group:>10}{str(spans):>9}{len(a):>9,}{a.mean():>8.3f}"
+                f"{(a == 2).mean():>12.4f}"
+            )
 
     table(rows, "non-spanning blocks only", lambda s: not s)
     print(

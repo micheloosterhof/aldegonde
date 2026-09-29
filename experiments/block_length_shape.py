@@ -117,7 +117,11 @@ def page_spread(mod) -> tuple[float, float, int]:
             sizes.append(len(w))
     f = np.array(fracs)
     s = np.array(sizes, float)
-    return float((f * s).sum() / s.sum()), float(f.std(ddof=1) / np.sqrt(len(f))), len(f)
+    return (
+        float((f * s).sum() / s.sum()),
+        float(f.std(ddof=1) / np.sqrt(len(f))),
+        len(f),
+    )
 
 
 def main() -> None:
@@ -133,29 +137,39 @@ def main() -> None:
         prose += h
         n_prose += n
 
-    print(f"body {n_body:,} blocks, LP plaintext {n_plain} words "
-          f"(all sixteen solved pages), "
-          f"prose {n_prose:,} words\n")
+    print(
+        f"body {n_body:,} blocks, LP plaintext {n_plain} words "
+        f"(all sixteen solved pages), "
+        f"prose {n_prose:,} words\n"
+    )
     print(f"{'len':>4}{'LP plain':>10}{'prose':>9}{'body':>9}")
     for i in range(CAP):
-        print(f"{i + 1:>4}{plain[i] / n_plain:>10.4f}{prose[i] / n_prose:>9.4f}"
-              f"{body[i] / n_body:>9.4f}")
+        print(
+            f"{i + 1:>4}{plain[i] / n_plain:>10.4f}{prose[i] / n_prose:>9.4f}"
+            f"{body[i] / n_body:>9.4f}"
+        )
     mean = lambda h, n: sum((i + 1) * h[i] for i in range(CAP)) / n  # noqa: E731
-    print(f"{'mean':>4}{mean(plain, n_plain):>10.3f}{mean(prose, n_prose):>9.3f}"
-          f"{mean(body, n_body):>9.3f}")
+    print(
+        f"{'mean':>4}{mean(plain, n_plain):>10.3f}{mean(prose, n_prose):>9.3f}"
+        f"{mean(body, n_body):>9.3f}"
+    )
 
     print("\nbest one-parameter register tilt, exp(lambda * length):")
     for name, base in (("LP plaintext", plain), ("prose", prose)):
         lam, chi, res = tilt_fit(base, body)
         print(f"  {name:<13} lambda {lam:+.3f}  chi2 {chi:>6.1f} on {CAP - 2} df")
         print("    residual by length: " + " ".join(f"{r:+5.1f}" for r in res))
-    print("\nNeither fits, and in both the largest residual is at length 2, with length")
+    print(
+        "\nNeither fits, and in both the largest residual is at length 2, with length"
+    )
     print("1 and length 3 on the other side of the prediction.")
 
     pooled, se, npages = page_spread(mod)
     frac2 = body[1] / n_body
-    print(f"\nfraction of 2-rune units: LP plaintext {pooled:.3f} (between-page se "
-          f"{se:.4f} over {npages} pages), body {frac2:.3f}")
+    print(
+        f"\nfraction of 2-rune units: LP plaintext {pooled:.3f} (between-page se "
+        f"{se:.4f} over {npages} pages), body {frac2:.3f}"
+    )
     print(f"  z against the between-page spread: {(frac2 - pooled) / se:+.2f}")
     print("  The between-page spread is the right denominator: it prices the register")
     print("  difference between one solved page and another, which is what the body")
@@ -231,10 +245,11 @@ def joint_scan() -> None:
         e = hs / hs.sum() * n_body
         chi = float((((body_h - e) ** 2) / np.maximum(e, 1e-9)).sum())
         v = np.array(ex)
-        print(f"{q:>6.2f}{chi:>15.1f}{hs[1] / hs.sum():>12.4f}"
-              f"{f'{v.mean():.4f} +- {v.std():.4f}':>22}")
-    print(f"{'body':>6}{'-':>15}{body_h[1] / n_body:>12.4f}"
-          f"{'0.0040 +- 0.0025':>22}")
+        print(
+            f"{q:>6.2f}{chi:>15.1f}{hs[1] / hs.sum():>12.4f}"
+            f"{f'{v.mean():.4f} +- {v.std():.4f}':>22}"
+        )
+    print(f"{'body':>6}{'-':>15}{body_h[1] / n_body:>12.4f}{'0.0040 +- 0.0025':>22}")
     print(
         "\nThe two fits disagree. The marginal picks q = 0.35, and at that rate the"
         "\nlength sequence still carries 0.023 of excess against the body's 0.004,"
@@ -274,12 +289,21 @@ def author_never_splits() -> None:
         res2 = (body[1] - e[1]) / np.sqrt(max(e[1], 1e-9))
         print(f"  {label:<26} chi2 {chi:>7.1f}   length-2 residual {res2:+.1f}")
     print("\n  Splitting TH halves the misfit. But the author never does it:")
-    pairs = {"TH": ("T", "H"), "EA": ("E", "A"), "NG": ("N", "G"),
-             "IA": ("I", "A"), "AE": ("A", "E")}
+    pairs = {
+        "TH": ("T", "H"),
+        "EA": ("E", "A"),
+        "NG": ("N", "G"),
+        "IA": ("I", "A"),
+        "AE": ("A", "E"),
+    }
     for dg, (a, b) in pairs.items():
         one = sum(1 for w in plain for r in w if eng[r] == dg)
-        two = sum(1 for w in plain for i in range(len(w) - 1)
-                  if eng[w[i]] == a and eng[w[i + 1]] == b)
+        two = sum(
+            1
+            for w in plain
+            for i in range(len(w) - 1)
+            if eng[w[i]] == a and eng[w[i + 1]] == b
+        )
         print(f"    {dg}: {one} as one rune, {two} as two")
     print("  125 digraph tokens in the solved plaintext, not one written apart.")
 
@@ -311,7 +335,9 @@ def hole_is_uniform() -> None:
             seq.append(cur)
         if len(seq) >= 40:
             rows.append((k, len(seq), sum(1 for x in seq if x == 2) / len(seq)))
-    print(f"\nIs the hole uniform across the body? {len(rows)} sections of 40+ blocks.\n")
+    print(
+        f"\nIs the hole uniform across the body? {len(rows)} sections of 40+ blocks.\n"
+    )
     print(f"{'section':>8}{'blocks':>8}{'frac len 2':>12}")
     for k, n, f in rows:
         print(f"{k:>8}{n:>8}{f:>12.3f}")
@@ -319,12 +345,18 @@ def hole_is_uniform() -> None:
     n = np.array([r[1] for r in rows], float)
     pooled = float((f * n).sum() / n.sum())
     chi = float((((f - pooled) ** 2) * n / (pooled * (1 - pooled))).sum())
-    print(f"\npooled {pooled:.4f} over {int(n.sum()):,} blocks; homogeneity chi2 "
-          f"{chi:.1f} on {len(rows) - 1} df")
-    print(f"observed sd across sections {f.std(ddof=1):.4f}, binomial expectation "
-          f"{np.sqrt(pooled * (1 - pooled) * (1 / n).mean()):.4f}")
-    print(f"highest section {f.max():.3f}; the author's own plaintext is 0.239; "
-          f"sections reaching it: {(f >= 0.239).sum()}")
+    print(
+        f"\npooled {pooled:.4f} over {int(n.sum()):,} blocks; homogeneity chi2 "
+        f"{chi:.1f} on {len(rows) - 1} df"
+    )
+    print(
+        f"observed sd across sections {f.std(ddof=1):.4f}, binomial expectation "
+        f"{np.sqrt(pooled * (1 - pooled) * (1 / n).mean()):.4f}"
+    )
+    print(
+        f"highest section {f.max():.3f}; the author's own plaintext is 0.239; "
+        f"sections reaching it: {(f >= 0.239).sum()}"
+    )
     print(
         "\nThe body is homogeneous and no section comes near the author's rate. Content"
         "\nvaries from section to section and this does not, which is what a process"

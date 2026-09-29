@@ -43,7 +43,9 @@ TRIPLES = ROOT / "experiments" / "solved_page_triples.json"
 def main() -> None:
     triples = json.loads(TRIPLES.read_text())
     print("the rule, checked on every interrupted page:")
-    print(f"{'chunk':>7}{'cipher':>22}{'plaintext F':>13}{'interrupts':>12}{'equal':>7}")
+    print(
+        f"{'chunk':>7}{'cipher':>22}{'plaintext F':>13}{'interrupts':>12}{'equal':>7}"
+    )
     for t in triples:
         if t["cipher"] == "monoalphabetic":
             continue

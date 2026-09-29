@@ -33,11 +33,27 @@ MOD = 29
 OBSERVED = 0.0063
 ROTATIONS = ("row+", "row-", "col+", "col-")
 THEMATIC = [
-    "PRIME", "PRIMES", "PRIMALITY", "TOTIENT", "DIVINITY", "CIRCUMFERENCE",
-    "INSTAR", "PARABLE", "KOAN", "WISDOM", "SACRED", "WELCOME", "TRUTH",
-    "WITHIN", "MOBIUS", "CICADA", "LIBER", "PRIMUS", "CONSUME", "PRESERVE",
+    "PRIME",
+    "PRIMES",
+    "PRIMALITY",
+    "TOTIENT",
+    "DIVINITY",
+    "CIRCUMFERENCE",
+    "INSTAR",
+    "PARABLE",
+    "KOAN",
+    "WISDOM",
+    "SACRED",
+    "WELCOME",
+    "TRUTH",
+    "WITHIN",
+    "MOBIUS",
+    "CICADA",
+    "LIBER",
+    "PRIMUS",
+    "CONSUME",
+    "PRESERVE",
 ]
-
 
 
 def transliterate(word: str) -> list[int] | None:
@@ -105,20 +121,24 @@ def main() -> None:
         print(f"  {m}: {rate:.4f}  ({rate / (1 / MOD):.2f}x chance)")
 
     rng = random.Random(3)
-    mins = np.array([
-        best_rate(f, rng.sample(range(MOD), 25)) for _ in range(4000)
-    ])
-    print(f"\nrandom grid best-of-4: mean={mins.mean():.4f} min={mins.min():.4f} "
-          f"frac<=obs={(mins <= OBSERVED).mean():.4f}")
+    mins = np.array([best_rate(f, rng.sample(range(MOD), 25)) for _ in range(4000)])
+    print(
+        f"\nrandom grid best-of-4: mean={mins.mean():.4f} min={mins.min():.4f} "
+        f"frac<=obs={(mins <= OBSERVED).mean():.4f}"
+    )
 
     scored: list[tuple[float, str]] = []
-    for kw in THEMATIC + [w for w in top_n_list("en", 6000) if w.isalpha() and len(w) >= 3]:
+    for kw in THEMATIC + [
+        w for w in top_n_list("en", 6000) if w.isalpha() and len(w) >= 3
+    ]:
         order = keyed_order(kw)
         if order:
             scored.append((best_rate(f, order), kw))
     scored.sort()
-    print(f"\nkeyword squares: {len(scored)} tested, "
-          f"{sum(1 for r, _ in scored if r <= OBSERVED)} reach <= {OBSERVED}")
+    print(
+        f"\nkeyword squares: {len(scored)} tested, "
+        f"{sum(1 for r, _ in scored if r <= OBSERVED)} reach <= {OBSERVED}"
+    )
     print("  lowest:", ", ".join(f"{kw}={r:.4f}" for r, kw in scored[:6]))
     thematic = sorted((r, kw) for r, kw in scored if kw in THEMATIC)
     print("  thematic:", ", ".join(f"{kw}={r:.4f}" for r, kw in thematic[:6]))

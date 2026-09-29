@@ -58,8 +58,10 @@ def main() -> None:
     def quarters(blocks) -> list[float]:
         n = len(blocks) // 4
         s = [scores(blocks[i * n : (i + 1) * n]) for i in range(4)]
-        return [float(np.corrcoef(s[i], s[j])[0, 1])
-                for i, j in itertools.combinations(range(4), 2)]
+        return [
+            float(np.corrcoef(s[i], s[j])[0, 1])
+            for i, j in itertools.combinations(range(4), 2)
+        ]
 
     rk = random.Random(31)
     print("does the filter give the same answer on either half?\n")
@@ -70,8 +72,10 @@ def main() -> None:
         c = split_half(walk(g, sigma, prose[t], random.Random(1)))
         print(f"{'planted walk ' + str(t):<28}{c:>26.3f}")
     print(f"{'THE BODY':<28}{split_half(lp_words()):>26.3f}")
-    print("\nThe body sits inside the planted range, so the filter measures something"
-          "\nstable rather than fitting noise. Its 6.2 bits survive the check.")
+    print(
+        "\nThe body sits inside the planted range, so the filter measures something"
+        "\nstable rather than fitting noise. Its 6.2 bits survive the check."
+    )
 
     print("\n\ndoes one g run through the whole body?\n")
     print(f"{'corpus':<28}{'pairwise correlations over quarters':>44}{'mean':>8}")
@@ -82,17 +86,22 @@ def main() -> None:
         sigma = rk2.sample(range(M), M)
         c = quarters(walk(g, sigma, prose[t], random.Random(1)))
         baseline += c
-        print(f"{'planted, one g ' + str(t):<28}"
-              f"{' '.join(f'{x:+.2f}' for x in c):>44}{np.mean(c):>8.2f}")
+        print(
+            f"{'planted, one g ' + str(t):<28}"
+            f"{' '.join(f'{x:+.2f}' for x in c):>44}{np.mean(c):>8.2f}"
+        )
     g1 = order5_fixing(rk2.sample(range(M), 4), rk2)
     g2 = order5_fixing(rk2.sample(range(M), 4), rk2)
     sigma = rk2.sample(range(M), M)
-    mixed = (walk(g1, sigma, prose[5][:1464], random.Random(1))
-             + walk(g2, sigma, prose[5][1464:], random.Random(2)))
+    mixed = walk(g1, sigma, prose[5][:1464], random.Random(1)) + walk(
+        g2, sigma, prose[5][1464:], random.Random(2)
+    )
     c = quarters(mixed)
     changed = float(np.mean(c))
-    print(f"{'planted, g changes at half':<28}"
-          f"{' '.join(f'{x:+.2f}' for x in c):>44}{changed:>8.2f}")
+    print(
+        f"{'planted, g changes at half':<28}"
+        f"{' '.join(f'{x:+.2f}' for x in c):>44}{changed:>8.2f}"
+    )
     c = quarters(lp_words())
     print(f"{'THE BODY':<28}{' '.join(f'{x:+.2f}' for x in c):>44}{np.mean(c):>8.2f}")
 

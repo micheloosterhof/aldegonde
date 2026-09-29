@@ -135,7 +135,9 @@ def main() -> None:
     rand = [list(rng.permutation(M)) for _ in range(4000)]
     r_even = sum(1 for p in rand if parity(p) == 1)
     r_long = sum(1 for p in rand if order_of(cycle_type(p)) >= MIN_ORDER)
-    print(f"  even {r_even / len(rand):.3f}   order >= {MIN_ORDER} {r_long / len(rand):.3f}")
+    print(
+        f"  even {r_even / len(rand):.3f}   order >= {MIN_ORDER} {r_long / len(rand):.3f}"
+    )
 
     print("\nThe commonest cycle types a keyword produces:\n")
     for kind, n in Counter(cycle_type(p) for _, p in perms).most_common(6):

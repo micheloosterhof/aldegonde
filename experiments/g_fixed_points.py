@@ -85,6 +85,7 @@ def ratio(stream: list[int], wid: list[int]) -> float:
     leaves an estimate of the fixed-point share. It pays for that with the sampling noise
     of the d5 cell, which rests on only ~2,000 pairs.
     """
+
     def rate(lag: int) -> float:
         hits = pairs = 0
         for i in range(len(stream) - lag):
@@ -110,14 +111,18 @@ def main() -> None:
 
     rng = random.Random(5)
     words = corpus()
-    print(f"{'5-cycles':>9}{'fixed':>7}{'median':>9}{'10th':>8}{'90th':>8}"
-          f"{'draws below body':>19}")
+    print(
+        f"{'5-cycles':>9}{'fixed':>7}{'median':>9}{'10th':>8}{'90th':>8}"
+        f"{'draws below body':>19}"
+    )
     for k in range(1, 6):
         vals = sorted(echo(*planted(k, words, rng)) for _ in range(draws))
         below = sum(1 for v in vals if v < body) / len(vals)
-        print(f"{k:>9}{29 - 5 * k:>7}{statistics.median(vals):>9.4f}"
-              f"{vals[max(0, draws // 10)]:>8.4f}{vals[-1 - draws // 10]:>8.4f}"
-              f"{below:>18.0%}")
+        print(
+            f"{k:>9}{29 - 5 * k:>7}{statistics.median(vals):>9.4f}"
+            f"{vals[max(0, draws // 10)]:>8.4f}{vals[-1 - draws // 10]:>8.4f}"
+            f"{below:>18.0%}"
+        )
     print(
         "\nThe medians fall monotonically as fixed points do, so the channel is real. The"
         "\nspread is wide and intrinsic -- it comes from where g's cycles land relative to"
@@ -135,8 +140,10 @@ def main() -> None:
             x for x in (ratio(*planted(k, words, rng)) for _ in range(draws)) if x == x
         )
         below = sum(1 for v in vals if v < b) / len(vals)
-        print(f"{k:>9}{(29 - 5 * k) / 29:>8.3f}{statistics.median(vals):>15.4f}"
-              f"{below:>18.0%}")
+        print(
+            f"{k:>9}{(29 - 5 * k) / 29:>8.3f}{statistics.median(vals):>15.4f}"
+            f"{below:>18.0%}"
+        )
     print(
         "\nThe medians track f/29, so the ratio is calibrated in fixed points rather"
         "\nthan in coincidence units. The body's 0.21 reads as about six fixed points,"

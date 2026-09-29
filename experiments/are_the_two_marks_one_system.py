@@ -152,15 +152,9 @@ def main() -> None:
     print(f"{'':<34}{'n':>7}{'mean':>10}{'se':>9}{'median':>9}")
     print(summarise("four-dot gaps", gaps))
     print(summarise("observed: previous ④ to each ⑬", observed))
+    print(summarise("if nested (⑬ ends a ④ span)", nested_arm(gaps, 20000, rng)))
     print(
-        summarise(
-            "if nested (⑬ ends a ④ span)", nested_arm(gaps, 20000, rng)
-        )
-    )
-    print(
-        summarise(
-            "if independent (⑬ falls inside)", independent_arm(gaps, 20000, rng)
-        )
+        summarise("if independent (⑬ falls inside)", independent_arm(gaps, 20000, rng))
     )
 
     n = len(observed)

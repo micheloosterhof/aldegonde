@@ -82,10 +82,14 @@ def verify_identity() -> None:
                     agree += 1
                 else:
                     disagree += 1
-    print(f"identity check against a synthetic walk: {agree:,} agree, "
-          f"{disagree:,} disagree")
-    print("  c(i) = c'(j)  <=>  p_i = g^(a - c_i) o sigma o g^(c'_j) (p'_j),  "
-          "a = clock at the last rune of block w")
+    print(
+        f"identity check against a synthetic walk: {agree:,} agree, "
+        f"{disagree:,} disagree"
+    )
+    print(
+        "  c(i) = c'(j)  <=>  p_i = g^(a - c_i) o sigma o g^(c'_j) (p'_j),  "
+        "a = clock at the last rune of block w"
+    )
     if disagree:
         print("  THE DERIVATION IS WRONG -- nothing below is usable")
 
@@ -100,8 +104,10 @@ def adjacency_table(words) -> None:
             for j in range(min(4, len(b))):
                 cnt[(di, j)] += 1
                 hits[(di, j)] += a[len(a) - 1 - di] == b[j]
-    print(f"\n\ncross-seam coincidence by distance from the end of block w (di) and "
-          f"offset into block w+1 (j).\nchance is {CHANCE:.4f}; z in brackets.\n")
+    print(
+        f"\n\ncross-seam coincidence by distance from the end of block w (di) and "
+        f"offset into block w+1 (j).\nchance is {CHANCE:.4f}; z in brackets.\n"
+    )
     print("{:>10}".format("") + "".join("{:>16}".format(f"j={j}") for j in range(4)))
     for di in range(4):
         row = ""
@@ -116,7 +122,9 @@ def adjacency_table(words) -> None:
         for i in range(len(w) - 1):
             pair += 1
             hit += w[i] == w[i + 1]
-    print(f"\nwithin-block adjacent, for comparison: {hit / pair:.4f} on {pair:,} pairs")
+    print(
+        f"\nwithin-block adjacent, for comparison: {hit / pair:.4f} on {pair:,} pairs"
+    )
     print(
         "\nExactly one cell of the sixteen is suppressed, the adjacent one, and every"
         "\nother sits at chance with |z| at most 1.6. The preventer is STRICTLY"
@@ -138,10 +146,12 @@ def sigma_channel(words) -> None:
                     table[a[i], b[j]] += 1
     table /= table.sum()
     rng = random.Random(5)
-    mass = np.array([
-        sum(table[x, h[x]] for x in range(M))
-        for h in (rng.sample(range(M), M) for _ in range(2000))
-    ])
+    mass = np.array(
+        [
+            sum(table[x, h[x]] for x in range(M))
+            for h in (rng.sample(range(M), M) for _ in range(2000))
+        ]
+    )
 
     clock, clocks = 0, []
     for w in words:
@@ -161,11 +171,15 @@ def sigma_channel(words) -> None:
 
     counts = np.array(list(cnt.values()))
     se = math.sqrt(CHANCE * (1 - CHANCE) / np.median(counts))
-    print(f"\n\nthe sigma channel: {counts.sum():,} usable pairs in {len(cnt)} (u, v) "
-          f"cells")
+    print(
+        f"\n\nthe sigma channel: {counts.sum():,} usable pairs in {len(cnt)} (u, v) "
+        f"cells"
+    )
     print(f"  median {int(np.median(counts)):,} pairs per cell, error {se:.4f}")
-    print(f"  graph mass of a random permutation on the cross-word table: "
-          f"{mass.mean():.4f} +- {mass.std():.4f}")
+    print(
+        f"  graph mass of a random permutation on the cross-word table: "
+        f"{mass.mean():.4f} +- {mass.std():.4f}"
+    )
     print(f"  signal to noise per cell: {mass.std() / se:.2f}")
     print(
         "\nThat is real but small. Fifteen cells at a signal-to-noise of 1.2 carry"

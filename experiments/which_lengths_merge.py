@@ -94,8 +94,10 @@ def main() -> None:
             c, _ = fit(ref, rule, synth, int(synth.sum()), reps=6, seed=b)
             nulls.append(c)
         n = np.array(nulls)
-        print(f"{name:<26}{q:>8.2f}{obs:>8.1f}"
-              f"{f'{n.mean():.1f} +- {n.std():.1f}':>22}{(n >= obs).mean():>7.2f}")
+        print(
+            f"{name:<26}{q:>8.2f}{obs:>8.1f}"
+            f"{f'{n.mean():.1f} +- {n.std():.1f}':>22}{(n >= obs).mean():>7.2f}"
+        )
 
     print(
         "\nThe boundary sits between 2 and 3. Absorbing units of two runes, or of one or"
@@ -118,8 +120,10 @@ def main() -> None:
     scores = np.array(scores)
     band = qs[scores <= scores.min() + 34]  # the null spread, from the table above
     frac2 = sum(1 for x in author if x == 2) / len(author)
-    print(f"\nbest q {qs[int(scores.argmin())]:.2f}; within the null's own spread the "
-          f"rate is indistinguishable over q in [{band.min():.2f}, {band.max():.2f}]\n")
+    print(
+        f"\nbest q {qs[int(scores.argmin())]:.2f}; within the null's own spread the "
+        f"rate is indistinguishable over q in [{band.min():.2f}, {band.max():.2f}]\n"
+    )
     print(f"{'q':>6}{'plaintext words':>18}{'joined to a neighbour':>24}")
     for q in (band.min(), float(qs[int(scores.argmin())]), band.max()):
         words = n_body / (1 - q * frac2)

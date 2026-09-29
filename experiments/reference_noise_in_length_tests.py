@@ -84,7 +84,9 @@ def marginal() -> None:
     body = histogram([len(w) for w in lp_words()])
     n_body = int(body.sum())
     obs, q = fit(author, body, n_body)
-    print(f"absorption fitted to the real data: chi2 {obs:.1f} on 11 df at q = {q:.2f}\n")
+    print(
+        f"absorption fitted to the real data: chi2 {obs:.1f} on 11 df at q = {q:.2f}\n"
+    )
 
     rng = random.Random(9)
     nulls = []
@@ -95,13 +97,19 @@ def marginal() -> None:
         c, _ = fit(ref, synth, int(synth.sum()), reps=8, seed=b)
         nulls.append(c)
     n = np.array(nulls)
-    print("if absorption were true, with a 723-word reference and a "
-          f"{n_body:,}-block body:")
-    print(f"  chi2 {n.mean():.1f} +- {n.std():.1f}, "
-          f"10th {np.percentile(n, 10):.1f}, 90th {np.percentile(n, 90):.1f}")
+    print(
+        "if absorption were true, with a 723-word reference and a "
+        f"{n_body:,}-block body:"
+    )
+    print(
+        f"  chi2 {n.mean():.1f} +- {n.std():.1f}, "
+        f"10th {np.percentile(n, 10):.1f}, 90th {np.percentile(n, 90):.1f}"
+    )
     print(f"  P(null chi2 >= observed) = {(n >= obs).mean():.3f}")
-    print("\nThe marginal does not reject absorption. The 42.9 recorded as a poor fit"
-          "\nwas a chi2 against a reference held exact.")
+    print(
+        "\nThe marginal does not reject absorption. The 42.9 recorded as a poor fit"
+        "\nwas a chi2 against a reference held exact."
+    )
 
 
 def serial() -> None:
@@ -110,23 +118,29 @@ def serial() -> None:
     body = excess_per_pair(body_sequences(), random.Random(2), 300)
 
     def measure(pages, q, seed, reps=5):
-        return float(np.mean([
-            excess_per_pair(
-                [absorb(s, q, random.Random(300 + t)) for s in pages],
-                random.Random(t),
-                120,
-            )[0]
-            for t in range(reps)
-        ]))
+        return float(
+            np.mean(
+                [
+                    excess_per_pair(
+                        [absorb(s, q, random.Random(300 + t)) for s in pages],
+                        random.Random(t),
+                        120,
+                    )[0]
+                    for t in range(reps)
+                ]
+            )
+        )
 
     print(f"\n\nthe body's serial excess: {body[0]:.4f} +- {body[1]:.4f}\n")
     print(f"{'q':>6}{'reference':>12}{'jackknife se':>14}{'z against the body':>21}")
     for q in (0.0, 0.40):
         full = measure(seqs, q, 0)
-        jk = np.array([
-            measure([s for j, s in enumerate(seqs) if j != i], q, i, reps=3)
-            for i in range(n)
-        ])
+        jk = np.array(
+            [
+                measure([s for j, s in enumerate(seqs) if j != i], q, i, reps=3)
+                for i in range(n)
+            ]
+        )
         se = float(np.sqrt((n - 1) / n * ((jk - jk.mean()) ** 2).sum()))
         z = (body[0] - full) / np.sqrt(body[1] ** 2 + se**2)
         print(f"{q:>6.2f}{full:>12.4f}{se:>14.4f}{z:>21.2f}")

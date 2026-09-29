@@ -190,14 +190,16 @@ def skip_rule_collision(g: list[int], base: list[int]) -> tuple[int, int, int] |
         powers = list(range(30))
         for _ in range(j):
             powers = [g[x] for x in powers]
-        forbidden = next(
-            (p for p in range(M) if base[powers[p]] == INFINITY), None
-        )
+        forbidden = next((p for p in range(M) if base[powers[p]] == INFINITY), None)
         if forbidden is None:
             continue
         stepped = [g[x] for x in powers]
         rival = next(
-            (q for q in range(M) if q != forbidden and base[powers[q]] == base[stepped[forbidden]]),
+            (
+                q
+                for q in range(M)
+                if q != forbidden and base[powers[q]] == base[stepped[forbidden]]
+            ),
             None,
         )
         if rival is not None:

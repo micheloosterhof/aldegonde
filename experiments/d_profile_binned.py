@@ -121,21 +121,27 @@ def main() -> None:
 
     meas = binned_measure(lp_words())
     cells = [c for c in meas if meas[c][2] >= MIN_PAIRS]
-    print(f"{len(cells)} cells of at least {MIN_PAIRS} pairs, against 5 aggregate "
-          f"lags\n")
-    print(f"{'lag':>4}{'bin':>8}{'pairs':>8}{'body':>20}{'pool prediction':>24}"
-          f"{'SNR':>6}")
+    print(
+        f"{len(cells)} cells of at least {MIN_PAIRS} pairs, against 5 aggregate lags\n"
+    )
+    print(
+        f"{'lag':>4}{'bin':>8}{'pairs':>8}{'body':>20}{'pool prediction':>24}{'SNR':>6}"
+    )
     for c in sorted(cells):
         v = np.array([predict(g, c, mats, tot) for g in pool])
         lo, hi = BINS[c[1]]
         label = f"j={lo}" if lo == hi else (f"j>={lo}" if hi == 99 else f"j={lo}-{hi}")
-        print(f"{c[0]:>4}{label:>8}{meas[c][2]:>8,}"
-              f"{f'{meas[c][0]:.4f} +- {meas[c][1]:.4f}':>20}"
-              f"{f'{v.mean():.4f} +- {v.std():.4f}':>24}{v.std() / meas[c][1]:>6.2f}")
+        print(
+            f"{c[0]:>4}{label:>8}{meas[c][2]:>8,}"
+            f"{f'{meas[c][0]:.4f} +- {meas[c][1]:.4f}':>20}"
+            f"{f'{v.mean():.4f} +- {v.std():.4f}':>24}{v.std() / meas[c][1]:>6.2f}"
+        )
 
     print("\nplanted controls, same pool, both scorings:\n")
-    print(f"{'true k':>7}{'5-cell rank':>14}{'12-cell rank':>14}"
-          f"{'12-cell top-1% profile':>26}")
+    print(
+        f"{'true k':>7}{'5-cell rank':>14}{'12-cell rank':>14}"
+        f"{'12-cell top-1% profile':>26}"
+    )
     rng = random.Random(51)
     for true_k in (1, 3, 5):
         points = rng.sample(range(M), 5 * true_k)
@@ -163,8 +169,10 @@ def main() -> None:
     for name, s in (("5 aggregate cells", s5), (f"{len(cells)} binned cells", s12)):
         n1, p1 = profile(s, counts, 1)
         n5, p5 = profile(s, counts, 5)
-        print(f"  {name:<20} chi2 min {s.min():>6.1f} median {np.median(s):>7.1f}   "
-              f"top-1% cycles {p1}   top-5% cycles {p5}")
+        print(
+            f"  {name:<20} chi2 min {s.min():>6.1f} median {np.median(s):>7.1f}   "
+            f"top-1% cycles {p1}   top-5% cycles {p5}"
+        )
     agree = ((s12 <= np.percentile(s12, 1)) & (s5 <= np.percentile(s5, 1))).sum()
     print(f"\n  permutations in BOTH top 1% lists: {agree} of 60")
     print(

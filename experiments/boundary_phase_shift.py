@@ -80,8 +80,10 @@ def profile() -> None:
         vals = [rates[s][lag - 1] for s in offsets]
         mu = sum(vals) / len(vals)
         sd = (sum((x - mu) ** 2 for x in vals) / len(vals)) ** 0.5
-        print(f"{lag:>4}{rates[0][lag - 1]:>11.3f}{mu:>9.3f} +-{sd:.3f}"
-              f"{(rates[0][lag - 1] - mu) / sd:>+8.2f}")
+        print(
+            f"{lag:>4}{rates[0][lag - 1]:>11.3f}{mu:>9.3f} +-{sd:.3f}"
+            f"{(rates[0][lag - 1] - mu) / sd:>+8.2f}"
+        )
 
     def concentration(target: int, pool: list[int], lags: tuple[int, ...]) -> float:
         total = 0.0
@@ -92,16 +94,23 @@ def profile() -> None:
             total += ((rates[target][lag - 1] - mu) / sd) ** 2
         return total
 
-    for lags, label in (((4, 5, 6), "lags 4, 5, 6"), ((1, 2, 3, 7, 8), "the other lags")):
+    for lags, label in (
+        ((4, 5, 6), "lags 4, 5, 6"),
+        ((1, 2, 3, 7, 8), "the other lags"),
+    ):
         obs = concentration(0, offsets, lags)
         null = sorted(
             concentration(s, [x for x in offsets if x != s], lags) for s in offsets
         )
         worse = sum(1 for x in null if x >= obs)
-        print(f"\nsum of z^2 over {label}: observed {obs:.2f}, "
-              f"shifted median {null[len(null) // 2]:.2f}, max {null[-1]:.2f}")
-        print(f"  offsets at least as high: {worse}/{len(null)}  "
-              f"-> p = {(worse + 1) / (len(null) + 1):.3f}")
+        print(
+            f"\nsum of z^2 over {label}: observed {obs:.2f}, "
+            f"shifted median {null[len(null) // 2]:.2f}, max {null[-1]:.2f}"
+        )
+        print(
+            f"  offsets at least as high: {worse}/{len(null)}  "
+            f"-> p = {(worse + 1) / (len(null) + 1):.3f}"
+        )
     print(
         "\nThe boundary-anchored structure is confined to lags 4, 5 and 6 -- exactly"
         "\nwhere a letter step of order 5 puts it: lag 5 repeats the alphabet, lags 4"

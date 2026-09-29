@@ -142,7 +142,9 @@ def main() -> None:
 
     print(f"grid readings indexed: {len(reads)}")
     print(f"distinct windows: {len(index):,} over digest sizes 16, 20, 32, 64")
-    print(f"strings hashed: {len(cands)} x {len(ALGOS)} algorithms = {tested:,} digests")
+    print(
+        f"strings hashed: {len(cands)} x {len(ALGOS)} algorithms = {tested:,} digests"
+    )
     print("\nno window of the grids is a digest of any of them.")
     print(
         "\nThe search is not exhaustive and cannot be: a digest of a string this"

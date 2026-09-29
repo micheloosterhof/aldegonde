@@ -77,7 +77,9 @@ def main() -> None:
     sb = spectrum(dist(body))
 
     print(f"LP plaintext {len(plain):,} runes, chi2 {chi2(plain):,.0f} on 28 df")
-    print(f"unsolved body {n:,} runes, chi2 {chi2(body):.1f} on 28 df (null 28 +- 7.5)\n")
+    print(
+        f"unsolved body {n:,} runes, chi2 {chi2(body):.1f} on 28 df (null 28 +- 7.5)\n"
+    )
 
     print("a language-text running key, spectrum taken from the LP's own plaintext:")
     pred = sum(sp[j] * sp[j] for j in range(1, M))
@@ -89,13 +91,15 @@ def main() -> None:
     pt = [plain[i % len(plain)] for i in range(n)]
     text_key = [plain[(i + 977) % len(plain)] for i in range(n)]
     flat_key = [rng.randrange(M) for _ in range(n)]
-    print(f"  text plaintext + text key    chi2 {chi2([(a + b) % M for a, b in zip(pt, text_key)]):>8,.0f}")
-    print(f"  text plaintext + uniform key chi2 {chi2([(a + b) % M for a, b in zip(pt, flat_key)]):>8.1f}")
+    print(
+        f"  text plaintext + text key    chi2 {chi2([(a + b) % M for a, b in zip(pt, text_key)]):>8,.0f}"
+    )
+    print(
+        f"  text plaintext + uniform key chi2 {chi2([(a + b) % M for a, b in zip(pt, flat_key)]):>8.1f}"
+    )
 
     print("\nper-frequency cap on any additive keystream (95% one-sided):")
-    sims = [
-        spectrum(dist([rng.randrange(M) for _ in range(n)])) for _ in range(300)
-    ]
+    sims = [spectrum(dist([rng.randrange(M) for _ in range(n)])) for _ in range(300)]
     print(f"{'j':>3}{'|P^(j)|^2':>12}{'|C^(j)|^2':>12}{'cap':>10}{'|K^(j)|^2 <=':>14}")
     caps: dict[int, float] = {}
     for j in sorted(range(1, M), key=lambda j: -sp[j])[:8]:
@@ -109,11 +113,15 @@ def main() -> None:
     pk = [(p - 1) % M for p in primes(300000)[:n]]
     sk = spectrum(dist(pk))
     worst = max(caps, key=lambda j: sk[j] / caps[j])
-    print(f"  key chi2 {chi2(pk):.0f}; tightest frequency j={worst}: "
-          f"|K^|^2 = {sk[worst]:.5f} against a cap of {caps[worst]:.5f}")
-    print(f"  enciphering LP plaintext with it gives chi2 "
-          f"{chi2([(a + b) % M for a, b in zip(pt, pk)]):.1f}, "
-          f"against the body's {chi2(body):.1f}")
+    print(
+        f"  key chi2 {chi2(pk):.0f}; tightest frequency j={worst}: "
+        f"|K^|^2 = {sk[worst]:.5f} against a cap of {caps[worst]:.5f}"
+    )
+    print(
+        f"  enciphering LP plaintext with it gives chi2 "
+        f"{chi2([(a + b) % M for a, b in zip(pt, pk)]):.1f}, "
+        f"against the body's {chi2(body):.1f}"
+    )
     print(
         "\nSo arithmetic keystreams pass this bound and language ones do not. The body"
         "\nis flatter than even the prime keystream would leave it."

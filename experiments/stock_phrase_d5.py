@@ -102,8 +102,7 @@ def main() -> None:
                 continue
             # strong: some word's plaintext repeats a rune 5 apart and the cipher agrees
             strong = any(
-                d5_direction(p, cipher_words[i + j])[0]
-                for j, p in enumerate(words)
+                d5_direction(p, cipher_words[i + j])[0] for j, p in enumerate(words)
             )
             survivors.append((phrase, i, strong))
 

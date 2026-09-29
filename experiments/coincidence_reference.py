@@ -67,19 +67,25 @@ def main() -> None:
     print(f"{'pair type':<36}{'LP plaintext':>22}{'runeglish prose':>22}")
     u1, n1 = unconditional(lp)
     u2, n2 = unconditional(pr)
-    print(f"{'unconditional (cross-block)':<36}{u1:>14.3f} ({n1:>7,}){u2:>14.3f} ({n2:>7,})")
+    print(
+        f"{'unconditional (cross-block)':<36}{u1:>14.3f} ({n1:>7,}){u2:>14.3f} ({n2:>7,})"
+    )
     wl = wp = pl = pp = 0.0
     for lag in range(1, 8):
         a, pa = within(lp, lag)
         b, pb = within(pr, lag)
-        print(f"{'within-block d=' + str(lag):<36}{a:>14.3f} ({pa:>7,}){b:>14.3f} ({pb:>7,})")
+        print(
+            f"{'within-block d=' + str(lag):<36}{a:>14.3f} ({pa:>7,}){b:>14.3f} ({pb:>7,})"
+        )
         if 2 <= lag <= 4:
             wl += a * pa
             wp += pa
             pl += b * pb
             pp += pb
-    print(f"{'within-block d=2..4, pair-weighted':<36}{wl / wp:>14.3f}{'':>10}"
-          f"{pl / pp:>14.3f}")
+    print(
+        f"{'within-block d=2..4, pair-weighted':<36}{wl / wp:>14.3f}{'':>10}"
+        f"{pl / pp:>14.3f}"
+    )
     print(
         "\nUse the row that matches the pair type being tested. For cross-block pairs at"
         "\narbitrary positions the reference is 1.79, not 1.74, and the two corpora agree"

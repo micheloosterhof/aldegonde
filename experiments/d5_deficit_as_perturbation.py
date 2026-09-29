@@ -69,29 +69,44 @@ def main() -> None:
     pd5, pn5 = plain(5)
     s5, sp5 = se(d5, n5), se(pd5, pn5)
     print(f"body    within-block d1 {d1:.4f}, d5 {d5:.4f} +- {s5:.4f} on {n5:,} pairs")
-    print(f"plaintext references for d5: LP's own {pd5:.4f} +- {sp5:.4f} ({pn5} pairs),"
-          f" prose {PROSE_D5:.4f}\n")
+    print(
+        f"plaintext references for d5: LP's own {pd5:.4f} +- {sp5:.4f} ({pn5} pairs),"
+        f" prose {PROSE_D5:.4f}\n"
+    )
 
     print(f"{'reference':<16}{'phi5':>18}{'implied q':>20}")
     for label, ref, ref_se in (("LP plaintext", pd5, sp5), ("prose", PROSE_D5, 0.0)):
         phi = (d5 - 1) / (ref - 1)
-        rel = math.sqrt((s5 / (d5 - 1)) ** 2 + ((ref_se / (ref - 1)) ** 2 if ref_se else 0))
+        rel = math.sqrt(
+            (s5 / (d5 - 1)) ** 2 + ((ref_se / (ref - 1)) ** 2 if ref_se else 0)
+        )
         lo, hi = max(1e-6, phi * (1 - rel)), min(1.0, phi * (1 + rel))
-        print(f"{label:<16}{phi:>8.3f} +-{phi * rel:<7.3f}"
-              f"{1 - hi ** 0.2:>9.4f} to {1 - lo ** 0.2:<8.4f}")
+        print(
+            f"{label:<16}{phi:>8.3f} +-{phi * rel:<7.3f}"
+            f"{1 - hi**0.2:>9.4f} to {1 - lo**0.2:<8.4f}"
+        )
 
     fires = d1 / M * 5 * 0.8
     print(f"\nthe dodge's own rate, from the doublet suppression: q = {fires:.4f}")
-    print("  (emitted doublet rate is 1/5 of the would-be rate; the dodge fires on 4/5)\n")
+    print(
+        "  (emitted doublet rate is 1/5 of the would-be rate; the dodge fires on 4/5)\n"
+    )
 
-    print("what each q predicts for the body's d5, against the observed"
-          f" {d5:.4f} +- {s5:.4f}:")
-    for label, q in (("no perturbation", 0.0), ("the dodge's rate", fires),
-                     ("the d5 point estimate", 1 - ((d5 - 1) / (pd5 - 1)) ** 0.2)):
+    print(
+        "what each q predicts for the body's d5, against the observed"
+        f" {d5:.4f} +- {s5:.4f}:"
+    )
+    for label, q in (
+        ("no perturbation", 0.0),
+        ("the dodge's rate", fires),
+        ("the d5 point estimate", 1 - ((d5 - 1) / (pd5 - 1)) ** 0.2),
+    ):
         for rlabel, ref in (("LP", pd5), ("prose", PROSE_D5)):
             pred = 1 + (1 - q) ** 5 * (ref - 1)
-            print(f"  {label:<22} vs {rlabel:<6} predicts {pred:.4f},"
-                  f" z = {(d5 - pred) / s5:+.2f}")
+            print(
+                f"  {label:<22} vs {rlabel:<6} predicts {pred:.4f},"
+                f" z = {(d5 - pred) / s5:+.2f}"
+            )
     print(
         "\nThe d5 deficit disfavours NO perturbation at 1.2 to 1.7 sigma and is"
         "\nconsistent with the dodge's 0.025. It cannot separate 0.025 from 0.085: the"

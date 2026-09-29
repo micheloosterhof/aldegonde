@@ -68,22 +68,35 @@ def main() -> None:
     obs_chi = float((((off - off.mean()) ** 2) / off.mean()).sum())
     obs_rm = row_max_z(off_full)
 
-    print(f"{n - 1:,} bigrams: diagonal {np.diag(big).sum():.0f} against "
-          f"{(n - 1) / M:.0f} expected flat, so {missing} were displaced")
-    print(f"off-diagonal: {off.size} cells, mean {off.mean():.2f}, "
-          f"sd {off.std():.2f}, max {off.max():.0f}")
-    print(f"  chi2 {obs_chi:.1f} on {off.size - 1} df, largest row-max z {obs_rm:.2f}\n")
+    print(
+        f"{n - 1:,} bigrams: diagonal {np.diag(big).sum():.0f} against "
+        f"{(n - 1) / M:.0f} expected flat, so {missing} were displaced"
+    )
+    print(
+        f"off-diagonal: {off.size} cells, mean {off.mean():.2f}, "
+        f"sd {off.std():.2f}, max {off.max():.0f}"
+    )
+    print(
+        f"  chi2 {obs_chi:.1f} on {off.size - 1} df, largest row-max z {obs_rm:.2f}\n"
+    )
 
     strongest = sorted(
         (
-            (np.delete(big[r], r).max(), ENG[r],
-             ENG[[c for c in range(M) if c != r][int(np.delete(big[r], r).argmax())]])
+            (
+                np.delete(big[r], r).max(),
+                ENG[r],
+                ENG[
+                    [c for c in range(M) if c != r][int(np.delete(big[r], r).argmax())]
+                ],
+            )
             for r in range(M)
         ),
         reverse=True,
     )[:5]
-    print("strongest off-diagonal cells: "
-          + ", ".join(f"{r}->{c} {int(v)}" for v, r, c in strongest))
+    print(
+        "strongest off-diagonal cells: "
+        + ", ".join(f"{r}->{c} {int(v)}" for v, r, c in strongest)
+    )
 
     rng = np.random.default_rng(21)
     total = int(off.sum())
@@ -107,8 +120,10 @@ def main() -> None:
         zr = (obs_rm - r.mean()) / r.std()
         verdict = "EXCLUDED" if abs(zc) > 2 or abs(zr) > 2 else "open"
         label = "rune-blind" if k == 0 else str(k)
-        print(f"{label:>4}{f'{c.mean():.0f} +- {c.std():.0f}   z {zc:+.1f}':>26}"
-              f"{f'{r.mean():.2f} +- {r.std():.2f}   z {zr:+.1f}':>26}{verdict:>10}")
+        print(
+            f"{label:>4}{f'{c.mean():.0f} +- {c.std():.0f}   z {zc:+.1f}':>26}"
+            f"{f'{r.mean():.2f} +- {r.std():.2f}   z {zr:+.1f}':>26}{verdict:>10}"
+        )
 
     print(
         "\nThe corpus sits on the rune-blind row. One substitution is excluded at about"

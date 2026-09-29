@@ -153,9 +153,7 @@ def main() -> None:
         shuffled = [list(w) for w in words]
         r.shuffle(shuffled)
         cells_n = table(shuffled)
-        nulls.append(
-            max(abs(zscore(*v)) for k, v in cells_n.items() if k != (0, 0))
-        )
+        nulls.append(max(abs(zscore(*v)) for k, v in cells_n.items() if k != (0, 0)))
     nulls = np.array(nulls)
     print(
         f"the same on {TRIALS} shuffles of the word order: "

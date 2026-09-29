@@ -83,18 +83,19 @@ def show(label, rates, baseline_glyphs):
     if not base_all:
         return
     p0 = base_hits / base_all
-    print(f"\n{label}   the word separator sits at a line end {p0:.3f} of the time"
-          f" ({base_hits}/{base_all})\n")
-    print(f"{'glyph':>6}{'count':>8}{'at a line end':>16}{'rate':>9}{'vs separator':>14}")
+    print(
+        f"\n{label}   the word separator sits at a line end {p0:.3f} of the time"
+        f" ({base_hits}/{base_all})\n"
+    )
+    print(
+        f"{'glyph':>6}{'count':>8}{'at a line end':>16}{'rate':>9}{'vs separator':>14}"
+    )
     for glyph, (hits, total) in sorted(rates.items(), key=lambda kv: -kv[1][1]):
         if glyph in baseline_glyphs or total < 4:
             continue
         p = hits / total
         se = math.sqrt(p0 * (1 - p0) * (1 / total + 1 / base_all))
-        print(
-            f"{glyph:>6}{total:>8}{hits:>16}{p:>9.3f}"
-            f"{f'{(p - p0) / se:+.2f}':>14}"
-        )
+        print(f"{glyph:>6}{total:>8}{hits:>16}{p:>9.3f}{f'{(p - p0) / se:+.2f}':>14}")
 
 
 def main() -> None:

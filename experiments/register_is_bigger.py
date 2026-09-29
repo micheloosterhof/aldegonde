@@ -63,8 +63,10 @@ def phrase_pairs(words) -> int:
 
 def main() -> None:
     old, new = corpus(keyed=False), corpus(keyed=True)
-    print(f"{'quantity':<32}{'11 pages':>11}{'16 pages':>11}{'change':>10}"
-          f"{'new error':>11}")
+    print(
+        f"{'quantity':<32}{'11 pages':>11}{'16 pages':>11}{'change':>10}"
+        f"{'new error':>11}"
+    )
 
     def row(label, a, b, err=None):
         e = f"+- {err:.4f}" if err else ""
@@ -72,24 +74,37 @@ def main() -> None:
 
     row("words", len(old), len(new))
     row("runes", sum(len(w) for w in old), sum(len(w) for w in new))
-    row("mean word length", sum(len(w) for w in old) / len(old),
-        sum(len(w) for w in new) / len(new))
-    row("fraction at length 2",
+    row(
+        "mean word length",
+        sum(len(w) for w in old) / len(old),
+        sum(len(w) for w in new) / len(new),
+    )
+    row(
+        "fraction at length 2",
         sum(1 for w in old if len(w) == 2) / len(old),
-        sum(1 for w in new if len(w) == 2) / len(new))
+        sum(1 for w in new if len(w) == 2) / len(new),
+    )
 
     def stream_d1(words):
         s = [r for w in words for r in w]
         return sum(1 for i in range(len(s) - 1) if s[i] == s[i + 1]) / (len(s) - 1)
 
     n_new = sum(len(w) for w in new)
-    row("stream doublet rate", stream_d1(old), stream_d1(new),
-        math.sqrt((1 / M) * (1 - 1 / M) / (n_new - 1)))
+    row(
+        "stream doublet rate",
+        stream_d1(old),
+        stream_d1(new),
+        math.sqrt((1 / M) * (1 - 1 / M) / (n_new - 1)),
+    )
     for lag in (1, 5):
         a, b = within(old, lag), within(new, lag)
         r = b[0] / b[1]
-        row(f"within-word d{lag}  ({a[1]}->{b[1]} pairs)", a[0] / a[1], r,
-            math.sqrt(r * (1 - r) / b[1]))
+        row(
+            f"within-word d{lag}  ({a[1]}->{b[1]} pairs)",
+            a[0] / a[1],
+            r,
+            math.sqrt(r * (1 - r) / b[1]),
+        )
 
     counts = [collections.Counter(r for w in x for r in w) for x in (old, new)]
     totals = [sum(c.values()) for c in counts]

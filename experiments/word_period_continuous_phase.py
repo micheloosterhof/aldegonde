@@ -145,36 +145,52 @@ def main() -> None:
             lens.append(0)
         lens[w] += 1
     print(f"corpus: {len(stream)} runes, {len(lens)} words")
-    print(f"chance {CHANCE:.4f} (nIoC 1.000); a shared alphabet gives ~0.060 (nIoC ~1.74)\n")
+    print(
+        f"chance {CHANCE:.4f} (nIoC 1.000); a shared alphabet gives ~0.060 (nIoC ~1.74)\n"
+    )
 
     # --- POSITIVE CONTROL: plant the exact machine and detect it ------------
     print("POSITIVE CONTROL: ciphertext planted with a 29-disk + continuous phase")
     rng = random.Random(3301)
     planted = plant(lens, rng, 29)
     h, t = bucket_coincidence(planted, word_id, 29)
-    print(f"  bucketed at the TRUE period 29: {h}/{t} = {h / t:.4f}  nIoC {h / t * N:.3f}"
-          f"   z(chance)={z(h, t, CHANCE):+.2f}")
+    print(
+        f"  bucketed at the TRUE period 29: {h}/{t} = {h / t:.4f}  nIoC {h / t * N:.3f}"
+        f"   z(chance)={z(h, t, CHANCE):+.2f}"
+    )
     assert z(h, t, CHANCE) > 8, "harness cannot detect its own planted machine"
     h2, t2 = bucket_coincidence(planted, word_id, 23)
-    print(f"  bucketed at a WRONG period 23: {h2}/{t2} = {h2 / t2:.4f}  nIoC {h2 / t2 * N:.3f}"
-          f"   z(chance)={z(h2, t2, CHANCE):+.2f}")
+    print(
+        f"  bucketed at a WRONG period 23: {h2}/{t2} = {h2 / t2:.4f}  nIoC {h2 / t2 * N:.3f}"
+        f"   z(chance)={z(h2, t2, CHANCE):+.2f}"
+    )
     hon, ton, hoff, toff = paired_drifting(planted, word_id, 29)
-    print(f"  paired drifting, phase-matched: {hon}/{ton} = {hon / ton:.4f} "
-          f"nIoC {hon / ton * N:.3f}  z={z(hon, ton, CHANCE):+.2f}")
-    print(f"  paired drifting, complement:    {hoff}/{toff} = {hoff / toff:.4f} "
-          f"nIoC {hoff / toff * N:.3f}  z={z(hoff, toff, CHANCE):+.2f}")
+    print(
+        f"  paired drifting, phase-matched: {hon}/{ton} = {hon / ton:.4f} "
+        f"nIoC {hon / ton * N:.3f}  z={z(hon, ton, CHANCE):+.2f}"
+    )
+    print(
+        f"  paired drifting, complement:    {hoff}/{toff} = {hoff / toff:.4f} "
+        f"nIoC {hoff / toff * N:.3f}  z={z(hoff, toff, CHANCE):+.2f}"
+    )
     print("  -> the test finds the machine it was built to find\n")
 
     # --- THE REAL CORPUS ----------------------------------------------------
     print("THE LP, same tests")
     h, t = bucket_coincidence(stream, word_id, 29)
-    print(f"  bucketed (w mod 29, i mod 5): {h}/{t} = {h / t:.4f}  nIoC {h / t * N:.3f}"
-          f"   z(chance)={z(h, t, CHANCE):+.2f}")
+    print(
+        f"  bucketed (w mod 29, i mod 5): {h}/{t} = {h / t:.4f}  nIoC {h / t * N:.3f}"
+        f"   z(chance)={z(h, t, CHANCE):+.2f}"
+    )
     hon, ton, hoff, toff = paired_drifting(stream, word_id, 29)
-    print(f"  paired drifting, phase-matched: {hon}/{ton} = {hon / ton:.4f} "
-          f"nIoC {hon / ton * N:.3f}  z={z(hon, ton, CHANCE):+.2f}")
-    print(f"  paired drifting, complement:    {hoff}/{toff} = {hoff / toff:.4f} "
-          f"nIoC {hoff / toff * N:.3f}  z={z(hoff, toff, CHANCE):+.2f}")
+    print(
+        f"  paired drifting, phase-matched: {hon}/{ton} = {hon / ton:.4f} "
+        f"nIoC {hon / ton * N:.3f}  z={z(hon, ton, CHANCE):+.2f}"
+    )
+    print(
+        f"  paired drifting, complement:    {hoff}/{toff} = {hoff / toff:.4f} "
+        f"nIoC {hoff / toff * N:.3f}  z={z(hoff, toff, CHANCE):+.2f}"
+    )
 
     # --- scan the period ----------------------------------------------------
     print("\nPERIOD SCAN (bucketed, continuous phase)")
@@ -189,13 +205,17 @@ def main() -> None:
         mark = "   <== 29" if p == 29 else ""
         print(f"    P={p:>4}: {h / t:.4f}  nIoC {h / t * N:.3f}  z={zz:+5.2f}{mark}")
     rank = [p for _, p, _, _ in rows].index(29) + 1
-    print(f"  29 ranks {rank} of {len(rows)}; scan max |z| {max(abs(r[0]) for r in rows):.2f}"
-          f" (noise expects ~{math.sqrt(2 * math.log(len(rows))):.2f})")
+    print(
+        f"  29 ranks {rank} of {len(rows)}; scan max |z| {max(abs(r[0]) for r in rows):.2f}"
+        f" (noise expects ~{math.sqrt(2 * math.log(len(rows))):.2f})"
+    )
 
     # --- also: phase-only, no disk at all -----------------------------------
     h, t = bucket_coincidence(stream, word_id, 1)
-    print(f"\n  phase alone (i mod 5, no disk): {h}/{t} = {h / t:.4f} "
-          f"nIoC {h / t * N:.3f}  z={z(h, t, CHANCE):+.2f}")
+    print(
+        f"\n  phase alone (i mod 5, no disk): {h}/{t} = {h / t:.4f} "
+        f"nIoC {h / t * N:.3f}  z={z(h, t, CHANCE):+.2f}"
+    )
     print("  (a continuous global phase with NO per-word step would show here)")
 
 

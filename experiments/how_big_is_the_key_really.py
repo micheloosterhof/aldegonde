@@ -66,13 +66,19 @@ def main() -> None:
 
     print("is a structured g consistent with the body's coincidence profile?\n")
     print(f"{'pool':<36}{'n':>9}{'best':>9}{'1st pct':>10}{'median':>9}")
-    for label, v in (("structured: fix 4, step 25 by five", structured),
-                     ("free five-cycle permutations", free)):
-        print(f"{label:<36}{len(v):>9,}{v.min():>9.2f}"
-              f"{np.percentile(v, 1):>10.2f}{np.median(v):>9.1f}")
-    print("\nThe tails match, so the profile does not prefer either family. A structured"
-          "\ng is consistent; it is not evidence FOR one, and the filter is worth 6.2"
-          "\nbits on individuals rather than on populations.")
+    for label, v in (
+        ("structured: fix 4, step 25 by five", structured),
+        ("free five-cycle permutations", free),
+    ):
+        print(
+            f"{label:<36}{len(v):>9,}{v.min():>9.2f}"
+            f"{np.percentile(v, 1):>10.2f}{np.median(v):>9.1f}"
+        )
+    print(
+        "\nThe tails match, so the profile does not prefer either family. A structured"
+        "\ng is consistent; it is not evidence FOR one, and the filter is worth 6.2"
+        "\nbits on individuals rather than on populations."
+    )
 
     vocab = collections.Counter()
     for c in prose:
@@ -80,23 +86,32 @@ def main() -> None:
             vocab[tuple(w)] += 1
     keywords = sum(1 for w in vocab if len(set(w)) == len(w) and 3 <= len(w) <= 12)
     free_perm = log2(factorial(M) // 2)
-    free_g = log2(sum(comb(M, 5 * k) * factorial(5 * k) // (5**k * factorial(k))
-                      for k in range(1, 6)))
+    free_g = log2(
+        sum(
+            comb(M, 5 * k) * factorial(5 * k) // (5**k * factorial(k))
+            for k in range(1, 6)
+        )
+    )
     struct = log2(comb(M, 4))
     kw = log2(keywords)
 
-    print(f"\n\nkeyword supply: {len(vocab):,} prose word types, {keywords:,} with "
-          f"all-distinct runes and 3-12 of them = {kw:.1f} bits\n")
-    print(f"{'how the key was built':<34}{'g':>8}{'sigma':>8}{'base':>8}"
-          f"{'bits':>7}{'keys':>10}")
+    print(
+        f"\n\nkeyword supply: {len(vocab):,} prose word types, {keywords:,} with "
+        f"all-distinct runes and 3-12 of them = {kw:.1f} bits\n"
+    )
+    print(
+        f"{'how the key was built':<34}{'g':>8}{'sigma':>8}{'base':>8}"
+        f"{'bits':>7}{'keys':>10}"
+    )
     for label, a, b, c in (
         ("every part a free permutation", free_g, free_perm, free_perm),
         ("g structured, the rest free", struct, free_perm, free_perm),
         ("every part naturally built", struct, kw, kw),
     ):
         t = a + b + c
-        print(f"{label:<34}{a:>8.1f}{b:>8.1f}{c:>8.1f}{t:>7.1f}"
-              f"{f'1e{t * 0.301:.0f}':>10}")
+        print(
+            f"{label:<34}{a:>8.1f}{b:>8.1f}{c:>8.1f}{t:>7.1f}{f'1e{t * 0.301:.0f}':>10}"
+        )
 
     total = struct + kw + kw
     keys = 2**total

@@ -44,8 +44,11 @@ def main() -> None:
         rune_gap = pos[1] - pos[0]
         block_gap = wid[pos[1]] - wid[pos[0]]
         print(f"  rune offsets {pos}, rune gap {rune_gap}, block gap {block_gap}")
-        print(f"  rune gap mod 5 = {rune_gap % 5}"
-              f"   ({rune_gap} = 5 x {rune_gap // 5})" if rune_gap % 5 == 0 else "")
+        print(
+            f"  rune gap mod 5 = {rune_gap % 5}   ({rune_gap} = 5 x {rune_gap // 5})"
+            if rune_gap % 5 == 0
+            else ""
+        )
 
     print(
         "\nUnder a continuous clock a state return REQUIRES the rune gap to be divisible"

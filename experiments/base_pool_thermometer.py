@@ -85,8 +85,10 @@ def invert(curve: dict[int, np.ndarray], value: float) -> tuple[float, float, fl
 
     point = cross(np.median)
     # a high count means a small pool, so the 90th percentile bounds the pool below
-    return point, cross(lambda v: np.percentile(v, 90)), cross(
-        lambda v: np.percentile(v, 10)
+    return (
+        point,
+        cross(lambda v: np.percentile(v, 90)),
+        cross(lambda v: np.percentile(v, 10)),
     )
 
 
@@ -101,8 +103,10 @@ def main() -> None:
     rng = random.Random(77)
     g = order5_fixing(rng.sample(range(M), 4), rng)
 
-    print(f"corpus: identical {lp['identical']}, long {lp['long']}, "
-          f"returns {lp['returns']}\n")
+    print(
+        f"corpus: identical {lp['identical']}, long {lp['long']}, "
+        f"returns {lp['returns']}\n"
+    )
     print(f"{'pool':>7}{'identical':>22}{'returns':>20}")
     print(f"{'':>7}{'median [10th, 90th]':>22}{'median [10th, 90th]':>20}")
     curves: dict[str, dict[int, np.ndarray]] = {"identical": {}, "returns": {}}
@@ -123,8 +127,10 @@ def main() -> None:
     for key in ("identical", "returns"):
         point, low, high = invert(curves[key], lp[key])
         fmt = lambda x: "inf" if x == float("inf") else f"{x:,.0f}"  # noqa: E731
-        print(f"  {key:<11} {lp[key]:>5.0f}  ->  pool {fmt(point)}  "
-              f"[{fmt(low)}, {fmt(high)}]")
+        print(
+            f"  {key:<11} {lp[key]:>5.0f}  ->  pool {fmt(point)}  "
+            f"[{fmt(low)}, {fmt(high)}]"
+        )
 
     print(
         "\nIf one walk produced the body, the two intervals must overlap. Where they do"

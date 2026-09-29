@@ -30,10 +30,14 @@ from aldegonde import c3301
 MOD = 29
 OBSERVED = 0.0063
 RESTARTS = 60
-CYCLES = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14],
-          [15, 16, 17, 18, 19], [20, 21, 22, 23, 24]]
+CYCLES = [
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8, 9],
+    [10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24],
+]
 FIXED_SLOTS = [25, 26, 27, 28]
-
 
 
 def transliterate(word: str) -> list[int] | None:
@@ -100,8 +104,12 @@ def main() -> None:
     rng = random.Random(11)
     floor = min_doublet_rate(f, rng)
     print(f"random order-5 g doublet rate : ~{1 / MOD:.4f}")
-    print(f"cipher achieves               : {OBSERVED:.4f}  ({(1 / MOD) / OBSERVED:.1f}x below random)")
-    print(f"minimum over order-5 perms    : {floor:.4f}  ({OBSERVED / max(floor, 1e-9):.0f}x below the cipher)")
+    print(
+        f"cipher achieves               : {OBSERVED:.4f}  ({(1 / MOD) / OBSERVED:.1f}x below random)"
+    )
+    print(
+        f"minimum over order-5 perms    : {floor:.4f}  ({OBSERVED / max(floor, 1e-9):.0f}x below the cipher)"
+    )
     print("\n=> g suppresses doublets deliberately (well below random) but is far")
     print("   from the achievable floor, so doublet-minimisation is not its design")
     print("   goal -- the 0.0063 reads as a byproduct of another rule.")

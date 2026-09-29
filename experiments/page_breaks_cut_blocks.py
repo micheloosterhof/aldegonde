@@ -72,21 +72,29 @@ def blocks_with_page_context():
 def main() -> None:
     rows, clean = blocks_with_page_context()
     lengths = np.array([n for n, _ in rows], float)
-    print(f"{len(clean)} page breaks: {sum(clean)} with a separator before them, "
-          f"{len(clean) - sum(clean)} with a rune\n")
+    print(
+        f"{len(clean)} page breaks: {sum(clean)} with a separator before them, "
+        f"{len(clean) - sum(clean)} with a rune\n"
+    )
 
     groups = collections.defaultdict(list)
     for n, follows in rows:
         if follows is not None:
             groups["separator before" if clean[follows] else "rune before"].append(n)
-    print(f"{'first block of the new page':>30}{'n':>5}{'mean':>8}"
-          f"{'1 rune':>9}{'2 runes':>10}")
+    print(
+        f"{'first block of the new page':>30}{'n':>5}{'mean':>8}"
+        f"{'1 rune':>9}{'2 runes':>10}"
+    )
     for key in ("rune before", "separator before"):
         a = np.array(groups[key], float)
-        print(f"{key:>30}{len(a):>5}{a.mean():>8.3f}{(a == 1).mean():>9.3f}"
-              f"{(a == 2).mean():>10.3f}")
-    print(f"{'every block':>30}{len(lengths):>5}{lengths.mean():>8.3f}"
-          f"{(lengths == 1).mean():>9.3f}{(lengths == 2).mean():>10.3f}")
+        print(
+            f"{key:>30}{len(a):>5}{a.mean():>8.3f}{(a == 1).mean():>9.3f}"
+            f"{(a == 2).mean():>10.3f}"
+        )
+    print(
+        f"{'every block':>30}{len(lengths):>5}{lengths.mean():>8.3f}"
+        f"{(lengths == 1).mean():>9.3f}{(lengths == 2).mean():>10.3f}"
+    )
     print(
         "\nAfter a break with a rune before it the first block is 1 rune eight times as"
         "\noften as a block should be. After a break with a separator before it, it is"
@@ -97,8 +105,10 @@ def main() -> None:
     author = word_lengths()
     af2 = sum(1 for x in author if x == 2) / len(author)
     ase = math.sqrt(af2 * (1 - af2) / len(author))
-    print(f"{'parse':<26}{'blocks':>8}{'mean':>8}{'frac 2':>9}{'seam':>9}"
-          f"{'d1 within':>11}{'z vs author':>13}")
+    print(
+        f"{'parse':<26}{'blocks':>8}{'mean':>8}{'frac 2':>9}{'seam':>9}"
+        f"{'d1 within':>11}{'z vs author':>13}"
+    )
     for join in (False, True):
         stream, wid = load_clean(join)
         words = [[] for _ in range(wid[-1] + 1)]
@@ -116,9 +126,11 @@ def main() -> None:
         f2 = float((lens == 2).mean())
         se = math.sqrt(f2 * (1 - f2) / len(lens))
         label = "joined at page breaks" if join else "as recorded everywhere"
-        print(f"{label:<26}{len(lens):>8,}{lens.mean():>8.3f}{f2:>9.4f}{seam:>9.4f}"
-              f"{hits / pairs:>11.4f}"
-              f"{(f2 - af2) / math.sqrt(se**2 + ase**2):>+13.2f}")
+        print(
+            f"{label:<26}{len(lens):>8,}{lens.mean():>8.3f}{f2:>9.4f}{seam:>9.4f}"
+            f"{hits / pairs:>11.4f}"
+            f"{(f2 - af2) / math.sqrt(se**2 + ase**2):>+13.2f}"
+        )
     print(
         "\nThe correction moves every block-level number by about one percent and makes"
         "\nthe hole at length 2 deeper, not shallower. `load_clean` takes join_pages to"

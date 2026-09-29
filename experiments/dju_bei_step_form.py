@@ -29,7 +29,7 @@ from __future__ import annotations
 
 GAP = 1449
 PREDICTED_EXCESS = 10853.0  # base_pool_floor.py: excess pairs for a pool of N is this/N
-OBSERVED_UPPER = 4.0        # 95% upper bound on the observed excess
+OBSERVED_UPPER = 4.0  # 95% upper bound on the observed excess
 
 
 def main() -> None:
@@ -37,9 +37,13 @@ def main() -> None:
     ceiling = PREDICTED_EXCESS / OBSERVED_UPPER
     print(f"DJU-BEI word gap {GAP} = 3^2 x 7 x 23")
     print(f"divisors: {divisors}\n")
-    print(f"base_pool_floor.py: a pool of N predicts {PREDICTED_EXCESS:.0f}/N excess pairs")
-    print(f"observed 95% upper bound {OBSERVED_UPPER:+.1f}, so pools below"
-          f" {ceiling:,.0f} are excluded\n")
+    print(
+        f"base_pool_floor.py: a pool of N predicts {PREDICTED_EXCESS:.0f}/N excess pairs"
+    )
+    print(
+        f"observed 95% upper bound {OBSERVED_UPPER:+.1f}, so pools below"
+        f" {ceiling:,.0f} are excluded\n"
+    )
     print(f"{'ord(sigma)':>11}{'predicted excess':>18}{'verdict':>12}")
     for d in divisors:
         e = PREDICTED_EXCESS / d

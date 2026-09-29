@@ -81,7 +81,9 @@ def gap_of(rows):
     if len(before) < MIN_MARKS or len(interior) < 30:
         return None
     a, b = np.array(before, float), np.array(interior, float)
-    se = math.hypot(a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b)))
+    se = math.hypot(
+        a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b))
+    )
     return float(a.mean() - b.mean()), se, len(a)
 
 

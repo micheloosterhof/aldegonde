@@ -69,8 +69,10 @@ def main() -> None:
             best, where = scan(spliced, width)
             off = abs(where - 6000)
             verdict = "FOUND" if off <= width // 4 else "missed"
-            print(f"width {width:>4}: planted plaintext at 6000, scan maximum "
-                  f"{best:.3f} at {where} (offset {off}) -- {verdict}")
+            print(
+                f"width {width:>4}: planted plaintext at 6000, scan maximum "
+                f"{best:.3f} at {where} (offset {off}) -- {verdict}"
+            )
         return
 
     print(f"{'width':>6}{'body max':>10}{'at':>8}{'shuffled null max':>20}{'z':>8}")
@@ -83,8 +85,10 @@ def main() -> None:
             nulls.append(scan(sh, width)[0])
         mu = sum(nulls) / len(nulls)
         sd = (sum((x - mu) ** 2 for x in nulls) / len(nulls)) ** 0.5
-        print(f"{width:>6}{best:>10.3f}{where:>8}{mu:>13.3f} +-{sd:.3f}"
-              f"{(best - mu) / sd:>+8.2f}")
+        print(
+            f"{width:>6}{best:>10.3f}{where:>8}{mu:>13.3f} +-{sd:.3f}"
+            f"{(best - mu) / sd:>+8.2f}"
+        )
     print(
         "\nThe author's own plaintext reads 1.80 and a monoalphabetic substitution of it"
         "\nreads the same, so either would stand far above these maxima. The body's best"

@@ -55,8 +55,11 @@ def within(k: int):
 def main() -> None:
     a, b = corpus(False), corpus(True)
     print("every headline body statistic under both tokenizations\n")
-    print("{:<32}{:>14}{:>14}{:>11}".format(
-        "statistic", "as recorded", "page-joined", "change"))
+    print(
+        "{:<32}{:>14}{:>14}{:>11}".format(
+            "statistic", "as recorded", "page-joined", "change"
+        )
+    )
 
     rates = []
 
@@ -68,14 +71,25 @@ def main() -> None:
 
     row("blocks", lambda s, w: len(w), rate=False)
     row("mean block length", lambda s, w: sum(len(x) for x in w) / len(w), rate=False)
-    row("fraction at length 2",
-        lambda s, w: sum(1 for x in w if len(x) == 2) / len(w), rate=False)
+    row(
+        "fraction at length 2",
+        lambda s, w: sum(1 for x in w if len(x) == 2) / len(w),
+        rate=False,
+    )
     for k in range(1, 8):
         row(f"within-block d{k}", within(k))
-    row("seam", lambda s, w: sum(
-        1 for x, y in zip(w, w[1:]) if x and y and x[-1] == y[0]) / (len(w) - 1))
-    row("stream doublet rate", lambda s, w: sum(
-        1 for i in range(len(s) - 1) if s[i] == s[i + 1]) / (len(s) - 1))
+    row(
+        "seam",
+        lambda s, w: (
+            sum(1 for x, y in zip(w, w[1:]) if x and y and x[-1] == y[0]) / (len(w) - 1)
+        ),
+    )
+    row(
+        "stream doublet rate",
+        lambda s, w: (
+            sum(1 for i in range(len(s) - 1) if s[i] == s[i + 1]) / (len(s) - 1)
+        ),
+    )
 
     def ioc(stream, words):
         c = collections.Counter(stream)

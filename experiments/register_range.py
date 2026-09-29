@@ -83,35 +83,50 @@ def main() -> None:
         e = h / n * n_body
         chi = float((((body_h - e) ** 2) / np.maximum(e, 1e-9)).sum())
         resid2 = (body_h[1] - e[1]) / np.sqrt(max(e[1], 1e-9))
-        rows.append((
-            h[1] / n,
-            title_of(path),
-            n,
-            float(sum((i + 1) * h[i] for i in range(CAP)) / n),
-            chi,
-            resid2,
-        ))
+        rows.append(
+            (
+                h[1] / n,
+                title_of(path),
+                n,
+                float(sum((i + 1) * h[i] for i in range(CAP)) / n),
+                chi,
+                resid2,
+            )
+        )
 
-    print(f"body: {n_body:,} blocks, fraction at length 2 = {body_f2:.4f}, "
-          f"mean {body_mean:.2f}")
-    print(f"the author's own solved pages: {len(solved)} words, "
-          f"fraction {solved_f2:.4f}\n")
-    print(f"{'register':>28}{'words':>9}{'frac 2':>9}{'mean':>7}"
-          f"{'chi2 vs body':>14}{'resid at 2':>12}")
+    print(
+        f"body: {n_body:,} blocks, fraction at length 2 = {body_f2:.4f}, "
+        f"mean {body_mean:.2f}"
+    )
+    print(
+        f"the author's own solved pages: {len(solved)} words, "
+        f"fraction {solved_f2:.4f}\n"
+    )
+    print(
+        f"{'register':>28}{'words':>9}{'frac 2':>9}{'mean':>7}"
+        f"{'chi2 vs body':>14}{'resid at 2':>12}"
+    )
     for f2, title, n, mean, chi, r2 in sorted(rows):
         print(f"{title:>28}{n:>9,}{f2:>9.4f}{mean:>7.2f}{chi:>14.1f}{r2:>12.1f}")
 
     f = np.array([r[0] for r in rows])
-    print(f"\n{len(rows)} registers: min {f.min():.4f}, max {f.max():.4f}, "
-          f"median {np.median(f):.4f}")
-    print(f"  the author's solved pages sit at {solved_f2:.4f}, "
-          f"the {int((f < solved_f2).mean() * 100)}th percentile of that range")
-    print(f"  registers at or below the body's {body_f2:.4f}: "
-          f"{int((f <= body_f2).sum())}")
+    print(
+        f"\n{len(rows)} registers: min {f.min():.4f}, max {f.max():.4f}, "
+        f"median {np.median(f):.4f}"
+    )
+    print(
+        f"  the author's solved pages sit at {solved_f2:.4f}, "
+        f"the {int((f < solved_f2).mean() * 100)}th percentile of that range"
+    )
+    print(
+        f"  registers at or below the body's {body_f2:.4f}: {int((f <= body_f2).sum())}"
+    )
 
     best = min(rows, key=lambda r: r[4])
-    print(f"\nbest-fitting register overall: {best[1]}, chi2 {best[4]:.1f} on 11 df, "
-          f"residual at length 2 {best[5]:+.1f}")
+    print(
+        f"\nbest-fitting register overall: {best[1]}, chi2 {best[4]:.1f} on 11 df, "
+        f"residual at length 2 {best[5]:+.1f}"
+    )
 
     match = min(rows, key=lambda r: abs(r[3] - body_mean))
     print(

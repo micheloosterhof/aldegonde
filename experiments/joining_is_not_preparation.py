@@ -79,21 +79,27 @@ def main() -> None:
     bse = math.sqrt(bf * (1 - bf) / len(body))
 
     print("fraction of 2-rune units, by how the page is enciphered\n")
-    print(f"{'cipher':<24}{'pages':>7}{'words':>7}{'frac 2':>9}{'se':>8}"
-          f"{'z vs the body':>15}")
+    print(
+        f"{'cipher':<24}{'pages':>7}{'words':>7}{'frac 2':>9}{'se':>8}"
+        f"{'z vs the body':>15}"
+    )
     for cipher in ORDER:
         lengths = groups[cipher]
         if not lengths:
             continue
         f = sum(1 for x in lengths if x == 2) / len(lengths)
         se = math.sqrt(f * (1 - f) / len(lengths))
-        print(f"{cipher:<24}{counts[cipher]:>7}{len(lengths):>7}{f:>9.4f}{se:>8.4f}"
-              f"{(bf - f) / math.sqrt(se**2 + bse**2):>15.2f}")
+        print(
+            f"{cipher:<24}{counts[cipher]:>7}{len(lengths):>7}{f:>9.4f}{se:>8.4f}"
+            f"{(bf - f) / math.sqrt(se**2 + bse**2):>15.2f}"
+        )
     enciphered = [x for c in ORDER[1:] for x in groups[c]]
     f = sum(1 for x in enciphered if x == 2) / len(enciphered)
     se = math.sqrt(f * (1 - f) / len(enciphered))
-    print(f"{'ALL enciphered pages':<24}{'':>7}{len(enciphered):>7}{f:>9.4f}{se:>8.4f}"
-          f"{(bf - f) / math.sqrt(se**2 + bse**2):>15.2f}")
+    print(
+        f"{'ALL enciphered pages':<24}{'':>7}{len(enciphered):>7}{f:>9.4f}{se:>8.4f}"
+        f"{(bf - f) / math.sqrt(se**2 + bse**2):>15.2f}"
+    )
     print(f"{'THE BODY':<24}{'':>7}{len(body):>7}{bf:>9.4f}{bse:>8.4f}")
 
     print(

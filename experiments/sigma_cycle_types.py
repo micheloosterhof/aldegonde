@@ -68,9 +68,15 @@ def main() -> None:
         high = [p for p in parts if order(p) >= floor]
         even = [p for p in high if is_even(p)]
         print(f"ord(sigma) >= {floor}  ({label})")
-        print(f"  cycle types: {len(high)} of {len(parts):,}, of which even {len(even)}")
-        print(f"  all parities: {frac(high):.5f} of S29  ({math.log2(1 / frac(high)):.1f} bits)")
-        print(f"  even only   : {frac(even):.5f} of S29  ({math.log2(1 / frac(even)):.1f} bits)")
+        print(
+            f"  cycle types: {len(high)} of {len(parts):,}, of which even {len(even)}"
+        )
+        print(
+            f"  all parities: {frac(high):.5f} of S29  ({math.log2(1 / frac(high)):.1f} bits)"
+        )
+        print(
+            f"  even only   : {frac(even):.5f} of S29  ({math.log2(1 / frac(even)):.1f} bits)"
+        )
         if len(even) <= 3:
             for p in even:
                 print(f"    the surviving type: {p}, order {order(p)}")

@@ -162,7 +162,11 @@ def d_profile(blocks, distances=DISTANCES):
                 trials += 1
                 hits += b[i] == b[i + k]
         p = hits / trials if trials else float("nan")
-        out[k] = (p, math.sqrt(p * (1 - p) / trials) if trials else float("nan"), trials)
+        out[k] = (
+            p,
+            math.sqrt(p * (1 - p) / trials) if trials else float("nan"),
+            trials,
+        )
     return out
 
 

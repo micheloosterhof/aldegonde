@@ -73,8 +73,10 @@ def homogeneity(cells: list[tuple[int, int]], label: str) -> None:
     df = len(used) - 1
     crit = df + 1.645 * math.sqrt(2 * df)
     verdict = "homogeneous" if chi < crit else "NOT homogeneous"
-    print(f"  {label:<22} pooled {rate:.4f}  chi2 {chi:>6.1f} on {df:>2} df "
-          f"(5% crit {crit:.1f})  {verdict}")
+    print(
+        f"  {label:<22} pooled {rate:.4f}  chi2 {chi:>6.1f} on {df:>2} df "
+        f"(5% crit {crit:.1f})  {verdict}"
+    )
 
 
 def main() -> None:
@@ -100,17 +102,23 @@ def main() -> None:
         mu = sum(iocs) / len(iocs)
         sd = (sum((x - mu) ** 2 for x in iocs) / len(iocs)) ** 0.5
         expected = sum(math.sqrt(2 / len(s)) for s, _w in kept) / len(kept)
-        print(f"  {'normalised IoC':<22} mean {mu:.4f}  sd {sd:.4f}  "
-              f"(sampling alone predicts ~{expected:.4f})")
+        print(
+            f"  {'normalised IoC':<22} mean {mu:.4f}  sd {sd:.4f}  "
+            f"(sampling alone predicts ~{expected:.4f})"
+        )
         worst = max(range(len(iocs)), key=lambda i: abs(iocs[i] - mu))
-        print(f"  {'':22} most extreme unit: {iocs[worst]:.4f} "
-              f"at {(iocs[worst] - mu) / sd:+.2f} sd, {len(kept[worst][0])} runes")
+        print(
+            f"  {'':22} most extreme unit: {iocs[worst]:.4f} "
+            f"at {(iocs[worst] - mu) / sd:+.2f} sd, {len(kept[worst][0])} runes"
+        )
 
     cc = collections.Counter(control)
     nc = len(control)
     ioc_c = M * sum(v * (v - 1) for v in cc.values()) / (nc * (nc - 1))
     print(f"\npositive control: chunk 72 is the Parable, stored as PLAINTEXT.")
-    print(f"  {nc} runes, normalised IoC {ioc_c:.3f} -- it stands out at +7 sd when left in,")
+    print(
+        f"  {nc} runes, normalised IoC {ioc_c:.3f} -- it stands out at +7 sd when left in,"
+    )
     print("  so this test would find a plaintext or monoalphabetic page in the body.")
     print(
         "\nOne cipher, uniformly applied. No section or page carries a weaker variant,"

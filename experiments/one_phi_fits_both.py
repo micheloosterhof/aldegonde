@@ -56,8 +56,10 @@ def main() -> None:
             keys = int(sys.argv[i + 1])
 
     d1, seam = rates(lp_words())
-    print(f"the body: within-block d1 {d1:.4f}, seam {seam:.4f}, "
-          f"ratio {seam / d1:.2f}   (chance {1 / M:.4f})\n")
+    print(
+        f"the body: within-block d1 {d1:.4f}, seam {seam:.4f}, "
+        f"ratio {seam / d1:.2f}   (chance {1 / M:.4f})\n"
+    )
 
     corpora = list(prose_corpora(2928, keys))
     rk = random.Random(13)
@@ -79,13 +81,17 @@ def main() -> None:
         za = (d1 - a.mean()) / a.std()
         zb = (seam - b.mean()) / b.std()
         rows.append((phi, za, zb))
-        print(f"{phi:>6.2f}{f'{a.mean():.4f} +- {a.std():.4f}':>22}{za:>7.2f}"
-              f"{f'{b.mean():.4f} +- {b.std():.4f}':>22}{zb:>7.2f}"
-              f"{b.mean() / a.mean():>8.2f}")
+        print(
+            f"{phi:>6.2f}{f'{a.mean():.4f} +- {a.std():.4f}':>22}{za:>7.2f}"
+            f"{f'{b.mean():.4f} +- {b.std():.4f}':>22}{zb:>7.2f}"
+            f"{b.mean() / a.mean():>8.2f}"
+        )
 
     both = [phi for phi, za, zb in rows if abs(za) <= 1 and abs(zb) <= 1]
-    print(f"\nboth observables within one sigma: phi in "
-          f"[{min(both):.2f}, {max(both):.2f}]")
+    print(
+        f"\nboth observables within one sigma: phi in "
+        f"[{min(both):.2f}, {max(both):.2f}]"
+    )
     print(
         "\nOne parameter lands both. At phi = 0.90 the within-block rate is -0.39 sigma"
         "\nand the seam +0.09."

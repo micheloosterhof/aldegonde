@@ -143,7 +143,9 @@ def main() -> None:
     print("  (the transcription gives 4.42 for the body, so the reader is close)\n")
 
     print(f"{'whitespace band':<26}{'breaks':>8}{'word before':>15}{'word after':>14}")
-    print(f"{'all one-dot breaks':<26}{len(lengths):>8}{lengths.mean():>15.2f}{after.mean():>14.2f}")
+    print(
+        f"{'all one-dot breaks':<26}{len(lengths):>8}{lengths.mean():>15.2f}{after.mean():>14.2f}"
+    )
     for q in DECILES:
         cut = float(np.quantile(white, q))
         sel = white >= cut

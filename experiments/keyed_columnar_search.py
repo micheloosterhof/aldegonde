@@ -124,17 +124,25 @@ def main() -> None:
             return (g2(rest)[0] - base[k]) / npair[k]
 
         rules = [
-            (c, o) for c in range(2, max_cols + 1) for o in itertools.permutations(range(c))
+            (c, o)
+            for c in range(2, max_cols + 1)
+            for o in itertools.permutations(range(c))
         ]
         sa = sorted(((excess("A", r), r) for r in rules), reverse=True)
         sb = sorted(((excess("B", r), r) for r in rules), reverse=True)
-        print(f"best rule on half A: {sa[0][0]:.4f}  cols {sa[0][1][0]} order {sa[0][1][1]}")
+        print(
+            f"best rule on half A: {sa[0][0]:.4f}  cols {sa[0][1][0]} order {sa[0][1][1]}"
+        )
         print(f"   the same rule on B: {excess('B', sa[0][1]):+.4f}")
-        print(f"best rule on half B: {sb[0][0]:.4f}  cols {sb[0][1][0]} order {sb[0][1][1]}")
+        print(
+            f"best rule on half B: {sb[0][0]:.4f}  cols {sb[0][1][0]} order {sb[0][1][1]}"
+        )
         print(f"   the same rule on A: {excess('A', sb[0][1]):+.4f}")
         rank = next(i for i, (_s, r) in enumerate(sb) if r == sa[0][1]) + 1
         print(f"\nA's winner ranks {rank:,} of {len(rules):,} on B -- the median.")
-        print("Neither winner survives the move. The full-corpus maximum is overfitting.")
+        print(
+            "Neither winner survives the move. The full-corpus maximum is overfitting."
+        )
         return
 
     if "--null" in sys.argv:
@@ -146,8 +154,10 @@ def main() -> None:
                 t = p[:]
                 rng.shuffle(t)
                 shuffled.append(t)
-            print(f"replicate {rep}: search maximum {search(shuffled, max_cols)[0][0]:.4f}",
-                  flush=True)
+            print(
+                f"replicate {rep}: search maximum {search(shuffled, max_cols)[0][0]:.4f}",
+                flush=True,
+            )
         return
 
     if "--control" in sys.argv:
@@ -169,8 +179,10 @@ def main() -> None:
 
     pages = page_lengths()
     rows = search(pages, max_cols)
-    print(f"{len(pages)} pages, {sum(len(p) for p in pages):,} blocks, "
-          f"{len(rows):,} keyed rules\n")
+    print(
+        f"{len(pages)} pages, {sum(len(p) for p in pages):,} blocks, "
+        f"{len(rows):,} keyed rules\n"
+    )
     print(f"{'excess/pair':>13}  columns  order")
     for e, c, o in rows[:8]:
         print(f"{e:>13.4f}  {c:>7}  {o}")

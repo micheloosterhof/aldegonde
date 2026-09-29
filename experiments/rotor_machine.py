@@ -134,7 +134,9 @@ def main() -> None:
     rng = random.Random(3301)
 
     # --- self-test: round trip -------------------------------------------
-    m = RotorMachine([random_perm(rng) for _ in range(3)], random_perm(rng), random_perm(rng))
+    m = RotorMachine(
+        [random_perm(rng) for _ in range(3)], random_perm(rng), random_perm(rng)
+    )
     plain = [rng.randrange(N) for _ in range(500)]
     assert m.decipher(m.encipher(plain)) == plain, "round trip failed"
     print("self-test: encrypt/decrypt round-trip OK")
@@ -174,7 +176,9 @@ def main() -> None:
             for t in range(60)
         )
         assert rel_ok, "adjacent-relation form failed"
-        print(f"  trial {trial}: identity holds, ord(V)={order(V)}, ord(s)={order(s)}  OK")
+        print(
+            f"  trial {trial}: identity holds, ord(V)={order(V)}, ord(s)={order(s)}  OK"
+        )
 
     print(
         "\n  => a single stepping rotor has EXACTLY 29 alphabets, period 29,\n"

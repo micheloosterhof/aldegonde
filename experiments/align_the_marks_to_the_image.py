@@ -177,7 +177,9 @@ def split(rows):
     n = np.array([b for _, b in rows], float)
     cut = float(np.median(w))
     hi, lo = n[w >= cut], n[w < cut]
-    se = math.hypot(hi.std(ddof=1) / math.sqrt(len(hi)), lo.std(ddof=1) / math.sqrt(len(lo)))
+    se = math.hypot(
+        hi.std(ddof=1) / math.sqrt(len(hi)), lo.std(ddof=1) / math.sqrt(len(lo))
+    )
     return hi.mean(), lo.mean(), hi.mean() - lo.mean(), se, len(hi), len(lo)
 
 
@@ -188,7 +190,9 @@ def main() -> None:
         f"four-dots: {len(four)} marks on {pages4} pages where image and transcription"
         f" agree.\none-dots:  {len(one)} on {pages1} pages, as the layout control.\n"
     )
-    print(f"{'mark':<12}{'n':>6}{'wide gap':>11}{'narrow':>9}{'difference':>18}{'r':>9}")
+    print(
+        f"{'mark':<12}{'n':>6}{'wide gap':>11}{'narrow':>9}{'difference':>18}{'r':>9}"
+    )
     for label, rows in (("four-dot", four), ("one-dot", one)):
         if len(rows) < 20:
             print(f"{label:<12}{len(rows):>6}   too few")

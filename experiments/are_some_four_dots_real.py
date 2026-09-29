@@ -135,13 +135,17 @@ def gap(sample, interior):
     a, b = np.array(sample, float), np.array(interior, float)
     if len(a) < 4:
         return float("nan"), float("nan"), len(a)
-    se = math.hypot(a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b)))
+    se = math.hypot(
+        a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b))
+    )
     return float(a.mean() - b.mean()), se, len(a)
 
 
 def report(label, rows, closer):
     at_end, mid, interior = cells(rows, closer)
-    print(f"\n{label}   interior mean {np.mean(interior):.2f} on {len(interior):,} blocks\n")
+    print(
+        f"\n{label}   interior mean {np.mean(interior):.2f} on {len(interior):,} blocks\n"
+    )
     print(f"{'subset':<34}{'marks':>7}{'final gap':>18}")
     out = {}
     for name, sample in (("closed AT a line end", at_end), ("closed mid-line", mid)):
@@ -153,7 +157,9 @@ def report(label, rows, closer):
     if not (math.isnan(a[0]) or math.isnan(b[0])):
         d = a[0] - b[0]
         se = math.hypot(a[1], b[1])
-        print(f"{'difference':<34}{'':>7}{f'{d:+.2f} +- {se:.2f}':>18}   z = {d / se:+.2f}")
+        print(
+            f"{'difference':<34}{'':>7}{f'{d:+.2f} +- {se:.2f}':>18}   z = {d / se:+.2f}"
+        )
     return out
 
 

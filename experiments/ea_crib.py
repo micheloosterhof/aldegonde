@@ -29,7 +29,6 @@ WORD_BOUNDARIES = set(
 )
 
 
-
 def to_runeglish(word: str) -> list[str] | None:
     """Encode an English word to a runeglish rune list, or None if it has a
     character outside the supported set."""

@@ -63,7 +63,9 @@ def main() -> None:
     reg = load_register()
     n_reg = sum(len(v) for v in reg.values())
     words = load_words()
-    print(f"register: {n_reg} words (data/register_vocab.txt); corpus: {len(words)} words\n")
+    print(
+        f"register: {n_reg} words (data/register_vocab.txt); corpus: {len(words)} words\n"
+    )
 
     doubles, singles = [], []
     for i, w in enumerate(words):

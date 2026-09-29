@@ -144,7 +144,9 @@ def plaintext_sequences() -> list[list[int]]:
 
     pages = MASTER.read_text().split("%")
     seqs = [[len(w) for w in words_of(pages[n])] for n in PLAIN_PAGES]
-    for t in json.loads((ROOT / "experiments" / "solved_page_triples.json").read_text()):
+    for t in json.loads(
+        (ROOT / "experiments" / "solved_page_triples.json").read_text()
+    ):
         key = t["key"] if t["cipher"] == "monoalphabetic" else None
         seqs.append([len(w) for w in words_of(pages[t["page"]], key)])
     return seqs
@@ -198,8 +200,10 @@ def tokenize_sweep(rng: random.Random) -> None:
     """Is the missing structure a segmentation artifact? No, under any convention."""
     import itertools  # noqa: PLC0415
 
-    print(f"{'wrap':>6}{'multi':>7}{'%':>5}{chr(34):>5}{'words':>8}{'mean':>7}"
-          f"{'2-rune':>9}{'excess/pair':>15}")
+    print(
+        f"{'wrap':>6}{'multi':>7}{'%':>5}{chr(34):>5}{'words':>8}{'mean':>7}"
+        f"{'2-rune':>9}{'excess/pair':>15}"
+    )
     best = None
     for w, m, p, q in itertools.product([False, True], repeat=4):
         seqs = tokenize(w, m, p, q)
@@ -238,8 +242,10 @@ def floor_probe(rng: random.Random) -> None:
         if not vals:
             continue
         lowest.append(min(vals))
-        print(f"{name:<14}{len(vals):>9}{min(vals):>9.4f}"
-              f"{statistics.median(vals):>9.4f}{max(vals):>9.4f}")
+        print(
+            f"{name:<14}{len(vals):>9}{min(vals):>9.4f}"
+            f"{statistics.median(vals):>9.4f}{max(vals):>9.4f}"
+        )
     print(f"\nlowest of all windows: {min(lowest):.4f}")
     print("body, matched size: 0.0037 +- 0.0022 -- six times below the floor.")
 
@@ -250,7 +256,11 @@ def intrapage(rng: random.Random) -> None:
 
     from aldegonde import c3301  # noqa: PLC0415
 
-    master = (ROOT / "data" / "liber-primus__transcription--master.txt").read_text().split("%")
+    master = (
+        (ROOT / "data" / "liber-primus__transcription--master.txt")
+        .read_text()
+        .split("%")
+    )
     pages = []
     for n in range(15, 71):
         if n >= len(master) or not RUNE.search(master[n]):
@@ -271,7 +281,9 @@ def intrapage(rng: random.Random) -> None:
     e, se, _o, _m, n = excess_per_pair(pages, rng, draws=300)
     flat = [[x for s in pages for x in s]]
     e2, se2, _o, _m, n2 = excess_per_pair(flat, rng, draws=200)
-    print(f"within a page only : {e:+.4f} +- {se:.4f} on {n:,} pairs, {len(pages)} pages")
+    print(
+        f"within a page only : {e:+.4f} +- {se:.4f} on {n:,} pairs, {len(pages)} pages"
+    )
     print(f"all transitions    : {e2:+.4f} +- {se2:.4f} on {n2:,} pairs")
     print(
         "\nDropping every cross-page transition does not recover the order, so the"
@@ -299,11 +311,15 @@ def sort_control(rng: random.Random) -> None:
     ):
         ls = lengths(ws)
         e, se, _o, _m, _n = excess_per_pair([ls], rng, draws=25)
-        print(f"{label:<28}{sum(ls) / len(ls):>7.2f}"
-              f"{sum(1 for x in ls if x == 2) / len(ls):>9.3f}{e:>10.4f}+-{se:.4f}")
+        print(
+            f"{label:<28}{sum(ls) / len(ls):>7.2f}"
+            f"{sum(1 for x in ls if x == 2) / len(ls):>9.3f}{e:>10.4f}+-{se:.4f}"
+        )
     body = [x for s in body_sequences() for x in s]
-    print(f"{'body':<28}{sum(body) / len(body):>7.2f}"
-          f"{sum(1 for x in body if x == 2) / len(body):>9.3f}{0.0039:>10.4f}+-0.0025")
+    print(
+        f"{'body':<28}{sum(body) / len(body):>7.2f}"
+        f"{sum(1 for x in body if x == 2) / len(body):>9.3f}{0.0039:>10.4f}+-0.0025"
+    )
     print(
         "\nSorting does not destroy order, it creates it: repeated words cluster into"
         "\nruns of equal length, and the excess jumps eighty-fold. The body matches the"
@@ -335,13 +351,17 @@ def type_control() -> None:
     ht, _ = hist(token_lengths)
     hy, _ = hist(type_lengths)
     hp, _ = hist(plain)
-    print(f"{'len':>4}{'body':>9}{'prose tokens':>14}{'prose TYPES':>13}{'LP plaintext':>14}")
+    print(
+        f"{'len':>4}{'body':>9}{'prose tokens':>14}{'prose TYPES':>13}{'LP plaintext':>14}"
+    )
     for k in range(12):
         print(f"{k + 1:>4}{hb[k]:>9.3f}{ht[k]:>14.3f}{hy[k]:>13.3f}{hp[k]:>14.3f}")
-    print(f"\nmeans: body {sum(body) / len(body):.2f}  "
-          f"tokens {sum(token_lengths) / len(token_lengths):.2f}  "
-          f"types {sum(type_lengths) / len(type_lengths):.2f}  "
-          f"LP plaintext {sum(plain) / len(plain):.2f}")
+    print(
+        f"\nmeans: body {sum(body) / len(body):.2f}  "
+        f"tokens {sum(token_lengths) / len(token_lengths):.2f}  "
+        f"types {sum(type_lengths) / len(type_lengths):.2f}  "
+        f"LP plaintext {sum(plain) / len(plain):.2f}"
+    )
 
     def fit(h: list[float], n: int, m: list[float]) -> float:
         return sum(2 * n * o * math.log(o / e) for o, e in zip(h, m) if o > 0 < e) / n
@@ -375,7 +395,9 @@ def perturb_control(rng: random.Random) -> None:
         f"body: mean {sum(body) / len(body):.2f} "
         f"2-rune {sum(1 for x in body if x == 2) / len(body):.3f} excess/pair 0.0039\n"
     )
-    print(f"{'model':<32}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}{'hist vs body':>14}")
+    print(
+        f"{'model':<32}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}{'hist vs body':>14}"
+    )
 
     def show(ls: list[int], label: str) -> None:
         e = excess_per_pair([ls], rng, draws=30)[0]
@@ -387,10 +409,14 @@ def perturb_control(rng: random.Random) -> None:
 
     show(prose, "prose, untouched")
     for r in (0.05, 0.10, 0.15, 0.25):
-        show([L + sum(rng.random() < r for _ in range(L)) for L in prose],
-             f"nulls inserted at rate {r}")
+        show(
+            [L + sum(rng.random() < r for _ in range(L)) for L in prose],
+            f"nulls inserted at rate {r}",
+        )
     for r in (0.5, 1.0):
-        show([L + (rng.random() < r) + (r > 1) for L in prose], f"pad {r} runes per word")
+        show(
+            [L + (rng.random() < r) + (r > 1) for L in prose], f"pad {r} runes per word"
+        )
     print(
         "\nThe rate that best matches the histogram, 0.10, still leaves 0.0237 of order"
         "\nwhere the body has 0.0039. Same failure as the merge family."
@@ -401,11 +427,15 @@ def jackknife(rng: random.Random) -> None:
     """Is the plaintext reference driven by one page? No."""
     seqs = plaintext_sequences()
     full = excess_per_pair(seqs, rng, draws=300)
-    print(f"all {len(seqs)} pages, {sum(len(s) for s in seqs)} words: "
-          f"{full[0]:.4f} +- {full[1]:.4f}\n")
+    print(
+        f"all {len(seqs)} pages, {sum(len(s) for s in seqs)} words: "
+        f"{full[0]:.4f} +- {full[1]:.4f}\n"
+    )
     vals = []
     for i in range(len(seqs)):
-        e = excess_per_pair([s for j, s in enumerate(seqs) if j != i], rng, draws=150)[0]
+        e = excess_per_pair([s for j, s in enumerate(seqs) if j != i], rng, draws=150)[
+            0
+        ]
         vals.append(e)
         print(f"  drop page {i:>2} ({len(seqs[i]):>3} words): {e:.4f}")
     m = sum(vals) / len(vals)
@@ -438,8 +468,11 @@ def shape_control(rng: random.Random) -> None:
     for k in range(12):
         print(f"{k + 1:>4}{hb[k]:>9.3f}{hp[k]:>10.3f}{hr[k]:>9.3f}{geo[k]:>11.3f}")
     print("\nG2 per word against a geometric of matching mean:")
-    for name, h, n, ls in (("body", hb, nb, body), ("LP plaintext", hp, npl, plain),
-                           ("prose", hr, nr, prose)):
+    for name, h, n, ls in (
+        ("body", hb, nb, body),
+        ("LP plaintext", hp, npl, plain),
+        ("prose", hr, nr, prose),
+    ):
         qq = len(ls) / sum(ls)
         g = [(1 - qq) ** (k - 1) * qq for k in range(1, 13)]
         g = [x / sum(g) for x in g]
@@ -448,7 +481,9 @@ def shape_control(rng: random.Random) -> None:
     print("process is out. But the shapes still differ, G2 per word:")
     print(f"  body vs LP plaintext {fit(hb, nb, hp) / nb:.4f}")
     print(f"  body vs prose        {fit(hb, nb, hr) / nb:.4f}")
-    print(f"  LP plaintext vs prose{fit(hp, npl, hr) / npl:>8.4f}   <- the two references agree")
+    print(
+        f"  LP plaintext vs prose{fit(hp, npl, hr) / npl:>8.4f}   <- the two references agree"
+    )
 
 
 def merge_control(rng: random.Random) -> None:
@@ -481,7 +516,15 @@ def merge_control(rng: random.Random) -> None:
         )
     print("\nmerging only SHORT words, which removes the alternation itself:")
     print(f"{'rule':<32}{'mean':>7}{'2-rune':>9}{'excess/pair':>13}")
-    for cap, q in ((2, 0.3), (2, 0.5), (2, 0.7), (2, 0.9), (3, 0.3), (3, 0.5), (3, 0.7)):
+    for cap, q in (
+        (2, 0.3),
+        (2, 0.5),
+        (2, 0.7),
+        (2, 0.9),
+        (3, 0.3),
+        (3, 0.5),
+        (3, 0.7),
+    ):
         out, i = [], 0
         while i < len(lens):
             cur = lens[i]
@@ -552,7 +595,9 @@ def main() -> None:
         for name, lens in prose:
             e, _se, obs, mu, _n = excess_per_pair([lens], rng, draws=40)
             vals.append(e)
-            print(f"{'  prose ' + name:<26}{len(lens):>8,}{obs:>9.1f}{mu:>11.1f}{e:>14.4f}")
+            print(
+                f"{'  prose ' + name:<26}{len(lens):>8,}{obs:>9.1f}{mu:>11.1f}{e:>14.4f}"
+            )
         m = sum(vals) / len(vals)
         sd = (sum((x - m) ** 2 for x in vals) / len(vals)) ** 0.5
         rows["prose"] = (m, sd)

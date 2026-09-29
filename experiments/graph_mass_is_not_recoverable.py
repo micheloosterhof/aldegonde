@@ -70,13 +70,16 @@ def main() -> None:
 
     values = {k: np.array([mass(g, k) for g in pool]) for k in LAGS}
 
-    print("mass of the plaintext lag-k table on the graph of g^(k mod 5), "
-          "over 4,000 g\n")
+    print(
+        "mass of the plaintext lag-k table on the graph of g^(k mod 5), over 4,000 g\n"
+    )
     print(f"{'lag':>4}{'g power':>9}{'mean':>10}{'sd':>9}{'corr with lag 1':>18}")
     for k in LAGS:
         r = float(np.corrcoef(values[1], values[k])[0, 1])
-        print(f"{k:>4}{k % 5:>9}{values[k].mean():>10.4f}{values[k].std():>9.4f}"
-              f"{r:>18.3f}")
+        print(
+            f"{k:>4}{k % 5:>9}{values[k].mean():>10.4f}{values[k].std():>9.4f}"
+            f"{r:>18.3f}"
+        )
     print(
         "\nLag 6 uses the same power of g as lag 1 and correlates with it at -0.13."
         "\nEnglish has strong bigram structure and almost none at distance six, so the"

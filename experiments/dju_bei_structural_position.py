@@ -36,11 +36,19 @@ def main() -> None:
     stream, wid = load_clean()
     n = len(stream)
     windows = [tuple(stream[i : i + 6]) for i in range(n - 5)]
-    a, b = [i for i, x in enumerate(windows) if windows.count(x) > 1][:2] if False else (
-        lambda c: [i for i, x in enumerate(windows) if c[x] > 1]
-    )(collections.Counter(windows))
+    a, b = (
+        [i for i, x in enumerate(windows) if windows.count(x) > 1][:2]
+        if False
+        else (lambda c: [i for i, x in enumerate(windows) if c[x] > 1])(
+            collections.Counter(windows)
+        )
+    )
 
-    master = (ROOT / "data" / "liber-primus__transcription--master.txt").read_text().split("%")
+    master = (
+        (ROOT / "data" / "liber-primus__transcription--master.txt")
+        .read_text()
+        .split("%")
+    )
     starts, total = {}, 0
     for k in range(15, 71):
         if not RUNE.search(master[k]):
@@ -59,25 +67,35 @@ def main() -> None:
                 page = k - 15
                 t = title_pages.get(page)
                 print(f"{label} occurrence: rune {off}, chunk {k} (page {page})")
-                print(f"  chunk offset {off - s} of {c}; "
-                      f"{s + c - off - 6} runes left in the chunk")
-                print(f"  block {wid[off]}, {wid[n - 1] - wid[off]} blocks left in the body")
+                print(
+                    f"  chunk offset {off - s} of {c}; "
+                    f"{s + c - off - 6} runes left in the chunk"
+                )
+                print(
+                    f"  block {wid[off]}, {wid[n - 1] - wid[off]} blocks left in the body"
+                )
                 if t:
-                    print(f"  rubricated title on this page: {t['runes']} runes in "
-                          f"{t['words']} words -> the repeat begins "
-                          f"{off - s - t['runes']} runes after it ends")
+                    print(
+                        f"  rubricated title on this page: {t['runes']} runes in "
+                        f"{t['words']} words -> the repeat begins "
+                        f"{off - s - t['runes']} runes after it ends"
+                    )
                 else:
                     print("  no rubricated title on this page")
         print()
 
     print("how surprising, for a randomly placed 2-block unit:")
-    print(f"  landing in the final six runes:            {6 / (n - 5):.5f}"
-          f"  (1 in {(n - 5) / 6:,.0f})")
+    print(
+        f"  landing in the final six runes:            {6 / (n - 5):.5f}"
+        f"  (1 in {(n - 5) / 6:,.0f})"
+    )
     blocks = wid[-1] + 1
-    print(f"  landing in the first five blocks of one of"
-          f"\n  the {len(title_pages)} rubricated-title pages:            "
-          f"{len(title_pages) * 5 / blocks:.4f}  "
-          f"(1 in {blocks / (len(title_pages) * 5):,.0f})")
+    print(
+        f"  landing in the first five blocks of one of"
+        f"\n  the {len(title_pages)} rubricated-title pages:            "
+        f"{len(title_pages) * 5 / blocks:.4f}  "
+        f"(1 in {blocks / (len(title_pages) * 5):,.0f})"
+    )
     print(
         "\nBoth occurrences sit where a scribe would put a refrain: one near the opening"
         "\nof a titled section, one as the last words of the enciphered book. That is what"

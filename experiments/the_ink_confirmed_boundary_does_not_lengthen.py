@@ -97,7 +97,9 @@ def gap(chosen, interior) -> tuple[float, float, int]:
     a, b = np.array(chosen, float), np.array(interior, float)
     if len(a) < 3:
         return float("nan"), float("nan"), len(a)
-    se = math.hypot(a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b)))
+    se = math.hypot(
+        a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b))
+    )
     return float(a.mean() - b.mean()), se, len(a)
 
 
@@ -135,17 +137,28 @@ def main() -> None:
         if first > 0:
             before_title.append(stream[first - 1][0])
 
-    print("English predicts every one of these lifts. The author's own prose gives "
-          f"{AUTHOR_GAP:+.2f}.\n")
+    print(
+        "English predicts every one of these lifts. The author's own prose gives "
+        f"{AUTHOR_GAP:+.2f}.\n"
+    )
     print(f"{'cell':<38}{'blocks':>8}{'gap vs interior':>20}{'z vs +1.19':>14}")
-    closes_title = {index[(t["chunk"], t["word_range"][1])] for t in titles
-                    if (t["chunk"], t["word_range"][1]) in index}
+    closes_title = {
+        index[(t["chunk"], t["word_range"][1])]
+        for t in titles
+        if (t["chunk"], t["word_range"][1]) in index
+    }
     thirteen = [i for i, (_, s, _, _) in enumerate(stream) if s == "⑬"]
     report("before a thirteen-dot", [stream[i][0] for i in thirteen], interior)
-    report("   of those, closing a red title",
-           [stream[i][0] for i in thirteen if i in closes_title], interior)
-    report("   of those, closing ordinary prose",
-           [stream[i][0] for i in thirteen if i not in closes_title], interior)
+    report(
+        "   of those, closing a red title",
+        [stream[i][0] for i in thirteen if i in closes_title],
+        interior,
+    )
+    report(
+        "   of those, closing ordinary prose",
+        [stream[i][0] for i in thirteen if i not in closes_title],
+        interior,
+    )
     report("before an ink-confirmed title", before_title, interior)
     report("before a four-dot", [n for n, s, _, _ in stream if s == "④"], interior)
     report("before any mark", [n for n, s, _, _ in stream if s in MARKS], interior)
@@ -166,7 +179,9 @@ def main() -> None:
 
     a, b = np.array(title_first, float), np.array(title_last, float)
     d = b.mean() - a.mean()
-    se = math.hypot(a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b)))
+    se = math.hypot(
+        a.std(ddof=1) / math.sqrt(len(a)), b.std(ddof=1) / math.sqrt(len(b))
+    )
     print(
         f"\nlast minus first, inside a title: {d:+.2f} +- {se:.2f} on {len(a)} titles."
         "\nEnglish noun phrases run light to heavy, so this is positive under word order"

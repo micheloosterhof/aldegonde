@@ -75,16 +75,23 @@ def main() -> None:
 
     groups: dict[str, list[int]] = collections.defaultdict(list)
     for n in range(15):
-        label = ("front: plaintext" if n in mod.PLAIN_PAGES
-                 else f"front: {ciphers.get(n, 'unknown')}")
+        label = (
+            "front: plaintext"
+            if n in mod.PLAIN_PAGES
+            else f"front: {ciphers.get(n, 'unknown')}"
+        )
         groups[label] += non_final_lines(chunks[n])
     for n in range(15, 71):
         groups["THE BODY"] += non_final_lines(chunks[n])
 
     print("runes per line, paragraph-final lines dropped\n")
     print(f"{'group':<32}{'lines':>7}{'mean':>9}{'sd':>8}")
-    for key in ("front: plaintext", "front: monoalphabetic",
-                "front: interrupted vigenere", "THE BODY"):
+    for key in (
+        "front: plaintext",
+        "front: monoalphabetic",
+        "front: interrupted vigenere",
+        "THE BODY",
+    ):
         v = np.array(groups[key], float)
         if len(v) < 4:
             continue
@@ -114,14 +121,20 @@ def main() -> None:
     front_marks = terminating_marks("\n".join(chunks[:15]))
     body_marks = terminating_marks("\n".join(chunks[15:71]))
     na, nb = sum(front_marks.values()), sum(body_marks.values())
-    print(f"\n\nmarks that end a block: {na:,} in the front matter, {nb:,} in the body\n")
+    print(
+        f"\n\nmarks that end a block: {na:,} in the front matter, {nb:,} in the body\n"
+    )
     print(f"{'mark':>7}{'front':>9}{'body':>9}{'front %':>10}{'body %':>9}")
-    for k in sorted(set(front_marks) | set(body_marks),
-                    key=lambda k: -(front_marks[k] + body_marks[k])):
+    for k in sorted(
+        set(front_marks) | set(body_marks),
+        key=lambda k: -(front_marks[k] + body_marks[k]),
+    ):
         if front_marks[k] + body_marks[k] < 5:
             continue
-        print(f"{k!r:>7}{front_marks[k]:>9}{body_marks[k]:>9}"
-              f"{front_marks[k] / na:>10.4f}{body_marks[k] / nb:>9.4f}")
+        print(
+            f"{k!r:>7}{front_marks[k]:>9}{body_marks[k]:>9}"
+            f"{front_marks[k] / na:>10.4f}{body_marks[k] / nb:>9.4f}"
+        )
     print(
         "\nThis one cannot be read as a scribal difference. The front matter uses '.' and"
         "\nnever a circled numeral; the body uses circled numerals and never '.'. Those"

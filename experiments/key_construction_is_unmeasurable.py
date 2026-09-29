@@ -59,15 +59,16 @@ def main() -> None:
     for c in prose_corpora(2928, 20):
         for w in c:
             vocab[tuple(w)] += 1
-    keywords = [list(w) for w in vocab
-                if len(set(w)) == len(w) and 4 <= len(w) <= 10]
+    keywords = [list(w) for w in vocab if len(set(w)) == len(w) and 4 <= len(w) <= 10]
     corpora = list(prose_corpora(2928, keys))
     rk = random.Random(5)
 
     body = lp_words()
     observed = chi_without_zero(difference_histogram(body))
     print("bigram difference histogram, offset 0 dropped, chi2 on 27 df\n")
-    print(f"{'construction':<16}{'over ' + str(keys) + ' keys':>26}{'z of the body':>16}")
+    print(
+        f"{'construction':<16}{'over ' + str(keys) + ' keys':>26}{'z of the body':>16}"
+    )
     for kind in KINDS:
         v = []
         for t in range(keys):
@@ -76,15 +77,23 @@ def main() -> None:
             base = build(kind, keywords[rk.randrange(len(keywords))], rk)
             if len(set(sigma)) != M or len(set(base)) != M:
                 continue
-            v.append(chi_without_zero(difference_histogram(
-                walk(g, sigma, base, corpora[t], random.Random(60 + t))
-            )))
+            v.append(
+                chi_without_zero(
+                    difference_histogram(
+                        walk(g, sigma, base, corpora[t], random.Random(60 + t))
+                    )
+                )
+            )
         v = np.array(v)
-        print(f"{kind:<16}{f'{v.mean():.1f} +- {v.std():.1f}':>26}"
-              f"{(observed - v.mean()) / v.std():>16.2f}")
+        print(
+            f"{kind:<16}{f'{v.mean():.1f} +- {v.std():.1f}':>26}"
+            f"{(observed - v.mean()) / v.std():>16.2f}"
+        )
     print(f"\nthe body: chi2 {observed:.1f} on 27 df, where 27 is uniform")
-    print("Every construction is uniform, so the statistic sees none of them. The body's"
-          "\ndeparture is about two sigma above them all and needs its own check.")
+    print(
+        "Every construction is uniform, so the statistic sees none of them. The body's"
+        "\ndeparture is about two sigma above them all and needs its own check."
+    )
 
     h = difference_histogram(body)
     e = h[1:].sum() / (M - 1)
@@ -101,12 +110,16 @@ def main() -> None:
         ee = hh[1:].sum() / (M - 1)
         zz = (hh - ee) / np.sqrt(ee)
         top = int(np.argsort(-np.abs(zz[1:]))[0]) + 1
-        print(f"{label:<14}{chi_without_zero(hh):>16.1f}"
-              f"{np.abs(zz[1:]).max():>14.2f}{top:>12}")
+        print(
+            f"{label:<14}{chi_without_zero(hh):>16.1f}"
+            f"{np.abs(zz[1:]).max():>14.2f}{top:>12}"
+        )
     za = (a[1:] - a[1:].mean()) / a[1:].std()
     zb = (b[1:] - b[1:].mean()) / b[1:].std()
-    print(f"\ncorrelation of the two halves' cell profiles: "
-          f"{np.corrcoef(za, zb)[0, 1]:+.3f}")
+    print(
+        f"\ncorrelation of the two halves' cell profiles: "
+        f"{np.corrcoef(za, zb)[0, 1]:+.3f}"
+    )
     print(
         "\nA real structure repeats across halves. This one does not -- the halves"
         "\ndisagree about which offset is extreme, and their profiles correlate at"

@@ -51,9 +51,7 @@ LAG = 5
 
 def pairs_by_length(segments: list[list[int]]) -> list[tuple[int, int]]:
     return [
-        (len(s), int(s[i] == s[i + LAG]))
-        for s in segments
-        for i in range(len(s) - LAG)
+        (len(s), int(s[i] == s[i + LAG])) for s in segments for i in range(len(s) - LAG)
     ]
 
 
@@ -131,8 +129,10 @@ def main() -> None:
     for label in ("prose, real words", "prose, arbitrary cuts"):
         rate_m, _n, r_m = rows[label]
         se_l = math.sqrt(rate_m * (1 - rate_m) / n_b)
-        print(f"  vs {label:<24} level z = {(rate_b - rate_m) / se_l:+.2f},"
-              f"  trend z = {(r_b - r_m) / se_r:+.2f}")
+        print(
+            f"  vs {label:<24} level z = {(rate_b - rate_m) / se_l:+.2f},"
+            f"  trend z = {(r_b - r_m) / se_r:+.2f}"
+        )
     print(
         "\nBoth statistics favour real words. The trend is the one that survives the"
         "\nleak: chance matches carry no length trend, so attenuation can only shrink"

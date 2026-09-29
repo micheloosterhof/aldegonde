@@ -74,8 +74,10 @@ def main() -> None:
     body = lp_words()
     observed, n_body = doublets(body)
     pairs = n_body - 1
-    print(f"the body: {observed} adjacent repeats in {n_body:,} runes, "
-          f"{pairs / M:.0f} expected at chance\n")
+    print(
+        f"the body: {observed} adjacent repeats in {n_body:,} runes, "
+        f"{pairs / M:.0f} expected at chance\n"
+    )
 
     corpora = list(prose_corpora(2928, keys))
     rk = random.Random(13)
@@ -100,8 +102,10 @@ def main() -> None:
     for limit in (1.0, 2.0):
         inside = [phi for phi, _, _, z in table if abs(z) <= limit]
         if inside:
-            print(f"\nwithin {limit:.0f} sigma: phi in "
-                  f"[{min(inside):.2f}, {max(inside):.2f}]")
+            print(
+                f"\nwithin {limit:.0f} sigma: phi in "
+                f"[{min(inside):.2f}, {max(inside):.2f}]"
+            )
     print("best near 0.90; phi = 0 is excluded and phi = 1 is not")
     print(
         "\nTwo things follow, and the first corrects D9."

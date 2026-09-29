@@ -160,7 +160,9 @@ def main() -> None:
         "\n  the front matter plainly has few.\n\n"
     )
     print("A ciphertext doublet needs p_i = g(p_(i+1)), so the unsuppressed rate is")
-    print(f"the graph mass m1(g), about {UNSUPPRESSED}, not the plaintext's repeat rate.")
+    print(
+        f"the graph mass m1(g), about {UNSUPPRESSED}, not the plaintext's repeat rate."
+    )
     print(f"Chance is {CHANCE:.4f}. phi is the implied suppression strength.\n")
     print(
         f"{'section':<40}{'pairs':>7}{'dbl':>7}{'rate':>9}{'vs chance':>10}"

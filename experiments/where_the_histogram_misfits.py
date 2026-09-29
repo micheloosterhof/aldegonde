@@ -114,7 +114,9 @@ def main() -> None:
         mean = float(column.mean())
         spread = float(column.std(ddof=1))
         agree = max((column > 0).sum(), (column < 0).sum()) / len(column)
-        se = math.hypot(spread / math.sqrt(len(column)), math.sqrt(obs[i] * (1 - obs[i]) / n))
+        se = math.hypot(
+            spread / math.sqrt(len(column)), math.sqrt(obs[i] * (1 - obs[i]) / n)
+        )
         z = mean / se
         tag = f"{k}" if k < CELLS[-1] else f"{k}+"
         print(

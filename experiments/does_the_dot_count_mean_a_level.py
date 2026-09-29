@@ -104,7 +104,9 @@ def same_glyph_gaps(rows, glyph):
 
 def main() -> None:
     rows = stream()
-    print(f"{'glyph':>6}{'dots':>6}{'count':>8}{'blocks to the previous':>25}{'median':>9}")
+    print(
+        f"{'glyph':>6}{'dots':>6}{'count':>8}{'blocks to the previous':>25}{'median':>9}"
+    )
     for glyph in sorted(MARKS, key=lambda g: MARKS[g]):
         total = sum(1 for k, v in rows if v == glyph)
         gaps = same_glyph_gaps(rows, glyph)
@@ -121,7 +123,10 @@ def main() -> None:
     for glyph in ("③", "⑩"):
         spots = [i for i, x in enumerate(order) if x == glyph]
         pairs = [
-            (order[i - 1] if i else "START", order[i + 1] if i + 1 < len(order) else "END")
+            (
+                order[i - 1] if i else "START",
+                order[i + 1] if i + 1 < len(order) else "END",
+            )
             for i in spots
         ]
         print(f"  {glyph} (n={len(spots)}): {pairs}")

@@ -81,7 +81,9 @@ def chi2(counts: collections.Counter) -> tuple[float, int]:
     return sum((counts[v] - e) ** 2 / e for v in range(M)), n
 
 
-def planted(rng: random.Random, words: list[list[int]], affine: bool) -> list[list[int]]:
+def planted(
+    rng: random.Random, words: list[list[int]], affine: bool
+) -> list[list[int]]:
     """Blocks enciphered with a per-block base, affine or general, plus a step of order 5."""
     cycles = list(range(M))
     rng.shuffle(cycles)
@@ -117,10 +119,14 @@ def main() -> None:
             if a == "--draws" and i + 1 < len(sys.argv):
                 draws = int(sys.argv[i + 1])
         for affine in (True, False):
-            vals = sorted(chi2(lambdas(planted(rng, words, affine)))[0] for _ in range(draws))
+            vals = sorted(
+                chi2(lambdas(planted(rng, words, affine)))[0] for _ in range(draws)
+            )
             tag = "AFFINE bases" if affine else "general bases"
-            print(f"{tag:<16} min {vals[0]:>7.1f}  median {vals[len(vals) // 2]:>7.1f}"
-                  f"  max {vals[-1]:>7.1f}   ({draws} draws)")
+            print(
+                f"{tag:<16} min {vals[0]:>7.1f}  median {vals[len(vals) // 2]:>7.1f}"
+                f"  max {vals[-1]:>7.1f}   ({draws} draws)"
+            )
         print(
             "\nThe two families do not overlap. An affine base leaves the invariant"
             "\nintact; a general one scrambles it to the chi-square range."
@@ -135,8 +141,10 @@ def main() -> None:
     print(f"  5% critical value 41.3, 0.1% critical value 56.9")
     top = sorted(counts.items(), key=lambda kv: -kv[1])[:4]
     e = n / M
-    print("  most extreme values: "
-          + ", ".join(f"lambda={v}: {k} (exp {e:.0f})" for v, k in top))
+    print(
+        "  most extreme values: "
+        + ", ".join(f"lambda={v}: {k} (exp {e:.0f})" for v, k in top)
+    )
     print("\n  planted AFFINE bases give 620 to 1,252 (median 848)")
     print("  planted general bases give 31.5 to 141.2 (median 82.2)")
     print(

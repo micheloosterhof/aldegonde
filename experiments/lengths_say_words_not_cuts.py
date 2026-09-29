@@ -46,8 +46,9 @@ def lognormal(mu: float, s: float) -> np.ndarray:
 
 def negative_binomial(r: int, p: float) -> np.ndarray:
     k = L - 1
-    v = np.array([math.comb(int(x) + r - 1, int(x)) * (p**r) * ((1 - p) ** x)
-                  for x in k])
+    v = np.array(
+        [math.comb(int(x) + r - 1, int(x)) * (p**r) * ((1 - p) ** x) for x in k]
+    )
     return v / v.sum()
 
 
@@ -87,8 +88,10 @@ def main() -> None:
     n_body = int(body.sum())
     rng = random.Random(9)
 
-    print("two readings of the body's block lengths, each against its own "
-          "parametric null\n")
+    print(
+        "two readings of the body's block lengths, each against its own "
+        "parametric null\n"
+    )
     print(f"{'model':<36}{'params':>8}{'chi2':>8}{'null, model true':>22}{'P':>7}")
 
     obs, q = fit_joined(author, body, n_body)
@@ -99,14 +102,19 @@ def main() -> None:
         synth = histogram(absorb(pool, q, random.Random(b))[:n_body])
         nulls.append(fit_joined(ref, synth, int(synth.sum()), reps=6, seed=b)[0])
     n = np.array(nulls)
-    print(f"{'the author words, short ones joined':<36}{1:>8}{obs:>8.1f}"
-          f"{f'{n.mean():.1f} +- {n.std():.1f}':>22}{(n >= obs).mean():>7.2f}")
+    print(
+        f"{'the author words, short ones joined':<36}{1:>8}{obs:>8.1f}"
+        f"{f'{n.mean():.1f} +- {n.std():.1f}':>22}{(n >= obs).mean():>7.2f}"
+    )
 
     grids = {
         "cuts: discrete lognormal": (
             lognormal,
-            [(mu, s) for mu in np.linspace(0.5, 2.2, 70)
-             for s in np.linspace(0.2, 1.2, 70)],
+            [
+                (mu, s)
+                for mu in np.linspace(0.5, 2.2, 70)
+                for s in np.linspace(0.2, 1.2, 70)
+            ],
         ),
         "cuts: negative binomial": (
             negative_binomial,
@@ -115,15 +123,21 @@ def main() -> None:
     }
     for label, (family, grid) in grids.items():
         o, par = fit_smooth(body, n_body, family, grid)
-        nl = np.array([
-            fit_smooth(
-                np.random.default_rng(b).multinomial(n_body, family(*par)),
-                n_body, family, grid,
-            )[0]
-            for b in range(draws)
-        ])
-        print(f"{label:<36}{2:>8}{o:>8.1f}{f'{nl.mean():.1f} +- {nl.std():.1f}':>22}"
-              f"{(nl >= o).mean():>7.2f}")
+        nl = np.array(
+            [
+                fit_smooth(
+                    np.random.default_rng(b).multinomial(n_body, family(*par)),
+                    n_body,
+                    family,
+                    grid,
+                )[0]
+                for b in range(draws)
+            ]
+        )
+        print(
+            f"{label:<36}{2:>8}{o:>8.1f}{f'{nl.mean():.1f} +- {nl.std():.1f}':>22}"
+            f"{(nl >= o).mean():>7.2f}"
+        )
 
     print(
         "\nThe smooth laws are rejected outright with TWO free parameters. The"

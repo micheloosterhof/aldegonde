@@ -59,8 +59,10 @@ def main() -> None:
     body = lp_words()
     prose = list(prose_corpora(2928, 40))
 
-    print("within-word coincidence, three corpora. Only lag 5 should leak under a walk"
-          f" with g of order 5; chance is {CHANCE:.4f}.\n")
+    print(
+        "within-word coincidence, three corpora. Only lag 5 should leak under a walk"
+        f" with g of order 5; chance is {CHANCE:.4f}.\n"
+    )
     print(f"{'lag':>4}{'LP plaintext':>24}{'prose':>20}{'the body':>24}")
     prose_d5 = prose_se = 0.0
     for lag in range(1, 8):
@@ -75,26 +77,32 @@ def main() -> None:
         d, dse, dp = profile(body, lag)
         if lag == 5:
             prose_d5, prose_se = b, bse
-        print(f"{lag:>4}{f'{a:.4f} +- {ase:.4f} ({ap})':>24}"
-              f"{f'{b:.4f} +- {bse:.4f}':>20}"
-              f"{f'{d:.4f} +- {dse:.4f} ({dp})':>24}")
+        print(
+            f"{lag:>4}{f'{a:.4f} +- {ase:.4f} ({ap})':>24}"
+            f"{f'{b:.4f} +- {bse:.4f}':>20}"
+            f"{f'{d:.4f} +- {dse:.4f} ({dp})':>24}"
+        )
 
     lp_d5, lp_se, _ = profile(lp, 5)
     body_d5, body_se, body_pairs = profile(body, 5)
     diff = lp_d5 - prose_d5
-    print(f"\nThe two plaintext estimates agree: {lp_d5:.4f} +- {lp_se:.4f} against "
-          f"{prose_d5:.4f} +- {prose_se:.4f},")
-    print(f"a difference of {diff:+.4f} +- {math.sqrt(lp_se**2 + prose_se**2):.4f}. "
-          f"Prose is used below for its precision.")
+    print(
+        f"\nThe two plaintext estimates agree: {lp_d5:.4f} +- {lp_se:.4f} against "
+        f"{prose_d5:.4f} +- {prose_se:.4f},"
+    )
+    print(
+        f"a difference of {diff:+.4f} +- {math.sqrt(lp_se**2 + prose_se**2):.4f}. "
+        f"Prose is used below for its precision."
+    )
 
     print(f"\n{'quantity':<40}{'value':>12}{'error':>10}")
     print(f"{'plaintext d5 (prose)':<40}{prose_d5:>12.4f}{prose_se:>10.4f}")
-    print(f"{'body d5':<40}{body_d5:>12.4f}{body_se:>10.4f} "
-          f"({body_pairs:,} pairs)")
+    print(f"{'body d5':<40}{body_d5:>12.4f}{body_se:>10.4f} ({body_pairs:,} pairs)")
     shortfall = body_d5 - prose_d5
     se = math.sqrt(body_se**2 + prose_se**2)
-    print(f"{'shortfall':<40}{shortfall:>+12.4f}{se:>10.4f}   "
-          f"z = {shortfall / se:+.2f}")
+    print(
+        f"{'shortfall':<40}{shortfall:>+12.4f}{se:>10.4f}   z = {shortfall / se:+.2f}"
+    )
 
     a_hat = (body_d5 - CHANCE) / (prose_d5 - CHANCE)
     a_se = math.sqrt(
@@ -102,13 +110,19 @@ def main() -> None:
         + (a_hat * prose_se / (prose_d5 - CHANCE)) ** 2
     )
     lo, hi = max(1e-6, a_hat - 1.96 * a_se), min(1.0, a_hat + 1.96 * a_se)
-    print(f"\nfraction of lag-5 pairs still aligned: A = {a_hat:.3f} +- {a_se:.3f}, "
-          f"95% [{lo:.3f}, {hi:.3f}]")
+    print(
+        f"\nfraction of lag-5 pairs still aligned: A = {a_hat:.3f} +- {a_se:.3f}, "
+        f"95% [{lo:.3f}, {hi:.3f}]"
+    )
     q = lambda A: 1 - A ** (1 / 5)  # noqa: E731
-    print(f"perturbation rate q = 1 - A^(1/5):        {q(a_hat):.3f}, "
-          f"95% [{q(hi):.3f}, {q(lo):.3f}]")
-    print(f"\nthe clock-dodge family predicts q = the would-be doublet rate = "
-          f"{CHANCE:.3f}")
+    print(
+        f"perturbation rate q = 1 - A^(1/5):        {q(a_hat):.3f}, "
+        f"95% [{q(hi):.3f}, {q(lo):.3f}]"
+    )
+    print(
+        f"\nthe clock-dodge family predicts q = the would-be doublet rate = "
+        f"{CHANCE:.3f}"
+    )
     print(f"a clean walk with no perturbation predicts q = 0")
 
     print(

@@ -83,8 +83,10 @@ def main() -> None:
     print(f"\n{'len':>4}{'titles':>10}{'body minus titles':>20}")
     for i in range(CAP):
         print(f"{i + 1:>4}{A[i] / na:>10.3f}{B[i] / nb:>20.4f}")
-    print(f"{'mean':>4}{sum((i + 1) * A[i] for i in range(CAP)) / na:>10.2f}"
-          f"{sum((i + 1) * B[i] for i in range(CAP)) / nb:>20.2f}")
+    print(
+        f"{'mean':>4}{sum((i + 1) * A[i] for i in range(CAP)) / na:>10.2f}"
+        f"{sum((i + 1) * B[i] for i in range(CAP)) / nb:>20.2f}"
+    )
 
     chi, df = 0.0, 0
     for i in range(CAP):
@@ -105,8 +107,10 @@ def main() -> None:
     print(f"{'the titles':<40}{f'{fa:.3f} +- {math.sqrt(fa * (1 - fa) / na):.3f}':>16}")
     print(f"{'against the rest of the body':<40}{fb:>16.3f}{(fa - fb) / se:>8.2f}")
     zz = (fa - f_auth) / math.sqrt(fa * (1 - fa) / na + sa**2)
-    print(f"{chr(34)+'against the author own plaintext'+chr(34):<40}"
-          f"{f_auth:>16.3f}{zz:>8.2f}")
+    print(
+        f"{chr(34) + 'against the author own plaintext' + chr(34):<40}"
+        f"{f_auth:>16.3f}{zz:>8.2f}"
+    )
 
     # se scales as 1/sqrt(n), so reaching 3 sigma needs (se / target_se)^2 times as many
     need = (se / ((fa - fb) / 3)) ** 2 * na

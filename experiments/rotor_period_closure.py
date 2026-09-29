@@ -79,7 +79,9 @@ def main() -> None:
             continue
         seen[tuple(stream[i : i + 6])].append(i)
     repeats = {g: p for g, p in seen.items() if len(p) > 1}
-    assert len(repeats) == 1, f"expected one word-initial 6-gram repeat, got {len(repeats)}"
+    assert len(repeats) == 1, (
+        f"expected one word-initial 6-gram repeat, got {len(repeats)}"
+    )
     gram, pos = next(iter(repeats.items()))
     a, b = pos[0], pos[1]
     rune_gap = b - a
@@ -129,7 +131,9 @@ def main() -> None:
     print("  letter-clocked (absolute position):")
     for p in letter_lags:
         hits, tot = lag_coincidence(stream, p)
-        print(f"    period {p:>5}: {hits:>5}/{tot:<6} = {hits / tot:.4f}  {zfmt(hits, tot)}")
+        print(
+            f"    period {p:>5}: {hits:>5}/{tot:<6} = {hits / tot:.4f}  {zfmt(hits, tot)}"
+        )
 
     print("\n  word-clocked (same within-word phase, words p apart):")
     for p in divisors(word_gap):
@@ -138,7 +142,9 @@ def main() -> None:
         hits, tot = word_period_coincidence(stream, word_id, p)
         if tot < 200:
             continue
-        print(f"    period {p:>5}: {hits:>5}/{tot:<6} = {hits / tot:.4f}  {zfmt(hits, tot)}")
+        print(
+            f"    period {p:>5}: {hits:>5}/{tot:<6} = {hits / tot:.4f}  {zfmt(hits, tot)}"
+        )
 
     full_lag_scan(stream)
     full_word_period_scan(stream, word_id)
@@ -183,7 +189,11 @@ def full_word_period_scan(stream: list[int], word_id: list[int]) -> None:
     print(f"    -> {zfmt(hits, tot)}")
     reach = [r[0] for r in rows if r[1] >= 0.055]
     print(f"  periods reaching 0.055: {reach or 'NONE'}")
-    for target, label in ((29, "one 29-disk"), (145, "5-wheel x 29-disk"), (841, "two disks")):
+    for target, label in (
+        (29, "one 29-disk"),
+        (145, "5-wheel x 29-disk"),
+        (841, "two disks"),
+    ):
         for pp, rr, hh, tt in rows:
             if pp == target:
                 print(f"  period {target:>4} ({label}): {rr:.4f}  {zfmt(hh, tt)}")

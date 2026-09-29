@@ -102,14 +102,20 @@ def best_affine(v):
 def main() -> None:
     plain = [x for p in PLAIN_PAGES for x in runes_of(p)]
     print(f"Calibration on the author's own plaintext ({len(plain)} runes):")
-    print(f"  quadgram score per rune, true plaintext : {score(plain) / len(plain):+.3f}")
+    print(
+        f"  quadgram score per rune, true plaintext : {score(plain) / len(plain):+.3f}"
+    )
     scrambled = list(plain)
     rng = np.random.default_rng(3301)
     rng.shuffle(scrambled)
-    print(f"  the same text shuffled                  : {score(scrambled) / len(scrambled):+.3f}\n")
+    print(
+        f"  the same text shuffled                  : {score(scrambled) / len(scrambled):+.3f}\n"
+    )
 
     print("Best affine key per page, scored per rune against a random-key null.\n")
-    print(f"{'page':>5}{'runes':>7}{'best key':>18}{'score/rune':>12}{'null':>18}{'z':>8}")
+    print(
+        f"{'page':>5}{'runes':>7}{'best key':>18}{'score/rune':>12}{'null':>18}{'z':>8}"
+    )
     for page in PAGES:
         v = runes_of(page)
         ranked = best_affine(v)

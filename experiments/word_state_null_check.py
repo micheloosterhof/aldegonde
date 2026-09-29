@@ -55,7 +55,9 @@ def runeglish_weights() -> np.ndarray:
 
 
 def keyset(a, state: str, mod: int, q: int, phase: str) -> np.ndarray:
-    sv = {"w": a["w"], "A": a["A"], "A+w": a["A"] + a["w"], "A-w": a["A"] - a["w"]}[state]
+    sv = {"w": a["w"], "A": a["A"], "A+w": a["A"] + a["w"], "A-w": a["A"] - a["w"]}[
+        state
+    ]
     pv = (a["j"] if phase == "reset" else a["i"]) % q
     return (sv % mod) * q + pv
 
@@ -132,12 +134,16 @@ def main() -> None:
     h, t = pooled(planted, keys)
     null = np.array([pooled(s, keys)[0] / t for s in surro])
     ze = (h / t - null.mean()) / null.std()
-    print(f"  detected at the true cell: nIoC {h / t * N:.3f}   empirical z = {ze:+.1f}")
+    print(
+        f"  detected at the true cell: nIoC {h / t * N:.3f}   empirical z = {ze:+.1f}"
+    )
     wrong = keyset(a, "w", 23, 5, "reset")
     h2, t2 = pooled(planted, wrong)
     null2 = np.array([pooled(s, wrong)[0] / t2 for s in surro])
-    print(f"  at a wrong modulus 23:     nIoC {h2 / t2 * N:.3f}   "
-          f"empirical z = {(h2 / t2 - null2.mean()) / null2.std():+.1f}")
+    print(
+        f"  at a wrong modulus 23:     nIoC {h2 / t2 * N:.3f}   "
+        f"empirical z = {(h2 / t2 - null2.mean()) / null2.std():+.1f}"
+    )
     print(
         "\n  With realistic plaintext the control still detects overwhelmingly,\n"
         "  so the negatives stand -- but the honest power figure is this one."

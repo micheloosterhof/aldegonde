@@ -110,10 +110,14 @@ def main() -> None:
         null.append(contrast([[next(it) for _ in b] for b in blocks]))
     mu = statistics.mean(null)
     sd = statistics.pstdev(null)
-    print(f"body contrast {obs:+.4f}; shuffled null {mu:+.4f} +- {sd:.4f}, z = {(obs - mu) / sd:+.2f}")
+    print(
+        f"body contrast {obs:+.4f}; shuffled null {mu:+.4f} +- {sd:.4f}, z = {(obs - mu) / sd:+.2f}"
+    )
     print(f"\nseparation / noise = {separation / sd:.2f} sigma")
-    print(f"corpus factor needed to reach 2 sigma: {(2 * sd / separation) ** 2:.0f}x"
-          f"  ({12956 * (2 * sd / separation) ** 2:,.0f} runes)")
+    print(
+        f"corpus factor needed to reach 2 sigma: {(2 * sd / separation) ** 2:.0f}x"
+        f"  ({12956 * (2 * sd / separation) ** 2:,.0f} runes)"
+    )
     print(
         "\nSo the sharpest discriminator available is about a quarter the size it would"
         "\nneed to be, and the shortfall is in the corpus rather than the method. The"

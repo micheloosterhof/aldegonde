@@ -124,9 +124,7 @@ def scan(stream, pos, st, periods):
     best = []
     for p in range(2, periods + 1):
         for phase in (True, False):
-            keys = [
-                (s % p, (i % 5) if phase else 0) for s, i in zip(st, pos)
-            ]
+            keys = [(s % p, (i % 5) if phase else 0) for s, i in zip(st, pos)]
             ioc, pairs = pooled_ioc(stream, keys)
             if pairs < 3000:
                 continue
@@ -145,8 +143,10 @@ def main() -> None:
     counts = collections.Counter(dots)
     print(f"{len(stream):,} runes, {max(wid) + 1:,} words")
     print(f"separator dot counts: {sorted(counts.items())}")
-    print(f"total dots {sum(dots):,} against {len(dots):,} words "
-          f"({sum(dots) - len(dots):,} extra steps)\n")
+    print(
+        f"total dots {sum(dots):,} against {len(dots):,} words "
+        f"({sum(dots) - len(dots):,} extra steps)\n"
+    )
 
     if "--control" in sys.argv:
         import random  # noqa: PLC0415
@@ -169,8 +169,10 @@ def main() -> None:
             cp.append(i)
             cst.append(st_all[k])
         got = scan(cs, cp, cst, periods)[0]
-        print(f"PLANTED dot clock at period {period}: best nIoC {got[0]:.3f} "
-              f"at period {got[1]}")
+        print(
+            f"PLANTED dot clock at period {period}: best nIoC {got[0]:.3f} "
+            f"at period {got[1]}"
+        )
         return
 
     # empirical null: the same scan on a shuffled stream, which carries no state
@@ -188,7 +190,9 @@ def main() -> None:
     sd = (sum((x - mu) ** 2 for x in nulls) / len(nulls)) ** 0.5
     print(f"surrogate scan maximum: {mu:.4f} +- {sd:.4f} over {len(nulls)} shuffles\n")
 
-    print(f"{'state':<24}{'best nIoC':>11}{'z vs surrogate':>16}{'period':>8}{'phase':>7}")
+    print(
+        f"{'state':<24}{'best nIoC':>11}{'z vs surrogate':>16}{'period':>8}{'phase':>7}"
+    )
     for name, st in states(wid, dots).items():
         ioc, p, phase, _pairs = scan(stream, pos, st, periods)[0]
         print(f"{name:<24}{ioc:>11.3f}{(ioc - mu) / sd:>+16.2f}{p:>8}{str(phase):>7}")

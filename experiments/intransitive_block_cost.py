@@ -88,7 +88,9 @@ def main() -> None:
         m = sum(f[x] for x in b)
         err = abs(m - 5 / N) / (5 / N)
         worst = max(worst, err)
-        print(f"  block {i}: mass {m:.5f}  ({err * 100:+.1f}% vs required)  {''.join(b)}")
+        print(
+            f"  block {i}: mass {m:.5f}  ({err * 100:+.1f}% vs required)  {''.join(b)}"
+        )
     for r in singles4:
         err = abs(f[r] - target) / target
         worst = max(worst, err)
@@ -111,16 +113,25 @@ def main() -> None:
     # the forced deviation against the observed flat ciphertext.
     n_runes = 12956
     sd = (n_runes * target * (1 - target)) ** 0.5
-    print(f"\n  ciphertext consequence (corpus {n_runes} runes, expected {n_runes * target:.0f} +/- {sd:.1f}):")
+    print(
+        f"\n  ciphertext consequence (corpus {n_runes} runes, expected {n_runes * target:.0f} +/- {sd:.1f}):"
+    )
     for r in best4:
         cnt = f[r] * n_runes
-        print(f"    singleton {r}: forced ciphertext count {cnt:.0f}  z = {(cnt - n_runes * target) / sd:+.2f}")
+        print(
+            f"    singleton {r}: forced ciphertext count {cnt:.0f}  z = {(cnt - n_runes * target) / sd:+.2f}"
+        )
     print("    observed ciphertext counts span 399..492 (flat-ioc.md)")
 
     # But blocks need only be unions of g-ORBITS, and g's four fixed points may
     # form ONE block of size 4 rather than four singletons. That is far cheaper.
     print("\n--- freer partition: blocks are arbitrary unions of g-orbits ---")
-    for sizes in ([5, 5, 5, 5, 5, 4], [5, 5, 5, 5, 5, 1, 1, 1, 1], [10, 5, 5, 5, 4], [25, 4]):
+    for sizes in (
+        [5, 5, 5, 5, 5, 4],
+        [5, 5, 5, 5, 5, 1, 1, 1, 1],
+        [10, 5, 5, 5, 4],
+        [25, 4],
+    ):
         err = best_partition_error(f, sizes)
         print(f"  block sizes {str(sizes):<30} worst mass error {err * 100:5.1f}%")
 
@@ -133,7 +144,9 @@ def main() -> None:
     )
 
 
-def best_partition_error(f: dict[str, float], sizes: list[int], iters: int = 40000) -> float:
+def best_partition_error(
+    f: dict[str, float], sizes: list[int], iters: int = 40000
+) -> float:
     """Min over partitions of max |block mass - size/29| / (size/29), by local search."""
     import random
 

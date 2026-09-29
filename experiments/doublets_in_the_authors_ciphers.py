@@ -57,8 +57,10 @@ def report(seq, label: str, words=None) -> None:
         if pairs:
             hits = sum(1 for a, b in pairs if a[-1] == b[0])
             seam = f"{hits / len(pairs):.4f}"
-    print(f"{label:<32}{n:>8,}{doublets:>6}{rate:>9.4f}{(rate - CHANCE) / se:>+8.2f}"
-          f"{ioc:>8.3f}{seam:>9}")
+    print(
+        f"{label:<32}{n:>8,}{doublets:>6}{rate:>9.4f}{(rate - CHANCE) / se:>+8.2f}"
+        f"{ioc:>8.3f}{seam:>9}"
+    )
 
 
 def words_of_page(text: str) -> list[list[int]]:
@@ -95,26 +97,28 @@ def main() -> None:
         groups[x["cipher"]] += [IDX[ch] for ch in RUNE.findall(page)]
         wordsets[x["cipher"]] += words_of_page(page)
 
-    print(f"{'text':<32}{'runes':>8}{'dbl':>6}{'d1 rate':>9}{'z':>8}{'IoC':>8}"
-          f"{'seam':>9}")
-    print(f"{'chance':<32}{'':>8}{'':>6}{CHANCE:>9.4f}{0.0:>+8.2f}{1.0:>8.3f}"
-          f"{CHANCE:>9.4f}")
+    print(
+        f"{'text':<32}{'runes':>8}{'dbl':>6}{'d1 rate':>9}{'z':>8}{'IoC':>8}{'seam':>9}"
+    )
+    print(
+        f"{'chance':<32}{'':>8}{'':>6}{CHANCE:>9.4f}{0.0:>+8.2f}{1.0:>8.3f}"
+        f"{CHANCE:>9.4f}"
+    )
     plain_words = reg.corpus()
-    report([r for w in plain_words for r in w], "the author's plaintext",
-           plain_words)
+    report([r for w in plain_words for r in w], "the author's plaintext", plain_words)
     for cipher in ("monoalphabetic", "interrupted vigenere", "prime running key"):
         if groups[cipher]:
-            short = {"monoalphabetic": "monoalphabetic",
-                     "interrupted vigenere": "interrupted Vigenere",
-                     "prime running key": "prime running key"}[cipher]
+            short = {
+                "monoalphabetic": "monoalphabetic",
+                "interrupted vigenere": "interrupted Vigenere",
+                "prime running key": "prime running key",
+            }[cipher]
             report(groups[cipher], f"his {short}", wordsets[cipher])
     report(load_clean()[0], "THE BODY", lp_words())
 
     n = len(load_clean()[0])
     expected = (n - 1) * CHANCE
-    observed = sum(
-        1 for a, b in zip(load_clean()[0], load_clean()[0][1:]) if a == b
-    )
+    observed = sum(1 for a, b in zip(load_clean()[0], load_clean()[0][1:]) if a == b)
     print(
         f"\nThe author's plaintext is already below chance -- runeglish collapses TH,"
         f"\nEA, NG and OE, so the doubled letters English is full of do not survive as"

@@ -209,15 +209,17 @@ def main() -> None:
                 arms.append(
                     (
                         f"join across the boundary, {way}, <={threshold}, {side}",
-                        lambda s, r, t=threshold, f=forward, m=mark_follows: join_across(
-                            s, JOIN_RATE, t, r, forward=f, mark_follows=m
+                        lambda s, r, t=threshold, f=forward, m=mark_follows: (
+                            join_across(s, JOIN_RATE, t, r, forward=f, mark_follows=m)
                         ),
                     )
                 )
     arms.append(
         (
             "SHUFFLE within the span, then join, forward, <=2",
-            lambda s, r: join_within(shuffle_within(s, r), JOIN_RATE, 2, r, forward=True),
+            lambda s, r: join_within(
+                shuffle_within(s, r), JOIN_RATE, 2, r, forward=True
+            ),
         )
     )
 

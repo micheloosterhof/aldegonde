@@ -173,7 +173,9 @@ def main() -> None:
             me, ch = me2, ch2
         else:
             assign[i], assign[j] = assign[j], assign[i]
-    print(f"  best joint partition: mass error {me * 100:.2f}%, plaintext block chi2 = {ch:.1f}")
+    print(
+        f"  best joint partition: mass error {me * 100:.2f}%, plaintext block chi2 = {ch:.1f}"
+    )
     obs, _ = observed_block_chi2(assign, nb)
     print(f"  observed CIPHERTEXT block chi2 under that partition = {obs:.1f}")
 
@@ -206,7 +208,9 @@ def main() -> None:
         )
     mu = sum(sur) / len(sur)
     sd = (sum((x - mu) ** 2 for x in sur) / len(sur)) ** 0.5
-    print(f"\n  doublet-preserving surrogate (no block structure): {mu:.1f} +/- {sd:.1f}")
+    print(
+        f"\n  doublet-preserving surrogate (no block structure): {mu:.1f} +/- {sd:.1f}"
+    )
     print(f"    observed ciphertext {obs:.1f}  -> z = {(obs - mu) / sd:+.2f}")
     print(f"    required by a block machine {ch:.1f}  -> z = {(ch - mu) / sd:+.2f}")
 
@@ -222,7 +226,9 @@ def main() -> None:
     for shape in admissible_shapes():
         if len(shape) == 1:
             note = "transitive -> the dichotomy case"
-            print(f"  {str(shape):<28} {'-':>3} {'-':>10}   {'-':>7}   {'-':>9}   {note}")
+            print(
+                f"  {str(shape):<28} {'-':>3} {'-':>10}   {'-':>7}   {'-':>9}   {note}"
+            )
             continue
         nb2 = len(shape)
         me2, ch2 = joint_best(mat, shape, n_obs, iters=60000)

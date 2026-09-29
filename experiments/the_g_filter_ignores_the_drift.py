@@ -168,7 +168,9 @@ def main() -> None:
 
     print("\nPlanting a known g, enciphering with a preventer, and asking where the")
     print("true key ranks in a pool of 4,000. Lower is better; 0.5 is useless.\n")
-    print(f"{'preventer phi':<16}{'firing rate':>13}{'uncorrected':>14}{'corrected':>12}")
+    print(
+        f"{'preventer phi':<16}{'firing rate':>13}{'uncorrected':>14}{'corrected':>12}"
+    )
     for phi in PHIS:
         raw, fixed, seen = [], [], []
         for t in range(PLANTS):
@@ -194,7 +196,8 @@ def main() -> None:
             g
             for g in pool
             if all(
-                abs(meas[k][0] - drifted(predict(g, k, mats, tot), k, q)) <= 2 * meas[k][1]
+                abs(meas[k][0] - drifted(predict(g, k, mats, tot), k, q))
+                <= 2 * meas[k][1]
                 for k in LAGS
             )
         ]

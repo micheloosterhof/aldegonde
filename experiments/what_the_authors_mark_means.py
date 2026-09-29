@@ -83,7 +83,11 @@ RUNE = re.compile(r"[ᚠ-᛿]")
 MASTER = ROOT / "data" / "liber-primus__transcription--master.txt"
 CICADA = Path.home() / "src" / "cicada-2014"
 PASSAGES = (
-    ("the koan, pages 4-7, Atbash+3", (4, 5, 6, 7), CICADA / "stage06" / "index.transcribed"),
+    (
+        "the koan, pages 4-7, Atbash+3",
+        (4, 5, 6, 7),
+        CICADA / "stage06" / "index.transcribed",
+    ),
     ("the welcome, page 2, Vigenere", (2,), CICADA / "stage04" / "index.1.decrypted"),
 )
 TRIPLES = ROOT / "experiments" / "solved_page_triples.json"
@@ -132,7 +136,9 @@ def english_stream(path):
 
 
 def main() -> None:
-    print(f"{'passage':<34}{'marks':>7}{'at a sentence end':>19}{'ends marked':>14}{'commas marked':>15}")
+    print(
+        f"{'passage':<34}{'marks':>7}{'at a sentence end':>19}{'ends marked':>14}{'commas marked':>15}"
+    )
     totals = [0, 0, 0, 0, 0, 0]
     for label, pages, path in PASSAGES:
         runic, marks = runic_stream(pages)
@@ -145,7 +151,9 @@ def main() -> None:
 
         at_end, covered = 0, set()
         for position in marks:
-            at = mapping.get(position, mapping.get(position - 1, mapping.get(position + 1)))
+            at = mapping.get(
+                position, mapping.get(position - 1, mapping.get(position + 1))
+            )
             if at is None:
                 continue
             covered.update(range(at - WINDOW, at + WINDOW + 1))

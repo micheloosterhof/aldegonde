@@ -76,38 +76,52 @@ def main() -> None:
     sigma = rk.sample(range(M), M)
     plain = next(iter(prose_corpora(2928, 1)))
 
-    print(f"lag-5 coincidence, within a block and across a block edge. "
-          f"chance {CHANCE:.4f}\n")
+    print(
+        f"lag-5 coincidence, within a block and across a block edge. "
+        f"chance {CHANCE:.4f}\n"
+    )
     print(f"{'corpus':<38}{'within block':>22}{'across an edge':>24}")
     rows = {}
     for label, words in (
-        ("planted walk, base steps every block", walk(g, sigma, plain,
-                                                      random.Random(2), True)),
-        ("planted walk, base never steps", walk(g, sigma, plain,
-                                                random.Random(2), False)),
+        (
+            "planted walk, base steps every block",
+            walk(g, sigma, plain, random.Random(2), True),
+        ),
+        (
+            "planted walk, base never steps",
+            walk(g, sigma, plain, random.Random(2), False),
+        ),
         ("THE BODY", lp_words()),
     ):
         inside, cross = rates(words, 5)
         rows[label] = cross
-        print(f"{label:<38}"
-              f"{f'{inside[0]:.4f} +- {inside[1]:.4f}':>22}"
-              f"{f'{cross[0]:.4f} +- {cross[1]:.4f}':>24}")
+        print(
+            f"{label:<38}"
+            f"{f'{inside[0]:.4f} +- {inside[1]:.4f}':>22}"
+            f"{f'{cross[0]:.4f} +- {cross[1]:.4f}':>24}"
+        )
 
     steps = rows["planted walk, base steps every block"]
     fixed = rows["planted walk, base never steps"]
     body = rows["THE BODY"]
-    print(f"\nthe body against 'base steps every block': "
-          f"z = {(body[0] - steps[0]) / math.sqrt(body[1] ** 2 + steps[1] ** 2):+.2f}")
-    print(f"the body against 'base never steps':       "
-          f"z = {(body[0] - fixed[0]) / math.sqrt(body[1] ** 2 + fixed[1] ** 2):+.2f}")
+    print(
+        f"\nthe body against 'base steps every block': "
+        f"z = {(body[0] - steps[0]) / math.sqrt(body[1] ** 2 + steps[1] ** 2):+.2f}"
+    )
+    print(
+        f"the body against 'base never steps':       "
+        f"z = {(body[0] - fixed[0]) / math.sqrt(body[1] ** 2 + fixed[1] ** 2):+.2f}"
+    )
 
     leak = fixed[0] - steps[0]
     frac = (body[0] - steps[0]) / leak
     err = math.sqrt(body[1] ** 2 + steps[1] ** 2) / leak
-    print(f"\nA surviving base leaks {leak:.4f} of coincidence. The body's excess over"
-          f"\nthe stepping walk is {body[0] - steps[0]:+.4f}, so the fraction of edges"
-          f"\nthat carry an unchanged base is {frac:+.3f} +- {err:.3f}, with a 95% upper"
-          f"\nbound of {frac + 1.96 * err:.2f}.")
+    print(
+        f"\nA surviving base leaks {leak:.4f} of coincidence. The body's excess over"
+        f"\nthe stepping walk is {body[0] - steps[0]:+.4f}, so the fraction of edges"
+        f"\nthat carry an unchanged base is {frac:+.3f} +- {err:.3f}, with a 95% upper"
+        f"\nbound of {frac + 1.96 * err:.2f}."
+    )
     print(
         "\nSo the base changes at essentially every block edge. A rule that stepped it"
         "\nonly every second block would leave half the edges unchanged and is excluded"

@@ -34,7 +34,9 @@ N = 29
 D = 5
 
 
-def split_counts(stream: list[int], lengths: list[int], d: int) -> tuple[int, int, int, int]:
+def split_counts(
+    stream: list[int], lengths: list[int], d: int
+) -> tuple[int, int, int, int]:
     """(within hits, within pairs, cross hits, cross pairs) at distance d."""
     word_of = []
     for w, L in enumerate(lengths):
@@ -70,7 +72,9 @@ def main() -> None:
     # Self-check against the documented figures.
     assert (wh, wp) == (102, 2073), (wh, wp)
     assert (ch, cp) == (377, 10878), (ch, cp)
-    print("  self-check: matches within-word-d5-coincidence.md (102/2073, 377/10878)  OK")
+    print(
+        "  self-check: matches within-word-d5-coincidence.md (102/2073, 377/10878)  OK"
+    )
 
     # The boundary-blind prediction: shuffle word lengths, keep runes fixed.
     rng = random.Random(3301)
@@ -83,9 +87,13 @@ def main() -> None:
     mean = sum(null) / trials
     sd = (sum((x - mean) ** 2 for x in null) / trials) ** 0.5
     ge = sum(1 for x in null if x >= wh)
-    print(f"\nboundary-blind null (word lengths shuffled, runes fixed, {trials} draws):")
+    print(
+        f"\nboundary-blind null (word lengths shuffled, runes fixed, {trials} draws):"
+    )
     print(f"  within-word hits {mean:.1f} +/- {sd:.1f}   observed {wh}")
-    print(f"  z = {(wh - mean) / sd:+.2f}   P(null >= observed) = {(ge + 1) / (trials + 1):.4f}")
+    print(
+        f"  z = {(wh - mean) / sd:+.2f}   P(null >= observed) = {(ge + 1) / (trials + 1):.4f}"
+    )
 
     print(
         "\n  An autonomous machine (rotor of any period, any wiring) is boundary-blind\n"
@@ -105,7 +113,9 @@ def main() -> None:
         m = sum(nl) / len(nl)
         s = (sum((x - m) ** 2 for x in nl) / len(nl)) ** 0.5
         flag = "  <== the echo" if d == D else ""
-        print(f"  d={d}: {h:>4}/{p:<6} obs, null {m:6.1f} +/- {s:4.1f}, z={(h - m) / s:+5.2f}{flag}")
+        print(
+            f"  d={d}: {h:>4}/{p:<6} obs, null {m:6.1f} +/- {s:4.1f}, z={(h - m) / s:+5.2f}{flag}"
+        )
 
 
 if __name__ == "__main__":

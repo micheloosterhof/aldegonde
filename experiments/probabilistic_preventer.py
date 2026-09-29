@@ -101,20 +101,26 @@ def main() -> None:
     ratio = lp["seam"] / lp["d1w"]
     # 63 within-word doublets and 23 at the seam set the ratio's error
     se = ratio * math.sqrt(1 / 63 + 1 / 23)
-    print(f"corpus: d1w {lp['d1w']:.4f}, seam {lp['seam']:.4f}, "
-          f"ratio {ratio:.2f} +- {se:.2f}\n")
+    print(
+        f"corpus: d1w {lp['d1w']:.4f}, seam {lp['seam']:.4f}, "
+        f"ratio {ratio:.2f} +- {se:.2f}\n"
+    )
 
     rng = random.Random(11)
     g = order5_fixing(rng.sample(range(M), 4), rng)
     sigma = rng.sample(range(M), M)
-    print(f"{'phi':>6}{'d1w':>10}{'seam':>10}{'ratio':>8}{'gap_min':>10}"
-          f"{'d6w':>10}{'lands':>8}")
+    print(
+        f"{'phi':>6}{'d1w':>10}{'seam':>10}{'ratio':>8}{'gap_min':>10}"
+        f"{'d6w':>10}{'lands':>8}"
+    )
     for phi in (0.0, 0.6, 0.8, 0.82, 0.9, 1.0):
         r = score(preventer(g, sigma, phi), lp, draws)
         landed = sum(1 for k in INFORMATIVE if r[k][1] > 0.05)
         rr = r["seam"][0] / r["d1w"][0] if r["d1w"][0] else float("inf")
-        print(f"{phi:>6.2f}{r['d1w'][0]:>10.4f}{r['seam'][0]:>10.4f}{rr:>8.2f}"
-              f"{r['doublet_gap_min'][0]:>10.2f}{r['d6w'][0]:>10.4f}{f'{landed}/5':>8}")
+        print(
+            f"{phi:>6.2f}{r['d1w'][0]:>10.4f}{r['seam'][0]:>10.4f}{rr:>8.2f}"
+            f"{r['doublet_gap_min'][0]:>10.2f}{r['d6w'][0]:>10.4f}{f'{landed}/5':>8}"
+        )
     print(
         "\nThree of five at phi ~ 0.8, the best here. But d1w and the seam cannot land"
         "\ntogether: fitting d1w at phi ~ 0.6 overshoots the seam, fitting the seam at"

@@ -216,14 +216,18 @@ def main() -> None:
         runes = [idx[c] for c in chunk if re.match(r"[ᚠ-᛿]", c)]
         cut = page["interrupts"][0]
         cipher = np.array(runes[:cut], dtype=np.int64)
-        print(f"POSITIVE CONTROL: AN END, {cipher.size} runes before the first interrupt")
+        print(
+            f"POSITIVE CONTROL: AN END, {cipher.size} runes before the first interrupt"
+        )
         rows = sweep(cipher, starts)
         for c, name, st, sense, off in rows[:6]:
             print(f"  {c:>+7.3f}  {name:<22} start {st:<4} {sense} offset {off}")
         rank = next(i for i, r in enumerate(rows) if r[1] == "prime(n)-1" and r[2] == 0)
         hit = rows[rank]
-        print(f"\n  prime(n)-1 at start 0: score {hit[0]:+.3f}, {hit[3]} offset {hit[4]},"
-              f" rank {rank + 1} of {len(rows):,}")
+        print(
+            f"\n  prime(n)-1 at start 0: score {hit[0]:+.3f}, {hit[3]} offset {hit[4]},"
+            f" rank {rank + 1} of {len(rows):,}"
+        )
         return
 
     stream, wid = load_clean()
@@ -242,7 +246,9 @@ def main() -> None:
         for c, name, st, sense, off in sweep(cipher, starts)[:3]:
             best.append((c, name, st, sense, off, o))
     best.sort(reverse=True)
-    print(f"{'score':>8}{'generator':>24}{'start':>7}{'sense':>10}{'off':>5}{'origin':>8}")
+    print(
+        f"{'score':>8}{'generator':>24}{'start':>7}{'sense':>10}{'off':>5}{'origin':>8}"
+    )
     for c, name, st, sense, off, o in best[:12]:
         print(f"{c:>+8.3f}{name:>24}{st:>7}{sense:>10}{off:>5}{o:>8}")
 

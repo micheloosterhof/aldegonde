@@ -86,11 +86,15 @@ def main() -> None:
     h = 0.0
     for c in collections.Counter(data).values():
         h -= (c / n) * math.log2(c / n)
-    print(f"\nShannon entropy {h:.2f} bits per value (max for {n} samples: {math.log2(n):.2f})")
+    print(
+        f"\nShannon entropy {h:.2f} bits per value (max for {n} samples: {math.log2(n):.2f})"
+    )
 
     print("\nwhat the values are NOT:")
     ascii_share = sum(1 for v in data if 32 <= v < 127) / n
-    print(f"  printable ASCII: {ascii_share:.1%} of values (uniform bytes predict 37.1%)")
+    print(
+        f"  printable ASCII: {ascii_share:.1%} of values (uniform bytes predict 37.1%)"
+    )
     high = sum(1 for v in data if v > 127) / n
     print(f"  bytes above 127: {high:.1%} (text would be near 0%)")
     mod29 = chi2_uniform([v % 29 for v in data], 29)
@@ -179,7 +183,9 @@ def keystream() -> None:
     for sc, kn, se, of, o in best[:6]:
         print(f"{sc:>+8.3f}  {kn:<26}{se:>10}{of:>5}{o:>8}")
     print(f"\n{len(best):,} scored; a true key on a 57-rune prefix reads +14.25")
-    print("(the benchmark is prime(n)-1 on the AN END page, running-key-math-sequence.md)")
+    print(
+        "(the benchmark is prime(n)-1 on the AN END page, running-key-math-sequence.md)"
+    )
 
 
 def unpack() -> None:

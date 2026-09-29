@@ -85,12 +85,16 @@ def main() -> None:
     stream, _wid = load_clean()
     chi, k, rows = profile(stream)
     print(f"body: {len(stream):,} runes, pooled suppression factor {k:.4f}")
-    print(f"  homogeneity of suppression across runes: chi2 {chi:.1f} on 28 df "
-          f"(5% crit 41.3)")
+    print(
+        f"  homogeneity of suppression across runes: chi2 {chi:.1f} on 28 df "
+        f"(5% crit 41.3)"
+    )
     ranked = sorted(rows, key=lambda r: -(r[0] - k * r[1]) / math.sqrt(k * r[1] or 1))
     for o, e, x in ranked[:2] + ranked[-2:]:
-        print(f"    {ENG[x]:>3}  observed {o:>2}  expected {k * e:>5.2f}  "
-              f"z {(o - k * e) / math.sqrt(k * e):+.2f}")
+        print(
+            f"    {ENG[x]:>3}  observed {o:>2}  expected {k * e:>5.2f}  "
+            f"z {(o - k * e) / math.sqrt(k * e):+.2f}"
+        )
 
     print("\npower check: the same statistic on planted walks with NO doublet rule")
     rng = random.Random(12)

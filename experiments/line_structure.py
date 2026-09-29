@@ -94,14 +94,18 @@ def main() -> None:
     stream, line, pos, bpos = load()
     n = len(stream)
     rng = random.Random(3)
-    print(f"{n:,} runes, {line[-1] + 1} lines, {sum(1 for b in bpos if b == 0):,} blocks\n")
+    print(
+        f"{n:,} runes, {line[-1] + 1} lines, {sum(1 for b in bpos if b == 0):,} blocks\n"
+    )
 
     print("pairs in the same LINE but different blocks:")
     print(f"{'lag':>5}{'hits/pairs':>16}{'x chance':>10}{'z':>8}")
     for lag in range(1, 9):
         h = p = 0
         for i in range(n - lag):
-            if line[i] == line[i + lag] and _block_of(bpos, i) != _block_of(bpos, i + lag):
+            if line[i] == line[i + lag] and _block_of(bpos, i) != _block_of(
+                bpos, i + lag
+            ):
                 p += 1
                 h += stream[i] == stream[i + lag]
         if p < 100:
@@ -109,16 +113,22 @@ def main() -> None:
         rate = h / p
         se = math.sqrt((1 / M) * (1 - 1 / M) / p)
         print(f"{lag:>5}{f'{h}/{p}':>16}{rate * M:>10.3f}{(rate - 1 / M) / se:>+8.2f}")
-    print("  lag 1 is the seam doublet suppression, which is global; the rest is chance.\n")
+    print(
+        "  lag 1 is the seam doublet suppression, which is global; the rest is chance.\n"
+    )
 
     print("subsets, against a same-size random subset of the body:")
     for label, idx in (
         ("block-initial runes", [i for i, b in enumerate(bpos) if b == 0]),
-        ("block-initial, not line-initial",
-         [i for i, b in enumerate(bpos) if b == 0 and pos[i] != 0]),
+        (
+            "block-initial, not line-initial",
+            [i for i, b in enumerate(bpos) if b == 0 and pos[i] != 0],
+        ),
         ("line-initial runes", [i for i, p in enumerate(pos) if p == 0]),
-        ("line-initial, not block-initial",
-         [i for i, p in enumerate(pos) if p == 0 and bpos[i] != 0]),
+        (
+            "line-initial, not block-initial",
+            [i for i, p in enumerate(pos) if p == 0 and bpos[i] != 0],
+        ),
     ):
         obs, z = subset_ioc(stream, idx, rng)
         print(f"  {label:<34} n={len(idx):>5}  nIoC {obs:.4f}  z={z:+.2f}")
@@ -126,9 +136,11 @@ def main() -> None:
     counts = collections.Counter(stream[i] for i, p in enumerate(pos) if p == 0)
     total = sum(counts.values())
     top = sorted(counts.items(), key=lambda kv: -kv[1])[:6]
-    print("\n  commonest line-initial runes: "
-          + "  ".join(f"{ENG[i]}={v} ({v / total:.1%})" for i, v in top)
-          + f"  against {1 / M:.1%}")
+    print(
+        "\n  commonest line-initial runes: "
+        + "  ".join(f"{ENG[i]}={v} ({v / total:.1%})" for i, v in top)
+        + f"  against {1 / M:.1%}"
+    )
     print(
         "\nThe line is not a cipher unit, and the whole positional excess is the known"
         "\nline-initial layout artifact -- it survives removing block-initial runes, so"

@@ -83,8 +83,7 @@ def main() -> None:
     for c in prose_corpora(2928, 20):
         for w in c:
             vocab[tuple(w)] += 1
-    keywords = [list(w) for w in vocab
-                if len(set(w)) == len(w) and 4 <= len(w) <= 10]
+    keywords = [list(w) for w in vocab if len(set(w)) == len(w) and 4 <= len(w) <= 10]
     corpora = list(prose_corpora(2928, keys))
     rk = random.Random(3)
 
@@ -106,19 +105,25 @@ def main() -> None:
 
     body = fingerprint(lp_words())
     print(f"{len(keywords):,} usable keywords, {keys} keys per arm\n")
-    print(f"{'cell':<14}{'body':>11}{'keyword-built':>23}{'z':>7}"
-          f"{'free permutations':>23}{'z':>7}")
+    print(
+        f"{'cell':<14}{'body':>11}{'keyword-built':>23}{'z':>7}"
+        f"{'free permutations':>23}{'z':>7}"
+    )
     zk, zf = [], []
     for k in CELLS:
         a, b = arms["keyword"][k], arms["free"][k]
         za, zb = (body[k] - a.mean()) / a.std(), (body[k] - b.mean()) / b.std()
         zk.append(za)
         zf.append(zb)
-        print(f"{k:<14}{body[k]:>11.4f}{f'{a.mean():.4f} +- {a.std():.4f}':>23}"
-              f"{za:>7.2f}{f'{b.mean():.4f} +- {b.std():.4f}':>23}{zb:>7.2f}")
+        print(
+            f"{k:<14}{body[k]:>11.4f}{f'{a.mean():.4f} +- {a.std():.4f}':>23}"
+            f"{za:>7.2f}{f'{b.mean():.4f} +- {b.std():.4f}':>23}{zb:>7.2f}"
+        )
     zk, zf = np.array(zk), np.array(zf)
-    print(f"\nmean |z| against keyword-built {np.abs(zk).mean():.2f}, "
-          f"against free {np.abs(zf).mean():.2f}")
+    print(
+        f"\nmean |z| against keyword-built {np.abs(zk).mean():.2f}, "
+        f"against free {np.abs(zf).mean():.2f}"
+    )
 
     # A tail probability under ONE arm is not evidence. What matters is how much
     # likelier the body is under one arm than the other, so the same statistic has to
@@ -129,9 +134,9 @@ def main() -> None:
     def as_free_like(arm) -> float:
         hits = 0
         for i in range(len(arm[CELLS[0]])):
-            d = np.mean([
-                abs((arm[k][i] - free[k].mean()) / free[k].std()) for k in CELLS
-            ])
+            d = np.mean(
+                [abs((arm[k][i] - free[k].mean()) / free[k].std()) for k in CELLS]
+            )
             if d <= target:
                 hits += 1
         return hits / len(arm[CELLS[0]])

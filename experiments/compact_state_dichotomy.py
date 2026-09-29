@@ -133,9 +133,7 @@ def main() -> None:
         o = G.order()
         trans = G.is_transitive()
         label = "A_29 or S_29" if o >= math.factorial(N) // 2 else "smaller"
-        print(
-            f"  trial {trial}: transitive={trans!s:<5} |G| = {o:.4e}  ({label})"
-        )
+        print(f"  trial {trial}: transitive={trans!s:<5} |G| = {o:.4e}  ({label})")
         assert trans, "expected transitive"
         assert o >= math.factorial(N) // 2, o
 
@@ -150,7 +148,9 @@ def main() -> None:
             s[cyc[i]] = cyc[(i + 1) % N]
         G = PermutationGroup([Permutation(g), Permutation(s)])
         o = G.order()
-        print(f"  trial {trial}: |<g, disk>| = {o:.4e}   (state space the operator must track)")
+        print(
+            f"  trial {trial}: |<g, disk>| = {o:.4e}   (state space the operator must track)"
+        )
         assert o >= math.factorial(N) // 2, o
 
     print(
@@ -178,7 +178,9 @@ def main() -> None:
     for a, b in zip(fixed, ff):
         s[a] = b
     G = PermutationGroup([Permutation(g), Permutation(s)])
-    print(f"  block-preserving sigma: transitive={G.is_transitive()}, |G| = {G.order():.4e}")
+    print(
+        f"  block-preserving sigma: transitive={G.is_transitive()}, |G| = {G.order():.4e}"
+    )
     print(f"  orbits: {[sorted(o) for o in G.orbits()]}")
     print(
         "\n  A block structure means a plaintext rune can only ever encipher to a\n"

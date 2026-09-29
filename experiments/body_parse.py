@@ -87,8 +87,10 @@ def spans(closer: set[str], chunks=BODY, minimum: int = 3):
 
 def main() -> None:
     body = blocks()
-    print(f"{len(body):,} body blocks, mean length "
-          f"{sum(b[0] for b in body) / len(body):.2f}")
+    print(
+        f"{len(body):,} body blocks, mean length "
+        f"{sum(b[0] for b in body) / len(body):.2f}"
+    )
     print("  the canonical figures are 2,928 blocks at mean 4.42\n")
 
     wrong, n = [], 0
@@ -106,8 +108,10 @@ def main() -> None:
                 elif (ch in MARKS or ch in SEPARATORS) and n:
                     wrong.append(n)
                     n = 0
-    print(f"a per-line parser finds {len(wrong):,} blocks at mean "
-          f"{sum(wrong) / len(wrong):.2f} -- {len(wrong) - len(body):,} spurious")
+    print(
+        f"a per-line parser finds {len(wrong):,} blocks at mean "
+        f"{sum(wrong) / len(wrong):.2f} -- {len(wrong) - len(body):,} spurious"
+    )
 
     s = spans({"④"})
     last = [x[-1] for x in s]

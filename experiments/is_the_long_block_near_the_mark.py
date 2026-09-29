@@ -158,11 +158,16 @@ def main() -> None:
     for o in OFFSETS:
         need = max(MIN_SPAN, abs(o) + 1)
         ref = np.array(
-            [(at_offset(s, o) >= LONG).mean() - interior_rate(s, need) for s in registers]
+            [
+                (at_offset(s, o) >= LONG).mean() - interior_rate(s, need)
+                for s in registers
+            ]
         )
         ba, au = at_offset(body, o), at_offset(author, o)
         pb = float((ba >= LONG).mean()) - interior_rate(body, need)
-        se = math.sqrt(max((ba >= LONG).mean() * (1 - (ba >= LONG).mean()), 1e-9) / len(ba))
+        se = math.sqrt(
+            max((ba >= LONG).mean() * (1 - (ba >= LONG).mean()), 1e-9) / len(ba)
+        )
         print(
             f"{o:>8}{f'{ref.mean():+.3f} +- {ref.std(ddof=1):.3f}':>20}"
             f"{f'{float((au >= LONG).mean()) - interior_rate(author, need):+.3f} ({len(au)})':>20}"
@@ -194,6 +199,7 @@ def main() -> None:
     print("Null: shuffle the blocks inside each span, which is what the transposition")
     print("reading says happened, and rescan all ten offsets for the largest |z|.\n")
     base = interior_rate(body)
+
     def scan(spans):
         best = 0.0
         for o in OFFSETS:

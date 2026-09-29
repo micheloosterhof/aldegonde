@@ -71,7 +71,9 @@ def excess(two: list[tuple[int, int]]) -> tuple[float, int, int]:
     return both - baseline, both, total
 
 
-def planted(pool_size: int, words, rng: random.Random, count: int) -> list[tuple[int, int]]:
+def planted(
+    pool_size: int, words, rng: random.Random, count: int
+) -> list[tuple[int, int]]:
     pool = []
     for _ in range(pool_size):
         p = list(range(M))
@@ -103,16 +105,22 @@ def main() -> None:
     c = collections.Counter(tuple(w) for w in words)
     n = len(words)
     rate = sum(v * (v - 1) // 2 for v in c.values()) / (n * (n - 1) // 2)
-    print(f"LP plaintext: {n} two-rune words, {len(c)} distinct, "
-          f"P(two identical) = {rate:.4f}")
+    print(
+        f"LP plaintext: {n} two-rune words, {len(c)} distinct, "
+        f"P(two identical) = {rate:.4f}"
+    )
     print(f"so a pool of N bases predicts an excess of {rate * total:.0f}/N\n")
 
     rng = random.Random(5)
     print(f"{'pool N':>8}{'median':>10}{'10th':>9}{'90th':>9}{'predicted':>12}")
     for pool in (29, 100, 300, 1000, 2928):
-        vals = sorted(excess(planted(pool, words, rng, len(two)))[0] for _ in range(draws))
-        print(f"{pool:>8}{statistics.median(vals):>10.1f}{vals[max(0, draws // 10)]:>9.1f}"
-              f"{vals[-1 - draws // 10]:>9.1f}{rate * total / pool:>12.1f}")
+        vals = sorted(
+            excess(planted(pool, words, rng, len(two)))[0] for _ in range(draws)
+        )
+        print(
+            f"{pool:>8}{statistics.median(vals):>10.1f}{vals[max(0, draws // 10)]:>9.1f}"
+            f"{vals[-1 - draws // 10]:>9.1f}{rate * total / pool:>12.1f}"
+        )
     print(
         "\nThe body sits below the 10th percentile of every pool, including one as large"
         "\nas the block count itself. The measurement is consistent with the base being"

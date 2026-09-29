@@ -39,7 +39,11 @@ from apostrophe_census import IMAGE_DIR, INK, TEXT_BLOCK_X
 from aldegonde import c3301
 
 RUNE = re.compile(r"[ᚠ-᛿]")
-MASTER = Path(__file__).resolve().parent.parent / "data" / "liber-primus__transcription--master.txt"
+MASTER = (
+    Path(__file__).resolve().parent.parent
+    / "data"
+    / "liber-primus__transcription--master.txt"
+)
 RUNE_H = (90, 140)
 ROW_GAP = 70
 
@@ -132,7 +136,8 @@ def summary(directory: Path, master: list[str]) -> None:
 
 def main() -> None:
     directory = (
-        Path(sys.argv[1]) if len(sys.argv) > 1 and not sys.argv[1].startswith("-")
+        Path(sys.argv[1])
+        if len(sys.argv) > 1 and not sys.argv[1].startswith("-")
         else IMAGE_DIR
     )
     master = MASTER.read_text().split("%")
@@ -162,13 +167,19 @@ def main() -> None:
         extra_total += sum(d for _l, d, _r in off if d > 0)
         if not off:
             balanced += 1
-        detail = "balanced" if not off else "; ".join(
-            f"line {li}{d:+d}{f', {r} red' if r else ''}" for li, d, r in off[:4]
+        detail = (
+            "balanced"
+            if not off
+            else "; ".join(
+                f"line {li}{d:+d}{f', {r} red' if r else ''}" for li, d, r in off[:4]
+            )
         )
         print(f"{p:>5}{len(rs):>6}{header:>8}{len(off):>11}  {detail}")
 
     print(f"\n{balanced} of {len(pages)} pages reconcile line for line")
-    print(f"header blobs dropped: {header_total} ({header_total / len(pages):.1f} per page)")
+    print(
+        f"header blobs dropped: {header_total} ({header_total / len(pages):.1f} per page)"
+    )
     print(f"net unencoded blobs on unbalanced lines: {extra_total}")
     print(
         "\nA page that balances has no glyph the transcription lacks and none it invents."

@@ -123,8 +123,10 @@ def offset_profile(spans, offsets):
         v = np.array(vals, float)
         out[o] = (
             float(v.mean() - interior.mean()),
-            math.hypot(v.std(ddof=1) / math.sqrt(len(v)),
-                       interior.std(ddof=1) / math.sqrt(len(interior))),
+            math.hypot(
+                v.std(ddof=1) / math.sqrt(len(v)),
+                interior.std(ddof=1) / math.sqrt(len(interior)),
+            ),
         )
     return out
 
@@ -271,7 +273,9 @@ def main() -> None:
         observed, z = cycle_score(blocks, pool, cycle, rng)
         print(f"{cycle:<22}{len(blocks):>13}{observed:>11.4f}{z:>+8.2f}")
 
-    print("\nControl: encipher English with a real 3-key cycle, then read every N back.")
+    print(
+        "\nControl: encipher English with a real 3-key cycle, then read every N back."
+    )
     print("The true N must stand out and the wrong ones must not.\n")
     plain = prose_corpora(2896, 1)[0]
     cipher, flags = simulate_cycle(plain, 17, random.Random(7), 3)

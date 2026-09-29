@@ -116,8 +116,10 @@ def size_sweep(sizes: list[int]) -> None:
     stream, _wid = load_clean()
     tables = bigram_tables(stream)
     words = corpus()
-    print(f"{'size':>5}{'subsets':>10}{'body max':>10}{'disjoint':>10}{'ratio':>8}"
-          f"{'planted rank 1':>16}{'planted median':>16}")
+    print(
+        f"{'size':>5}{'subsets':>10}{'body max':>10}{'disjoint':>10}{'ratio':>8}"
+        f"{'planted rank 1':>16}{'planted median':>16}"
+    )
     for size in sizes:
         rows = score_subsets(tables, size)
         top, tset = rows[0]
@@ -130,8 +132,10 @@ def size_sweep(sizes: list[int]) -> None:
             planted_scores.append(pr[rank][0])
             hits += rank == 0
         med = sorted(planted_scores)[len(planted_scores) // 2]
-        print(f"{size:>5}{len(rows):>10,}{top:>10.1f}{disjoint:>10.1f}"
-              f"{top / disjoint:>8.3f}{f'{hits}/6':>16}{med:>16.0f}")
+        print(
+            f"{size:>5}{len(rows):>10,}{top:>10.1f}{disjoint:>10.1f}"
+            f"{top / disjoint:>8.3f}{f'{hits}/6':>16}{med:>16.0f}"
+        )
     print(
         "\nThe body's maximum is far below what a planted block of the same size scores,"
         "\nand its top candidates are separated from the best disjoint set by a few"
@@ -167,7 +171,9 @@ def main() -> None:
         rank = next(i for i, (_s, s4) in enumerate(rows) if s4 == planted)
         print(f"PLANTED [25,4] cipher over LP plaintext, small block {planted}")
         print(f"  top scores: " + ", ".join(f"{s:.1f}" for s, _ in rows[:5]))
-        print(f"  planted set scores {rows[rank][0]:.1f}, rank {rank + 1} of {len(rows):,}")
+        print(
+            f"  planted set scores {rows[rank][0]:.1f}, rank {rank + 1} of {len(rows):,}"
+        )
         return
 
     stream, _wid = load_clean()
@@ -182,7 +188,9 @@ def main() -> None:
         print(f"    {s:>7.2f}  {s4}   z = {(s - mu) / sd:+.2f}")
     top, tset = rows[0]
     disjoint = next((sc, x) for sc, x in rows if not set(x) & set(tset))
-    print(f"\n  best set sharing no rune with the top one: {disjoint[0]:.2f} {disjoint[1]}")
+    print(
+        f"\n  best set sharing no rune with the top one: {disjoint[0]:.2f} {disjoint[1]}"
+    )
     print(f"  top-to-disjoint ratio {top / disjoint[0]:.3f}")
     print(
         "\nThat ratio is the discriminator, not the absolute score. A real block wins by"

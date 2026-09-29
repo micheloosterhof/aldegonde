@@ -90,16 +90,24 @@ def main() -> None:
         R.append(sum(1 for w in sample if any(pattern(w))) / len(sample))
     S, LS, R = (np.array(x, float) for x in (S, LS, R))
 
-    print(f"blocks of {MIN_LEN}+ runes: {len(long_blocks)} in the body, "
-          f"{total:,} same-length pairs\n")
+    print(
+        f"blocks of {MIN_LEN}+ runes: {len(long_blocks)} in the body, "
+        f"{total:,} same-length pairs\n"
+    )
     print(f"{'statistic':<44}{'body':>9}{'prose, matched shape':>24}{'z':>8}")
-    print(f"{'pairs sharing a pattern':<44}{same:>9,}"
-          f"{f'{S.mean():.0f} +- {S.std():.0f}':>24}{(same - S.mean()) / S.std():>8.2f}")
-    print(f"{'  among blocks carrying a coincidence':<44}{live_same:>9,}"
-          f"{f'{LS.mean():.1f} +- {LS.std():.1f}':>24}"
-          f"{(live_same - LS.mean()) / LS.std():>8.2f}")
-    print(f"{'fraction of blocks with a coincidence':<44}{rate:>9.3f}"
-          f"{f'{R.mean():.3f} +- {R.std():.3f}':>24}{(rate - R.mean()) / R.std():>8.2f}")
+    print(
+        f"{'pairs sharing a pattern':<44}{same:>9,}"
+        f"{f'{S.mean():.0f} +- {S.std():.0f}':>24}{(same - S.mean()) / S.std():>8.2f}"
+    )
+    print(
+        f"{'  among blocks carrying a coincidence':<44}{live_same:>9,}"
+        f"{f'{LS.mean():.1f} +- {LS.std():.1f}':>24}"
+        f"{(live_same - LS.mean()) / LS.std():>8.2f}"
+    )
+    print(
+        f"{'fraction of blocks with a coincidence':<44}{rate:>9.3f}"
+        f"{f'{R.mean():.3f} +- {R.std():.3f}':>24}{(rate - R.mean()) / R.std():>8.2f}"
+    )
     print(
         "\nThe first two point opposite ways at about two sigma, which is what happens"
         "\nwhen a statistic is driven by the coincidence RATE rather than by word"
@@ -109,8 +117,10 @@ def main() -> None:
     )
 
     print("\n\nwhy: how much does a pattern say about which word it is?\n")
-    print(f"{'length':>7}{'prose words':>13}{'distinct':>11}{'pattern bits':>14}"
-          f"{'words per pattern':>19}")
+    print(
+        f"{'length':>7}{'prose words':>13}{'distinct':>11}{'pattern bits':>14}"
+        f"{'words per pattern':>19}"
+    )
     for length in range(6, 15):
         ws = by_len[length]
         if len(ws) < 200:
@@ -119,8 +129,10 @@ def main() -> None:
         n = sum(pats.values())
         bits = -sum(v / n * math.log2(v / n) for v in pats.values())
         types = len({tuple(w) for w in ws})
-        print(f"{length:>7}{len(ws):>13,}{types:>11,}{bits:>14.2f}"
-              f"{types / 2**bits:>19,.0f}")
+        print(
+            f"{length:>7}{len(ws):>13,}{types:>11,}{bits:>14.2f}"
+            f"{types / 2**bits:>19,.0f}"
+        )
     print(
         "\nNaming a word of length ten takes about ten bits; the pattern supplies 1.6,"
         "\nleaving some 250 candidates. Even at length thirteen it supplies 2.4."

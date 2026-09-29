@@ -69,7 +69,9 @@ def within_word_pairs(stream: list[int], wid: list[int]) -> dict[int, np.ndarray
     return out
 
 
-def mutual_information(assign: np.ndarray, pairs: dict[int, np.ndarray], k: int) -> float:
+def mutual_information(
+    assign: np.ndarray, pairs: dict[int, np.ndarray], k: int
+) -> float:
     """Summed G^2 of the block-pair tables over the lags, in nats."""
     total = 0.0
     for arr in pairs.values():
@@ -85,8 +87,9 @@ def mutual_information(assign: np.ndarray, pairs: dict[int, np.ndarray], k: int)
     return total
 
 
-def optimise(pairs: dict[int, np.ndarray], k: int, rng: random.Random,
-             restarts: int = 12) -> tuple[float, np.ndarray]:
+def optimise(
+    pairs: dict[int, np.ndarray], k: int, rng: random.Random, restarts: int = 12
+) -> tuple[float, np.ndarray]:
     """Best G^2 over assignments, by restarts plus greedy single-rune moves."""
     best, best_a = -1.0, None
     for _ in range(restarts):

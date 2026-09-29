@@ -136,7 +136,10 @@ def fit(words, model, target, rng, draws=6):
     for _ in range(14):
         mid = (lo + hi) / 2
         got = np.mean(
-            [float(np.mean(np.array(model(words, mid, rng)) == 2)) for _ in range(draws)]
+            [
+                float(np.mean(np.array(model(words, mid, rng)) == 2))
+                for _ in range(draws)
+            ]
         )
         if got > target:
             lo = mid
@@ -157,10 +160,14 @@ def main() -> None:
     author = [x for s in author_spans() for x in s]
     target = float(np.mean(np.array(body) == 2))
     counts = histogram(body) * len(body)
-    print(f"body: {len(body):,} blocks, 2-rune fraction {target:.4f}, "
-          f"mean {np.mean(body):.2f}")
-    print(f"author: {len(author):,} words, 2-rune fraction "
-          f"{np.mean(np.array(author) == 2):.4f}, mean {np.mean(author):.2f}\n")
+    print(
+        f"body: {len(body):,} blocks, 2-rune fraction {target:.4f}, "
+        f"mean {np.mean(body):.2f}"
+    )
+    print(
+        f"author: {len(author):,} words, 2-rune fraction "
+        f"{np.mean(np.array(author) == 2):.4f}, mean {np.mean(author):.2f}\n"
+    )
 
     sources = [("the author", author)]
     for n in REGISTERS[:4]:
@@ -197,7 +204,9 @@ def main() -> None:
     obs = histogram(body)
     for i, k in enumerate(CELLS):
         tag = f"{k}" if k < CELLS[-1] else f"{k}+"
-        print(f"{tag:>7}{obs[i]:>11.4f}{best['merging'][i]:>11.4f}{best['omitting'][i]:>11.4f}")
+        print(
+            f"{tag:>7}{obs[i]:>11.4f}{best['merging'][i]:>11.4f}{best['omitting'][i]:>11.4f}"
+        )
 
 
 if __name__ == "__main__":

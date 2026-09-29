@@ -101,7 +101,9 @@ def control(width: int, starts: int) -> bool:
 
     from aldegonde import c3301  # noqa: PLC0415
 
-    triples = json.loads((ROOT / "experiments" / "solved_page_triples.json").read_text())
+    triples = json.loads(
+        (ROOT / "experiments" / "solved_page_triples.json").read_text()
+    )
     page = next(x for x in triples if x["cipher"] == "prime running key")
     plain = np.array(page["plaintext_runes"], dtype=np.int64)
     seq = generators()["prime(n)-1"]
@@ -118,8 +120,10 @@ def control(width: int, starts: int) -> bool:
     alph = c3301.CICADA_ALPHABET
     eng = c3301.CICADA_ENGLISH_ALPHABET
     print(f"control: planted prime(n)-1 at rune 200 of {stream.size}")
-    print(f"  top hit  score {top[0]:+.3f} at position {top[1]}, "
-          f"generator {top[2]}, start {top[3]}")
+    print(
+        f"  top hit  score {top[0]:+.3f} at position {top[1]}, "
+        f"generator {top[2]}, start {top[3]}"
+    )
     runner = sorted({r[2] for r in rows[:10]})
     print(f"  generators in the top ten: {', '.join(runner)}")
     print(f"  FOUND\n" if hit else "  MISSED -- the sweep has no power, stop here\n")
@@ -149,14 +153,18 @@ def main() -> None:
     ):
         rows = sweep_windows(stream, width, step, starts, drift)
         scores = np.array([r[0] for r in rows])
-        print(f"\n{label}\n  {len(rows):,} (window, generator) pairs, width {width}, "
-              f"step {step}, {starts} starts each")
+        print(
+            f"\n{label}\n  {len(rows):,} (window, generator) pairs, width {width}, "
+            f"step {step}, {starts} starts each"
+        )
         print(f"  {'score':>8}{'position':>10}{'generator':>22}{'start':>8}")
         for sc, pos, name, start in rows[:6]:
             print(f"  {sc:>8.3f}{pos:>10}{name:>22}{start:>8}")
-        print(f"  max {scores.max():.3f}, median {np.median(scores):.3f}, "
-              f"sd {scores.std():.3f}  ->  best is "
-              f"{(scores.max() - scores.mean()) / scores.std():+.2f} sigma of its own scan")
+        print(
+            f"  max {scores.max():.3f}, median {np.median(scores):.3f}, "
+            f"sd {scores.std():.3f}  ->  best is "
+            f"{(scores.max() - scores.mean()) / scores.std():+.2f} sigma of its own scan"
+        )
     print(
         "\nThe planted control scores +14.27. A body best near +11.5 at under three"
         "\nsigma of a ten-thousand-cell scan is what a scan of noise looks like."

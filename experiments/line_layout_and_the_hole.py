@@ -90,16 +90,22 @@ def wraps_are_ordinary(runes_per_line: np.ndarray, blocks) -> None:
         counts.append(len(spans))
         means.append(float(np.mean(spans)) if spans else 0.0)
     c, m = np.array(counts, float), np.array(means, float)
-    print(f"{len(blocks):,} blocks in {len(runes_per_line)} lines of "
-          f"{runes_per_line.mean():.1f} runes\n")
+    print(
+        f"{len(blocks):,} blocks in {len(runes_per_line)} lines of "
+        f"{runes_per_line.mean():.1f} runes\n"
+    )
     print(f"{'':<26}{'observed':>10}{'length-bias null':>20}{'z':>8}")
-    print(f"{'blocks spanning a break':<26}{len(observed):>10}"
-          f"{f'{c.mean():.1f} +- {c.std():.1f}':>20}"
-          f"{(len(observed) - c.mean()) / c.std():>8.2f}")
+    print(
+        f"{'blocks spanning a break':<26}{len(observed):>10}"
+        f"{f'{c.mean():.1f} +- {c.std():.1f}':>20}"
+        f"{(len(observed) - c.mean()) / c.std():>8.2f}"
+    )
     om = float(np.mean(observed))
-    print(f"{'their mean length':<26}{om:>10.3f}"
-          f"{f'{m.mean():.3f} +- {m.std():.3f}':>20}"
-          f"{(om - m.mean()) / m.std():>8.2f}")
+    print(
+        f"{'their mean length':<26}{om:>10.3f}"
+        f"{f'{m.mean():.3f} +- {m.std():.3f}':>20}"
+        f"{(om - m.mean()) / m.std():>8.2f}"
+    )
     print(
         "\nBoth are ordinary, and the mean is if anything SHORT. Losing separators at"
         "\nbreaks would make spanning blocks both commoner and longer. Neither happens."
@@ -111,13 +117,19 @@ def wraps_are_ordinary(runes_per_line: np.ndarray, blocks) -> None:
     author = word_lengths()
     af2 = sum(1 for x in author if x == 2) / len(author)
     ase = math.sqrt(af2 * (1 - af2) / len(author))
-    print(f"\nblocks that touch no line break: {len(clean):,}, fraction at length 2 "
-          f"{f2:.4f} +- {se:.4f}")
-    print(f"  against the author's {af2:.4f} +- {ase:.4f}:  "
-          f"z = {(f2 - af2) / math.sqrt(se**2 + ase**2):+.2f}")
-    print("  The deficit survives in the blocks the line breaks never touched. This is"
-          "\n  a length-biased subset -- it over-samples short blocks -- so its rate sits"
-          "\n  above the body's own 0.1588 and still falls far below the author's.")
+    print(
+        f"\nblocks that touch no line break: {len(clean):,}, fraction at length 2 "
+        f"{f2:.4f} +- {se:.4f}"
+    )
+    print(
+        f"  against the author's {af2:.4f} +- {ase:.4f}:  "
+        f"z = {(f2 - af2) / math.sqrt(se**2 + ase**2):+.2f}"
+    )
+    print(
+        "  The deficit survives in the blocks the line breaks never touched. This is"
+        "\n  a length-biased subset -- it over-samples short blocks -- so its rate sits"
+        "\n  above the body's own 0.1588 and still falls far below the author's."
+    )
 
 
 def separators_per_line_is_not_a_test(sets: dict[str, str]) -> None:
@@ -142,13 +154,17 @@ def separators_per_line_is_not_a_test(sets: dict[str, str]) -> None:
         )
 
     print("\n\nThe separators-per-line test, and why it is invalid\n")
-    print(f"{'text':<28}{'lines':>6}{'sd z':>8}{'corr obs':>10}{'corr null':>11}{'z':>8}")
+    print(
+        f"{'text':<28}{'lines':>6}{'sd z':>8}{'corr obs':>10}{'corr null':>11}{'z':>8}"
+    )
     for label, text in sets.items():
         runes, seps, blocks = parse(text)
         if len(runes) < 30:
             continue
         sd_z, co, cn, c_z = stats(runes, seps, [n for n, _ in blocks])
-        print(f"{label:<28}{len(runes):>6}{sd_z:>8.2f}{co:>10.3f}{cn:>11.3f}{c_z:>8.2f}")
+        print(
+            f"{label:<28}{len(runes):>6}{sd_z:>8.2f}{co:>10.3f}{cn:>11.3f}{c_z:>8.2f}"
+        )
 
     for k, plain in enumerate(prose_corpora(2928, 3)):
         lengths = [len(w) for w in plain]
@@ -159,13 +175,13 @@ def separators_per_line_is_not_a_test(sets: dict[str, str]) -> None:
             rem -= x
         runes = np.array(ll, float)
         acc = np.cumsum(runes)
-        c = collections.Counter(
-            np.searchsorted(acc, np.cumsum(lengths), side="left")
-        )
+        c = collections.Counter(np.searchsorted(acc, np.cumsum(lengths), side="left"))
         seps = np.array([c.get(i, 0) for i in range(len(runes))], float)
         sd_z, co, cn, c_z = stats(runes, seps, lengths)
-        print(f"{'prose control ' + str(k):<28}{len(runes):>6}{sd_z:>8.2f}"
-              f"{co:>10.3f}{cn:>11.3f}{c_z:>8.2f}")
+        print(
+            f"{'prose control ' + str(k):<28}{len(runes):>6}{sd_z:>8.2f}"
+            f"{co:>10.3f}{cn:>11.3f}{c_z:>8.2f}"
+        )
 
     print(
         "\nThe body reads sd z about -4 and corr z about -8, which looked like separators"
@@ -186,14 +202,18 @@ def main() -> None:
     wraps_are_ordinary(runes, blocks)
     master = (ROOT / "data" / "liber-primus__transcription--master.txt").read_text()
     chunks = master.split("%")
-    separators_per_line_is_not_a_test({
-        "body (pages 0-56)": body,
-        "front matter, all 15": "\n".join(chunks[:15]),
-        "front matter, plaintext": "\n".join(chunks[i] for i in (3, 8, 9, 10, 11, 14)),
-        "front matter, enciphered": "\n".join(
-            chunks[i] for i in (0, 1, 2, 4, 5, 6, 7, 12, 13)
-        ),
-    })
+    separators_per_line_is_not_a_test(
+        {
+            "body (pages 0-56)": body,
+            "front matter, all 15": "\n".join(chunks[:15]),
+            "front matter, plaintext": "\n".join(
+                chunks[i] for i in (3, 8, 9, 10, 11, 14)
+            ),
+            "front matter, enciphered": "\n".join(
+                chunks[i] for i in (0, 1, 2, 4, 5, 6, 7, 12, 13)
+            ),
+        }
+    )
 
 
 if __name__ == "__main__":

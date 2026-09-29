@@ -104,8 +104,10 @@ def main() -> None:
     stream, word_id = load_clean()
     words = build_words(stream, word_id)
     print(f"corpus: {len(stream)} runes, {len(words)} words")
-    print(f"chance nIoC = 1.000 (rate {CHANCE:.4f});  shared alphabet ~ nIoC 1.74 "
-          f"(rate {PLAINTEXT:.4f})\n")
+    print(
+        f"chance nIoC = 1.000 (rate {CHANCE:.4f});  shared alphabet ~ nIoC 1.74 "
+        f"(rate {PLAINTEXT:.4f})\n"
+    )
 
     # --- positive control: P = 0 is the within-word same-phase echo ----------
     print("POSITIVE CONTROL  (P=0: within-word pairs at distance 5, 10, ...)")
@@ -151,14 +153,18 @@ def main() -> None:
     print("  strongest 6 periods by z vs chance:")
     for zz, p, h, t in best[:6]:
         mark = "   <== 29" if p == 29 else ""
-        print(f"    P={p:>4}: rate {h / t:.4f}  nIoC {h / t * N:.3f}  z={zz:+5.2f}{mark}")
+        print(
+            f"    P={p:>4}: rate {h / t:.4f}  nIoC {h / t * N:.3f}  z={zz:+5.2f}{mark}"
+        )
     print("  weakest 3:")
     for zz, p, h, t in best[-3:]:
         print(f"    P={p:>4}: rate {h / t:.4f}  nIoC {h / t * N:.3f}  z={zz:+5.2f}")
     rank = [p for _, p, _, _ in best].index(29) + 1
     print(f"\n  29 ranks {rank} of {len(best)} periods scanned")
-    print(f"  max |z| over the scan: {max(abs(b[0]) for b in best):.2f} "
-          f"(expected ~{math.sqrt(2 * math.log(len(best))):.2f} for pure noise)")
+    print(
+        f"  max |z| over the scan: {max(abs(b[0]) for b in best):.2f} "
+        f"(expected ~{math.sqrt(2 * math.log(len(best))):.2f} for pure noise)"
+    )
 
 
 if __name__ == "__main__":

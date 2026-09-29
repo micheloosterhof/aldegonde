@@ -83,8 +83,10 @@ def main() -> None:
     expected = len(exps) / 5
     chi = sum((counts[k] - expected) ** 2 / expected for k in range(5))
     print(f"{len(lengths):,} blocks")
-    print(f"exponent distribution {[counts[k] for k in range(5)]}, "
-          f"chi2 {chi:.1f} on 4 df (5% crit 9.5)\n")
+    print(
+        f"exponent distribution {[counts[k] for k in range(5)]}, "
+        f"chi2 {chi:.1f} on 4 df (5% crit 9.5)\n"
+    )
 
     print(f"{'lag':>4}{'observed':>11}{'null from shuffled LENGTHS':>30}{'z':>8}")
     for lag in (1, 2, 3, 5):
@@ -94,8 +96,10 @@ def main() -> None:
             rng.shuffle(t)
             null.append(acf(exponents(t), lag))
         mu, sd = statistics.mean(null), statistics.pstdev(null)
-        print(f"{lag:>4}{acf(exps, lag):>+11.4f}{mu:>+18.4f} +-{sd:.4f}"
-              f"{(acf(exps, lag) - mu) / sd:>+8.2f}")
+        print(
+            f"{lag:>4}{acf(exps, lag):>+11.4f}{mu:>+18.4f} +-{sd:.4f}"
+            f"{(acf(exps, lag) - mu) / sd:>+8.2f}"
+        )
 
     a, b = GAP
     obs = sum(exps[a:b]) % 5
@@ -104,8 +108,10 @@ def main() -> None:
         t = lengths[:]
         rng.shuffle(t)
         hits += sum(exponents(t)[a:b]) % 5 == 0
-    print(f"\nsum of exponents over the {b - a} blocks between the occurrences: "
-          f"mod 5 = {obs}")
+    print(
+        f"\nsum of exponents over the {b - a} blocks between the occurrences: "
+        f"mod 5 = {obs}"
+    )
     print(f"  shuffled-length corpora giving 0: {hits / 2000:.3f} (chance 0.200)")
     print(
         "\nNothing. The exponent marginal is uniform, the autocorrelation is the modular"

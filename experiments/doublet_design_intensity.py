@@ -31,7 +31,6 @@ SEED = 7
 DRAWS = 5000
 
 
-
 def transliterate(word: str) -> list[int] | None:
     if not (word.isascii() and word.isalpha()):
         return None
@@ -88,16 +87,26 @@ def main() -> None:
     generic = np.array([rate(f, random_permutation(rng)) for _ in range(DRAWS)])
     order5 = np.array([rate(f, random_cycletype(rng)) for _ in range(DRAWS)])
 
-    print(f"runeglish plaintext bigram table: {(f > 0).sum()} of {MOD * MOD} bigrams occur\n")
+    print(
+        f"runeglish plaintext bigram table: {(f > 0).sum()} of {MOD * MOD} bigrams occur\n"
+    )
     print(f"  s = identity (plaintext doublet rate)   = {identity:.4f}")
-    print(f"  assignment floor (min over all perms)   = {floor:.4f}  (proxy exploits exact zeros)")
-    print(f"  random permutation g                    = {generic.mean():.4f} +- {generic.std():.4f}")
-    print(f"  random cycle-type 5^5.1^4 g             = {order5.mean():.4f} +- {order5.std():.4f}")
+    print(
+        f"  assignment floor (min over all perms)   = {floor:.4f}  (proxy exploits exact zeros)"
+    )
+    print(
+        f"  random permutation g                    = {generic.mean():.4f} +- {generic.std():.4f}"
+    )
+    print(
+        f"  random cycle-type 5^5.1^4 g             = {order5.mean():.4f} +- {order5.std():.4f}"
+    )
     print(f"  cipher actually achieves                = {OBSERVED:.4f}\n")
     z = (OBSERVED - order5.mean()) / order5.std()
-    print(f"  observed is {z:+.1f} sd below a random order-5 g; "
-          f"{(order5 <= OBSERVED).mean():.4f} of {DRAWS} draws reach it "
-          f"(min sampled {order5.min():.4f})")
+    print(
+        f"  observed is {z:+.1f} sd below a random order-5 g; "
+        f"{(order5 <= OBSERVED).mean():.4f} of {DRAWS} draws reach it "
+        f"(min sampled {order5.min():.4f})"
+    )
     print("\n  => g is tuned against the language (a rule-random g stays near chance),")
     print("     but sits above the achievable floor, so it suppresses common bigrams")
     print("     rather than being pushed to the doublet-free optimum.")

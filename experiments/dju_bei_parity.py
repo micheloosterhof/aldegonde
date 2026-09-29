@@ -67,7 +67,9 @@ def main() -> None:
     rng = random.Random(3)
     print("g has order 5, so all its cycles are 5-cycles, which are even:")
     for k in (1, 3, 5):
-        print(f"  g with {k} 5-cycle{'s' if k > 1 else ' '}: sign {sign(order5(rng, k)):+d}")
+        print(
+            f"  g with {k} 5-cycle{'s' if k > 1 else ' '}: sign {sign(order5(rng, k)):+d}"
+        )
 
     print("\nthe product of 1,449 steps g^a o sigma, exponents drawn at random:")
     g = order5(rng, 5)
