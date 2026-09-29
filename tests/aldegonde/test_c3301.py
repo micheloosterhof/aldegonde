@@ -177,3 +177,93 @@ def test_rune_conversions_say_what_was_wrong() -> None:
 def test_unknown_tabula_recta_type_is_rejected_by_name() -> None:
     with pytest.raises(AlphabetError, match="nonsense"):
         c3301.valueTR("nonsense")
+
+
+def test_runes_codec_agrees_with_the_rune_index() -> None:
+    assert len(c3301.RUNES) == 29
+    assert c3301.RUNES.encode("ᚢᛠᛝ") == [1, 28, 21]
+    assert c3301.RUNES.decode([1, 28, 21]) == ["ᚢ", "ᛠ", "ᛝ"]
+    for rune in c3301.CICADA_ALPHABET:
+        assert c3301.RUNES.index(rune) == c3301.r2i(rune)
+
+
+def test_runes_codec_rejects_a_mark() -> None:
+    with pytest.raises(AlphabetError, match="not in the alphabet"):
+        c3301.RUNES.encode("ᚢ①ᛠ")
+
+
+def _labels(indices: list[int]) -> str:
+    return "-".join(c3301.CICADA_ENGLISH_ALPHABET[i] for i in indices)
+
+
+# English words and the runes the solved pages of the Liber Primus write them with.
+BOOK_SPELLINGS = [
+    ("THINGS", "TH-NG-S"),
+    ("NOTHING", "N-O-TH-NG"),
+    ("ANYTHING", "A-N-Y-TH-NG"),
+    ("BEING", "B-E-NG"),
+    ("GOING", "G-O-NG"),
+    ("DURING", "D-U-R-NG"),
+    ("GETTING", "G-E-T-T-NG"),
+    ("WARNING", "W-A-R-N-NG"),
+    ("FOLLOWING", "F-O-L-L-O-W-NG"),
+    ("CONSUMING", "C-O-N-S-U-M-NG"),
+    ("INHABITING", "I-N-H-A-B-I-T-NG"),
+    ("PRESERVING", "P-R-E-S-E-R-U-NG"),
+    ("BELONG", "B-E-L-O-NG"),
+    ("STRONG", "S-T-R-O-NG"),
+    ("CHANGE", "C-H-A-NG-E"),
+    ("INSTRUCTION", "I-N-S-T-R-U-C-T-IA-N"),
+    ("PRESERVATION", "P-R-E-S-E-R-U-A-T-IA-N"),
+    ("ILLUSIONS", "I-L-L-U-S-IA-N-S"),
+    ("BEHAVIORS", "B-E-H-A-U-IA-R-S"),
+    ("CONSCIOUSNESS", "C-O-N-S-C-IA-U-S-N-E-S-S"),
+    ("AETHEREAL", "AE-TH-E-R-EA-L"),
+    ("QUESTION", "C-W-E-S-T-IA-N"),
+    ("KNOWLEDGE", "C-N-O-W-L-E-D-G-E"),
+    ("BOOK", "B-O-O-C"),
+    ("LUCK", "L-U-C-C"),
+    ("WEAK", "W-EA-C"),
+    ("THINK", "TH-I-N-C"),
+    ("VOICE", "U-O-I-C-E"),
+    ("CIRCUMFERENCE", "C-I-R-C-U-M-F-E-R-E-N-C-E"),
+    ("EXPERIENCE", "E-X-P-E-R-I-E-N-C-E"),
+    ("JOURNEY", "J-O-U-R-N-E-Y"),
+]
+
+
+@pytest.mark.parametrize(("english", "runes"), BOOK_SPELLINGS)
+def test_encode_english_spells_as_the_book_does(english: str, runes: str) -> None:
+    assert _labels(c3301.encode_english(english)) == runes
+
+
+@pytest.mark.parametrize("index", range(29))
+def test_encode_english_reads_every_rune_label_as_that_rune(index: int) -> None:
+    assert c3301.encode_english(c3301.CICADA_ENGLISH_ALPHABET[index]) == [index]
+
+
+def test_encode_english_ignores_case() -> None:
+    assert c3301.encode_english("Things") == c3301.encode_english("THINGS")
+
+
+def test_encode_english_gives_letters_without_a_rune_their_nearest() -> None:
+    assert _labels(c3301.encode_english("ZOO")) == "S-O-O"
+    assert _labels(c3301.encode_english("IRAQ")) == "I-R-A-C"
+
+
+def test_encode_english_skips_what_is_not_a_letter() -> None:
+    assert _labels(c3301.encode_english("DON'T, 3 OF")) == "D-O-N-T-O-F"
+
+
+def test_encode_english_forms_no_rune_across_a_gap() -> None:
+    assert _labels(c3301.encode_english("AT HOME")) == "A-T-H-O-M-E"
+
+
+def test_decode_english_joins_the_rune_labels() -> None:
+    assert c3301.decode_english([2, 21, 15]) == "THNGS"
+    assert c3301.decode_english([]) == ""
+
+
+def test_decode_english_rejects_an_index_outside_the_alphabet() -> None:
+    with pytest.raises(AlphabetError, match="outside the alphabet"):
+        c3301.decode_english([0, 29])

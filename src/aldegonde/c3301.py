@@ -1,10 +1,13 @@
+# ABOUTME: The Cicada 3301 rune alphabet, its transcription marks, and conversions
+# ABOUTME: between runes, rune indices, prime values and English spelling.
 """Functions to deal with Cicada 3301."""
 
 import random
 from collections import defaultdict
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 
 from aldegonde import pasc
+from aldegonde.alphabet import Alphabet
 from aldegonde.exceptions import AldegondeKeyError, AlphabetError
 from aldegonde.maths.prime_numbers import primes
 from aldegonde.stats import compare, nulls
@@ -167,6 +170,76 @@ def is_rune(char: str) -> bool:
 
 
 RUNE_SET = frozenset(CICADA_ALPHABET)
+
+#: The 29 runes as a codec between rune characters and rune indices.
+RUNES: Alphabet[str] = Alphabet(CICADA_ALPHABET)
+
+_LABELS: Alphabet[str] = Alphabet(CICADA_ENGLISH_ALPHABET)
+
+
+def _english_spellings() -> dict[str, tuple[int, ...]]:
+    """Every English letter sequence the encoder reads, with its rune indices."""
+    spellings = {label: (index,) for index, label in enumerate(CICADA_ENGLISH_ALPHABET)}
+    rune = {label: index for index, label in enumerate(CICADA_ENGLISH_ALPHABET)}
+    spellings["ING"] = (rune["NG"],)
+    spellings["IO"] = (rune["IA"],)
+    spellings["QU"] = (rune["C"], rune["W"])
+    spellings["K"] = (rune["C"],)
+    spellings["Q"] = (rune["C"],)
+    spellings["V"] = (rune["U"],)
+    spellings["Z"] = (rune["S"],)
+    return spellings
+
+
+_ENGLISH_SPELLINGS = _english_spellings()
+_LONGEST_SPELLING = max(len(spelling) for spelling in _ENGLISH_SPELLINGS)
+
+
+def encode_english(text: str) -> list[int]:
+    """Spell English text in runes, the way the solved pages do.
+
+    Reads left to right and takes the longest letter sequence that has a
+    spelling: ING is the NG rune, IO is the IA rune, QU is C then W, and K, Q,
+    V and Z are written C, C, U and S. A character that is not a letter is
+    skipped, and no rune is formed across it.
+
+    Args:
+        text: English text, in any case
+
+    Returns:
+        The rune index of each rune written
+    """
+    letters = text.upper()
+    indices: list[int] = []
+    position = 0
+    while position < len(letters):
+        for length in range(_LONGEST_SPELLING, 0, -1):
+            spelling = letters[position : position + length]
+            if len(spelling) == length and spelling in _ENGLISH_SPELLINGS:
+                indices.extend(_ENGLISH_SPELLINGS[spelling])
+                position += length
+                break
+        else:
+            position += 1
+    return indices
+
+
+def decode_english(indices: Iterable[int]) -> str:
+    """Write rune indices as English letters.
+
+    Each rune becomes its label, so the NG rune reads NG where the English
+    word may have had ING, and the IA rune reads IA where it may have had IO.
+
+    Args:
+        indices: Rune indices from 0 to 28
+
+    Returns:
+        The labels joined into one string
+
+    Raises:
+        AlphabetError: If an index is outside the alphabet
+    """
+    return "".join(_LABELS.decode(indices))
 
 
 def r2i(rune: str) -> int:
