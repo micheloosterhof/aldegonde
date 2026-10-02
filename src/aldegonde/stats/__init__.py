@@ -6,6 +6,14 @@ from aldegonde.stats.binomial import (
     two_proportion_z,
     wilson_interval,
 )
+from aldegonde.stats.chisq import (
+    ChiSquare,
+    goodness_of_fit,
+    independence,
+    rate_uniformity,
+    uniformity,
+    wilson_hilferty,
+)
 from aldegonde.stats.compare import (
     bigramscore,
     chi_square,
@@ -89,6 +97,13 @@ __all__ = [
     "binomial_z",
     "two_proportion_z",
     "wilson_interval",
+    # chisq
+    "ChiSquare",
+    "goodness_of_fit",
+    "independence",
+    "rate_uniformity",
+    "uniformity",
+    "wilson_hilferty",
     # compare
     "make_ngram_scorer",
     "bigramscore",
