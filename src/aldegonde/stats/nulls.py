@@ -30,13 +30,13 @@ from __future__ import annotations
 
 import random
 from collections import Counter
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Hashable, Sequence
 from typing import TypeVar
 
 from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.markov import MarkovModel, fit_markov
 
-T = TypeVar("T")
+T = TypeVar("T", bound=Hashable)
 
 NullModel = Callable[[Sequence[T], random.Random], Sequence[T]]
 """A resampler: (observed sequence, random source) -> surrogate sequence."""
@@ -264,7 +264,7 @@ def doublet_markov(alphabet: Sequence[T], rate: float) -> NullModel[T]:
         msg = f"rate must be between 0 and 1, got {rate}"
         raise InvalidInputError(msg)
     other = (1.0 - rate) / (len(alphabet) - 1)
-    transitions = {
+    transitions: dict[tuple[T, ...], dict[T, float]] = {
         (symbol,): {
             candidate: rate if candidate == symbol else other for candidate in alphabet
         }

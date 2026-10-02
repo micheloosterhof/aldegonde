@@ -17,7 +17,7 @@ All functions work on arbitrary alphabets (runes, integers, letters).
 
 import random
 from collections import Counter, defaultdict
-from collections.abc import Sequence
+from collections.abc import Hashable, Sequence
 from math import sqrt
 from typing import TypeVar
 
@@ -28,7 +28,7 @@ from aldegonde.stats.resample import monte_carlo_map
 from aldegonde.stats.zscore import z_score
 from aldegonde.validation import validate_positive_integer, validate_text_sequence
 
-T = TypeVar("T")
+T = TypeVar("T", bound=Hashable)
 
 
 def repeat_distances(

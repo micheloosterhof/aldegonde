@@ -179,7 +179,9 @@ _LABELS: Alphabet[str] = Alphabet(CICADA_ENGLISH_ALPHABET)
 
 def _english_spellings() -> dict[str, tuple[int, ...]]:
     """Every English letter sequence the encoder reads, with its rune indices."""
-    spellings = {label: (index,) for index, label in enumerate(CICADA_ENGLISH_ALPHABET)}
+    spellings: dict[str, tuple[int, ...]] = {
+        label: (index,) for index, label in enumerate(CICADA_ENGLISH_ALPHABET)
+    }
     rune = {label: index for index, label in enumerate(CICADA_ENGLISH_ALPHABET)}
     spellings["ING"] = (rune["NG"],)
     spellings["IO"] = (rune["IA"],)

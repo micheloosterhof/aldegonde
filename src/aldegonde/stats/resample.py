@@ -23,7 +23,7 @@ a skewed null it is only indicative, and the p-values are authoritative.
 from __future__ import annotations
 
 import random
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Hashable, Mapping, Sequence
 from dataclasses import dataclass
 from math import sqrt
 from typing import TYPE_CHECKING, TypeVar
@@ -34,7 +34,7 @@ from aldegonde.stats.zscore import z_score
 if TYPE_CHECKING:
     from aldegonde.stats.nulls import NullModel
 
-T = TypeVar("T")
+T = TypeVar("T", bound=Hashable)
 
 #: Seed used when a caller injects no random source. Fixed so a resampled
 #: p-value can be reproduced; pass `rng` to vary the draw deliberately.
