@@ -336,6 +336,29 @@ def low_doublet_null() -> nulls.NullModel[int]:
     return model
 
 
+def low_doublet_markov_null() -> nulls.NullModel[int]:
+    """Generative null at the text's own doublet rate over the 29 runes.
+
+    The generative twin of `low_doublet_null`: each surrogate is drawn fresh
+    from a uniform-marginal chain whose self-transition probability is the
+    observed doublet rate. Use it when the null is "a random rune process with
+    this doublet suppression and nothing else"; use `low_doublet_null` when the
+    observed rune frequencies must be held exactly.
+
+    Returns:
+        A null model generating length-matched rune-index surrogates at the
+        observed doublet rate
+    """
+
+    def model(data: Sequence[int], rng: random.Random) -> Sequence[int]:
+        sampler = nulls.doublet_markov(
+            range(len(CICADA_ALPHABET)), _observed_doublet_rate(data)
+        )
+        return sampler(data, rng)
+
+    return model
+
+
 def numberToBase(n: int, b: int) -> list[int]:
     """Convert from base10 to any other base. outputs as list of int."""
     if n == 0:

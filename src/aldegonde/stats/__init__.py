@@ -55,6 +55,7 @@ from aldegonde.stats.kappa_test import (
     print_kappa,
     triplets,
 )
+from aldegonde.stats.markov import MarkovModel, fit_markov
 from aldegonde.stats.multigraph_ioc import MiocTuple, mioc, nmioc, print_mioc_statistics
 from aldegonde.stats.ngram import (
     bigrams,
@@ -71,7 +72,10 @@ from aldegonde.stats.ngram import (
 )
 from aldegonde.stats.nulls import (
     NullModel,
+    doublet_markov,
     doublet_shuffle,
+    fitted_markov,
+    markov_null,
     no_doublet_shuffle,
     shuffle,
 )
@@ -152,6 +156,9 @@ __all__ = [
     "kappa_spectrum",
     "print_kappa",
     "triplets",
+    # markov
+    "MarkovModel",
+    "fit_markov",
     # mioc
     "MiocTuple",
     "mioc",
@@ -171,7 +178,10 @@ __all__ = [
     "trigraphs",
     # nulls
     "NullModel",
+    "doublet_markov",
     "doublet_shuffle",
+    "fitted_markov",
+    "markov_null",
     "no_doublet_shuffle",
     "shuffle",
     # pairs

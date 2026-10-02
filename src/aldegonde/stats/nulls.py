@@ -9,11 +9,18 @@ randomizes everything else. Comparing an observed statistic against the
 distribution of the same statistic over many surrogates isolates the
 structure the null does not contain.
 
-The nulls implemented here both preserve the exact multiset of symbols:
+The shuffle nulls preserve the exact multiset of symbols:
 
     shuffle             exact unigram frequencies, order destroyed
     no_doublet_shuffle  exact frequencies and no adjacent equal symbols
     doublet_shuffle     exact frequencies at a chosen adjacent-doublet rate
+
+The generative nulls draw each surrogate fresh from a Markov model, so only
+the length is preserved:
+
+    markov_null         any model from `stats.markov`
+    fitted_markov       an order-k model fitted to the observed sequence
+    doublet_markov      uniform marginals with a pinned adjacent-doublet rate
 
 Randomness is injected as a random.Random so a seeded run is reproducible and
 trials are independent; the resampler is a pure function of (data, rng).
@@ -27,6 +34,7 @@ from collections.abc import Callable, Sequence
 from typing import TypeVar
 
 from aldegonde.exceptions import InvalidInputError
+from aldegonde.stats.markov import MarkovModel, fit_markov
 
 T = TypeVar("T")
 
@@ -168,3 +176,98 @@ def _doublet_fill(data: Sequence[T], rng: random.Random, factor: float) -> list[
         remaining[chosen] -= 1
         previous = chosen
     return out
+
+
+def markov_null(model: MarkovModel[T]) -> NullModel[T]:
+    """Build a generative null from a Markov model.
+
+    Each surrogate is drawn fresh from the model and matches the observed
+    sequence in length only; the symbol multiset is not preserved. This is
+    the null for a hypothesis stated as a process, "text whose only structure
+    is these transition rates", where the shuffle family states it as a
+    rearrangement of the observed symbols.
+
+    Args:
+        model: The model to draw surrogates from
+
+    Returns:
+        A null model generating length-matched surrogates
+    """
+
+    def null(data: Sequence[T], rng: random.Random) -> list[T]:
+        return model.sample(len(data), rng)
+
+    return null
+
+
+def fitted_markov(
+    order: int = 1,
+    smoothing: float = 1.0,
+    alphabet: Sequence[T] | None = None,
+) -> NullModel[T]:
+    """Build a generative null that fits a Markov model to the observed sequence.
+
+    Every call fits an order-k model to the data it is given and samples a
+    surrogate from it, so the surrogates share the observed n-gram statistics
+    in expectation and nothing of longer range.
+
+    Args:
+        order: Number of symbols of context
+        smoothing: Pseudo-count added for every next symbol
+        alphabet: Symbols to smooth over; the symbols seen when omitted
+
+    Returns:
+        A null model generating length-matched surrogates from the fitted
+        chain
+
+    Raises:
+        InvalidInputError: If order is not positive or smoothing is negative
+    """
+    if order < 1:
+        msg = f"order must be positive, got {order}"
+        raise InvalidInputError(msg)
+    if smoothing < 0:
+        msg = f"smoothing must be non-negative, got {smoothing}"
+        raise InvalidInputError(msg)
+
+    def null(data: Sequence[T], rng: random.Random) -> list[T]:
+        return fit_markov(data, order, alphabet, smoothing).sample(len(data), rng)
+
+    return null
+
+
+def doublet_markov(alphabet: Sequence[T], rate: float) -> NullModel[T]:
+    """Build a generative null with a pinned adjacent-doublet rate.
+
+    Each symbol repeats its predecessor with probability `rate` and is
+    otherwise uniform over the rest of the alphabet, so the marginals stay
+    uniform. rate = 1/N gives uniform random text; a smaller rate models
+    doublet suppression. Statistics judged against a uniform null on such
+    text show artifacts; this null holds the doublet rate fixed so only
+    structure beyond it can score.
+
+    Args:
+        alphabet: The symbols to generate
+        rate: Probability that a symbol equals its predecessor
+
+    Returns:
+        A null model generating length-matched surrogates at that rate
+
+    Raises:
+        InvalidInputError: If the alphabet has fewer than 2 symbols or the
+            rate is outside [0, 1]
+    """
+    if len(alphabet) < 2:
+        msg = "doublet_markov needs at least 2 symbols"
+        raise InvalidInputError(msg)
+    if not 0.0 <= rate <= 1.0:
+        msg = f"rate must be between 0 and 1, got {rate}"
+        raise InvalidInputError(msg)
+    other = (1.0 - rate) / (len(alphabet) - 1)
+    transitions = {
+        (symbol,): {
+            candidate: rate if candidate == symbol else other for candidate in alphabet
+        }
+        for symbol in alphabet
+    }
+    return markov_null(MarkovModel(1, alphabet, transitions))

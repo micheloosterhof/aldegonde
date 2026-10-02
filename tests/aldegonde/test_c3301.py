@@ -69,6 +69,23 @@ def test_low_doublet_null_is_reproducible() -> None:
     assert model(data, random.Random(4)) == model(data, random.Random(4))
 
 
+def test_low_doublet_markov_null_matches_the_observed_doublet_rate() -> None:
+    rng = random.Random(0)
+    data: list[int] = []
+    while len(data) < 6000:
+        r = rng.randrange(29)
+        if data and r == data[-1] and rng.random() < 0.8:
+            continue
+        data.append(r)
+    observed = c3301._observed_doublet_rate(data)
+    out = c3301.low_doublet_markov_null()(data, random.Random(1))
+    rate = sum(1 for a, b in zip(out, out[1:]) if a == b) / (len(out) - 1)
+    assert len(out) == len(data)
+    assert all(0 <= r < 29 for r in out)
+    assert abs(rate - observed) < 0.005
+    assert Counter(out) != Counter(data)  # drawn fresh, not rearranged
+
+
 def test_randomrunes_with_low_doublets_removed() -> None:
     assert not hasattr(c3301, "randomrunes_with_low_doublets")
 
