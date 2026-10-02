@@ -47,7 +47,14 @@ from aldegonde.stats.isomorphs import (
     print_isomorph_statistics,
     random_isomorph_statistics,
 )
-from aldegonde.stats.kappa_test import doublets, kappa, print_kappa, triplets
+from aldegonde.stats.kappa_test import (
+    KappaZ,
+    doublets,
+    kappa,
+    kappa_spectrum,
+    print_kappa,
+    triplets,
+)
 from aldegonde.stats.multigraph_ioc import MiocTuple, mioc, nmioc, print_mioc_statistics
 from aldegonde.stats.ngram import (
     bigrams,
@@ -139,8 +146,10 @@ __all__ = [
     "print_isomorph_statistics",
     "random_isomorph_statistics",
     # kappa
+    "KappaZ",
     "doublets",
     "kappa",
+    "kappa_spectrum",
     "print_kappa",
     "triplets",
     # mioc
