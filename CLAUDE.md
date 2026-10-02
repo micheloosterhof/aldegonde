@@ -89,7 +89,7 @@ pytest --cov=aldegonde tests/aldegonde
 tox
 
 # Run specific test environment
-tox -e py310      # Python 3.10 tests
+tox -e py311      # Python 3.11 tests
 tox -e lint       # Linting only
 tox -e typing     # Type checking only
 ```
@@ -283,9 +283,9 @@ def test_caesar_roundtrip(plaintext: str) -> None:
 ## CI/CD
 
 GitHub Actions workflow (`.github/workflows/tox.yml`) runs on push/PR:
-- Tests against Python 3.10, 3.11, 3.12, 3.13
-- Linting with ruff (Python 3.10)
-- Type checking with ty (Python 3.10)
+- Tests against Python 3.11, 3.12, 3.13
+- Linting with ruff (Python 3.11)
+- Type checking with ty (Python 3.11)
 
 ## Common Commands Quick Reference
 
