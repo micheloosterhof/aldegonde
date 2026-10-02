@@ -9,6 +9,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
+from aldegonde import masc
 from aldegonde.exceptions import InvalidInputError
 from aldegonde.maths import permutation
 
@@ -179,3 +180,44 @@ def test_numpy_arrays_are_accepted() -> None:
     a, b = np.array([1, 2, 0]), np.array([0, 2, 1])
     assert permutation.compose(a, b) == list(a[b])
     assert permutation.inverse(a) == [2, 0, 1]
+
+
+def test_parity_of_a_transposition_is_odd() -> None:
+    assert permutation.parity(permutation.transposition(4, 0, 1)) == -1
+    assert permutation.parity(permutation.identity(4)) == 1
+    assert permutation.parity(permutation.from_cycles(4, [[0, 1, 2]])) == 1
+
+
+@given(permutations, permutations)
+def test_parity_is_multiplicative(p: list[int], q: list[int]) -> None:
+    product = permutation.compose(p, q)
+    assert permutation.parity(product) == permutation.parity(p) * permutation.parity(q)
+
+
+def test_from_key_reads_a_substitution_key_in_alphabet_order() -> None:
+    key = masc.shiftedkey("ABCD", shift=1)
+    assert permutation.from_key("ABCD", key) == [1, 2, 3, 0]
+
+
+def test_to_key_inverts_from_key() -> None:
+    key = masc.randomkey("ABCDEFG", rng=random.Random(5))
+    perm = permutation.from_key("ABCDEFG", key)
+    assert permutation.to_key("ABCDEFG", perm) == key
+
+
+@given(permutations)
+def test_from_key_inverts_to_key(p: list[int]) -> None:
+    alphabet = [chr(0x16A0 + i) for i in range(SIZE)]
+    assert permutation.from_key(alphabet, permutation.to_key(alphabet, p)) == list(p)
+
+
+def test_from_key_rejects_a_key_that_is_not_a_bijection() -> None:
+    with pytest.raises(InvalidInputError):
+        permutation.from_key("ABC", {"A": "B", "B": "B", "C": "A"})
+    with pytest.raises(InvalidInputError):
+        permutation.from_key("ABC", {"A": "B", "B": "C"})
+
+
+def test_to_key_rejects_a_size_mismatch() -> None:
+    with pytest.raises(InvalidInputError):
+        permutation.to_key("ABC", [0, 1])

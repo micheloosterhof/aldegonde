@@ -16,14 +16,20 @@ of integers. Any integer sequence is accepted, including a numpy array.
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 from aldegonde.exceptions import InvalidInputError
-from aldegonde.validation import validate_permutation, validate_positive_integer
+from aldegonde.validation import (
+    validate_alphabet,
+    validate_permutation,
+    validate_positive_integer,
+)
 
 if TYPE_CHECKING:
     import random
-    from collections.abc import Collection, Sequence
+    from collections.abc import Collection, Hashable, Mapping, Sequence
+
+T = TypeVar("T", bound="Hashable")
 
 
 def _validate_point(point: int, size: int) -> int:
@@ -243,6 +249,25 @@ def order(perm: Sequence[int]) -> int:
     return math.lcm(*cycle_type(perm))
 
 
+def parity(perm: Sequence[int]) -> int:
+    """Return +1 for an even permutation and -1 for an odd one.
+
+    A cycle of length L is L - 1 transpositions, so the sign is
+    (-1) ** (N - number of cycles). The sign multiplies under composition.
+
+    Args:
+        perm: Permutation to inspect
+
+    Returns:
+        +1 or -1
+
+    Raises:
+        InvalidInputError: If perm is not a permutation
+    """
+    images = validate_permutation(perm)
+    return 1 if (len(images) - len(_cycles(images))) % 2 == 0 else -1
+
+
 def fixed_points(perm: Sequence[int]) -> list[int]:
     """Return the points a permutation maps to themselves.
 
@@ -346,3 +371,53 @@ def random_with_cycle_type(
         placed.append(free[start : start + length])
         start += length
     return from_cycles(size, placed)
+
+
+def from_key(alphabet: Sequence[T], key: Mapping[T, T]) -> list[int]:
+    """Return a substitution key as a permutation of alphabet indices.
+
+    Args:
+        alphabet: The symbols in index order
+        key: Maps each symbol of the alphabet to its substitute
+
+    Returns:
+        The permutation with image[i] the index of key[alphabet[i]]
+
+    Raises:
+        AlphabetError: If the alphabet is not valid
+        InvalidInputError: If the key does not map the alphabet onto itself
+    """
+    validate_alphabet(alphabet)
+    index = {symbol: i for i, symbol in enumerate(alphabet)}
+    images = []
+    for symbol in alphabet:
+        if symbol not in key or key[symbol] not in index:
+            msg = f"key does not map {symbol!r} onto the alphabet"
+            raise InvalidInputError(msg, input_value=key)
+        images.append(index[key[symbol]])
+    return validate_permutation(images)
+
+
+def to_key(alphabet: Sequence[T], perm: Sequence[int]) -> dict[T, T]:
+    """Return a permutation of alphabet indices as a substitution key.
+
+    Args:
+        alphabet: The symbols in index order
+        perm: Permutation of 0..N-1, with N the alphabet size
+
+    Returns:
+        The key mapping alphabet[i] to alphabet[perm[i]]
+
+    Raises:
+        AlphabetError: If the alphabet is not valid
+        InvalidInputError: If perm is not a permutation of the alphabet's
+            indices
+    """
+    validate_alphabet(alphabet)
+    images = validate_permutation(perm)
+    if len(images) != len(alphabet):
+        msg = (
+            f"permutation size {len(images)} differs from alphabet size {len(alphabet)}"
+        )
+        raise InvalidInputError(msg, input_value=perm)
+    return {symbol: alphabet[image] for symbol, image in zip(alphabet, images)}
