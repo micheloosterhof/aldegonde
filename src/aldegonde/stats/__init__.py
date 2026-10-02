@@ -1,5 +1,11 @@
 """Statistical analysis tools for cryptanalysis."""
 
+from aldegonde.stats.binomial import (
+    WilsonInterval,
+    binomial_z,
+    two_proportion_z,
+    wilson_interval,
+)
 from aldegonde.stats.compare import (
     bigramscore,
     chi_square,
@@ -54,6 +60,12 @@ from aldegonde.stats.nulls import (
     no_doublet_shuffle,
     shuffle,
 )
+from aldegonde.stats.pairs import (
+    RelationBound,
+    extremal_relation_rate,
+    pair_counts,
+    relation_rate,
+)
 from aldegonde.stats.position import PositionChiSquare, position_frequency_chi2
 from aldegonde.stats.repeats import (
     odd_spaced_repeats,
@@ -72,6 +84,11 @@ from aldegonde.stats.resample import (
 from aldegonde.stats.zscore import z_score
 
 __all__ = [
+    # binomial
+    "WilsonInterval",
+    "binomial_z",
+    "two_proportion_z",
+    "wilson_interval",
     # compare
     "make_ngram_scorer",
     "bigramscore",
@@ -133,6 +150,11 @@ __all__ = [
     "doublet_shuffle",
     "no_doublet_shuffle",
     "shuffle",
+    # pairs
+    "RelationBound",
+    "extremal_relation_rate",
+    "pair_counts",
+    "relation_rate",
     # position
     "PositionChiSquare",
     "position_frequency_chi2",
