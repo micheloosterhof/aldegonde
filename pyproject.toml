@@ -29,16 +29,16 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "build==1.5.0",
-  "coverage==7.13.1",
+  "build==1.6.1",
+  "coverage==7.16.2",
   "hypothesis>=6.100.0",
-  "pipdeptree==4.2.0",
-  "pytest==9.0.2",
+  "pipdeptree==4.2.5",
+  "pytest==9.1.1",
   "pytest-cov==7.1.0",
-  "ruff==0.16.1",
-  "tox==4.56.4",
-  "twine==6.2.0",
-  "ty==0.0.18",
+  "ruff==0.16.10",
+  "tox==4.64.7",
+  "twine==7.0.0",
+  "ty==0.0.84",
 ]
 docs = [
   "sphinx>=7.0.0",
