@@ -65,7 +65,7 @@ def main() -> None:
 
     def row(label, f, rate=True):
         x, y = f(*a), f(*b)
-        print("{:<32}{:>14.4f}{:>14.4f}{:>+11.4f}".format(label, x, y, y - x))
+        print(f"{label:<32}{x:>14.4f}{y:>14.4f}{y - x:>+11.4f}")
         if rate and x:
             rates.append(abs(y - x) / abs(x))
 

@@ -39,7 +39,7 @@ def main() -> None:
     counts = collections.Counter(windows)
     repeated = [k for k, v in counts.items() if v > 1]
     assert len(repeated) == 1, f"expected one repeated 6-gram, found {len(repeated)}"
-    a, b = [i for i, x in enumerate(windows) if x == repeated[0]]
+    a, b = (i for i, x in enumerate(windows) if x == repeated[0])
 
     print(f"clean body: {n:,} runes in {wid[-1] + 1:,} blocks")
     print(f"repeat {''.join(ENG[x] for x in repeated[0])} at rune offsets {a} and {b}")
@@ -47,7 +47,7 @@ def main() -> None:
     print(f"  runes after the second occurrence: {n - b - 6}")
     print(
         f"  blocks occupied by the second occurrence: "
-        f"{sorted(set(wid[i] for i in range(b, n)))}"
+        f"{sorted({wid[i] for i in range(b, n)})}"
     )
 
     master = (
