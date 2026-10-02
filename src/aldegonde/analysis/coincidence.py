@@ -16,7 +16,8 @@ All functions work on arbitrary alphabets (runes, integers, letters).
 
 import random
 import statistics
-from collections.abc import Sequence
+from collections import Counter
+from collections.abc import Hashable, Sequence
 from typing import NamedTuple, TypeVar
 
 from aldegonde.exceptions import InvalidInputError
@@ -229,14 +230,15 @@ def _within_word_matches(
     stream: Sequence[T],
     lengths: Sequence[int],
     lag: int,
+    length: int = 1,
 ) -> int:
-    """Count lag-L matches falling inside single words of the given cut."""
+    """Count lag-L n-gram matches falling inside single words of the given cut."""
     matches = 0
     position = 0
-    for length in lengths:
-        end = position + length
-        for i in range(position, end - lag):
-            if stream[i] == stream[i + lag]:
+    for word_length in lengths:
+        end = position + word_length
+        for i in range(position, end - lag - length + 1):
+            if stream[i : i + length] == stream[i + lag : i + lag + length]:
                 matches += 1
         position = end
     return matches
@@ -256,26 +258,125 @@ class WithinWordRate(NamedTuple):
     rate: float
 
 
-def within_word_match_rate(words: Sequence[Sequence[T]], lag: int) -> WithinWordRate:
-    """The within-word same-symbol rate at a given lag.
+def within_word_match_rate(
+    words: Sequence[Sequence[T]],
+    lag: int,
+    length: int = 1,
+) -> WithinWordRate:
+    """The within-word repeat rate of n-grams at a given lag.
 
-    Counts pairs (i, i + lag) that fall inside one word and the fraction of
-    them whose two symbols are equal. Pairs never cross a word boundary, and a
-    word shorter than lag + 1 offers none. This is the diagonal of the
-    within-word bigram diagram as a single number, per lag.
+    Counts pairs of n-grams starting at i and i + lag that both fall inside
+    one word, and the fraction of them that are equal. Pairs never cross a
+    word boundary, and a word shorter than lag + length offers none. With
+    length 1 this is the diagonal of the within-word bigram diagram as a
+    single number, per lag; with length 2 it counts the XY..XY repeats.
 
     Args:
         words: Tokenized text, one sequence per word
-        lag: Distance between the compared symbols
+        lag: Distance between the compared n-grams
+        length: Size of the compared n-grams
 
     Returns:
         The match count, the available pair count, and their ratio
+
+    Raises:
+        InvalidInputError: If lag or length is not a positive integer
     """
+    validate_positive_integer(lag, "lag")
+    validate_positive_integer(length, "length")
     stream = [symbol for word in words for symbol in word]
     lengths = [len(word) for word in words]
-    matches = _within_word_matches(stream, lengths, lag)
-    pairs = sum(max(0, length - lag) for length in lengths)
+    matches = _within_word_matches(stream, lengths, lag, length)
+    pairs = sum(max(0, word_length - lag - length + 1) for word_length in lengths)
     return WithinWordRate(matches, pairs, matches / pairs if pairs else 0.0)
+
+
+class BucketCoincidence(NamedTuple):
+    """Pooled pairwise coincidence inside position buckets.
+
+    Attributes:
+        observed: Pairs of positions sharing a label that hold equal symbols
+        pairs: Pairs of positions sharing a label
+        rate: observed / pairs, or 0.0 when no pair is available
+    """
+
+    observed: int
+    pairs: int
+    rate: float
+
+
+def bucket_coincidence(
+    stream: Sequence[T],
+    labels: Sequence[Hashable],
+) -> BucketCoincidence:
+    """Pool the pairwise coincidence rate inside position buckets.
+
+    Every position carries a label, and every unordered pair of positions
+    with the same label is compared. A rate above chance means positions
+    with the same label tend to hold the same symbol. The label encodes the
+    hypothesis under test: position in a period, position in the word, the
+    previous symbol, or any other public feature the key might depend on.
+
+    Args:
+        stream: Symbol stream to analyze
+        labels: One label per position
+
+    Returns:
+        The matched pairs, the available pairs, and their ratio
+
+    Raises:
+        InvalidInputError: If there is not exactly one label per position
+    """
+    if len(labels) != len(stream):
+        msg = f"{len(labels)} labels for {len(stream)} positions"
+        raise InvalidInputError(msg)
+    buckets: dict[Hashable, Counter[T]] = {}
+    for symbol, label in zip(stream, labels):
+        buckets.setdefault(label, Counter())[symbol] += 1
+    observed = pairs = 0
+    for counts in buckets.values():
+        size = sum(counts.values())
+        pairs += size * (size - 1) // 2
+        observed += sum(count * (count - 1) // 2 for count in counts.values())
+    return BucketCoincidence(observed, pairs, observed / pairs if pairs else 0.0)
+
+
+def match_separations(
+    text: Sequence[T],
+    lag: int,
+    max_separation: int | None = None,
+) -> dict[int, int]:
+    """Histogram the separations between consecutive lag-L matches.
+
+    Where `joint_coincidence` counts pairs of matches at chosen separations,
+    this profiles the gap from one match to the next. Under independence the
+    gaps are geometric; an excess at particular separations points at a
+    periodic or self-excluding mechanism. Judge it against a resampled null,
+    since the gaps are not independent.
+
+    Args:
+        text: Sequence to analyze
+        lag: Lag of the match indicator
+        max_separation: Largest gap to record; larger gaps are dropped
+
+    Returns:
+        A dictionary mapping each gap to how often it occurs
+
+    Raises:
+        InvalidInputError: If lag is not a positive integer
+        InsufficientDataError: If text is no longer than lag
+    """
+    separations: dict[int, int] = {}
+    previous: int | None = None
+    for i, matched in enumerate(match_indicator(text, lag)):
+        if not matched:
+            continue
+        if previous is not None:
+            gap = i - previous
+            if max_separation is None or gap <= max_separation:
+                separations[gap] = separations.get(gap, 0) + 1
+        previous = i
+    return separations
 
 
 def boundary_permutation_test(

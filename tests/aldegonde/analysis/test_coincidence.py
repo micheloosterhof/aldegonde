@@ -6,12 +6,15 @@ import pytest
 
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
+    BucketCoincidence,
     JointCount,
     WithinWordRate,
     boundary_coincidence,
     boundary_permutation_test,
+    bucket_coincidence,
     joint_coincidence,
     match_indicator,
+    match_separations,
     recut_words,
     within_word_match_rate,
     word_index_map,
@@ -183,3 +186,60 @@ def test_boundary_permutation_blind_matches_are_not_flagged() -> None:
     assert result.null_sd == 0.0
     assert result.observed == result.null_mean
     assert result.p_value == 1.0
+
+
+def test_within_word_match_rate_counts_ngram_repeats() -> None:
+    """Digraph XY..XY at lag 5 inside one word: 7 runes give one eligible pair."""
+    word = [1, 2, 3, 4, 5, 1, 2]
+    assert within_word_match_rate([word], lag=5, length=2) == WithinWordRate(1, 1, 1.0)
+    assert within_word_match_rate([word], lag=5, length=3) == WithinWordRate(0, 0, 0.0)
+    assert within_word_match_rate([word], lag=5) == WithinWordRate(2, 2, 1.0)
+
+
+def test_within_word_match_rate_ngram_pairs_stay_inside_the_word() -> None:
+    """The digraph straddling the boundary of two words is not a pair."""
+    words = [[1, 2, 3], [1, 2, 3]]
+    assert within_word_match_rate(words, lag=3, length=2).pairs == 0
+    assert within_word_match_rate([[1, 2, 3, 1, 2, 3]], lag=3, length=2).pairs == 2
+
+
+def test_within_word_match_rate_rejects_a_bad_length() -> None:
+    with pytest.raises(InvalidInputError):
+        within_word_match_rate([[1, 2, 3]], lag=1, length=0)
+
+
+def test_bucket_coincidence_compares_positions_with_the_same_label() -> None:
+    """Labels 'a' hold symbols 1,1,2 (one matching pair of three), 'b' holds 3,3."""
+    result = bucket_coincidence([1, 1, 2, 3, 3], ["a", "a", "a", "b", "b"])
+    assert result == BucketCoincidence(observed=2, pairs=4, rate=0.5)
+
+
+def test_bucket_coincidence_with_one_label_is_the_pair_count_of_the_stream() -> None:
+    stream = [1, 2, 1, 2, 1]
+    result = bucket_coincidence(stream, [0] * 5)
+    assert result.pairs == 10
+    assert result.observed == 3 + 1  # three pairs of 1s, one pair of 2s
+
+
+def test_bucket_coincidence_with_no_pairs_has_zero_rate() -> None:
+    assert bucket_coincidence([1, 2], ["a", "b"]) == BucketCoincidence(0, 0, 0.0)
+
+
+def test_bucket_coincidence_rejects_mismatched_labels() -> None:
+    with pytest.raises(InvalidInputError):
+        bucket_coincidence([1, 2, 3], ["a", "b"])
+
+
+def test_match_separations_histograms_gaps_between_matches() -> None:
+    """Lag-1 matches at positions 0, 1 and 4: gaps 1 and 3."""
+    text = [7, 7, 7, 8, 9, 9]
+    assert match_separations(text, lag=1) == {1: 1, 3: 1}
+
+
+def test_match_separations_respects_max_separation() -> None:
+    text = [7, 7, 7, 8, 9, 9]
+    assert match_separations(text, lag=1, max_separation=2) == {1: 1}
+
+
+def test_match_separations_with_fewer_than_two_matches_is_empty() -> None:
+    assert match_separations([1, 2, 3, 4], lag=1) == {}

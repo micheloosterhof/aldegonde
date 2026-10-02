@@ -3,12 +3,17 @@
 from aldegonde.analysis.coincidence import (
     BoundaryCoincidence,
     BoundaryPermutation,
+    BucketCoincidence,
     JointCount,
+    WithinWordRate,
     boundary_coincidence,
     boundary_permutation_test,
+    bucket_coincidence,
     joint_coincidence,
     match_indicator,
+    match_separations,
     recut_words,
+    within_word_match_rate,
     word_index_map,
 )
 from aldegonde.analysis.delta_stream import DeltaOp, delta, delta2
@@ -47,12 +52,17 @@ __all__ = [
     # coincidence
     "BoundaryCoincidence",
     "BoundaryPermutation",
+    "BucketCoincidence",
     "JointCount",
+    "WithinWordRate",
     "boundary_coincidence",
     "boundary_permutation_test",
+    "bucket_coincidence",
     "joint_coincidence",
     "match_indicator",
+    "match_separations",
     "recut_words",
+    "within_word_match_rate",
     "word_index_map",
     # delta
     "DeltaOp",
