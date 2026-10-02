@@ -86,7 +86,7 @@ def g2(seqs: list[list[int]]) -> tuple[float, int]:
 
 
 def excess_per_pair(
-    seqs: list[list[int]], rng: random.Random, draws: int = 200, within: bool = False
+    seqs: list[list[int]], rng: random.Random, draws: int = 200, *, within: bool = False
 ):
     """(excess G^2 per pair, its standard error) against a length-shuffling surrogate.
 
@@ -167,7 +167,7 @@ def prose_sequences(limit: int = 20000) -> list[tuple[str, list[int]]]:
 MULTI = {chr(0x2460 + i) for i in range(1, 20)}  # circled 2..20, the multi-dot marks
 
 
-def tokenize(wrap: bool, multi: bool, pct: bool, quote: bool) -> list[list[int]]:
+def tokenize(*, wrap: bool, multi: bool, pct: bool, quote: bool) -> list[list[int]]:
     """Body word lengths under one convention for which marks break a word."""
     text = (ROOT / "data" / "page0-56.txt").read_text()
     out = []
@@ -206,7 +206,7 @@ def tokenize_sweep(rng: random.Random) -> None:
     )
     best = None
     for w, m, p, q in itertools.product([False, True], repeat=4):
-        seqs = tokenize(w, m, p, q)
+        seqs = tokenize(wrap=w, multi=m, pct=p, quote=q)
         flat = [x for s in seqs for x in s]
         e, se, _o, _mu, _n = excess_per_pair(seqs, rng, draws=60)
         if best is None or e > best[0]:
@@ -252,7 +252,6 @@ def floor_probe(rng: random.Random) -> None:
 
 def intrapage(rng: random.Random) -> None:
     """Is the anomaly between pages or inside them?"""
-    import re  # noqa: PLC0415
 
     from aldegonde import c3301  # noqa: PLC0415
 

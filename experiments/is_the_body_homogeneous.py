@@ -90,10 +90,9 @@ def sectioned_blocks():
         elif ch in STANDALONE:
             if ch == "$":
                 section += 1
-        elif ch in c3301.WORD_BOUNDARY:
-            if current:
-                out.append([current, section, ch])
-                current = []
+        elif ch in c3301.WORD_BOUNDARY and current:
+            out.append([current, section, ch])
+            current = []
     if current:
         out.append([current, section, None])
     return out

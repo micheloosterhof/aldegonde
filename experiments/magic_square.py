@@ -65,15 +65,10 @@ def report(grid: list[list[int]]) -> None:
     print(f"  diagonals       {diag}, {anti}")
     print(f"  total           {sum(flat)} = {SIZE} x {sum(flat) // SIZE}")
     print(f"  centre          {grid[2][2]}")
-    print(
-        f"  180-deg symmetric {
-            all(
-                grid[i][j] == grid[4 - i][4 - j]
-                for i in range(SIZE)
-                for j in range(SIZE)
-            )
-        }"
+    symmetric = all(
+        grid[i][j] == grid[4 - i][4 - j] for i in range(SIZE) for j in range(SIZE)
     )
+    print(f"  180-deg symmetric {symmetric}")
     magic = all(v == CONSTANT for v in rows + cols + [diag, anti])
     print(f"  fully magic at {CONSTANT}: {magic}")
     print(f"  pandiagonal: {all(v == CONSTANT for v in broken)}  (broken {broken})")

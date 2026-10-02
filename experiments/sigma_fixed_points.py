@@ -50,7 +50,7 @@ def body_blocks() -> list[list[int]]:
 
 
 def cross(
-    blocks: list[list[int]], gap: int, continuous: bool = False
+    blocks: list[list[int]], gap: int, *, continuous: bool = False
 ) -> tuple[int, int]:
     """(hits, pairs) between blocks `gap` apart, at matching letter phase."""
     starts = []

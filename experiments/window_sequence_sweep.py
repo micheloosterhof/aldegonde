@@ -70,7 +70,7 @@ def score_all_starts(
 
 
 def sweep_windows(
-    stream: np.ndarray, width: int, step: int, starts: int, drift: bool = True
+    stream: np.ndarray, width: int, step: int, starts: int, *, drift: bool = True
 ):
     """Slide a window; at each one try the key indices the position allows.
 
@@ -126,7 +126,7 @@ def control(width: int, starts: int) -> bool:
     )
     runner = sorted({r[2] for r in rows[:10]})
     print(f"  generators in the top ten: {', '.join(runner)}")
-    print(f"  FOUND\n" if hit else "  MISSED -- the sweep has no power, stop here\n")
+    print("  FOUND\n" if hit else "  MISSED -- the sweep has no power, stop here\n")
     del alph, eng, re
     return hit
 
@@ -151,7 +151,7 @@ def main() -> None:
         (True, "key runs on through the body, interrupted at most `starts` times"),
         (False, "key restarts near the sequence's beginning in some window"),
     ):
-        rows = sweep_windows(stream, width, step, starts, drift)
+        rows = sweep_windows(stream, width, step, starts, drift=drift)
         scores = np.array([r[0] for r in rows])
         print(
             f"\n{label}\n  {len(rows):,} (window, generator) pairs, width {width}, "

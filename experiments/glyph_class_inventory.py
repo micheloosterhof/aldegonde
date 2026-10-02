@@ -136,7 +136,7 @@ def main() -> None:
     other_pages: dict[tuple[int, int], set] = collections.defaultdict(set)
 
     for page in pages:
-        for y, x, h, w in components(page):
+        for _y, x, h, w in components(page):
             if not TEXT_BLOCK_X[0] <= x <= TEXT_BLOCK_X[1]:
                 continue
             kind = classify(h, w)
@@ -150,7 +150,7 @@ def main() -> None:
     for kind, n in tally.most_common():
         print(f"  {kind:<8}{n:>8,}")
 
-    print(f"\nunclassified clusters, binned to 5px, by population:")
+    print("\nunclassified clusters, binned to 5px, by population:")
     print(f"{'h':>5}{'w':>5}{'count':>8}{'pages':>8}  ")
     for (h, w), n in others.most_common(18):
         print(f"{h:>5}{w:>5}{n:>8,}{len(other_pages[(h, w)]):>8}")

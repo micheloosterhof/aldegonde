@@ -146,7 +146,7 @@ def power(nwords: int) -> None:
         s, w = plant(words, nwords, k, 9)
         res = scan(s, w, "diff")
         row = "".join(f"{res[1, kk][0]:>8.0f}/{res[1, kk][1]:<3}" for kk in DIVISORS)
-        tag = "H_%d%s" % (k, " (2-transitive)" if k == 28 else "")
+        tag = f"H_{k}{' (2-transitive)' if k == 28 else ''}"
         print(f"{tag:>16}{row}")
     print(
         "H_28 is the 2-transitive case the orbit theorem assumes: no signal by design."

@@ -170,7 +170,7 @@ def main() -> None:
         rows = score_subsets(bigram_tables(cipher))
         rank = next(i for i, (_s, s4) in enumerate(rows) if s4 == planted)
         print(f"PLANTED [25,4] cipher over LP plaintext, small block {planted}")
-        print(f"  top scores: " + ", ".join(f"{s:.1f}" for s, _ in rows[:5]))
+        print("  top scores: " + ", ".join(f"{s:.1f}" for s, _ in rows[:5]))
         print(
             f"  planted set scores {rows[rank][0]:.1f}, rank {rank + 1} of {len(rows):,}"
         )
@@ -183,7 +183,7 @@ def main() -> None:
     sd = (sum((x - mu) ** 2 for x in vals) / len(vals)) ** 0.5
     print(f"{len(rows):,} four-rune subsets, pooled G^2 over lags {LAGS}")
     print(f"  mean {mu:.2f}, sd {sd:.2f}, max {vals[0]:.2f}")
-    print(f"  best sets:")
+    print("  best sets:")
     for s, s4 in rows[:5]:
         print(f"    {s:>7.2f}  {s4}   z = {(s - mu) / sd:+.2f}")
     top, tset = rows[0]

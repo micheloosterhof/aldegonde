@@ -26,7 +26,7 @@ IDX = {r: i for i, r in enumerate(ALPHABET)}
 N = 29
 
 
-def load_clean(join_pages: bool = False) -> tuple[list[int], list[int]]:
+def load_clean(*, join_pages: bool = False) -> tuple[list[int], list[int]]:
     """Return (stream, word_id): rune indices and the word each rune belongs to.
 
     `join_pages` controls what happens at a page break. `%` is in

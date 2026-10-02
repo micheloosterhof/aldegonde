@@ -115,7 +115,7 @@ def main() -> None:
     cc = collections.Counter(control)
     nc = len(control)
     ioc_c = M * sum(v * (v - 1) for v in cc.values()) / (nc * (nc - 1))
-    print(f"\npositive control: chunk 72 is the Parable, stored as PLAINTEXT.")
+    print("\npositive control: chunk 72 is the Parable, stored as PLAINTEXT.")
     print(
         f"  {nc} runes, normalised IoC {ioc_c:.3f} -- it stands out at +7 sd when left in,"
     )

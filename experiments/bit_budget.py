@@ -100,7 +100,7 @@ def main() -> None:
     )
 
     key = log2(order5_count(5)) + 2 * log2(factorial(M) // 2)
-    print(f"\n\nthe budget\n")
+    print("\n\nthe budget\n")
     print(f"{'part of the key':<34}{'bits':>8}{'channel':>26}{'supplied':>10}")
     print(
         f"{'g (five-cycle class)':<34}{log2(order5_count(5)):>8.1f}"

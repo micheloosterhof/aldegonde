@@ -102,7 +102,7 @@ def words_from_plaintext(page: str, plain: list[int]) -> list[list[int]]:
     return out
 
 
-def corpus(keyed: bool = True) -> list[list[int]]:
+def corpus(*, keyed: bool = True) -> list[list[int]]:
     """Every word of authentic LP plaintext available.
 
     Three sources, not two. The six pages transcribed as plaintext; the five

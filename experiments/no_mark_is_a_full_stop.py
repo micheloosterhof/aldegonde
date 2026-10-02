@@ -82,10 +82,9 @@ def closed_blocks():
             length += 1
         elif ch == "\n" or ch in STANDALONE:
             continue
-        elif ch in c3301.WORD_BOUNDARY:
-            if length:
-                out.append((length, ch))
-                length = 0
+        elif ch in c3301.WORD_BOUNDARY and length:
+            out.append((length, ch))
+            length = 0
     if length:
         out.append((length, None))
     return out

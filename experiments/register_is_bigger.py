@@ -33,8 +33,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301  # noqa: E402
 from lp_plaintext_register import corpus  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
 
 ENG = c3301.CICADA_ENGLISH_ALPHABET
 M = 29

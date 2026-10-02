@@ -74,9 +74,10 @@ def set_sweep(per_set: int = 8, n_sets: int = 40) -> None:
     plain = prose_corpora(2928, 1)[0]
     rng = random.Random(77)
     sets, total_admissible = admissible(plain, lp, n_sets, rng)
-    print(f"{total_admissible:,} admissible fixed-point sets; sampling {len(sets)}"
-          f" x {per_set} draws
-")
+    print(
+        f"{total_admissible:,} admissible fixed-point sets; sampling {len(sets)}"
+        f" x {per_set} draws\n"
+    )
     per_cell: collections.Counter = collections.Counter()
     winners, total = [], 0
     for keep in sets:
@@ -95,8 +96,7 @@ def set_sweep(per_set: int = 8, n_sets: int = 40) -> None:
     expected = total
     for k in CELLS:
         expected *= per_cell[k] / total
-    print(f"
-all five at once: {len(winners)}/{total}")
+    print(f"\nall five at once: {len(winners)}/{total}")
     print(f"independence would predict {expected:.1f}")
     for w in winners[:3]:
         print(f"   {w[0]} -> {w[1]}")
@@ -126,18 +126,28 @@ def main() -> None:
         rows.append(fingerprint(encipher(plain, rng.sample(range(M), M), g, sigma)))
 
     print(f"g fixes {KEEP}; 5-cycles, sigma and base0 redrawn {draws} times\n")
-    print(f"{'cell':>12}{'corpus':>9}{'median':>9}{'min':>9}{'max':>9}{'within 2SE':>12}")
+    print(
+        f"{'cell':>12}{'corpus':>9}{'median':>9}{'min':>9}{'max':>9}{'within 2SE':>12}"
+    )
     for k in CELLS:
         v = [r[k] for r in rows]
         hit = sum(1 for r in rows if abs(r[k] - lp[k]) <= 2 * SE[k])
-        print(f"{k:>12}{lp[k]:>9.4f}{statistics.median(v):>9.4f}{min(v):>9.4f}"
-              f"{max(v):>9.4f}{f'{hit}/{draws}':>12}")
+        print(
+            f"{k:>12}{lp[k]:>9.4f}{statistics.median(v):>9.4f}{min(v):>9.4f}"
+            f"{max(v):>9.4f}{f'{hit}/{draws}':>12}"
+        )
 
-    three = [r for r in rows if all(abs(r[k] - lp[k]) <= 2 * SE[k] for k in ("d3w", "d6w", "seam"))]
+    three = [
+        r
+        for r in rows
+        if all(abs(r[k] - lp[k]) <= 2 * SE[k] for k in ("d3w", "d6w", "seam"))
+    ]
     print(f"\nall three open cells at once: {len(three)}/{draws}")
     lo = min(r["d3w"] for r in rows)
-    print(f"d3w never lands: its minimum over {draws} draws is {lo:.4f}, above the"
-          f" corpus ceiling of {lp['d3w'] + 2 * SE['d3w']:.4f}")
+    print(
+        f"d3w never lands: its minimum over {draws} draws is {lo:.4f}, above the"
+        f" corpus ceiling of {lp['d3w'] + 2 * SE['d3w']:.4f}"
+    )
     print(
         "\nd1w and the doublet position are constant across draws, as the mechanism"
         "\nrequires -- they are set by the fixed points alone. So for this fixed-point"

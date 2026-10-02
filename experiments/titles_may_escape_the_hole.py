@@ -30,9 +30,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301  # noqa: E402
 from fingerprint_battery import lp_words  # noqa: E402
 from lp_plaintext_register import word_lengths  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 CAP = 10

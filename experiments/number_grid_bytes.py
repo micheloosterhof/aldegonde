@@ -153,7 +153,6 @@ def primality() -> None:
 def keystream() -> None:
     """Are the grid values the body's additive keystream? Scored like any generator."""
     import numpy as np  # noqa: PLC0415
-
     from lp_corpus import load_clean  # noqa: PLC0415
     from sequence_key_sweep import best_variant  # noqa: PLC0415
 
@@ -191,7 +190,6 @@ def keystream() -> None:
 def unpack() -> None:
     """Are the grids a page of runes packed densely? 1,408 bits is about 290 runes."""
     import numpy as np  # noqa: PLC0415
-
     from lp_plaintext_register import corpus  # noqa: PLC0415
     from sequence_key_sweep import trigram_table  # noqa: PLC0415
 

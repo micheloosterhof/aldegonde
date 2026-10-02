@@ -165,7 +165,7 @@ def main() -> None:
 
     s12 = np.array([chi2(g, meas, mats, tot, cells) for g in pool])
     s5 = np.array([flat_chi2(g, meas, mats, tot) for g in pool])
-    print(f"\nthe body:\n")
+    print("\nthe body:\n")
     for name, s in (("5 aggregate cells", s5), (f"{len(cells)} binned cells", s12)):
         n1, p1 = profile(s, counts, 1)
         n5, p5 = profile(s, counts, 5)

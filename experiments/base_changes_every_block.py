@@ -55,7 +55,7 @@ def rates(words, lag: int) -> tuple[tuple[float, float, int], tuple[float, float
     return out[0], out[1]
 
 
-def walk(g, sigma, plain, rng, change: bool):
+def walk(g, sigma, plain, rng, *, change: bool):
     gp = [ppow(g, i) for i in range(5)]
     base = rng.sample(range(M), M)
     out, clock = [], 0
@@ -85,11 +85,11 @@ def main() -> None:
     for label, words in (
         (
             "planted walk, base steps every block",
-            walk(g, sigma, plain, random.Random(2), True),
+            walk(g, sigma, plain, random.Random(2), change=True),
         ),
         (
             "planted walk, base never steps",
-            walk(g, sigma, plain, random.Random(2), False),
+            walk(g, sigma, plain, random.Random(2), change=False),
         ),
         ("THE BODY", lp_words()),
     ):

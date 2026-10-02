@@ -53,7 +53,7 @@ def main() -> None:
 
     n_pr, p_pr, k_pr = profile(full)
     n_10, p_10, k_10 = profile(list(prose_corpora(2928, 10)))
-    n_lp, p_lp, k_lp = profile([corpus(True)])
+    n_lp, p_lp, k_lp = profile([corpus(keyed=True)])
 
     print(
         f"{'lag-k tables from':<32}{'lag-2 pairs':>14}"

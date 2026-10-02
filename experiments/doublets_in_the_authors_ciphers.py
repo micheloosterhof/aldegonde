@@ -34,9 +34,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301  # noqa: E402
 from fingerprint_battery import lp_words  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 IDX = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}

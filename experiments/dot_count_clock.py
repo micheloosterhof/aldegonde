@@ -32,7 +32,6 @@ normalised, rather than at 1.0.
 from __future__ import annotations
 
 import collections
-import math
 import re
 import sys
 from pathlib import Path

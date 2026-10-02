@@ -71,7 +71,7 @@ def main() -> None:
     bse = math.sqrt(obs * (1 - obs) / nb)
     pred = q + (1 - q) / M
     z = (obs - pred) / math.sqrt(bse**2 + se**2)
-    print(f"\nif the body used this interrupter, its rune-F rate would be")
+    print("\nif the body used this interrupter, its rune-F rate would be")
     print(f"  q + (1-q)/29 = {pred:.4f}")
     print(f"observed        {obs:.4f} +- {bse:.4f}   z = {z:+.2f}")
     print(f"\npredicted interrupts in the body: {q * nb:.0f}")

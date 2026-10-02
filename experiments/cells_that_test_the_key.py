@@ -43,17 +43,17 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from doublet_dodge_walk import generator as dodge_generator, order5_fixing  # noqa: E402
+from doublet_dodge_walk import generator as dodge_generator  # noqa: E402
+from doublet_dodge_walk import order5_fixing  # noqa: E402
 from fingerprint_battery import (  # noqa: E402
     M,
-    compose,
     fingerprint,
     lp_words,
-    ppow,
     prose_corpora,
 )
 from probabilistic_preventer import preventer as prob_preventer  # noqa: E402
-from substitution_preventer import preventer as sub_preventer, tau_fixing  # noqa: E402
+from substitution_preventer import preventer as sub_preventer  # noqa: E402
+from substitution_preventer import tau_fixing  # noqa: E402
 
 REACHABLE = ("d1w", "seam", "doublet_gap_min", "d6w")
 

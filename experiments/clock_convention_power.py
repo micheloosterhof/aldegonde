@@ -32,9 +32,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from sigma_fixed_points import M, body_blocks, planted  # noqa: E402
-
 from lp_plaintext_register import corpus  # noqa: E402
+from sigma_fixed_points import M, body_blocks, planted  # noqa: E402
 
 
 def contrast(blocks: list[list[int]]) -> float:

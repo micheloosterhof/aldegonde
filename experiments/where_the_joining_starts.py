@@ -84,10 +84,9 @@ def blocks_of(page: str) -> list[int]:
             current += 1
         elif ch == "\n" or ch in "%$&":
             continue
-        elif ch in c3301.WORD_BOUNDARY:
-            if current:
-                out.append(current)
-                current = 0
+        elif ch in c3301.WORD_BOUNDARY and current:
+            out.append(current)
+            current = 0
     if current:
         out.append(current)
     return out

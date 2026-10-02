@@ -55,7 +55,7 @@ def profile(words, lag: int) -> tuple[float, float, int]:
 
 
 def main() -> None:
-    lp = corpus(True)
+    lp = corpus(keyed=True)
     body = lp_words()
     prose = list(prose_corpora(2928, 40))
 
@@ -123,7 +123,7 @@ def main() -> None:
         f"\nthe clock-dodge family predicts q = the would-be doublet rate = "
         f"{CHANCE:.3f}"
     )
-    print(f"a clean walk with no perturbation predicts q = 0")
+    print("a clean walk with no perturbation predicts q = 0")
 
     print(
         "\nBoth sit inside the interval. The point estimate is about three times the"

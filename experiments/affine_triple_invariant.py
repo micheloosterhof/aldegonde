@@ -31,7 +31,6 @@ and 812 x 5 phases clears the >= 949 alphabets `alphabet_count_bound.py` require
 from __future__ import annotations
 
 import collections
-import math
 import random
 import sys
 from pathlib import Path
@@ -82,7 +81,7 @@ def chi2(counts: collections.Counter) -> tuple[float, int]:
 
 
 def planted(
-    rng: random.Random, words: list[list[int]], affine: bool
+    rng: random.Random, words: list[list[int]], *, affine: bool
 ) -> list[list[int]]:
     """Blocks enciphered with a per-block base, affine or general, plus a step of order 5."""
     cycles = list(range(M))
@@ -120,7 +119,8 @@ def main() -> None:
                 draws = int(sys.argv[i + 1])
         for affine in (True, False):
             vals = sorted(
-                chi2(lambdas(planted(rng, words, affine)))[0] for _ in range(draws)
+                chi2(lambdas(planted(rng, words, affine=affine)))[0]
+                for _ in range(draws)
             )
             tag = "AFFINE bases" if affine else "general bases"
             print(
@@ -138,7 +138,7 @@ def main() -> None:
     c, n = chi2(counts)
     print(f"body: {n:,} within-block triples")
     print(f"  chi2 of the affine invariant against uniform: {c:.1f} on 28 df")
-    print(f"  5% critical value 41.3, 0.1% critical value 56.9")
+    print("  5% critical value 41.3, 0.1% critical value 56.9")
     top = sorted(counts.items(), key=lambda kv: -kv[1])[:4]
     e = n / M
     print(

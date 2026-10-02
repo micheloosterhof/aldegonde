@@ -132,8 +132,6 @@ def main() -> None:
     for label, spans in (("the LP author", author), ("the LP body", body)):
         first, last, interior = cells(spans)
         mid = np.mean(interior)
-        for name, v in (("", first), ("", last)):
-            pass
         row = f"{label:<26}"
         for v in (first, last):
             a = np.array(v, float)

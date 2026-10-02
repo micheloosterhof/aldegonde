@@ -34,7 +34,12 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from d_profile_binned import MIN_PAIRS, binned_measure, binned_tables, chi2  # noqa: E402
+from d_profile_binned import (  # noqa: E402
+    MIN_PAIRS,
+    binned_measure,
+    binned_tables,
+    chi2,
+)
 from d_profile_constrains_g import walk  # noqa: E402
 from fingerprint_battery import M, lp_words, prose_corpora  # noqa: E402
 
@@ -90,7 +95,7 @@ def main() -> None:
         cells = [c for c in meas if meas[c][2] >= MIN_PAIRS and c in mats]
         fit = [c for c in cells if c[0] in (2, 3)]
         test = [c for c in cells if c[0] in (4, 6, 7)]
-        per = lambda g, cs: chi2(g, meas, mats, tot, cs) / len(cs)  # noqa: E731
+        per = lambda g, cs, meas=meas: chi2(g, meas, mats, tot, cs) / len(cs)  # noqa: E731
         print(
             f"\n{label}: {len(cells)} cells, fitting on {len(fit)} (lags 2, 3), "
             f"holding out {len(test)} (lags 4, 6, 7)\n"

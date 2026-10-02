@@ -234,7 +234,7 @@ def main() -> None:
     # so a null result above can be read as blindness to chaining or as a real absence.
     print("\nPositive control: the free cipher against chains with a closed base pool.")
     print(f"{'pool':>8}{'identical':>12}{'returns':>10}{'ioc':>9}{'max sep':>9}  cell")
-    fm = {k: v for k, v in b.items()}
+    fm = dict(b)
     for period in (29, 100, 300, 1000, 2928):
         c = collect(cycling(period), max(4, keys // 3), draws, corpora)
         best, where = 0.0, "-"
@@ -284,7 +284,9 @@ def extension_rate(keys: int, draws: int, corpora) -> None:
                 g = order5_fixing(rng.sample(range(M), 4), rng)
                 r = random.Random(3301)
                 for plain in corpora:
-                    c = recurrence_counts(pool_cipher(g, period, chained)(plain, r))
+                    c = recurrence_counts(
+                        pool_cipher(g, period, chained=chained)(plain, r)
+                    )
                     tot_i += c["identical"]
                     tot_r += c["returns"]
             rate = tot_r / tot_i if tot_i else 0.0
@@ -303,7 +305,7 @@ def extension_rate(keys: int, draws: int, corpora) -> None:
     )
 
 
-def pool_cipher(g, period: int, chained: bool):
+def pool_cipher(g, period: int, *, chained: bool):
     """A pool of `period` alphabets, walked in order or sampled independently."""
 
     def generate(plain, rng):

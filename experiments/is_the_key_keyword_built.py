@@ -152,7 +152,7 @@ def main() -> None:
     control = {k: np.array([r[k] for r in rows], float) for k in CELLS}
 
     pk, pf = as_free_like(arms["keyword"]), as_free_like(control)
-    print(f"\nfraction of corpora as free-like as the body:")
+    print("\nfraction of corpora as free-like as the body:")
     print(f"  keyword-built                {pk:.3f}")
     print(f"  genuinely free (the control) {pf:.3f}")
     print(f"  likelihood ratio, free over keyword: {pf / max(pk, 1e-9):.1f} to 1")

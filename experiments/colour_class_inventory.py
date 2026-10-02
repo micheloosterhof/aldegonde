@@ -26,10 +26,9 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from apostrophe_census import IMAGE_DIR, INK, TEXT_BLOCK_X
 from PIL import Image
 from scipy import ndimage
-
-from apostrophe_census import IMAGE_DIR, INK, TEXT_BLOCK_X
 
 RUNE_H = (90, 140)
 
@@ -43,7 +42,7 @@ def rune_colours(path: Path) -> list[tuple[int, int, int]]:
     out = []
     for i, sl in enumerate(ndimage.find_objects(labels), start=1):
         ys, xs = sl
-        h, w = ys.stop - ys.start, xs.stop - xs.start
+        h = ys.stop - ys.start
         if not (RUNE_H[0] <= h <= RUNE_H[1]):
             continue
         if not TEXT_BLOCK_X[0] <= xs.start <= TEXT_BLOCK_X[1]:

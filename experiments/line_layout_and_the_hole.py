@@ -39,9 +39,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301  # noqa: E402
 from fingerprint_battery import prose_corpora  # noqa: E402
 from lp_plaintext_register import word_lengths  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 LINE = re.compile(r"[/\n]+")
@@ -168,7 +169,7 @@ def separators_per_line_is_not_a_test(sets: dict[str, str]) -> None:
 
     for k, plain in enumerate(prose_corpora(2928, 3)):
         lengths = [len(w) for w in plain]
-        total, rem, ll = sum(lengths), sum(lengths), []
+        rem, ll = sum(lengths), []
         while rem > 0:
             x = min(rem, max(6, int(rng.gauss(21.8, 2.6))))
             ll.append(x)

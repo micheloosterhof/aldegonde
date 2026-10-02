@@ -34,13 +34,12 @@ import re
 import sys
 from pathlib import Path
 
-import numpy as np
-
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from aldegonde import c3301  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
+
+from aldegonde import c3301  # noqa: E402
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 IDX = {r: i for i, r in enumerate(c3301.CICADA_ALPHABET)}
@@ -124,7 +123,7 @@ def body_passes_nothing() -> None:
 
     closest = max(r[5] for r in rows)
     print(
-        f"\nEvery rune is flat and none is near its pass-through rate. The closest any"
+        "\nEvery rune is flat and none is near its pass-through rate. The closest any"
     )
     print(
         f"rune comes is {closest:+.1f} sigma, which is F -- the one the author actually"

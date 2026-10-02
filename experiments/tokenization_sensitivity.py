@@ -32,8 +32,8 @@ from fingerprint_battery import M  # noqa: E402
 from lp_corpus import load_clean  # noqa: E402
 
 
-def corpus(join: bool):
-    stream, wid = load_clean(join)
+def corpus(*, join: bool):
+    stream, wid = load_clean(join_pages=join)
     words = [[] for _ in range(wid[-1] + 1)]
     for rune, w in zip(stream, wid):
         words[w].append(rune)
@@ -53,7 +53,7 @@ def within(k: int):
 
 
 def main() -> None:
-    a, b = corpus(False), corpus(True)
+    a, b = corpus(join=False), corpus(join=True)
     print("every headline body statistic under both tokenizations\n")
     print(
         "{:<32}{:>14}{:>14}{:>11}".format(
@@ -63,7 +63,7 @@ def main() -> None:
 
     rates = []
 
-    def row(label, f, rate=True):
+    def row(label, f, *, rate=True):
         x, y = f(*a), f(*b)
         print(f"{label:<32}{x:>14.4f}{y:>14.4f}{y - x:>+11.4f}")
         if rate and x:

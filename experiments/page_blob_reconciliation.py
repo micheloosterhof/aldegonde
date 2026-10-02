@@ -31,12 +31,9 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from apostrophe_census import IMAGE_DIR, INK, TEXT_BLOCK_X
 from PIL import Image
 from scipy import ndimage
-
-from apostrophe_census import IMAGE_DIR, INK, TEXT_BLOCK_X
-
-from aldegonde import c3301
 
 RUNE = re.compile(r"[ᚠ-᛿]")
 MASTER = (
