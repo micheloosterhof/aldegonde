@@ -11,9 +11,19 @@ from aldegonde.stats.isomorphs import (
 
 def test_isomorph() -> None:
     assert isomorph("ATTACK") == isomorph("EFFECT")
-    assert isomorph("ATTACK") == "ABBACD"
-    assert isomorph("ATTA") == "ABBA"
-    assert isomorph([0, 0, 0, 0]) == "AAAA"
+    assert isomorph("ATTACK") == (0, 1, 1, 0, 2, 3)
+    assert isomorph("ATTA") == (0, 1, 1, 0)
+    assert isomorph([0, 0, 0, 0]) == (0, 0, 0, 0)
+
+
+def test_isomorph_numbers_past_26_symbols() -> None:
+    """A window of 29 distinct runes gets 29 distinct indices."""
+    assert isomorph(range(29)) == tuple(range(29))
+
+
+def test_isomorph_keeps_symbols_that_print_alike_apart() -> None:
+    """The integer 1 and the string '1' are different symbols."""
+    assert isomorph([1, "1"]) == (0, 1)
 
 
 def test_all_isomorphs() -> None:
@@ -21,9 +31,9 @@ def test_all_isomorphs() -> None:
     # TTAC -> AABC
     # TACK -> ABCD
     assert isomorph_distribution("ATTACK", length=4) == {
-        "ABBA": 1,
-        "AABC": 1,
-        "ABCD": 1,
+        (0, 1, 1, 0): 1,
+        (0, 0, 1, 2): 1,
+        (0, 1, 2, 3): 1,
     }
 
 

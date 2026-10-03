@@ -1,4 +1,9 @@
-"""Example ATTACK and EFFECT both normalize to ABBACD.
+# ABOUTME: Isomorphs: a text's pattern of repeated symbols, with no symbol identity.
+# ABOUTME: Counts repeated patterns and compares them against random text.
+
+"""Example ATTACK and EFFECT both normalize to (0, 1, 1, 0, 2, 3).
+
+The patterns per length, written with A for 0, B for 1 and so on:
 
 length 1: A (1)
 length 2: AA | AB (2)
@@ -10,7 +15,7 @@ AABC AACB ABAC ABBC ABCA ABCB ABCC ABCA ABCB ABCC | ABCD
 import random
 import statistics
 from collections import Counter, defaultdict
-from collections.abc import Sequence
+from collections.abc import Hashable, Sequence
 from typing import TypeVar
 
 from aldegonde.stats.ngram import iterngrams
@@ -18,46 +23,48 @@ from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
 
+#: A text's pattern of repeated symbols: each symbol replaced by the order of
+#: its first appearance, counting from 0.
+Isomorph = tuple[int, ...]
 
-def isomorph(text: Sequence[object]) -> str:
-    """Input is a piece of text as a sequence
-    Output is this normalized as an isomorph, as a string in alphabet A-Z
-    Example ATTACK and EFFECT both normalize to ABBACD
-    TODO: raise exception when we go beyond Z.
+
+def isomorph(text: Sequence[Hashable]) -> Isomorph:
+    """Normalize a text to its isomorph.
+
+    Example: ATTACK and EFFECT both normalize to (0, 1, 1, 0, 2, 3).
+
+    Args:
+        text: Sequence of symbols, compared by equality
+
+    Returns:
+        Each symbol replaced by the order of its first appearance
     """
-    output: str = ""
-    letter: str = "A"
-    mapping: dict[str, str] = {}
-    for rune in text:
-        if str(rune) not in mapping:
-            mapping[str(rune)] = letter
-            letter = chr(ord(letter) + 1)
-        output = output + mapping[str(rune)]
-    return output
+    first_seen: dict[Hashable, int] = {}
+    return tuple(first_seen.setdefault(symbol, len(first_seen)) for symbol in text)
 
 
 def isomorph_distribution(
-    ciphertext: Sequence[object],
+    ciphertext: Sequence[Hashable],
     length: int,
     cut: int = 0,
-) -> dict[str, int]:
+) -> dict[Isomorph, int]:
     """Return all isomorphs of a particular length from a sequence with their count."""
     return Counter([isomorph(x) for x in iterngrams(ciphertext, length=length)])
 
 
 def isomorph_positions(
-    text: Sequence[object],
+    text: Sequence[Hashable],
     length: int = 1,
     cut: int = 0,
-) -> dict[str, list[int]]:
+) -> dict[Isomorph, list[int]]:
     """Flexible isomorph positions function, returns each ngram and its starting location in the source text."""
-    out: dict[str, list[int]] = defaultdict(list)
+    out: dict[Isomorph, list[int]] = defaultdict(list)
     for i, e in enumerate(iterngrams(text, length=length, cut=cut)):
         out[isomorph(e)].append(i)
     return out
 
 
-def isomorph_statistics(dist: dict[str, int]) -> tuple[int, int]:
+def isomorph_statistics(dist: dict[Isomorph, int]) -> tuple[int, int]:
     """Input is the output of `isomorph_distribution`.
     Returns `distincts` and `duplicates` for the input.
     """
@@ -114,7 +121,7 @@ def random_isomorph_statistics(
     return (meandistinct, stdevdistinct, meanduplicate, stdevduplicate)
 
 
-def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> None:
+def print_isomorph_statistics(seq: Sequence[Hashable], *, trace: bool = False) -> None:
     """Look for isomorphs in the sequence.
     Isomorphs are sequences that have the same number of unique characters:
     CDDE and LKKY are isomorphs, that can be generalized to the pattern ABBC
@@ -122,7 +129,7 @@ def print_isomorph_statistics(seq: Sequence[object], *, trace: bool = False) -> 
     """
     startlength = 4
     endlength = 40
-    isos: dict[str, int]  # normalized isomorph as key, count as value
+    isos: dict[Isomorph, int]  # normalized isomorph as key, count as value
 
     print(
         "null hypothesis: uniform random text "
