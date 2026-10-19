@@ -64,12 +64,14 @@ binomial error the gap is 2.3σ, not the p = 0.000 the battery prints
 
 ## Evidence against
 
-- **The state pool is 841.** `base_pool_floor.py` reads the body's 2-rune blocks as
-  consistent with a base distinct for every block: excess −13.4 ± 10.6 agreeing pairs
-  against +14.5 predicted for a pool of 841, 2.6σ. The `identical` cell above passes
-  because whole-word identity needs the same plaintext word as well, and the register
-  carries the LP's own word lengths. The two statistics disagree on this family by
-  about 2.6σ; the sweep decides.
+- **The two-rune agreement statistic leans against it.** `base_pool_floor.py` counts
+  pairs of 2-rune blocks agreeing at both positions over an independent baseline; the
+  body reads −13.4. On prose drawn to the body's own word-length sequence, 40 draws
+  each: this family +11.9 ± 14.9 (1 of 40 at or below the body), the original odometer
+  +3.4 ± 11.9 (2 of 40), 841 free bases −1.8 ± 9.9 (5 of 40), a distinct base per word
+  −1.4 ± 11.2 (5 of 40). So the family is disfavoured at about 2σ, and the statistic
+  has no power against a pool of 841 at this register, which weakens row C8's 2,713
+  floor. The sweep decides.
 - The doublet preventer's clock skips put the body's d5 shortfall at q ≈ 0.034, inside
   the allowed [0.003, 0.262] (`d5-bounds-the-clock-perturbation.md`).
 
