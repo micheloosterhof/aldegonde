@@ -339,6 +339,17 @@ proposed, not a proof of exhaustiveness.)
    correction — but the hedge is cheap and the crib route is the only one that does
    not pass through σ.
 
+   **Run (2026-10-19, `experiments/d5_crib_targets_joined.py`).** Book spelling,
+   blocks with page breaks joined (2,896), and joined candidates taken from
+   consecutive Gutenberg prose pairs whose first word is 2 runes. Every one of the 8
+   XY···XY blocks except one gains joined candidates (1 to 44 each, against 4 to 152
+   single words). In two blocks the most frequent joined pair outranks the most
+   frequent single word: block 1967 (word 1987 above; 4 single words, the joined
+   TO+RUSTICUS at 1.6×) and block 2148 (67 single words, AN+INFINITE at 2.7× over
+   PERIPHERAL). So the hedge was needed: a single-word list leaves out candidates
+   that are as likely as its best. Joining is now supported
+   (`plaintext-is-english.md`), so a crib verifier should take both lists.
+
    **Seam doublets are base-free σ-readings, but under-determine σ and don't
    touch g (2026-08-15).** At a seam doublet `c_last(w)=c_first(w+1)`, the shared
    `base_w∘g^a` prefix cancels, leaving `p_last = σ(p_first)` — one point of σ,
