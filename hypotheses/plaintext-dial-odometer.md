@@ -20,14 +20,16 @@ word and `b` only when `a` wraps.
 
 **Status**: unresolved; **negative on the DIVINITY WITHIN crib** for every key of the
 sweep's family with the clock at phase 0 on the body's first rune (see Evidence
-against). The sweep over 3301's own vocabulary is running (started 2026-10-20 01:08,
-`experiments/plaintext_dial_sweep.py --nproc 6`; after 132 minutes 10 of 240 tasks
-and 184 million keys were done at 23,000 keys/s with the machine shared, so about two
-days in all; progress in `$TMPDIR/plaintext_dial_progress.jsonl`, resumable; results
-to `experiments/plaintext_dial_candidates.jsonl`). A true key scores near +1.0 nats
-per rune; wrong keys reach +0.82 in the self-test and +0.70 in the first 184 million.
-Because the sweep fits each window's clock phase, what it still covers beyond the
-crib check is a clock that is not at phase 0 on the first rune.
+against). The sweep over 3301's own vocabulary (`experiments/plaintext_dial_sweep.py
+--nproc 6`, started 2026-10-20 01:08) was stopped at 03:46 after 12 of 240 tasks and
+220 million keys (best +0.70; a true key scores near +1.0 nats per rune and wrong keys
+reach +0.82 in the self-test), because `experiments/dialled_quagmire_crib_check.py`
+tests the sweep's whole family through the crib at every start phase in twenty
+minutes, and with the cipher alphabet in every rotation in a few hours. The sweep's
+only coverage beyond that check is a crib with two preventer fires inside it, or a
+wrong crib. To resume it run the same command; finished tasks are read back from
+`$TMPDIR/plaintext_dial_progress.jsonl`, results go to
+`experiments/plaintext_dial_candidates.jsonl`.
 
 ## Why the dial moves
 
@@ -114,6 +116,11 @@ ranks 1 of 2,001 at z = +28 with its dial recovered; 5,026 keys/s/core.
 
 To stop: `pkill -f plaintext_dial_sweep`. To resume: run the same command; finished
 tasks are read back from the progress file.
+
+The schedules are normalised to S_4 = 0. In the odometer that constant sits inside
+K's coordinates with the inner dial and is absorbed by it. Here the dial is on the
+plaintext side, so the constant is a rotation of K and the sweep covers one rotation
+in 29 of each keyed alphabet. The `--rotations` run of the crib check covers all 29.
 
 ## Predictions
 
