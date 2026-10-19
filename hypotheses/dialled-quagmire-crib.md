@@ -21,9 +21,9 @@ every other way of moving the dials, and with a second alphabet on the cipher si
 
 ## Status
 
-**Status**: **negative for keyed and affine alphabets on both sides** (2026-10-20).
-Every rotation of K2, the Beaufort form (K2 backwards) and the stutter reading of a
-preventer fire are being run; see Results.
+**Status**: **negative for keyed and affine alphabets on both sides, under either
+reading of a preventer fire** (2026-10-20). Every rotation of K2 and the Beaufort form
+(K2 backwards) are being run; see Results.
 
 ## Why this family
 
@@ -60,6 +60,11 @@ fire at any of twelve places).
 |---|---|---|---|---|---|---|
 | keyed | 1,266 keyed | 1,266 keyed | 18,130 | **0** | 0.7 | 20 min |
 | affine | 2,076 keyed + affine | 2,076 keyed + affine | 64,820 | **0** | 2.7 | 55 min |
+| stutter | 1,266 keyed | 1,266 keyed | 37,364 | **0** | 1.5 | 42 min |
+
+The stutter run (`--stutter`, 250 clocks) adds the other reading of a preventer fire:
+the fired rune borrows the next alphabet and the clock goes on as if nothing had
+happened, so that rune and the next share an alphabet.
 
 The affine alphabets are every x → ux + v (812, the standard order and its reverse
 among them), so the affine run holds Quagmire I, II and the Vigenère/Beaufort forms
