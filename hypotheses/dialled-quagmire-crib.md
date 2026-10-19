@@ -77,7 +77,11 @@ preventer fired twice inside it.
 - The dial inside K1's coordinates instead of on the plaintext side is the original
   odometer's relation, fixed across words, which C9 puts at P = 0.005.
 - Two preventer fires inside the crib (about one chance in fourteen), or a crib that
-  is not the first two blocks' plaintext.
+  is not the first two blocks' plaintext. The crib is a conjecture, not a reading: the
+  first rubricated title is 8 + 5 runes, the runeglish lengths of DIVINITY WITHIN,
+  and the solved Parable ends "FIND THE DIVINITY WITHIN AND EMERGE"
+  (`no-known-plaintext-foothold.md`). Nothing key-free confirms it, and every
+  negative in this file and in `odometer_crib_check.py` is conditional on it.
 - A schedule with no zero offset or two; the one zero is what the preventer needs to
   leave the body's 86 doublets (`quagmire-dodge.md`).
 
