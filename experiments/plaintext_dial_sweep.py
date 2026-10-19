@@ -286,7 +286,124 @@ def run(nproc: int) -> None:
     print(f"written to {OUT}; a true key scores near +1.0, wrong keys below +0.65")
 
 
+def decrypt(cipher_words, K, offsets, a0, *, window: int = 18):
+    """Read the body under a key, fitting the outer dial and each window's phase.
+
+    The preventer moves the clock, so inside each window the phase is unknown; every
+    window is read at all five phases and the one scoring best on runeglish quadgrams
+    is kept. The outer dial b0 is chosen the same way over the whole text. Returns
+    (plaintext words, nats per rune above a shuffled baseline, b0).
+    """
+    from aldegonde import c3301  # noqa: PLC0415
+
+    pos = [0] * M
+    for i, r in enumerate(K):
+        pos[r] = i
+    S = running(offsets)
+    runes = [c for w in cipher_words for c in w]
+    owner = [w for w, cw in enumerate(cipher_words) for _ in cw]
+    dial_a = []
+    a, b_shift = a0, 0
+    for _ in cipher_words:
+        dial_a.append(a)
+        a = (a + 1) % M
+        if a == 0:
+            b_shift += 1
+    carries = [0] * len(cipher_words)
+    a, k = a0, 0
+    for w in range(len(cipher_words)):
+        carries[w] = k
+        a = (a + 1) % M
+        if a == 0:
+            k += 1
+
+    def read(b0):
+        out = []
+        for lo in range(0, len(runes), window):
+            best, best_text = -1e30, None
+            for ph in range(5):
+                text = []
+                for i in range(lo, min(lo + window, len(runes))):
+                    w = owner[i]
+                    z = (runes[i] - b0 - carries[w]) % M
+                    p = (K[(pos[z] - S[(ph + i - lo) % 5]) % M] - dial_a[w]) % M
+                    text.append(p)
+                score = c3301.quadgramscore(
+                    "".join(c3301.CICADA_ALPHABET[x] for x in text)
+                )
+                if score > best:
+                    best, best_text = score, text
+            out.extend(best_text)
+        return out
+
+    best_b, best_score, best_text = 0, -1e30, None
+    for b0 in range(M):
+        text = read(b0)
+        score = c3301.quadgramscore("".join(c3301.CICADA_ALPHABET[x] for x in text))
+        if score > best_score:
+            best_b, best_score, best_text = b0, score, text
+    rng = random.Random(1)
+    shuffled = best_text[:]
+    rng.shuffle(shuffled)
+    baseline = c3301.quadgramscore("".join(c3301.CICADA_ALPHABET[x] for x in shuffled))
+    words, i = [], 0
+    for cw in cipher_words:
+        words.append(best_text[i : i + len(cw)])
+        i += len(cw)
+    return words, (best_score - baseline) / len(runes), best_b
+
+
+def decrypt_selftest() -> None:
+    from pure_quagmire_restart import matched_register, schedule  # noqa: PLC0415
+    from quagmire_runner import PROSE_CACHE, load_register  # noqa: PLC0415
+
+    rng = random.Random(11)
+    lens = _lens()
+    pools, _t, _f = load_register(PROSE_CACHE)
+    K = rng.sample(range(M), M)
+    offsets = schedule(rng)
+    dials = (rng.randrange(M), rng.randrange(M))
+    plain = matched_register(rng, lens, pools)
+    cipher = encipher(plain, K, offsets, dials)
+    words, gain, b0 = decrypt(cipher, K, offsets, dials[0])
+    right = sum(p == q for pw, qw in zip(plain, words) for p, q in zip(pw, qw))
+    total = sum(len(w) for w in plain)
+    print(
+        f"planted key read back: {right} of {total} runes, b0 {b0} (planted {dials[1]}), {gain:+.2f} nats/rune over shuffled"
+    )
+    # the window phases are fitted, so a few runes around each dodge read wrong
+    assert b0 == dials[1] and right > 0.8 * total
+    wrong = decrypt(cipher, rng.sample(range(M), M), schedule(rng), rng.randrange(M))
+    print(f"a wrong key reads {wrong[1]:+.2f} nats/rune over shuffled")
+    assert wrong[1] < gain / 3
+    print("decrypt self-test passed")
+
+
+def show(path: Path = OUT, top: int = 3) -> None:
+    """Decrypt the best candidates in the sweep's output and print the opening."""
+    from quagmire_schedule_census import lp_words  # noqa: PLC0415
+
+    from aldegonde import c3301  # noqa: PLC0415
+
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    rows.sort(key=lambda r: -r["score"])
+    body = lp_words()
+    for r in rows[:top]:
+        words, gain, b0 = decrypt(body, r["K"], r["sched"], r["dial"])
+        opening = " ".join(c3301.decode_english(w) for w in words[:40])
+        print(
+            f"{r['score']:+.4f} {r['keyword']} sched {r['sched']} dial {r['dial']} b0 {b0}"
+        )
+        print(f"   {gain:+.2f} nats/rune over shuffled: {opening}")
+
+
 def main() -> None:
+    if "--decrypt-selftest" in sys.argv:
+        decrypt_selftest()
+        return
+    if "--show" in sys.argv:
+        show()
+        return
     if "--selftest" in sys.argv:
         sample = 2000
         for i, a in enumerate(sys.argv):
