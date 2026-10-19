@@ -108,6 +108,22 @@ best single XOR byte by English-likeness: the best score is 0.52 at key length 8
 length, which is the free parameters rather than a signal — eight key bytes fitted to 176
 is 22 bytes per parameter.
 
+## Not the walk's permutations (October 2026)
+
+The walk's key is permutations, not a keystream, and the grids hold enough bits for all
+of it. `experiments/grid_bytes_as_permutations.py` derives rune permutations from the
+bytes five ways: ranks of 29-byte windows and their inverses, keyword-style mixed
+alphabets of bytes mod 29, Fisher-Yates shuffles driven by the bytes, windows that are
+already permutations mod 29, and Lehmer codes of every big-integer reading. Each grid
+and both concatenations, rows and columns, forwards and reversed: 7,422 candidates.
+
+g is the sharp target, because a uniform permutation has order exactly 5 with
+probability 1.1e-7. One candidate has order 5, with two 5-cycles. It is the top
+base-29! digit of a big integer, a 23-bit number whose permutation moves only 11 runes,
+and random bytes through the same pipeline give 2.13 such hits per trial (P = 0.82).
+No candidate has the four or five 5-cycles g needs. The grids do not spell g by any of
+these derivations; σ and base₀ have no key-free channel to test against.
+
 ## What cannot be tested, and why it is not worth pretending otherwise
 
 The natural next guess is an RSA modulus: 128 of the 176 bytes would be 1,024 bits. The
