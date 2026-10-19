@@ -97,13 +97,21 @@ def matches(K, sums: np.ndarray, cipher: np.ndarray, *, plaintext_side: bool):
     else:
         start = pos[PLAIN][None, :] + dial
     hits = []
+    sums16 = sums.astype(np.int16)
     for v, clock in enumerate(clock_variants()):
         phase = clock % 5
-        inner = (start[:, None, :] + sums[None, :, phase].astype(np.int16)) % M
-        b = (cipher[None, None, :] - K[inner]) % M  # (29, n, 13)
-        same = (b == b[..., :1]).all(axis=-1)  # (29, n)
-        for a0, idx in zip(*np.nonzero(same)):
-            hits.append((int(idx), int(a0), int(b[a0, idx, 0]), v))
+        # the first two runes already fix the outer shift; only keys where they agree
+        # need the other eleven, which is one key in 29
+        two = (start[:, None, :2] + sums16[None, :, phase[:2]]) % M  # (29, n, 2)
+        b2 = (cipher[None, None, :2] - K[two]) % M
+        a0s, idxs = np.nonzero(b2[..., 0] == b2[..., 1])
+        if len(idxs) == 0:
+            continue
+        inner = (start[a0s, :] + sums16[idxs][:, phase]) % M  # (m, 13)
+        b = (cipher[None, :] - K[inner]) % M
+        same = (b == b[:, :1]).all(axis=1)
+        for a0, idx, row in zip(a0s[same], idxs[same], b[same]):
+            hits.append((int(idx), int(a0), int(row[0]), v))
     return hits
 
 
@@ -200,13 +208,32 @@ def self_test() -> None:
     print("self-test passed")
 
 
-def run() -> None:
+def dictionary_alphabets(top: int):
+    """Keyed alphabets from the `top` most frequent English words not in the priority list."""
+    from keyword_exhaustion import alphabets, kw_runes  # noqa: PLC0415
+    from quagmire_ungated_sweep import priority_vocabulary  # noqa: PLC0415
+    from wordfreq import top_n_list  # noqa: PLC0415
+
+    skip = {w.upper() for w in priority_vocabulary()}
+    out = []
+    for word in top_n_list("en", top):
+        if word.isalpha() and word.upper() not in skip:
+            seq = kw_runes(word)
+            if seq:
+                out.extend((f"{word} {rule}", list(K)) for rule, K in alphabets(seq))
+    return out
+
+
+def run(top: int = 0) -> None:
     from dodge_priority_sweep import _prepare  # noqa: PLC0415
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
 
     body = lp_words()
     cipher = np.array(body[0] + body[1])
-    _w, keys = _prepare([len(w) for w in body][:400])
+    if top:
+        keys = dictionary_alphabets(top)
+    else:
+        _w, keys = _prepare([len(w) for w in body][:400])
     sums = all_schedules()
     print(
         f"{len(keys):,} keyed alphabets x {len(sums):,} schedules x 29 dials x 13 clocks, two families"
@@ -231,6 +258,10 @@ def run() -> None:
 
 if __name__ == "__main__":
     if "--run" in sys.argv:
-        run()
+        top = 0
+        for i, arg in enumerate(sys.argv):
+            if arg == "--top" and i + 1 < len(sys.argv):
+                top = int(sys.argv[i + 1])
+        run(top)
     else:
         self_test()
