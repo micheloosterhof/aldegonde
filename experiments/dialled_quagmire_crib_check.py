@@ -248,6 +248,11 @@ def rotated(fam):
     ]
 
 
+def backwards(fam):
+    """Every alphabet of `fam` read backwards."""
+    return [(f"{name} backwards", list(K[::-1])) for name, K in fam]
+
+
 _W: dict = {}
 
 
@@ -371,7 +376,7 @@ def run(
         # K2 read backwards is the Beaufort form, c = K2[S_k - pos_K1(p + a)] + b, and
         # also stands in for K1 read backwards
         k1 = family(words, affine=True)
-        k2 = rotated([(f"{n} backwards", K[::-1]) for n, K in family(words)])
+        k2 = rotated(backwards(family(words)))
         label = "keyed and affine K1, keyed K2 backwards in every rotation"
         out = OUT.with_name("dialled_quagmire_crib_reverse_matches.jsonl")
     elif rotations:

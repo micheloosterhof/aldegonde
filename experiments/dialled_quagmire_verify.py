@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "experiments"))
 from dialled_quagmire_crib_check import (  # noqa: E402
     CRIB,
     all_schedules,
+    backwards,
     encipher,
     family,
     inverse,
@@ -170,6 +171,7 @@ def run(path: Path) -> None:
     by_name = dict(fam1)
     by_name.update(dict(fam2))
     by_name.update(dict(family(keywords)))
+    by_name.update(dict(rotated(backwards(family(keywords)))))
     sums = all_schedules()
     words = dictionary()
     body = lp_words()[FIRST : FIRST + WORDS]
