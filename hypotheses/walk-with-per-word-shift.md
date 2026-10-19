@@ -76,7 +76,23 @@ phase fitting would be needed on top of the chain.
 
 ## Result
 
-(pending)
+Wrong keys score +0.451 ± 0.021 on the body's windows, maximum +0.556 over 8,700
+random keys; a true key reads near +1.1.
+
+**Two keywords, crib-filtered: negative.** `experiments/walk_shift_crib_sweep.py --run`
+takes g from one priority keyword and σ from another, 1.6 × 10¹⁰ keys, and uses the
+DIVINITY WITHIN crib at words 0–1 as a base-free filter: word 0's bijection consistency
+refutes 468,297 of 586,496 (g, a₀, ±) triples outright, and the two runes the words
+share pin σ at two points for the rest. 1,561,215 keys survived and were scored; the
+best is +0.5730 (WHICH R2, column rotation), at the null ceiling. The filter trusts
+the crib and assumes the preventer did not fire inside those two words (about one
+chance in four that it did), so this is a negative for the crib-consistent part of the
+family.
+
+**One keyword: (pending).**
+
+**g on the standard order with any four fixed runes, σ from a keyword, crib-filtered:
+(pending).**
 
 ## Scripts
 
