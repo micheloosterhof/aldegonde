@@ -95,7 +95,10 @@ rotation), the extreme-value tail of the null; the next seven lie at +0.580 to +
 `experiments/walk_shift_candidates.jsonl` holds the top 40.
 
 **g on the standard order with any four fixed runes, σ from a keyword, crib-filtered:
-(pending).**
+negative.** `--run --standard-g`: g is the standard rune order minus any four fixed
+runes, laid in a 5×5 grid with a column or a row rotated (95,004 steps), σ from the
+priority keywords as above; 1.5 × 10¹¹ keys. Word 0 refutes 4,316,278 of 5,510,232
+triples; 15,636,120 keys scored, best +0.5817, the null.
 
 ## Scripts
 
