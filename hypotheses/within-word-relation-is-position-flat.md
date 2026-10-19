@@ -36,6 +36,14 @@ the cells expecting 5 or more).
 | walk, 2-rune words joined at q = 0.40 | 70.8 | 17.8 | 0.000 | 0.005 |
 | walk, blocks re-cut at random | 19.5 | 7.6 | 0.210 | 0.490 |
 | a fresh g for every word | 19.7 | 6.5 | 0.260 | 0.450 |
+| walk with clock skips at q ≈ 0.2 | 44.4 | 10.7 | 0.020 | 0.035 |
+
+**Word ends say the same, more strongly.** English endings (-S, -ED, -ING) are as
+structured as beginnings, and one g passes them through too. Classing pairs by start
+position {0, 1, 2+} and by the second rune's distance from the word end {0, 1, 2+}
+(`--run --start-end`, 40 df): the body reads H = 28.9. Every one-g model above misses
+in all 200 draws, with minima from 43 (clock skips) to 131 (fitted g). A fresh g per
+word gives P = 0.08 and re-cut blocks P = 0.07.
 
 Every model in which one relation serves the whole body and blocks are words lands far
 above the body. The two models in which the relation does not track word position land
@@ -63,13 +71,17 @@ prose position-class tables.
 
 | | log evidence, one g against fresh per word |
 |---|---|
-| body, 20,000 sampled g | −4.74 (−4.33 and −5.10 on other seeds, the latter at 200,000) |
-| body, each prose book held out of the tables (`--holdout`) | −3.7 to −5.8 |
-| planted walks on the held-out books | medians +11 to +36; 0 to 1 of 80 reach the body |
-| planted fresh-g corpora | median −4.0, range −7.6 to +4.3 |
+| | start classes | start-end classes |
+|---|---|---|
+| body, converged (`--convergence`, 20 million sampled g) | −5.0 | about −10.5 (−10.3 to −10.8 from 10 million on) |
+| body, each prose book held out of the tables (`--holdout`, 20,000 g) | −3.7 to −5.8 | −10.3 to −15.7 |
+| planted walks on the held-out books | medians +11 to +36; at most 1 of 80 reach the body | medians +11 to +55; 0 of 80 |
+| planted fresh-g corpora | median −4.0, range −7.6 to +4.3 | median −11.0, range −16.7 to −5.5 |
 
-So the body looks like a fresh-g corpus and not like a walk, by about e^5 ≈ 150 : 1
-with a uniform prior on g. A designed g would have to be chosen for flatness across
+So the body looks like a fresh-g corpus and not like a walk: about e^5 ≈ 150 : 1 on
+start classes and e^10.5 ≈ 36,000 : 1 on start-end classes, with a uniform prior on g.
+The start-end figure is a Monte Carlo average dominated by rare g, and it was still
+moving by about ±0.5 at 20 million samples. A designed g would have to be chosen for flatness across
 word positions; the doublet-tuned g goes the other way.
 
 **The datum against.** Lag 6 is low: 31 coincidences on 1,267 pairs, 0.0245, where a
@@ -97,7 +109,7 @@ The Bayes factor above includes those cells.
 | (b) blocks are cut from the stream without regard to words | fits (P 0.21–0.49) | live on H; conflicts with the 2-rune excess after sentence marks, which needs blocks to start at words |
 | (c) five fixed alphabets with a clock that runs through the text | body shows no absolute-position structure (H_abs 19.2, 20.3) where (c) gives 53–55 | disfavoured for the two clock conventions tried |
 | (d) one g applied after the base, c_j = g^j(base_w(p_j)) | would leave a permutation-shaped excess in the ciphertext pair tables: +1.24 ± 0.96 for ten planted g, body −1.43 (`--cipher-side`) | disfavoured, 0 of 10 |
-| the walk with one g | needs a rare flat g | disfavoured about e^5 under a uniform prior on g |
+| the walk with one g | needs a g flat at both ends of words | disfavoured about e^10 under a uniform prior on g |
 
 Additive per-word keys are already disproved (`within-word-key-sharing.md`); (a) is the
 mixed-alphabet, equality-only version that test leaves open.
@@ -125,7 +137,8 @@ preventer supplies it under either reading.
 ## Scripts
 
 - `experiments/within_word_relation_by_position.py`: `--run`, `--fit`, `--evidence`,
-  `--holdout`, `--c0`, `--cipher-side`.
+  `--convergence`, `--holdout`, `--c0`, `--cipher-side`; `--start-end` for the joint
+  classes.
 
 ## Related
 

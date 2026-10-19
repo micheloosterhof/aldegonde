@@ -28,17 +28,23 @@ On 200 prose windows of the body's size:
     walk, 2-rune joined      70.8   17.8      0.000          0.005
     walk, blocks recut       19.5    7.6      0.210          0.490
     fresh g per word         19.7    6.5      0.260          0.450
+    walk, clock skips q~0.2  44.4   10.7      0.020          0.035
+
+`--start-end` classes pairs by start position {0, 1, 2+} and the second rune's distance
+from the word end {0, 1, 2+} (40 df). Body H = 28.9. Every one-g model misses in all
+200 draws (minima 43 to 131); fresh g per word P = 0.08, blocks re-cut P = 0.07.
 
 `--fit`: one g CAN fit all 25 per-class body rates (misfit 3.6, below planted walks
 and planted fresh-g corpora), so the walk is not excluded. It needs a g whose powers
 are flat across English word positions, which about 1% of random order-5 g are and
 the doublet-fitted g is not.
 
-`--evidence`: the Bayes factor for one g (uniform over order-5 g) against a fresh g
-per word is log -4.7 on the body; -4.3 and -5.1 at 20,000 and 200,000 sampled g; -4.8
-to -5.8 with each of the ten prose books held out of the tables (`--holdout`). Planted
-walks on the held-out books give medians of +11 to +36, and 0 to 1 of 80 fall to the
-body's value, depending on the seed.
+`--evidence`: the Bayes factor for one g (uniform over order-5 g with five 5-cycles)
+against a fresh such g per word. `--convergence` follows the body's value to 20 million
+sampled g: -5.0 on start classes, flat from 200,000 on; about -10.5 on start-end
+classes (-11.5 at 200,000, -10.3 to -10.8 from 10 million on). With each prose book
+held out of the tables (`--holdout`), planted walks on the held-out books give medians
+of +11 to +36 (+11 to +55 on start-end), and at most 1 of 80 reaches the body.
 
 `--c0`: the filter behind C-0 ("g has five 5-cycles") reads the same top-1% profile
 on fresh-g-per-word corpora ([0 0 7 19 34], [0 0 12 20 28]) as on the body
@@ -48,8 +54,10 @@ over lags 2-4 is +1.24 +- 0.96 for ten planted g, +0.09 +- 1.97 for a fresh g pe
 word, and -1.43 for the body: disfavoured, 0 of 10, not excluded.
 
 Run with no arguments for the self-test, `--run` for the model table, `--fit` for the
-joint fit, `--evidence` for the Bayes factor, `--holdout` for it with each prose book
-held out, `--c0` and `--cipher-side` for the two checks above.
+joint fit, `--evidence` for the Bayes factor, `--convergence` for its limit, `--holdout`
+for it with each prose book held out, `--c0` and `--cipher-side` for the two checks
+above. `--start-end` switches `--run`, `--evidence`, `--convergence` and `--holdout`
+to the start-end classes.
 """
 
 from __future__ import annotations
@@ -78,29 +86,45 @@ from fingerprint_battery import (  # noqa: E402
 from aldegonde.maths import permutation  # noqa: E402
 
 LAGS = (2, 3, 4, 6, 7)
-CLASSES = 5
+CLASSES = 5  # the period: alphabets repeat every five runes inside a word
 
 
-def counts(words) -> np.ndarray:
-    """hits[k, c], pairs[k, c]: lag-k coincidences by start position class c = i mod 5."""
-    hits = np.zeros((len(LAGS), CLASSES))
-    pairs = np.zeros((len(LAGS), CLASSES))
+def start_class(i: int, k: int, length: int) -> int:
+    """The pair's start position mod 5."""
+    return i % CLASSES
+
+
+def start_end_class(i: int, k: int, length: int) -> int:
+    """Start position {0, 1, 2+} by the second rune's distance from the end {0, 1, 2+}."""
+    return 3 * min(i, 2) + min(length - 1 - (i + k), 2)
+
+
+START = (start_class, CLASSES)
+START_END = (start_end_class, 9)
+
+
+def counts(words, classing=START) -> np.ndarray:
+    """hits[a, c], pairs[a, c]: lag LAGS[a] coincidences by position class c."""
+    classify, n = classing
+    hits = np.zeros((len(LAGS), n))
+    pairs = np.zeros((len(LAGS), n))
     for w in words:
         for a, k in enumerate(LAGS):
             for i in range(len(w) - k):
-                pairs[a, i % CLASSES] += 1
-                hits[a, i % CLASSES] += w[i] == w[i + k]
+                c = classify(i, k, len(w))
+                pairs[a, c] += 1
+                hits[a, c] += w[i] == w[i + k]
     return np.stack([hits, pairs])
 
 
-def heterogeneity(words, min_expected: float = 0.0) -> float:
+def heterogeneity(words, min_expected: float = 0.0, classing=START) -> float:
     """Homogeneity chi2 across position classes, over cells expecting > min_expected.
 
     The default keeps every cell with at least one pair. A small corpus leaves the
     long-word cells empty, and a cell expecting under one coincidence makes the chi2
     unstable, so `min_expected=5` gives a robust version on the populated cells.
     """
-    hits, pairs = counts(words)
+    hits, pairs = counts(words, classing)
     total = 0.0
     for a in range(len(LAGS)):
         p = hits[a].sum() / pairs[a].sum()
@@ -146,6 +170,13 @@ def self_test() -> None:
             assert (wp[i] == wp[i + 5]) == (wc[i] == wc[i + 5])
     hits, pairs = counts([[1, 2, 1, 2, 1, 2, 1, 2]])
     assert hits[0, 0] == pairs[0, 0] == 2, "lag 2 from class 0: i = 0 and 5"
+    # the vectorised sampler gives rich order-5 g, and its rates match the per-g ones
+    batch = random_rich_batch(np.random.default_rng(0), 20)
+    tables = class_tables([plain[:500]], START_END)
+    for row, r in zip(batch, batch_rates(batch, tables)):
+        g = [int(x) for x in row]
+        assert permutation.cycle_type(g).count(5) == 5
+        assert np.allclose(r, predicted(g, tables))
     print("self-test passed")
 
 
@@ -185,10 +216,26 @@ def fresh_g(plain, rng):
     return out
 
 
-def run(draws: int = 200) -> None:
+def clock_skipped(plain, rng, size: int = 6):
+    """The walk on joined words, its clock taking an extra step after `size` cipher runes.
+
+    With six runes in the skip set the clock is perturbed at about 20% of steps, near
+    the top of the range the d5 shortfall allows (`d5-bounds-the-clock-perturbation.md`).
+    """
+    from autokey_variants import encipher_clocked  # noqa: PLC0415
+
+    skip = frozenset(rng.sample(range(M), size))
+    base0 = permutation.random_permutation(M, rng)
+    sigma = permutation.random_permutation(M, rng)
+    return encipher_clocked(
+        joined(plain, rng), base0, rich_order5(rng), sigma, skip, by_cipher=True
+    )
+
+
+def run(draws: int = 200, classing=START) -> None:
     body_words = lp_words()
-    body = heterogeneity(body_words)
-    body5 = heterogeneity(body_words, 5.0)
+    body = heterogeneity(body_words, classing=classing)
+    body5 = heterogeneity(body_words, 5.0, classing)
     lengths = [len(w) for w in body_words]
     rng = random.Random(3301)
     lp = fingerprint(body_words)
@@ -208,9 +255,13 @@ def run(draws: int = 200) -> None:
             recut(plain, lengths, r), r
         ),
         "fresh g per word": fresh_g,
+        "walk, clock skips": clock_skipped,
     }
-    df = len(LAGS) * (CLASSES - 1)
-    print(f"H = homogeneity chi2 over lags {LAGS} and 5 position classes ({df} df)")
+    df = len(LAGS) * (classing[1] - 1)
+    print(
+        f"H = homogeneity chi2 over lags {LAGS} and {classing[1]} position classes"
+        f" ({df} df)"
+    )
     print(f"body H = {body:.1f}; on cells expecting 5 or more, H5 = {body5:.1f}\n")
     print(
         f"{'model':<22}{'mean H':>9}{'sd':>7}{'min':>7}{'P(<=body)':>11}"
@@ -218,8 +269,8 @@ def run(draws: int = 200) -> None:
     )
     for name, gen in models.items():
         ciphers = [gen(plain, rng) for plain in corpora]
-        h = np.array([heterogeneity(c) for c in ciphers])
-        h5 = np.array([heterogeneity(c, 5.0) for c in ciphers])
+        h = np.array([heterogeneity(c, classing=classing) for c in ciphers])
+        h5 = np.array([heterogeneity(c, 5.0, classing) for c in ciphers])
         print(
             f"{name:<22}{h.mean():>9.1f}{h.std():>7.1f}{h.min():>7.1f}"
             f"{(h <= body).mean():>11.3f}{h5.mean():>9.1f}{h5.min():>7.1f}"
@@ -227,21 +278,22 @@ def run(draws: int = 200) -> None:
         )
 
 
-def class_tables(corpora) -> np.ndarray:
-    """T[a, c, x, y]: plaintext pair table at lag LAGS[a] from positions i = c mod 5."""
-    t = np.zeros((len(LAGS), CLASSES, M, M))
+def class_tables(corpora, classing=START) -> np.ndarray:
+    """T[a, c, x, y]: plaintext pair table at lag LAGS[a] in position class c."""
+    classify, n = classing
+    t = np.zeros((len(LAGS), n, M, M))
     for words in corpora:
         for w in words:
             for a, k in enumerate(LAGS):
                 for i in range(len(w) - k):
-                    t[a, i % CLASSES, w[i], w[i + k]] += 1
+                    t[a, classify(i, k, len(w)), w[i], w[i + k]] += 1
     return t / np.maximum(t.sum(axis=(2, 3), keepdims=True), 1)
 
 
 def predicted(g, tables) -> np.ndarray:
     """Coincidence rate per cell under one g: P(p_i == g^k(p_(i+k)))."""
     ys = np.arange(M)
-    out = np.zeros((len(LAGS), CLASSES))
+    out = np.zeros(tables.shape[:2])
     for a, k in enumerate(LAGS):
         gk = np.array(ppow(g, k % CLASSES))
         out[a] = tables[a][:, gk, ys].sum(axis=1)
@@ -302,14 +354,73 @@ def joint_fit(planted: int = 20) -> None:
     )
 
 
-def log_evidence_ratio(words, rates: np.ndarray) -> float:
+def random_rich_batch(rng: np.random.Generator, size: int) -> np.ndarray:
+    """`size` order-5 permutations with five 5-cycles, uniformly, as rows."""
+    points = np.argsort(rng.random((size, M)), axis=1)[:, :25].reshape(size, 5, 5)
+    g = np.tile(np.arange(M), (size, 1))
+    rows = np.arange(size)[:, None, None]
+    g[rows, points] = np.roll(points, -1, axis=2)
+    return g
+
+
+def batch_rates(g: np.ndarray, tables: np.ndarray) -> np.ndarray:
+    """rates[b, a, c] for a batch of g, as `predicted` gives for one."""
+    size = len(g)
+    rows = np.arange(size)[:, None]
+    powers = [np.tile(np.arange(M), (size, 1))]
+    for _ in range(CLASSES - 1):
+        powers.append(g[rows, powers[-1]])
+    ys = np.arange(M)
+    out = np.zeros((size,) + tables.shape[:2])
+    for a, k in enumerate(LAGS):
+        gk = powers[k % CLASSES]
+        # tables[a][c, gk[b, y], y] summed over y
+        out[:, a, :] = tables[a][:, gk, ys].sum(axis=2).T
+    return out
+
+
+def converged_log_evidence(
+    words, tables, classing, total: int, chunk: int = 50000, seed: int = 1
+) -> list[tuple[int, float]]:
+    """The log evidence ratio as the number of sampled g grows, in chunks.
+
+    Returns (samples so far, estimate) after each chunk, so convergence can be read.
+    """
+    rng = np.random.default_rng(seed)
+    hits, pairs = counts(words, classing)
+    keep = pairs > 0
+    h, n = hits[keep], pairs[keep]
+    log_sum, rate_sum, done, trace = -np.inf, np.zeros(int(keep.sum())), 0, []
+    while done < total:
+        r = batch_rates(random_rich_batch(rng, chunk), tables)[:, keep]
+        ll = (h * np.log(r) + (n - h) * np.log1p(-r)).sum(axis=1)
+        log_sum = np.logaddexp(log_sum, np.logaddexp.reduce(ll))
+        rate_sum += r.sum(axis=0)
+        done += chunk
+        mean = rate_sum / done
+        ll_fresh = float((h * np.log(mean) + (n - h) * np.log1p(-mean)).sum())
+        trace.append((done, float(log_sum - np.log(done) - ll_fresh)))
+    return trace
+
+
+def convergence(total: int = 20_000_000, classing=START) -> None:
+    rng = random.Random(31)
+    tables = class_tables([joined(c, rng) for c in prose_corpora(2928, 150)], classing)
+    trace = converged_log_evidence(lp_words(), tables, classing, total)
+    print("body log evidence, one g against a fresh g per word, by samples of g\n")
+    for done, value in trace:
+        if done in (200_000, 2_000_000) or done % 5_000_000 == 0:
+            print(f"  {done:>11,}  {value:+7.2f}")
+
+
+def log_evidence_ratio(words, rates: np.ndarray, classing=START) -> float:
     """log P(cells | one g, g from the prior) - log P(cells | a fresh g per word).
 
-    `rates[s]` holds the 25 per-class rates of the s-th sampled g. One g averages the
+    `rates[s]` holds the per-class rates of the s-th sampled g. One g averages the
     binomial likelihood over the sample; a fresh g per word gives every pair the
     sample's mean rate, since each word draws its own g.
     """
-    hits, pairs = counts(words)
+    hits, pairs = counts(words, classing)
     keep = pairs > 0
     h, n = hits[keep], pairs[keep]
     r = rates[:, keep]
@@ -320,19 +431,20 @@ def log_evidence_ratio(words, rates: np.ndarray) -> float:
     return float(top + np.log(np.exp(ll - top).mean()) - ll_fresh)
 
 
-def evidence(samples: int = 20000, planted: int = 20) -> None:
+def evidence(samples: int = 20000, planted: int = 20, classing=START) -> None:
     rng = random.Random(9)
     corpora = prose_corpora(2928, 200)
-    tables = class_tables([joined(c, rng) for c in corpora[:150]])
+    tables = class_tables([joined(c, rng) for c in corpora[:150]], classing)
     rates = np.array([predicted(rich_order5(rng), tables) for _ in range(samples)])
-    body = log_evidence_ratio(lp_words(), rates)
+    body = log_evidence_ratio(lp_words(), rates, classing)
     walks, fresh = [], []
     for plain in corpora[150 : 150 + planted]:
         words = joined(plain, rng)
-        walks.append(log_evidence_ratio(walk(rich_order5(rng))(words, rng), rates))
-        fresh.append(log_evidence_ratio(fresh_g(words, rng), rates))
+        cipher = walk(rich_order5(rng))(words, rng)
+        walks.append(log_evidence_ratio(cipher, rates, classing))
+        fresh.append(log_evidence_ratio(fresh_g(words, rng), rates, classing))
     walks, fresh = np.array(walks), np.array(fresh)
-    hits, pairs = counts(lp_words())
+    hits, pairs = counts(lp_words(), classing)
     mean = rates.mean(axis=0)
     print("pooled body rate per lag against a fresh g per word (prose tables)\n")
     for a, k in enumerate(LAGS):
@@ -356,7 +468,7 @@ def evidence(samples: int = 20000, planted: int = 20) -> None:
     )
 
 
-def holdout(samples: int = 20000, planted: int = 8) -> None:
+def holdout(samples: int = 20000, planted: int = 8, classing=START) -> None:
     """The Bayes factor with each prose book held out of the tables and planted from.
 
     Planted plaintext then differs from the tables in register, as the body's does.
@@ -379,15 +491,20 @@ def holdout(samples: int = 20000, planted: int = 8) -> None:
     )
     for hold in range(len(books)):
         rest = [w for i, b in enumerate(books) if i != hold for w in windows(b)]
-        tables = class_tables([joined(c, rng) for c in rest[:150]])
+        tables = class_tables([joined(c, rng) for c in rest[:150]], classing)
         rates = np.array([predicted(rich_order5(rng), tables) for _ in range(samples)])
         plants = windows(books[hold])[:planted]
         wv = [
-            log_evidence_ratio(walk(rich_order5(rng))(joined(x, rng), rng), rates)
+            log_evidence_ratio(
+                walk(rich_order5(rng))(joined(x, rng), rng), rates, classing
+            )
             for x in plants
         ]
-        fv = [log_evidence_ratio(fresh_g(joined(x, rng), rng), rates) for x in plants]
-        b = log_evidence_ratio(body, rates)
+        fv = [
+            log_evidence_ratio(fresh_g(joined(x, rng), rng), rates, classing)
+            for x in plants
+        ]
+        b = log_evidence_ratio(body, rates, classing)
         below += sum(1 for v in wv if v <= b)
         total += len(wv)
         print(
@@ -474,17 +591,20 @@ def cipher_side_check(planted: int = 10) -> None:
 
 
 if __name__ == "__main__":
-    if "--holdout" in sys.argv:
-        holdout()
+    classing = START_END if "--start-end" in sys.argv else START
+    if "--convergence" in sys.argv:
+        convergence(classing=classing)
+    elif "--holdout" in sys.argv:
+        holdout(classing=classing)
     elif "--c0" in sys.argv:
         c0_check()
     elif "--cipher-side" in sys.argv:
         cipher_side_check()
     elif "--evidence" in sys.argv:
-        evidence()
+        evidence(classing=classing)
     elif "--fit" in sys.argv:
         joint_fit()
     elif "--run" in sys.argv:
-        run()
+        run(classing=classing)
     else:
         self_test()
