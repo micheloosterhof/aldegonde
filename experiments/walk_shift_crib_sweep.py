@@ -109,6 +109,36 @@ def crib_conditions(g, a0: int, direction: int, cipher0, cipher1):
     return pins, excluded
 
 
+def standard_steps():
+    """Every order-5 step with four fixed runes and the other 25, in the standard rune
+    order, laid in a 5x5 grid with a column or a row rotated by one: 95,004 steps."""
+    from itertools import combinations  # noqa: PLC0415
+
+    for fixed in combinations(range(M), 4):
+        grid = [x for x in range(M) if x not in fixed]
+        for axis in ("col", "row"):
+            for sign in (+1, -1):
+                g = list(range(M))
+                for c in range(5):
+                    line = (
+                        [grid[r * 5 + c] for r in range(5)]
+                        if axis == "col"
+                        else grid[c * 5 : c * 5 + 5]
+                    )
+                    for t in range(5):
+                        g[line[t]] = line[(t + sign) % 5]
+                yield f"fixed {fixed} {axis}{'+' if sign > 0 else '-'}", g
+
+
+def g_sources(g_words):
+    """(alphabet name, iterator of (step name, g)) for the chosen g family."""
+    if g_words == "standard":
+        yield "standard order", standard_steps()
+        return
+    for kname, K in keyed_alphabets(g_words):
+        yield kname, grid_steps(K)
+
+
 def sweep(
     g_words, sigma_words, body_words, logf, *, keep: int = KEEP, log_every: int = 50
 ):
@@ -120,8 +150,10 @@ def sweep(
     best: list[tuple[float, str, str, list[int], int, int]] = []
     tested = refuted = triples = 0
     start = time.time()
-    for n, (kname, K) in enumerate(keyed_alphabets(g_words), 1):
-        for gname, g in grid_steps(K):
+    n = 0
+    for kname, steps in g_sources(g_words):
+        for gname, g in steps:
+            n += 1
             perms = powers(g)
             for direction in (+1, -1):
                 for a0 in range(M):
@@ -154,13 +186,13 @@ def sweep(
                     )
                     best.sort(reverse=True)
                     del best[keep:]
-        if n % log_every == 0:
-            print(
-                f"  {n} g-alphabets, {triples:,} (g, a0) triples, {refuted:,} refuted by "
-                f"word 0, {tested:,} sigmas scored, best {best[0][0]:+.4f} "
-                f"({best[0][1]} {best[0][2]}), {(time.time() - start) / 60:.1f} min",
-                flush=True,
-            )
+            if n % log_every == 0 and best:
+                print(
+                    f"  {n} steps, {triples:,} (g, a0) triples, {refuted:,} refuted by "
+                    f"word 0, {tested:,} sigmas scored, best {best[0][0]:+.4f} "
+                    f"({best[0][1]} {best[0][2]}), {(time.time() - start) / 60:.1f} min",
+                    flush=True,
+                )
     return best, tested, triples, refuted, len(family)
 
 
@@ -228,22 +260,30 @@ def selftest() -> None:
     print("self-test passed")
 
 
-def run() -> None:
+def run(*, standard: bool = False) -> None:
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
     from quagmire_ungated_sweep import priority_vocabulary  # noqa: PLC0415
 
     words = priority_vocabulary()
     body = lp_words()
     logf = log_frequencies()
+    g_words = "standard" if standard else words
     print(
-        f"{len(words)} priority words for g and for sigma; crib DIVINITY WITHIN at words 0-1"
+        f"{len(words)} priority words for sigma, g from "
+        f"{'the standard order, any four fixed' if standard else 'the same words'}; "
+        "crib DIVINITY WITHIN at words 0-1"
     )
-    best, tested, triples, refuted, size = sweep(words, words, body, logf)
+    best, tested, triples, refuted, size = sweep(
+        g_words, words, body, logf, log_every=5000 if standard else 50
+    )
     print(
         f"\nDONE: {triples:,} (g, a0, dir) triples x {size:,} sigmas = {triples * size:,} keys; "
         f"{refuted:,} triples refuted by word 0; {tested:,} keys scored"
     )
-    with OUT.open("w") as fout:
+    out = (
+        OUT.with_name("walk_shift_crib_standard_candidates.jsonl") if standard else OUT
+    )
+    with out.open("w") as fout:
         for score, kname, gname, sigma, a0, direction in best:
             print(
                 f"  {score:+.4f}  {kname:<28} {gname:<16} a0 {a0:>2} dir {direction:+d}"
@@ -261,14 +301,14 @@ def run() -> None:
                 )
                 + "\n"
             )
-    print(f"written to {OUT}; a true key scores near +1.1, wrong keys below +0.6")
+    print(f"written to {out}; a true key scores near +1.1, wrong keys below +0.6")
 
 
 def main() -> None:
     if "--selftest" in sys.argv:
         selftest()
     elif "--run" in sys.argv:
-        run()
+        run(standard="--standard-g" in sys.argv)
     else:
         print(__doc__)
 
