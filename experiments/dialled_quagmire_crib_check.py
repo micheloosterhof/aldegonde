@@ -218,13 +218,20 @@ def encipher(plain_words, K1, K2, offsets, a, b, *, phase=0, restart=False):
     return out, fires
 
 
-def family(words):
-    """Keyed alphabets from `words` plus the standard order both ways round."""
+def family(words, *, affine: bool = False):
+    """Keyed alphabets from `words` plus the standard order both ways round, or with
+    `affine` every alphabet x -> ux + v (812, the standard order and its reverse
+    among them)."""
     from walk_shift_sweep import keyed_alphabets  # noqa: PLC0415
 
     out = list(keyed_alphabets(words))
-    out.append(("standard order", list(range(M))))
-    out.append(("standard reversed", list(range(M - 1, -1, -1))))
+    if affine:
+        for u in range(1, M):
+            for v in range(M):
+                out.append((f"affine {u}x+{v}", [(u * x + v) % M for x in range(M)]))
+    else:
+        out.append(("standard order", list(range(M))))
+        out.append(("standard reversed", list(range(M - 1, -1, -1))))
     return out
 
 
@@ -296,20 +303,24 @@ def self_test() -> None:
     )
     print(f"random ciphertext: {w0} word-0 matches, {len(found)} full matches")
     assert not found
+    aff = {tuple(K) for _, K in family([], affine=True)}
+    assert len(aff) == (M - 1) * M
+    assert tuple(range(M)) in aff and tuple(range(M - 1, -1, -1)) in aff
+    print(f"affine family: {len(aff)} distinct alphabets, standard order both ways in")
     print("self-test passed")
 
 
-def run() -> None:
+def run(*, affine: bool = False) -> None:
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
     from quagmire_ungated_sweep import priority_vocabulary  # noqa: PLC0415
 
     body = lp_words()
     cipher0, cipher1 = np.array(body[0]), np.array(body[1])
-    fam = family(priority_vocabulary())
+    fam = family(priority_vocabulary(), affine=affine)
     sums = all_schedules()
     print(
-        f"{len(fam):,} alphabets on each side x {len(sums):,} schedules x "
-        f"{len(clock_variants())} clocks, dials free per word"
+        f"{len(fam):,} alphabets on each side ({'keyed and affine' if affine else 'keyed'}) "
+        f"x {len(sums):,} schedules x {len(clock_variants())} clocks, dials free per word"
     )
     found, w0 = check(
         [n for n, _ in fam],
@@ -320,7 +331,8 @@ def run() -> None:
         cipher1,
         log_every=20,
     )
-    with OUT.open("w") as fout:
+    out = OUT.with_name("dialled_quagmire_crib_affine_matches.jsonl") if affine else OUT
+    with out.open("w") as fout:
         for row in found:
             fout.write(json.dumps(row) + "\n")
     print(f"\nDONE: {w0:,} word-0 matches, {len(found)} keys reproduce DIVINITY WITHIN")
@@ -328,6 +340,6 @@ def run() -> None:
 
 if __name__ == "__main__":
     if "--run" in sys.argv:
-        run()
+        run(affine="--affine" in sys.argv)
     else:
         self_test()
