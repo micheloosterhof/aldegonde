@@ -1,0 +1,5 @@
+{"K1": "AMASS R4 grid-cols", "K2": "BELONG R2 reversed rot9", "schedule": 45461, "clock": "phase 0 restart, fire at 12", "a0": 16, "b0": 24, "a1": 13, "b1": 28}
+{"K1": "AMASS R4 grid-cols", "K2": "BELONG R2 reversed rot7", "schedule": 66657, "clock": "phase 1 restart, fire at 12", "a0": 16, "b0": 24, "a1": 13, "b1": 28}
+{"K1": "AMASS R4 grid-cols", "K2": "BELONG R2 reversed rot2", "schedule": 87853, "clock": "phase 2 restart, fire at 12", "a0": 16, "b0": 24, "a1": 13, "b1": 28}
+{"K1": "AMASS R4 grid-cols", "K2": "BELONG R2 reversed rot2", "schedule": 3069, "clock": "phase 3 restart, fire at 12", "a0": 16, "b0": 24, "a1": 13, "b1": 28}
+{"K1": "AMASS R4 grid-cols", "K2": "BELONG R2 reversed rot24", "schedule": 24265, "clock": "phase 4 restart, fire at 12", "a0": 16, "b0": 24, "a1": 13, "b1": 28}

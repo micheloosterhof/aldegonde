@@ -21,9 +21,10 @@ every other way of moving the dials, and with a second alphabet on the cipher si
 
 ## Status
 
-**Status**: **negative for keyed and affine alphabets on both sides, under either
-reading of a preventer fire** (2026-10-20). Every rotation of K2 and the Beaufort form
-(K2 backwards) are being run; see Results.
+**Status**: **negative for keyed and affine alphabets on both sides, for every
+rotation of the cipher alphabet, under either reading of a preventer fire**
+(2026-10-20). The Beaufort form (K2 backwards, every rotation) is being run; see
+Results.
 
 ## Why this family
 
@@ -61,6 +62,19 @@ fire at any of twelve places).
 | keyed | 1,266 keyed | 1,266 keyed | 18,130 | **0** | 0.7 | 20 min |
 | affine | 2,076 keyed + affine | 2,076 keyed + affine | 64,820 | **0** | 2.7 | 55 min |
 | stutter | 1,266 keyed | 1,266 keyed | 37,364 | **0** | 1.5 | 42 min |
+| rotations | 2,076 keyed + affine | 36,714 keyed, every rotation | 1,389,810 | 5 rows, **1 key** | about 3 keys | 152 min, 6 workers |
+
+The rotations run's one key (K1 AMASS R4, K2 BELONG R2 reversed, five equivalent
+rotation/phase/schedule settings, a fire at the crib's last rune) reads 4 of the 50
+long blocks as dictionary words; random keys read 1.0 ± 0.9 (maximum 3 of 100) and a
+true key about 38. It is a false match.
+
+The expected-false column counts independent trials. A word-0 match with an affine
+K1 stands for 29 equivalent ones (v and a_0 trade off), and with K2 rotated, five
+(rotation, phase, schedule) settings give the same alphabets; the rotations run's
+1.39 million word-0 matches are about 87,000 independent trials at a word-1 false
+rate of 3.3 × 10⁻⁵ (measured: 8 in 245,400 random word-1 ciphertexts conditioned on
+a word-0 match), so about three false keys, each printed as five rows. One was seen.
 
 The stutter run (`--stutter`, 250 clocks) adds the other reading of a preventer fire:
 the fired rune borrows the next alphabet and the clock goes on as if nothing had
