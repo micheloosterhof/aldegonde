@@ -268,6 +268,26 @@ It also explains an observation from `key-local-channel-is-empty.md` §5: σ has
 local footprint beyond the seam rate because the seam diagonal is the whole of its
 observable job.
 
+## Four more variants: only feedback on the clock keeps d5 (October 2026)
+
+`experiments/autokey_variants.py` tries the places the lag theorem's proof does not
+reach. 20 prose corpora each:
+
+| variant | d1w | d4w | d5w | d6w |
+|---|---|---|---|---|
+| LP | 0.0063 | 0.0410 | **0.0492** | 0.0245 |
+| A: lag-1 ciphertext feedback through a random permutation per previous rune (no group law), lag-5 tap restarting per word | 0.035 | 0.034 | **0.033** | 0.035 |
+| D: walk enciphering `a(p_j) + b(p_{j-1})` | 0.0687 | 0.0370 | **0.0309** | 0.0353 |
+| B: walk, clock steps 2 after plaintext runes in S (q = 0.118) | 0.0079 | 0.0424 | **0.0483** | 0.0285 |
+| C: walk, clock steps 2 after ciphertext runes in S (q = 0.104) | 0.0098 | 0.0418 | **0.0503** | 0.0258 |
+| walk control (no skips) | 0.0070 | 0.0381 | 0.0609 | 0.0241 |
+
+Feedback that changes the rune value puts d5 at chance whether or not addition is the
+combining law (A, D). Feedback that only advances the period-5 clock keeps the
+period-5 cells (B, C). It is then the walk with a perturbed clock, which
+`d5-bounds-the-clock-perturbation.md` already bounds at q 95% [0.003, 0.262]. So an
+autokey can sit in this cipher only as a driver of the clock, not of the alphabet.
+
 ## Predictions, if it can be rescued
 
 - Any rescue must keep β = 1 (else no suppression at all).
@@ -285,6 +305,8 @@ observable job.
   floor computation (whose floor the September 2026 section retracts).
 - `experiments/dual_autokey_delimiter.py` — permutation taps, the delimiter step, and
   the profile sweep; self-tests round-trip decryption and the seam behaviour.
+- `experiments/autokey_variants.py` — non-additive lag-1 feedback, a lag-1 tap inside
+  the walk's alphabet, and plaintext- and ciphertext-driven clocks.
 
 ## Related
 
