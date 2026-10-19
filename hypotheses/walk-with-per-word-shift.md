@@ -18,9 +18,9 @@ the word when an emission would repeat the previous rune.
 
 ## Status
 
-**Status**: unresolved. The sweep over keys built from one keyword each
-(`experiments/walk_shift_sweep.py --run`, 1.8 × 10⁷ keys) ran on 2026-10-20; its
-result is recorded below when it finishes.
+**Status**: unresolved as a mechanism; negative for every naturally built key family
+tried on 2026-10-20 (one keyword; two keywords through the crib; see Result). What
+survives is a free σ, a continuous clock, or keys from outside 3301's vocabulary.
 
 ## Why the shift
 
@@ -89,7 +89,10 @@ the crib and assumes the preventer did not fire inside those two words (about on
 chance in four that it did), so this is a negative for the crib-consistent part of the
 family.
 
-**One keyword: (pending).**
+**One keyword: negative.** `experiments/walk_shift_sweep.py --run`, 17,594,880 keys
+(1,264 alphabets × 8 grid steps × 30 σ × 58 schedules), best +0.6086 (ENOUGH R1, row
+rotation), the extreme-value tail of the null; the next seven lie at +0.580 to +0.593.
+`experiments/walk_shift_candidates.jsonl` holds the top 40.
 
 **g on the standard order with any four fixed runes, σ from a keyword, crib-filtered:
 (pending).**
