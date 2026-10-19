@@ -353,7 +353,13 @@ def self_test() -> None:
     print("self-test passed")
 
 
-def run(*, affine: bool = False, rotations: bool = False, nproc: int = 1) -> None:
+def run(
+    *,
+    affine: bool = False,
+    rotations: bool = False,
+    reverse: bool = False,
+    nproc: int = 1,
+) -> None:
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
     from quagmire_ungated_sweep import priority_vocabulary  # noqa: PLC0415
 
@@ -361,7 +367,14 @@ def run(*, affine: bool = False, rotations: bool = False, nproc: int = 1) -> Non
     cipher0, cipher1 = np.array(body[0]), np.array(body[1])
     words = priority_vocabulary()
     sums = all_schedules()
-    if rotations:
+    if rotations and reverse:
+        # K2 read backwards is the Beaufort form, c = K2[S_k - pos_K1(p + a)] + b, and
+        # also stands in for K1 read backwards
+        k1 = family(words, affine=True)
+        k2 = rotated([(f"{n} backwards", K[::-1]) for n, K in family(words)])
+        label = "keyed and affine K1, keyed K2 backwards in every rotation"
+        out = OUT.with_name("dialled_quagmire_crib_reverse_matches.jsonl")
+    elif rotations:
         k1, k2 = family(words, affine=True), rotated(family(words))
         label = "keyed and affine K1, keyed K2 in every rotation"
         out = OUT.with_name("dialled_quagmire_crib_rotations_matches.jsonl")
@@ -410,6 +423,7 @@ if __name__ == "__main__":
         run(
             affine="--affine" in sys.argv,
             rotations="--rotations" in sys.argv,
+            reverse="--reverse" in sys.argv,
             nproc=nproc,
         )
     else:
