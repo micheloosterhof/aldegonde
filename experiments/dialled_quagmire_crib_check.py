@@ -59,9 +59,14 @@ def inverse(K) -> np.ndarray:
     return np.asarray(permutation.inverse([int(x) for x in K]))
 
 
-def clock_variants() -> list[tuple[str, np.ndarray]]:
+def clock_variants(*, stutter: bool = False) -> list[tuple[str, np.ndarray]]:
     """(name, clock index of each crib rune): five start phases, continuous or
-    restarting at the word, no preventer fire or one fire after rune d."""
+    restarting at the word, no preventer fire or one fire at rune d.
+
+    A fire advances the clock for the rest of the word (and of the text, when the
+    clock is continuous). With `stutter` the other reading is added: the fired rune
+    borrows the next alphabet and the clock goes on as if nothing happened, so that
+    rune and the next share an alphabet."""
     out = []
     for phase in range(5):
         for restart in (False, True):
@@ -76,6 +81,11 @@ def clock_variants() -> list[tuple[str, np.ndarray]]:
                 end = 8 if (restart and d < 8) else 13
                 clock[d:end] += 1
                 out.append((f"{tag}, fire at {d}", clock))
+            if stutter:
+                for d in range(1, 13):
+                    clock = base.copy()
+                    clock[d] += 1
+                    out.append((f"{tag}, stutter at {d}", clock))
     return out
 
 
@@ -157,11 +167,20 @@ def word1_dials(K1, K2, sums_s, clock, cipher1) -> list[tuple[int, int]]:
 
 
 def check(
-    k1_names, k1_alphabets, k2_family, sums, cipher0, cipher1, *, log_every=0, tag=""
+    k1_names,
+    k1_alphabets,
+    k2_family,
+    sums,
+    cipher0,
+    cipher1,
+    *,
+    log_every=0,
+    tag="",
+    stutter=False,
 ):
     """Every (K1, K2, schedule, clock, a0, b0, a1, b1) reproducing both crib words."""
     k1_index = AlphabetIndex(k1_names, np.array(k1_alphabets))
-    variants = clock_variants()
+    variants = clock_variants(stutter=stutter)
     indexes = [ScheduleIndex(sums, clock) for _, clock in variants]
     found, word0_total = [], 0
     start = time.time()
@@ -195,8 +214,12 @@ def check(
     return found, word0_total
 
 
-def encipher(plain_words, K1, K2, offsets, a, b, *, phase=0, restart=False):
-    """The family's ciphertext with the preventer; also the stream indices where it fired."""
+def encipher(
+    plain_words, K1, K2, offsets, a, b, *, phase=0, restart=False, stutter=False
+):
+    """The family's ciphertext with the preventer; also the stream indices where it
+    fired. A fire advances the clock, or with `stutter` only borrows the next
+    alphabet for the fired rune."""
     pos1 = inverse(K1)
     S = running(offsets)
     out, fires, previous, i = [], [], None, 0
@@ -210,8 +233,9 @@ def encipher(plain_words, K1, K2, offsets, a, b, *, phase=0, restart=False):
             c = (K2[x] + b[w]) % M
             if c == previous:
                 fires.append(i)
-                clock += 1
-                x = (pos1[(p + a[w]) % M] + S[clock % 5]) % M
+                if not stutter:
+                    clock += 1
+                x = (pos1[(p + a[w]) % M] + S[(clock + stutter) % 5]) % M
                 c = (K2[x] + b[w]) % M
             cw.append(c)
             previous = c
@@ -266,10 +290,11 @@ def _work(i: int):
         *_W["cipher"],
         log_every=50,
         tag=f"worker {i}: ",
+        stutter=_W["stutter"],
     )
 
 
-def _plant(rng, fam1, fam2, sums, *, phase, restart, want_fires):
+def _plant(rng, fam1, fam2, sums, *, phase, restart, want_fires, stutter=False):
     """A planted key whose crib ciphertext has `want_fires` preventer fires inside it."""
     k1name, K1 = fam1[rng.randrange(len(fam1))]
     k2name, K2 = fam2[rng.randrange(len(fam2))]
@@ -280,7 +305,9 @@ def _plant(rng, fam1, fam2, sums, *, phase, restart, want_fires):
     for _ in range(2000):
         a = [rng.randrange(M) for _ in plain]
         b = [rng.randrange(M) for _ in plain]
-        ct, fires = encipher(plain, K1, K2, offsets, a, b, phase=phase, restart=restart)
+        ct, fires = encipher(
+            plain, K1, K2, offsets, a, b, phase=phase, restart=restart, stutter=stutter
+        )
         if len([f for f in fires if f < 13]) == want_fires:
             key = {
                 "K1": k1name,
@@ -355,6 +382,23 @@ def self_test() -> None:
         f"cipher alphabet {key['K2']}: planted key found; {w0} word-0 matches, "
         f"{len(found)} full match(es)"
     )
+    key, ct, fires = _plant(
+        rng, fam, fam, sums, phase=3, restart=False, want_fires=1, stutter=True
+    )
+    found, w0 = check(
+        names, alphabets, fam, sums, np.array(ct[0]), np.array(ct[1]), stutter=True
+    )
+    expect_clock = f"phase 3 continuous, stutter at {fires[0]}"
+    hit = [
+        f
+        for f in found
+        if f["clock"] == expect_clock and all(f[k] == v for k, v in key.items())
+    ]
+    assert hit, f"planted stutter key not found: {key} {expect_clock}; found {found}"
+    print(
+        f"stutter at {fires[0]}: planted key found; {w0} word-0 matches, "
+        f"{len(found)} full match(es) over {len(clock_variants(stutter=True))} clocks"
+    )
     print("self-test passed")
 
 
@@ -363,6 +407,7 @@ def run(
     affine: bool = False,
     rotations: bool = False,
     reverse: bool = False,
+    stutter: bool = False,
     nproc: int = 1,
 ) -> None:
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
@@ -391,10 +436,12 @@ def run(
             if affine
             else OUT
         )
+    if stutter:
+        out = out.with_name(out.name.replace("matches", "stutter_matches"))
     print(
         f"{len(k1):,} plain alphabets x {len(k2):,} cipher alphabets ({label}) x "
-        f"{len(sums):,} schedules x {len(clock_variants())} clocks, dials free per word; "
-        f"{nproc} worker(s)"
+        f"{len(sums):,} schedules x {len(clock_variants(stutter=stutter))} clocks, "
+        f"dials free per word; {nproc} worker(s)"
     )
     names, alphabets = [n for n, _ in k1], [K for _, K in k1]
     if nproc > 1:
@@ -405,6 +452,7 @@ def run(
             sums=sums,
             cipher=(cipher0, cipher1),
             nproc=nproc,
+            stutter=stutter,
         )
         found, w0 = [], 0
         with get_context("fork").Pool(nproc) as pool:
@@ -412,7 +460,16 @@ def run(
                 found.extend(part)
                 w0 += n
     else:
-        found, w0 = check(names, alphabets, k2, sums, cipher0, cipher1, log_every=20)
+        found, w0 = check(
+            names,
+            alphabets,
+            k2,
+            sums,
+            cipher0,
+            cipher1,
+            log_every=20,
+            stutter=stutter,
+        )
     with out.open("w") as fout:
         for row in found:
             fout.write(json.dumps(row) + "\n")
@@ -429,6 +486,7 @@ if __name__ == "__main__":
             affine="--affine" in sys.argv,
             rotations="--rotations" in sys.argv,
             reverse="--reverse" in sys.argv,
+            stutter="--stutter" in sys.argv,
             nproc=nproc,
         )
     else:
