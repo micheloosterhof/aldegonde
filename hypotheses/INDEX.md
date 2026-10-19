@@ -110,7 +110,7 @@ proposed mechanisms scored against them.
 | [zero-triplets.md](zero-triplets.md) | Zero Triplets | confirmed (characterization) |
 | [within-word-relation-is-position-flat.md](within-word-relation-is-position-flat.md) | Within-Word Coincidences Carry No Word-Position Structure, Which Disfavours One Global g | confirmed (measurement): H = 15.1 on 20 df where one global g on English predicts 70-100; Bayes factor about e^5 for a relation that changes per word; C-0's profile does not need one g; lag 6 low at -2.44 sigma against it |
 
-### Hypotheses (60)
+### Hypotheses (61)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -174,3 +174,4 @@ proposed mechanisms scored against them.
 | [doublet-preventer-clock-drift.md](doublet-preventer-clock-drift.md) | The Doublet Preventer Moves the Clock, Forward or Back | Michel's NEGATIVE skip (clock holds, same alphabet repeats) lands d1w 0.00588 against the corpus's 0.00628, closer than the forward dodge's 0.00868, and drifts the clock -0.034/rune where the dodge drifts +0.032. The two DRIFT-FREE variants are DISPROVED: with the clock undisturbed every surviving doublet must share one phase (simulated: [0,0,0,0,94], chi2 376) and the LP's 86 doublets are flat at every space skip 0-4 (chi2 1.6-4.6, p 0.33-0.82). Covers both escape directions (rotation) and both space-skip signs (mod 5). The k=0 row needs no word indices, so it survives the separator-loss worry. The drifting pair is untested, not supported |
 | [plaintext-is-english.md](plaintext-is-english.md) | The Body's Plaintext Is Another Language Than English | disproved for ten languages: none fits the length marginal and serial order together; English with 2-rune words joined at q = 0.40 fits both |
 | [plaintext-dial-odometer.md](plaintext-dial-odometer.md) | The Odometer Quagmire With Its Inner Dial on the Plaintext Side | unresolved: the one shift-dial family that passes the word-position test (H 21/45); 18 of 19 battery cells; 841-state pool 2.6 sigma against; sweep over 3301's vocabulary running from 2026-10-20 |
+| [walk-with-per-word-shift.md](walk-with-per-word-shift.md) | The Length-Clocked Walk With a Per-Word Caesar Shift of the Plaintext | unresolved: the walk's repair under C9 (H 24/48); verifier tolerates the dodge; one-keyword family of 1.8e7 keys swept 2026-10-20 |
