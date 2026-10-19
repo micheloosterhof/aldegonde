@@ -32,6 +32,7 @@ import json
 import random
 import sys
 import time
+from multiprocessing import get_context
 from pathlib import Path
 
 import numpy as np
@@ -155,7 +156,9 @@ def word1_dials(K1, K2, sums_s, clock, cipher1) -> list[tuple[int, int]]:
     return [(int(a), int(b1[a, 0])) for a in np.nonzero(same)[0]]
 
 
-def check(k1_names, k1_alphabets, k2_family, sums, cipher0, cipher1, *, log_every=0):
+def check(
+    k1_names, k1_alphabets, k2_family, sums, cipher0, cipher1, *, log_every=0, tag=""
+):
     """Every (K1, K2, schedule, clock, a0, b0, a1, b1) reproducing both crib words."""
     k1_index = AlphabetIndex(k1_names, np.array(k1_alphabets))
     variants = clock_variants()
@@ -185,7 +188,7 @@ def check(k1_names, k1_alphabets, k2_family, sums, cipher0, cipher1, *, log_ever
                     print(f"  MATCH: {found[-1]}", flush=True)
         if log_every and n % log_every == 0:
             print(
-                f"  {n} cipher alphabets, {word0_total:,} word-0 matches, "
+                f"  {tag}{n} cipher alphabets, {word0_total:,} word-0 matches, "
                 f"{len(found)} full matches, {(time.time() - start) / 60:.1f} min",
                 flush=True,
             )
@@ -235,10 +238,36 @@ def family(words, *, affine: bool = False):
     return out
 
 
-def _plant(rng, fam, sums, *, phase, restart, want_fires):
+def rotated(fam):
+    """Every alphabet of `fam` in all 29 rotations: a disk has no start, and the
+    schedules are normalised to S_4 = 0, which a rotation of K2 undoes."""
+    return [
+        (f"{name} rot{t}", list(K[t:]) + list(K[:t]))
+        for name, K in fam
+        for t in range(M)
+    ]
+
+
+_W: dict = {}
+
+
+def _work(i: int):
+    """One worker's share of the cipher alphabets."""
+    return check(
+        _W["names"],
+        _W["alphabets"],
+        _W["k2"][i :: _W["nproc"]],
+        _W["sums"],
+        *_W["cipher"],
+        log_every=50,
+        tag=f"worker {i}: ",
+    )
+
+
+def _plant(rng, fam1, fam2, sums, *, phase, restart, want_fires):
     """A planted key whose crib ciphertext has `want_fires` preventer fires inside it."""
-    k1name, K1 = fam[rng.randrange(len(fam))]
-    k2name, K2 = fam[rng.randrange(len(fam))]
+    k1name, K1 = fam1[rng.randrange(len(fam1))]
+    k2name, K2 = fam2[rng.randrange(len(fam2))]
     offsets = schedule(rng)
     s = np.nonzero((sums == np.cumsum(offsets) % M).all(axis=1))[0]
     assert len(s) == 1
@@ -280,7 +309,7 @@ def self_test() -> None:
     ]
     for phase, restart, want in cases:
         key, ct, fires = _plant(
-            rng, fam, sums, phase=phase, restart=restart, want_fires=want
+            rng, fam, fam, sums, phase=phase, restart=restart, want_fires=want
         )
         found, w0 = check(names, alphabets, fam, sums, np.array(ct[0]), np.array(ct[1]))
         kind = "restart" if restart else "continuous"
@@ -307,31 +336,65 @@ def self_test() -> None:
     assert len(aff) == (M - 1) * M
     assert tuple(range(M)) in aff and tuple(range(M - 1, -1, -1)) in aff
     print(f"affine family: {len(aff)} distinct alphabets, standard order both ways in")
+    k2fam = rotated(fam[:4])
+    key, ct, fires = _plant(rng, fam, k2fam, sums, phase=1, restart=False, want_fires=0)
+    assert not key["K2"].endswith("rot0"), key
+    found, w0 = check(names, alphabets, k2fam, sums, np.array(ct[0]), np.array(ct[1]))
+    hit = [
+        f
+        for f in found
+        if f["clock"] == "phase 1 continuous" and all(f[k] == v for k, v in key.items())
+    ]
+    assert hit, f"planted rotated key not found: {key}; found {found}"
+    print(
+        f"cipher alphabet {key['K2']}: planted key found; {w0} word-0 matches, "
+        f"{len(found)} full match(es)"
+    )
     print("self-test passed")
 
 
-def run(*, affine: bool = False) -> None:
+def run(*, affine: bool = False, rotations: bool = False, nproc: int = 1) -> None:
     from quagmire_schedule_census import lp_words  # noqa: PLC0415
     from quagmire_ungated_sweep import priority_vocabulary  # noqa: PLC0415
 
     body = lp_words()
     cipher0, cipher1 = np.array(body[0]), np.array(body[1])
-    fam = family(priority_vocabulary(), affine=affine)
+    words = priority_vocabulary()
     sums = all_schedules()
+    if rotations:
+        k1, k2 = family(words, affine=True), rotated(family(words))
+        label = "keyed and affine K1, keyed K2 in every rotation"
+        out = OUT.with_name("dialled_quagmire_crib_rotations_matches.jsonl")
+    else:
+        k1 = k2 = family(words, affine=affine)
+        label = "keyed and affine" if affine else "keyed"
+        out = (
+            OUT.with_name("dialled_quagmire_crib_affine_matches.jsonl")
+            if affine
+            else OUT
+        )
     print(
-        f"{len(fam):,} alphabets on each side ({'keyed and affine' if affine else 'keyed'}) "
-        f"x {len(sums):,} schedules x {len(clock_variants())} clocks, dials free per word"
+        f"{len(k1):,} plain alphabets x {len(k2):,} cipher alphabets ({label}) x "
+        f"{len(sums):,} schedules x {len(clock_variants())} clocks, dials free per word; "
+        f"{nproc} worker(s)"
     )
-    found, w0 = check(
-        [n for n, _ in fam],
-        [K for _, K in fam],
-        fam,
-        sums,
-        cipher0,
-        cipher1,
-        log_every=20,
-    )
-    out = OUT.with_name("dialled_quagmire_crib_affine_matches.jsonl") if affine else OUT
+    names, alphabets = [n for n, _ in k1], [K for _, K in k1]
+    if nproc > 1:
+        _W.update(
+            names=names,
+            alphabets=alphabets,
+            k2=k2,
+            sums=sums,
+            cipher=(cipher0, cipher1),
+            nproc=nproc,
+        )
+        found, w0 = [], 0
+        with get_context("fork").Pool(nproc) as pool:
+            for part, n in pool.imap_unordered(_work, range(nproc)):
+                found.extend(part)
+                w0 += n
+    else:
+        found, w0 = check(names, alphabets, k2, sums, cipher0, cipher1, log_every=20)
     with out.open("w") as fout:
         for row in found:
             fout.write(json.dumps(row) + "\n")
@@ -340,6 +403,14 @@ def run(*, affine: bool = False) -> None:
 
 if __name__ == "__main__":
     if "--run" in sys.argv:
-        run(affine="--affine" in sys.argv)
+        nproc = 1
+        for i, arg in enumerate(sys.argv):
+            if arg == "--nproc" and i + 1 < len(sys.argv):
+                nproc = int(sys.argv[i + 1])
+        run(
+            affine="--affine" in sys.argv,
+            rotations="--rotations" in sys.argv,
+            nproc=nproc,
+        )
     else:
         self_test()
