@@ -133,7 +133,10 @@ preventer supplies it under either reading.
 
 - Whether the per-word relations share a cycle type. Under (a) with conjugates of one
   g, every word's relation fixes exactly 4 runes, so plaintext repeats leak at 4/29 per
-  lag. A relation drawn arbitrarily per word fixes 1 rune on average.
+  lag. A relation drawn arbitrarily per word fixes 1 rune on average. **Tried, no
+  power** (2026-10-19, ad hoc): the log likelihood ratio between the two rate vectors
+  is −0.9 for planted conjugate corpora and −0.8 for planted arbitrary ones on start
+  classes, with ranges of ±3 that overlap; the body reads +0.9. Not settleable here.
 - The lag-6 deficit under (a): whether a preventer or clock rule can lower lag 6
   without position structure.
 
