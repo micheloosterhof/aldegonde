@@ -35,15 +35,30 @@ the cells expecting 5 or more).
 | five unrelated alphabets, word-anchored | 90.3 | 20.2 | 0.000 | 0.000 |
 | walk, 2-rune words joined at q = 0.40 | 70.8 | 17.8 | 0.000 | 0.005 |
 | walk, blocks re-cut at random | 19.5 | 7.6 | 0.210 | 0.490 |
-| a fresh g for every word | 19.7 | 6.5 | 0.260 | 0.450 |
-| walk with clock skips at q ≈ 0.2 | 44.4 | 10.7 | 0.020 | 0.035 |
+| a fresh g for every word | 21.2 | 8.0 | 0.160 | 0.360 |
+| five unrelated order-5 alphabets per word | 21.5 | 6.7 | 0.170 | 0.385 |
+| a fresh g per word with the dodge | 22.2 | 7.8 | 0.160 | 0.360 |
+| walk with clock skips at q ≈ 0.2 | 47.0 | 13.9 | 0.010 | 0.035 |
+| one g conjugated by the shift w mod 29 | 22.5 | 7.5 | 0.190 | — |
+| one g conjugated by a random affine map per word | 22.5 | 8.3 | 0.160 | — |
+| odometer (`quagmire-odometer.md`, shift dials) | 30.9 | 9.3 | 0.040 | 0.095 |
 
 **Word ends say the same, more strongly.** English endings (-S, -ED, -ING) are as
 structured as beginnings, and one g passes them through too. Classing pairs by start
 position {0, 1, 2+} and by the second rune's distance from the word end {0, 1, 2+}
 (`--run --start-end`, 40 df): the body reads H = 28.9. Every one-g model above misses
-in all 200 draws, with minima from 43 (clock skips) to 131 (fitted g). A fresh g per
-word gives P = 0.08 and re-cut blocks P = 0.07.
+in all 200 draws, with minima from 42 (clock skips) to 131 (fitted g). A fresh g per
+word gives 42.3 ± 9.4 (P = 0.05), re-cut blocks 40.2 ± 8.4 (P = 0.07), the odometer
+69.6 ± 28.3 (P = 0.005). The body sits about 1.2σ below even a structureless model
+here; nothing is significant in that direction.
+
+**A per-word Caesar shift conjugating one g is nearly enough.** c = base_w(g^j(p + s_w))
+with s_w = w mod 29 reads 22.5 on start classes (P = 0.19) and 46.5 ± 10.8 on
+start-end (P = 0.04); a random shift per word 24.3 / 46.7; a random affine conjugator
+(812 values) 22.5 / 40.5, indistinguishable from a fresh g. Keyword schedules with 6–8
+distinct shifts (DIVINITY, FIRFUMFERENFE, CIRCUMFERENCE, WELCOME, WISDOM) read 64–78
+on start-end, 0 of 100. So the per-word change to the relation need be no larger than
+one Caesar shift taking all 29 values: about one letter of key per word.
 
 Every model in which one relation serves the whole body and blocks are words lands far
 above the body. The two models in which the relation does not track word position land
@@ -60,11 +75,11 @@ Checks:
 
 ## One g is not excluded, but it is disfavoured
 
-`--fit`: a single g can match all 25 per-class body rates (misfit 3.6, lower than
-planted walks reach). So the walk survives, but only with a g whose powers happen to be
+`--fit`: a single g can match all 25 per-class body rates (misfit 3.6, against
+15.7 ± 11.4 for planted walks and 8.2 ± 3.9 for planted fresh-g corpora). So the walk survives, but only with a g whose powers happen to be
 flat across English word positions. About 1% of random order-5 g are. The g fitted to
 the pooled d-values is not. On the 45 start-end cells the best g reaches 20.7, which is
-what fitting a fresh-g corpus gives (22.2 ± 4.5): with about 80 bits in g, a fit can
+what fitting a fresh-g corpus gives (22.7 ± 3.4): with about 80 bits in g, a fit can
 absorb noise, so the fit is not evidence either way. The Bayes factor below is the
 comparison that prices the freedom in g.
 
@@ -79,7 +94,7 @@ prose position-class tables.
 | body, converged (`--convergence`, 20 million sampled g) | −5.0 | about −10.5 (−10.3 to −10.8 from 10 million on) |
 | body, each prose book held out of the tables (`--holdout`, 20,000 g) | −3.7 to −5.8 | −10.3 to −15.7 |
 | planted walks on the held-out books | medians +11 to +36; at most 1 of 80 reach the body | medians +11 to +55; 0 of 80 |
-| planted fresh-g corpora | median −4.0, range −7.6 to +4.3 | median −11.0, range −16.7 to −5.5 |
+| planted fresh-g corpora | median −5.0, range −8.6 to +0.3 | median −10.1, range −19.2 to −2.2 |
 
 So the body looks like a fresh-g corpus and not like a walk: about e^5 ≈ 150 : 1 on
 start classes and e^10.5 ≈ 36,000 : 1 on start-end classes, with a uniform prior on g.
@@ -96,8 +111,8 @@ The Bayes factor above includes those cells.
 ## What C-0 and F3 do and do not show
 
 - **C-0** ("g has five 5-cycles", `d-profile-pins-g-to-five-cycles.md`). Its filter
-  run on fresh-g-per-word corpora gives the same top-1% profile ([0 0 7 19 34],
-  [0 0 12 20 28]) as on the body ([0 0 4 20 36]) (`--c0`). The profile records that
+  run on fresh-g-per-word corpora gives the same top-1% profile ([0 0 12 18 30],
+  [0 0 10 24 26]) as on the body ([0 0 4 20 36]) (`--c0`). The profile records that
   the lag-k relations scramble the plaintext. It does not need one g.
 - **F3** ("one g runs through the body at 5 to 1") compares the two halves' d-values.
   A relation that changes per word puts both halves near chance, so they agree as well
@@ -111,7 +126,8 @@ The Bayes factor above includes those cells.
 | (a) the relation changes per word: alphabet base_w ∘ g_w^j, g_w different each word, e.g. g conjugated by a per-word permutation | fits (P 0.26–0.45) | live; lag 6 at −2.44σ |
 | (b) blocks are cut from the stream without regard to words | fits (P 0.21–0.49) | live on H; conflicts with the 2-rune excess after sentence marks, which needs blocks to start at words |
 | (c) five fixed alphabets with a clock that runs through the text | body shows no absolute-position structure (H_abs 19.2, 20.3) where (c) gives 53–55 | disfavoured for the two clock conventions tried |
-| (d) one g applied after the base, c_j = g^j(base_w(p_j)) | would leave a permutation-shaped excess in the ciphertext pair tables: +1.24 ± 0.96 for ten planted g, body −1.43 (`--cipher-side`) | disfavoured, 0 of 10 |
+| (d) one g applied after the base, c_j = g^j(base_w(p_j)) | would leave a permutation-shaped excess in the ciphertext pair tables: +3.72 ± 2.90 for ten planted g, +0.42 ± 0.70 for a fresh g per word, body −1.43 (`--cipher-side`) | disfavoured, 0 of 10 |
+| (e) one g conjugated by a per-word Caesar shift, c = base_w(g^j(p + s_w)) | H 22.5 / 46.5 with s_w = w mod 29 (P = 0.19 / 0.04); needs all 29 shift values, a keyword of 6–8 letters is not enough | live, and the smallest key addition that fits: one letter per word |
 | the walk with one g | needs a g flat at both ends of words | disfavoured about e^10 under a uniform prior on g |
 
 Additive per-word keys are already disproved (`within-word-key-sharing.md`); (a) is the
@@ -123,11 +139,21 @@ Programs that assume one global g lose their footing if (a) holds: the crib budg
 g (`crib-budget-for-g.md`), the injectivity constraints on (g, σ) from crib words, the
 g constructions (`g-from-5x5-grid.md`, `magic-square-grid-key.md`), and any key search
 over (g, σ). Under (a) each word carries its own step as well as its own base, and the
-key-free channels say nothing about g beyond "order 5 inside a word".
+key-free channels say nothing about g beyond "order 5 inside a word". Reading (e)
+shows the per-word change can be as small as one Caesar shift of the plaintext, so the
+key need not grow by a permutation per word.
 
 The doublet suppression does not depend on this. It is in the emitted stream, not the
 block's alphabet schedule (`separators-are-the-cipher-unit.md`, row D3), and the
 preventer supplies it under either reading.
+
+## A correction to the code (2026-10-20)
+
+`fresh_g`, the dodge-on-fresh-g model and the planted cipher-side control drew a new g
+for every power k, so they were five unrelated order-5 alphabets per word rather than
+powers of one g. Fixed; every number above is from the corrected code. The differences
+were under one sd and no verdict moved; the old model is kept in the table as its own
+row.
 
 ## Next tests
 

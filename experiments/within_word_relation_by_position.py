@@ -27,22 +27,32 @@ On 200 prose windows of the body's size:
     five alphabets           90.3   20.2      0.000          0.000
     walk, 2-rune joined      70.8   17.8      0.000          0.005
     walk, blocks recut       19.5    7.6      0.210          0.490
-    fresh g per word         19.7    6.5      0.260          0.450
-    walk, clock skips q~0.2  44.4   10.7      0.020          0.035
-    fresh g + dodge          20.8    9.1      0.170
-    odometer (shift dials)   33.2   10.6      0.040
+    fresh g per word         21.2    8.0      0.160          0.360
+    five alphabets per word  21.5    6.7      0.170          0.385
+    walk, clock skips q~0.2  47.0   13.9      0.010          0.035
+    fresh g + dodge          22.2    7.8      0.160          0.360
+    odometer (shift dials)   30.9    9.3      0.040          0.095
 
 `--start-end` classes pairs by start position {0, 1, 2+} and the second rune's distance
 from the word end {0, 1, 2+} (40 df). Body H = 28.9. Every one-g model misses in all
-200 draws (minima 43 to 131); fresh g per word P = 0.08, blocks re-cut P = 0.07, fresh
-g with the dodge P = 0.02 (H 43.4 +- 9.4). The odometer's shift-conjugate relation
-(`quagmire-odometer.md`) reads 72.2 +- 17.1, 0 of 100 at the body.
+200 draws (minima 42 to 131); fresh g per word 42.3 +- 9.4 (P = 0.05), blocks re-cut
+P = 0.07, fresh g with the dodge 43.5 +- 9.7 (P = 0.05). The odometer's
+shift-conjugate relation (`quagmire-odometer.md`) reads 69.6 +- 28.3, P = 0.005.
+
+**One g conjugated by a per-word Caesar shift is nearly enough.** With s_w = w mod 29,
+c = base_w(g^j(p + s_w)) reads H 22.5 +- 8.1 on start classes (P = 0.19) and
+46.5 +- 10.8 on start-end (P = 0.04); a random shift per word 24.3 / 46.7; a random
+affine conjugator 22.5 / 40.5 (P = 0.16 / 0.10), the same as a fresh g. A keyword
+schedule of 6-8 distinct shifts (DIVINITY, FIRFUMFERENFE, ...) reads 64-78 on
+start-end, 0 of 100. So the relation must be conjugated by something taking all 29
+values, or more, per word; 29 values is about one letter of key per word.
 
 `--fit`: one g CAN fit all 25 per-class body rates (misfit 3.6, below planted walks
-and planted fresh-g corpora), so the walk is not excluded. It needs a g whose powers
+at 15.7 +- 11.4 and planted fresh-g corpora at 8.2 +- 3.9), so the walk is not
+excluded. It needs a g whose powers
 are flat across English word positions, which about 1% of random order-5 g are and
 the doublet-fitted g is not. On the 45 start-end cells (`--fit --start-end`) the best g
-reaches 20.7, the same as on fresh-g corpora (22.2 +- 4.5): the fit absorbs noise.
+reaches 20.7, the same as on fresh-g corpora (22.7 +- 3.4): the fit absorbs noise.
 
 `--evidence`: the Bayes factor for one g (uniform over order-5 g with five 5-cycles)
 against a fresh such g per word. `--convergence` follows the body's value to 20 million
@@ -52,11 +62,16 @@ held out of the tables (`--holdout`), planted walks on the held-out books give m
 of +11 to +36 (+11 to +55 on start-end), and at most 1 of 80 reaches the body.
 
 `--c0`: the filter behind C-0 ("g has five 5-cycles") reads the same top-1% profile
-on fresh-g-per-word corpora ([0 0 7 19 34], [0 0 12 20 28]) as on the body
+on fresh-g-per-word corpora ([0 0 12 18 30], [0 0 10 24 26]) as on the body
 ([0 0 4 20 36]), so it does not need one g. `--cipher-side`: g applied after the base
 would leave a permutation-shaped excess in the ciphertext lag-k pair tables. Summed z
-over lags 2-4 is +1.24 +- 0.96 for ten planted g, +0.09 +- 1.97 for a fresh g per
+over lags 2-4 is +3.72 +- 2.90 for ten planted g, +0.42 +- 0.70 for a fresh g per
 word, and -1.43 for the body: disfavoured, 0 of 10, not excluded.
+
+A bug fixed on 2026-10-20: `fresh_g`, `dodge_fresh` and the cipher-side control drew
+a new g for every POWER, so they were five unrelated alphabets per word. The numbers
+above are from the corrected code; the earlier ones differed by under one sd and no
+verdict moved. The old model is kept as `five_alphabets_per_word`.
 
 Run with no arguments for the self-test, `--run` for the model table, `--fit` for the
 joint fit, `--evidence` for the Bayes factor, `--convergence` for its limit, `--holdout`
@@ -182,6 +197,15 @@ def self_test() -> None:
         g = [int(x) for x in row]
         assert permutation.cycle_type(g).count(5) == 5
         assert np.allclose(r, predicted(g, tables))
+    # fresh_g must use powers of ONE g per word: with the base removed, positions j
+    # and j + 1 are related by that g, so c_j == c_(j+1) <=> p_j == g(p_(j+1)); a
+    # corpus where every word is a run of one rune then shows a doublet at every
+    # position or at none, never a mix
+    runs = [[x] * 8 for x in range(M)] * 20
+    cipher = fresh_g(runs, random.Random(2))
+    for cw in cipher:
+        doubled = [cw[j] == cw[j + 1] for j in range(7)]
+        assert all(doubled) or not any(doubled)
     print("self-test passed")
 
 
@@ -216,6 +240,20 @@ def fresh_g(plain, rng):
     """A new order-5 step for every word, so no relation is shared between words."""
     out = []
     for w in plain:
+        g = rich_order5(rng)
+        gp = [ppow(g, k) for k in range(CLASSES)]
+        out.append(per_word([w], gp, rng)[0])
+    return out
+
+
+def five_alphabets_per_word(plain, rng):
+    """Five unrelated order-5 alphabets per word, lag 5 still the identity.
+
+    The relation at lag k is then an arbitrary permutation rather than a power of one
+    order-5 g, which is the other way a per-word relation could be built.
+    """
+    out = []
+    for w in plain:
         gp = [ppow(rich_order5(rng), k) for k in range(CLASSES)]
         out.append(per_word([w], gp, rng)[0])
     return out
@@ -241,7 +279,8 @@ def dodge_fresh(plain, rng):
     """A fresh order-5 g for every word, with the dodge rule of `doublet_dodge_walk`."""
     out, previous = [], None
     for w in plain:
-        gp = [ppow(rich_order5(rng), k) for k in range(CLASSES)]
+        g = rich_order5(rng)
+        gp = [ppow(g, k) for k in range(CLASSES)]
         base = permutation.random_permutation(M, rng)
         cw, clock = [], 0
         for p in w:
@@ -261,6 +300,37 @@ def odometer(plain, rng):
     from quagmire_odometer import draw, encipher  # noqa: PLC0415
 
     return encipher(joined(plain, rng), *draw(rng))
+
+
+def shift(s: int) -> list[int]:
+    return [(x + s) % M for x in range(M)]
+
+
+def conjugated_by_shift(plain, rng, schedule=None):
+    """One g, conjugated for word w by the Caesar shift s_w: c = base_w(g^j(p + s_w)).
+
+    `schedule(w)` gives s_w; the default is w mod 29. A keyword schedule with six to
+    eight distinct letters reads H 64-78 on start-end classes and is not enough.
+    """
+    g = rich_order5(rng)
+    out = []
+    for w_idx, w in enumerate(plain):
+        s = w_idx % M if schedule is None else schedule(w_idx)
+        gw = permutation.compose(shift(-s), permutation.compose(g, shift(s)))
+        out.append(per_word([w], [ppow(gw, k) for k in range(CLASSES)], rng)[0])
+    return out
+
+
+def conjugated_by_affine(plain, rng):
+    """One g, conjugated per word by a random affine map x -> ax + b (812 of them)."""
+    g = rich_order5(rng)
+    out = []
+    for w in plain:
+        a, b = rng.randrange(1, M), rng.randrange(M)
+        h = [(a * x + b) % M for x in range(M)]
+        gw = permutation.compose(permutation.inverse(h), permutation.compose(g, h))
+        out.append(per_word([w], [ppow(gw, k) for k in range(CLASSES)], rng)[0])
+    return out
 
 
 def run(draws: int = 200, classing=START) -> None:
@@ -286,9 +356,15 @@ def run(draws: int = 200, classing=START) -> None:
             recut(plain, lengths, r), r
         ),
         "fresh g per word": fresh_g,
+        "five alphabets per word": five_alphabets_per_word,
         "walk, clock skips": clock_skipped,
         "fresh g + dodge": dodge_fresh,
         "odometer, joined": odometer,
+        "g conj. by shift w mod 29": conjugated_by_shift,
+        "g conj. by random shift": lambda plain, r: conjugated_by_shift(
+            plain, r, lambda w: r.randrange(M)
+        ),
+        "g conj. by random affine": conjugated_by_affine,
     }
     df = len(LAGS) * (classing[1] - 1)
     print(
@@ -606,7 +682,8 @@ def cipher_side_check(planted: int = 10) -> None:
     body = permutation_excess(lp_words(), rng)
     planted_z, fresh_z = [], []
     for plain in prose_corpora(2928, planted):
-        gp = [ppow(rich_order5(prng), j) for j in range(CLASSES)]
+        g = rich_order5(prng)
+        gp = [ppow(g, j) for j in range(CLASSES)]
         cs = []
         for w in plain:
             base = permutation.random_permutation(M, prng)
