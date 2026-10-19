@@ -98,23 +98,30 @@ def merged(lengths, absorb_len: int, q: float, rng) -> list[int]:
     return out
 
 
-def page_spread(mod) -> tuple[float, float, int]:
-    """Fraction of 2-rune words per solved page, so register variation is priced."""
+def page_lengths(mod) -> list[list[int]]:
+    """The word lengths of each of the sixteen solved pages, in reading order."""
     pages = mod.MASTER.read_text().split("%")
-    fracs, sizes = [], []
+    out = []
     for n in mod.PLAIN_PAGES:
         w = mod.words_of(pages[n])
         if w:
-            fracs.append(sum(1 for x in w if len(x) == 2) / len(w))
-            sizes.append(len(w))
+            out.append([len(x) for x in w])
     for t in json.loads(mod.TRIPLES.read_text()):
         # lengths survive an interrupt, so every solved page counts here even where
         # its runes do not
         key = t["key"] if t["cipher"] == "monoalphabetic" else None
         w = mod.words_of(pages[t["page"]], key)
         if w:
-            fracs.append(sum(1 for x in w if len(x) == 2) / len(w))
-            sizes.append(len(w))
+            out.append([len(x) for x in w])
+    return out
+
+
+def page_spread(mod) -> tuple[float, float, int]:
+    """Fraction of 2-rune words per solved page, so register variation is priced."""
+    fracs, sizes = [], []
+    for lengths in page_lengths(mod):
+        fracs.append(sum(1 for x in lengths if x == 2) / len(lengths))
+        sizes.append(len(lengths))
     f = np.array(fracs)
     s = np.array(sizes, float)
     return (
