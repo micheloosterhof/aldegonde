@@ -19,10 +19,14 @@ word and `b` only when `a` wraps.
 ## Status
 
 **Status**: unresolved; the sweep over 3301's own vocabulary is running (started
-2026-10-20, `experiments/plaintext_dial_sweep.py --nproc 6`, about 35 hours; progress
-in `$TMPDIR/plaintext_dial_progress.jsonl`, resumable; results to
-`experiments/plaintext_dial_candidates.jsonl`). A true key scores near +1.0 nats per
-rune; wrong keys score below +0.82 in the self-test.
+2026-10-20 01:08, `experiments/plaintext_dial_sweep.py --nproc 6`; after 66 minutes
+5 of 240 tasks and 92 million keys were done at 23,000 keys/s with the machine
+shared, so about two days in all; progress in `$TMPDIR/plaintext_dial_progress.jsonl`,
+resumable; results to `experiments/plaintext_dial_candidates.jsonl`). A true key
+scores near +1.0 nats per rune; wrong keys reach +0.82 in the self-test and +0.70 in
+the first 92 million. `experiments/odometer_crib_check.py` tests the same family, and
+the original odometer, against the DIVINITY WITHIN crib in about two hours; see
+Evidence against once it has run.
 
 ## Why the dial moves
 
