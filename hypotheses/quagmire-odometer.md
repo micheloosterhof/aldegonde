@@ -189,6 +189,8 @@ two-stage 60% prefilter.
 
 ## Related
 
+- `dialled-quagmire-crib.md` — the crib against the family with any dial sequence and
+  a second alphabet on the cipher side: negative for keyed alphabets.
 - `pure-quagmire-word-restart.md` — Michel's proposal, whose restart this drops and
   whose state budget this meets.
 - `quagmire-dodge.md` — the same preventer with a general permutation per word; reaches

@@ -138,6 +138,8 @@ in 29 of each keyed alphabet. The `--rotations` run of the crib check covers all
 
 ## Related
 
+- `dialled-quagmire-crib.md` — the crib against this family with the dials free in
+  every word and a second alphabet on the cipher side: negative for keyed alphabets.
 - `quagmire-odometer.md` — the parent, disfavoured by C9.
 - `within-word-relation-is-position-flat.md` — why the dial moves.
 - `quagmire-dodge.md` — the preventer and the single zero offset.
