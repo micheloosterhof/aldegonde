@@ -21,9 +21,9 @@ every other way of moving the dials, and with a second alphabet on the cipher si
 
 ## Status
 
-**Status**: **negative for keyed alphabets on both sides** (2026-10-20). Affine
-alphabets, every rotation of K2, and the Beaufort form (K2 backwards) are being run;
-see Results.
+**Status**: **negative for keyed and affine alphabets on both sides** (2026-10-20).
+Every rotation of K2, the Beaufort form (K2 backwards) and the stutter reading of a
+preventer fire are being run; see Results.
 
 ## Why this family
 
@@ -59,6 +59,11 @@ fire at any of twelve places).
 | run | K1 | K2 | word-0 matches | full matches | expected false | time |
 |---|---|---|---|---|---|---|
 | keyed | 1,266 keyed | 1,266 keyed | 18,130 | **0** | 0.7 | 20 min |
+| affine | 2,076 keyed + affine | 2,076 keyed + affine | 64,820 | **0** | 2.7 | 55 min |
+
+The affine alphabets are every x → ux + v (812, the standard order and its reverse
+among them), so the affine run holds Quagmire I, II and the Vigenère/Beaufort forms
+with one affine alphabet; it is closed under rotation on the affine side.
 
 A full match is one with both crib words right; the expected false count is the
 word-0 matches times 29² dial choices over 29⁵ for word 1's five runes. The keyed run
