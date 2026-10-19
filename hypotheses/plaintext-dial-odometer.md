@@ -18,15 +18,16 @@ word and `b` only when `a` wraps.
 
 ## Status
 
-**Status**: unresolved; the sweep over 3301's own vocabulary is running (started
-2026-10-20 01:08, `experiments/plaintext_dial_sweep.py --nproc 6`; after 66 minutes
-5 of 240 tasks and 92 million keys were done at 23,000 keys/s with the machine
-shared, so about two days in all; progress in `$TMPDIR/plaintext_dial_progress.jsonl`,
-resumable; results to `experiments/plaintext_dial_candidates.jsonl`). A true key
-scores near +1.0 nats per rune; wrong keys reach +0.82 in the self-test and +0.70 in
-the first 92 million. `experiments/odometer_crib_check.py` tests the same family, and
-the original odometer, against the DIVINITY WITHIN crib in about two hours; see
-Evidence against once it has run.
+**Status**: unresolved; **negative on the DIVINITY WITHIN crib** for every key of the
+sweep's family with the clock at phase 0 on the body's first rune (see Evidence
+against). The sweep over 3301's own vocabulary is running (started 2026-10-20 01:08,
+`experiments/plaintext_dial_sweep.py --nproc 6`; after 132 minutes 10 of 240 tasks
+and 184 million keys were done at 23,000 keys/s with the machine shared, so about two
+days in all; progress in `$TMPDIR/plaintext_dial_progress.jsonl`, resumable; results
+to `experiments/plaintext_dial_candidates.jsonl`). A true key scores near +1.0 nats
+per rune; wrong keys reach +0.82 in the self-test and +0.70 in the first 184 million.
+Because the sweep fits each window's clock phase, what it still covers beyond the
+crib check is a clock that is not at phase 0 on the first rune.
 
 ## Why the dial moves
 
@@ -68,6 +69,21 @@ binomial error the gap is 2.3σ, not the p = 0.000 the battery prints
 
 ## Evidence against
 
+- **The opening crib refutes every key in the sweep's family, at clock phase 0.**
+  `experiments/odometer_crib_check.py --run`: this family has no free base, so a key
+  (K, schedule, a_0) fixes the ciphertext of DIVINITY WITHIN up to the outer shift b,
+  and a wrong key reproduces the thirteen rubricated runes with one b once in 29^12.
+  All 1,264 keyed alphabets × 105,980 schedules × 29 inner dials were tried with the
+  clock at phase 0 on the first rune and either no preventer fire or one fire at any
+  of the twelve places inside the crib, for this family and for the original
+  odometer: 0 matches over 1.0 × 10^11 (key, clock) combinations, 106 minutes
+  (2026-10-20). So a hit from the sweep can only be a key whose clock is not at phase
+  0 on the first rune, or a key the crib check's assumptions exclude: the title is
+  the first two blocks' plaintext (`crib_divinity_within.py` puts the red ink on
+  exactly those 13 runes), the preventer fired at most once inside them (twice is
+  about one chance in fourteen), and the inner dial advances by one at the first
+  word break. The check over the 3,000 most frequent English words as keywords
+  (`--run --top 3000`, 11,016 alphabets) is running; 0 matches in the first 3,200.
 - **The two-rune agreement statistic leans against it.** `base_pool_floor.py` counts
   pairs of 2-rune blocks agreeing at both positions over an independent baseline; the
   body reads −13.4. On prose drawn to the body's own word-length sequence, 40 draws

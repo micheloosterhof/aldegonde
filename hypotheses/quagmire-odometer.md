@@ -108,6 +108,19 @@ permutation σ in the per-word step. The difference between the two is the thing
 hypothesis removes, so the discrepancy is evidence that the shift-only step is what
 cannot reach d6.
 
+## Evidence against: the opening crib matches no key over 3301's vocabulary
+
+The odometer has no free base, so a key (K, schedule, a_0) fixes the ciphertext of
+DIVINITY WITHIN up to the outer shift b, and a wrong key reproduces the thirteen
+rubricated runes with one b once in 29^12. `experiments/odometer_crib_check.py --run`
+(2026-10-20) tried all 1,264 keyed alphabets from the priority vocabulary × 105,980
+one-zero schedules × 29 inner dials, with the clock at phase 0 on the first rune and
+the preventer firing at most once inside the crib (at any of twelve places), for this
+family and for the plaintext-side dial of `plaintext-dial-odometer.md`: 0 matches in
+106 minutes. What survives is a keyword outside that vocabulary, a clock not at phase
+0 on the first rune, two preventer fires inside the crib (about one chance in
+fourteen), or a crib that is not the first two blocks' plaintext.
+
 ## A reporting bug worth recording
 
 The first full-profile run printed "misses: returns" while `d6w` sat at p = 0.000,
