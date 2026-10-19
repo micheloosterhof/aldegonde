@@ -84,8 +84,11 @@ binomial error the gap is 2.3σ, not the p = 0.000 the battery prints
   the first two blocks' plaintext (`crib_divinity_within.py` puts the red ink on
   exactly those 13 runes), the preventer fired at most once inside them (twice is
   about one chance in fourteen), and the inner dial advances by one at the first
-  word break. The check over the 3,000 most frequent English words as keywords
-  (`--run --top 3000`, 11,016 alphabets) is running; 0 matches in the first 3,200.
+  word break. The same check over the 3,000 most frequent English words as keywords
+  (`--run --top 3000`, 11,016 keyed alphabets not already in the priority list, same
+  four rules): 0 matches, 231 minutes. `dialled-quagmire-crib.md` takes the family
+  further, with a second alphabet on the cipher side and the dials free in every
+  word, and is negative too.
 - **The two-rune agreement statistic leans against it.** `base_pool_floor.py` counts
   pairs of 2-rune blocks agreeing at both positions over an independent baseline; the
   body reads −13.4. On prose drawn to the body's own word-length sequence, 40 draws

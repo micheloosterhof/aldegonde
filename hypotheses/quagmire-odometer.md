@@ -117,9 +117,13 @@ rubricated runes with one b once in 29^12. `experiments/odometer_crib_check.py -
 one-zero schedules × 29 inner dials, with the clock at phase 0 on the first rune and
 the preventer firing at most once inside the crib (at any of twelve places), for this
 family and for the plaintext-side dial of `plaintext-dial-odometer.md`: 0 matches in
-106 minutes. What survives is a keyword outside that vocabulary, a clock not at phase
-0 on the first rune, two preventer fires inside the crib (about one chance in
-fourteen), or a crib that is not the first two blocks' plaintext.
+106 minutes. The 3,000 most frequent English words as keywords (`--run --top 3000`,
+11,016 more alphabets): 0 matches in 231 minutes. What survives is a keyword outside
+those vocabularies, a clock not at phase 0 on the first rune, two preventer fires
+inside the crib (about one chance in fourteen), or a crib that is not the first two
+blocks' plaintext. The crib is a conjecture from the title's length and the Parable's
+last line (`no-known-plaintext-foothold.md`), so every negative here is conditional
+on it.
 
 ## A reporting bug worth recording
 
