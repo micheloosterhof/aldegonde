@@ -8,6 +8,10 @@ type: observation
 **Status**: confirmed negative, with a planted control that works and a body run that
 does not. It stops an attack rather than opening one.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. Consistent with C9: a body run that pins no single g is what a per-word relation gives.
+
 ## The attack that suggests itself
 
 `d-profile-pins-g-to-five-cycles.md` scores candidate `g` by how well its predicted lag-k

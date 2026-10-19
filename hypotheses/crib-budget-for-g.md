@@ -22,6 +22,10 @@ program cannot pin the key. It remains a verifier, not a generator.
 where every derived constraint is checked against the planted `g` (the run
 asserts both that each constraint is true and that each resolved point matches).
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The budget counts constraints on one g. Under a per-word relation each crib word constrains only its own g_w and nothing carries to the next word; the injectivity constraints on (g, σ) go the same way. The budget holds under the one-g reading only.
+
 ## The channel
 
 Within word `w`, `c_j = psi_w(g^(j mod 5)(p_j))` with `psi_w` constant, so for

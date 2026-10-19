@@ -20,6 +20,10 @@ census selection is below the calibration resolution of the available
 plaintext references; the d6 depth is unexplained by any census at
 realistic tuning)
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The d6 depth this file calls unexplained is 31 coincidences on 1,267 pairs, −1.9σ against chance. Under a per-word relation it is a fluctuation and no census is needed. The cycle-type question moves from one g to the typical g_w, where it has no power.
+
 ## Mechanism and the monotonicity theorem
 
 Under a random assignment of letters to cycles the expected within-word

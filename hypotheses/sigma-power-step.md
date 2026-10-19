@@ -15,6 +15,10 @@ exponent, roughly halving the key material.
 **Status**: disproved (all five powers, on three independent grounds;
 near-powers excluded too — see Evidence against)
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. σ is defined relative to g. Under a per-word relation the step between words is base_w⁻¹base_{w+1} with no g to factor out, so this file's question is posed inside the one-g model.
+
 ## Mechanism
 
 If σ ∈ ⟨g⟩ (cyclic, order 5), every per-word base is base₀ ∘ g^m: the

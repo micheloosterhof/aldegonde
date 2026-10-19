@@ -8,6 +8,10 @@ type: observation
 **Status**: confirmed, with planted controls at three different cycle structures. The
 filter is key-free — it uses no base, no σ and no search.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The filter's top-1% profile on a corpus with a fresh g for every word is [0 0 7 19 34] and [0 0 12 20 28], against the body's [0 0 4 20 36] (`within_word_relation_by_position.py --c0`). So the profile shows that the lag-k relations scramble the plaintext; it does not show that one g does. The body's five d-values read χ² 10.0 on 5 df against chance (lag 4 +2.0σ, lag 6 −1.9σ), so the pool table below should be read against chance as well. 'g fixes four runes' holds for each word's relation if those are rich order-5 permutations; it is not a statement about one g.
+
 ## Why every lag except 5 measures g
 
 Inside a block the alphabet at position `j` is `base ∘ g^(c+j)`. For a lag-k pair,

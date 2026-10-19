@@ -16,6 +16,10 @@ autokey "walk", not a tableau.
 it (phase-gating of doublets) is refuted by the data below. How one order-5 *g*
 would set a rune-flat, phase-flat 5× suppression is not answered.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The bullet 'the whole d1–d6 profile follows the powers of one g' rests on d6 at −1.9σ and d4 at +2.0σ; against chance the five g-lags read χ² 10.0 on 5 df. The linkage between the suppression and the leak does not need one g: the preventer is in the stream (row D3) and the leak needs only an order-5 relation per word.
+
 ## Mechanism
 
 - *g* has order 5 (g⁵ = identity), already established

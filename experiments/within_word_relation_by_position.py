@@ -29,10 +29,14 @@ On 200 prose windows of the body's size:
     walk, blocks recut       19.5    7.6      0.210          0.490
     fresh g per word         19.7    6.5      0.260          0.450
     walk, clock skips q~0.2  44.4   10.7      0.020          0.035
+    fresh g + dodge          20.8    9.1      0.170
+    odometer (shift dials)   33.2   10.6      0.040
 
 `--start-end` classes pairs by start position {0, 1, 2+} and the second rune's distance
 from the word end {0, 1, 2+} (40 df). Body H = 28.9. Every one-g model misses in all
-200 draws (minima 43 to 131); fresh g per word P = 0.08, blocks re-cut P = 0.07.
+200 draws (minima 43 to 131); fresh g per word P = 0.08, blocks re-cut P = 0.07, fresh
+g with the dodge P = 0.02 (H 43.4 +- 9.4). The odometer's shift-conjugate relation
+(`quagmire-odometer.md`) reads 72.2 +- 17.1, 0 of 100 at the body.
 
 `--fit`: one g CAN fit all 25 per-class body rates (misfit 3.6, below planted walks
 and planted fresh-g corpora), so the walk is not excluded. It needs a g whose powers
@@ -233,6 +237,32 @@ def clock_skipped(plain, rng, size: int = 6):
     )
 
 
+def dodge_fresh(plain, rng):
+    """A fresh order-5 g for every word, with the dodge rule of `doublet_dodge_walk`."""
+    out, previous = [], None
+    for w in plain:
+        gp = [ppow(rich_order5(rng), k) for k in range(CLASSES)]
+        base = permutation.random_permutation(M, rng)
+        cw, clock = [], 0
+        for p in w:
+            c = base[gp[clock % CLASSES][p]]
+            if c == previous:
+                clock += 1
+                c = base[gp[clock % CLASSES][p]]
+            cw.append(c)
+            previous = c
+            clock += 1
+        out.append(cw)
+    return out
+
+
+def odometer(plain, rng):
+    """`quagmire-odometer.md`: shift dials on a keyed alphabet, untuned draws."""
+    from quagmire_odometer import draw, encipher  # noqa: PLC0415
+
+    return encipher(joined(plain, rng), *draw(rng))
+
+
 def run(draws: int = 200, classing=START) -> None:
     body_words = lp_words()
     body = heterogeneity(body_words, classing=classing)
@@ -257,6 +287,8 @@ def run(draws: int = 200, classing=START) -> None:
         ),
         "fresh g per word": fresh_g,
         "walk, clock skips": clock_skipped,
+        "fresh g + dodge": dodge_fresh,
+        "odometer, joined": odometer,
     }
     df = len(LAGS) * (classing[1] - 1)
     print(

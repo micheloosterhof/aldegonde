@@ -8,6 +8,10 @@ type: observation
 **Status**: confirmed. The identity is verified exactly against a synthetic walk — 7,208
 agreements, 0 disagreements — before anything is read from it.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The 4×4 cross-seam result (only the adjacent cell is suppressed) uses the ciphertext alone and stands. The identity h = g^u σ g^v assumes one g; under a per-word relation the cross-seam relation is conjugated by the two words' own relations, and the key-free handle on σ goes with it.
+
 ## The cross-seam identity
 
 Inside a block the base cancels from a lag-k coincidence

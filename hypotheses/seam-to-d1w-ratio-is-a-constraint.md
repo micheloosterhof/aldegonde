@@ -16,6 +16,10 @@ without a preventer: inside a block a would-be repeat needs the plaintext bigram
 `g`'s graph, at a seam the cross-word mass on `g^u ∘ σ ∘ g^v`. A ratio of two
 key-dependent quantities was never going to sit still.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The ratio reads g's graph mass under one g. Under a per-word relation it reads the average over g_w, which for rich order-5 relations is near chance; nothing here changes.
+
 ## The shape this file points to is now closed (September 2026)
 
 The argument here names a rule whose residual collision probability is the same inside a

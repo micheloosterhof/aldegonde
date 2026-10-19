@@ -39,6 +39,10 @@ d1-delta residual (chi2 41.4, df27, p ~ 0.04), and the lag-1 marking hint
 (LR ~ 4). Each is single-digit-sigma in a session that scanned dozens of
 statistics; none is load-bearing.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. This file's free per-word base with one g is the structure C9 disfavours. The repair is a per-word relation as well as a per-word base, base_w ∘ g_w^j.
+
 ## Mechanism
 
 Within a word, the alphabet at position `j` is `A_{j mod 5} = base_w o g^{j mod

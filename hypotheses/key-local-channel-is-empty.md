@@ -11,6 +11,10 @@ handful of scalars worth ~16 bits, and everything else about the corpus is **key
 only by committing to the whole key at once. Key-global means no partial credit, and
 no partial credit is what a delta-function landscape *is*.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The 16 bits on g assume one g; under C9 they describe the typical g_w, not a key. Everything here that uses g and σ jointly (the injectivity cribs, the seam reading of σ) is inside the one-g model.
+
 ## Measurement
 
 ### 1. The information is present (this is not an information-theoretic barrier)

@@ -9,6 +9,10 @@ type: hypothesis
 `the-bit-budget.md` rather than contradicting it — every number there is right for the
 model space it describes.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The 38-bit costing builds one g from a keyword. A per-word relation needs a per-word construction: a keyword-built g conjugated by a per-word shift or selected by a running key would keep the key small, and that family is not costed or swept here.
+
 ## The point
 
 `the-bit-budget.md` totals the key at **283 bits** — g 79.7, σ 101.8, base₀ 101.8 — and

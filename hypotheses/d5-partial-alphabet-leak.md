@@ -65,6 +65,10 @@ way, consistent with full leak but below it. That is the same standing as the
 0.85 ± 0.26 recorded below, so the partial-vs-full fork remains underpowered and
 the "base may drift within the word" reading is NOT retired.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The d3/d4 controls refute one alphabet per word because the relation at lags 3 and 4 is not the identity, and that holds per word. 'order-5 g confirmed' should read 'an order-5 relation per word confirmed'; whether it is one g is what C9 addresses.
+
 ## Status
 
 **Status**: partial — one-alphabet-per-word REFUTED and order-5 `g` confirmed via

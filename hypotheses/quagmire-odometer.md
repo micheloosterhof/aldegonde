@@ -40,6 +40,10 @@ the MODEL's spread and treats the corpus value as exact. The LP's within-word di
 rate is 31 coincidences in 1,267 pairs. Counting its error too, the gap is z = 1.65 to
 2.29 rather than p = 0.000. See `distance-6-has-no-power.md`.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The odometer's within-word relation is a shift conjugated by K, one of five shifts chosen by the clock phase. Untuned draws on joined prose read H 31–33 on start classes (P = 0.04–0.06 at the body's 15.1) and 72 ± 17 on start-end classes, 0 of 100 at the body's 28.9 (`within_word_relation_by_position.py --run`). The position structure of English passes through a shift conjugate much as through one g.
+
 ## Why each piece is forced
 
 - **The carry.** Two dials each advancing at a fixed rate stay on a line and deliver 29

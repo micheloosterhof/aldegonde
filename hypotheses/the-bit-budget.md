@@ -9,6 +9,10 @@ type: observation
 the d-profile filter. Both measurements stand; what they are worth as search constraints
 does not.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The 6.2 bits credited to g assume one g. Under a per-word relation there is no global g to measure, and the key grows by one order-5 permutation per word unless a schedule supplies them. The conclusion that the measured channels reach a few percent of the key is unchanged in direction and stronger in degree.
+
 ## The correction that prompted it
 
 `d-profile-pins-g-to-five-cycles.md` filters a pool drawn uniformly over cycle counts 1

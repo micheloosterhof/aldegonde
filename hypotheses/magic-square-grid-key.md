@@ -70,6 +70,10 @@ expected" (from plaintext tables that were not length-matched, and a control res
 on 5 events), and "no advantage shown" (which framed the result as absence of
 enrichment when enrichment was never the mechanism).
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The sweep scored candidates against the body's d-profile, which reads χ² 10.0 on 5 df against chance. A chance-level result is what a per-word relation predicts, so the sweep's negative is not evidence about the square. A per-word use of the square (a row or a rotation per word) has not been tested.
+
 ## The square
 
 ```

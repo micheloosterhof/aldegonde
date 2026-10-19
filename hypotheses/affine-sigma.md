@@ -21,6 +21,10 @@ killed all 28 with full demonstrated power. Not excluded for g outside that
 pool; the register-dependent seam-floor strike disfavors the family
 generally.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. Posed inside the one-g model: the state-return filter and the base₀ verifier both take g from a pool. Under a per-word relation the family has to be restated before it can be tested.
+
 ## Prior strike (register-dependent)
 
 `sigma_algebraic_floor.py` (July 2026): the seam algebra makes the cross-word

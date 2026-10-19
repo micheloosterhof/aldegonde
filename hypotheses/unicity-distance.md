@@ -33,6 +33,10 @@ ciphertext can pin, so many keys yield sensible plaintext and none is distinguis
 input is measured on the author's own plaintext; the key-entropy figures are exact
 given each model's parameter count.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. C9 moves the body toward this file's 'free per-word permutation' column: a per-word relation g_w adds about 80 bits per word on top of the base unless a schedule supplies it. The over-determination figure applies to the walk only.
+
 ## What it settles
 
 **The walk and odometer families are over-determined by 60 to 140 times.** Their keys

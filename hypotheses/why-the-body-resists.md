@@ -52,6 +52,10 @@ reading the d1 channel's 7 bits are produced by the mechanism rather than by `g`
 **Status**: confirmed — each component is measured or proved in the file cited, and the
 composition is arithmetic.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The 13 bits on g assume one g. Under C9 the local channel says nothing about a global g, so the figure is 0 of 170 unless a global g exists.
+
 ## What follows
 
 - **The answer exists uniquely.** Unicity settles that; "flat everywhere, spiked only at

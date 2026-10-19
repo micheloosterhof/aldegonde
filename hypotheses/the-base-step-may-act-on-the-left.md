@@ -8,6 +8,10 @@ type: hypothesis
 **Status**: a lean at about two sigma, not a conclusion. It is the first measurement that
 bears on a choice every model in this directory has made by assumption.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. Both conventions are stated inside the one-g chain. Under a per-word relation the cross-seam table is flat because the relation changes with the word, so the lean recorded here is not evidence on left against right.
+
 ## The two conventions make opposite predictions
 
 `the-preventer-is-strictly-adjacent.md` derives, for a base that steps on the **right** —

@@ -26,6 +26,10 @@ real but costs 0-6 runes in 12,388, and a beam search holding the key recovers t
 corpus exactly for half the keys tried. What stands against it is three cells it has
 not yet been shown to reach.
 
+## Scope under C9 (October 2026)
+
+`within-word-relation-is-position-flat.md` (row C9, October 2026) finds that within-block lag-k coincidence carries no word-position structure. One g for the whole body passes English word structure through and predicts it (every such model misses in 200 of 200 draws when pairs are classed by start and by distance from the word end); a relation that changes from word to word does not. Bayes factor about e^10 against one g under a uniform prior on g. The dodge is a stream rule and survives C9; its walk host does not (H 73.7 against the body's 15.1). The dodge on a fresh g per word reads H 20.8 ± 6.9 on start classes (P = 0.17) and 43.4 ± 9.4 on start-end classes (P = 0.02), so it is near the body but slightly high on the second (`within_word_relation_by_position.py --run`).
+
 ## Mechanism, and what falls out of it
 
 Inside a word the base is constant, so a would-be doublet is `g(p_j) = p_(j−1)`. After
