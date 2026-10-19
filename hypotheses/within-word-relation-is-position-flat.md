@@ -63,7 +63,10 @@ Checks:
 `--fit`: a single g can match all 25 per-class body rates (misfit 3.6, lower than
 planted walks reach). So the walk survives, but only with a g whose powers happen to be
 flat across English word positions. About 1% of random order-5 g are. The g fitted to
-the pooled d-values is not.
+the pooled d-values is not. On the 45 start-end cells the best g reaches 20.7, which is
+what fitting a fresh-g corpus gives (22.2 ± 4.5): with about 80 bits in g, a fit can
+absorb noise, so the fit is not evidence either way. The Bayes factor below is the
+comparison that prices the freedom in g.
 
 `--evidence`: a Bayes factor between one g drawn uniformly from the order-5
 permutations with five 5-cycles, and a fresh such g for every word. Rates come from

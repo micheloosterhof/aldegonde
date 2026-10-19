@@ -37,7 +37,8 @@ from the word end {0, 1, 2+} (40 df). Body H = 28.9. Every one-g model misses in
 `--fit`: one g CAN fit all 25 per-class body rates (misfit 3.6, below planted walks
 and planted fresh-g corpora), so the walk is not excluded. It needs a g whose powers
 are flat across English word positions, which about 1% of random order-5 g are and
-the doublet-fitted g is not.
+the doublet-fitted g is not. On the 45 start-end cells (`--fit --start-end`) the best g
+reaches 20.7, the same as on fresh-g corpora (22.2 +- 4.5): the fit absorbs noise.
 
 `--evidence`: the Bayes factor for one g (uniform over order-5 g with five 5-cycles)
 against a fresh such g per word. `--convergence` follows the body's value to 20 million
@@ -307,9 +308,11 @@ def misfit(g, hits, pairs, tables) -> float:
     return float(((hits[keep] - e) ** 2 / (e * (1 - r[keep]))).sum())
 
 
-def fit_g(words, tables, rng, restarts: int = 3, rounds: int = 6000) -> float:
+def fit_g(
+    words, tables, rng, restarts: int = 3, rounds: int = 6000, classing=START
+) -> float:
     """The smallest misfit over order-5 g, by conjugating with transpositions."""
-    hits, pairs = counts(words)
+    hits, pairs = counts(words, classing)
     best = float("inf")
     for _ in range(restarts):
         g = rich_order5(rng)
@@ -326,20 +329,21 @@ def fit_g(words, tables, rng, restarts: int = 3, rounds: int = 6000) -> float:
     return best
 
 
-def joint_fit(planted: int = 20) -> None:
+def joint_fit(planted: int = 20, classing=START) -> None:
     """Can one g fit all 25 per-class body rates? Calibrated on planted walks."""
     rng = random.Random(5)
     corpora = prose_corpora(2928, 200)
     reference = [joined(c, rng) for c in corpora[:150]]
-    tables = class_tables(reference)
-    body = fit_g(lp_words(), tables, rng)
+    tables = class_tables(reference, classing)
+    body = fit_g(lp_words(), tables, rng, classing=classing)
     walks, fresh = [], []
     for plain in corpora[150 : 150 + planted]:
         words = joined(plain, rng)
-        walks.append(fit_g(walk(rich_order5(rng))(words, rng), tables, rng))
-        fresh.append(fit_g(fresh_g(words, rng), tables, rng))
+        cipher = walk(rich_order5(rng))(words, rng)
+        walks.append(fit_g(cipher, tables, rng, classing=classing))
+        fresh.append(fit_g(fresh_g(words, rng), tables, rng, classing=classing))
     walks, fresh = np.array(walks), np.array(fresh)
-    cells = len(LAGS) * CLASSES
+    cells = len(LAGS) * classing[1]
     print(
         f"best one-g misfit over the {cells} per-class cells (prose tables, joined)\n"
     )
@@ -603,7 +607,7 @@ if __name__ == "__main__":
     elif "--evidence" in sys.argv:
         evidence(classing=classing)
     elif "--fit" in sys.argv:
-        joint_fit()
+        joint_fit(classing=classing)
     elif "--run" in sys.argv:
         run(classing=classing)
     else:
