@@ -28,8 +28,10 @@ from aldegonde.stats.repeats import print_repeat_statistics
 def print_matrix_size_analysis(alphabet_size: int = 29, max_matrix: int = 20) -> None:
     """Print, for each matrix side N, whether symbol 0 is naturally suppressed."""
     print(f"\nMatrix size analysis (alphabet={alphabet_size}, tracking symbol 0)")
-    print(f"{'N':>3} {'N^2':>5} {'Base':>5} {'Rem':>4} "
-          f"{'Sym0 freq':>10} {'Ratio':>7} {'Suppressed?':>12}")
+    print(
+        f"{'N':>3} {'N^2':>5} {'Base':>5} {'Rem':>4} "
+        f"{'Sym0 freq':>10} {'Ratio':>7} {'Suppressed?':>12}"
+    )
     print("-" * 52)
     for n in range(2, max_matrix + 1):
         total = n * n
@@ -37,8 +39,10 @@ def print_matrix_size_analysis(alphabet_size: int = 29, max_matrix: int = 20) ->
         freq = profile.expected_frequencies[0]
         ratio = profile.suppression_ratio[0]
         marker = "YES" if 0 in profile.suppressed_symbols else ""
-        print(f"{n:>3} {total:>5} {total // alphabet_size:>5} "
-              f"{total % alphabet_size:>4} {freq:>10.5f} {ratio:>7.4f} {marker:>12}")
+        print(
+            f"{n:>3} {total:>5} {total // alphabet_size:>5} "
+            f"{total % alphabet_size:>4} {freq:>10.5f} {ratio:>7.4f} {marker:>12}"
+        )
 
 
 def print_byte_mapping_analysis(alphabet_size: int = 29) -> None:
@@ -47,13 +51,19 @@ def print_byte_mapping_analysis(alphabet_size: int = 29) -> None:
     for byte_size in [128, 256, 512, 1024]:
         profile = natural_mapping(byte_size, alphabet_size)
         remainder = byte_size % alphabet_size
-        print(f"\n  {byte_size} states: "
-              f"{byte_size}={byte_size // alphabet_size}*{alphabet_size}+{remainder}")
-        print(f"    Symbol 0 freq: {profile.expected_frequencies[0]:.5f}  "
-              f"ratio: {profile.suppression_ratio[0]:.4f}  "
-              f"suppressed: {0 in profile.suppressed_symbols}")
-        print(f"    Suppressed symbols ({len(profile.suppressed_symbols)}): "
-              f"{profile.suppressed_symbols}")
+        print(
+            f"\n  {byte_size} states: "
+            f"{byte_size}={byte_size // alphabet_size}*{alphabet_size}+{remainder}"
+        )
+        print(
+            f"    Symbol 0 freq: {profile.expected_frequencies[0]:.5f}  "
+            f"ratio: {profile.suppression_ratio[0]:.4f}  "
+            f"suppressed: {0 in profile.suppressed_symbols}"
+        )
+        print(
+            f"    Suppressed symbols ({len(profile.suppressed_symbols)}): "
+            f"{profile.suppressed_symbols}"
+        )
 
     print_frequency_profile(natural_mapping(256, alphabet_size), "256-state detail")
 
@@ -85,9 +95,9 @@ def main() -> None:
     for i, s in enumerate(z):
         if len(s) == 0:
             continue
-        print(f"\n\n{'='*60}")
+        print(f"\n\n{'=' * 60}")
         print(f"SEGMENT {i} - DELTA STREAM ANALYSIS")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
 
         raw = "".join([x for x in s if x in c3301.CICADA_ALPHABET])
         if len(raw) < 3:
@@ -109,10 +119,11 @@ def main() -> None:
 
         # Count zeros
         zero_count = deltas.count(0)
-        print(f"Delta=0 count: {zero_count}/{len(deltas)} "
-              f"({zero_count / len(deltas) * 100:.2f}%)")
-        print(f"Expected uniform: {len(deltas) / 29:.1f} "
-              f"({100 / 29:.2f}%)")
+        print(
+            f"Delta=0 count: {zero_count}/{len(deltas)} "
+            f"({zero_count / len(deltas) * 100:.2f}%)"
+        )
+        print(f"Expected uniform: {len(deltas) / 29:.1f} ({100 / 29:.2f}%)")
 
         if len(delta_runes) < 10:
             print("  Too few deltas for full analysis")
@@ -127,7 +138,8 @@ def main() -> None:
         shannon_entropy(delta_runes)
         print_ioc_statistics(delta_runes, alphabetsize=29)
         bigram_diagram.print_auto_bigram_diagram(
-            delta_runes, alphabet=c3301.CICADA_ALPHABET,
+            delta_runes,
+            alphabet=c3301.CICADA_ALPHABET,
         )
         print_kappa(delta_runes)
         friedman.friedman_test(delta_runes, maxperiod=34)
@@ -136,26 +148,27 @@ def main() -> None:
     # Aggregate analysis across all segments
     all_delta_str = "".join(all_deltas_runes)
     if len(all_delta_str) > 10:
-        print(f"\n\n{'='*60}")
+        print(f"\n\n{'=' * 60}")
         print("AGGREGATE DELTA STREAM - ALL SEGMENTS")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print(f"Total deltas: {len(all_delta_str)}")
 
         all_indices = [c3301.r2i(r) for r in all_delta_str]
         zero_count = all_indices.count(0)
-        print(f"Delta=0 count: {zero_count}/{len(all_indices)} "
-              f"({zero_count / len(all_indices) * 100:.2f}%)")
-        print(f"Expected uniform: {len(all_indices) / 29:.1f} "
-              f"({100 / 29:.2f}%)")
+        print(
+            f"Delta=0 count: {zero_count}/{len(all_indices)} "
+            f"({zero_count / len(all_indices) * 100:.2f}%)"
+        )
+        print(f"Expected uniform: {len(all_indices) / 29:.1f} ({100 / 29:.2f}%)")
 
         print_dist(all_delta_str)
         shannon_entropy(all_delta_str)
         print_ioc_statistics(all_delta_str, alphabetsize=29)
 
         # Frequency suppression model analysis
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("FREQUENCY SUPPRESSION MODEL ANALYSIS")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
 
         # Compute observed delta=0 frequency
         observed_freq = zero_count / len(all_indices)
@@ -173,7 +186,10 @@ def main() -> None:
             observed_dict[idx] = counts.get(idx, 0) / len(all_indices)
 
         best_count, best_profile = find_best_suppression(
-            observed_dict, 13, 29, 0,
+            observed_dict,
+            13,
+            29,
+            0,
         )
         print(f"Best fit: symbol 0 gets {best_count} of 169 pre-images")
         print_frequency_profile(best_profile, "13x13 best fit for delta=0")
@@ -183,8 +199,10 @@ def main() -> None:
         for n in [169, 256, 512, 841]:
             profile = natural_mapping(n, 29)
             suppressed = profile.suppressed_symbols
-            print(f"  {n} states: suppressed={suppressed[:5]}{'...' if len(suppressed) > 5 else ''}, "
-                  f"sym0 ratio={profile.suppression_ratio[0]:.4f}")
+            print(
+                f"  {n} states: suppressed={suppressed[:5]}{'...' if len(suppressed) > 5 else ''}, "
+                f"sym0 ratio={profile.suppression_ratio[0]:.4f}"
+            )
 
         print_matrix_size_analysis()
         print_byte_mapping_analysis()

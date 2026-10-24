@@ -45,9 +45,7 @@ def load_pages(path: str) -> list[list[int]]:
     """Load the LP transcription and return rune indices per page."""
     with open(path, encoding="utf-8") as f:
         text = f.read()
-    return [
-        [c3301.r2i(ch) for ch in page if ch in ABC] for page in text.split("%")
-    ]
+    return [[c3301.r2i(ch) for ch in page if ch in ABC] for page in text.split("%")]
 
 
 def to_english(runes: list[int]) -> str:

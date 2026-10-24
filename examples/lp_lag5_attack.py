@@ -181,13 +181,17 @@ def solve_cosets(
                 best_chi, best = chi, s
         shifts.append(best)
     decryption = [
-        r if lit else ((r - shifts[p]) % 29 if family == "add" else (shifts[p] - r) % 29)
+        r
+        if lit
+        else ((r - shifts[p]) % 29 if family == "add" else (shifts[p] - r) % 29)
         for r, p, lit in zip(runes, ph, literal)
     ]
     return decryption, shifts
 
 
-def attack(page: Page, rule: PhaseRule, family: str) -> tuple[float, list[int], list[int]]:
+def attack(
+    page: Page, rule: PhaseRule, family: str
+) -> tuple[float, list[int], list[int]]:
     """Run one attack: returns (trigram score, shifts, decryption)."""
     ph, literal = phase_sequence(page, rule)
     decryption, shifts = solve_cosets(page[0], ph, literal, family)

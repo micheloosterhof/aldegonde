@@ -71,7 +71,9 @@ ct = [c3301.r2i(e) for e in welcome]
 # ioc.print_ioc_statistics(seq, alphabetsize=29)
 
 pt = beaufort_decrypt_interrupted(
-    ct, key, [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514],
+    ct,
+    key,
+    [48, 74, 84, 132, 159, 160, 250, 421, 443, 465, 514],
 )
 
 plaintext = "".join(c3301.i2r(i) for i in pt)

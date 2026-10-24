@@ -1,9 +1,0 @@
-build==1.6.1
-coverage==7.16.2
-pipdeptree==4.2.5
-pytest==9.1.1
-pytest-cov==7.1.0
-ruff==0.16.10
-tox==4.64.7
-twine==7.0.0
-ty==0.0.84

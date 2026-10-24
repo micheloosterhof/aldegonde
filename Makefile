@@ -1,45 +1,34 @@
-.PHONY: all
-all: build
+.PHONY: install test lint typecheck format check build clean help
 
-.PHONY: build
-build: ## Build package
-	python -m pip install --upgrade build
-	python -m build        
+install: ## Install the package with development dependencies, editable
+	python -m pip install --upgrade pip
+	python -m pip install -e ".[dev]"
+
+test: ## Run the test suite
+	python -m pytest tests/aldegonde
+
+lint: ## Lint and check formatting with ruff
+	ruff check src tests experiments
+	ruff format --check src tests experiments
+
+typecheck: ## Type-check the library with ty
+	ty check src
+
+format: ## Format with ruff
+	ruff format src tests experiments
+
+check: lint typecheck test ## Everything CI runs, on this interpreter
+
+build: ## Build the distribution and check it
+	python -m pip install --upgrade build twine
+	python -m build
 	twine check dist/*
 
-.PHONY: upload
-upload: ## Upload to Pypi
-	twine upload dist/*
+clean: ## Remove build and tool caches
+	rm -rf build dist .tox .coverage htmlcov .pytest_cache .ruff_cache .hypothesis
+	find . -name __pycache__ -type d -prune -exec rm -rf {} +
+	find . -name '*.egg-info' -type d -prune -exec rm -rf {} +
 
-.PHONY: direnv
-direnv:
-	[ -n "${DIRENV_DIR}" ] || ( echo Please activate direnv by typing "direnv allow ." && exit 1 )
-
-.PHONY: install
-install: ## Install Python requirements + module in site-packages in editor mode
-	python -m pip install --no-index --require-virtualenv --upgrade pip setuptools wheel
-	python -m pip install --no-index --require-virtualenv -r ./requirements.txt
-	python -m pip install --no-index --require-virtualenv -e .
-
-.PHONY: upgrade
-upgrade: ## Upgrade Python requirements to latest version
-	python -m pur -r requirements.txt
-	python -m pip install --upgrade -r ./requirements.txt
-	python -m pur -r requirements-docs.txt
-	python -m pip install --upgrade -r ./requirements-docs.txt
-	python -m pur -r requirements-dev.txt
-	python -m pip install --upgrade -r ./requirements-dev.txt
-
-.PHONY: clean
-clean: ## Clean generated data
-	find . -name .coverage '*-darwin.so' -or -name .mypy_cache -or -name __pycache__ -or -name .pytest_cache -or -name aldegonde.egg-info -print0 | xargs -0 rm -rf
-	rm -rf build dist
-
-.PHONY: lint
-lint: ## Various Linters
-	yamllint .github
-
-# Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}'

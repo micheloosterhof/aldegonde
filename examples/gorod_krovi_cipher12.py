@@ -190,10 +190,18 @@ def autokey_bruteforce_standard(ct: str) -> None:
     variants: list[tuple[str, Callable[..., Any], pasc.TR[str]]] = [
         ("Plaintext Autokey + Vigenere TR", auto.plaintext_autokey_decrypt, VIG),
         ("Plaintext Autokey + Beaufort TR", auto.plaintext_autokey_decrypt, BEA),
-        ("Plaintext Autokey + Variant Beaufort TR", auto.plaintext_autokey_decrypt, VAR),
+        (
+            "Plaintext Autokey + Variant Beaufort TR",
+            auto.plaintext_autokey_decrypt,
+            VAR,
+        ),
         ("Ciphertext Autokey + Vigenere TR", auto.ciphertext_autokey_decrypt, VIG),
         ("Ciphertext Autokey + Beaufort TR", auto.ciphertext_autokey_decrypt, BEA),
-        ("Ciphertext Autokey + Variant Beaufort TR", auto.ciphertext_autokey_decrypt, VAR),
+        (
+            "Ciphertext Autokey + Variant Beaufort TR",
+            auto.ciphertext_autokey_decrypt,
+            VAR,
+        ),
     ]
 
     all_results: list[tuple[float, str, str, str]] = []
@@ -210,7 +218,7 @@ def autokey_bruteforce_standard(ct: str) -> None:
     print_header("TOP 5 STANDARD TR RESULTS")
     for i, (score, primer, pt, label) in enumerate(all_results[:5]):
         ic = calc_ioc(pt)
-        print(f"  #{i+1}  score={score:8.2f}  IOC={ic:.4f}  primer={primer}  {label}")
+        print(f"  #{i + 1}  score={score:8.2f}  IOC={ic:.4f}  primer={primer}  {label}")
         print(f"     PT={pt}")
         print()
 
@@ -218,7 +226,9 @@ def autokey_bruteforce_standard(ct: str) -> None:
 def autokey_bruteforce_keyword(ct: str) -> None:
     """Try autokey with keyword-based mixed alphabet TRs."""
     print_header("KEYWORD-BASED MIXED ALPHABET AUTOKEY SEARCH")
-    print(f"Testing {len(KEYWORDS)} keywords x 3 TR types x 2 autokey types x 26 primers")
+    print(
+        f"Testing {len(KEYWORDS)} keywords x 3 TR types x 2 autokey types x 26 primers"
+    )
     print()
 
     all_results: list[tuple[float, str, str, str, str]] = []
@@ -250,7 +260,9 @@ def autokey_bruteforce_keyword(ct: str) -> None:
     for i, (score, primer, pt, label, keyword) in enumerate(all_results[:20]):
         ic = calc_ioc(pt)
         formatted = reconstruct_with_spaces(CIPHERTEXT_RAW, pt)
-        print(f"  #{i+1:2d}  score={score:8.2f}  IOC={ic:.4f}  primer={primer}  {label}")
+        print(
+            f"  #{i + 1:2d}  score={score:8.2f}  IOC={ic:.4f}  primer={primer}  {label}"
+        )
         print(f"       PT={pt}")
         print(f"       => {formatted}")
         print()
@@ -265,9 +277,16 @@ def autokey_bruteforce_keyword_2letter(ct: str) -> None:
     for keyword in KEYWORDS:
         mixed_al = masc.mixedalphabet(ALPHABET, keyword)
         best = float("-inf")
-        for tr_func in [mixed_vigenere_tr, mixed_beaufort_tr, mixed_variant_beaufort_tr]:
+        for tr_func in [
+            mixed_vigenere_tr,
+            mixed_beaufort_tr,
+            mixed_variant_beaufort_tr,
+        ]:
             tr = tr_func(mixed_al)
-            for func in [auto.plaintext_autokey_decrypt, auto.ciphertext_autokey_decrypt]:
+            for func in [
+                auto.plaintext_autokey_decrypt,
+                auto.ciphertext_autokey_decrypt,
+            ]:
                 for p in ALPHABET:
                     pt = "".join(func(ct, primer=p, tr=tr))
                     score = quadgramscore(pt)
@@ -308,7 +327,9 @@ def autokey_bruteforce_keyword_2letter(ct: str) -> None:
     for i, (score, primer, pt, label, keyword) in enumerate(all_results[:20]):
         ic = calc_ioc(pt)
         formatted = reconstruct_with_spaces(CIPHERTEXT_RAW, pt)
-        print(f"  #{i+1:2d}  score={score:8.2f}  IOC={ic:.4f}  primer={primer:4s}  {label}")
+        print(
+            f"  #{i + 1:2d}  score={score:8.2f}  IOC={ic:.4f}  primer={primer:4s}  {label}"
+        )
         print(f"       PT={pt}")
         print(f"       => {formatted}")
         print()
