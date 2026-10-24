@@ -149,7 +149,29 @@ the body's blocks include joined pairs the dictionary does not contain:
 observed successors, weighted by the author's own text. Cheap, and it raises
 every crib programme's hit rate before any cipher is chosen.
 
-### 3.7 Things to stop doing
+### 3.7 The null-rune preventer (class B and C)
+
+`hypotheses/null-rune-preventer.md`. When the next rune would repeat, insert one of the
+four runes the author never writes (J, EO, OE, AE) as a plaintext null and encipher it.
+Rune-blind, memoryless, boundary-blind, φ = 1 − 1/29 = 0.966 inside D9's 2σ band, clock
+perturbation 0.034 inside D10, and the flat doublet position profile for free. It
+differs from the dodge in one channel only: the blocks carry about 450 extra runes.
+Re-run the joining fit (E9) with a parameter-free 1/29 inflation first; if P drops below
+0.05 it is out.
+
+### 3.8 What a relation catalogue closed (class C, negative)
+
+`hypotheses/no-natural-relation-suppresses-doublets.md`,
+`experiments/natural_relations_doublet_rate.py`. Shifts, GF(29) multipliers, atbash,
+every natural 5×5 square fill, the autokeys and Chaocipher all sit 2× to 7× above the
+body's doublet rate on the author's own plaintext. GF(29) affine and power maps do reach
+it (0.0079 on the register, where the prose floor said 0.0125) but have no element of
+order 5. Homophones on the spare runes reach φ ≤ 0.42. A compact base chain in AGL(2,5)
+on a 5×5 square of the 25 used runes was proposed and withdrawn: the four outside runes
+carry 3.1 to 3.8% of the body each against 0.17% together in the plaintext, and
+`no-block-partition.md` closes every 4-set at 75% power.
+
+### 3.9 Things to stop doing
 
 - Fitting one more cell to one fitted key. G4: eleven of nineteen cells test
   the key, not the mechanism.

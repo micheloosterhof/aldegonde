@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (113)
+### Observations (114)
 
 | File | Feature | Status |
 |---|---|---|
@@ -121,8 +121,9 @@ proposed mechanisms scored against them.
 | [the-rearrangement-is-not-a-simple-rule.md](the-rearrangement-is-not-a-simple-rule.md) | The Last Slot Holds an Interior Word, and No Structured Rule Beats a Shuffle | see file |
 | [the-scribe-ignored-the-blocks.md](the-scribe-ignored-the-blocks.md) | The Scribe Broke Lines at Word Boundaries Only Where He Could Read the Text | confirmed, with a positive control in the same book. |
 | [the-thirteen-dot-closes-a-section.md](the-thirteen-dot-closes-a-section.md) | The Thirteen-Dot Mark Closes a Section; the Four-Dot Mark Avoids One | confirmed. |
+| [no-natural-relation-suppresses-doublets.md](no-natural-relation-suppresses-doublets.md) | No Natural Relation, Autokey or Machine Suppresses Doublets on the Author's Plaintext | confirmed (computation on the register); affine and power maps reach the rate but have no order-5 element |
 
-### Hypotheses (63)
+### Hypotheses (64)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -189,3 +190,4 @@ proposed mechanisms scored against them.
 | [the-four-dot-may-be-a-displaced-stop.md](the-four-dot-may-be-a-displaced-stop.md) | The Four-Dot Is a Full Stop Written a Variable Block or Two Off | **Live.** Not excluded, fits the offset profile as well as any surviving reading, and is |
 | [the-marks-may-be-under-recorded.md](the-marks-may-be-under-recorded.md) | The Body's Marks May Be a Thinned Sample of What the Scribe Wrote | **WITHDRAWN**, one day after it was proposed |
 | [the-words-are-transposed-within-sentences.md](the-words-are-transposed-within-sentences.md) | The Words Are Transposed Within Each Sentence | open. |
+| [null-rune-preventer.md](null-rune-preventer.md) | The Preventer Is a Plaintext Null | unresolved; one parameter-free prediction in the block lengths |
