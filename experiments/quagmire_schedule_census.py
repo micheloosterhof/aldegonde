@@ -47,7 +47,7 @@ from d5_partial_leak import to_runeglish  # noqa: E402
 from doublet_position_profile import IDX_ENG  # noqa: E402
 from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
 from keyword_exhaustion import DICT, alphabets, kw_runes  # noqa: E402
-from lp_corpus import load_clean  # noqa: E402
+from lp_corpus import load_words  # noqa: E402
 
 M = 29
 RNG = random.Random(3301)
@@ -65,11 +65,8 @@ def wilson(k: int, n: int) -> tuple[float, float]:
 
 
 def lp_words() -> list[list[int]]:
-    stream, wid = load_clean()
-    d: dict[int, list[int]] = {}
-    for i, w in enumerate(wid):
-        d.setdefault(w, []).append(stream[i])
-    return [d[k] for k in sorted(d)]
+    """The clean corpus cut into words (`lp_corpus.load_words`)."""
+    return load_words()
 
 
 def observed_rates(words: list[list[int]]) -> dict[int, tuple[int, int]]:

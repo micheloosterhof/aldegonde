@@ -79,26 +79,10 @@ def order(g: np.ndarray) -> int:
 
 # ---- corpus ----
 def load_words() -> list[list[int]]:
-    from aldegonde.c3301 import CICADA_ALPHABET as A
+    """Every word of `data/page0-56.txt` as rune indices (`lp_corpus.load_words`)."""
+    from lp_corpus import load_words as clean_words  # noqa: PLC0415
 
-    idx = {r: i for i, r in enumerate(A)}
-    from aldegonde import c3301
-
-    text = (ROOT / "data" / "page0-56.txt").read_text()
-    # split on the library's boundary set: a literal class of legacy mark
-    # characters stopped matching when the transcription moved to the circled
-    # numerals, and silently returned 60 enormous "words" instead of 2,928
-    words: list[list[int]] = []
-    cur: list[int] = []
-    for ch in text:
-        if ch in idx:
-            cur.append(idx[ch])
-        elif ch in c3301.WORD_BOUNDARY and cur:
-            words.append(cur)
-            cur = []
-    if cur:
-        words.append(cur)
-    return words
+    return clean_words()
 
 
 def load_bigram_matrix() -> np.ndarray:

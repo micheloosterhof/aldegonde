@@ -86,7 +86,7 @@ from d5_partial_leak import to_runeglish  # noqa: E402
 from doublet_position_profile import IDX_ENG  # noqa: E402
 from ea_direction_test import PROSE_CACHE, prose_words  # noqa: E402
 from external_text_length_match import CACHE as BOOK_CACHE  # noqa: E402
-from lp_corpus import load_clean  # noqa: E402
+from lp_corpus import load_words  # noqa: E402
 
 from aldegonde import c3301  # noqa: E402
 
@@ -291,11 +291,8 @@ def self_test() -> None:
 
 
 def lp_words() -> list[list[int]]:
-    stream, wid = load_clean()
-    words: list[list[int]] = [[] for _ in range(wid[-1] + 1)]
-    for rune, w in zip(stream, wid):
-        words[w].append(rune)
-    return words
+    """The clean corpus cut into words (`lp_corpus.load_words`)."""
+    return load_words()
 
 
 def run(draws: int = 40) -> None:

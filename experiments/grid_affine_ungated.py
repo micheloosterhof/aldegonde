@@ -39,7 +39,7 @@ sys.path.insert(0, str(ROOT / "experiments"))
 
 from base_free_verifier import log_frequencies, powers  # noqa: E402
 from ea_direction_test import PROSE_CACHE  # noqa: E402
-from lp_corpus import load_clean  # noqa: E402
+from lp_corpus import load_words  # noqa: E402
 from magic_square_sweep import build_family_g  # noqa: E402
 from quagmire_runner import load_register  # noqa: E402
 from quagmire_ungated_sweep import CANDIDATE_FROM, SECTIONS, windows_of  # noqa: E402
@@ -61,11 +61,8 @@ _W: dict = {}
 
 
 def lp_words() -> list[list[int]]:
-    stream, wid = load_clean()
-    words: list[list[int]] = [[] for _ in range(wid[-1] + 1)]
-    for rune, w in zip(stream, wid):
-        words[w].append(rune)
-    return words
+    """The clean corpus cut into words (`lp_corpus.load_words`)."""
+    return load_words()
 
 
 def _prepare() -> None:

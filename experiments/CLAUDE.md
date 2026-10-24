@@ -27,6 +27,7 @@ Imports are package-level: `from aldegonde.stats import nioc`,
 | English spelled as the book spells it, to indices | `c3301.encode_english`; back to labels `c3301.decode_english` |
 | Any other alphabet to integers | `alphabet.Alphabet(symbols).encode` |
 | Mark and boundary sets of the transcription | `c3301.WORD_BOUNDARY`, `c3301.WORD_MARKS`, `c3301.CLUSTER_MARKS`, `c3301.LINE_WRAP`, `c3301.dot_count` |
+| The transcription as rune indices with word, line, page and section ids | `c3301.tokenize(text, join_pages=..., sections=...)`; for the clean corpus `lp_corpus.load_tokenized`, `lp_corpus.load_words`, `lp_corpus.load_clean` |
 
 ### Frequencies, IoC, entropy
 
@@ -100,9 +101,12 @@ the script what the null keeps and what it destroys.
 - **Integers inside.** Convert runes and English to indices at the top of
   the script and work on integers. The library's table and algebra
   functions take integers and an explicit alphabet size.
-- **Corpus loading.** Use an existing loader (`lp_corpus.load_clean`,
-  `body_parse`) rather than parsing `%`, `$` and the marks again. There
-  should be one tokenizer; see `docs/library-candidates.md`.
+- **Corpus loading.** `lp_corpus.load_words()` (or `load_clean`,
+  `load_tokenized`) is the clean corpus; it is a thin wrapper over
+  `c3301.tokenize`, which is the one tokenizer. Do not parse `%`, `$` and
+  the marks again. `anomaly_scan.parse` survives for its 21 importers and
+  differs in one rule: Latin annotations end a word there (2,932 words
+  against 2,928). Do not use it in new scripts.
 - **No absolute paths.** Resolve paths from the repository root.
 - **Compute the verdict.** Print conclusions from the numbers the script
   computes, never as a fixed string. A fixed string stays behind when the
