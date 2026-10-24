@@ -157,3 +157,18 @@ proof.
   marginal test's reach.
 - `dju-bei-stands-alone.md`, `dju-bei-is-more-surprising-than-recorded.md` — the
   single return, now priced against a chainless alternative.
+
+## Two more negative halves, 2026-10-24
+
+`experiments/new_directions_probes.py period anchors`.
+
+- **No word-clocked period at the DJU-BEI distance.** Position-aligned
+  coincidence between word `w` and word `w + 1449` reads +3.19σ against chance,
+  which ranks 3rd of 2,877 word distances with a scan maximum of +3.74; without
+  the phrase itself it is +2.73σ. A chain returning with that period would share
+  every base and read about 287 hits against the 201 observed.
+- **The 17 identical words do not continue.** Pooling the three words after
+  each identical pair gives 11/140, and 8/137 without DJU-BEI (+1.5σ), where
+  every pair being a true return would add about 8. The chain is visible at
+  DJU-BEI and nowhere else, which is this file's claim restated with two more
+  channels closed.

@@ -1,7 +1,7 @@
 ---
 type: observation
 ---
-# Observation: The Two Number Grids Are 176 Uniform Bytes
+# Observation: The Number Grids Are 256 Uniform Bytes (three grids; first recorded as two and 176)
 
 ## What was sitting unread
 
@@ -130,9 +130,40 @@ This is what uniformity means in general: the tests above work because each prop
   orders permute the multiset and so change none of the tests above except the integer
   and keystream readings; those are cheap to rerun if a reason appears.
 
+## Correction, 2026-10-24: there are three grids, and they hold 256 bytes
+
+Master chunk 64 — the page before the two counted here — carries 66 runes, a `&`, and
+then a third grid of **ten rows of eight** in the same two-character base-60 code, values
+4 to 255. `experiments/new_directions_probes.py grids` reads all three:
+
+| chunk | rows × 8 | bytes | runes on the page |
+|---|---|---|---|
+| 64 | 10 | 80 | 66 |
+| 65 | 13 | 104 | 0 |
+| 66 | 9 | 72 | 92 |
+
+**80 + 104 + 72 = 256 bytes = 2,048 bits.** The 176 counted above was two of three. The
+pooled 256 bytes are still uniform: 161 distinct values against 162 expected, no value
+above 255 in any grid.
+
+What changes. Every "not a standard length" remark above is withdrawn: 256 bytes is the
+one standard length in asymmetric cryptography, an RSA-2048 modulus, signature or
+ciphertext. Read big-endian in page order the integer is even, so it is not a modulus
+and not a prime; a signature or a ciphertext can be anything below the modulus. The
+digest-window and keystream searches above were run on 176 bytes and on two
+concatenation orders; with three grids there are six, and those two scripts should be
+rerun on 256 bytes before any of their negatives is quoted again.
+
+The one decisive test needs an artifact from outside the repository: Cicada's published
+RSA public keys. For each 2,048-bit modulus `n` and exponent `e`, compute
+`pow(s, e, n)` for the block `s` in the four readings (row-major and column-major, page
+order and reversed) and look for PKCS#1 padding (`00 01 ff … 00` followed by a DigestInfo)
+or any structured output. A hit identifies the block as a signature and names what it
+signs; a miss on every known key leaves "ciphertext under a key we do not hold".
+
 ## Status
 
-**Status**: confirmed (measurement), 176 tokens, complete — 13×8 and 9×8 exactly, no
+**Status**: confirmed (measurement) for the decoding; the count is **corrected to 256 tokens in three grids** (10×8, 13×8, 9×8), see above; the earlier 176 covered two of them, 13×8 and 9×8 exactly, no
 token dropped at a line wrap. `experiments/number_grid_bytes.py` with `--primes`,
 `--keystream`, `--unpack`, `--xor`; `experiments/grid_hash_search.py` for the digest
 windows.

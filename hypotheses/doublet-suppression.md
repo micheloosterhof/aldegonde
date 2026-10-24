@@ -32,6 +32,12 @@ adjacent runes regardless of whether a space intervenes. Zero triplets
 
 ## Consequences
 
+- **Not one plaintext rune written as a repeat** (2026-10-24,
+  `experiments/new_directions_probes.py repeat-slot`). An exclusion tableau,
+  where "repeat the previous rune" encodes one fixed plaintext rune `s`,
+  suppresses for free; but `s` would need a non-initial rate of 0.0063, an
+  initial rate of 0.0079 and a word-final share of 0.30 among its non-initial
+  uses, and 0 of 29 runes fit all three within 2σ on the author's register.
 - Additive/keystream ciphers whose key is fixed before emission cannot produce
   this (rate stays ~3.45%); requires output feedback OR a bigram-tuned mixed
   alphabet. See the structural constraint in `README.md` and
