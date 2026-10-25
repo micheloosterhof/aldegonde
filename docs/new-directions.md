@@ -126,7 +126,9 @@ Decryption with a dodge is deterministic: the receiver sees the same previous
 ciphertext rune and re-steps at the same places. The payoff is that a crib test,
 a planted-key control, and the fingerprint battery become one code path, so
 a new carrier costs an afternoon rather than a script. Port it with the first
-experiment migrated onto it.
+experiment migrated onto it. `experiments/cipher_zoo_fingerprint.py` is the prototype:
+three pluggable parts, eighteen algorithms, one table
+(`hypotheses/cipher-zoo-fingerprint.md`).
 
 ### 3.5 Ciphertext feedback as the carrier's clock (class C)
 
@@ -201,3 +203,13 @@ Each has its own file; six key-free channels were closed on the way
 | `the-plaintext-is-old-english-or-latin.md` | the four dead runes are the Old English and Latin vowels | the length marginal against a transliterated corpus; beat English's χ² 139 |
 | `the-body-is-machine-made.md` | the key is a seed and a construction, the 256-byte block first | generated g through the d-profile filter and the chain through the DJU-BEI identity |
 | `the-plaintext-was-prepared-against-cribs.md` | joining and keep-first shuffling were deliberate | none to run; it fixes the crib strategy: words, span-initial blocks, joined function words |
+
+## 6. The cipher zoo, 2026-10-25
+
+`hypotheses/cipher-zoo-fingerprint.md`. Eighteen algorithms on the author's plaintext,
+scored on the body's cells. The letter clock owns the lag-5 echo, the chain is invisible,
+and the preventer owns the doublet cells, where every always-acting preventer lands an
+order of magnitude too low. The body's rates are reached only by a preventer that fails
+one time in five, and the natural carrier of that failure is a 5-letter Quagmire keyword
+with a doubled letter: 0.0051 inside words and 0.0089 at seams against 0.0063 and 0.0079.
+Tuning the within-word relation is then not merely unnecessary but excluded by the rate.

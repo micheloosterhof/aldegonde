@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (115)
+### Observations (116)
 
 | File | Feature | Status |
 |---|---|---|
@@ -123,6 +123,7 @@ proposed mechanisms scored against them.
 | [the-thirteen-dot-closes-a-section.md](the-thirteen-dot-closes-a-section.md) | The Thirteen-Dot Mark Closes a Section; the Four-Dot Mark Avoids One | confirmed. |
 | [no-natural-relation-suppresses-doublets.md](no-natural-relation-suppresses-doublets.md) | No Natural Relation, Autokey or Machine Suppresses Doublets on the Author's Plaintext | confirmed (computation on the register); affine and power maps reach the rate but have no order-5 element |
 | [closed-channels-october-2026.md](closed-channels-october-2026.md) | Six Channels Closed While Drafting the October 2026 Hypotheses | confirmed (measurement); thirteen-dot restart, Bacon lengths, red runes, word order, checksum chain (planted control z +15.8), scrambled solved pages all at chance |
+| [cipher-zoo-fingerprint.md](cipher-zoo-fingerprint.md) | A Zoo of Encryption Algorithms Scored on the Body's Fingerprint | confirmed (simulation); only a preventer failing one time in five reaches the body's doublet rates, the doubled keyword letter being its natural form |
 
 ### Hypotheses (69)
 
