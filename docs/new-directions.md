@@ -226,3 +226,14 @@ doubled rune once, across word boundaries too. Applied to the ciphertext at a ra
 (1.19). It is the only reading in which the one-in-five is nobody's design. It has to
 answer D8: the author's own Vigenère pages were written with their doubles. If it holds,
 every key search may drop the dodge and allow one inserted rune per word instead.
+
+## 8. With lag 5 set aside: the one mechanism that suppresses doublets by itself, 2026-10-25
+
+`hypotheses/ciphertext-autokey-with-a-dead-identity-rune.md`. Every feedback cipher makes a
+doublet mean "the plaintext letter here is e", and the body's doublets mark no letter: no
+letter in the register has the needed 0.65% inside words, 0.8% at word starts and 30% final
+share at once. The surviving version makes e a rune the plaintext never writes, so the
+cipher emits no doublet at all; flatness comes free from the feedback, the preceding-rune
+split is met by a per-word key (1.04–1.07 against 1.026), and EO is the one dead rune whose
+lag-2..4 cells match. The 86 must then be runes written twice. Test: a planted-key solver
+on the difference stream, then one page of the body.

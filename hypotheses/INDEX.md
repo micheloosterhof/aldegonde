@@ -125,7 +125,7 @@ proposed mechanisms scored against them.
 | [closed-channels-october-2026.md](closed-channels-october-2026.md) | Six Channels Closed While Drafting the October 2026 Hypotheses | confirmed (measurement); thirteen-dot restart, Bacon lengths, red runes, word order, checksum chain (planted control z +15.8), scrambled solved pages all at chance |
 | [cipher-zoo-fingerprint.md](cipher-zoo-fingerprint.md) | A Zoo of Encryption Algorithms Scored on the Body's Fingerprint | confirmed (simulation); only a preventer failing one time in five reaches the body's doublet rates, the doubled keyword letter being its natural form |
 
-### Hypotheses (70)
+### Hypotheses (71)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -199,3 +199,4 @@ proposed mechanisms scored against them.
 | [the-body-is-machine-made.md](the-body-is-machine-made.md) | The Body Was Produced by a Program, and the Key Is a Seed | unresolved; low prior per construction, decisive per construction |
 | [the-plaintext-was-prepared-against-cribs.md](the-plaintext-was-prepared-against-cribs.md) | The Plaintext Was Prepared Against Cribbing Before Encipherment | unresolved framing; dictates words-not-phrases cribbing |
 | [haplography-the-scribe-wrote-doubles-once.md](haplography-the-scribe-wrote-doubles-once.md) | The Cipher Has No Repeat Rule; the Scribe Wrote Doubled Runes Once | unresolved; one copyist parameter lands both doublet cells from a rule-free carrier and leaks the echo into lag 4 as the body does; D8 is the obstacle |
+| [ciphertext-autokey-with-a-dead-identity-rune.md](ciphertext-autokey-with-a-dead-identity-rune.md) | A Ciphertext Autokey Whose Identity Rune the Plaintext Never Uses | unresolved; zero doublets by construction with no rule, per-word key passes the split, EO fits the lag cells; the 86 must be runes written twice |
