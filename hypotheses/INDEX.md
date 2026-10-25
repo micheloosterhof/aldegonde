@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (114)
+### Observations (115)
 
 | File | Feature | Status |
 |---|---|---|
@@ -122,8 +122,9 @@ proposed mechanisms scored against them.
 | [the-scribe-ignored-the-blocks.md](the-scribe-ignored-the-blocks.md) | The Scribe Broke Lines at Word Boundaries Only Where He Could Read the Text | confirmed, with a positive control in the same book. |
 | [the-thirteen-dot-closes-a-section.md](the-thirteen-dot-closes-a-section.md) | The Thirteen-Dot Mark Closes a Section; the Four-Dot Mark Avoids One | confirmed. |
 | [no-natural-relation-suppresses-doublets.md](no-natural-relation-suppresses-doublets.md) | No Natural Relation, Autokey or Machine Suppresses Doublets on the Author's Plaintext | confirmed (computation on the register); affine and power maps reach the rate but have no order-5 element |
+| [closed-channels-october-2026.md](closed-channels-october-2026.md) | Six Channels Closed While Drafting the October 2026 Hypotheses | confirmed (measurement); thirteen-dot restart, Bacon lengths, red runes, word order, checksum chain (planted control z +15.8), scrambled solved pages all at chance |
 
-### Hypotheses (64)
+### Hypotheses (69)
 
 | File | Mechanism | Status |
 |---|---|---|
@@ -191,3 +192,8 @@ proposed mechanisms scored against them.
 | [the-marks-may-be-under-recorded.md](the-marks-may-be-under-recorded.md) | The Body's Marks May Be a Thinned Sample of What the Scribe Wrote | **WITHDRAWN**, one day after it was proposed |
 | [the-words-are-transposed-within-sentences.md](the-words-are-transposed-within-sentences.md) | The Words Are Transposed Within Each Sentence | open. |
 | [null-rune-preventer.md](null-rune-preventer.md) | The Preventer Is a Plaintext Null | unresolved; one parameter-free prediction in the block lengths |
+| [the-body-composes-the-taught-devices.md](the-body-composes-the-taught-devices.md) | The Body Is the Composition of Every Device the Solved Pages Teach | unresolved; mixed alphabet × 5-rune keyword × running numeric key × skip, in the gap the standard-order exclusions leave |
+| [the-body-is-a-scrambled-copy-of-published-text.md](the-body-is-a-scrambled-copy-of-published-text.md) | The Body Is a Word-Scrambled Re-Encipherment of Text the Author Already Published | unresolved; solved pages excluded (0 of 137 spans match), external sources untested |
+| [the-plaintext-is-old-english-or-latin.md](the-plaintext-is-old-english-or-latin.md) | The Plaintext Is Old English or Latin, Not Modern English | unresolved; four dead letters J, EO, OE, AE; needs a corpus |
+| [the-body-is-machine-made.md](the-body-is-machine-made.md) | The Body Was Produced by a Program, and the Key Is a Seed | unresolved; low prior per construction, decisive per construction |
+| [the-plaintext-was-prepared-against-cribs.md](the-plaintext-was-prepared-against-cribs.md) | The Plaintext Was Prepared Against Cribbing Before Encipherment | unresolved framing; dictates words-not-phrases cribbing |

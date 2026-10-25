@@ -188,3 +188,16 @@ carry 3.1 to 3.8% of the body each against 0.17% together in the plaintext, and
 - Word-aligned coincidence has no peak at the DJU-BEI distance beyond the
   phrase itself; the 17 identical words do not continue. Both belong in
   `the-chain-shows-only-in-extension.md` as further negative halves.
+
+## 5. Five hypotheses added 2026-10-25
+
+Each has its own file; six key-free channels were closed on the way
+(`hypotheses/closed-channels-october-2026.md`).
+
+| file | claim | first test |
+|---|---|---|
+| `the-body-composes-the-taught-devices.md` | mixed alphabet × 5-rune keyword restarting per word × running numeric key × output-triggered skip; the numeric key through a mixed alphabet is the gap B3/B5 state | a Quagmire-with-numeric-key IoC climb over the 24 sequences, planted key first |
+| `the-body-is-a-scrambled-copy-of-published-text.md` | known plaintext, shuffled per sentence | multiset matching against the external Cicada texts; the solved pages already fail (0 of 137) |
+| `the-plaintext-is-old-english-or-latin.md` | the four dead runes are the Old English and Latin vowels | the length marginal against a transliterated corpus; beat English's χ² 139 |
+| `the-body-is-machine-made.md` | the key is a seed and a construction, the 256-byte block first | generated g through the d-profile filter and the chain through the DJU-BEI identity |
+| `the-plaintext-was-prepared-against-cribs.md` | joining and keep-first shuffling were deliberate | none to run; it fixes the crib strategy: words, span-initial blocks, joined function words |
