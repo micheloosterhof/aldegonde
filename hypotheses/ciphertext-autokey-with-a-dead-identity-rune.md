@@ -56,6 +56,22 @@ table by the preceding-rune split; a table keyed per word is not that case.
   spare runes are a fact of his writing.
 - The key is small: one mixed alphabet, a per-word key, and `e`.
 
+## Why not EA, measured
+
+EA is the one rare letter whose within-word rate is right, so it deserves its own line.
+Frequency-weighted English through `c3301.encode_english` (SEA → S EA, IDEA → I D EA):
+
+| | EA | the body's doublets need |
+|---|---|---|
+| rate at a non-initial rune | 0.0083 | 0.0063 |
+| rate word-initial, per word | 0.0022 | 0.0079 |
+| word-final share of non-initial uses | 0.035 | 0.30 ± 0.06 |
+
+EA does end words (SEA, PLEA, IDEA, AREA, TEA) but in one of 28 of its uses, where one in
+three of the body's doublets is word-final; and EA opens a word 3.6 times too rarely for
+the seams. `doublet-marker-rune-ea.md` reached the same verdict on prose (EA 90% medial,
+8% initial, 2% final; the doublets on the all-rune baseline).
+
 ## Evidence against
 
 - **The 86 doublets are not the cipher's.** They have to be runes written twice by the
