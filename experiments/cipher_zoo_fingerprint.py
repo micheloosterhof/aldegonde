@@ -24,6 +24,7 @@ alternatives for each, plus controls that drop a part so its signature can be se
   word chain     product walk | two dials with carry | plaintext-sum accumulator |
                  no change (control)
   preventer      dodge (advance the clock again) | hold (step back) | null rune | none
+  scribe         no rule in the cipher; doubled runes written once by the copyist (rate 0.8)
 
 The letter clock runs through the separators for every machine but the walk, whose
 chain carries the phase in g^(L-1); a clock that restarts at every word puts every
@@ -160,6 +161,23 @@ def compose(*perms: Sequence[int]) -> list[int]:
     out = list(range(M))
     for p in perms:
         out = [p[x] for x in out]
+    return out
+
+
+def scribe(words: Words, rate: float, rng: random.Random) -> Words:
+    """Runic orthography applied to the ciphertext: a doubled rune is written once, with
+    probability `rate`, across separators as well; a word emptied by it disappears."""
+    out: Words = []
+    prev = -1
+    for w in words:
+        cw: list[int] = []
+        for r in w:
+            if r == prev and rng.random() < rate:
+                continue
+            cw.append(r)
+            prev = r
+        if cw:
+            out.append(cw)
     return out
 
 
@@ -361,6 +379,28 @@ def zoo(rng: random.Random, words: Words) -> list[tuple[str, Words]]:
         words, word_step=odometer
     )
     results.append(("quagmire, progressive shift +3 per letter, dodge", ct))
+
+    # --- no rule in the cipher at all; the scribe writes a doubled rune once, 80% of the time
+    bases.clear()
+    bases[0] = rng.sample(range(M), M)
+    ct = Machine(walk_median_alphabet, preventer="none").encipher(
+        words, word_step=walk_median_step
+    )
+    results.append(
+        (
+            "walk, untuned g, no rule; scribe writes doubles once at 0.8",
+            scribe(ct, 0.8, rng),
+        )
+    )
+    ct = Machine(keyword2_alphabet, preventer="none", continuous=True).encipher(
+        words, word_step=odometer
+    )
+    results.append(
+        (
+            "quagmire, distinct-letter keyword, no rule; scribe at 0.8",
+            scribe(ct, 0.8, rng),
+        )
+    )
 
     # --- one alphabet per word, no letter clock: the monoalphabet-per-word control
     def mono_alphabet(state: int, _clock: int) -> list[int]:

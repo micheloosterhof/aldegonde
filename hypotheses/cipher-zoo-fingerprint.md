@@ -107,6 +107,16 @@ The body's counts run 399–492, so under the walk the key must keep g's fixed p
 - The chain trap: under the walk, σ may not fix a fixed point of g, or one rune carries
   one letter.
 
+## The scribe rows, added the same day
+
+Two rows put no rule in the cipher and let a copyist write doubled runes once at a rate
+of 0.8 (`scribe()` in the script), after Michel's objection that no author writes a
+preventer that acts four times in five. The rule-free walk reads 0.0042–0.0071 inside
+words and 0.0054–0.0072 at seams over two runs of six keys; the rule-free Quagmire
+0.0049–0.0058 and 0.0070–0.0074. One parameter, outside the cipher, lands both cells,
+and the walk's d4 rises from 0.93 to 1.23, which is the body's 1.19. The reading has its
+own file, `haplography-the-scribe-wrote-doubles-once.md`, with the D8 objection.
+
 ## Corrections after review, 2026-10-25
 
 The first version of this file said tuning was "excluded by the rate" and presented the

@@ -216,3 +216,13 @@ against 0.0063 and 0.0079), or by a relation tuned to those two rates with no pr
 as the walk is fitted. The two cells cannot separate those readings. A side finding: the
 walk's σ chain traps a rune on one plaintext letter whenever σ fixes a fixed point of g
 (16% of random keys), so the body's flat counts constrain σ (`walk_chain_traps.py`).
+
+## 7. The suppression may not be in the cipher at all, 2026-10-25
+
+`hypotheses/haplography-the-scribe-wrote-doubles-once.md`. Runic orthography writes a
+doubled rune once, across word boundaries too. Applied to the ciphertext at a rate near
+0.8 it gives, from a carrier with no rule and no tuning, 0.004–0.007 inside words and
+0.005–0.007 at seams together, and leaks the lag-5 echo into lag 4 as the body does
+(1.19). It is the only reading in which the one-in-five is nobody's design. It has to
+answer D8: the author's own Vigenère pages were written with their doubles. If it holds,
+every key search may drop the dodge and allow one inserted rune per word instead.
