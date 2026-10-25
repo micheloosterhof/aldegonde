@@ -7,15 +7,17 @@ type: hypothesis
 
 The body's doublet suppression is not part of the encryption algorithm. It is **runic
 orthography**: in runic writing a doubled rune is written once, and the convention
-applies across word boundaries as well as inside words. Applied to the ciphertext by
-whoever prepared the exemplar, with about 80% consistency, it produces a suppression that
+applies across word boundaries as well as inside words. The group that enciphered the
+text also drew the pages, so this is a writing convention they chose for their own
+ciphertext, not a copyist's habit. Applied to the ciphertext at about 80%, or at 100%
+with the 86 as their own drawing errors, it produces a suppression that
 is boundary-blind, rune-blind, strictly adjacent and memoryless, and it lands the
 within-word and seam rates together with **one** parameter. The cipher underneath needs no
 dodge, no zero offset and no tuned diagonal.
 
 ## Status
 
-**Status**: unresolved. Proposed 2026-10-25 in answer to the design objection that a
+**Status**: unresolved. Proposed 2026-10-25 (the file name keeps the first wording; read "scribe" as the group's own hand) in answer to the design objection that a
 preventer "that only acts four times in five" is not something an author writes. One
 recorded fact stands against it (below); one recorded file leaves room for it.
 
@@ -51,12 +53,16 @@ beam-search cost comparable to the dodge's lookahead, not worse.
 - **It is the only reading in which the 1/5 is nobody's design.** Under the dodge the
   surviving doublets are the failing phase of a schedule; here they are the copyist's
   lapses, and 80% consistency is an ordinary human rate.
-- **The deletion leaves a trace at lag 4, and the body has it.** A dropped rune moves
-  pairs that were five apart to four apart, so the lag-5 echo leaks into d4. The walk
-  with the scribe reads d4 1.23 against 0.93 without; the body reads 1.19 against 1.01
-  and 1.07 at lags 2 and 3. An inserted null would leak the other way, into d6, where
-  the body reads a deficit (0.71). `null-rune-preventer.md` is the weaker reading for
-  that reason.
+- **The deletion leaks a little of the echo into lag 4, but the leak is below the noise.**
+  Pairs five apart in the exemplar share an alphabet and agree at the plaintext rate;
+  when a doubled rune between them is written once they sit four apart on the page.
+  Tracked through the squash on the walk (20 keys): 8.4% of the page's lag-4 pairs are
+  such pairs and they coincide at 2.5× chance, adding about +0.13 to d4. The body reads
+  1.19 ± 0.09. That is consistent, not evidence: the lag-4 cell varies by ±0.4 from key
+  to key in the walk (it is the g⁴ diagonal on the lag-4 table), and over 30 keys the
+  squash shifted d4 by +0.01 ± 0.10. An earlier version of this file called the body's
+  d4 a match; withdrawn. The written lag-5 echo is diluted from 2.12 to 1.98, still far
+  from the body's 1.43. No lag cell separates the squash from a dodge.
 - `the-preventer-is-in-the-stream.md` shows the suppression crosses written line breaks,
   and says in its own words that this excludes a rule applied by eye at write time but
   "not scribal at all": a convention applied to the exemplar before the page layout
