@@ -125,6 +125,24 @@ decrypts word by word, so a missing rune damages one word only. Length-clocked c
 (the walk's chain depends on L_w) are the fragile ones under deletion: a dropped rune
 changes the length the chain is clocked by.
 
+**The squash does not explain the short-word deficit; it deepens it.** On the author's own
+word lengths, squashing every doubled rune of a chance-level ciphertext moves the marginal
+away from the body: the 2-rune share goes from 0.241 to 0.249 (body 0.159), the 1-rune share
+from 0.041 to 0.056 (body 0.034), the mean length from 3.99 to 3.84 (body 4.43). The hole at
+length 2 stays with the joining of `short-units-are-written-joined.md`, which then has to
+carry about 360 more missing runes.
+
+**What makes the 86 we see, if every double was squashed.** Not the interrupter: a
+passed-through F equals the previous ciphertext rune one time in 29, about 6 doublets in the
+body, and B6 excludes the pass-through anyway; a key-skip that still enciphers the rune makes
+a doublet only at a plaintext double, so 86 would need skips at 28% of positions, which
+destroys the echo. Not triplets, see above. That leaves two scribal readings that no page
+statistic separates: **lapses** (the convention applied 80% of the time; both runes of a
+visible doublet are real) or **dittography** (the convention applied always, and 86 runes
+written twice by copying error, 0.66% of the stream, an ordinary scribal error rate; one rune
+of each visible doublet is spurious). They differ only at decryption, where a solver should
+try both readings at every visible doublet: two letters, or one.
+
 What this carrier still misses, like every other: d5 at 2.1 against 1.43, and the DJU-BEI
 return, which a word-count odometer does not produce at words 1477 and 2926.
 
