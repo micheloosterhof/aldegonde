@@ -402,6 +402,17 @@ def zoo(rng: random.Random, words: Words) -> list[tuple[str, Words]]:
         )
     )
 
+    # --- the simplest carrier: the 5-rune keyword restarts at every word; two dials; no rule; the copyist
+    keyword3 = rng.sample(range(M), 5)
+
+    def restart_alphabet(state: int, clock: int) -> list[int]:
+        d1, d2 = state % M, state // M
+        return compose(shift(keyword3[clock % 5] + d1), key, shift(d2))
+
+    ct = Machine(restart_alphabet, preventer="none").encipher(words, word_step=odometer)
+    results.append(("quagmire, keyword restarting per word, two dials, no rule", ct))
+    results.append(("same, scribe writes doubles once at 0.8", scribe(ct, 0.8, rng)))
+
     # --- one alphabet per word, no letter clock: the monoalphabet-per-word control
     def mono_alphabet(state: int, _clock: int) -> list[int]:
         d1, d2 = state % M, state // M

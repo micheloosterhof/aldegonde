@@ -93,6 +93,41 @@ beam-search cost comparable to the dodge's lookahead, not worse.
    repeat of its left neighbour in the cipher's output.
 3. **The exemplar, if it is ever found, has 447 doublets and the page has 86.**
 
+## Consequences, 2026-10-25
+
+**Not triplets.** Chance triplets in a flat stream of the body's length are about 16; under a
+pair rule (XX → X, so XXX → XX) applied always they would be the only visible doublets, five
+times too few. Under the stricter "never twice in a row" nothing survives. The 86 are the
+copyist's lapses, with at most about nine former triplets under the pair rule; a lapse and a
+former triplet are indistinguishable on the page.
+
+**Decryption works the way the interrupter did.** On the solved Vigenère pages the reader
+cannot tell an enciphered F from a passed-through F; the convention is resolved by reading
+the plaintext. A dropped doubled rune is the same kind of convention with the same cost: a
+word with a missing rune decrypts wrongly from that point, and the reader re-inserts the
+rune where the sense breaks. Michel's point: 3301 has done exactly this before.
+
+**It revives the simplest carrier.** `pure-quagmire-word-restart.md` disproved a 5-rune
+keyword restarting at every word because a dodge at a fixed restart fails at every seam or
+at none. With no dodge that argument has nothing to act on. Scored in the zoo
+(`cipher_zoo_fingerprint.py`, six keys):
+
+| Quagmire, keyword restarts per word, two dials with carry | d1w | seam | d2 d3 d4 | d5 | d5x |
+|---|---|---|---|---|---|
+| no rule, no copyist | 0.0342 | 0.0395 | 0.93 1.01 1.00 | 2.12 | 1.00 |
+| no rule, copyist at 0.8 | **0.0079** | **0.0076** | 0.91 1.07 1.01 | 2.11 | 0.96 |
+| body | 0.0063 | 0.0079 | 1.01 1.07 1.19 | 1.43 | 0.95 |
+
+The restart anchors the echo to the separators (D1, D2) by construction, the two dials
+supply 841 × 5 alphabets (A1), and the copyist supplies both doublet cells. The key is a
+mixed alphabet, a 5-rune keyword and two dial starts, all enumerable, and the carrier
+decrypts word by word, so a missing rune damages one word only. Length-clocked carriers
+(the walk's chain depends on L_w) are the fragile ones under deletion: a dropped rune
+changes the length the chain is clocked by.
+
+What this carrier still misses, like every other: d5 at 2.1 against 1.43, and the DJU-BEI
+return, which a word-count odometer does not produce at words 1477 and 2926.
+
 ## Scripts
 
 - `experiments/cipher_zoo_fingerprint.py` — the scribe rows (`scribe(words, rate, rng)`).
