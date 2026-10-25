@@ -62,23 +62,39 @@ four times, so the column reads the pool of alphabets.
   letter reads 0.0051 / 0.0089, the zero-increment schedule 0.0046 / 0.0035 (dodge) or
   0.0038 / 0.0080 (hold).
 
-**The doubled letter is the natural form of the "single zero offset".** In a Quagmire
-the per-letter shifts are the keyword's letters; a dodge advances to the next keyword
-letter; two equal consecutive letters make that advance a no-op, and the repeat stands.
-With one such pair in a 5-letter keyword the preventer fails one time in five, and the
-body's doublet rate is chance over five, which `stream-cipher-no-repeat.md` recorded as
-P = (1/5)(1/29) with no free parameter. No arrangement of `g` or `K` is needed for the
-rate; the arrangement would only lower it further.
+**The doubled letter is the keyword form of the recorded zero offset.** `quagmire-dodge.md`
+already states the mechanism: the dodge fails exactly when `s_(k+1) = 0`, "two identical
+adjacent alphabets", a property of the schedule. In a Quagmire the shifts are the
+keyword's letters, so a zero step is a doubled adjacent letter in a 5-rune keyword; the
+zoo adds the wording and the numbers, not the mechanism. With one such pair the preventer
+fails one time in five and the rate is chance over five, which `stream-cipher-no-repeat.md`
+recorded as P = (1/5)(1/29).
 
-**Tuning hurts.** The walk with a rare-diagonal `g` suppresses doublets to 0.0027 with no
-preventer at all, and any preventer on top overshoots the body by an order of magnitude.
-If a preventer exists, the within-word relation is untuned; if the relation is tuned,
-there is no room for a preventer. The body's 0.0063 with seams at 0.0079 is the first
-case: an untuned relation and a preventer that fails one time in five.
+**Tuning and the preventer are alternatives on these two cells.** The walk with a
+rare-diagonal `g` and no preventer reads 0.0027 inside words and 0.034 at seams here;
+with `g` and σ fitted to the body's two rates, as `length-clocked-walk.md` does, it
+reads 0.0063 and 0.0079 by construction. An untuned relation with a preventer failing one
+time in five reads the same. The doublet cells cannot separate the two; what cannot be
+had is a tuned relation **and** an always-acting preventer, which overshoots by an order
+of magnitude. The case for the preventer over the tuned relation rests on other rows
+(D3, D5, D9, D11 of `what-any-solution-must-satisfy.md`), not on this table.
 
 **d6 misses everywhere.** The body reads 0.71 on 1,267 pairs; every algorithm reads
 0.85–1.3. `distance-6-has-no-power.md` puts the body's figure at z −1.95, so this is a
 2σ cell, but no construction here produces it.
+
+**Two columns need a caveat.** `kmax` is inflated by the plaintext: the cycled register
+reads 3.3–4.0 even with independent random bases per word, against the body's 2.9, so
+only differences between rows mean anything there. And the walk rows read nIoC
+1.006–1.007 where every other carrier reads 1.000; that is the chain, not the tuned g
+(`experiments/walk_chain_traps.py`). The preimage of a ciphertext rune follows a
+deterministic orbit `x_(w+1) = σ⁻¹ g^-(L-1) x_w`; when σ fixes a point g also fixes, the
+orbit can stop and one rune carries one plaintext letter. Over 300 random keys, 16%
+share such a point and read nIoC 1.025 with rune counts from 8 to 1,035; the rest read
+1.0010 ± 0.0120 with outliers to 1,057, against 1.0002 ± 0.0006 for independent bases.
+The body's counts run 399–492, so under the walk the key must keep g's fixed points off
+σ's short cycles; the directory's fitted key reads kappa_max_z 4.1 against the body's
+2.9 (`fingerprint_battery.py`), which is the same trace seen from the other side.
 
 ## What this adds to the directory
 
@@ -87,12 +103,20 @@ case: an untuned relation and a preventer that fails one time in five.
 - The negative controls in one place: rotors stepping per letter (no echo), a
   progressive shift (periodic, no echo), one alphabet per word (the plaintext's whole
   lag profile passes through), and a keyword of distinct letters (no doublets at all).
-- The reading of the doubled keyword letter as the failure mechanism, which turns the
-  "single zero offset" from a fitted parameter into a property of the keyword.
+- The keyword wording of the zero offset: a doubled adjacent letter in a 5-rune keyword.
+- The chain trap: under the walk, σ may not fix a fixed point of g, or one rune carries
+  one letter.
+
+## Corrections after review, 2026-10-25
+
+The first version of this file said tuning was "excluded by the rate" and presented the
+doubled keyword letter as a new mechanism; both are withdrawn above. It also said every
+row read nIoC 1.000; the walk rows did not, and the reason is now recorded.
 
 ## Scripts
 
 - `experiments/cipher_zoo_fingerprint.py`
+- `experiments/walk_chain_traps.py`
 
 ## Related
 

@@ -210,6 +210,9 @@ Each has its own file; six key-free channels were closed on the way
 scored on the body's cells. The letter clock owns the lag-5 echo, the chain is invisible,
 and the preventer owns the doublet cells, where every always-acting preventer lands an
 order of magnitude too low. The body's rates are reached only by a preventer that fails
-one time in five, and the natural carrier of that failure is a 5-letter Quagmire keyword
-with a doubled letter: 0.0051 inside words and 0.0089 at seams against 0.0063 and 0.0079.
-Tuning the within-word relation is then not merely unnecessary but excluded by the rate.
+one time in five (the zero offset of `quagmire-dodge.md`, which in keyword terms is a
+doubled adjacent letter in a 5-rune keyword: 0.0051 inside words and 0.0089 at seams
+against 0.0063 and 0.0079), or by a relation tuned to those two rates with no preventer,
+as the walk is fitted. The two cells cannot separate those readings. A side finding: the
+walk's σ chain traps a rune on one plaintext letter whenever σ fixes a fixed point of g
+(16% of random keys), so the body's flat counts constrain σ (`walk_chain_traps.py`).
