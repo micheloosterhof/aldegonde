@@ -119,3 +119,38 @@ This is the same conclusion as `alphabet_count_bound.py`'s ≥ 949 alphabets, re
 the plainest possible observation. It excludes far more than the autokey: any scheme in
 which the same plaintext word enciphers the same way, whenever its context recurs, is
 dead.
+
+## The Gematria-sum forms, at full power (October 2026)
+
+`experiments/base_by_previous_cipher_sum.py`
+
+The whole-previous-block row above is the general test and the weak one (742 pairs). A
+sum has only 29 values, so grouping blocks by the previous ciphertext block's Gematria
+Primus sum puts hundreds of thousands of rune pairs at the same within-block phase into
+shared-alphabet buckets. Michel's question was whether a word-level autokey could be
+ciphertext-driven rather than plaintext-driven; a plaintext-driven compact state is already
+dead by the alphabet count and the repeat census, and a ciphertext-driven one is public,
+so it is tested directly. The running-sum rows cover the composed public form
+base_w = base₀ ∘ T^(cumulative index).
+
+| state of a block | pairs | matched | × chance | z vs chance | z vs a shared base |
+|---|---|---|---|---|---|
+| previous block GP sum mod 29 | 658,951 | 22,487 | 0.990 | −1.6 | −94 |
+| previous block GP sum mod 5 | 3,808,981 | 130,661 | 0.995 | −1.9 | −223 |
+| previous block GP sum mod 28 / 30 / 2 | 681,594 / 642,606 / 9,518,964 | | 1.001 / 1.000 / 0.999 | +0.1 / 0.0 / −0.5 | −94 / −91 / −350 |
+| previous block GP sum, raw | 47,297 | 1,662 | 1.019 | +0.8 | −24 |
+| previous block index sum mod 29 / mod 5 | 658,707 / 3,806,443 | | 1.002 / 1.001 | +0.4 / +0.5 | −92 / −221 |
+| running GP sum mod 5 / 29 / 58 / 87 / 145 / 290 | 3.8M … 67,185 | | 0.995–1.025 | −2.0 to +1.2 | −223 to −28 |
+
+Planted control — prose re-cut to the body's block lengths, 29 random bases indexed by
+the previous ciphertext block's GP sum mod 29, the same g-cycle inside blocks — reads
+**1.765 × chance, z = +117** on the matching row, and its side channels (the other
+moduli, the index sums, the running sums) all lift to 1.02–1.05 at z = +2 to +15. The body
+shows neither the main signal nor any side channel.
+
+So the per-block alphabet set is not a function of the previous ciphertext block's sum
+under any modulus, in either rune numbering, and not of a running sum of the ciphertext
+either. With the rows above, a ciphertext autokey at the word level is excluded in every
+bounded-memory form the page could supply; what survives is the composed form with secret
+generators, which is a keyed walk whose selector happens to be public, not an autokey the
+solver can follow.
