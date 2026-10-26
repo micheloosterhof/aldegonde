@@ -438,3 +438,27 @@ rate carries no information beyond the pooled one. The pooled figure (0.0492 aga
 0.0550, −1.2σ) stands as the only residual, and the thin plaintext control that made the
 trend look anomalous is superseded by the prose reference. This retires the gradient as a
 lead and the per-length φ5 estimate it was going to motivate.
+
+### Universal or subset sharing: not decidable here (October 2026)
+
+`experiments/echo_dispersion.py`
+
+Two readings give the pooled 0.0492: every block shares five apart and the preventer's
+drift attenuates the relation uniformly ((1−q)⁵ = 0.841 at q = 0.034); or a fraction f
+of blocks share fully at English's rate and the rest sit at chance, f = 0.55 pinned by
+the pooled rate. The spread of per-block match counts is the only text-only statistic
+that could separate them. Both arms simulated from prose words drawn to the body's own
+806 blocks of six runes or more, 2,000 draws each:
+
+| statistic | body | universal arm | subset arm | arms apart |
+|---|---|---|---|---|
+| D, dispersion index | 1.094 | 1.027 ± 0.036 | 1.030 ± 0.036 | 0.08σ |
+| blocks with ≥ 2 matches | 9 | 10.8 ± 3.3 | 8.6 ± 2.9 | 0.72σ |
+| blocks with ≥ 3 matches | 2 | 0.96 ± 1.0 | 0.80 ± 0.9 | 0.17σ |
+
+The arms are indistinguishable: a subset model at f = 0.55 produces the same per-block
+spread as uniform attenuation, because at 1–9 pairs per block and a rate near 0.05 the
+plaintext's own heterogeneity dominates both. The body's D sits +1.8σ above both arms —
+the same distance from each, so it says nothing about the choice. Reaching 2σ of
+separation on W2 would need about eight times the blocks. The question is recorded as
+unanswerable from the ciphertext, not as open.
