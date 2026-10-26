@@ -114,7 +114,7 @@ order 5 on F_29 are translations, which the difference test above already exclud
 
 ## The thin table, run anyway (October 2026)
 
-`experiments/lag5_full_table.py`
+`experiments/lag_full_table.py`
 
 The difference and ratio tests above cover the structured alternatives to equality. The
 unstructured one — the full 29×29 table of (c_i, c_{i+5}) on within-word pairs — had not
@@ -138,3 +138,31 @@ So at lag 5 the only thing the ciphertext does is repeat a rune inside a word. N
 pairs one rune with a different one at any rate above chance, within words, across them,
 or overall. The Scope section's reservation about cross-word pairs is discharged for this
 lag: the cross-word table is as flat as the within-word one.
+
+### Every other lag, and the pair after a match (October 2026)
+
+`experiments/lag_full_table.py --lag k`, `experiments/lag5_match_conditional_table.py`
+
+The same three readings at lags 1, 2, 3, 4, 6 and 7, same null, 4,000 trials. Only the
+"chi² all cells" row at lag 1 departs, and that is the doublet diagonal already on record
+(within-word z = +5.71, whole-stream +8.41); with the diagonal set aside lag 1 is flat too.
+
+| lag | scope | pairs | diagonal | χ² off-diagonal z | best off-diagonal relation z |
+|---|---|---|---|---|---|
+| 1 | within / cross / whole | 10,028 / 2,918 / 12,946 | 63 / 23 / 86 | −0.33 / +0.51 / +0.73 | +0.34 / +1.90 / +1.86 |
+| 2 | within / cross / whole | 7,199 / 5,737 / 12,936 | 250 / 191 / 441 | −0.18 / −0.10 / −0.06 | +0.06 / +0.34 / −0.03 |
+| 3 | within / cross / whole | 4,835 / 8,091 / 12,926 | 179 / 260 / 439 | −1.66 / +0.55 / −0.83 | −1.18 / −1.06 / −0.84 |
+| 4 | within / cross / whole | 3,197 / 9,719 / 12,916 | 131 / 327 / 458 | +0.31 / +0.33 / +0.88 | −0.82 / −1.07 / −0.22 |
+| 6 | within / cross / whole | 1,267 / 11,629 / 12,896 | 31 / 423 / 454 | +1.04 / −0.58 / −0.99 | +1.09 / −2.13 / −2.50 |
+| 7 | within / cross / whole | 713 / 12,173 / 12,886 | 30 / 416 / 446 | −0.39 / +1.52 / +1.46 | −1.47 / −0.64 / −0.86 |
+
+Thirty-six off-diagonal cells; the largest |z| is 2.50, a deficit at lag 6 whole-stream,
+which is what the largest of 36 null draws looks like. Under Burnside this could not
+have come out otherwise — a transitive base family of prime degree is affine or
+2-transitive, and the affine case is already excluded — so these rows confirm the
+premise in its unstructured form and add nothing to it.
+
+The pair that follows a lag-5 match, (c_{i+1}, c_{i+6}) given c_i = c_{i+5}, is the
+off-diagonal face of the d1 pairing. Its diagonal is the known pairing (9 of 66 within
+words, 29 of 477 whole-stream); off the diagonal it is flat (χ² z = +0.89 / +0.63, best
+relation z = −1.37 / −0.60). A match is continued by another match or by nothing.

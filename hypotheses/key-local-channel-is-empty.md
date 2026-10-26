@@ -739,3 +739,18 @@ survives, and MI measures independence rather than that ratio. The ratio test in
 So there is no order-k statistic left to try. The classification rests on measured
 premises — transitive, not Frobenius, not affine — and attacking one of those is the only
 route, not a higher-order local statistic.
+
+## The seam reach family, off the diagonal (October 2026)
+
+`experiments/seam_reach_tables.py`
+
+The 25 reaches above were tested for equality only. Each now gets the full 29×29 table
+against a pairing-shuffle null (second rune permuted across the reach's pairs, 2,000
+trials): independence χ² over all cells, over the off-diagonal cells, and the best
+fixed-point-free relation. The (0,0) seam shows its doublet deficit in the all-cells row
+(z = +2.05) and nothing else. Over the other 24 reaches, 412 to 2,820 pairs each, the
+largest |z| is 1.68 (off-diagonal χ² at (1,1)) against an expected maximum of about 2.2
+for 24 null draws; the best-relation statistic peaks at |z| = 1.41.
+
+So no seam reach pairs one rune with a different one at any rate above chance. The
+σ-family is empty off the diagonal as well as on it.
