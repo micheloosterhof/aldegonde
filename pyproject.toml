@@ -31,7 +31,7 @@ dev = [
   "build==1.6.1",
   "coverage==7.16.2",
   "hypothesis>=6.100.0",
-  "pipdeptree==4.2.5",
+  "pipdeptree==4.2.7",
   "pytest==9.1.1",
   "pytest-cov==7.1.0",
   "ruff==0.16.10",
