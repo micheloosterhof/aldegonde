@@ -327,3 +327,56 @@ the lone unexplained lag-5 count excess — but the July 2026 anatomy shows
 it carries no geometric or key-equation structure (most of its legs cannot
 be walk alphabet-coincidences, and no σ-relation cell is enriched), so it
 is kept as a watch-item compatible with scan noise, not an attack surface.
+
+## The frame, re-priced and featureless (October 2026)
+
+`experiments/frame_count_baseline.py`, `experiments/frame_feature_nulls.py`
+
+Three questions about the 28 frames, each with its null built before the events were
+looked at.
+
+**Is the baseline right?** Yes. With within-word legs at the LP's echo rate (0.0492) and
+cross-word legs at chance, independent matches give 17.5 frames analytically and
+17.5 ± 4.3 by simulation; the record's 17.7 stands. P(≥ 28) = 0.016, and the d1 pairing
+reads P = 0.012 the same way. Separations 2, 3, 6, 7 and 8 sit at their expectations.
+
+**Does running prose make frames across word boundaries?** No. Over 229 windows of 2,928
+consecutive words from nine books in book spelling, each against its own uniform-scatter
+null, frames run at 0.94× overall: 1.29× inside one word (z +3.3), 0.94× across one
+boundary (z −2.4), 0.91× across two (z −5.6), 0.95× across three or more. The earlier
+"absent in plaintext" verdict was within-word only; it now holds at every boundary count.
+The LP's frames concentrate at b = 2 (14 against 8.3, z +2.0), where prose is furthest
+below chance. The adjacent pairing, by contrast, is elevated in prose at every b
+(1.16–1.60×), which is the morphology already credited for the d1 face.
+
+**Do the frames share a feature?** No. Six features fixed in advance (section 4;
+a line-initial rune among the four; a word in the span closing with a mark other than ①,
+page breaks included; the first rune word-initial; S among x, y; both legs cross-word),
+each scored as the count among the 28 against the pooled rate in three nulls that all
+produce frames in the LP's own layout: 1,000 doublet-preserving shuffles of the rune
+stream with word lengths, lines and marks held; 400 draws of the doublet-dodging walk on
+prose re-cut to the LP's word lengths; and the 79 pairs of real matches at the control
+separations {2, 3, 6, 7, 8}.
+
+| feature | of 28 | shuffle rate / P | walk rate / P | case-control rate / P |
+|---|---|---|---|---|
+| section 4 | 4 | 0.147 / 0.61 | 0.142 / 0.58 | 0.304 / 0.99 |
+| line-initial rune | 8 | 0.185 / 0.13 | 0.182 / 0.12 | 0.253 / 0.42 |
+| marked span | 4 | 0.143 / 0.58 | 0.139 / 0.56 | 0.203 / 0.85 |
+| word-initial start | 7 | 0.229 / 0.47 | 0.236 / 0.50 | 0.241 / 0.53 |
+| S among x, y | 0 | 0.065 / 1.0 | 0.063 / 1.0 | 0.114 / 1.0 |
+| both legs cross-word | 18 | 0.701 / 0.81 | 0.572 / 0.29 | 0.696 / 0.80 |
+
+The lowest raw P is 0.13 before the six-way correction, and the matched values x, y are
+distributed as in the shuffle (χ² 27.8 on 28 df, p = 0.48). The three nulls agree on
+every row. Power, counted beforehand: with about ten excess events among 28, a feature
+shows only if it is rare (base rate ≲ 0.25) and near-universal among the excess; nothing
+of that kind is present.
+
+**The count under the walk.** The shuffle null, which destroys the echo, gives 15.2 ± 3.9
+frames and P(≥ 28) = 0.002. The walk itself gives **19.1 ± 4.8 and P(≥ 28) = 0.047** —
+higher than the analytic 17.5 because the walk's echo on prose runs at prose's within-word
+d5 (≈ 0.059) rather than the LP's 0.049. Either way the frame is a one-cell excess of
+about two sigma in a family of seven separations, with no plaintext source, no feature,
+and no key-equation structure (the anatomy above). It is now priced rather than
+unexplained, and it is not an attack surface.
