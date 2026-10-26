@@ -111,3 +111,30 @@ non-affine g scrambles those classes. The conclusion of this file is unaffected:
 extra bit is not a plaintext statistic unless g is affine, and the only affine maps of
 order 5 on F_29 are translations, which the difference test above already excludes.
 
+
+## The thin table, run anyway (October 2026)
+
+`experiments/lag5_full_table.py`
+
+The difference and ratio tests above cover the structured alternatives to equality. The
+unstructured one — the full 29×29 table of (c_i, c_{i+5}) on within-word pairs — had not
+been run, because 2,073 pairs over 784 cells is about 2.6 per cell. Run with a pairing-shuffle
+null (the second rune permuted across pairs, both marginals kept, 4,000 trials), it is flat
+in every scope and on every reading:
+
+| scope | pairs | diagonal | χ² all cells, z | χ² off-diagonal, z | best off-diagonal relation, z | top cell, Bonferroni ×812 |
+|---|---|---|---|---|---|---|
+| within-word | 2,073 | 102 (0.0492) | +0.50 | −0.28 | +0.91 | 9 vs 2.1, P = 0.27 |
+| cross-word | 10,833 | 375 (0.0346) | +0.11 | −0.37 | −0.92 | 26 vs 14.0, P = 1 |
+| whole stream | 12,906 | 477 (0.0370) | −0.35 | −0.57 | −1.38 | 29 vs 15.5, P = 1 |
+
+The "best off-diagonal relation" is the assignment maximum: the fixed-point-free permutation
+π collecting the most pairs with c_i = π(c_{i+5}). It is the concentrated test for "some
+other fixed relation at lag 5", and within words it collects 170 pairs against a null of
+165.7 ± 4.8. Cross-word pairs here exclude the 45 that straddle a section boundary, which
+is why the count is 10,833 rather than the 10,878 in `within-word-d5-coincidence.md`.
+
+So at lag 5 the only thing the ciphertext does is repeat a rune inside a word. Nothing
+pairs one rune with a different one at any rate above chance, within words, across them,
+or overall. The Scope section's reservation about cross-word pairs is discharged for this
+lag: the cross-word table is as flat as the within-word one.
