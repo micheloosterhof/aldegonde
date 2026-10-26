@@ -227,3 +227,29 @@ ordinary draw from the gated model. The 1/5 acceptance therefore cannot come fro
 tied to the block-level period-5 structure; if it is a gate at all, it belongs to a
 stream-level clock that ignores blocks — the same conclusion the boundary-blindness
 reaches from the other side.
+
+## The total suppression against the phase shares (October 2026)
+
+Michel asked whether the total suppression factor matches the occupancy of one phase.
+Measured: within blocks 63/10,028 → 0.182 ± 0.023 of chance; whole stream 86/12,955 →
+0.192 ± 0.021.
+
+| candidate | share | distance from 0.192 ± 0.021 |
+|---|---|---|
+| 1/5 | 0.200 | 0.4σ |
+| pairs ending at phase 3 | 0.182 | 0.5σ |
+| runes at phase 2 | 0.209 | 0.8σ |
+| pairs ending at phases 0 + 4 | 0.208 | 0.8σ |
+| pairs ending at phase 4 | 0.122 | 3.3σ |
+| pairs ending at phase 2 | 0.270 | 3.7σ |
+| runes at phase 0 | 0.292 | 4.8σ |
+
+The total lines up with phase 3's pair share, with 1/5, with phase 2's rune share and with
+phases 0 + 4 together, all within a sigma: 86 doublets give the ratio a ±12% error and the
+shares are spaced about 0.1 apart, so anything between 0.15 and 0.23 "lines up". And the
+only mechanism that would give such a match a meaning — doublets admitted at the phase
+whose share it matches — is the gate the per-phase table excludes. A gate produces the
+right total only by producing the wrong distribution. The per-phase doublet ratios
+(1.11, 0.84, 1.29, 0.79, 1.04) are also uncorrelated with the shares (r = +0.17, p = 0.78),
+and a rate proportional to share is disfavoured (χ² 10.7 on 4 df, p = 0.03). The 1/5 stays
+a one-sigma numerical coincidence among several.

@@ -66,3 +66,28 @@ measurement that supports it at short block distances, where the pooled test cou
 - `lag5-digraph-is-inside-the-word.md` — the pooled word-aligned test this sharpens.
 - `rotor-machine-compact-state.md`, `lengths-do-not-steer-the-key.md`,
   `dot-counts-do-not-drive-the-key.md` — public triggers tested by bucket coincidence.
+
+## What the record says about how the per-block sets relate (October 2026)
+
+The question behind the test above — one set per block, or related sets — has a model
+answer and a measured one. The model assumes a relation (`base_{w+1} = base_w ∘ g^a ∘ σ`,
+one σ conjugated by a g-power set by the block length), because a finite key needs one.
+The measurements say the relation, whatever it is, is indistinguishable from fresh:
+
+| question | result | file |
+|---|---|---|
+| any two blocks sharing an alphabet set at a detectable rate? | no: 13.5M block pairs at matched positions coincide at 0.0344, chance 0.0345 | `lag5-digraph-is-inside-the-word.md` |
+| consecutive blocks sharing? | no: this file, adjacent 0.0373 against 0.0569 for two-block runs | — |
+| how many effective alphabets? | ≥ 949 from the flat IoC; ≥ ~300 bases from the no-reuse depth | `flat-ioc.md`, `two-rune-depth-no-base-reuse.md` |
+| the step a power of g (five alphabets in all)? | no: within-class IoC 0.999 where 1.6 is required | `key-local-channel-is-empty.md` §6 |
+| the re-basing a shift or affine map? | no: χ² 89.7 against 620–1,252 for planted affine | `base-is-not-affine.md` |
+| the group the bases live in? | A₂₉ or S₂₉ | `base-family-is-the-symmetric-group.md` |
+| the same relation in every block? | disfavoured at e¹⁰ (C9) | `within-word-relation-is-position-flat.md` |
+| any positive sign of relatedness? | one candidate base return, DJU-BEI (chance 0.00037) | `dju-bei-*.md` |
+
+Every small family is excluded, and the surviving one — related by a generic permutation
+step — is observationally identical to new. The reason is structural: a cross-block pair
+exposes `g^{-j} · S · g^{j'}` with S a long product, a generic permutation's diagonal is
+about one fixed point in 29, so cross-block equality sits at 1/29 whether or not the
+blocks are related (`key-construction-is-unmeasurable.md`). Relatedness is reachable only
+key-globally: a crib propagated through base₀, or a structured enumeration of (g, σ).

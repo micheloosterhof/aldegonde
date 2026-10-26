@@ -207,3 +207,40 @@ for the same reason: the base absorbs the value.
 four walks, carrying a per-block base and a letter step of order 5 and nothing else, give
 suppression factors of **0.74 to 1.40** where the body gives **0.19**. A walk does not
 suppress doublets. Something in the mechanism does.
+
+## Can period 5 give the suppression without a rule? (October 2026)
+
+Michel's question: can the low doublet rate fall out of a period-5 encipherment naturally,
+with no avoider. Out of the alphabets' choice, yes; out of period 5 itself, no; and the text
+cannot tell the static version from a runtime rule.
+
+**Yes from the alphabets.** By the argument above the rate is the plaintext bigram mass on
+the graph of each adjacent-alphabet relation. A period-5 cipher has four such relations
+inside a block; if they were chosen against the bigram table the rate is low with no rule
+at run time, and English has enough empty cells for one permutation to reach well under
+0.0063 (the record tunes to 0.0001). In the progressive form alphabet_j = base ∘ g^j all
+four relations are the same g, so one tuned permutation does it everywhere. The dodge
+rule (`doublet-dodge-walk.md`) is the other way of paying the same ~7 bits.
+
+**No from period 5 as such.** The author's own interrupted-Vigenère pages, generic
+alphabets, return doublets to chance (0.89×, z −0.54; the testbed table above). The body
+is 0.18×.
+
+**Static tuning against a runtime preventer — everything the text offers, all weak:**
+
+| observation | static tuned relation | runtime preventer |
+|---|---|---|
+| seam rate equals the within-block rate (0.0079 vs 0.0063, z +0.87) | the cross-block relation is a different permutation per length class; each must be tuned too, a 13–34-bit coincidence (`key-local-channel-is-empty.md`) | free: one rule on adjacent output |
+| cross-seam 4×4: only the adjacent cell suppressed (−16.3), the rest at chance (`the-preventer-is-strictly-adjacent.md`) | consistent | predicted exactly |
+| d6 = 0.0245 (−1.95σ, `distance-6-has-no-power.md`) | predicted: distance 6 is distance 1 mod 5 | not predicted: a rule on adjacent output leaves d6 at chance |
+| d5 against English −2.0σ, or −1.2σ with clock drift (`within-word-d5-coincidence.md`) | no drift | drift explains the deficit |
+| surviving doublets late in blocks, 0.553 (`doublet-dodge-walk.md`) | 0.40 expected | plaintext doubles survive late |
+| suppression crosses lines, marks, page breaks identically (`the-preventer-is-in-the-stream.md`) | consistent | consistent |
+| doublets at every within-block phase at one rate; seam 23 (`period5-doublet-linkage.md`, October 2026) | consistent | consistent for a stream clock; excludes a gate on a block-reset clock |
+
+Each measured discriminator is one to two sigma and they point both ways: d6 for static
+tuning, the survivors' positions and the drift for a preventer. The fork was resolved
+toward the preventer on the seam's parsimony, not on a measurement, and a hybrid is not
+excluded. What a static design does not get for free is the seam: a per-block re-keyed
+cipher has a different adjacent relation at every boundary, and the text says that relation
+is suppressed just as hard in every length class.
