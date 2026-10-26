@@ -191,3 +191,39 @@ refuted, and no keyed 5×5 square (single rotation, any plausible key, lexicon o
 register bigrams) reproduces it. What remains is to find the actual rule for *g*
 that yields a rune-flat, phase-flat suppression at exactly this level alongside
 the d5 leak.
+
+## Phase gating under a per-block clock reset is excluded (October 2026)
+
+`experiments/doublet_phase_gate_by_word.py`
+
+Michel's observation: if the clock restarts at each block, a rune's phase is its position
+mod 5 and the phases are far from equally represented — so a gate admitting doublets at
+one phase would show in the doublet profile by position and by block length, and the
+position test withdrawn above regains its power under this convention.
+
+The census (within-block runes and the adjacent pairs ending at each phase):
+
+| phase | runes | share | pairs ending here | share | doublets | rate |
+|---|---|---|---|---|---|---|
+| 0 | 3,787 | 0.292 | 859 | 0.086 | 6 | 0.0070 |
+| 1 | 3,408 | 0.263 | 3,408 | 0.340 | 18 | 0.0053 |
+| 2 | 2,711 | 0.209 | 2,711 | 0.270 | 22 | 0.0081 |
+| 3 | 1,822 | 0.141 | 1,822 | 0.182 | 9 | 0.0049 |
+| 4 | 1,228 | 0.095 | 1,228 | 0.122 | 8 | 0.0065 |
+
+Doublets occur at every phase at one rate (χ² 2.6 on 4 df against the pooled 0.0063).
+A gate at any single phase forbids the 41–57 doublets the body holds at the other four,
+predicts 30–118 at its own phase where the body has 6–22, and at the seam — whose second
+rune is at phase 0 under a reset — predicts 100.6 doublets for a phase-0 gate or none for
+any other, against 23 observed. By block length the rate is flat too (z between −1.1
+and +1.1 at every length from 2 to 10+), where a gate at phase 4 would empty every block
+shorter than five runes (23 doublets observed in 3,459 pairs) and a gate at phase 0 every
+block shorter than six (30 in 4,731).
+
+**So under a block-reset clock the doublets are not phase-gated, and the withdrawn test
+above is restored with power for that convention.** What remains untestable is the
+continuous-clock reading, where the phase drifts off position and the body's profile is an
+ordinary draw from the gated model. The 1/5 acceptance therefore cannot come from a gate
+tied to the block-level period-5 structure; if it is a gate at all, it belongs to a
+stream-level clock that ignores blocks — the same conclusion the boundary-blindness
+reaches from the other side.
