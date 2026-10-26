@@ -462,3 +462,14 @@ plaintext's own heterogeneity dominates both. The body's D sits +1.8σ above bot
 the same distance from each, so it says nothing about the choice. Reaching 2σ of
 separation on W2 would need about eight times the blocks. The question is recorded as
 unanswerable from the ciphertext, not as open.
+
+### The sharing is the same in every layout context (October 2026)
+
+`experiments/echo_by_context.py`
+
+The within-block d5 rate by the glyph closing the block (① 0.0500 on 1,941 pairs, ④
+0.0390 on 77), by the glyph before it (① 0.0497, ④ 0.0522), by whether the block wraps a
+line (one line 0.0439 on 1,457; wraps 0.0617 on 616, χ² 2.8, p = 0.10), by whether it opens
+a line (0.0505 / 0.0301 on 133, p = 0.30) and by section (χ² 4.1 on 8 df, p = 0.85). Nothing
+the scribe wrote switches the sharing on or off; it is one rate everywhere the corpus can
+check.
