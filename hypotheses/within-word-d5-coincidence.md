@@ -412,3 +412,29 @@ requires.
 **Weak point:** q is not measured directly. At q = 0 the deficit is −2.04σ. The conclusion
 needs the drift to be real, which `the-preventer-is-in-the-stream.md` establishes
 independently.
+
+### The gradient is English's own (October 2026)
+
+`experiments/echo_gradient_vs_english.py`
+
+The rise with block length recorded above was called suggestive because the author's own
+plaintext shows no trend on 261 pairs. Prose does: English's within-word d5 climbs from
+0.040 at six runes to 0.071 at nine. Class by class, nine Gutenberg registers in book
+spelling, drifted by (1−q)⁵ at q = 0.034:
+
+| length | body pairs | body | drifted English | body / English | z |
+|---|---|---|---|---|---|
+| 6 | 252 | 0.0317 | 0.0387 | 0.82 | −0.63 |
+| 7 | 428 | 0.0444 | 0.0504 | 0.88 | −0.60 |
+| 8 | 477 | 0.0461 | 0.0580 | 0.79 | −1.24 |
+| 9 | 308 | 0.0487 | 0.0648 | 0.75 | −1.31 |
+| 10–11 | 423 | 0.0638 | 0.0585 | 1.09 | +0.44 |
+| 12+ | 185 | 0.0595 | 0.0559 | 1.06 | +0.20 |
+
+χ² = 4.2 on 6 df against drifted English. The body's slope is +0.0046 ± 0.0024 per rune,
+English's +0.0028; the difference is z = +0.76. **The gradient is inherited: the
+shared-alphabet window reads English at every block length**, and the length-stratified
+rate carries no information beyond the pooled one. The pooled figure (0.0492 against
+0.0550, −1.2σ) stands as the only residual, and the thin plaintext control that made the
+trend look anomalous is superseded by the prose reference. This retires the gradient as a
+lead and the per-length φ5 estimate it was going to motivate.
