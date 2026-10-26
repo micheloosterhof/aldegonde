@@ -258,3 +258,63 @@ spent, not excluded by a structural argument.
 **Side-finding, independent of all of this.** The joining rate that brings the author's
 two-rune share onto the body's is **q = 0.40**, the rate `short-units-are-written-joined.md`
 fitted from the length histogram. Two unrelated statistics, the same rate.
+
+## The titles: a non-length channel, and it leans the wrong way for English order (October 2026)
+
+`experiments/title_word_order.py`
+
+The rubricated titles are the one place where plaintext order is partly known without a
+key. The author's own titles put an article or preposition first — A WARNING, A KOAN,
+THE LOSS OF DIVINITY, AN INSTRUCTION, AN END: in runes A is one and THE, OF, AN are two —
+so a one- or two-rune block in a title span is almost certainly such a word, and where it
+sits is an order statistic that no length *distribution* argument can neutralise. Under a
+per-span shuffle it lands in a uniformly random slot.
+
+The seventeen spans' shapes (from the master transcription):
+
+| page | shape | short word first? |
+|---|---|---|
+| 0 | (8, 5) | — crib, matched by this shape, not counted |
+| 3 | (2, 11, 3) | yes |
+| 3 | (3) | — |
+| 6 | (4, 1, 4, 2) | **no** |
+| 7 | (2, 4, 3, 2, 3) | yes |
+| 8 | (4, 8) | — |
+| 15 | (4, 5, 4, 2, 5) | **no** |
+| 23 | (2, 6, 3, 5) | yes |
+| 27 | (3, 12, 4) | — |
+| 33 | (2, 8) | yes |
+| 33 | (3, 5) | — |
+| 39, 40, 54 | (3), (3, 5), (1) | — |
+| 53 | (5, 4, 4, 11, 2, 3, 2, 6, 5, 5, 2, 2) | **no** |
+| 56, 57 | (2, 3) AN END, (7) PARABLE | yes, — : outside the body |
+
+Seven body spans carry the test; the short word opens **4 of 7**. A shuffle expects 2.52
+(exact Poisson-binomial over the spans' own sizes), P(≥ 4) = 0.21. The author's titles
+read 5 of 5. Likelihood of 4 of 7 against the shuffle's 0.153:
+
+| in-order rate r | P(4 of 7) | ratio to shuffle |
+|---|---|---|
+| 0.95 (the author's own titles) | 0.004 | 0.02 |
+| 0.85 | 0.062 | 0.40 |
+| 0.70 | 0.227 | 1.5 |
+| 0.50 | 0.273 | 1.8 |
+
+**Read plainly: the body's titles do not behave like the author's titles in order** —
+three of seven have their short word interior (pages 6, 15 and the twelve-word span on
+53), where his five have none. Against a shuffle they are an ordinary draw (P = 0.21).
+The result leans toward "not in the author's order" at about 40:1 against his own rate,
+and at nothing against a looser English-title rate where interior articles are common.
+
+What it does not settle. Seven spans are seven; a one-rune block interior to page 6's
+(4, 1, 4, 2) may be an A inside an ordinary English phrase; page 53's twelve words may be
+an epigraph rather than a heading; and a short word moved inward by a shuffle can be
+joined to its predecessor and vanish, which would make the shuffle arm read *higher* than
+2.52 and the body less unlike it. The two spans outside the body (AN END, PARABLE) are in
+order, as their decryptions already showed — the body is bracketed by in-order text on
+both sides.
+
+So the titles give the first non-length reading on the question and it does not rescue
+English order; it is consistent with a per-span permutation and with "the marks are not
+sentence marks" alike, and the fork stands. Reading the titles' plaintext — which needs
+the key — would settle it in one page.
