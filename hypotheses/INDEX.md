@@ -8,7 +8,7 @@ proposed mechanisms scored against them.
 
 | File | Feature | Status |
 |---|---|---|
-| [alphabet-sets-do-not-persist-across-blocks.md](alphabet-sets-do-not-persist-across-blocks.md) | The Alphabet Set Does Not Persist Across Blocks | confirmed (measurement): matched-position coincidence between blocks D apart is at chance for every D (adjacent 0.0373 against 0.0569 for two-block runs, -8 sigma; lag 5 across one boundary 0.0328 against 0.047, -5.7 sigma); any trigger switches the set at >= 85% of boundaries |
+| [alphabet-sets-do-not-persist-across-blocks.md](alphabet-sets-do-not-persist-across-blocks.md) | The Alphabet Set Does Not Persist Across Blocks | confirmed (measurement): matched-position coincidence between blocks D apart is at chance for every D (adjacent 0.0373 against 0.0569 for two-block runs, -8 sigma; lag 5 across one boundary 0.0328 against 0.047, -5.7 sigma); any trigger switches the set at >= 85% of boundaries; no period in blocks either -- every distance 1..600 scanned, all positions and phase 0 alone, max z 3.5 below the 3.9 bar where a cycle would give +20 |
 | [aligned-kappa-no-reset.md](aligned-kappa-no-reset.md) | No Shared Keystream Reset at Page or Section Boundaries | confirmed (characterization) |
 | [bigram-ioc.md](bigram-ioc.md) | Off-Diagonal Bigrams are Uniform | confirmed (characterization) |
 | [collision-hunt-single-constraint.md](collision-hunt-single-constraint.md) | The Ciphertext Yields One Cross-Word Constraint (DJU-BEI); the Wiring is Starved | confirmed (characterization) for the repeat census itself |
