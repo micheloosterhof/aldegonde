@@ -210,12 +210,38 @@ preferred ordering (shuffle, then cipher) the survivor is a base keyed on the pr
 keyword alphabet built from a dictionary word has about 12 bits, not 98, and the chain
 can be followed one word at a time once g is known.
 
-**A cheap test, not yet run.** The DIVINITY WITHIN title gives one known adjacent pair in
-the visible order (if the two words were not swapped by the shuffle). Under the
-hypothesis WITHIN's base is f(DIVINITY) for a construction f, and its first rune has no
-g, so f(DIVINITY) must send W to WITHIN's first ciphertext rune: one 1/29 check per
-construction. DIVINITY's own base is f(previous word), scanned over a dictionary: runes 0
-and 5 are g-free (g⁵ = 1), and runes 1 and 3 are I in both words, so g(I) and g³(I) read
-off DIVINITY must agree with those read off WITHIN. Four 1/29 checks per candidate, about
-29⁻⁴ × 3,000 ≈ 0.004 false survivors per construction, with the preventer allowed one
-fire. Assumes the clock restarts at phase 0 at each word, as the walk does.
+**The crib test (October 2026, `experiments/previous_word_keyed_alphabet_crib.py`).**
+The DIVINITY WITHIN title gives one known adjacent pair in the visible order. Under the
+hypothesis WITHIN's base is f(DIVINITY) and its first rune has no g, so f(DIVINITY) must
+send W to WITHIN's first ciphertext rune. DIVINITY's base is f(P) for the unknown word P
+before it, scanned over 3,070 words (the 3,000 most frequent English words and the
+register vocabulary). With the clock restarting at each word, DIVINITY's runes 0 and 5
+are g-free and its runes 1, 3 and 4 (I, I, N) share position and plaintext with WITHIN's,
+so the g-values read off the two words must agree: six 1/29 checks per (P, f). With the
+clock running on across the title the script derives the checks afresh (four). f ranges
+over the four keyword rules of `keyword_exhaustion.alphabets` on the ciphertext or the
+plaintext side, eight constructions. A candidate survives at 0 mismatches, or at 1 if
+the preventer fired once inside the crib. A planted key is recovered, and a planted fire
+is found at one mismatch, before the body is read. The false-survivor rate is measured on
+random ciphertext.
+
+| variant | mismatches | body survivors | random ciphertext |
+|---|---|---|---|
+| no rotation, clock restarts per word | 0 / ≤ 1 | **0 / 0** | 0.00 / 0.00 |
+| no rotation, clock continuous | 0 / ≤ 1 | **0 / 0** | 0.02 / 4.1 ± 26 |
+| free rotation per word, restart | 0 / ≤ 1 | 0 / 20 | 0.01 / 6.2 ± 16 |
+| free rotation per word, continuous | 0 / ≤ 1 | 16 / 2,226 | 20.5 ± 42 / 2,472 ± 1,148 |
+
+**Negative.** A base that is a keyword alphabet built from the previous plaintext word,
+by any of the four rules on either side, with the alphabet used as built, reproduces the
+crib for none of the 3,070 candidate previous words, under either clock, with or without
+one preventer fire; the false-survivor rate at the same thresholds is 0 to 4. With a free
+rotation of the keyed alphabet per word the crib has no power: the body's survivors sit
+at the random-ciphertext rate, so that variant is untested here, not excluded.
+
+What the negative does not reach: a previous word outside the 3,070 (a name, a
+non-English word, or a key phrase that starts the chain), a keyword rule outside the four,
+a rotated keyed alphabet, and a base keyed on the previous **ciphertext** word, which the
+742-pair test closes under the same ordering. It assumes the title's two words were not
+swapped by the shuffle and that the crib identification (8 + 5 runes at body words 0 to 1)
+is right.
