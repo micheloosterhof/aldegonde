@@ -183,3 +183,39 @@ the key for a word is fixed before its runes are emitted, so it cannot
 avoid ciphertext doublets without per-rune output feedback. (Mixed-alphabet
 schedules with a bigram-tuned step evade that argument, but those vary the
 alphabet per RUNE, not per word — see `length-clocked-walk.md`.)
+
+## Conditional on the order of operations (October 2026)
+
+Michel asked whether the base could be a Quagmire alphabet keyed by the previous word.
+The two closures above assume the cipher ran in the visible order, and the words are now
+known to have been permuted within spans (`the-words-are-transposed-within-sentences.md`).
+Which closure holds depends on when the permutation ran.
+
+- **Previous ciphertext word** (tap battery above; `the-base-is-not-a-ciphertext-autokey.md`):
+  the taps are read off the visible predecessor, so the closure holds only if the shuffle
+  came before the cipher. If the shuffle followed the cipher the keying predecessor is
+  hidden and the tap battery and the 742-pair test are void.
+- **Previous plaintext word** (forced-repeat closure above): the forced repeats are the
+  recurrences of the English adjacent bigram (P, Q), so the closure holds only if the
+  cipher ran in English order. If the words were shuffled first, P precedes Q in the
+  enciphered order with probability about 1/n per occurrence, n the span length in words
+  (mean 20), so the prediction falls by about 400: 2,500 becomes about 6 and the
+  refrain-free 650 about 1.6. Against 0 observed that is P 0.002 and 0.20, a lean, not a
+  closure. The repeats themselves would survive a later shuffle, since whole words move.
+
+So each ordering kills one previous-word key and leaves the other. Under the record's
+preferred ordering (shuffle, then cipher) the survivor is a base keyed on the previous
+**plaintext** word, read in the visible order. That survivor also escapes
+`key-local-channel-is-empty.md`, whose argument assumes a base that is free per word: a
+keyword alphabet built from a dictionary word has about 12 bits, not 98, and the chain
+can be followed one word at a time once g is known.
+
+**A cheap test, not yet run.** The DIVINITY WITHIN title gives one known adjacent pair in
+the visible order (if the two words were not swapped by the shuffle). Under the
+hypothesis WITHIN's base is f(DIVINITY) for a construction f, and its first rune has no
+g, so f(DIVINITY) must send W to WITHIN's first ciphertext rune: one 1/29 check per
+construction. DIVINITY's own base is f(previous word), scanned over a dictionary: runes 0
+and 5 are g-free (g⁵ = 1), and runes 1 and 3 are I in both words, so g(I) and g³(I) read
+off DIVINITY must agree with those read off WITHIN. Four 1/29 checks per candidate, about
+29⁻⁴ × 3,000 ≈ 0.004 false survivors per construction, with the preventer allowed one
+fire. Assumes the clock restarts at phase 0 at each word, as the walk does.

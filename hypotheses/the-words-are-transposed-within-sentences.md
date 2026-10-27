@@ -190,6 +190,8 @@ then remover" is live, with a weak lean against it; and if it holds, the chain o
 runs in the hidden order, not the visible one, which any key search using the visible
 block order must allow for.
 
+The ordering also decides which previous-word key is closed: the previous-ciphertext-word closure reads the visible predecessor and holds only under shuffle-then-cipher; the previous-plaintext-word closure reads English bigram recurrence and holds only under cipher-then-shuffle (`word-level-autokey.md`, `the-base-is-not-a-ciphertext-autokey.md`, October 2026).
+
 This closes a family of mechanisms, not a reading — "the marks are not sentence marks"
 proposes no rearrangement at all and is untouched here. (It was excluded in October 2026 by
 the adjacency test, closing sections.)

@@ -154,3 +154,20 @@ either. With the rows above, a ciphertext autokey at the word level is excluded 
 bounded-memory form the page could supply; what survives is the composed form with secret
 generators, which is a keyed walk whose selector happens to be public, not an autokey the
 solver can follow.
+
+## Conditional on the order of operations (October 2026)
+
+Every row above groups blocks by their **visible** predecessor. That is the keying
+predecessor only if the cipher ran in the visible order, which is the "shuffle, then
+cipher" ordering of `the-words-are-transposed-within-sentences.md`. If the words were
+enciphered in the author's order and permuted afterwards, the keying predecessor of a
+block is a hidden word of its span, the 742 identical-visible-predecessor pairs are not
+pairs with identical keying predecessors, and this closure is void. So:
+
+- shuffle, then cipher: a base keyed on the previous ciphertext word is excluded (this
+  file, 7,300 : 1 on the general row, every observable tap at the noise floor);
+- cipher, then shuffle: open, and the chain runs in the hidden order, so a solver could
+  not follow it without the permutation.
+
+The mirror case, a base keyed on the previous **plaintext** word, is closed under the
+opposite ordering only (`word-level-autokey.md`, same date).
