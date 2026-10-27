@@ -18,7 +18,7 @@ and all fail (`block-lengths-have-a-hole-at-two.md`).
 
 After that file's retraction, one mechanism survives. Joining about 40% of 2-rune units
 to the unit before them is consistent with the length **marginal** at P = 0.79 and with
-the **serial order** at 1.2 sigma — one mechanism, not two.
+the **serial order** at 1.2 sigma — one mechanism, not two. **The serial-order half is withdrawn, October 2026** (closing section): the 1.2σ was Pearson lag-1, and a transition table reads +5.1 on the author's pages after joining; joining explains the marginal only.
 
 ## Which lengths
 

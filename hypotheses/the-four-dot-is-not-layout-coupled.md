@@ -113,6 +113,8 @@ The two readings of the four-dot anomaly are "the words inside a span are transp
 rests on the block-length channel, which cannot separate them
 (`lengths_cannot_separate_the_readings.py`).
 
+*October 2026*: the length channel does separate them now — adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`) — and it excludes "order intact". The layout coupling is read against that: the scribe broke lines at the four-dot less than at real punctuation, which is what a mark closing a permuted sentence in a text he could not read looks like.
+
 **Layout coupling can, and it favours the second.** A transposition rearranges the words
 inside a sentence; it does not move the sentence's end, so a scribe breaking his line at
 clause ends would still break at ④. He does not. The simpler reading — ④ marks something

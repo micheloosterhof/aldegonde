@@ -22,8 +22,8 @@ Proposed 2026-10-25.
 Two steps before encipherment, both reversible by the reader of a decryption:
 
 1. join: a 2-rune unit is written onto its successor at rate q ≈ 0.40
-   (`short-units-are-written-joined.md`, P = 0.79 for the marginal, 1.2σ for the serial
-   order), producing the hole at length 2 and the 3,100–3,300 plaintext words the fit
+   (`short-units-are-written-joined.md`, P = 0.79 for the marginal; the serial-order fit was
+   withdrawn in October 2026), producing the hole at length 2 and the 3,100–3,300 plaintext words the fit
    implies;
 2. shuffle: the words after the first are permuted uniformly within the sentence
    (`the-rearrangement-is-not-a-simple-rule.md`: no structured rule beats a shuffle;
@@ -38,6 +38,7 @@ Two steps before encipherment, both reversible by the reader of a decryption:
   freedom against identity), while its first block is sentence-initial: exactly what
   "keep the first word" leaves.
 - Motive is documented in the book itself: every solved page was broken by a crib.
+- October 2026: the shuffle step is measured, not inferred — adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`). Whether the join came before or after the shuffle is unreadable from the marginal (`joining_before_or_after_the_shuffle.py`), and the shuffle did not make the doublet deficit (`doublets_per_span.py`).
 
 ## Evidence against
 

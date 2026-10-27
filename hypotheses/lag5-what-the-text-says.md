@@ -74,6 +74,9 @@ doublet preventer on top. Everything beyond that is key, not text.
 | `doublet_phase_gate_by_word.py` | within-block phase census; one-phase doublet gates under a block-reset clock | phases 29/26/21/14/10% of runes; doublets at every phase at one rate (χ² 2.6 on 4 df); every gate excluded by the seam (23 vs 100.6 or 0) |
 | the total suppression against phase shares | does 0.192 ± 0.021 pick a phase | no: 1/5, phase 3's pair share, phase 2's rune share and phases 0+4 all within a sigma |
 | `alphabet_sharing_by_word_distance.py` | do consecutive blocks share one alphabet set, fixed k or triggered | negative: adjacent −8σ against k = 2; lag 5 across one boundary −5.7σ; persistence ≤ 15% at 2σ |
+| `length_adjacency_self_null.py` (27th) | are adjacent block lengths inside a span dependent, against the body's own shuffle | negative on the body (z −0.10; 0.00 at sections; +0.01 at every mark) where intact joined order reads +5.1 (author) and +5.8 to +17.1 (prose at the body's size): the words are permuted
+| `joining_before_or_after_the_shuffle.py` (28th) | were short units joined before or after the permutation | undecidable: three models fit the marginal at P 0.55–0.70, two percent apart
+| `doublets_per_span.py` (28th) | is the permutation the doublet avoider | negative: doublets per span binomial (121 on 145 df vs 145 ± 30; rate flat across span length) where a best-of-42 selector clears short spans
 
 Two discussions recorded without a new run: whether period 5 can yield the doublet
 suppression without an avoider (`doublet-suppression-requires-design.md`, October 2026

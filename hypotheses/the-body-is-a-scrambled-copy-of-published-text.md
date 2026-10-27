@@ -27,7 +27,7 @@ comparing.
 ## Evidence for
 
 - E1/E2: the block lengths have the marginal of running text and the serial order of
-  nothing, which is what shuffled sentences look like.
+  nothing, which is what shuffled sentences look like. October 2026: measured directly — adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`).
 - The author re-uses his own text: the Parable and the AN END page appear in the book and
   outside it.
 - Cribs broke the early pages; a shuffled known text defeats a phrase crib while keeping

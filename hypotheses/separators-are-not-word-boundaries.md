@@ -394,3 +394,8 @@ against two independent references; the interpretation is one hypothesis among o
 - `length-clocked-walk.md`, `pure-quagmire-word-restart.md` — models that take the
   separator as the key's unit, which this supports while renaming what it delimits.
 - `lp-plaintext-register.md` — the register-matched reference.
+
+## Confirmed reference-free (October 2026)
+
+The order result above was reference-limited (3σ against the author's 723 words). Scored
+against the body's own within-span shuffle it needs no reference: adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`). Over pairs of blocks both 3+ runes, which the joining cannot touch, +3.0 / +10.4 against the body's +0.19. The reading that followed from this file — the separators delimit words with the short ones joined and the order gone — is now the transposition reading, `the-words-are-transposed-within-sentences.md`.

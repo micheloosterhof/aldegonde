@@ -65,6 +65,8 @@ short units joined. This agrees with the G² result in
 Gutenberg prose is not the right reference here: its serial order is 1.6 times the
 author's.
 
+*October 2026*: the serial-order fit by joining is withdrawn (it was Pearson lag-1; the body's adjacent lengths are independent against its own shuffle because the words are permuted, `the-words-are-transposed-within-sentences.md`). The language verdict stands: it rests on the marginal, which the permutation leaves alone, and on the serial order being *absent*, which every candidate language with strong alternation fails to match without a permutation.
+
 ## Caveats
 
 - The transliteration uses English spelling rules. A writer spelling German in runes

@@ -355,6 +355,8 @@ preceding word is consistent with the marginal at P = 0.79 and with the serial o
 1.2 sigma. One mechanism accounts for both, within the precision a 723-word reference
 allows.
 
+**The serial-order half of that is withdrawn, October 2026.** The 1.2σ was a Pearson lag-1; a five-class transition table against each corpus's own within-span shuffle reads +5.1 on the author's pages after joining and −0.10 on the body (`experiments/length_adjacency_self_null.py`). Joining accounts for the hole and not for the missing order, which is what this file's first reading said; the missing order is a word permutation (`the-words-are-transposed-within-sentences.md`).
+
 **And constraint E1 is weaker than recorded.** It contrasts the body's 0.0039 ± 0.0025
 with the author's 0.0397 ± 0.0101, where the ±0.0101 is the surrogate spread and carries
 no page sampling. With the jackknife the author's figure is 0.0393 ± 0.0263 and the

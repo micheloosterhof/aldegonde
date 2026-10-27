@@ -395,6 +395,8 @@ Three readings, none yet eliminated:
    since there is no dip there for either arrangement to disturb.
 2. **The circled numerals are not sentence marks.** Then the sentence-initial match
    against the author is a coincidence. Hard to hold given that control.
+
+   *Excluded in its order-intact form, October 2026*: adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`). The words are not in English order whatever the marks are, so the flat edge is the transposition's (`the-words-are-transposed-within-sentences.md`).
 3. **A block adjacent to a mark is not a word** — it is a cipher-cut remainder, or the
    cipher pads to a boundary at a sentence end. This predicts a gap of zero and the
    observation is −0.21 ± 0.18.
@@ -464,7 +466,7 @@ So this result does not overturn it — it names the kind of rule that would hav
 
 ## Status
 
-**Status**: open, narrowed to three readings. Reading 1 — the register escape — is
+**Status**: open, narrowed to three readings; and in October 2026 the reading "the marks are not sentence marks, order intact" is **excluded** too — adjacent block lengths inside a span are independent against the body's own within-span shuffle (z −0.10) where intact joined order reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`length_adjacency_self_null.py`), so the flat edge is the transposition's (`the-words-are-transposed-within-sentences.md`). Reading 1 — the register escape — is
 **excluded**: the author's own sentence-final lengthening (+1.32 ± 0.26) matches ten
 English registers (+1.17 ± 0.27) while the body reads −0.29 ± 0.20. The anomaly is
 present in every span-length stratum at −2.3σ to −4.4σ. Pooled, the author-versus-body difference is −6.1σ, but

@@ -111,6 +111,8 @@ blocks either side of a mark.
 
 ## What it does not establish, and cannot
 
+**Superseded, October 2026.** The structural argument below holds for statistics computed inside one span. Adjacency is not one of those, and the adjacency test (closing sections) separates the readings: adjacent block lengths inside a span are independent, z −0.10 against the body's own within-span shuffle, where intact order with the body's joining applied reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size (`experiments/length_adjacency_self_null.py`). The section is kept as the record of why the earlier statistics could not.
+
 Flatness is evidence, not proof: "the marks are not sentence marks" predicts a flat
 profile too. The two differ in what a span *is* — a permuted sentence, or a run of words
 cut at points unrelated to the syntax — and **no block-length statistic can tell them
@@ -177,7 +179,8 @@ must be deciphered first, because the cipher state runs through them in the orde
 appear.
 
 This closes a family of mechanisms, not a reading — "the marks are not sentence marks"
-proposes no rearrangement at all and is untouched.
+proposes no rearrangement at all and is untouched here. (It was excluded in October 2026 by
+the adjacency test, closing sections.)
 
 ## How to falsify
 
@@ -218,6 +221,8 @@ make the span the unit. `experiments/are_the_words_transposed.py`,
   transposition families already excluded.
 
 ## The order channel forks the readings but cannot reach them
+
+**Superseded, October 2026.** It reaches them with the right statistic; see "Adjacency under the body's own shuffle" below. Kept as the record of the Pearson attempt and of the joining-rate side-finding, which stands.
 
 `experiments/order_survives_in_the_lengths.py`
 
@@ -323,7 +328,7 @@ both sides.
 
 So the titles give the first non-length reading on the question and it does not rescue
 English order; it is consistent with a per-span permutation and with "the marks are not
-sentence marks" alike, and the fork stands. Reading the titles' plaintext — which needs
+sentence marks" alike, and the fork stood until the adjacency test below. Reading the titles' plaintext — which needs
 the key — would settle it in one page.
 
 ## Adjacency under the body's own shuffle: the order is not intact (October 2026)
