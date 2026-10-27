@@ -208,9 +208,12 @@ block lengths inside a span are independent (z −0.10 against the body's own wi
 shuffle) where intact order gives +5.1 on the author's joined pages at a fifth of the
 body's size and +5.8 to +17.1 on joined prose at the body's size. **Which** permutation is
 undetermined (reversal and rotations 1–3 excluded; nothing beats a plain shuffle), and
-whether the unit is the four-dot span or something larger is not fixed by the length
-channel; the quote-edge alignment (P = 1.5e-7) and the sentence-shaped gap law are what
-make the span the unit. `experiments/are_the_words_transposed.py`,
+the unit is bounded above by the span (the rubricated titles are contiguous runs of red
+blocks, so no word left its span) and below only weakly (order as written excluded at
+−2.6σ on the author and −6.6σ on prose; two-word units at −2.2σ on prose; three-word
+units and larger not separated from a whole-span shuffle by the pre-mark block,
+`experiments/permutation_unit_size.py`); the quote-edge alignment (P = 1.5e-7) and the
+sentence-shaped gap law are what make the span, rather than a clause, the unit. `experiments/are_the_words_transposed.py`,
 `experiments/is_there_any_order_inside_a_span.py`,
 `experiments/length_adjacency_self_null.py`.
 
@@ -431,3 +434,41 @@ span are binomial (dispersion 121 on 145 df against 145 ± 30; 93/35/11/7 spans 
 0/1/2/3+ against 91/36/12/7 expected; rate flat across span length), where choosing each
 span's order for few doublets would clear the short spans and leave the long ones at
 chance. `doublet-suppression-requires-design.md`, `experiments/doublets_per_span.py`.
+
+## The unit of the permutation: bounded above by the red ink, weakly from below (October 2026)
+
+`experiments/permutation_unit_size.py`
+
+**From above.** The rubricated titles (`rubricated_titles.json`, read off the page scans
+independently of the glyph stream) are each a contiguous run of blocks whose rune total
+matches the title, and the thirteen-dot sits on their edges
+(`do_the_marks_bound_the_titles.py`). A permutation within sections or pages would have
+scattered a title's words through the section and the red runes with them. They are
+contiguous, and the title spans are themselves scrambled (short word interior in 3 of 7).
+So no word left its span: the unit is at most the span.
+
+**From below.** If the words were permuted within consecutive units of k words, the
+sentence's long final word stays in the last unit and the pre-mark block keeps part of
+the sentence-final lift. Planted on the author's joined sentences and on joined prose
+length-matched to the body's spans (6+ blocks; units counted from the end), the last
+block's excess over its span's mean:
+
+| unit k | author planted | z (body) | prose planted | z (body) |
+|---|---|---|---|---|
+| 1 (as written) | +0.43 | **−2.59** | +1.25 | **−6.56** |
+| 2 | +0.04 ± 0.22 | −0.51 | +0.51 ± 0.18 | **−2.24** |
+| 3 | −0.03 ± 0.24 | −0.28 | +0.28 ± 0.21 | −1.34 |
+| 4 | +0.10 ± 0.29 | −0.61 | +0.14 ± 0.21 | −0.87 |
+| 5–15 | ≈ +0.02 ± 0.29 | −0.3 to −0.4 | +0.16 to −0.01 | −0.9 to −0.3 |
+| whole span | +0.01 ± 0.33 | −0.32 | +0.01 ± 0.20 | −0.41 |
+
+The body reads −0.11 ± 0.21. Order as written is excluded again by this statistic; pairs
+are disfavoured at 2.2σ against prose and not at all against the author (whose joined
+6+-block sentences number 50 and lift only +0.42); three-word units and larger are not
+separated from a whole-span shuffle. The lower bound is weak because even a two-word unit
+puts the final word last only half the time, and the author's reference is small.
+
+So: the unit is no larger than a span and no smaller than a pair, with everything from a
+clause to the whole sentence open on the lengths. The span is the unit by parsimony and by
+the non-length channels — the quote edges on the marks and the sentence-shaped gap law —
+not by this bound.
