@@ -61,9 +61,9 @@ build-backend = "setuptools.build_meta"
 
 [project.urls]
 homepage = "https://github.com/micheloosterhof/aldegonde"
-documentation = "https://readthedocs.org"
+documentation = "https://github.com/micheloosterhof/aldegonde/blob/main/CLAUDE.md"
 repository = "https://github.com/micheloosterhof/aldegonde"
-changelog = "https://github.com/micheloosterhof/aldegonde/blob/master/CHANGELOG.md"
+changelog = "https://github.com/micheloosterhof/aldegonde/blob/main/CHANGELOG.md"
 
 [tool.ruff]
 line-length = 88
@@ -88,9 +88,6 @@ line-ending = "auto"
 [tool.ruff.lint.isort]
 known-first-party = ["aldegonde"]
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
-
-[tool.pylint]
-disable = ["invalid-name"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

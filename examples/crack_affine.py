@@ -27,7 +27,7 @@ def brute_affine():
                 key = masc.affinekey(alphabet, multiplier, shift)
                 pt = "".join(masc.masc_decrypt(CT, key))
                 score = compare.quadgramscore(pt)
-                out.append(tuple([multiplier,shift,pt,score]))
+                out.append(tuple([multiplier, shift, pt, score]))
             except:
                 pass
     for p in sorted(out, key=lambda x: -x[3])[0]:

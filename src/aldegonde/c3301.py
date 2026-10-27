@@ -4,7 +4,8 @@
 
 import random
 from collections import defaultdict
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Collection, Iterable, Iterator, Sequence
+from dataclasses import dataclass
 
 from aldegonde import pasc
 from aldegonde.alphabet import Alphabet
@@ -175,6 +176,125 @@ RUNE_SET = frozenset(CICADA_ALPHABET)
 RUNES: Alphabet[str] = Alphabet(CICADA_ALPHABET)
 
 _LABELS: Alphabet[str] = Alphabet(CICADA_ENGLISH_ALPHABET)
+
+
+@dataclass(frozen=True)
+class Tokenized:
+    """A transcription as rune indices, with the ids that locate every rune.
+
+    Every list but `closing` is indexed by rune position and has one entry
+    per rune. `closing` is indexed by word id and holds the boundary character
+    that ended the word, or "" when the text ended first.
+
+    Attributes:
+        stream: Rune indices 0..28 in reading order.
+        word: Word id of each rune, dense from 0.
+        line: Line id of each rune, dense from 0; a line is what `/` ends.
+        page: Page index of each rune: how many `%` precede it, so it matches
+            the file's own page numbering even where a page holds no runes.
+        section: Section id of each rune, dense from 0 over the `$` sections
+            that contain at least one rune.
+        closing: The character that closed each word.
+    """
+
+    stream: list[int]
+    word: list[int]
+    line: list[int]
+    page: list[int]
+    section: list[int]
+    closing: list[str]
+
+    def words(self) -> list[list[int]]:
+        """The stream cut into words."""
+        out: list[list[int]] = []
+        for rune, w in zip(self.stream, self.word, strict=True):
+            if w == len(out):
+                out.append([])
+            out[w].append(rune)
+        return out
+
+
+def tokenize(
+    text: str,
+    *,
+    join_pages: bool = False,
+    sections: Collection[int] | None = None,
+) -> Tokenized:
+    """Tokenize a transcription into rune indices and structure ids.
+
+    The rules are the ones every recorded count of the clean corpus depends
+    on (12,956 runes, 2,928 words, 86 doublets on `data/page0-56.txt`):
+
+    - A rune extends the current word.
+    - Any character in `WORD_BOUNDARY` ends the word: a mark, a numeral, a
+      quotation mark, or one of the structure characters `%`, `&`, `$`.
+    - `/` and newlines are line wraps. The word runs through them.
+    - Any other character is ignored and the word runs through it: Latin
+      annotations, and the apostrophe, which sits inside a contraction.
+    - `%` starts a new page, `$` a new section, `/` a new line.
+
+    Args:
+        text: The transcription.
+        join_pages: Treat a page break with no separator before it as a line
+            wrap rather than a word boundary. In 34 of the 55 page breaks of
+            the clean corpus a rune stands immediately before the `%`, and
+            `hypotheses/page-breaks-cut-blocks.md` records those as blocks
+            cut in two. False reproduces every count recorded before the
+            option existed; True gives 2,896 words on the clean corpus.
+        sections: Keep only these section ids, counted among the `$`
+            sections that contain a rune. None keeps every section.
+
+    Returns:
+        The tokenized text.
+    """
+    chunks = [s for s in text.split("$") if any(ch in RUNE_SET for ch in s)]
+    keep = set(range(len(chunks))) if sections is None else set(sections)
+    stream: list[int] = []
+    word: list[int] = []
+    line: list[int] = []
+    page: list[int] = []
+    section: list[int] = []
+    closing: list[str] = []
+    w = ln = -1
+    pg = 0
+    open_word = False
+    new_line = True
+    for s, chunk in enumerate(chunks):
+        if s not in keep:
+            pg += chunk.count("%")
+            continue
+        new_word = True
+        for ch in chunk:
+            if ch in RUNE_SET:
+                if new_word:
+                    w += 1
+                    closing.append("")
+                    new_word = False
+                    open_word = True
+                if new_line:
+                    ln += 1
+                    new_line = False
+                stream.append(RUNES.encode([ch])[0])
+                word.append(w)
+                line.append(ln)
+                page.append(pg)
+                section.append(s)
+            elif ch == "%":
+                pg += 1
+                new_line = True
+                if not join_pages and open_word:
+                    closing[w] = ch
+                    open_word = False
+                    new_word = True
+            elif ch in WORD_BOUNDARY:
+                if open_word:
+                    closing[w] = ch
+                    open_word = False
+                new_word = True
+            elif ch == "/":
+                new_line = True
+        open_word = False
+    return Tokenized(stream, word, line, page, section, closing)
 
 
 def _english_spellings() -> dict[str, tuple[int, ...]]:

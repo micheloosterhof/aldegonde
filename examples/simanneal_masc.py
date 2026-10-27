@@ -38,7 +38,8 @@ def startermapping(ciphertext: Sequence[str]) -> dict[str, str]:
         dist[e] = 0
 
     sorted_unigrams: list[tuple[str, int]] = sorted(
-        compare.unigrams.items(), key=lambda x: x[1],
+        compare.unigrams.items(),
+        key=lambda x: x[1],
     )
     sorted_ngrams: list[tuple[str, int]] = sorted(dist.items(), key=lambda x: x[1])
     assert len(sorted_unigrams) == len(sorted_ngrams)

@@ -1,87 +1,57 @@
 #!/usr/bin/env python3
 """Liber Primus analysis script.
 
-This script performs cryptanalysis on Liber Primus segments using various
-statistical methods including IOC, Kappa test, Friedman test, and repeat analysis.
+Prints the basic cryptodiagnostics of every section of the clean corpus:
+frequency distribution, index of coincidence, kappa at every skip, the
+Friedman period test and the repeated n-grams. Nothing here is a result; it
+is the first look a new section or a decryption candidate gets.
+
+    python examples/lp_analysis.py
 """
 
-import os
+from collections import Counter
+from pathlib import Path
 
-from aldegonde import auto, c3301, pasc
-from aldegonde.analysis import friedman
+from aldegonde import c3301
+from aldegonde.analysis import friedman_test
 from aldegonde.grams import bigram_diagram
-from aldegonde.maths import factor
-from aldegonde.stats import dist, entropy, ioc, kappa, repeats
+from aldegonde.maths import factor_pairs, prime_factors
+from aldegonde.stats import (
+    print_ioc_statistics,
+    print_kappa,
+    print_repeat_positions,
+    print_repeat_statistics,
+    shannon_entropy,
+)
 
-
-def deltastream(runes: list[int], skip: int = 1) -> list[int]:
-    """Calculate delta stream mod 29.
-
-    DIFF = C_K+1 - C_K % MAX
-    """
-    diff = []
-    for i in range(len(runes) - skip):
-        diff.append((runes[i + skip] - runes[i]) % 29)
-    return diff
+ROOT = Path(__file__).resolve().parent.parent
+CORPUS = ROOT / "data" / "page0-56.txt"
 
 
 def main() -> None:
-    """Main analysis function."""
-    # Get the data directory relative to this script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_file = os.path.join(script_dir, "..", "data", "page0-58.txt")
-
-    with open(data_file) as f:
-        lp = f.read()
-
-    segments = lp.split("$")
-    z = segments[0:10]
-
-    print(f"{len(segments)} segments")
-    for i, s in enumerate(z):
-        if len(s) == 0:
-            continue
-        print(f"\n\nNEW SEGMENT {i} **************")
-
-        raw = "".join([x for x in s if x in c3301.CICADA_ALPHABET])
-
-        print("RAW:")
-        c3301.print_all(raw, limit=30)
-
-        VIG = pasc.vigenere_tr(c3301.CICADA_ALPHABET)
-        BOF = pasc.beaufort_tr(c3301.CICADA_ALPHABET)
-
-        aut = "".join(
-            auto.ciphertext_autokey_decrypt(
-                raw, primer=c3301.CICADA_ALPHABET[0], tr=BOF,
-            ),
-        )
-
-        FIRFUMFERENFE = "ᚠᛁᚱᚠᚢᛗᚠᛖᚱᛖᚾᚠᛖ"
-        seg = "".join(pasc.pasc_decrypt(aut, keyword=FIRFUMFERENFE, tr=BOF))
-
-        seg = raw
-        print("SEG:")
-        c3301.print_all(seg, limit=30)
-
-        for skip in range(1, 2):
-            if len(seg) == 0:
-                print("EMPTY SEGMENT {i}")
-                continue
-            print(f"used alphabet: {set(seg)} ({len(set(seg))} symbols)")
-            print(f"length: {len(seg)} symbols")
-            print(f"   prime factors =: {factor.prime_factors(len(seg))}")
-            print(f"   factor pairs  =: {factor.factor_pairs(len(seg))[1:-1]}")
-            dist.print_dist(seg)
-            entropy.shannon_entropy(seg)
-            ioc.print_ioc_statistics(seg, alphabetsize=29)
-            bigram_diagram.print_auto_bigram_diagram(
-                seg, alphabet=c3301.CICADA_ALPHABET,
-            )
-            kappa.print_kappa(seg, trace=True)
-            friedman.friedman_test(seg, maxperiod=34)
-            repeats.print_repeat_statistics(seg, minimum=2)
-            repeats.print_repeat_positions(seg, minimum=5)
+    """Run the diagnostics on each section of the clean corpus."""
+    tok = c3301.tokenize(CORPUS.read_text(encoding="utf-8"))
+    sections = sorted(set(tok.section))
+    print(
+        f"{len(tok.stream)} runes in {tok.word[-1] + 1} words and {len(sections)} sections"
+    )
+    for s in sections:
+        seg = [r for r, sec in zip(tok.stream, tok.section, strict=True) if sec == s]
+        runes = "".join(c3301.RUNES.decode(seg))
+        print(f"\n\nSECTION {s} **************")
+        c3301.print_all(runes, limit=30)
+        print(f"length: {len(seg)} runes, {len(set(seg))} distinct")
+        print(f"   prime factors = {prime_factors(len(seg))}")
+        print(f"   factor pairs  = {factor_pairs(len(seg))[1:-1]}")
+        counts = Counter(seg)
+        print("frequencies:", " ".join(f"{c3301.i2r(r)}{counts[r]}" for r in range(29)))
+        print(f"shannon entropy: {shannon_entropy(seg):.4f} bits")
+        print_ioc_statistics(seg, alphabetsize=29)
+        bigram_diagram.print_auto_bigram_diagram(runes, alphabet=c3301.CICADA_ALPHABET)
+        print_kappa(seg, trace=True)
+        friedman_test(seg, maxperiod=34)
+        print_repeat_statistics(seg, minimum=2)
+        print_repeat_positions(seg, minimum=5)
 
 
 if __name__ == "__main__":

@@ -9,16 +9,19 @@ statistical properties table and status definitions.
 
 ## Key context
 
-- The unsolved ciphertext is in `data/page0-58.txt` (13,136 runes; 2,973
-  words under the correct tokenization — line wraps `/` are NOT word
-  boundaries). All file paths are relative to the repository root. The final
-  two `$`-sections of this file are solved (section 10 is the "AN END" page,
-  section 11 the plaintext Parable, 85 + 95 runes) — exclude them: the clean
-  unsolved corpus is sections 0-9, **12,956 runes, 2,928 words, 86
-  doublets**. See the contamination note in `README.md`.
+- The clean unsolved corpus is `data/page0-56.txt`: master pages 15-70,
+  **12,956 runes, 2,928 words, 86 doublets**. Load it with
+  `experiments/lp_corpus.load_words()` (or `load_clean`, `load_tokenized`),
+  which wraps `aldegonde.c3301.tokenize`, the one tokenizer. Do not split on
+  `%`, `$` and the marks by hand. All file paths are relative to the
+  repository root.
+- `data/page0-58.txt` is the same body plus two solved sections at the end
+  (the "AN END" page and the plaintext Parable). If you read it, keep
+  sections 0-9 only. See the contamination note in `README.md`.
 - The full transcription (solved + unsolved) is in
   `data/liber-primus__transcription--master.txt`. Do NOT analyze the solved
-  early pages as if they were unsolved ciphertext.
+  early pages as if they were unsolved ciphertext. The author's own
+  plaintext, for calibration, is `experiments/lp_plaintext_register.corpus()`.
 - The alphabet is 29 Elder Futhark runes. See `src/aldegonde/c3301.py` for the
   alphabet, rune-to-index mappings, and Gematria Primus prime values.
 - The aldegonde library uses **0-indexed** rune numbering internally (F=0,
@@ -27,8 +30,15 @@ statistical properties table and status definitions.
   they are the first 29 primes. Whether the cipher arithmetic uses the
   library's 0-based index, the GP prime values, or some other numbering is an
   open question — do not assume any particular scheme.
-- Word boundaries are preserved in the ciphertext (delimited by `-`).
+- Word boundaries are preserved in the ciphertext. The transcription writes
+  the marks as circled numerals by dot count (`①` is the word separator,
+  `④` the four-dot mark, `⑬` closes a section); `-` and `.` are the legacy
+  two-character encoding. Line wraps `/` are NOT word boundaries. The sets
+  are in `c3301.WORD_MARKS`, `c3301.CLUSTER_MARKS`, `c3301.WORD_BOUNDARY`.
 - `lp_section_data.py` has per-section word lists and page ranges.
+- The standing specification every candidate must clear is
+  `what-any-solution-must-satisfy.md`; the ranked directions beyond the
+  current models are in `docs/new-directions.md`.
 
 ## Constraints on valid hypotheses
 
@@ -66,12 +76,12 @@ explain ALL of these (see `README.md` for exact numbers):
   Exclude both: the clean cipher stream is sections 0-9, 12,956 runes with
   86 doublets. (Older analyses citing 13,041 runes / 88 doublets excluded
   only the Parable and still include the solved AN END page.)
-- `aldegonde.stats.isomorph` compares against *uniform random* text. The
+- `random_isomorph_statistics` defaults to *uniform random* text. The
   doublet suppression alone collapses pattern diversity, which makes the
   cipher look 6-11 sigma anomalous on isomorphs. Under a doublet-corrected
-  Markov null the anomaly vanishes entirely
-  (`experiments/isomorph_corrected.py`). Always use a doublet-corrected
-  null for pattern-class statistics.
+  null the anomaly vanishes entirely (`experiments/isomorph_corrected.py`).
+  Pass `null=c3301.low_doublet_null(), observed=seq`, and use a
+  doublet-corrected null for every pattern-class statistic.
 - Line-initial rune frequencies are strongly non-uniform. This is a
   typesetting artifact (present in solved pages too), not cipher structure.
 

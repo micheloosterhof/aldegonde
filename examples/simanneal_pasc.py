@@ -127,7 +127,8 @@ def determine_schedule(ciphertext: str) -> dict:
 
 
 def threaded_simple_solver(
-    ciphertext: str, schedule: dict,
+    ciphertext: str,
+    schedule: dict,
 ) -> tuple[list[int], int, str]:
     """
     this can run inside a thread
@@ -143,7 +144,8 @@ def threaded_simple_solver(
 
 
 def threaded_custom_solver(
-    ciphertext: str, schedule: dict,
+    ciphertext: str,
+    schedule: dict,
 ) -> tuple[list[int], int, str]:
     """
     this can run inside a thread

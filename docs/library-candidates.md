@@ -11,6 +11,10 @@ re-implement the same helpers. Adding functions does not fix that on its
 own; every new module should be followed by migrating one experiment onto
 it, which is both the regression test and the proof that the API fits.
 
+Updated 2026-10-24: the tokenizer landed and six loaders were migrated onto
+it; the isomorph null takes a resampler; the stale planning files
+(`IMPROVEMENTS_TODO.md`, `REVIEW.md`, `TODO`) were folded in here.
+
 ## Design rule
 
 Integers inside, symbols at the edge. Functions that index tables or do
@@ -25,6 +29,7 @@ from the data: a symbol absent from the text would shrink it.
 | Need | Use |
 |---|---|
 | Symbols to integers and back | `alphabet.Alphabet`; `c3301.RUNES` |
+| The transcription tokenized: runes with word, line, page, section ids and the closing mark | `c3301.tokenize`; `experiments/lp_corpus.load_words` wraps it for the clean corpus |
 | English spelled the way the book spells it | `c3301.encode_english`, `c3301.decode_english` |
 | Permutation algebra | `maths.permutation`: `compose`, `inverse`, `power`, `order`, `cycles`, `cycle_type`, `parity`, `conjugate`, `shift`, `transposition`, `from_cycles`, `random_with_cycle_type`, `from_key`, `to_key` |
 | Count against a stated rate, interval, two rates | `stats.binomial_z`, `stats.wilson_interval`, `stats.two_proportion_z` |
@@ -42,16 +47,15 @@ from the data: a symbol absent from the text would shrink it.
 
 ## Open, ranked by counted duplication
 
-1. **Corpus tokenizer.** 177 scripts read the corpus file directly and at
-   least 6 tokenizers exist (`lp_corpus.load_clean` has 93 importers,
-   `fingerprint_battery.lp_words` 53, `walk_verifier.load_words` 28,
-   `anomaly_scan.parse` 21, `body_parse`). Two recorded tokenizer bugs: a
-   page break cut 34 blocks in two; a stale mark class returned 60 words
-   instead of 2,928. One function returning runes with word, line, page and
-   section ids and the closing mark. Open question: whether blocks join
-   across page breaks by default. The 2026-08 survey put this in one shared
-   experiments module rather than `src/`; the 2026-09 survey put it in
-   `c3301`. Either way there must be exactly one.
+1. ~~**Corpus tokenizer.**~~ Done 2026-10-24: `c3301.tokenize` returns
+   runes with word, line, page and section ids and the closing mark, with
+   `join_pages` for the page-break cut and `sections` for the clean
+   selection. Its tests pin 12,956 runes, 2,928 words, 86 doublets and the
+   2,896 joined blocks, and the stale-mark-class bug. `lp_corpus.load_clean`
+   (95 importers), `walk_verifier.load_words` (31) and four `lp_words`
+   copies are wrappers over it. Still separate: `anomaly_scan.parse` (21
+   importers), which ends a word at a Latin annotation and so counts 2,932;
+   migrate its importers one at a time, re-checking each script's numbers.
 2. **Lazy n-gram tables and an integer scorer.** `stats/compare.py` loads
    the English tables at import and `c3301.py` the runeglish ones, so any
    `aldegonde.stats` import costs 245 MB and 1.0 s and `c3301` 357 MB. 27
@@ -138,5 +142,9 @@ from the data: a symbol absent from the text would shrink it.
 - Constants copied from another script's output and typed in
   (`PROSE_D5 = 0.0550`, `MONOGRAPH_LR = 265.0`, `ENGLISH_FINAL = 1.19`).
 - Figures quoted without a spread that move on the random seed alone.
-- `random_isomorph_statistics` in `stats/isomorphs.py` uses a uniform
-  null, which is the wrong null for doublet-suppressed text.
+- ~~`random_isomorph_statistics` in `stats/isomorphs.py` uses a uniform
+  null~~ — it now takes `null=` and `observed=`; `print_isomorph_statistics`
+  still calls it without them and should pass `c3301.low_doublet_null()` for
+  rune input.
+- `stats.repeat_positions` and friends have no `cut` parameter to stop a
+  repeat at a word boundary (from the old `TODO`).

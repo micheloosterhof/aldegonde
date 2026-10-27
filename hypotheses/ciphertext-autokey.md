@@ -12,6 +12,14 @@ variant), with either standard or custom tabula recta.
 
 **Status**: disproved
 
+## Scope note, 2026-10-25
+
+The preceding-rune split above excludes one fixed table. A ciphertext autokey whose table
+is keyed per word (`c_j = K_w(K_w⁻¹(c_{j−1}) + p_j − e)`) reads a group nIoC of 1.04–1.07
+against the body's 1.026 and is not reached by this file; see
+`ciphertext-autokey-with-a-dead-identity-rune.md`, where the identity element is a rune the
+plaintext never writes and the doublet rate is zero by construction.
+
 ## Mechanism
 
 In a ciphertext autokey cipher, each ciphertext rune feeds back as the key for

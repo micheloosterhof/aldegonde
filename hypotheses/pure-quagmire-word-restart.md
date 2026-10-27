@@ -121,3 +121,12 @@ rest of the key. The larger idea behind the proposal survives and is worth pursu
 per-word step has to supply thousands of states, but nothing requires it to be a general
 permutation, and two decorrelated shift dials would do. That is a genuinely smaller key
 than σ.
+
+## Scope note, 2026-10-25
+
+The restart disproof above assumes a dodge: a fixed restart puts every seam on one clock
+phase, so a dodge fails at all seams or none. If the suppression is not a dodge but the
+copyist writing doubled runes once (`haplography-the-scribe-wrote-doubles-once.md`), the
+argument has nothing to act on, and the restart is live again: scored with that copyist at
+0.8 the restarting Quagmire reads 0.0079 inside words and 0.0076 at seams
+(`experiments/cipher_zoo_fingerprint.py`).

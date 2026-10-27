@@ -18,7 +18,9 @@ from collections import Counter, defaultdict
 from collections.abc import Hashable, Sequence
 from typing import TypeVar
 
+from aldegonde.exceptions import InvalidInputError
 from aldegonde.stats.ngram import iterngrams
+from aldegonde.stats.nulls import NullModel
 from aldegonde.stats.zscore import z_score
 
 T = TypeVar("T")
@@ -86,8 +88,16 @@ def random_isomorph_statistics(
     *,
     trace: bool = False,
     rng: random.Random | None = None,
+    null: NullModel[int] | None = None,
+    observed: Sequence[int] | None = None,
 ) -> tuple[float, float, float, float]:
-    """Mean and stdev of distinct and of duplicate isomorphs in random text.
+    """Mean and stdev of distinct and of duplicate isomorphs under a null.
+
+    The default null is uniform random text, which is the wrong null for
+    doublet-suppressed text: a missing diagonal alone changes the isomorph
+    counts (`hypotheses/bigram-ioc.md`). For such text pass a resampler such
+    as `c3301.low_doublet_null()` or `stats.doublet_shuffle(rate)` together
+    with the observed sequence it resamples.
 
     Args:
         sequencelength: Length of each random sequence drawn
@@ -97,18 +107,29 @@ def random_isomorph_statistics(
         trace: Unused, kept for call compatibility
         rng: Injected random source. Defaults to one seeded with
             `DEFAULT_NULL_SEED`, so the null is the same on every run.
+        null: A resampler `(observed, rng) -> surrogate`. None draws uniform
+            text of `sequencelength` from `alphabetlen` symbols.
+        observed: The sequence the resampler draws from. Required with `null`.
 
     Returns:
         (mean distinct, stdev distinct, mean duplicate, stdev duplicate)
+
+    Raises:
+        InvalidInputError: If `null` is given without `observed`.
     """
+    if null is not None and observed is None:
+        msg = "a null resampler needs the observed sequence to resample"
+        raise InvalidInputError(msg)
     source = random.Random(DEFAULT_NULL_SEED) if rng is None else rng
     distincts: list[int] = []
     duplicates: list[int] = []
 
     for _ in range(samples):
-        rand: list[int] = [
-            source.randrange(0, alphabetlen) for _ in range(sequencelength)
-        ]
+        rand: Sequence[int]
+        if null is None:
+            rand = [source.randrange(0, alphabetlen) for _ in range(sequencelength)]
+        else:
+            rand = null(observed if observed is not None else [], source)
         isos = isomorph_distribution(rand, isomorphlength)
         (distinct, duplicate) = isomorph_statistics(isos)
         distincts.append(distinct)

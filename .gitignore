@@ -15,3 +15,6 @@ htmlcov/
 # generated review sheets (regenerate with experiments/boundary_review_sheet.py)
 review/
 data/*.marks.txt
+
+# figure written by experiments/cross_product_map.py
+/cross_product_map.png

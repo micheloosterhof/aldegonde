@@ -62,8 +62,10 @@ aldegonde/
 │   └── test_hypothesis.py   # Property-based tests with Hypothesis
 ├── examples/                # Example scripts
 │   └── lp_analysis.py       # Liber Primus analysis script
-├── data/                    # External data files (Liber Primus, etc.)
-├── docs/                    # Documentation
+├── data/                    # Liber Primus transcriptions and sample texts; see data/README.rst
+├── docs/                    # Documentation; library-candidates.md is the backlog, new-directions.md the research directions
+├── hypotheses/              # One file per observation or hypothesis; INDEX.md lists them
+├── experiments/             # Analysis scripts; see experiments/CLAUDE.md
 └── lp_section_data.py       # Liber Primus section metadata
 ```
 
@@ -230,6 +232,7 @@ def function(param: int) -> str:
 - `CICADA_ALPHABET` - 29 Elder Futhark runes
 - `CICADA_ENGLISH_ALPHABET` - English letter mappings
 - `r2i()`, `i2r()`, `r2v()`, `v2r()` - Rune/index/value conversions
+- `tokenize()` - The one tokenizer for the transcription: rune indices with word, line, page and section ids. `experiments/lp_corpus` wraps it for the clean corpus
 - N-gram scorers for runeglish text
 
 ### stats/ - Statistical Analysis

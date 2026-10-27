@@ -102,6 +102,8 @@ period 5 regardless of how the doublet question resolves.
 
 ## Related
 
+- `no-natural-relation-suppresses-doublets.md` — the theorem evaluated for every natural relation, autokey and machine on the author's register (2026-10-24).
+
 - `bifid-fractionation.md`, `homophonic-substitution.md`, `thirty-symbol-disk.md`,
   `stream-cipher-no-repeat.md` — the four escape classes.
 - `doublet-suppression.md` — the measurement being explained.

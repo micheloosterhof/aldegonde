@@ -8,6 +8,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `alphabet.Alphabet`, a codec between symbols and integer indices, and
+  `c3301.RUNES`, `c3301.encode_english`, `c3301.decode_english` for the
+  Liber Primus
+- `c3301.tokenize`, the one tokenizer for the transcription: rune indices with
+  word, line, page and section ids and the mark that closed each word
+- `maths.permutation`: compose, inverse, power, order, cycles, cycle type,
+  parity, conjugation, random permutations, conversion to and from
+  substitution keys
+- `stats.binomial_z`, `stats.wilson_interval`, `stats.two_proportion_z`
+- `stats.pair_counts`, `stats.relation_rate`, `stats.extremal_relation_rate`
+- `stats.uniformity`, `stats.goodness_of_fit`, `stats.rate_uniformity`,
+  `stats.independence`: chi-square tests that carry df, p and a normal-scale z
+- `stats.kappa_spectrum` against the frequency-matched rate
+- `stats.MarkovModel`, `stats.fit_markov`, and the generative null models
+  `stats.markov_null`, `stats.fitted_markov`, `stats.doublet_markov`,
+  `c3301.low_doublet_markov_null`
+- `analysis.within_word_match_rate`, `analysis.bucket_coincidence`,
+  `analysis.match_separations`
+- `random_isomorph_statistics` takes a `null` model, so rune text can be
+  scored against a doublet-suppressed null instead of a uniform one
+
+### Changed
+- Type checking moved from mypy to ty
+- Python 3.10 dropped; 3.11 is the floor
+- Development dependencies pinned to their current releases
+
+### Removed
+- `setup.py` and its mypyc build; the package builds from `pyproject.toml`
+- `lp.py`, an unmaintained driver superseded by `examples/lp_analysis.py`
+- `IMPROVEMENTS_TODO.md`, `REVIEW.md` and `TODO`; the one planning document is
+  `docs/library-candidates.md`
+- Sample texts moved from the repository root to `data/samples/`
+
+### Earlier, also unreleased
+
+### Added
 - Comprehensive error handling hierarchy with structured exception classes
   - `AldegondeError` as base exception class for all library errors
   - `CipherError` for cipher-specific operations with cipher type context

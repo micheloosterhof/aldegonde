@@ -55,7 +55,7 @@ sys.path.insert(0, str(ROOT / "experiments"))
 
 from base_free_verifier import log_frequencies  # noqa: E402
 from compact_state_models import prose_corpora  # noqa: E402
-from lp_corpus import load_clean  # noqa: E402
+from lp_corpus import load_words  # noqa: E402
 from order5_algebraic_routes import (  # noqa: E402
     INFINITY,
     cycle_of,
@@ -74,11 +74,8 @@ MISSING = np.log(1e-9)  # the plaintext never holds the extra point
 
 
 def lp_words() -> list[list[int]]:
-    stream, wid = load_clean()
-    words: list[list[int]] = [[] for _ in range(wid[-1] + 1)]
-    for rune, w in zip(stream, wid):
-        words[w].append(rune)
-    return words
+    """The clean corpus cut into words (`lp_corpus.load_words`)."""
+    return load_words()
 
 
 def plaintext_tables(draws: int = 40) -> tuple[np.ndarray, np.ndarray]:
