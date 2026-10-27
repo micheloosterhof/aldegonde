@@ -55,6 +55,11 @@ reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size. 
 are not sentence marks and the order is intact" is excluded; the words are permuted within
 units at least as large as a span. What this file measured stands as stated.
 
+## Conditional (October 2026)
+
+The ordering assumes the preventer runs inside the cipher. A preventer run as a final pass
+after the shuffle suppresses the seam under either order; see the hypothesis file.
+
     python the_transposition_precedes_the_cipher.py
 """
 
