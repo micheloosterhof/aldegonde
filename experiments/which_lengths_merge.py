@@ -16,6 +16,13 @@ Each candidate is scored against its OWN parametric null: let that rule be true,
 across rules would not be fair, since the rules differ in how much they move the
 distribution.
 
+## Corrected (October 2026)
+
+The serial-order fit at 1.2 sigma was Pearson lag-1 and is withdrawn: a transition table
+against the within-span shuffle reads +5.1 on the author's pages after joining and -0.10 on
+the body (`length_adjacency_self_null.py`). Joining explains the marginal only; the
+boundary result below is about the marginal and stands.
+
     python which_lengths_merge.py [--draws 60]
 """
 

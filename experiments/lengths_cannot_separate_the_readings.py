@@ -75,6 +75,14 @@ transposition changes nothing. Cross-block plaintext structure is hidden because
 every block edge (D12). So the distinction needs a key, or a channel this corpus does not
 have.
 
+## Superseded on the verdict (October 2026)
+
+The readings are separable after all, by adjacency against the corpus's own within-span
+shuffle: `length_adjacency_self_null.py` reads -0.10 on the body where intact joined order
+reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size. "The marks
+are not sentence marks and the order is intact" is excluded; the words are permuted within
+units at least as large as a span. What this file measured stands as stated.
+
     python lengths_cannot_separate_the_readings.py
 """
 

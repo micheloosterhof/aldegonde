@@ -47,6 +47,14 @@ Which of the two readings is right. Both "the spans are transposed sentences" an
 marks are not sentence marks" are consistent with an unrearranged ciphertext -- the second
 proposes no rearrangement at all. This closes a family of mechanisms, not a reading.
 
+## Superseded on the verdict (October 2026)
+
+The readings are separable after all, by adjacency against the corpus's own within-span
+shuffle: `length_adjacency_self_null.py` reads -0.10 on the body where intact joined order
+reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size. "The marks
+are not sentence marks and the order is intact" is excluded; the words are permuted within
+units at least as large as a span. What this file measured stands as stated.
+
     python the_transposition_precedes_the_cipher.py
 """
 

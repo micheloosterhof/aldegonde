@@ -84,6 +84,14 @@ not at all, because both predict an ordinary interior block there. The lag-1 cha
 the only one that distinguishes them in principle, and neither the corpus nor the
 reference is large enough to use it.
 
+## Superseded on the verdict (October 2026)
+
+The readings are separable after all, by adjacency against the corpus's own within-span
+shuffle: `length_adjacency_self_null.py` reads -0.10 on the body where intact joined order
+reads +5.1 on the author's pages and +5.8 to +17.1 on prose at the body's size. "The marks
+are not sentence marks and the order is intact" is excluded; the words are permuted within
+units at least as large as a span. What this file measured stands as stated.
+
     python what_would_it_take.py
 """
 
