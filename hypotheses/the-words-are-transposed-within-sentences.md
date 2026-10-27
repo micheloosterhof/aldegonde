@@ -197,12 +197,19 @@ proposes no rearrangement at all and is untouched.
 
 ## Status
 
-**Status**: open. What is established is that the word order inside a span is **not** the
-order English would give — the identity is rejected by the offset profile (χ² 33.3 on
-8 df, P = 0.0001) and by the longest-block position (P = 0.034). **Which** permutation is
-undetermined: reversal, rotation and scrambling all fit, and reversal is disfavoured only
-by the full profile at P = 0.024.
-`experiments/are_the_words_transposed.py`.
+**Status**: supported on the order question, open on the unit. The word order inside a
+span is **not** English's, established three ways: the identity is rejected by the offset
+profile (χ² 33.3 on 8 df, P = 0.0001), the pre-mark block is a random block of its span
+(z −0.86 against the body's own shuffle), and — October 2026, the decisive one — adjacent
+block lengths inside a span are independent (z −0.10 against the body's own within-span
+shuffle) where intact order gives +5.1 on the author's joined pages at a fifth of the
+body's size and +5.8 to +17.1 on joined prose at the body's size. **Which** permutation is
+undetermined (reversal and rotations 1–3 excluded; nothing beats a plain shuffle), and
+whether the unit is the four-dot span or something larger is not fixed by the length
+channel; the quote-edge alignment (P = 1.5e-7) and the sentence-shaped gap law are what
+make the span the unit. `experiments/are_the_words_transposed.py`,
+`experiments/is_there_any_order_inside_a_span.py`,
+`experiments/length_adjacency_self_null.py`.
 
 ## Related
 
@@ -318,3 +325,92 @@ So the titles give the first non-length reading on the question and it does not 
 English order; it is consistent with a per-span permutation and with "the marks are not
 sentence marks" alike, and the fork stands. Reading the titles' plaintext — which needs
 the key — would settle it in one page.
+
+## Adjacency under the body's own shuffle: the order is not intact (October 2026)
+
+`experiments/length_adjacency_self_null.py`
+
+The section above left the order channel "forked but unreachable": a Pearson lag-1 of
+−0.031 for intact order against −0.005 for a shuffle, with the body between them and the
+reference's own error larger than the gap. Two things were wrong with that reading, and
+fixing them decides the question.
+
+**The statistic.** Pearson lag-1 sees only linear dependence. The dependence English
+word lengths carry is not linear: after a two-rune block the next is rarely two runes,
+after a long block the next is often short, and the middle classes are nearly flat. A
+transition table over five length classes (1–2, 3, 4, 5–6, 7+; 25 cells) sees this where
+Pearson does not. On the same 636 blocks of the author's joined pages, Pearson reads
+z = +0.05 and the table reads z = +5.14.
+
+**The null.** The comparison is each corpus against its **own within-span shuffle**, the
+device of `is_there_any_order_inside_a_span.py`: every span's multiset of lengths is kept
+exactly and only adjacency is destroyed, so no reference enters the body's reading. The
+chi-square of the observed table against the shuffle's cell means and sds is scored on
+the null distribution of the same statistic from a second set of shuffles. The reference
+is used only to calibrate what intact order would read, and it is calibrated on both
+available references: the author's solved pages and five Gutenberg registers, each with
+the body's joining applied (units of two runes or fewer joined forward at q = 0.40) and
+the prose cut into windows of the body's own block count.
+
+| corpus | blocks | pairs | χ² | shuffle null | z | P |
+|---|---|---|---|---|---|---|
+| the author, raw | 713 | 625 | 77.2 | 25.6 ± 8.1 | **+6.38** | 0.000 |
+| the author, joined q = 0.40 | 636 | 552 | 67.5 | 25.3 ± 8.2 | **+5.14** | 0.000 |
+| joined prose, 28 windows at the body's size | ≈2,900 | ≈2,750 | 80–164 | ≈25 ± 9 | **+9.5 ± 3.0** (min +5.8) | 0.000 |
+| the author, joined, then shuffled (control) | 636 | 552 | 31.2 | 25.3 ± 8.2 | +0.72 | 0.21 |
+| **the body, four-dot spans** | 2,896 | 2,759 | 25.2 | 26.0 ± 8.7 | **−0.10** | 0.52 |
+| the body, cut at sections only | 2,928 | 2,918 | 24.8 | 24.8 ± 9.0 | 0.00 | 0.44 |
+| the body, cut at every cluster mark | 2,925 | 2,760 | 24.9 | 24.8 ± 8.7 | +0.01 | 0.46 |
+
+The body's table sits on its own shuffle to the decimal. Its largest cells are
+4 → 5–6 at +1.9σ and 4 → 1–2 at −1.6σ, ordinary for 25 cells.
+
+**Robustness.** The result does not depend on the class edges or on the cut, and it
+cannot be the joining:
+
+| classes | author joined | one prose window | the body |
+|---|---|---|---|
+| 1–2 / 3 / 4 / 5–6 / 7+ | +4.79 | +13.43 | +0.06 |
+| 1 / 2 / 3 / 4–5 / 6+ | +3.91 | +12.73 | −0.19 |
+| 1–2 / 3–4 / 5–6 / 7+ | +4.21 | +9.84 | −0.59 |
+| 1–3 / 4–5 / 6–8 / 9+ | +1.05 | +15.74 | +2.70 |
+| **both blocks 3+**, 3 / 4 / 5–6 / 7+ | +3.02 | +10.35 | +0.19 |
+
+The last row counts only pairs whose blocks are both three runes or longer. The joining
+model touches units of two runes or fewer, so no pair in that row was created or moved by
+joining, and intact order still reads +3.0 on the author and +10.4 on prose there. The
+body reads +0.19. Whatever removed the body's adjacency structure is not the joining.
+
+The one cell to be honest about: the 1–3 / 4–5 / 6–8 / 9+ cut reads +2.70 on the body
+(+2.1 to +2.3 on three further seeds, P 0.02–0.035), one of five cuts times three
+span definitions. Its driving cells are 4–5 → 1–3 at −2.7 and 6–8 → 6–8 at −2.7, which
+is a *deficit* of long-then-short, the opposite of English's alternation; the body's
+Pearson lag-1 is −0.009 (z −0.77 against its shuffle). A 2σ cell in a scan of fifteen,
+pointing the wrong way, is not order.
+
+**What this settles.** Under "the marks are not sentence marks and the order is intact",
+the body's block lengths are English word lengths in English order with the joining
+applied, and that reads between +5 and +17 here. The body reads zero under three cuts and
+five classings. **The words are not in their English order.** That reading is out. Two
+earlier verdicts are superseded by this one and the reason is the same for both:
+`short-units-are-written-joined.md`'s "joining explains the serial order at 1.2σ" and the
+section above's "4.7× the corpus needed" were both Pearson lag-1 against an errored
+reference, and the table against the self-null has about a hundred times the power.
+The September result in `separators-are-not-word-boundaries.md` (excess G² per
+transition 0.0039 ± 0.0025 against 0.0397 for the author) was right, and it is now
+reference-free.
+
+**What it does not settle.** The unit of permutation. A shuffle within sections or within
+pages destroys adjacency just as a shuffle within spans does, and all three cuts of the
+body read zero, so this test says the unit is *at least* a span and nothing more. The
+things that make the four-dot span the unit are elsewhere: the gap law has English
+sentence-length shape, the quote edges land on marks at P = 1.5e-7, and the marks arrive
+with the joining and the line measure at page 15. Nor does it say which permutation; it
+says only that no adjacency survives, which a plain shuffle gives and which a rotation or
+reversal would not (both keep adjacency and are excluded on their own already).
+
+**Consequence for the crib program.** A span is a bag of words. A phrase crib (a title, a
+quotation) constrains a span's multiset of block lengths, not its sequence, and the crib
+verifier must place the crib's words into blocks of matching length in any order. The
+transposition is a key: a different permutation per sentence, with 20! orderings for a
+twenty-word sentence, so recovering it is a separate problem after the cipher is off.

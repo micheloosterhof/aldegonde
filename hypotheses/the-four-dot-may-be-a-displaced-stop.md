@@ -168,3 +168,10 @@ would still sit inside the ±2 window, and it is not there — at under two sigm
 anything wider is not separated from a transposition by this statistic. The reading stays
 live only in its wide form: a mark that wanders several blocks from the stop, which is
 statistically the same object as a per-span permutation of the length sequence.
+
+The adjacency test of October 2026 (`experiments/length_adjacency_self_null.py`, in
+`the-words-are-transposed-within-sentences.md`) does not touch the wide form either: a
+displaced stop leaves the words in order, and the body's adjacent block lengths are
+independent (z −0.10 against its own shuffle, intact order +5 to +17), so the words are
+not in order whatever the marks are. A displaced stop over a permuted sentence is the
+transposition reading with a different account of where the mark sits.

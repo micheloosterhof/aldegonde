@@ -431,3 +431,18 @@ base changes. Inside a merged block the base does not change.
 (0.0474 ± 0.0076 against 0.0687, −2.8σ; pooled χ² 8.3 on 4 cells, P ≈ 0.08). Merging does
 not explain it. Either the body's plaintext repeats letters at distance five less than
 English prose, or something else suppresses it. Unresolved.
+
+## Joining does not explain the serial order after all (October 2026)
+
+`experiments/length_adjacency_self_null.py`
+
+The Status's "serial order at 1.2σ" was a Pearson lag-1 against the 723-word reference
+with its error carried. Pearson sees only linear dependence and English word-length
+dependence is mostly not linear. A five-class transition table scored against each
+corpus's own within-span shuffle reads +5.14 on the author's pages *after* joining at
+q = 0.40 (Pearson on the same 636 blocks: +0.05), +5.8 to +17.1 on joined prose at the
+body's size, and −0.10 on the body. Over pairs whose blocks are both 3+ runes, which
+joining cannot touch, the author still reads +3.0 and the body +0.19. So joining explains
+the marginal (unchanged) and does not explain the order; the order is destroyed by
+something else, which `the-words-are-transposed-within-sentences.md` identifies as a
+permutation of the words within each span.
