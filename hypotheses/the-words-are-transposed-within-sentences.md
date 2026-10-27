@@ -414,3 +414,9 @@ quotation) constrains a span's multiset of block lengths, not its sequence, and 
 verifier must place the crib's words into blocks of matching length in any order. The
 transposition is a key: a different permutation per sentence, with 20! orderings for a
 twenty-word sentence, so recovering it is a separate problem after the cipher is off.
+
+**Order of operations with the joining (October 2026).** Whether the short units were
+joined before or after the permutation is not readable from the lengths: all three models
+fit the marginal at P 0.55–0.70 and differ by two percent in the share of short blocks,
+under reference error of ±21–34 χ² units. `short-units-are-written-joined.md`,
+`experiments/joining_before_or_after_the_shuffle.py`.

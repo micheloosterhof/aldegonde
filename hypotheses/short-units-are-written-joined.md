@@ -446,3 +446,27 @@ joining cannot touch, the author still reads +3.0 and the body +0.19. So joining
 the marginal (unchanged) and does not explain the order; the order is destroyed by
 something else, which `the-words-are-transposed-within-sentences.md` identifies as a
 permutation of the words within each span.
+
+## Joined before or after the word shuffle: the marginal cannot say (October 2026)
+
+`experiments/joining_before_or_after_the_shuffle.py`
+
+If the short units were joined in the author's order, a joined block holds a function
+word plus the content word that followed (or preceded) it in English, which is longer than
+average and almost never short; if they were joined after the words were permuted, the
+partner is a random word of the span. The marginal is the only length channel that reads
+this, since the shuffle leaves the marginal alone. Three models on the author's 94
+sentences in order, each fitted on q and priced against its own parametric null:
+
+| model | best q | χ² (12 bins) | null, model true | P |
+|---|---|---|---|---|
+| joined before the shuffle, forward | 0.35 | 47.8 | 59.6 ± 40.4 | 0.55 |
+| joined before the shuffle, backward | 0.40 | 45.2 | 65.3 ± 36.5 | 0.63 |
+| shuffled, then joined | 0.37 | 39.9 | 55.2 ± 29.0 | 0.70 |
+
+All three fit. The models differ by two percent in the share of blocks of four runes or
+fewer (0.509 / 0.492 / 0.529 at q = 1), and the χ² difference between the before and
+after fits is −7.8 observed against spreads of ±21 to ±34 under either model (P 0.42 to
+0.85 whichever is true). **Undecidable on the lengths with a 719-word reference.** The
+order of operations is left open; a solved body page reads it directly from whether the
+joined pairs are English collocations.
