@@ -178,6 +178,18 @@ It follows that a solver cannot undo the transposition by moving ciphertext bloc
 must be deciphered first, because the cipher state runs through them in the order they
 appear.
 
+**Conditional, noted October 2026 (Michel).** This ordering assumes the doublet preventer
+is part of the cipher. If the preventer is a separate final pass run after the shuffle, the
+seam rate is suppressed under either order and says nothing about whether the shuffle came
+before or after the cipher. What then constrains the pipeline is the preventer itself: a
+final pass must be invertible by the intended reader, every deterministic local fix is
+excluded (`explicit-doublet-avoidance.md`), and what survives is a re-draw that is
+statistically the in-cipher dodge except for the clock drift, which the d5 shortfall
+favours at about 2σ (`d5-bounds-the-clock-perturbation.md`). So "cipher, then shuffle,
+then remover" is live, with a weak lean against it; and if it holds, the chain of bases
+runs in the hidden order, not the visible one, which any key search using the visible
+block order must allow for.
+
 This closes a family of mechanisms, not a reading — "the marks are not sentence marks"
 proposes no rearrangement at all and is untouched here. (It was excluded in October 2026 by
 the adjacency test, closing sections.)
