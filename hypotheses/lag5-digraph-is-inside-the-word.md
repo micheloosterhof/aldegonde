@@ -15,6 +15,17 @@ Restricting to pairs inside a single block is where the base cancels.
 
 `experiments/ngram_kappa_inside_a_word.py`
 
+## Status
+
+**Status**: confirmed (measurement). The digraph excess of `lag5-digraph-structure.md` is a
+within-word effect: 9 of 29 hits sit inside one block against 2.9 by chance (P = 0.0015),
+and the within-block monograph cell reads 104 of 2,105 against 72.6. Five adversarial
+attacks on the channel fail; the shared alphabet five apart stands at a couple of hundred
+to one on the monograph cell and about 3,400 to one with the digraph arrangement. The five
+alphabets' mutual relation is undecidable from equality, the per-word re-basing is a
+general permutation (not a shift, not affine), and a five-phase model with no per-word
+base is excluded at z = −164.
+
 ## Lag 5 is pre-specified, not a scan maximum
 
 This is the reason the result is not another look-elsewhere artifact. g has order 5, so

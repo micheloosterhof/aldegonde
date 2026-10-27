@@ -36,6 +36,14 @@ four-dot more often than at a word break and much less often than at a clause en
 the thirteen-dot (13.2× its baseline) behaving like a section boundary as the ink
 independently says.
 
+## Status
+
+**Status**: confirmed (measurement), after the retraction above. The four-dot IS
+layout-coupled: it sits at a line end at 0.106 against the word separator's 0.039
+(z = +4.02), 2.7 times as often — but far below real punctuation, the author's own clause
+mark at 0.471 (z = −4.07 against it), while the thirteen-dot reads 0.516 like a section
+boundary. The title records the original claim; the corrected statement is intermediate.
+
 ## What this costs elsewhere
 
 The layout channel no longer supports "the four-dot is unrelated to the syntax". It was

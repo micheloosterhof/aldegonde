@@ -12,6 +12,14 @@ separable from the corpus alone, with no reference text.
 
 `experiments/what_the_four_dot_counts.py`
 
+## Status
+
+**Status**: confirmed (measurement). The mean block length before a four-dot is
+4.165 ± 0.187 against 5.631 for a rune clock (z = −4.9) and 4.428 for a block clock
+(z = −1.0); the author's own marks read the opposite way (rune clock z = +0.7, block clock
+z = +4.5). The four-dot is not placed by any rule that samples blocks in proportion to
+their length. `experiments/what_the_four_dot_counts.py`.
+
 ## The prediction
 
 A **rune clock** drops a mark when a letter countdown expires. A scribe counting letters

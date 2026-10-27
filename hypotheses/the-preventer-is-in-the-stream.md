@@ -17,6 +17,14 @@ the page.
 
 `experiments/does_the_preventer_cross_a_line_break.py`
 
+## Status
+
+**Status**: confirmed (measurement). Pairs straddling a line break hold 4 doublets in 593
+where an eye rule predicts 20.4 (P = 9.3e-6, 25,700 to 1 for a stream rule); the
+suppression crosses separators, line breaks, marks and page breaks at one rate. It does
+not exclude a rule applied to an exemplar before the layout existed.
+`experiments/does_the_preventer_cross_a_line_break.py`.
+
 ## Result
 
 | cell | pairs | doublets | rate | vs chance |
