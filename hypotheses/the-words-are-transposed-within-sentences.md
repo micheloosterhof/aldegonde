@@ -420,3 +420,9 @@ joined before or after the permutation is not readable from the lengths: all thr
 fit the marginal at P 0.55–0.70 and differ by two percent in the share of short blocks,
 under reference error of ±21–34 χ² units. `short-units-are-written-joined.md`,
 `experiments/joining_before_or_after_the_shuffle.py`.
+
+**The permutation is not the doublet avoider (October 2026).** Doublets per four-dot
+span are binomial (dispersion 121 on 145 df against 145 ± 30; 93/35/11/7 spans with
+0/1/2/3+ against 91/36/12/7 expected; rate flat across span length), where choosing each
+span's order for few doublets would clear the short spans and leave the long ones at
+chance. `doublet-suppression-requires-design.md`, `experiments/doublets_per_span.py`.

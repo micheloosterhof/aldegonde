@@ -244,3 +244,38 @@ toward the preventer on the seam's parsimony, not on a measurement, and a hybrid
 excluded. What a static design does not get for free is the seam: a per-block re-keyed
 cipher has a different adjacent relation at every boundary, and the text says that relation
 is suppressed just as hard in every length class.
+
+## The word permutation is not the avoider (October 2026)
+
+`experiments/doublets_per_span.py`
+
+Michel's question: since every block's alphabets depend on its position, permuting a
+sentence's words changes every doublet in it, so the deficit could be made by choosing
+each span's word order rather than by a rule. Selection on the count leaves marks a
+per-pair rule does not: counts pushed toward one low value (under-dispersion), and with a
+fixed number of tries, long spans keep more doublets per pair than short ones. Read on the
+146 four-dot spans against a binomial null at the body's own pooled rate, and against a
+planted selector (best of k orderings at the chance rate, k = 42 to reach the body's 85):
+
+| | the body | binomial null | planted selector, k = 42 |
+|---|---|---|---|
+| dispersion statistic, 145 df | 121.2 | 145.1 ± 30.4 (P 0.22) | 76.7 (P 0.001) |
+| spans with 0 / 1 / 2 / 3+ doublets | 93 / 35 / 11 / 7 | 91.1 / 35.6 / 12.5 / 6.8 | 105 / 24 / 8 / 9 |
+| doublets per pair, short tercile of spans | 0.0058 ± 0.0025 | | 0.0000 |
+| middle tercile | 0.0058 ± 0.0014 | | 0.0009 |
+| long tercile | 0.0070 ± 0.0009 | | 0.0096 |
+
+The body's per-span counts are binomial: dispersion on the null, the count histogram on
+the null to the span, and the rate flat across span length (long tercile +1.3σ). The
+selector's signature is the gradient — it clears the short spans entirely and leaves the
+long ones at chance — and the body has none of it (short tercile 2.3σ above the selector's
+zero, long tercile 2.9σ below its chance). Seven spans carry three or more doublets, as
+the null expects, which excludes any cap on the count per span. A selector whose effort
+grew with span length so as to reproduce a binomial exactly is not excluded by this and is
+not a model. Across the 145 span boundaries there is 1 doublet against 5.0 at chance,
+the same suppression as inside, which the stream preventer already accounts for.
+
+So the deficit is per pair, not per span, and the permutation did not make it. The
+permutation does not touch the seam rate in expectation either: it re-pairs the same word
+ends with the same word starts, and at the ciphertext level the base changes at every seam
+regardless.
