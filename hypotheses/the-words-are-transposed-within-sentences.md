@@ -486,3 +486,47 @@ So: the unit is no larger than a span and no smaller than a pair, with everythin
 clause to the whole sentence open on the lengths. The span is the unit by parsimony and by
 the non-length channels — the quote edges on the marks and the sentence-shaped gap law —
 not by this bound.
+
+## Which permutation: no fixed geometry among sixteen, and no fixed row count (October 2026)
+
+The lag-1 table excludes a permutation that keeps neighbours together (reversal,
+rotation). A transposition with a fixed geometry escapes it: a columnar transposition of a
+span's words with R rows puts English neighbours R positions apart in the output, so the
+same table at lag R carries the intact-order signal. `which_permutation_lag_scan.py` runs
+two scans against the within-span shuffle, which keeps every span's multiset:
+
+- the **lag scan**, the table over pairs (i, i + lag) for lags 1 to 12, family P for the
+  largest z over lags 2 to 12 from the same shuffle draws;
+- the **inversion scan**, each of sixteen geometries (columnar with 2 to 6 rows, columnar
+  with 2 to 8 columns, rail fence with 2 to 4 rails, reversal) undone on every span and
+  the lag-1 table scored, family P over the sixteen.
+
+Calibration on a joined prose window of 2,916 blocks, the body's size:
+
+| planted | lag scan, largest z (lag) | inversion scan, best geometry |
+|---|---|---|
+| intact | +13.1 at lag 1 | reversal +12.5 (its inverse is itself; the transpose table scores too) |
+| columnar, 3 rows | +10.8 at lag 3 | columnar 3 rows +12.1 |
+| columnar, 5 rows | +7.3 at lag 5 | columnar 5 rows +13.5 |
+| columnar, 4 columns | +2.2, family P 0.24 (a fixed width smears the lag) | columnar 4 columns +11.8 |
+| rail fence, 3 rails | +1.3, family P 0.70 | rail fence 3 rails +13.1 |
+| shuffled | +0.7, family P 0.96 | +0.7, family P 0.98 |
+
+On the author's joined pages (634 blocks) neither scan has power: a planted 3-row
+columnar reads +1.3 in the lag scan and +2.6 (family P 0.05) in the inversion scan, and
+this joining draw's intact lag-1 reads +3.0 where the earlier draw read +5.1.
+
+**The body**, 137 four-dot spans of two or more blocks, 2,896 blocks:
+
+| scan | largest z | family P |
+|---|---|---|
+| lag scan, lags 2 to 12 | +2.14 (lag 7) | 0.29 |
+| inversion scan, 16 geometries | +1.88 (columnar, 4 columns) | 0.49 |
+
+**Negative.** No geometry of the sixteen restores the order, and no fixed row count puts
+the order at a fixed lag. Where a planted geometry reads +7 to +13, the body reads under
++2.2 at the chance rate of a scan. What survives is a permutation without a fixed
+geometry: a random shuffle, a keyed transposition whose geometry changes per span, or a
+geometry outside the sixteen. For a solver that is the same thing: the permutation is
+not invertible from the lengths, and any key search has to treat the order within a span
+as unknown.
