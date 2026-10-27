@@ -142,3 +142,29 @@ looks like when a sharp test arrives.
 The standing tension between spacing and content resolves by the spacing losing. What
 survives is unchanged: a small mixture at the layout rate and no-mark-is-an-end are 1.5σ
 and 0.8σ away respectively, and the corpus cannot separate them.
+
+## The long block is not near the mark either (run recorded October 2026)
+
+`experiments/is_the_long_block_near_the_mark.py` — written for this question, never
+recorded. A displaced stop keeps the sentence's long final block within a block or two of
+the mark; a transposition scatters it over the span. A mean cancels (English puts +1.19
+at −1 and −0.71 at +1), so the script counts blocks of 7+ runes in a window spanning the
+mark, minus the span interior, with the register column scaled to the body's mark count:
+
+| window | ten registers | the author | the body | z vs English |
+|---|---|---|---|---|
+| ±1 blocks | +12.3 ± 7.0 | +7.1 | −0.6 ± 6.3 | −1.37 |
+| ±2 blocks | +6.5 ± 8.9 | +5.1 | −3.2 ± 8.9 | −0.77 |
+| ±3 blocks | +4.6 ± 9.1 | +6.2 | +3.6 ± 10.5 | −0.08 |
+| ±5 blocks | +5.3 ± 9.7 | +0.4 | −1.2 ± 12.1 | −0.43 |
+
+Per offset the body reads −0.030 ± 0.033 at −1 against the author's +0.114 and English's
++0.151, and nothing at −2 or −3 (−0.045, −0.025). Its largest |z| over ten offsets is 1.70,
+where within-span shuffles of its own blocks give 2.03 ± 0.67 (P = 0.68): the apparent
+peak at +3 is noise.
+
+**So a displacement of one or two blocks is disfavoured** — the sentence-final long block
+would still sit inside the ±2 window, and it is not there — at under two sigma, and
+anything wider is not separated from a transposition by this statistic. The reading stays
+live only in its wide form: a mark that wanders several blocks from the stop, which is
+statistically the same object as a per-span permutation of the length sequence.
