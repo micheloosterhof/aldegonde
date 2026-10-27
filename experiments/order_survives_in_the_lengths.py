@@ -57,6 +57,15 @@ which is the rate `short-units-are-written-joined.md` fitted from the length his
 Two independent statistics, the same rate. That is corroboration of the joining model
 rather than of anything about order.
 
+## Superseded on the verdict (October 2026)
+
+Pearson lag-1 is the wrong statistic: English word-length dependence is mostly not
+linear. `length_adjacency_self_null.py` scores a five-class transition table against each
+corpus's own within-span shuffle and reads +5.1 on the author's joined pages (Pearson on
+the same blocks: +0.05), +5.8 to +17.1 on joined prose at the body's size, and -0.10 on
+the body. The fork is reachable and the body's words are not in order. The joining-rate
+side-finding below stands.
+
     python order_survives_in_the_lengths.py
 """
 
