@@ -599,7 +599,19 @@ for no rule in the catalogue against a rule. The ciphertext words are not sorted
 visible key. Still open at 10 : 1: a catalogue rule whose restored order happens to sit
 in the weak tail; and untouched: a sort on the plaintext, a keyed rule whose key changes
 per span, and a random draw. For a solver the within-span order is unknown in every case.
-An independent channel can sharpen the 10 : 1 without a new scan: under the whole-body
-winner's inversion the sentence-final long block should return (prose +1.28 ± 0.24, the
-author +0.42 ± 0.29, the body as written −0.11 ± 0.21); that statistic was not used in the
-selection.
+**The independent channel (28 October 2026).** Under the whole-body winner's inversion
+the sentence-final long block should return; the selection did not use that statistic.
+On the 114 spans of six or more blocks:
+
+| | last block minus span mean | z against the within-span shuffle |
+|---|---|---|
+| body as written | −0.114 ± 0.206 | −0.58 |
+| body undone by the winner | +0.088 ± 0.218 | +0.41 |
+| joined prose, intact (`permutation_unit_size.py`) | +1.277 ± 0.235 | |
+| the author joined, intact | +0.418 ± 0.287 | |
+
+The undone order sits 3.7 sigma below prose and 0.9 sigma below the author's pages. If
+the body's sentences end long as prose does, the winner is excluded on this channel and
+the catalogue result tightens from 10 : 1 to about 1,000 : 1; if they end as weakly as the
+author's solved pages do, the channel adds almost nothing and 10 : 1 stands. The author's
+figure rests on 68 sentences, so which applies is not settled.
