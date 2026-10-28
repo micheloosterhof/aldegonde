@@ -269,7 +269,7 @@ def scan(corpus: Corpus, rules, rng: np.random.Generator) -> dict:
     }
 
 
-def report(label: str, spans, rules, rng) -> None:
+def report(label: str, spans, rules, rng) -> dict:
     r = scan(Corpus(spans), rules, rng)
     order = np.argsort(-r["z"])
     print(f"\n{label}: {len(spans)} spans, {sum(len(s) for s in spans)} blocks")
@@ -279,11 +279,42 @@ def report(label: str, spans, rules, rng) -> None:
         f"  largest z {r['top']:+.2f} over {len(rules)} rules; family P = {r['family_p']:.3f}"
         f" (null largest {r['null_top'].mean():.2f} +- {r['null_top'].std():.2f})"
     )
+    return r
+
+
+def final_block_check(spans, fn, label: str, rng: np.random.Generator) -> None:
+    """A channel the scan did not use: under the right inversion the sentence-final long
+    block returns (joined prose +1.28 +- 0.24, the author +0.42 +- 0.29 in
+    `permutation_unit_size.py`)."""
+    from permutation_unit_size import MIN_SPAN, bootstrap  # noqa: PLC0415
+
+    long = [s for s in spans if len(s) >= MIN_SPAN]
+    undone = []
+    for s in long:
+        inv = inverse(fn(len(s)))
+        undone.append([s[inv[i]] for i in range(len(s))])
+    print(
+        f"\nSentence-final block under the winner's inversion ({label}), {len(long)} spans of {MIN_SPAN}+ blocks"
+    )
+    for name, rows in (("as written", long), ("undone", undone)):
+        e, se = bootstrap(rows, rng)
+        null = []
+        for _ in range(2000):
+            draw = [rng.permutation(s) for s in rows]
+            null.append(np.mean([s[-1] - s.mean() for s in draw]))
+        null = np.array(null)
+        print(
+            f"  {name:<11} last block minus span mean {e:+.3f} +- {se:.3f};"
+            f" within-span shuffle {null.mean():+.3f} +- {null.std(ddof=1):.3f}; z {(e - null.mean()) / null.std(ddof=1):+.2f}"
+        )
 
 
 def held_out(spans, rules, rng: np.random.Generator) -> None:
     """The rule selected on one half of the spans, scored on the other half."""
-    print("\nHeld-out check: the best rule on one half, read on the other")
+    print(
+        "\nHeld-out check: the best rule on one half, read on the other"
+        "\n  (no power: a rule at the body's strength reads about +2.6 on a half, under the scan's null maximum)"
+    )
     halves = (
         ("odd / even spans", spans[0::2], spans[1::2]),
         ("first / second half", spans[: len(spans) // 2], spans[len(spans) // 2 :]),
@@ -395,8 +426,10 @@ def main() -> None:
     report("shuffled", shuffled, rules, nrng)
 
     print("\nThe body")
-    report("body, four-dot spans", body, rules, nrng)
+    r = report("body, four-dot spans", body, rules, nrng)
     held_out(body, rules, nrng)
+    top = int(np.argmax(r["z"]))
+    final_block_check(body, rules[top][1], rules[top][0], nrng)
     sort_tests([s for s in body_word_spans() if len(s) >= 2], rng)
 
 
