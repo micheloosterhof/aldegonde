@@ -577,8 +577,12 @@ Held out, selecting the best rule on one half of the spans and reading it on the
 | first / second | first | width 6, (5, 4, 2, 3, 0, 1), down | +5.61 | −0.35 |
 | first / second | second | width 6, (3, 5, 1, 4, 2, 0), alternating | +5.38 | +2.12 |
 
-Four different winners, none carrying to the other half. The whole-body +5.11 is the
-winner's curse of a 5,482-way scan, not a rule.
+Four different winners, none carrying to the other half. **This check has no power and
+is withdrawn as evidence (review, 28 October 2026).** A rule reading +5.1 on the whole
+body reads about +2.6 on a half, and even a planted rule at +7.7 to +8.9 reads about +4,
+below the scan's null maximum of 4.6 ± 0.6; so the rule selected on a half is a noise
+winner whether or not a real rule exists, and its failure to carry over is what both
+cases produce.
 
 **Sorted after encipherment?** A shuffle that sorts the ciphertext words by a visible
 key would leave ascending runs. Ascending adjacent pairs inside spans, against the shuffle:
@@ -586,6 +590,16 @@ first rune z +0.78, last rune +0.53, Gematria sum −0.22, rune order −0.05, l
 Not sorted. A sort on the plaintext (alphabetical) is invisible to this test and stays
 open; so does a keyed rule whose key changes per span, and a random draw.
 
-**Negative.** No fixed rule in the catalogue restores the order, and the ciphertext words
-are not sorted. If the shuffle is rule-based, the rule is outside this catalogue or
-changes from span to span; for a solver the within-span order is unknown either way.
+**Corrected reading (28 October 2026).** The scan is evidence against a catalogue rule,
+not an exclusion. A true rule would restore intact order, which reads 9.5 ± 3.0 on
+joined prose windows at the body's size (`length_adjacency_self_null.py`, 28 windows,
+range +5.8 to +17.1). The body's best is +5.11: 7% of intact windows read that low, and
+the scan's null maximum is 4.59 ± 0.61, so the likelihood ratio at +5.11 is about 10 : 1
+for no rule in the catalogue against a rule. The ciphertext words are not sorted by any
+visible key. Still open at 10 : 1: a catalogue rule whose restored order happens to sit
+in the weak tail; and untouched: a sort on the plaintext, a keyed rule whose key changes
+per span, and a random draw. For a solver the within-span order is unknown in every case.
+An independent channel can sharpen the 10 : 1 without a new scan: under the whole-body
+winner's inversion the sentence-final long block should return (prose +1.28 ± 0.24, the
+author +0.42 ± 0.29, the body as written −0.11 ± 0.21); that statistic was not used in the
+selection.
