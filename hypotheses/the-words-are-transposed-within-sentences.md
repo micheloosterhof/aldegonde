@@ -530,3 +530,62 @@ geometry: a random shuffle, a keyed transposition whose geometry changes per spa
 geometry outside the sixteen. For a solver that is the same thing: the permutation is
 not invertible from the lengths, and any key search has to treat the order within a span
 as unknown.
+
+## The catalogue of rule-based sentence shuffles: none of 5,482 fits (October 2026)
+
+Michel's framing: a shuffle a reader can undo must be a rule that works at every sentence
+length, and there are not many. `catalogue_of_sentence_shuffles.py` enumerates them and
+tests each by undoing it on every four-dot span and scoring the lag-1 length-class table
+against the body's own within-span shuffle, with one family P for the whole catalogue
+from the same shuffle draws scored under every rule.
+
+The catalogue, each rule followed by its inverse, 5,482 in all:
+
+- columnar with a fixed width 2 to 10, the columns read in every order up to width 6 and
+  forward or reversed above, each column read down, up or alternating;
+- columnar with a fixed number of rows 2 to 10, columns forward or reversed, the same
+  three read directions;
+- rail fence with 2 to 6 rails at every starting offset;
+- reversal, rotations by 1 to 3 either way, swapped halves, reversed halves, middle-out and
+  ends-in in both parities, reversed blocks of 2 to 5 words.
+
+Calibration on a joined prose window at the body's size (2,912 blocks):
+
+| window | best rule | z | family P |
+|---|---|---|---|
+| intact | rotation by 3 (keeps the order) | +8.7 | 0.000 |
+| planted keyed columnar, width 5, columns (3, 0, 4, 1, 2), up | the planted rule | +7.7 | 0.000 |
+| planted rail fence, 4 rails, offset 3 | the planted rule | +7.7 | 0.000 |
+| planted ends-in | the planted rule | +8.9 | 0.000 |
+| shuffled | a width-6 columnar | +4.4 | 0.65 |
+
+The scan's own maximum under the null is 4.6 ± 0.6, set by the 1,440 keyed width-6
+orders. A planted rule clears it by 3 to 4 sigma and is named exactly.
+
+**The body**, 137 spans of two or more blocks:
+
+| | best rule | z | family P |
+|---|---|---|---|
+| whole body | columnar width 6, columns (3, 5, 1, 4, 2, 0), alternating | +5.11 | 0.175 |
+
+Held out, selecting the best rule on one half of the spans and reading it on the other:
+
+| split | selected on | rule | z there | z on the other half |
+|---|---|---|---|---|
+| odd / even | odd | width 6, (0, 4, 5, 2, 1, 3), down | +6.43 | +0.59 |
+| odd / even | even | width 6, (4, 5, 2, 1, 0, 3), up | +5.10 | −1.10 |
+| first / second | first | width 6, (5, 4, 2, 3, 0, 1), down | +5.61 | −0.35 |
+| first / second | second | width 6, (3, 5, 1, 4, 2, 0), alternating | +5.38 | +2.12 |
+
+Four different winners, none carrying to the other half. The whole-body +5.11 is the
+winner's curse of a 5,482-way scan, not a rule.
+
+**Sorted after encipherment?** A shuffle that sorts the ciphertext words by a visible
+key would leave ascending runs. Ascending adjacent pairs inside spans, against the shuffle:
+first rune z +0.78, last rune +0.53, Gematria sum −0.22, rune order −0.05, length +0.05.
+Not sorted. A sort on the plaintext (alphabetical) is invisible to this test and stays
+open; so does a keyed rule whose key changes per span, and a random draw.
+
+**Negative.** No fixed rule in the catalogue restores the order, and the ciphertext words
+are not sorted. If the shuffle is rule-based, the rule is outside this catalogue or
+changes from span to span; for a solver the within-span order is unknown either way.
