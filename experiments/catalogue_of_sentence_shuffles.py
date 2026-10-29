@@ -252,15 +252,19 @@ def scan(corpus: Corpus, rules, rng: np.random.Generator) -> dict:
         return float((((t - mean)[live] / sd[live]) ** 2).sum())
 
     indices = [corpus.recovery_index(fn) for _, fn in rules]
-    null = np.array(
+    # one draw set standardises every rule, a separate set is the family null: a draw
+    # standardised by a set it belongs to is capped at (n - 1) / sqrt(n), the observed
+    # data is not
+    draws = np.array(
         [
             [chi(corpus.table(draw[idx])) for idx in indices]
-            for draw in (corpus.shuffled_classes(rng) for _ in range(NULL_DRAWS))
+            for draw in (corpus.shuffled_classes(rng) for _ in range(2 * NULL_DRAWS))
         ]
     )
+    scale, null = draws[:NULL_DRAWS], draws[NULL_DRAWS:]
     obs = np.array([chi(corpus.table(corpus.classes[idx])) for idx in indices])
-    z = (obs - null.mean(axis=0)) / null.std(axis=0, ddof=1)
-    z_null = (null - null.mean(axis=0)) / null.std(axis=0, ddof=1)
+    z = (obs - scale.mean(axis=0)) / scale.std(axis=0, ddof=1)
+    z_null = (null - scale.mean(axis=0)) / scale.std(axis=0, ddof=1)
     return {
         "z": z,
         "top": float(z.max()),
