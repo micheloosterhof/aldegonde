@@ -553,20 +553,23 @@ Calibration on a joined prose window at the body's size (2,912 blocks):
 
 | window | best rule | z | family P |
 |---|---|---|---|
-| intact | rotation by 3 (keeps the order) | +8.7 | 0.000 |
-| planted keyed columnar, width 5, columns (3, 0, 4, 1, 2), up | the planted rule | +7.7 | 0.000 |
-| planted rail fence, 4 rails, offset 3 | the planted rule | +7.7 | 0.000 |
-| planted ends-in | the planted rule | +8.9 | 0.000 |
-| shuffled | a width-6 columnar | +4.4 | 0.65 |
+| intact | rotation by 3 (keeps the order) | +8.7 | 0.005 |
+| planted keyed columnar, width 5, columns (3, 0, 4, 1, 2), up | the planted rule | +7.6 | 0.010 |
+| planted rail fence, 4 rails, offset 3 | the planted rule | +7.4 | 0.015 |
+| planted ends-in | the planted rule | +8.8 | 0.000 |
+| shuffled | a width-6 columnar | +3.8 | 0.96 |
 
-The scan's own maximum under the null is 4.6 ± 0.6, set by the 1,440 keyed width-6
-orders. A planted rule clears it by 3 to 4 sigma and is named exactly.
+The scan's own maximum under the null is 5.0 ± 0.8, set by the 1,440 keyed width-6
+orders. A planted rule clears it by about 3 sigma and is named exactly. (Numbers from the
+29 October rerun, after the standardising draws were separated from the family-null
+draws; a draw standardised by a set it belongs to is capped at (n − 1)/√n while the
+observed data is not, which understated the null maximum.)
 
 **The body**, 137 spans of two or more blocks:
 
 | | best rule | z | family P |
 |---|---|---|---|
-| whole body | columnar width 6, columns (3, 5, 1, 4, 2, 0), alternating | +5.11 | 0.175 |
+| whole body | a keyed width-6 columnar (the winner changes with the draw set) | +5.10 | 0.395 |
 
 Held out, selecting the best rule on one half of the spans and reading it on the other:
 
@@ -594,7 +597,7 @@ open; so does a keyed rule whose key changes per span, and a random draw.
 not an exclusion. A true rule would restore intact order, which reads 9.5 ± 3.0 on
 joined prose windows at the body's size (`length_adjacency_self_null.py`, 28 windows,
 range +5.8 to +17.1). The body's best is +5.11: 7% of intact windows read that low, and
-the scan's null maximum is 4.59 ± 0.61, so the likelihood ratio at +5.11 is about 10 : 1
+the scan's null maximum is 5.0 ± 0.8, so the likelihood ratio at +5.1 is about 10 : 1
 for no rule in the catalogue against a rule. The ciphertext words are not sorted by any
 visible key. Still open at 10 : 1: a catalogue rule whose restored order happens to sit
 in the weak tail; and untouched: a sort on the plaintext, a keyed rule whose key changes
@@ -606,11 +609,11 @@ On the 114 spans of six or more blocks:
 | | last block minus span mean | z against the within-span shuffle |
 |---|---|---|
 | body as written | −0.114 ± 0.206 | −0.58 |
-| body undone by the winner | +0.088 ± 0.218 | +0.41 |
+| body undone by the winner | +0.150 ± 0.204 | +0.74 |
 | joined prose, intact (`permutation_unit_size.py`) | +1.277 ± 0.235 | |
 | the author joined, intact | +0.418 ± 0.287 | |
 
-The undone order sits 3.7 sigma below prose and 0.9 sigma below the author's pages. If
+The undone order sits 3.6 sigma below prose and 0.8 sigma below the author's pages. If
 the body's sentences end long as prose does, the winner is excluded on this channel and
 the catalogue result tightens from 10 : 1 to about 1,000 : 1; if they end as weakly as the
 author's solved pages do, the channel adds almost nothing and 10 : 1 stands. The author's
