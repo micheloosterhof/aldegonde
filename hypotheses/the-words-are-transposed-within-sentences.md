@@ -618,3 +618,61 @@ the body's sentences end long as prose does, the winner is excluded on this chan
 the catalogue result tightens from 10 : 1 to about 1,000 : 1; if they end as weakly as the
 author's solved pages do, the channel adds almost nothing and 10 : 1 stands. The author's
 figure rests on 68 sentences, so which applies is not settled.
+
+## The sentence boundaries elsewhere: no unit lets a rule restore the order (29 October 2026)
+
+Michel's question: if the four-dot is not the sentence end, could a rule-based shuffle
+hide behind the wrong unit? Moving the boundaries cannot make the order more English by
+itself, since the lag-1 table is flat with no cuts, with cuts at every mark, and with cuts
+at the four-dot. It can change the unit a rule acts on. `sentence_boundaries_elsewhere.py`
+scans 309 unit sets against 1,174 rules (the catalogue with keyed column orders up to
+width 5), 362,766 cells:
+
+- the four-dot spans with every stop moved d words, d = −3..+3;
+- spans at every cluster mark (four-, thirteen-, three-, ten-dot, quote);
+- fixed blocks of k words from each section start, k = 2..24, at every offset;
+- pages; sections.
+
+Every cell undoes the rule on its units and scores the lag-1 length-class table against
+the one null the record holds, words shuffled within the four-dot spans. One draw set
+standardises the cells and a separate set prices the family maximum. Two scorer faults
+were found and fixed on the way: a "shuffled" control that drew its permutation from a
+generator seeded by the sentence length, which made every sentence of one length share a
+permutation (a rule, not a shuffle); and null draws standardised in-sample, which caps a
+draw's z at (n − 1)/√n while the observed data is uncapped (a genuine shuffle then read
++9 at "P 0.000"). Both are documented in the script. A within-unit shuffle is not used as
+the null for a non-sentence unit, because sentences differ in word-length composition and
+a block that straddles two reads that difference as order.
+
+Calibration on a joined prose window at the body's size:
+
+| window | full family (362,766 cells) | displaced-stop family (8,218 cells) |
+|---|---|---|
+| shuffled within sentences | +9.0, P 0.075 (null max 7.85 ± 0.74) | +6.4, P 0.225 (null max 5.8 ± 0.9) |
+| rule planted inside blocks of 7, offset 3 | **+11.1 at that unit and rule, P 0.025** | |
+| rule planted inside sentences, stop two words late | +8.6, P 0.075 | **+8.6 at stops moved +1, P 0.000 (null max 5.6 ± 0.7)** |
+
+The full family finds a rule in a unit the spans do not see; a rule inside the true
+sentences with a displaced stop is found by the displaced-stop family, where the null
+maximum is lower, and not reliably by the full one.
+
+**The body** (two runs, 40 + 40 draws each):
+
+| family | best cell | z | family P |
+|---|---|---|---|
+| full, 362,766 cells | blocks of 7 or 12, a keyed width-5 columnar | +6.8 / +6.9 | 0.975 / 0.825 |
+| four-dot spans, stops moved −3..+3 | stops moved −2; columnar width 5, columns (4, 2, 3, 1, 0), up | +6.69 | 0.075 (null max 5.57 ± 0.81) |
+| mark, page and section units | pages; a keyed width-5 columnar | +6.06 | 0.050 (null max 5.00 ± 0.75) |
+
+The displaced-stop cell at P 0.075 is priced against a true rule, which reads 9.5 ± 3.0
+when the order is restored: about 2 : 1 for noise, so uninformative on its own. The
+independent channel decides it the same way as before. Under that cell's inversion the
+unit-final block reads +0.15 ± 0.23 (z +0.77 against the within-unit shuffle), 3.6 sigma
+below prose (+1.28) and 0.8 sigma below the author's pages (+0.42); as written, with the
+stops moved −2, it reads −0.20 ± 0.18.
+
+**Negative.** No unit among 309 and no rule among 1,174 restores the order above what a
+random shuffle within the four-dot spans produces on the same scan. Moving the stops by up
+to three words, cutting at every mark, cutting into fixed blocks, pages or sections, none
+gives a cell a planted rule would not have beaten. What survives is what survived before:
+a random draw, a sort on the plaintext, or a keyed rule whose key changes per unit.
