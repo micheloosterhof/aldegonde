@@ -593,6 +593,13 @@ first rune z +0.78, last rune +0.53, Gematria sum −0.22, rune order −0.05, l
 Not sorted. A sort on the plaintext (alphabetical) is invisible to this test and stays
 open; so does a keyed rule whose key changes per span, and a random draw.
 
+Neighbour relations the length classes and the sorts cannot see (29 October 2026, same
+script): adjacent words of the same length parity 1,362 against 1,385 ± 24 (z −0.95);
+same first rune 85 against 99 ± 10 (−1.46); same last rune 91 against 92 ± 9 (−0.10);
+same length 404 against 409 ± 17 (−0.28). The one relation that moves, a word's first
+rune equal to the previous word's last rune, 22 against 92 ± 9 (z −7.45), is the known
+seam doublet deficit (`doublet-suppression-requires-design.md`), not an ordering.
+
 **Corrected reading (28 October 2026).** The scan is evidence against a catalogue rule,
 not an exclusion. A true rule would restore intact order, which reads 9.5 ± 3.0 on
 joined prose windows at the body's size (`length_adjacency_self_null.py`, 28 windows,
