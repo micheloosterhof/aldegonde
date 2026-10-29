@@ -388,6 +388,32 @@ def sort_tests(spans, rng: random.Random) -> None:
     print(
         "  a sort would read far above the shuffle (ascending) or far below (descending)"
     )
+    # relations between neighbours that no sort and no length class would show
+    relations = {
+        "same length parity as the previous word": lambda a, b: (
+            len(a) % 2 == len(b) % 2
+        ),
+        "same first rune as the previous word": lambda a, b: a[0] == b[0],
+        "same last rune as the previous word": lambda a, b: a[-1] == b[-1],
+        "first rune equals the previous word's last rune": lambda a, b: a[-1] == b[0],
+        "same length as the previous word": lambda a, b: len(a) == len(b),
+    }
+    print(f"\nNeighbour relations inside {len(spans)} spans, against the shuffle")
+    for label, rel in relations.items():
+        obs = sum(rel(a, b) for s in spans for a, b in zip(s, s[1:]))
+        null = []
+        for _ in range(NULL_DRAWS):
+            draw = []
+            for s in spans:
+                s = list(s)
+                rng.shuffle(s)
+                draw.append(s)
+            null.append(sum(rel(a, b) for s in draw for a, b in zip(s, s[1:])))
+        null = np.array(null)
+        print(
+            f"  {label:<48} {obs:>5}  shuffle {null.mean():7.1f} +- {null.std():5.1f}"
+            f"  z {(obs - null.mean()) / null.std(ddof=1):+.2f}"
+        )
 
 
 def main() -> None:
