@@ -547,9 +547,9 @@ if __name__ == "__main__":
             print(f"  {english_pt[i : i + 50]}")
 
     # Save results to file
-    import datetime
+    import datetime as dt
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
     results_file = f"experiments/repeat_attack_results_{timestamp}.txt"
 
     with open(results_file, "w") as f:
