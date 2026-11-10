@@ -27,8 +27,8 @@ only; rejecting it on a T2 or T3 row is a category error.
 
 | tier | rows |
 |---|---|
-| T0 | B6, C9, D1, D2, D3, D5, D6, D8, D11, D15, D17, E1, E2, E3, E5, E6, E7, E9, E10, E11, E12, F1, F2 |
-| T1 | A1, A2, A3, A4, B1, B2, B3, B4, B5, C2, D4, D16 |
+| T0 | B6, C9, D1, D2, D3, D5, D6, D8, D11, D15, D17, D18, E1, E2, E3, E5, E6, E7, E9, E10, E11, E12, E13, F1, F2 |
+| T1 | A1, A2, A3, A4, B1, B2, B3, B4, B5, B7, B8, B9, C2, D4, D16 |
 | T2 | C-0, C1, C7, C8, D9, D10, D12, D14, F3, G3, G4, G5 |
 | T3 | C0, C3, C4, C5, C6, D7, D13, G1, G2 |
 
@@ -73,6 +73,9 @@ order and cycle type, and the 283-bit budget are T2 and T3.
 | B4 · T1 | No **repeating** key of any period ≤ 949 (IoC) or detectable depth | `no-running-key-depth.md` | — |
 | B5 · T1 | Not an **integer-sequence keystream** over the standard rune order: 24 generators × 445 window positions × 29 offsets × both senses, running on or restarting, at 14,000 terms. Body best +2.6σ of its own scan against a planted control 2.6 points higher | `no-integer-keystream-anywhere.md` | Covers the prime running key the author uses on the very next page |
 | B6 · T0 | The cipher **passes no rune through**. The author's interrupt convention is exactly "plaintext F" (12 for 12 over five keyed pages), and F in the body sits +0.53σ from flat, −8.9σ from its pass-through rate — the closest of all 29 | `the-body-passes-nothing-through.md` | Excludes the pass-through convention on any keystream; key-skipping that still enciphers the rune is untouched |
+| B7 · T1 | Not an integer-sequence keystream over the standard rune order **under any pattern of key skips and stalls**: 34 generators × 29 offsets × three senses × three layouts × three bases through a Viterbi alignment; best of 306 cells z +3.87, family P 0.41, against a planted key under the key-skipping dodge at **+239** | `no-keystream-under-slips-or-any-tableau.md`, `slip_tolerant_keystream.py` | Removes B5's allowance of 200 interrupts, which a key-eating preventer (about 360 slips) or a key-eating space (2,927) exceeds. Null matched per generator on surrogate bodies |
+| B8 · T1 | Not an integer-sequence key selecting the alphabet **under any tableau**: the 29 × 29 table of (cipher rune, key residue) is independent for the same 34 generators at every start term to 2,000, with or without one rune of ciphertext feedback; body best +8.79 against +8.04 ± 1.27 on surrogates and **+248** for a planted Quagmire IV with two random alphabets | same, `any_tableau_keystream.py` | Removes B3/B5's "standard rune order". Fixed alignment: covers no preventer, a tuned relation and a null-inserting preventer. A key-skipping preventer with a mixed alphabet is the one cell left |
+| B9 · T1 | No **repeating key smeared by key slips** up to period 600: coincidences summed over lag bands, seven widths, family P 0.10 against 400 surrogate bodies | same, `smeared_period.py` | Planted periods 100, 300, 600 and 2,000 are found, 1,000 is not; quote 600 |
 
 ## C. The alphabet family
 
@@ -112,6 +115,7 @@ order and cycle type, and the 283-bit budget are T2 and T3.
 | D15 · T0 | The body's blocks lengthen less before a mark than the author's do, but **only at short and medium spans**. Stratifying by the length of the span the mark closes: **−5.66σ at 3–6 blocks, −2.19σ at 7–14, −0.61σ at 15+**, where half the body's spans lie. Pooled it reads −6.1σ, and most of that is composition — the author closes spans of ≤2 blocks (titles: `A WARNNG.`, `WELCOME.`) 20.2% of the time against the body's 2.9% | `sentences-do-not-end-long.md` | Like-for-like on one glyph class: the two transcriptions prove `.` and ④ are one class and pages 0–14 carry no ⑬/③/⑩. **The Austen benchmark is retracted as a register model** — its profile rises with span length (+0.35→+1.08) where the author's falls (+2.20→+0.20). Mark spacing excludes mechanical placement at 6.7σ but is NOT over-dispersed — across ten English registers the CV runs 0.645–1.068 and the body's 0.972 is z = +0.66 (`sentence_length_across_registers.py`); the random-vs-English spacing evidence is 3:1 to 33:1 and rests on that same retracted proxy. Mark rate differs 2.3× between sections (z = +5.02) |
 | D16 · T1 | The cipher **does not restart at any structural boundary**. Blocks following a sentence mark coincide at 0.0338 against a length-matched null of 0.0348 ± 0.0011: **z = −0.96**, where a planted base reset reads +53 (with the clock) or +17 (without). Page breaks agree at z = −0.28 on 18 blocks | `the-cipher-does-not-restart.md` | Key-free: a shared base makes boundary-following blocks coincide at the plaintext rate. **Silent on a clock-only reset** (planted: −1.6), and that is structural — different bases coincide at chance whatever the phase, so no key-free channel can see it. The page-break cell excludes a full reset only (+4σ control). D12's 15% cap had left room for this |
 | D17 · T0 | The separators are **inside the cipher, not laid over it**: re-cutting the unchanged stream with the same block lengths in another order drops the within-block lag-5 count from 104 to 77.9 ± 8.2 (z +3.18, P 0.0015) over the body and to 78.9 ± 8.0 (P 0.0005) inside spans | `separators-are-independent-draws.md`, `separators_drawn_independently.py` | The same fact as D1 under a different re-cut. Excludes decorative separators only; separators that are cipher units of independent length are untouched |
+| D18 · T0 | The doublets are **not block edges and not ruled null positions**: over block sizes 4 to 7 and nine index rules the largest share of the 86 in one residue class is 0.38 where a block reversal needs 1.00; over 288 positional rules the best cover is 0.62 | `doublets-are-new-adjacencies.md`, `new_adjacency_probes.py` | Any reading with a perfect preventer and an after-step must cover all 86 positions. Keyed null positions are untested |
 
 ## E. The plaintext side
 
@@ -128,6 +132,7 @@ order and cycle type, and the 283-bit budget are T2 and T3.
 | E6 · T0 | Not **interleaved** at any depth to 30 — the language peak would move, not vanish | `interleaving_depth.py` | |
 | E7 · T0 | **Blocks are words**, on two independent lines. The lengths: the author's own words with short ones joined fit at P = 0.83 with one free parameter, while a discrete lognormal and a negative binomial are rejected at P = 0.00 with two. The d5 length-trend agrees but weakly, +0.0369 ± 0.0202, 1.73σ from cuts | `blocks-are-still-words.md`, `lengths_say_words_not_cuts.py` | WEAKENED: the row quoted two point estimates and no error. 806 blocks reach six runes and supply a lag-5 pair. Matters because E7 is what keeps crib programs valid | 1.55σ; rescues the crib programmes |
 | E12 · T0 | Span-to-span **composition is not a channel**: the between-span dispersion of block length reads +0.92 on the body, +0.6 ± 0.5 on joined prose at the body's span sizes and −0.01 ± 1.04 on independent lengths, so sentences and independent draws sit 0.53σ apart | `separators-are-independent-draws.md` | Records a powerless test so it is not re-run. Whether the spans hold sentences rests on the non-length channels (red-ink titles, quote edges) |
+| E13 · T0 | **THE written joined** accounts for most of the hole at 2: χ² against the body falls from 45.4 to 14.1 on 11 df with no parameter. Nulls at 0.096 of the runes, the share the doublet count implies, give 16.0 and a mean block of 4.411 against 4.425 | `doublets-are-new-adjacencies.md` | Not separated from E9's general joining by the marginal. Lag 2 reads +1.89σ against the null reading |
 
 ## F. Uniformity
 
@@ -192,6 +197,9 @@ Everything else in this table is a constraint. These two are the facts a solutio
 explain.
 
 ## Status
+
+**Rows B7, B8, B9, D18 and E13 added 2026-11-10** from
+`no-keystream-under-slips-or-any-tableau.md` and `doublets-are-new-adjacencies.md`.
 
 **Tiered 2026-11-10.** Every row id carries the weakest premise under which it can
 reject a candidate (T0 to T3, defined at the top). Rows D17 and E12 added from

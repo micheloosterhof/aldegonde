@@ -251,3 +251,65 @@ cipher emits no doublet at all; flatness comes free from the feedback, the prece
 split is met by a per-word key (1.04–1.07 against 1.026), and EO is the one dead rune whose
 lag-2..4 cells match. The 86 must then be runes written twice. Test: a planted-key solver
 on the difference stream, then one page of the body.
+
+## 9. Directions that need neither the order-5 step nor σ, 2026-11-10
+
+The tiering of `what-any-solution-must-satisfy.md` leaves, at T0 and T1, a uniform stream
+with adjacent repeats thinned to 0.193 of chance, a weak separator-anchored lag-5 echo
+(family P 0.0045) and one repeated phrase. Everything below works from those alone.
+
+### 9.1 Run today
+
+| test | question | result | file |
+|---|---|---|---|
+| slip-tolerant alignment | Is the key an integer sequence that a key-eating preventer or a key-eating space has desynchronised? | 34 generators, 306 cells, best z +3.87 (family P 0.41); planted +239 | `slip_tolerant_keystream.py` |
+| any-tableau dependence | Does an integer sequence select the alphabet under ANY tableau (all Quagmires, any Latin square), with or without one rune of ciphertext feedback? | body +8.79 against +8.04 ± 1.27 on surrogates; planted Quagmire IV +248 | `any_tableau_keystream.py` |
+| smeared period | Is there a repeating key whose period the slips have spread over a band of lags? | family P 0.10; excluded to period 600 | `smeared_period.py` |
+| new adjacencies | Is the preventer perfect, with the 86 doublets made by a later step (block reversal, inserted nulls)? | block reversal excluded; no ruled null position; random nulls hit the mean block length with no parameter and miss lag 2 by 1.9σ | `new_adjacency_probes.py` |
+| THE | Is the 2-rune hole one word? | THE joined to the next word: χ² 45.4 → 14.1 on 11 df, no parameter | same |
+
+One lesson for every path-based test: a structured key scores differently from a random
+key on ANY text once the path has a thousand free moves (prime(n)−1 reads +5σ against a
+random-key null on a shuffled body). The null has to hold the key and resample the text.
+
+### 9.2 Not run, ranked
+
+1. **The one keystream cell left.** A key-skipping preventer × a mixed alphabet × an
+   integer-sequence key. Alternate the two tests of 9.1: fit the alphabets by linear
+   assignment along the current path (the unigram score is a sum over (cipher rune,
+   number) cells, so the best alphabet for a fixed path is an exact 29 × 29 assignment,
+   not a climb), then re-path. Plant first.
+2. **Cover tests for every preventer reading.** Any reading in which the preventer is
+   perfect and the survivors are an after-effect names a set of positions that must
+   contain all 86 doublets; a wrong rule passes with probability about 0.2⁸⁶. The same
+   holds for a dodge that fails on a schedule's zero offset: the doublets must all sit on
+   the zero's phase. Keyed null gaps (primes, prime gaps, digits) are the untested
+   family.
+3. **A dodge-aware decoder in the library.** Decryption under "re-encipher with the next
+   key term on a would-be repeat" is ambiguous at one position in 29 (both readings are
+   consistent when C_i − C_{i−1} equals the key step) and is resolved by sense. A beam
+   search with the n-gram scorer does it. Every candidate key then costs one call, and
+   the zero-offset half of the Quagmire schedules (section 3.3) becomes sweepable.
+4. **Fingerprint-first program search.** Enumerate small cipher programs in a grammar
+   (carrier × chain × preventer × after-step), run each FORWARD on the author's
+   plaintext, and keep those that reproduce the T0 cells: 0.193 at seams and inside
+   blocks alike, uniform off-diagonal bigrams, uniform non-zero differences, no period.
+   No key is recovered; the output is the list of mechanisms that can make the
+   fingerprint at all. The cipher zoo (section 6) is this with eighteen programs by hand.
+5. **The second weak signal.** Word-aligned coincidence at the DJU-BEI word distance
+   1,449 reads +2.72σ with the phrase removed (195 of 4,669), spread over the whole body
+   and over word positions, about a quarter of what a full word-period would give. It is
+   as strong as the lag-5 echo was before anything was built on it. No model predicts a
+   partial word-period; a pre-stated test needs fresh text, which does not exist.
+6. **Crib shape under the THE reading.** If THE is written joined, blocks beginning
+   TH-E are about one in sixteen; under a per-block restart their first two runes share
+   plaintext. That is a crib on position, not on a phrase, and survives the word
+   shuffle.
+
+### 9.3 What these close for the walk's rivals
+
+"A plain running key under a dodge" was the simplest T0 reading left. For the 34
+generators it is now closed in the standard rune order under any slips, and under any
+alphabets at a fixed alignment. What remains of it is the cell in 9.2 item 1, sequences
+outside the list, and keys that are not sequences at all.
+
