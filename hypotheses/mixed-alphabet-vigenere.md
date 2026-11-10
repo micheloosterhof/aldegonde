@@ -475,6 +475,32 @@ priority sweep all searched only the zero-free half of the schedule space. None 
 them could have found such a key. Whether it is worth searching the other half turns
 on whether any Quagmire schedule can suppress d6, which is untested.
 
+## The gated enumeration replicated (November 2026)
+
+`experiments/quagmire_sweep_compiled.py`, outcome in
+`experiments/quagmire_sweep_outcome.json`. The same candidate generators as the July run,
+with the gate and the base₀ fit compiled and checked against the original code (gate
+300 of 300, score 40 of 40) and against 20 planted family keys (all recovered at −1323,
+base₀ 29 of 29; a wrong space wheel on the same ciphertext reads −4961 ± 33, best −4884).
+
+| | July 2026 | November 2026 |
+|---|---|---|
+| complete keys | 313,972,400 | 199,222,740 (642,654 letter wheels × 310 space wheels, 222 distinct) |
+| through the gate (≥ 6 fixed points) | 186,465 | 117,436, rate 5.89×10⁻⁴ against 5.94×10⁻⁴ for a random permutation |
+| exact returns (29 fixed points, the degenerate σ ∈ ⟨g⟩ class) | 69 | 33 |
+| 2-rune fit of the passers | floor near −4950 | −4954 ± 22, best −4834 |
+| keys above −4000 | 0 | 0 |
+| time | — | 0.38 h on 4 workers |
+
+The key counts differ because the keyword list does: this run read Debian's
+`/usr/share/dict/web2` (195,952 words of 4–12 letters) and found 310 space wheels in the
+seam band where the July run had 446. The two runs agree on everything a key count does
+not enter: the gate passes at the chance rate, the passers floor where a wrong key
+floors, and nothing approaches a planted key.
+
+It adds no coverage. The gate's weakness (`dju-bei-gate-validity.md`), the one-register
+bands and the zero-free schedules all stand as written below.
+
 ## The enumeration, run (July 2026) — negative for the keyword family
 
 `experiments/quagmire_runner.py` streamed the full candidate space —

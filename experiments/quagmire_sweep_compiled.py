@@ -480,9 +480,9 @@ def sweep(nproc: int, every: int, checks: dict) -> None:
         )
     else:
         print(
-            f"VERDICT: no key above {THRESH:.0f} on {coverage}. The keyword Quagmire "
-            f"odometer with these bands is excluded on the DJU-BEI gate and the 2-rune "
-            f"fit."
+            f"VERDICT: no key above {THRESH:.0f} on {coverage}. Negative for the "
+            f"keyword Quagmire walk inside these bands, conditional on DJU-BEI being a "
+            f"state return (dju-bei-gate-validity.md)."
             if every == 1
             else f"VERDICT: no key above {THRESH:.0f} on {coverage}."
         )
