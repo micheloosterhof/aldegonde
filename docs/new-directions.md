@@ -23,7 +23,7 @@ carrier for each:
 | class | carrier tried | where it stands |
 |---|---|---|
 | tuned relation | the walk, `g` of order 5 and `σ` per word | 16 bits recoverable of 283 (`why-the-body-resists.md`); every free cell lands except the DJU-BEI return |
-| non-bijective step | the dodge on the walk; the Quagmire odometer with a dodge | 17 of 19 free cells, d6w misses on 31 coincidences; no recorded outcome of the enumeration (`quagmire_runner.py --run`) |
+| non-bijective step | the dodge on the walk; the Quagmire odometer with a dodge | 17 of 19 free cells, d6w misses on 31 coincidences; the enumerations run so far cover the no-dodge, zero-free schedules only (section 3.3) |
 
 So "a mechanism that is neither" does not exist inside the position-wise
 cipher class. What is open is everything around the suppression:
@@ -98,16 +98,30 @@ concluding the permutation varies from sentence to sentence.
   permutation needs a key and the transposition is a second cipher layer to
   budget for.
 
-### 3.3 Record the enumeration's outcome before building anything else (class C)
+### 3.3 The enumeration's outcome was recorded; this entry was wrong (class C)
 
-`quagmire_runner.py` is a complete verify-not-search programme over about
-2.2 × 10⁸ odometer keys with the DJU-BEI filter first. Neither
-`quagmire-odometer.md` nor the script records whether `--run` was carried to
-the end. That is the cheapest decisive fact in the directory:
+Corrected 2026-11-10. This section said neither `quagmire-odometer.md` nor the script
+records whether `quagmire_runner.py --run` was carried to the end. It was, and the
+outcome is recorded in two other files:
 
-- a negative at full coverage kills the odometer carrier, which is progress;
-- an incomplete run is the one computation worth finishing before any new
-  carrier is proposed, because every carrier below needs the same machinery.
+- `mixed-alphabet-vigenere.md`: the July 2026 gated run, 313,972,400 keys, 186,465
+  through the DJU-BEI gate, none above the 2-rune threshold.
+- `dju-bei-gate-validity.md`: the gate passes a true key only at the chance rate unless
+  the repeat is a genuine state return, so the gated negative is weak; the ungated
+  re-runs (7.0 × 10⁸ keys, September 2026) are also negative.
+- `experiments/quagmire_sweep_compiled.py` (November 2026) replicates the gated run with
+  compiled loops; the figures are in `mixed-alphabet-vigenere.md`.
+
+What is not run, and is the real open computation:
+
+- **The register-robust bands.** The one-register bands keep a true key about a quarter
+  of the time; the wide bands hold 4.8 × 10¹¹ keys, 594 core-hours ungated.
+- **The zero-offset half of the schedule space.** Every sweep requires five non-zero
+  offsets. The dodge reading (`quagmire-dodge.md`, `quagmire-odometer.md`) requires
+  exactly one zero, and needs a dodge-aware decryption, which no sweep has.
+
+So the keyword Quagmire walk is negative on about a quarter of its no-dodge half, and
+the odometer with a dodge has only the DIVINITY WITHIN crib check against it.
 
 ### 3.4 One library cipher for every carrier (class C)
 
