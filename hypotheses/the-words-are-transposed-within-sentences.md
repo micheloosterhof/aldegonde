@@ -220,7 +220,8 @@ profile (χ² 33.3 on 8 df, P = 0.0001), the pre-mark block is a random block of
 (z −0.86 against the body's own shuffle), and — October 2026, the decisive one — adjacent
 block lengths inside a span are independent (z −0.10 against the body's own within-span
 shuffle) where intact order gives +5.1 on the author's joined pages at a fifth of the
-body's size and +5.8 to +17.1 on joined prose at the body's size. **Which** permutation is
+body's size and +5.8 to +17.1 on joined prose at the body's size. (11 November 2026: with refrains removed and particular words joined the adjacency margin is
+2 to 3σ, not this; see the last section.) **Which** permutation is
 undetermined (reversal and rotations 1–3 excluded; nothing beats a plain shuffle), and
 the unit is bounded above by the span (the rubricated titles are contiguous runs of red
 blocks, so no word left its span) and below only weakly (order as written excluded at
@@ -683,3 +684,31 @@ random shuffle within the four-dot spans produces on the same scan. Moving the s
 to three words, cutting at every mark, cutting into fixed blocks, pages or sections, none
 gives a cell a planted rule would not have beaten. What survives is what survived before:
 a random draw, a sort on the plaintext, or a keyed rule whose key changes per unit.
+
+## The adjacency evidence is weaker than recorded (11 November 2026)
+
+`experiments/joined_short_words_and_order.py`; the tables are in
+`short-units-are-written-joined.md`.
+
+The October section called adjacency "the decisive one": the body at −0.10 against
++5.14 on the author's joined pages and +5.8 to +17.1 on joined prose. Two things lower
+both figures.
+
+- **Refrains.** The author's pages repeat whole sentences. Without the repeats the
+  author reads +1.9 to +2.5 at about 450 blocks, against 0.0 ± 0.6 for the body at that
+  size.
+- **Which words are joined.** October joined a random 40% of the short units. If the
+  joined words are the articles with OF and TO, which fits the lengths equally well
+  (P 0.32), prose at the body's size reads +6.1 ± 2.0 with a lowest window of +1.6, and
+  with IN as well +5.4 ± 2.8 with a lowest window of +0.6.
+
+Adjacency therefore separates the body from intact English order by about 3σ under the
+best-fitting joining and about 2σ under the widest, not by the margin recorded. No
+window of prose reaches the body under any rule, so the lean is unchanged; the weight is
+not.
+
+What still carries the claim is at the span's edge: the last block is +1.2 to +1.6 runes
+longer than the interior in English under every joining rule that fits the lengths, and
+−0.29 ± 0.20 in the body (3.9 to 4.9σ), with the offset profile and the pre-mark block
+above. All of those read the four-dot mark as a sentence end. If it is not one, the
+order question rests on the 2 to 3σ of adjacency alone.

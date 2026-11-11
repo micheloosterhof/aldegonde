@@ -470,3 +470,69 @@ after fits is −7.8 observed against spreads of ±21 to ±34 under either model
 0.85 whichever is true). **Undecidable on the lengths with a 719-word reference.** The
 order of operations is left open; a solved body page reads it directly from whether the
 joined pairs are English collocations.
+
+## Joining by identity: THE, the articles, OF and TO (11 November 2026)
+
+`experiments/joined_short_words_and_order.py`
+
+Everything above joins by length at a fitted rate. The natural reading of a hole at two
+runes is narrower: named words are written onto the word that follows them, always, with
+no rate. Each rule is run forward on the author's 723 words and on five prose registers.
+
+**Lengths** (two-sample χ² against the body's 2,896 blocks, 11 df):
+
+| words joined to the next word | blocks | 2-rune share | χ² | P |
+|---|---|---|---|---|
+| none, as written | 723 | 0.242 | 45.4 | 0.000 |
+| THE | 680 | 0.194 | 13.4 | 0.27 |
+| THE, A | 661 | 0.200 | 19.0 | 0.06 |
+| THE, A, AN | 652 | 0.189 | 13.9 | 0.24 |
+| the articles and OF | 643 | 0.177 | 12.6 | 0.32 |
+| the articles, OF and TO | 620 | 0.140 | 12.6 | 0.32 |
+| the articles, OF, TO and IN | 618 | 0.136 | 13.3 | 0.28 |
+| every word of 1 or 2 runes | 522 | 0.002 | 140.9 | 0.000 |
+
+The body's share of 2-rune blocks is 0.155. **THE alone is enough for the lengths**, and
+any rule from THE to the articles with three prepositions fits as well. The lengths do
+not choose among them. Joining every short word is excluded: the body keeps its 2-rune
+blocks.
+
+**Order between neighbours** (the transition table of `length_adjacency_self_null.py`
+against each text's own within-span shuffle; prose in windows of the body's size):
+
+| words joined | prose, 17 to 20 windows | lowest window | Pearson lag-1 |
+|---|---|---|---|
+| none | +22.9 ± 5.9 | +10.8 | −0.135 |
+| THE | +24.5 ± 7.0 | +14.2 | −0.141 |
+| THE, A, AN | +22.3 ± 6.9 | +8.4 | −0.130 |
+| the articles and OF | +9.3 ± 1.9 | +5.5 | −0.025 |
+| the articles, OF and TO | +6.1 ± 2.0 | +1.6 | −0.006 |
+| the articles, OF, TO and IN | +5.4 ± 2.8 | +0.6 | +0.024 |
+| every word of 1 or 2 runes | +4.8 ± 2.3 | +0.7 | +0.023 |
+| **the body** | **+0.01** | | −0.009 |
+
+Joining the articles does nothing to the order. Joining OF and TO as well removes three
+quarters of it and all of the linear part: the short-long alternation of English is
+mostly preposition, article, noun. What is left is +5 to +6 where the body reads 0, no
+window of prose reaches the body under any rule, and no rule in this family goes below
++4.8.
+
+**Span ends** (last block minus interior blocks): +1.22 to +1.57 runes on the author's
+text under every fitting rule, +1.13 to +1.37 on prose, against the body's −0.29 ± 0.20.
+3.9 to 4.9σ. Joining forward cannot shorten the last word of a sentence.
+
+**So the two anomalies are two facts.** Joining is the combination and accounts for the
+lengths. With prepositions included it also accounts for most of the neighbour order,
+which the October section above did not see because it joined a random 40% of short
+units instead of particular words. It does not account for the span ends, and it leaves
+a neighbour residual of about 3σ.
+
+A correction that comes with this. The author's pages hold refrains (WHO ARE YOU WHO
+WISHES TO STUDY HERE five times), and a repeated sentence repeats its transitions. With
+every span dropped that repeats a three-word run of an earlier one (76 spans and 514
+words of 94 and 723), the author's adjacency z falls from +4.0 to +5.7 to **+1.9 to
++2.5** under the fitting rules, against 0.0 ± 0.6 for the body cut to the same size. The
+"+5.14 on the author's joined pages" quoted in October carries the refrains.
+
+Cost of the reading: the solved pages write THE, OF and TO apart. A body that joins
+them follows a convention the front matter does not.
