@@ -695,7 +695,7 @@ The October section called adjacency "the decisive one": the body at −0.10 aga
 both figures.
 
 - **Refrains.** The author's pages repeat whole sentences. Without the repeats the
-  author reads +1.9 to +2.5 at about 450 blocks, against 0.0 ± 0.6 for the body at that
+  author reads +1.9 to +2.5 at about 450 blocks, against +0.1 ± 0.6 for the body at that
   size.
 - **Which words are joined.** October joined a random 40% of the short units. If the
   joined words are the articles with OF and TO, which fits the lengths equally well

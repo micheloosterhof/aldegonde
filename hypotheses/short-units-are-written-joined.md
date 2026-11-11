@@ -530,8 +530,8 @@ a neighbour residual of about 3σ.
 A correction that comes with this. The author's pages hold refrains (WHO ARE YOU WHO
 WISHES TO STUDY HERE five times), and a repeated sentence repeats its transitions. With
 every span dropped that repeats a three-word run of an earlier one (76 spans and 514
-words of 94 and 723), the author's adjacency z falls from +4.0 to +5.7 to **+1.9 to
-+2.5** under the fitting rules, against 0.0 ± 0.6 for the body cut to the same size. The
+words of 94 and 723), the author's adjacency z falls from between +4.0 and +5.2 to **between +1.9 and
++2.5** under the fitting rules, against +0.1 ± 0.6 for the body cut to the same size. The
 "+5.14 on the author's joined pages" quoted in October carries the refrains.
 
 Cost of the reading: the solved pages write THE, OF and TO apart. A body that joins
