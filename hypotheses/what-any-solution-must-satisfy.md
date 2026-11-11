@@ -28,7 +28,7 @@ only; rejecting it on a T2 or T3 row is a category error.
 | tier | rows |
 |---|---|
 | T0 | B6, C9, D1, D2, D3, D5, D6, D8, D11, D15, D17, D18, E1, E2, E3, E5, E6, E7, E9, E10, E11, E12, E13, F1, F2 |
-| T1 | A1, A2, A3, A4, B1, B2, B3, B4, B5, B7, B8, B9, B10, C2, D4, D16 |
+| T1 | A1, A2, A3, A4, B1, B2, B3, B4, B5, B7, B8, B9, B10, B11, B12, C2, D4, D16 |
 | T2 | C-0, C1, C7, C8, D9, D10, D12, D14, F3, G3, G4, G5 |
 | T3 | C0, C3, C4, C5, C6, D7, D13, G1, G2 |
 
@@ -74,9 +74,11 @@ order and cycle type, and the 283-bit budget are T2 and T3.
 | B5 · T1 | Not an **integer-sequence keystream** over the standard rune order: 24 generators × 445 window positions × 29 offsets × both senses, running on or restarting, at 14,000 terms. Body best +2.6σ of its own scan against a planted control 2.6 points higher | `no-integer-keystream-anywhere.md` | Covers the prime running key the author uses on the very next page |
 | B6 · T0 | The cipher **passes no rune through**. The author's interrupt convention is exactly "plaintext F" (12 for 12 over five keyed pages), and F in the body sits +0.53σ from flat, −8.9σ from its pass-through rate — the closest of all 29 | `the-body-passes-nothing-through.md` | Excludes the pass-through convention on any keystream; key-skipping that still enciphers the rune is untouched |
 | B7 · T1 | Not an integer-sequence keystream over the standard rune order **under any pattern of key skips and stalls**: 34 generators × 29 offsets × three senses × three layouts × three bases through a Viterbi alignment; best of 306 cells z +3.87, family P 0.41, against a planted key under the key-skipping dodge at **+239** | `no-keystream-under-slips-or-any-tableau.md`, `slip_tolerant_keystream.py` | Removes B5's allowance of 200 interrupts, which a key-eating preventer (about 360 slips) or a key-eating space (2,927) exceeds. Null matched per generator on surrogate bodies |
-| B8 · T1 | Not an integer-sequence key selecting the alphabet **under any tableau**: the 29 × 29 table of (cipher rune, key residue) is independent for the same 34 generators at every start term to 2,000, with or without one rune of ciphertext feedback; body best +8.79 against +8.04 ± 1.27 on surrogates and **+248** for a planted Quagmire IV with two random alphabets | same, `any_tableau_keystream.py` | Removes B3/B5's "standard rune order". Fixed alignment: covers no preventer, a tuned relation and a null-inserting preventer. A key-skipping preventer with a mixed alphabet is the one cell left |
+| B8 · T1 | Not an integer-sequence key selecting the alphabet **under any tableau**: the 29 × 29 table of (cipher rune, key residue) is independent for the same 34 generators at every start term to 2,000, with or without one rune of ciphertext feedback; body best +8.79 against +8.04 ± 1.27 on surrogates and **+248** for a planted Quagmire IV with two random alphabets | same, `any_tableau_keystream.py` | Removes B3/B5's "standard rune order". Fixed alignment: covers no preventer, a tuned relation and a null-inserting preventer. A key-skipping preventer with a mixed alphabet is the cell left, and B10 to B12 narrow it to two arbitrary alphabets under a key that runs on |
 | B9 · T1 | No **repeating key smeared by key slips** up to period 600: coincidences summed over lag bands, seven widths, family P 0.10 against 400 surrogate bodies | same, `smeared_period.py` | Planted periods 100, 300, 600 and 2,000 are found, 1,000 is not; quote 600 |
 | B10 · T1 | No integer-sequence key that **restarts at a page, section or line** selects the alphabet under any tableau, **key-skipping preventer included**: the (cipher rune, key residue) table over the first 20 to 60 runes of each unit, where the key is still aligned; body best +4.97 against +5.11 ± 0.38 on surrogates and **+12.96** for a planted Quagmire IV restarting per page with the dodge | `no-keystream-under-slips-or-any-tableau.md`, `any_tableau_unit_heads.py` | The first two runes of every written line are left out: glyph width sets them (`line-initial-bias.md`) and a key whose early terms label line positions reads that as dependence |
+| B11 · T1 | No **keyword alphabet under a running integer-sequence key with key slips**: 1,216 alphabets from 3301's vocabulary × three placements (keyed plaintext, keyed cipher, both) × two bases × 19 generator classes through the slip-tolerant alignment on the first 2,000 runes; the best opening score is −374 where a planted Quagmire III reads +597 (robust z **+73**), and the five best cells re-scored on the whole body read −0.70 to +2.35 against surrogate bodies | `no-keystream-under-slips-or-any-tableau.md`, `keyed_alphabet_slips.py` | Twelve of the 34 generators are set aside first: residues that uneven cannot leave flat rune counts under an additive tableau. A vocabulary of 316 words; start terms to about 80 |
+| B12 · T1 | No **single arbitrary mixed alphabet**, on the cipher side or the plaintext side, under a running integer-sequence key with key slips: a swap search with the alignment inside the loop, 304 searches of the first 2,000 runes, best −293 and −315 where planted alphabets read **+611** and **+614**; against the same generator on surrogate bodies z max +3.16, family P 0.21 | same, `one_sided_alphabet_slips.py` | The planted alphabets are found in 11 of 12 and 12 of 12 searches, so a true key is missed with chance at most 0.020. **Two arbitrary alphabets under a running key with slips is the cell left**: the search does not climb there, and a planted Quagmire IV is not recovered |
 
 ## C. The alphabet family
 
@@ -198,6 +200,10 @@ Everything else in this table is a constraint. These two are the facts a solutio
 explain.
 
 ## Status
+
+**Rows B10, B11 and B12 added 2026-11-11**, and D18 extended to keyed and content
+rules, from `no-keystream-under-slips-or-any-tableau.md` and
+`doublets-are-new-adjacencies.md`.
 
 **Rows B7, B8, B9, D18 and E13 added 2026-11-10** from
 `no-keystream-under-slips-or-any-tableau.md` and `doublets-are-new-adjacencies.md`.

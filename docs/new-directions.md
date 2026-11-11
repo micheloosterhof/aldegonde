@@ -278,13 +278,15 @@ random-key null on a shuffled body). The null has to hold the key and resample t
    integer-sequence key. Alternate the two tests of 9.1: fit the alphabets by linear
    assignment along the current path (the unigram score is a sum over (cipher rune,
    number) cells, so the best alphabet for a fixed path is an exact 29 × 29 assignment,
-   not a climb), then re-path. Plant first.
+   not a climb), then re-path. Plant first. *Run 11 November (9.4): the alternation
+   fails from a random start; a swap search with the alignment inside the loop works
+   for one alphabet and not for two.*
 2. **Cover tests for every preventer reading.** Any reading in which the preventer is
    perfect and the survivors are an after-effect names a set of positions that must
    contain all 86 doublets; a wrong rule passes with probability about 0.2⁸⁶. The same
    holds for a dodge that fails on a schedule's zero offset: the doublets must all sit on
    the zero's phase. Keyed null gaps (primes, prime gaps, digits) are the untested
-   family.
+   family. *Run 11 November (9.4): 37 million rules, none covers.*
 3. **A dodge-aware decoder in the library.** Decryption under "re-encipher with the next
    key term on a would-be repeat" is ambiguous at one position in 29 (both readings are
    consistent when C_i − C_{i−1} equals the key step) and is resolved by sense. A beam
@@ -301,6 +303,7 @@ random-key null on a shuffled body). The null has to hold the key and resample t
    and over word positions, about a quarter of what a full word-period would give. It is
    as strong as the lag-5 echo was before anything was built on it. No model predicts a
    partial word-period; a pre-stated test needs fresh text, which does not exist.
+   *Recorded 11 November as `residual-at-the-dju-bei-word-distance.md`.*
 6. **Crib shape under the THE reading.** If THE is written joined, blocks beginning
    TH-E are about one in sixteen; under a per-block restart their first two runes share
    plaintext. That is a crib on position, not on a phrase, and survives the word
@@ -313,3 +316,35 @@ generators it is now closed in the standard rune order under any slips, and unde
 alphabets at a fixed alignment. What remains of it is the cell in 9.2 item 1, sequences
 outside the list, and keys that are not sequences at all.
 
+### 9.4 Run 11 November
+
+| test | question | result | file |
+|---|---|---|---|
+| keyed-null cover | Are the 86 doublets made by nulls whose positions a reader could compute from a key or from the text? | 36,990,974 positional and keyed rules, best covers 58 of 86 (a planted rule is recovered uniquely at 10⁻⁶¹); a content marker needs 17 of the 29 runes | `keyed_null_cover.py` |
+| word-distance residual | What is left at word distance 1,449 with the phrase removed? | +2.73σ, empirical P 0.0026 against every other distance, start-anchored, nine of ten bins positive, 0.27 of a word-period; unexplained | `word_distance_residual.py` |
+| unit heads | A key that restarts per page, section or line, under any tableau, key-skipping preventer included? | body +4.97 against +5.11 ± 0.38 on surrogates; planted Quagmire IV +12.96 | `any_tableau_unit_heads.py` |
+| keyword alphabets under slips | A keyword Quagmire I, II or III under a running number-sequence key with a key-skipping preventer? | 1,216 alphabets × 3 placements × 2 bases × 19 generator classes: none; planted +73; the opening's best cells do not extend to the whole body | `keyed_alphabet_slips.py` |
+| one arbitrary alphabet under slips | The same with one unknown alphabet on either side? | 304 searches at the surrogate level (z max +3.16, family P 0.21); planted alphabets found in 23 of 24 searches | `one_sided_alphabet_slips.py` |
+
+Four lessons.
+
+- **Line starts are typeset.** The first two runes of every written line follow glyph
+  width. Any statistic whose labels separate line positions reads that as structure
+  (`n!` on lines read +7.3 before those runes were dropped).
+- **Flat counts filter keys before any search.** Under an additive tableau the cipher's
+  rune counts are the plaintext's convolved with the key's residues. Twelve of the 34
+  generators (n², triangular, prime gaps, n!, Fibonacci, Lucas, Pell, divisor count,
+  Möbius, Thue-Morse, n-th rune value, prime(n)²) cannot leave the body's flat counts.
+- **A search with an alignment inside it is a wait.** It does not descend; it sits at
+  the noise level until it falls in. Hold the temperature between the cost of leaving a
+  noise fit and the cost of leaving the truth, measure the hit rate on plants, and
+  refuse the negative when the rate is low. Lay the emissions out along the key so the
+  inner loop has no table lookup: 5.5 times faster.
+- **Match the null to the key.** Third time this arose: a key that steps by one reads
+  +8.9σ against random keys on any text.
+
+What is left of "a number sequence under a dodge": two arbitrary alphabets (or one used
+on both sides) under a key that runs on. The gain there is quadratic in how much of the
+alphabets is right, a random start sees nothing, and no planted key has been recovered.
+A method for that cell has to get the alignment without the alphabets or the alphabets
+without the alignment; neither is known.
