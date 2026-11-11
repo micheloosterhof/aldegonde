@@ -87,18 +87,43 @@ does as well over the seven widths 10% of the time. Its coincidences lean on run
 what two stretches with skewed rune counts give. **No smeared period up to 600**; the
 control is unreliable beyond.
 
+## 4. A key that restarts per unit, under any tableau, key-skipping preventer included (11 November 2026)
+
+`experiments/any_tableau_unit_heads.py`. Tests 1 and 2 leave one cell: a key-skipping
+preventer with mixed alphabets. When the key restarts at a unit the cell is reachable
+without the rune order and without a fixed alignment, because the first few dozen runes
+of every unit are still aligned and there are many units. The (cipher rune, key residue)
+table is taken over the heads of pages and sections (first 20, 36 and 60 runes) and over
+whole lines, for the same 34 generators, three bases and start terms to 300.
+
+| | z of the best start |
+|---|---|
+| control: Quagmire IV, prime(n)−1 restarting per page, key-skipping dodge; first 36 runes of each page | **+12.96**, at start 0 |
+| the same control over whole pages at a fixed alignment | +7.55, at start 9 (the wrong start) |
+| the body, best of 918 cells | +4.97 |
+| eight surrogate bodies, best of 918 cells | +5.11 ± 0.38 (4.53 to 5.69) |
+
+**No generator restarting at a page, a section or a line selects the body's alphabet.**
+
+One trap, recorded because it produced a false positive on the first run. The first two
+runes of every written line are left out of every table. Their distribution is set by
+glyph width (`line-initial-bias.md`: wide runes such as EA, P, D begin lines, narrow ones
+such as I and R do not), and any key whose early terms label line positions apart reads
+that typesetting as dependence: `n!` on lines read +7.27 and the prime gaps +6.08 against
+a surrogate maximum of 5.53 until those two runes were dropped.
+
 ## What is left open
 
-One cell: a key-skipping preventer **and** a mixed alphabet **and** an integer-sequence
-key. Test 1 needs the rune order; test 2 needs the alignment. Closing it takes an
-alternation of the two (fit the alphabets by assignment along the current path, re-path),
-started from several alphabets, with a planted control.
+One cell, narrowed: a key-skipping preventer **and** a mixed alphabet **and** an
+integer-sequence key that **runs on** through the body. Restarting keys are closed by
+test 4 and keyword alphabets by test 5. For an arbitrary alphabet under a running key it
+takes a joint search over the path and the alphabets, with a planted control.
 
 Also open, as before: sequences outside the 34, and keys that are not sequences.
 
 ## Status
 
-**Status**: confirmed (three negatives, each with a planted positive control).
+**Status**: confirmed (five negatives, each with a planted positive control).
 
 ## Related
 

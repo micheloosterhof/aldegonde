@@ -15,8 +15,10 @@ and the body says f = 0.193 ± 0.021. Proposed 2026-11-10.
 
 ## Status
 
-**Status**: unresolved. Two of its three carriers are tested and fail; the third has one
-parameter-free success and one prediction against it at 1.9σ.
+**Status**: unresolved, close to disproved. Block reversal is excluded. Nulls placed by
+any positional, keyed or content rule tried are excluded (37 million rules, 11 November
+2026). What survives is nulls at unmarked random positions, which a reader could not
+remove, and which lag 2 disfavours at 1.9σ.
 
 ## Mechanism
 
@@ -83,17 +85,44 @@ has to follow a rule or be a rune the plaintext never writes; the first is not f
 above, and the second is `null-rune-preventer.md`, which inserts only on a would-be
 repeat (ν = 1/29) and predicts no survivors by this route.
 
+## Keyed and content rules for the nulls (11 November 2026)
+
+`experiments/keyed_null_cover.py`. A reader who must strip the nulls needs a rule he can
+compute from a key or from the text. Each rule is scored by the binomial tail of its
+cover of the 86 doublets given the share of all adjacent pairs it touches.
+
+| family | rules |
+|---|---|
+| i + c is prime, or semiprime, every shift c to 2,000,000 | 8,000,000 |
+| i = r mod m, m to 60 | 10,620 |
+| G(i + c) = r mod m for twelve number sequences G, m to 30, start c to 1,000 | about 28,000,000 |
+| nulls spaced by gaps (G(n) mod m) + 1 from start term c | about 300,000 |
+
+Positions counted in runes or in runes and separators, from the start of the body or of
+each section or page. **36,990,974 rules; none covers the doublets.** The best covers 58
+of 86 while touching 0.378 of all pairs: a tail of 10⁻⁷·⁶, which times the number of rules
+is 1. A true rule reads about 10⁻⁶⁰.
+
+The control builds a strict no-repeat random stream of the body's length and inserts
+random nulls at gaps (π's base-29 digits mod 20) + 1 from term 123: 92 doublets, and of
+300,000 gap rules exactly one covers them all, the planted one, at 10⁻⁶¹.
+
+**Content rules.** If the null is marked by its neighbour ("the rune after a member of
+X", or before), every doublet needs its null's neighbour in X. The smallest such X, by
+exact minimum vertex cover, has **17 runes** either way, so nulls would be at least 0.59
+of the runes where the doublet count allows 0.096.
+
 ## Predictions
 
 - Any proposed after-step names the pairs it creates. All 86 doublets are among them.
-- Keyed null positions (gaps drawn from a key sequence) are the untested carrier. The
-  test is the same cover count, run for each candidate sequence of gaps.
+- Keyed null positions were the untested carrier; they are tested above and fail.
 - Under inserted nulls the lag-5 echo is diluted by (1 − ν)⁵ ≈ 0.60 inside blocks, so a
   real echo would be about 1.7 times stronger in the plaintext stream than row D2 reads.
 
 ## Scripts
 
 - `experiments/new_adjacency_probes.py`
+- `experiments/keyed_null_cover.py`
 
 ## Related
 
@@ -105,6 +134,9 @@ repeat (ν = 1/29) and predicts no survivors by this route.
 
 ## Verdict
 
-Open, leaning against. The lens is the useful part: a perfect preventer plus an
-after-step turns the doublets from a rate to be matched into 86 positions to be covered,
-which is a far sharper test than any battery cell.
+Close to disproved. Every carrier that a recipient could undo is excluded: block
+reversal, and nulls placed by position, by key or by content. Random unmarked nulls are
+the only form left, and they make a cipher nobody can read. The lens is the useful part
+and outlives the hypothesis: a perfect preventer plus an after-step turns the doublets
+from a rate to be matched into 86 positions to be covered, a test a wrong rule passes
+once in 10⁶⁰.

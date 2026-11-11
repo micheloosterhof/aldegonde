@@ -4,7 +4,7 @@ Files are tagged `type:` in frontmatter. Observations are measured features
 (each with an `experiments/` script reproducing its significance); hypotheses are
 proposed mechanisms scored against them.
 
-### Observations (120)
+### Observations (121)
 
 | File | Feature | Status |
 |---|---|---|
@@ -128,6 +128,7 @@ proposed mechanisms scored against them.
 | [closed-channels-october-2026.md](closed-channels-october-2026.md) | Six Channels Closed While Drafting the October 2026 Hypotheses | confirmed (measurement); thirteen-dot restart, Bacon lengths, red runes, word order, checksum chain (planted control z +15.8), scrambled solved pages all at chance |
 | [cipher-zoo-fingerprint.md](cipher-zoo-fingerprint.md) | A Zoo of Encryption Algorithms Scored on the Body's Fingerprint | confirmed (simulation); only a preventer failing one time in five reaches the body's doublet rates, the doubled keyword letter being its natural form |
 | [no-keystream-under-slips-or-any-tableau.md](no-keystream-under-slips-or-any-tableau.md) | No Integer-Sequence Keystream, Under Key Slips or Under Any Tableau; No Period Smeared by Slips | confirmed (three negatives with planted controls): 34 generators through a slip-tolerant Viterbi alignment, best of 306 cells z +3.87 (family P 0.41) against +239 for a planted key under the key-skipping dodge; the (cipher rune, key residue) table independent under any tableau, +8.79 against +8.04 +- 1.27 on surrogates and +248 planted; no smeared period to 600 |
+| [residual-at-the-dju-bei-word-distance.md](residual-at-the-dju-bei-word-distance.md) | A Residual at the DJU-BEI Word Distance, +2.73 sigma With the Phrase Removed | confirmed as a measurement, unexplained: word-aligned coincidence 1,449 words apart is 195 of 4,669 with the phrase removed (empirical P 0.0026 against every other distance), start-anchored, spread along the whole body, 0.27 of a full word-period; as strong as the lag-5 echo, and nothing is built on it |
 
 ### Hypotheses (77)
 
@@ -209,4 +210,4 @@ proposed mechanisms scored against them.
 | [haplography-the-scribe-wrote-doubles-once.md](haplography-the-scribe-wrote-doubles-once.md) | The Cipher Has No Repeat Rule; the Scribe Wrote Doubled Runes Once | unresolved; one copyist parameter lands both doublet cells from a rule-free carrier and leaks the echo into lag 4 as the body does; D8 is the obstacle |
 | [ciphertext-autokey-with-a-dead-identity-rune.md](ciphertext-autokey-with-a-dead-identity-rune.md) | A Ciphertext Autokey Whose Identity Rune the Plaintext Never Uses | unresolved; zero doublets by construction with no rule, per-word key passes the split, EO fits the lag cells; the 86 must be runes written twice |
 | [separators-are-independent-draws.md](separators-are-independent-draws.md) | The Separators Are Independent Draws, Not Plaintext Word Boundaries | decorative separators disproved (re-cutting the stream with the block lengths in another order drops the within-block lag-5 count from 104 to 77.9 +- 8.2, P 0.0015); cipher units of independent length unresolved and untestable on the lengths (sentences and independent draws sit 0.53 sigma apart on between-span composition) |
-| [doublets-are-new-adjacencies.md](doublets-are-new-adjacencies.md) | The Preventer Is Perfect and the 86 Doublets Are New Adjacencies | unresolved, leaning against: block reversal excluded (largest residue-class share 0.38 of 86), no ruled null position (best cover 0.62), random nulls at f/2 = 0.096 predict the mean block length with no parameter (4.411 against 4.425) but lag 2 reads +1.89 sigma against; by-product: THE written joined takes the length chi-square from 45.4 to 14.1 |
+| [doublets-are-new-adjacencies.md](doublets-are-new-adjacencies.md) | The Preventer Is Perfect and the 86 Doublets Are New Adjacencies | unresolved, close to disproved: block reversal excluded (largest residue-class share 0.38 of 86); nulls placed by any of 36,990,974 positional or keyed rules excluded (best cover 58 of 86, a planted rule recovered at 1e-61); a content marker needs 17 runes; random unmarked nulls at f/2 = 0.096 predict the mean block length (4.411 against 4.425) but lag 2 reads +1.89 sigma against and no reader could strip them; by-product: THE written joined takes the length chi-square from 45.4 to 14.1 |
